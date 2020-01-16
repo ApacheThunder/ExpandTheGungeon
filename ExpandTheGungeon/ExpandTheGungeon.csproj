@@ -1,0 +1,992 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{879A1D67-4A5C-4A21-9823-426D1752D3D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExpandTheGungeon</RootNamespace>
+    <AssemblyName>ExpandTheGungeon</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Dependencies\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\Dependencies\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp.Base.mm">
+      <HintPath>..\Dependencies\Assembly-CSharp.Base.mm.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>..\Dependencies\MonoMod.RuntimeDetour.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>..\Dependencies\MonoMod.Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>..\Dependencies\PlayMaker.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\Dependencies\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Dependencies\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule.Base.mm">
+      <HintPath>..\Dependencies\UnityEngine.CoreModule.Base.mm.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\Dependencies\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>..\Dependencies\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>..\Dependencies\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExpandAudio\OtherUtilities.cs" />
+    <Compile Include="ExpandAudio\AudioResourceLoader.cs" />
+    <Compile Include="ExpandAudio\ResourceLoaderSoundbanks.cs" />
+    <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandBlobulinRancherChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandBooChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandBulletKingChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandChaosModeChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandCorruptedObjectAmbienceComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandEnableCorpseOnDeath.cs" />
+    <Compile Include="ExpandComponents\ExpandGlitchedEnemyStunManager.cs" />
+    <Compile Include="ExpandComponents\ExpandCustomEnemyBehaviorEnabler.cs" />
+    <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
+    <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
+    <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
+    <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
+    <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
+    <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
+    <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
+    <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
+    <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
+    <Compile Include="ExpandObjects\ExpandCorruptedRoomAmbiencePlacable.cs" />
+    <Compile Include="ExpandComponents\ExpandElevatorDepartureManager.cs" />
+    <Compile Include="ExpandComponents\ExpandForgeHammerComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandSellCellManager.cs" />
+    <Compile Include="ExpandComponents\ExpandThwompManager.cs" />
+    <Compile Include="ExpandComponents\ExpandGlitchedSuperReaperController.cs" />
+    <Compile Include="ExpandComponents\ExpandTripleTroubleChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandUsableBasicWarp.cs" />
+    <Compile Include="ExpandComponents\ExpandZoneControlChallengeComponent.cs" />
+    <Compile Include="ExpandMain\ExpandPlaceCorruptTiles.cs" />
+    <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
+    <Compile Include="ItemAPI\CompanionBuilder.cs" />
+    <Compile Include="ItemAPI\FakePrefab.cs" />
+    <Compile Include="ItemAPI\FakePrefabHooks.cs" />
+    <Compile Include="ItemAPI\ItemBuilder.cs" />
+    <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
+    <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
+    <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
+    <Compile Include="ItemAPI\ResourceExtractor.cs" />
+    <Compile Include="ItemAPI\SpriteBuilder.cs" />
+    <Compile Include="ExpandMain\ExpandAssemblerHook.cs" />
+    <Compile Include="ExpandMain\ExpandJunkEnemySpawner.cs" />
+    <Compile Include="ExpandUtilities\RoomDebug.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\test_customroom_flow.cs" />
+    <Compile Include="ExpandObjectMods.cs" />
+    <Compile Include="ExpandDungeonFlows\ExpandDungeonFlows.cs" />
+    <Compile Include="ExpandMain\ExpandEnemyReplacements.cs" />
+    <Compile Include="ExpandObjects\ExpandGlitchTrapDoor.cs" />
+    <Compile Include="ExpandObjects\ExpandMirrorController.cs" />
+    <Compile Include="ExpandObjects\ExpandPrefabs.cs" />
+    <Compile Include="ExpandUtilities\ExpandShaders.cs" />
+    <Compile Include="ExpandComponents\ExpandSpawnGlitchedEnemyOnDeath.cs" />
+    <Compile Include="ExpandComponents\ExpandSpawnGlitchedObjectOnDeath.cs" />
+    <Compile Include="ExpandMain\ExpandStringTableManager.cs" />
+    <Compile Include="ExpandComponents\ExpandWeatherController.cs" />
+    <Compile Include="ExpandUtilities\AssetFinder.cs" />
+    <Compile Include="ExpandComponents\ExpandExplodeOnDeath.cs" />
+    <Compile Include="ExpandObjects\ExpandGlitchedEnemies.cs" />
+    <Compile Include="ExpandMain\ExpandPlaceGlitchedEnemies.cs" />
+    <Compile Include="ExpandUtilities\ExpandLoadPrefab.cs" />
+    <Compile Include="ExpandStats.cs" />
+    <Compile Include="ExpandObjects\ExpandLists.cs" />
+    <Compile Include="DungeonFlowModule.cs" />
+    <Compile Include="ExpandTheGungeon.cs" />
+    <Compile Include="ExpandMain\ExpandObjectDatabase.cs" />
+    <Compile Include="ExpandComponents\ExpandKickableObject.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\BossrushFlows.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\complex_flow_test.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\custom_glitchchestalt_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\custom_glitchchest_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\custom_glitch_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\demo_stage_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\really_big_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\secretglitchfloor_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\test_traproom_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\test_west_floor_03a_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\fruit_loops.cs" />
+    <Compile Include="ExpandUtilities\FlowHelpers.cs" />
+    <Compile Include="ItemAPI\Tools.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExpandMain\ExpandSharedHooks.cs" />
+    <Compile Include="ExpandUtilities\ExpandUtility.cs" />
+    <Compile Include="ExpandMain\ExpandPlaceWallMimics.cs" />
+    <Compile Include="ExpandUtilities\ResourceExtractor.cs" />
+    <Compile Include="ExpandUtilities\RoomFromText.cs" />
+    <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
+    <Compile Include="Textures\BootlegEnemies\BlueShotGunMan\BlueShotGunMan.cs" />
+    <Compile Include="Textures\BootlegEnemies\Bullat\Bullat.cs" />
+    <Compile Include="Textures\BootlegEnemies\BulletManBandana\BulletManBandana.cs" />
+    <Compile Include="Textures\BootlegEnemies\BulletMan\BulletMan.cs" />
+    <Compile Include="Textures\BootlegEnemies\RedShotGunMan\RedShotGunMan.cs" />
+    <Compile Include="Textures\Rat_Grenade\Rat_Grenade.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\BigEntranceRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Giant_Elevator_Room_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Utiliroom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\SpecialWallMimicRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Utiliroom_SpecialPit_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\SpecialMaintenanceRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\ShopBackRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Utiliroom_Pitfall_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\SecretRewardRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\SecretExitRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\ThwompCrossingVertical_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\ThwompCrossingHorizontal_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\PuzzleRoom3_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Explode_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\ENV_Tileset_Canyon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Stone_Cube_Collection_West.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_C_Hub_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_C_Gap_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Chain_Gap_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Challange1_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Line_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Singer_Gap_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Flying_Gap_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Cross_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Blocks_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Blocks_Pits_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Wall_Pit_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Gate_Cross_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Passage_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Jump_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Passage_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_R_Blocks_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Small_Passage_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Box_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Steps_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Hollows\Expand_SpiderMaze_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Spiral_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Apache_Hub_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Box_Hub_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Castle\Expand_Enclose_Hub_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BulletMan_Monochrome.png" />
+    <EmbeddedResource Include="Textures\BulletMan_UpsideDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_back_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_back_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_back_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_back_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_front_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_front_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_front_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_front_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_left_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_left_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_left_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_left_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_right_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_right_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_right_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_idle_right_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_005.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_back_006.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_005.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_front_006.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_005.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_left_006.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_001.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_002.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_003.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_004.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_005.png" />
+    <EmbeddedResource Include="Textures\Rat_Grenade\rat_candle_move_right_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_charge_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_charge_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_charge_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_charge_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_die_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\Bullat\bullat_idle_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_burst_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_front_north_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_front_north_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_front_north_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_front_north_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_front_north_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_forward_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_left_side_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_forward_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_death_right_side_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_hit_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_hit_left_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_hit_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_hit_right_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_idle_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_idle_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_idle_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_idle_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_left_run_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_pitfall_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_pitfall_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_pitfall_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_pitfall_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_pitfall_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_right_run_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_eft_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_left_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_run_right_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_spawn_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_spawn_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_spawn_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_surprise_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_surprise_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_surprise_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BlueShotGunMan\shotgunguy_surprise_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_idle_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_leap_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_leap_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_leap_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_left_leap_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_idle_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_leap_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_leap_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_leap_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_cover_right_leap_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_back_south_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_back_south_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_back_south_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_back_south_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_front_north_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_front_north_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_front_north_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_front_north_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_front_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_left_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_front_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_death_right_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_die_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_hand_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_hit_back_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_hit_back_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_hit_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_hit_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_idle_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_pitfall_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_pitfall_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_pitfall_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_pitfall_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_pitfall_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_left_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_run_right_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_shooting_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_shooting_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_spawn_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_spawn_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_spawn_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_left_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_left_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletMan\bullet_surprise_right_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_idle_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_leap_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_leap_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_leap_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_left_leap_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_idle_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_leap_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_leap_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_leap_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_cover_right_leap_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_back_south_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_back_south_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_back_south_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_back_south_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_front_north_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_front_north_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_front_north_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_front_north_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_front_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_left_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_front_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_death_right_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_die_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_hand_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_hit_back_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_hit_back_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_hit_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_hit_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_idle_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_pitfall_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_pitfall_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_pitfall_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_pitfall_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_pitfall_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_left_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_run_right_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_shooting_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_shooting_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_spawn_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_spawn_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_spawn_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_left_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_left_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_left_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\BulletManBandana\bullet_surprise_right_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_burst_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_front_north_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_front_north_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_front_north_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_front_north_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_front_north_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_forward_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_left_side_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_forward_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_front_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_front_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_side_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_side_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_side_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_side_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_death_right_side_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_hit_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_hit_left_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_hit_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_hit_right_forward_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_idle_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_idle_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_idle_front_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_idle_front_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_left_run_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_pitfall_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_pitfall_right_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_pitfall_right_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_pitfall_right_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_pitfall_right_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_right_run_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_eft_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_left_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_left_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_left_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_left_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_left_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_run_right_back_006.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_spawn_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_spawn_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_spawn_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_surprise_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_surprise_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_surprise_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies\RedShotGunMan\shotgunguy_surprise_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_00.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_03.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_04.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_05.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_06.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_07.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_08.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_09.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_10.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_11.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_12.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_13.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_14.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_15.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_16.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_17.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_18.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_19.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_20.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_21.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_22.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_23.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_24.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\babygoodhammer_spawn_25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\babygoodhammer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\corruptionbomb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BlueBulletShotgunMan.png" />
+    <EmbeddedResource Include="Textures\RedBulletShotgunMan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BulletManEyepatch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_03.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_04.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_05.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_06.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_07.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_08.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_09.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corruptionbomb\corruptionbomb_spin_10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\tabletech_assassin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\corruptionbomb_minimapicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExpandAudio\EX_SFX.bnk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\corrupted_poopsack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_03.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_04.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_05.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_06.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_07.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_08.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_09.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\corrupted_poopsack\corrupted_poopsack_10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_001.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_002.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_003.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_004.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_005.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_alarm_006.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_break_001.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_break_002.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_break_003.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_break_004.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_idle_001.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_idle_002.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_idle_003.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_idle_004.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_idle_005.png" />
+    <EmbeddedResource Include="Textures\Traps\alarm_mushroom\alarm_mushroom2_shadow_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_001.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_001.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_002.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_003.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_004.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_005.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_006.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_007.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_door_008.png" />
+    <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_pit_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\SecretExitRoom2_Layout.txt" />
+    <EmbeddedResource Include="RoomCellData\SecretRatEntranceRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_00.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_01.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_02.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_03.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_04.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_05.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_06.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_07.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Frame_Bottom.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Frame_Top.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_00.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_01.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_02.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_03.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_04.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_05.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_06.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Open_07.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Background.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Light_Green.png" />
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Light_Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_MinimapIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Frame_NoDecal_Top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\Expand_SecretElevatorEntranceRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoomCellData\CreepyGlitchRoom_Layout.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_Base.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\MimicInMirror_BossCardBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicCrack_01.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicCrack_02.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicCrack_03.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicCrack_04.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicCrack_05.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_01.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_02.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_03.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_04.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_05.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_06.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_07.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_08.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_09.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_MimicFadeIn_10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_Broken.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_01.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_02.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_03.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_04.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_05.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_06.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_07.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_08.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_09.png" />
+    <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_ShatterDebris_10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BehaviorScripts\BabyGoodHammer_BehaviorScript.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_03.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_04.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_05.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_idle_down_06.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_left_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_left_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_left_03.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_01.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_02.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_03.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,3014 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
+using Dungeonator;
+using Pathfinding;
+using tk2dRuntime.TileMap;
+using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandDungeonFlows;
+
+namespace ExpandTheGungeon.ExpandUtilities {
+
+    public class ExpandUtility : MonoBehaviour {
+
+        public static ExpandUtility Instance {
+            get {
+                if (!m_instance) {
+                    m_instance = ETGModMainBehaviour.Instance.gameObject.AddComponent<ExpandUtility>();
+                }
+                return m_instance;
+            }
+        }
+        private static ExpandUtility m_instance;
+
+        public static Dungeon RatDungeon = null;
+
+        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false) {
+
+            if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }
+
+            GameObject m_CachedGunAttachPoint = null;
+
+            corpseObject = null;
+
+            if (instantiateCorpseObject) {
+                corpseObject = Instantiate(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").CorpseObject);
+                corpseObject.SetActive(false);
+                FakePrefab.MarkAsFakePrefab(corpseObject);
+            } else if (ExternalCorpseObject) {
+                corpseObject = ExternalCorpseObject;
+            }
+
+            if (!targetObject.GetComponent<AIActor>() && !gunAttachObjectOverride && !EnemyHasNoShooter) {
+                m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
+                m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
+                if (GunAttachOffset.HasValue) {
+                    m_CachedGunAttachPoint.transform.localPosition = GunAttachOffset.Value;
+                } else {
+                    m_CachedGunAttachPoint.transform.localPosition = new Vector3(0.3125f, 0.25f, 0);
+                }
+            } else if (!targetObject.GetComponent<AIActor>() && gunAttachObjectOverride && !EnemyHasNoShooter) {
+                m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
+                if (gunAttachObjectOverride.GetComponent<tk2dSprite>()) {
+                    m_CachedGunAttachPoint.AddComponent<tk2dSprite>();
+                    DuplicateSprite(m_CachedGunAttachPoint.GetComponent<tk2dSprite>(), gunAttachObjectOverride.GetComponent<tk2dSprite>());
+                }
+                m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
+                if (GunAttachOffset.HasValue) {
+                    m_CachedGunAttachPoint.transform.localPosition = GunAttachOffset.Value;
+                } else {
+                    m_CachedGunAttachPoint.transform.localPosition = new Vector3(0.3125f, 0.25f, 0);
+                }
+            }
+
+            if (!targetObject.GetComponent<tk2dSprite>() && spriteSource) {
+                // ItemBuilder.AddSpriteToObject(targetObject, spriteResourcePath, false, isFakePrefab);
+                tk2dSprite newSprite = targetObject.AddComponent<tk2dSprite>();
+                DuplicateSprite(newSprite, spriteSource);
+            }
+            
+            tk2dSprite targetSprite = targetObject.GetComponent<tk2dSprite>();
+            if (!targetSprite) { return; }
+
+            if (!targetObject.GetComponent<SpeculativeRigidbody>()) {
+                if (customColliders != null) {
+                    foreach (PixelCollider collider in customColliders) {
+                        int SizeX = collider.ManualWidth;
+                        int SizeY = collider.ManualHeight;
+                        int OffsetX = collider.ManualOffsetX;
+                        int OffsetY = collider.ManualOffsetY;
+                        GenerateOrAddToRigidBody(targetObject, collider.CollisionLayer, collider.ColliderGenerationMode, RigidBodyCollidesWithTileMap, RigidBodyCollidesWithOthers, RigidBodyCanBeCarried, RigidBodyCanBePushed, false, collider.IsTrigger, false, true, new IntVector2(SizeX, SizeY), new IntVector2(OffsetX, OffsetY));
+                    }
+                } else {
+                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyCollider, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 4), new IntVector2(5, 0));
+                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyHitBox, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 23), new IntVector2(5, 0));
+                }
+
+                SpeculativeRigidbody targetRigidBody = targetObject.GetComponent<SpeculativeRigidbody>();
+                targetRigidBody.Reinitialize();
+                if (customColliders == null) { targetRigidBody.PixelColliders[1].Sprite = targetSprite; }
+            }
+                        
+            if (!targetObject.GetComponent<tk2dSpriteAnimator>()) {
+                GenerateSpriteAnimator(targetObject, null, 0, 0, false, false, false, false, true, false, 0, 0, false);
+            }
+
+            if (!targetObject.GetComponent<HealthHaver>()) {
+                GenerateHealthHaver(targetObject, 15, false, false, OnDeathBehavior.DeathType.Death, true, false, false, false, true, true);
+            }
+
+            if (!targetObject.GetComponent<HitEffectHandler>()) { targetObject.AddComponent<HitEffectHandler>(); }
+
+            HitEffectHandler hitEffectHandler = targetObject.GetComponent<HitEffectHandler>();
+            hitEffectHandler.overrideHitEffect = new VFXComplex() { effects = new VFXObject[0] };
+            hitEffectHandler.overrideHitEffectPool = new VFXPool() { effects = new VFXComplex[0] };
+            hitEffectHandler.additionalHitEffects = new HitEffectHandler.AdditionalHitEffect[0];
+            hitEffectHandler.SuppressAllHitEffects = false;
+            
+            if (!targetObject.GetComponent<KnockbackDoer>()) { targetObject.AddComponent<KnockbackDoer>(); }
+
+            KnockbackDoer knockBackDoer = targetObject.GetComponent<KnockbackDoer>();
+            knockBackDoer.weight = 35;
+            knockBackDoer.deathMultiplier = 2.5f;
+            knockBackDoer.knockbackWhileReflecting = false;
+            knockBackDoer.shouldBounce = true;
+            knockBackDoer.collisionDecay = 0.5f;
+
+            if (!targetObject.GetComponent<AIAnimator>()) { GenerateBlankAIAnimator(targetObject); }
+
+            if (!targetObject.GetComponent<ObjectVisibilityManager>()) { targetObject.AddComponent<ObjectVisibilityManager>(); }
+
+            ObjectVisibilityManager visibilityManager = targetObject.GetComponent<ObjectVisibilityManager>();
+            visibilityManager.SuppressPlayerEnteredRoom = false;
+
+            AIActor bulletManTemplate = EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+
+            if ((!targetObject.GetComponent<AIShooter>() | !targetObject.GetComponent<AIBulletBank>()) && !EnemyHasNoShooter) {
+                DuplicateAIShooterAndAIBulletBank(targetObject, bulletManTemplate.gameObject.GetComponent<AIShooter>(), bulletManTemplate.gameObject.GetComponent<AIBulletBank>(), StartingGunID, m_CachedGunAttachPoint.transform);
+            }
+            
+            if (!targetObject.GetComponent<AIActor>()) { targetObject.AddComponent<AIActor>(); }
+
+            AIActor m_CachedAIActor = targetObject.GetComponent<AIActor>();
+            m_CachedAIActor.placeableWidth = 1;
+            m_CachedAIActor.placeableHeight = 1;
+            m_CachedAIActor.difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
+            m_CachedAIActor.isPassable = true;
+            m_CachedAIActor.ActorName = EnemyName;
+            m_CachedAIActor.OverrideDisplayName = EnemyName;
+            m_CachedAIActor.actorTypes = 0;
+            m_CachedAIActor.HasShadow = true;
+            m_CachedAIActor.ShadowHeightOffGround = 0;
+            m_CachedAIActor.ActorShadowOffset = Vector3.zero;
+            m_CachedAIActor.DoDustUps = false;
+            m_CachedAIActor.DustUpInterval = 0;
+            m_CachedAIActor.FreezeDispelFactor = 20;
+            m_CachedAIActor.ImmuneToAllEffects = false;
+            m_CachedAIActor.EffectResistances = new ActorEffectResistance[0];
+            m_CachedAIActor.OverrideColorOverridden = false;
+            m_CachedAIActor.EnemyId = UnityEngine.Random.Range(10000, 99999);
+            m_CachedAIActor.EnemyGuid = EnemyGUID;
+            m_CachedAIActor.ForcedPositionInAmmonomicon = -1;
+            m_CachedAIActor.SetsFlagOnDeath = false;
+            m_CachedAIActor.FlagToSetOnDeath = GungeonFlags.NONE;
+            m_CachedAIActor.SetsFlagOnActivation = false;
+            m_CachedAIActor.FlagToSetOnActivation = GungeonFlags.NONE;
+            m_CachedAIActor.SetsCharacterSpecificFlagOnDeath = false;
+            m_CachedAIActor.CharacterSpecificFlagToSetOnDeath = CharacterSpecificGungeonFlags.NONE;
+            m_CachedAIActor.IsNormalEnemy = true;
+            m_CachedAIActor.IsSignatureEnemy = false;
+            m_CachedAIActor.IsHarmlessEnemy = false;
+            m_CachedAIActor.CompanionSettings = new ActorCompanionSettings() { WarpsToRandomPoint = false };
+            m_CachedAIActor.MovementSpeed = 8;
+            m_CachedAIActor.PathableTiles = CellTypes.FLOOR;
+            m_CachedAIActor.DiesOnCollison = false;
+            m_CachedAIActor.CollisionDamage = 0.5f;
+            m_CachedAIActor.CollisionKnockbackStrength = 5;
+            m_CachedAIActor.CollisionDamageTypes = CoreDamageTypes.None;
+            m_CachedAIActor.EnemyCollisionKnockbackStrengthOverride = -1;
+            m_CachedAIActor.CollisionVFX = new VFXPool() { effects = new VFXComplex[0] };
+            m_CachedAIActor.NonActorCollisionVFX = new VFXPool() { effects = new VFXComplex[0] };
+            m_CachedAIActor.CollisionSetsPlayerOnFire = false;
+            m_CachedAIActor.TryDodgeBullets = false;
+            m_CachedAIActor.AvoidRadius = 4;
+            m_CachedAIActor.ReflectsProjectilesWhileInvulnerable = false;
+            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.HasOverrideDodgeRollDeath = false;
+            m_CachedAIActor.OverrideDodgeRollDeath = string.Empty;
+            m_CachedAIActor.CanDropCurrency = true;
+            m_CachedAIActor.AdditionalSingleCoinDropChance = 0;
+            m_CachedAIActor.CanDropItems = true;
+            m_CachedAIActor.CanDropDuplicateItems = false;
+            m_CachedAIActor.CustomLootTableMinDrops = 1;
+            m_CachedAIActor.CustomLootTableMaxDrops = 1;
+            m_CachedAIActor.ChanceToDropCustomChest = 0;
+            m_CachedAIActor.IgnoreForRoomClear = false;
+            m_CachedAIActor.SpawnLootAtRewardChestPos = false;
+            if (corpseObject && !ExternalCorpseObject) {
+                m_CachedAIActor.CorpseObject = corpseObject;
+            } else if (ExternalCorpseObject) {
+                m_CachedAIActor.CorpseObject = ExternalCorpseObject;
+            }
+            m_CachedAIActor.CorpseShadow = true;
+            m_CachedAIActor.TransferShadowToCorpse = false;
+            m_CachedAIActor.shadowDeathType = AIActor.ShadowDeathType.Fade;
+            m_CachedAIActor.PreventDeathKnockback = false;
+            m_CachedAIActor.OnCorpseVFX = new VFXPool() { effects = new VFXComplex[0] };
+            m_CachedAIActor.OnEngagedVFXAnchor = tk2dBaseSprite.Anchor.LowerLeft;
+            m_CachedAIActor.shadowHeightOffset = 0;
+            m_CachedAIActor.invisibleUntilAwaken = false;
+            m_CachedAIActor.procedurallyOutlined = true;
+            m_CachedAIActor.forceUsesTrimmedBounds = true;
+            m_CachedAIActor.reinforceType = AIActor.ReinforceType.FullVfx;
+            m_CachedAIActor.UsesVaryingEmissiveShaderPropertyBlock = false;
+            m_CachedAIActor.EnemySwitchState = "Metal_Bullet_Man";
+            m_CachedAIActor.OverrideSpawnReticleAudio = string.Empty;
+            m_CachedAIActor.OverrideSpawnAppearAudio = string.Empty;
+            m_CachedAIActor.UseMovementAudio = false;
+            m_CachedAIActor.StartMovingEvent = string.Empty;
+            m_CachedAIActor.StopMovingEvent = string.Empty;
+            m_CachedAIActor.animationAudioEvents = new List<ActorAudioEvent>() {
+                new ActorAudioEvent() { eventTag = "footstep", eventName = "Play_CHR_metalBullet_step_01" }
+            };
+            m_CachedAIActor.HealthOverrides = new List<AIActor.HealthOverride>(0);
+            m_CachedAIActor.IdentifierForEffects = AIActor.EnemyTypeIdentifier.UNIDENTIFIED;
+            m_CachedAIActor.BehaviorOverridesVelocity = false;
+            m_CachedAIActor.BehaviorVelocity = Vector2.zero;
+            m_CachedAIActor.AlwaysShowOffscreenArrow = false;
+            m_CachedAIActor.BlackPhantomProperties = new BlackPhantomProperties() {
+                BonusHealthPercentIncrease = 2.2f,
+                BonusHealthFlatIncrease = 0,
+                MaxTotalHealth = 175,
+                CooldownMultiplier = 0.66f,
+                MovementSpeedMultiplier = 1.5f,
+                LocalTimeScaleMultiplier = 1,
+                BulletSpeedMultiplier = 1,
+                GradientScale = 0.75f,
+                ContrastPower = 1.3f
+            };
+            m_CachedAIActor.ForceBlackPhantomParticles = false;
+            m_CachedAIActor.OverrideBlackPhantomParticlesCollider = false;
+            m_CachedAIActor.BlackPhantomParticlesCollider = 0;
+            m_CachedAIActor.PreventFallingInPitsEver = false;
+
+            m_CachedAIActor.RegenerateCache();
+
+            bulletManTemplate = null;
+        }
+
+        public static void DuplicateAIShooterAndAIBulletBank(GameObject targetObject, AIShooter sourceShooter, AIBulletBank sourceBulletBank, int startingGunOverrideID = 0, Transform gunAttachPointOverride = null, Transform bulletScriptAttachPointOverride = null, PlayerHandController overrideHandObject = null) {
+            if (targetObject.GetComponent<AIShooter>() && targetObject.GetComponent<AIBulletBank>()) { return; }
+
+            if (!targetObject.GetComponent<AIBulletBank>()) { 
+                AIBulletBank m_TargetBulletBank = targetObject.AddComponent<AIBulletBank>();
+                m_TargetBulletBank.Bullets = new List<AIBulletBank.Entry>(0);
+                if (sourceBulletBank.Bullets.Count > 0) {
+                    foreach (AIBulletBank.Entry bulletEntry in sourceBulletBank.Bullets) {
+                        m_TargetBulletBank.Bullets.Add(
+                            new AIBulletBank.Entry() {
+                                Name = bulletEntry.Name,
+                                BulletObject = bulletEntry.BulletObject,
+                                OverrideProjectile = bulletEntry.OverrideProjectile,
+                                ProjectileData = new ProjectileData() {
+                                    damage = bulletEntry.ProjectileData.damage,
+                                    speed = bulletEntry.ProjectileData.speed,
+                                    range = bulletEntry.ProjectileData.range,
+                                    force = bulletEntry.ProjectileData.force,
+                                    damping = bulletEntry.ProjectileData.damping,
+                                    UsesCustomAccelerationCurve = bulletEntry.ProjectileData.UsesCustomAccelerationCurve,
+                                    AccelerationCurve = bulletEntry.ProjectileData.AccelerationCurve,
+                                    CustomAccelerationCurveDuration = bulletEntry.ProjectileData.CustomAccelerationCurveDuration,
+                                    onDestroyBulletScript = bulletEntry.ProjectileData.onDestroyBulletScript,
+                                    IgnoreAccelCurveTime = bulletEntry.ProjectileData.IgnoreAccelCurveTime
+                                },
+                                PlayAudio = bulletEntry.PlayAudio,
+                                AudioSwitch = bulletEntry.AudioSwitch,
+                                AudioEvent = bulletEntry.AudioEvent,
+                                AudioLimitOncePerFrame = bulletEntry.AudioLimitOncePerFrame,
+                                AudioLimitOncePerAttack = bulletEntry.AudioLimitOncePerAttack,
+                                MuzzleFlashEffects = new VFXPool() {
+                                    effects = bulletEntry.MuzzleFlashEffects.effects,
+                                    type = bulletEntry.MuzzleFlashEffects.type
+                                },
+                                MuzzleLimitOncePerFrame = bulletEntry.MuzzleLimitOncePerFrame,
+                                MuzzleInheritsTransformDirection = bulletEntry.MuzzleInheritsTransformDirection,
+                                ShellTransform = bulletEntry.ShellTransform,
+                                ShellPrefab = bulletEntry.ShellPrefab,
+                                ShellForce = bulletEntry.ShellForce,
+                                ShellForceVariance = bulletEntry.ShellForceVariance,
+                                DontRotateShell = bulletEntry.DontRotateShell,
+                                ShellGroundOffset = bulletEntry.ShellGroundOffset,
+                                ShellsLimitOncePerFrame = bulletEntry.ShellsLimitOncePerFrame,
+                                rampBullets = bulletEntry.rampBullets,
+                                conditionalMinDegFromNorth = bulletEntry.conditionalMinDegFromNorth,
+                                forceCanHitEnemies = bulletEntry.forceCanHitEnemies,
+                                suppressHitEffectsIfOffscreen = bulletEntry.suppressHitEffectsIfOffscreen,
+                                preloadCount = bulletEntry.preloadCount
+                            }
+                        );
+                    }
+                }
+                m_TargetBulletBank.useDefaultBulletIfMissing = true;
+                m_TargetBulletBank.transforms = new List<Transform>();
+                if (sourceBulletBank.transforms != null && sourceBulletBank.transforms.Count > 0) {
+                    foreach (Transform transform in sourceBulletBank.transforms) { m_TargetBulletBank.transforms.Add(transform); }
+                }
+                m_TargetBulletBank.RegenerateCache();
+            }
+
+            if (!targetObject.GetComponent<AIShooter>()) { 
+                AIShooter m_targetShooter = targetObject.AddComponent<AIShooter>();
+                m_targetShooter.volley = sourceShooter.volley;
+                if (startingGunOverrideID != 0) {
+                    m_targetShooter.equippedGunId = startingGunOverrideID;
+                } else {
+                    m_targetShooter.equippedGunId = sourceShooter.equippedGunId;
+                }
+                m_targetShooter.shouldUseGunReload = true;
+                m_targetShooter.volleyShootPosition = sourceShooter.volleyShootPosition;
+                m_targetShooter.volleyShellCasing = sourceShooter.volleyShellCasing;
+                m_targetShooter.volleyShellTransform = sourceShooter.volleyShellTransform;
+                m_targetShooter.volleyShootVfx = sourceShooter.volleyShootVfx;
+                m_targetShooter.usesOctantShootVFX = sourceShooter.usesOctantShootVFX;
+                m_targetShooter.bulletName = sourceShooter.bulletName;
+                m_targetShooter.customShootCooldownPeriod = sourceShooter.customShootCooldownPeriod;
+                m_targetShooter.doesScreenShake = sourceShooter.doesScreenShake;
+                m_targetShooter.rampBullets = sourceShooter.rampBullets;
+                m_targetShooter.rampStartHeight = sourceShooter.rampStartHeight;
+                m_targetShooter.rampTime = sourceShooter.rampTime;
+                if (gunAttachPointOverride) {
+                    m_targetShooter.gunAttachPoint = gunAttachPointOverride;
+                } else {
+                    m_targetShooter.gunAttachPoint = sourceShooter.gunAttachPoint;
+                }
+                if (bulletScriptAttachPointOverride) {
+                    m_targetShooter.bulletScriptAttachPoint = bulletScriptAttachPointOverride;
+                } else {
+                    m_targetShooter.bulletScriptAttachPoint = sourceShooter.bulletScriptAttachPoint;
+                }
+                m_targetShooter.overallGunAttachOffset = sourceShooter.overallGunAttachOffset;
+                m_targetShooter.flippedGunAttachOffset = sourceShooter.flippedGunAttachOffset;
+                if (overrideHandObject) {
+                    m_targetShooter.handObject = overrideHandObject;
+                } else {
+                    m_targetShooter.handObject = sourceShooter.handObject;
+                }
+                m_targetShooter.AllowTwoHands = sourceShooter.AllowTwoHands;
+                m_targetShooter.ForceGunOnTop = sourceShooter.ForceGunOnTop;
+                m_targetShooter.IsReallyBigBoy = sourceShooter.IsReallyBigBoy;
+                m_targetShooter.BackupAimInMoveDirection = sourceShooter.BackupAimInMoveDirection;
+                m_targetShooter.RegenerateCache();
+            }
+            return;
+        }
+
+        public static AIAnimator GenerateBlankAIAnimator(GameObject targetObject) {
+            AIAnimator m_CachedAIAnimator = targetObject.AddComponent<AIAnimator>();
+            m_CachedAIAnimator.facingType = AIAnimator.FacingType.Default;
+            m_CachedAIAnimator.faceSouthWhenStopped = false;
+            m_CachedAIAnimator.faceTargetWhenStopped = false;
+            m_CachedAIAnimator.AnimatedFacingDirection = -90;
+            m_CachedAIAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
+            m_CachedAIAnimator.RotationQuantizeTo = 0;
+            m_CachedAIAnimator.RotationOffset = 0;
+            m_CachedAIAnimator.ForceKillVfxOnPreDeath = false;
+            m_CachedAIAnimator.SuppressAnimatorFallback = false;
+            m_CachedAIAnimator.IsBodySprite = true;
+            m_CachedAIAnimator.IdleAnimation = new DirectionalAnimation() {
+                Type = DirectionalAnimation.DirectionType.None,
+                Prefix = string.Empty,
+                AnimNames = new string[0],
+                Flipped = new DirectionalAnimation.FlipType[0]
+            };
+            m_CachedAIAnimator.MoveAnimation = new DirectionalAnimation() {
+                Type = DirectionalAnimation.DirectionType.None,
+                Prefix = string.Empty,
+                AnimNames = new string[0],
+                Flipped = new DirectionalAnimation.FlipType[0]
+            };
+            m_CachedAIAnimator.FlightAnimation = new DirectionalAnimation() {
+                Type = DirectionalAnimation.DirectionType.None,
+                Prefix = string.Empty,
+                AnimNames = new string[0],
+                Flipped = new DirectionalAnimation.FlipType[0]
+            };
+            m_CachedAIAnimator.HitAnimation = new DirectionalAnimation() {
+                Type = DirectionalAnimation.DirectionType.None,
+                Prefix = string.Empty,
+                AnimNames = new string[0],
+                Flipped = new DirectionalAnimation.FlipType[0]
+            };
+            m_CachedAIAnimator.TalkAnimation = new DirectionalAnimation() {
+                Type = DirectionalAnimation.DirectionType.None,
+                Prefix = string.Empty,
+                AnimNames = new string[0],
+                Flipped = new DirectionalAnimation.FlipType[0]
+            };
+            m_CachedAIAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>(0);
+            m_CachedAIAnimator.OtherVFX = new List<AIAnimator.NamedVFXPool>(0);
+            m_CachedAIAnimator.OtherScreenShake = new List<AIAnimator.NamedScreenShake>(0);
+            m_CachedAIAnimator.IdleFidgetAnimations = new List<DirectionalAnimation>(0);
+            m_CachedAIAnimator.HitReactChance = 1;
+            m_CachedAIAnimator.HitType = AIAnimator.HitStateType.Basic;
+            return m_CachedAIAnimator;
+        }
+
+        public static void GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
+            
+            if (targetObject.GetComponent<tk2dSpriteAnimator>()) { Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
+
+            tk2dSpriteAnimator newAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
+            newAnimator.Library = library;
+            newAnimator.DefaultClipId = DefaultClipId;
+            newAnimator.AdditionalCameraVisibilityRadius = AdditionalCameraVisibilityRadius;
+            newAnimator.AnimateDuringBossIntros = AnimateDuringBossIntros;
+            newAnimator.AlwaysIgnoreTimeScale = AlwaysIgnoreTimeScale;
+            newAnimator.ignoreTimeScale = ignoreTimeScale;
+            newAnimator.ForceSetEveryFrame = ForceSetEveryFrame;
+            newAnimator.playAutomatically = playAutomatically;
+            newAnimator.IsFrameBlendedAnimation = IsFrameBlendedAnimation;
+            newAnimator.clipTime = clipTime;
+            newAnimator.ClipFps = ClipFps;
+            newAnimator.deferNextStartClip = deferNextStartClip;
+            newAnimator.alwaysUpdateOffscreen = alwaysUpdateOffscreen;
+            newAnimator.maximumDeltaOneFrame = maximumDeltaOneFrame;
+
+            return;
+        }
+
+        public static tk2dSpriteAnimator GenerateSpriteAnimator(tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
+            tk2dSpriteAnimator newAnimator = new tk2dSpriteAnimator();
+            newAnimator.Library = library;
+            newAnimator.DefaultClipId = DefaultClipId;
+            newAnimator.AdditionalCameraVisibilityRadius = AdditionalCameraVisibilityRadius;
+            newAnimator.AnimateDuringBossIntros = AnimateDuringBossIntros;
+            newAnimator.AlwaysIgnoreTimeScale = AlwaysIgnoreTimeScale;
+            newAnimator.ignoreTimeScale = ignoreTimeScale;
+            newAnimator.ForceSetEveryFrame = ForceSetEveryFrame;
+            newAnimator.playAutomatically = playAutomatically;
+            newAnimator.IsFrameBlendedAnimation = IsFrameBlendedAnimation;
+            newAnimator.clipTime = clipTime;
+            newAnimator.ClipFps = ClipFps;
+            newAnimator.deferNextStartClip = deferNextStartClip;
+            newAnimator.alwaysUpdateOffscreen = alwaysUpdateOffscreen;
+            newAnimator.maximumDeltaOneFrame = maximumDeltaOneFrame;
+            return newAnimator;
+        }
+        
+        public static void AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<int> spriteIDList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            
+            if (targetAnimator.Library == null) {
+                targetAnimator.Library = targetAnimator.gameObject.AddComponent<tk2dSpriteAnimation>();
+                targetAnimator.Library.clips = new tk2dSpriteAnimationClip[0];
+			}
+
+			List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
+			for (int i = 0; i < spriteIDList.Count; i++) {
+				tk2dSpriteDefinition spriteDefinition = collection.spriteDefinitions[spriteIDList[i]];
+				if (spriteDefinition.Valid) {
+                    animationList.Add(
+                        new tk2dSpriteAnimationFrame {
+                            spriteCollection = collection,
+                            spriteId = spriteIDList[i],
+                            invulnerableFrame = false,
+                            groundedFrame = true,
+                            requiresOffscreenUpdate = false,
+                            eventAudio = string.Empty,
+                            eventVfx = string.Empty,
+                            eventStopVfx = string.Empty,
+                            eventLerpEmissive = false,
+                            eventLerpEmissiveTime = 0.5f,
+                            eventLerpEmissivePower = 30,
+                            forceMaterialUpdate = false,
+                            finishedSpawning = false,
+                            triggerEvent = false,
+                            eventInfo = string.Empty,
+                            eventInt = 0,
+                            eventFloat = 0,
+                            eventOutline = tk2dSpriteAnimationFrame.OutlineModifier.Unspecified,
+					    }
+                    );
+				}
+			}
+			tk2dSpriteAnimationClip animationClip = new tk2dSpriteAnimationClip() {
+                name = clipName,
+                frames = animationList.ToArray(),
+                fps = frameRate,
+                wrapMode = wrapMode,
+                loopStart = loopStart,
+                minFidgetDuration = minFidgetDuration,
+                maxFidgetDuration = maxFidgetDuration,
+            };
+			Array.Resize(ref targetAnimator.Library.clips, targetAnimator.Library.clips.Length + 1);
+            targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
+            return;
+        }
+
+        public static void AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            if (!targetAnimator.Library) {
+                targetAnimator.Library = targetAnimator.gameObject.AddComponent<tk2dSpriteAnimation>();
+                targetAnimator.Library.clips = new tk2dSpriteAnimationClip[0];
+			}
+            List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
+			for (int i = 0; i < spriteNameList.Count; i++) {
+                tk2dSpriteDefinition spriteDefinition = collection.GetSpriteDefinition(spriteNameList[i]);
+                if (spriteDefinition != null && spriteDefinition.Valid) {
+                    animationList.Add(
+                        new tk2dSpriteAnimationFrame {
+                            spriteCollection = collection,
+                            spriteId = collection.GetSpriteIdByName(spriteNameList[i]),
+                            invulnerableFrame = false,
+                            groundedFrame = true,
+                            requiresOffscreenUpdate = false,
+                            eventAudio = string.Empty,
+                            eventVfx = string.Empty,
+                            eventStopVfx = string.Empty,
+                            eventLerpEmissive = false,
+                            eventLerpEmissiveTime = 0.5f,
+                            eventLerpEmissivePower = 30,
+                            forceMaterialUpdate = false,
+                            finishedSpawning = false,
+                            triggerEvent = false,
+                            eventInfo = string.Empty,
+                            eventInt = 0,
+                            eventFloat = 0,
+                            eventOutline = tk2dSpriteAnimationFrame.OutlineModifier.Unspecified,
+					    }
+                    );
+				}
+			}
+            tk2dSpriteAnimationClip animationClip = new tk2dSpriteAnimationClip() {
+                name = clipName,
+                frames = animationList.ToArray(),
+                fps = frameRate,
+                wrapMode = wrapMode,
+                loopStart = loopStart,
+                minFidgetDuration = minFidgetDuration,
+                maxFidgetDuration = maxFidgetDuration,
+            };
+            Array.Resize(ref targetAnimator.Library.clips, targetAnimator.Library.clips.Length + 1);
+            targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
+            return;
+        }
+
+        public static void GenerateCorruptedTilesAtPosition(Dungeon dungeon, RoomHandler parentRoom, IntVector2 targetPosition, IntVector2 areaSize, GameObject parentObject = null, float CorruptionIntensity = 0.5f, bool AllowGlitchShader = true, bool emitsCorruptionNoise = true, bool corruptionNoiseFillsRoom = false, bool isSecretRoomWallMarkerCorruption = true) {
+
+            if (dungeon == null | parentRoom == null) { return; }
+
+            // This centers the point of origin to the center of the radius area instead of bottom left corner.
+            IntVector2 position = targetPosition;
+            if (areaSize != IntVector2.One) {
+                IntVector2 areaSizeOffset = new IntVector2((areaSize.x / 2), (areaSize.y / 2));
+                if (areaSizeOffset != IntVector2.Zero) {
+                    position = (new IntVector2(targetPosition.x, targetPosition.y) - areaSizeOffset);
+                }
+            }
+            if (emitsCorruptionNoise) {
+                if (isSecretRoomWallMarkerCorruption && parentObject) {
+                    GameObject CorruptionAmbience = new GameObject("SecretRoomWall_CorruptionAmbience_SFX") { layer = 20 };
+                    CorruptionAmbience.transform.position = (position.ToVector3());
+                    CorruptionAmbience.transform.parent = parentObject.transform;
+                    CorruptionAmbience.AddComponent<ExpandCorruptedObjectAmbienceComponent>();
+                    ExpandCorruptedObjectAmbienceComponent m_CorruptedAmbiencePlacable = CorruptionAmbience.GetComponent<ExpandCorruptedObjectAmbienceComponent>();
+                    if (m_CorruptedAmbiencePlacable) {
+                        if (areaSize != IntVector2.One) {
+                            IntVector2 areaSizeOffset = new IntVector2((areaSize.x / 2), (areaSize.y / 2));
+                            if (areaSizeOffset != IntVector2.Zero) {
+                                m_CorruptedAmbiencePlacable.UnitOffset = areaSizeOffset.ToVector3();
+                            }
+                        }
+                        m_CorruptedAmbiencePlacable.Init(parentRoom);
+                    }
+                } else {
+                    if (parentObject) {
+                        if (corruptionNoiseFillsRoom) {
+                            AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_01", parentObject);
+                        } else {
+                            AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_02", parentObject);
+                        }
+                    } else {
+                        GameObject CorruptionAmbience = new GameObject("CorruptionAmbience_SFX") { layer = 20 };
+                        CorruptionAmbience.transform.position = (position.ToVector2());
+                        CorruptionAmbience.transform.parent = parentRoom.hierarchyParent;
+                        
+                        CorruptionAmbience.AddComponent<ExpandCorruptedRoomAmbiencePlacable>();
+                        ExpandCorruptedRoomAmbiencePlacable m_SoundPlacable = CorruptionAmbience.GetComponent<ExpandCorruptedRoomAmbiencePlacable>();
+                        m_SoundPlacable.CameFromCorruptionBomb = true;
+                        if (corruptionNoiseFillsRoom) {
+                            m_SoundPlacable.CorruptionFXPlayEvent = "Play_EX_CorruptionAmbience_01";
+                            m_SoundPlacable.CorruptionFXStopEvent = "Stop_EX_CorruptionAmbience_01";
+                            // AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_01", CorruptionAmbience);
+                        } else {
+                            m_SoundPlacable.CorruptionFXPlayEvent = "Play_EX_CorruptionAmbience_02";
+                            m_SoundPlacable.CorruptionFXStopEvent = "Stop_EX_CorruptionAmbience_02";
+                            // AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_02", CorruptionAmbience);
+                        }
+                        m_SoundPlacable.ConfigureOnPlacement(parentRoom);
+                    }
+                }
+            }
+
+            tk2dSpriteCollectionData dungeonCollection = dungeon.tileIndices.dungeonCollection;
+
+            List<int> CurrentFloorWallIDs = new List<int>();
+            List<int> CurrentFloorFloorIDs = new List<int>();
+            List<int> CurrentFloorMiscIDs = new List<int>();
+
+            // Select Sprite ID lists based on tileset. (IDs corrispond to different sprites depending on tileset dungeonCollection)
+            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
+                CurrentFloorWallIDs = ExpandLists.CastleWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.CastleFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.CastleMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.GUNGEON) {
+                CurrentFloorWallIDs = ExpandLists.GungeonWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.GungeonFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.GungeonMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.MINEGEON) {
+                CurrentFloorWallIDs = ExpandLists.MinesWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.MinesFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.MinesMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
+                CurrentFloorWallIDs = ExpandLists.HollowsWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.HollowsFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.HollowsMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FORGEGEON) {
+                CurrentFloorWallIDs = ExpandLists.ForgeWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.ForgeFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.ForgeMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON) {
+                CurrentFloorWallIDs = ExpandLists.BulletHell_WallIDs;
+                CurrentFloorFloorIDs = ExpandLists.BulletHell_FloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.BulletHell_MiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.SEWERGEON) {
+                CurrentFloorWallIDs = ExpandLists.SewerWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.SewerFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.SewerMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
+                CurrentFloorWallIDs = ExpandLists.AbbeyWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.AbbeyFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.AbbeyMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
+                CurrentFloorWallIDs = ExpandLists.RatDenWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.RatDenFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.RatDenMiscIDs;
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
+                foreach (int id in ExpandLists.Nakatomi_OfficeWallIDs) { CurrentFloorWallIDs.Add(id); }
+                foreach (int id in ExpandLists.Nakatomi_OfficeFloorIDs) { CurrentFloorFloorIDs.Add(id); }
+                foreach (int id in ExpandLists.Nakatomi_OfficeMiscIDs) { CurrentFloorMiscIDs.Add(id); }
+                foreach (int id in ExpandLists.Nakatomi_FutureWallIDs) { CurrentFloorWallIDs.Add(id + 704); }
+                foreach (int id in ExpandLists.Nakatomi_FutureFloorIDs) { CurrentFloorFloorIDs.Add(id + 704); }
+                foreach (int id in ExpandLists.Nakatomi_FutureMiscIDs) { CurrentFloorMiscIDs.Add(id + 704); }
+            } else {
+                Dungeon tempDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Gungeon");
+                dungeonCollection = tempDungeonPrefab.tileIndices.dungeonCollection;
+                CurrentFloorWallIDs = ExpandLists.GungeonWallIDs;
+                CurrentFloorFloorIDs = ExpandLists.GungeonFloorIDs;
+                CurrentFloorMiscIDs = ExpandLists.GungeonMiscIDs;
+                tempDungeonPrefab = null;
+            }
+            
+            for (int X = 0; X < areaSize.x; X++) {
+                for (int Y = 0; Y < areaSize.y; Y++) {
+                    if (UnityEngine.Random.value <= CorruptionIntensity) {
+                        bool isWallCell = false;
+
+                        if (dungeon.data.isWall(position.x + X, position.y + Y) | dungeon.data.isAnyFaceWall(position.x + X, position.y + Y) | dungeon.data.isWall(position.x + X, (position.y - 1) + Y)) {
+                            isWallCell = true;
+                        }
+
+                        GameObject m_GlitchTile = new GameObject("GlitchTile_" + UnityEngine.Random.Range(1000000, 9999999)) { layer = 20 };
+                        m_GlitchTile.transform.position = (position.ToVector2() + new Vector2(X, Y));
+
+                        if (isSecretRoomWallMarkerCorruption) {
+                            m_GlitchTile.transform.parent = parentRoom.hierarchyParent;
+                        } else if (parentObject != null) {
+                            m_GlitchTile.transform.parent = parentObject.transform;
+                        } else {
+                            m_GlitchTile.transform.parent = parentRoom.hierarchyParent;
+                        }
+
+                        if (isWallCell) {
+                            // m_GlitchTile.layer = 22;
+                            m_GlitchTile.layer = LayerMask.NameToLayer("FG_Critical");
+                        }
+
+                        List<int> spriteIDs = new List<int>();
+                        int TileType = UnityEngine.Random.Range(1, 3);
+                        if (TileType == 1) { spriteIDs = CurrentFloorWallIDs.Shuffle(); }
+                        if (TileType == 2) { spriteIDs = CurrentFloorFloorIDs.Shuffle(); }
+                        if (TileType == 3) { spriteIDs = CurrentFloorMiscIDs.Shuffle(); }
+
+                        m_GlitchTile.AddComponent<tk2dSprite>();
+
+                        tk2dSprite m_GlitchSprite = m_GlitchTile.GetComponent<tk2dSprite>();
+                        m_GlitchSprite.Collection = dungeonCollection;
+                        m_GlitchSprite.SetSprite(m_GlitchSprite.Collection, BraveUtility.RandomElement(spriteIDs));
+                        m_GlitchSprite.ignoresTiltworldDepth = false;
+                        m_GlitchSprite.depthUsesTrimmedBounds = false;
+                        m_GlitchSprite.allowDefaultLayer = false;
+                        m_GlitchSprite.OverrideMaterialMode = tk2dBaseSprite.SpriteMaterialOverrideMode.NONE;
+                        m_GlitchSprite.independentOrientation = false;
+                        m_GlitchSprite.hasOffScreenCachedUpdate = false;
+                        m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+                        m_GlitchSprite.SortingOrder = 2;
+                        m_GlitchSprite.IsBraveOutlineSprite = false;
+                        m_GlitchSprite.IsZDepthDirty = false;
+                        m_GlitchSprite.ApplyEmissivePropertyBlock = false;
+                        m_GlitchSprite.GenerateUV2 = false;
+                        m_GlitchSprite.LockUV2OnFrameOne = false;
+                        m_GlitchSprite.StaticPositions = false;
+                                    
+                        if (isWallCell) {                
+                            if (dungeon.data.isFaceWallLower(position.x + X, position.y + Y) && !dungeon.data.isWall(position.x + X, (position.y - 1) + Y)) {
+                                m_GlitchSprite.HeightOffGround = -1.4f;
+                                m_GlitchSprite.UpdateZDepth();
+                            } else {
+                                m_GlitchSprite.HeightOffGround = 3.5f;
+                                m_GlitchSprite.UpdateZDepth();
+                            }
+                        } else {
+                            m_GlitchSprite.HeightOffGround = -1.5f;
+                            m_GlitchSprite.SortingOrder = 2;
+                            m_GlitchSprite.UpdateZDepth();
+                            FloorTypeOverrideDoer floorOverride = m_GlitchTile.AddComponent<FloorTypeOverrideDoer>();
+                            floorOverride.overrideMode = FloorTypeOverrideDoer.OverrideMode.Placeable;
+                            floorOverride.xStartOffset = 0;
+                            floorOverride.yStartOffset = 0;
+                            floorOverride.width = 1;
+                            floorOverride.height = 1;
+                            floorOverride.overrideCellFloorType = false;
+                            floorOverride.cellFloorType = CellVisualData.CellFloorType.Stone;
+                            floorOverride.overrideTileIndex = false;
+                            floorOverride.TilesetsToOverrideFloorTile = new GlobalDungeonData.ValidTilesets[0];
+                            floorOverride.OverrideFloorTiles = new int[0];
+                            floorOverride.preventsOtherFloorDecoration = false;
+                            floorOverride.allowWallDecorationTho = true;
+                        }
+                        
+
+                        if (AllowGlitchShader && UnityEngine.Random.value <= 0.4f) {
+                            float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
+                            float RandomDispFloat = UnityEngine.Random.Range(0.07f, 0.09f);
+                            float RandomDispIntensityFloat = UnityEngine.Random.Range(0.085f, 0.2f);
+                            float RandomColorProbFloat = UnityEngine.Random.Range(0.04f, 0.15f);
+                            float RandomColorIntensityFloat = UnityEngine.Random.Range(0.08f, 0.14f);
+
+                            ExpandShaders.Instance.ApplyGlitchShader(m_GlitchSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                        }
+                    }
+                }
+            }
+        }
+        
+        public static tk2dSpriteAnimationClip DuplicateAnimationClip(tk2dSpriteAnimationClip sourceClip) {
+            if (sourceClip == null) {
+                return new tk2dSpriteAnimationClip() {
+                    name = string.Empty,
+                    frames = new tk2dSpriteAnimationFrame[0],
+                    fps = 30,
+                    loopStart = 0,
+                    wrapMode = tk2dSpriteAnimationClip.WrapMode.Loop,
+                    minFidgetDuration = 1,
+                    maxFidgetDuration = 2
+                };
+            }
+
+            tk2dSpriteAnimationClip m_CachedClip = new tk2dSpriteAnimationClip() {
+                name = sourceClip.name,
+                fps = sourceClip.fps,
+                loopStart = sourceClip.loopStart,
+                wrapMode = sourceClip.wrapMode,
+                minFidgetDuration = sourceClip.minFidgetDuration,
+                maxFidgetDuration = sourceClip.maxFidgetDuration
+            };
+
+            List<tk2dSpriteAnimationFrame> m_FrameList = new List<tk2dSpriteAnimationFrame>();
+
+            foreach (tk2dSpriteAnimationFrame Frame in sourceClip.frames) {
+                if (Frame != null) {
+                    m_FrameList.Add(
+                        new tk2dSpriteAnimationFrame() {
+                            spriteCollection = Frame.spriteCollection,
+                            spriteId = Frame.spriteId,
+                            invulnerableFrame = Frame.invulnerableFrame,
+                            groundedFrame = Frame.groundedFrame,
+                            requiresOffscreenUpdate = Frame.requiresOffscreenUpdate,
+                            eventAudio = Frame.eventAudio,
+                            eventVfx = Frame.eventVfx,
+                            eventStopVfx = Frame.eventStopVfx,
+                            eventLerpEmissive = Frame.eventLerpEmissive,
+                            eventLerpEmissiveTime = Frame.eventLerpEmissiveTime,
+                            eventLerpEmissivePower = Frame.eventLerpEmissivePower,
+                            forceMaterialUpdate = Frame.forceMaterialUpdate,
+                            finishedSpawning = Frame.finishedSpawning,
+                            triggerEvent = Frame.triggerEvent,
+                            eventInfo = Frame.eventInfo,
+                            eventInt = Frame.eventInt,
+                            eventFloat = Frame.eventFloat,
+                            eventOutline = Frame.eventOutline
+                        }    
+                    );
+                }
+            }
+
+            m_CachedClip.frames = m_FrameList.ToArray();
+
+            return m_CachedClip;
+        }
+
+        public IntVector2? GetRandomAvailableCellSmart(RoomHandler CurrentRoom, IntVector2 Clearence, bool relativeToRoom = false) {            
+            CellValidator cellValidator = delegate (IntVector2 c) {
+                for (int X = 0; X < Clearence.x; X++) {
+                    for (int Y = 0; Y < Clearence.y; Y++) {
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + X, c.y + Y) || 
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.PIT || 
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].isOccupied ||
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.WALL)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+            if (relativeToRoom) {
+                return CurrentRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(Clearence.x, Clearence.y)), new CellTypes?(CellTypes.FLOOR), false, cellValidator) - CurrentRoom.area.basePosition;
+            } else {
+                return CurrentRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(Clearence.x, Clearence.y)), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            }            
+        }
+
+        public IntVector2 GetRandomAvailableCellSmart(RoomHandler CurrentRoom, PlayerController PrimaryPlayer, int MinClearence = 2, bool usePlayerVectorAsFallback = false) {
+            Vector2 PlayerVector2 = PrimaryPlayer.CenterPosition;
+            IntVector2 PlayerIntVector2 = PlayerVector2.ToIntVector2(VectorConversions.Floor);
+            
+            CellValidator cellValidator = delegate (IntVector2 c) {
+                for (int l = 0; l < MinClearence; l++) {
+                    for (int m = 0; m < MinClearence; m++) {
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + l, c.y + m) || 
+                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.PIT || 
+                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].isOccupied ||
+                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.WALL)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+
+            IntVector2? randomAvailableCell = CurrentRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(MinClearence, MinClearence)), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            // IntVector2? randomAvailableCell = CurrentRoom.GetRandomAvailableCell(new IntVector2?(IntVector2.One * MinClearence), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            IntVector2 SelectedVector;
+            if (randomAvailableCell.HasValue) {
+                SelectedVector = randomAvailableCell.Value;
+                return SelectedVector;
+            } else {
+                if (usePlayerVectorAsFallback) { return PlayerIntVector2; } else { return IntVector2.Zero; }
+            }
+        }
+
+        public static void CorrectForWalls(AIActor targetActor) {
+            bool flag = PhysicsEngine.Instance.OverlapCast(targetActor.specRigidbody, null, true, false, null, null, false, null, null, new SpeculativeRigidbody[0]);
+            if (flag) {
+                Vector2 a = targetActor.transform.position.XY();
+                IntVector2[] cardinalsAndOrdinals = IntVector2.CardinalsAndOrdinals;
+                int num = 0;
+                int num2 = 1;
+                for (;;) {
+                    for (int i = 0; i < cardinalsAndOrdinals.Length; i++) {
+                        targetActor.transform.position = a + PhysicsEngine.PixelToUnit(cardinalsAndOrdinals[i] * num2);
+                        targetActor.specRigidbody.Reinitialize();
+                        if (!PhysicsEngine.Instance.OverlapCast(targetActor.specRigidbody, null, true, false, null, null, false, null, null, new SpeculativeRigidbody[0])) { return; }
+                    }
+                    num2++;
+                    num++;
+                    if (num > 200) {
+                        Debug.LogError("FREEZE AVERTED!  TELL RUBEL!  (you're welcome) 147");
+                        return;
+                    }
+                }                
+            }
+            return;
+        }
+
+        public RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD) {
+            Dungeon dungeon = GameManager.Instance.Dungeon;           
+            tk2dTileMap m_tilemap = dungeon.MainTilemap;
+
+            if (m_tilemap == null) {
+                ETGModConsole.Log("ERROR: TileMap object is null! Something seriously went wrong!");
+                Debug.Log("ERROR: TileMap object is null! Something seriously went wrong!");
+                return null;
+            }
+
+            TK2DDungeonAssembler assembler = new TK2DDungeonAssembler();
+            assembler.Initialize(dungeon.tileIndices);
+
+            IntVector2 basePosition = IntVector2.Zero;
+            IntVector2 basePosition2 = new IntVector2(50, 50);
+            int num = basePosition2.x;
+            int num2 = basePosition2.y;
+            IntVector2 intVector = new IntVector2(int.MaxValue, int.MaxValue);
+            IntVector2 intVector2 = new IntVector2(int.MinValue, int.MinValue);
+            intVector = IntVector2.Min(intVector, basePosition);
+            intVector2 = IntVector2.Max(intVector2, basePosition + new IntVector2(prototype.Width, prototype.Height));
+            IntVector2 a = intVector2 - intVector;
+            IntVector2 b = IntVector2.Min(IntVector2.Zero, -1 * intVector);
+            a += b;
+            IntVector2 intVector3 = new IntVector2(dungeon.data.Width + num, num);
+            int newWidth = dungeon.data.Width + num * 2 + a.x;
+            int newHeight = Mathf.Max(dungeon.data.Height, a.y + num * 2);
+            CellData[][] array = BraveUtility.MultidimensionalArrayResize(dungeon.data.cellData, dungeon.data.Width, dungeon.data.Height, newWidth, newHeight);
+            dungeon.data.cellData = array;
+            dungeon.data.ClearCachedCellData();
+            IntVector2 d = new IntVector2(prototype.Width, prototype.Height);
+            IntVector2 b2 = basePosition + b;
+            IntVector2 intVector4 = intVector3 + b2;
+            CellArea cellArea = new CellArea(intVector4, d, 0);
+            cellArea.prototypeRoom = prototype;
+            RoomHandler targetRoom = new RoomHandler(cellArea);
+            for (int k = -num; k < d.x + num; k++) {
+                for (int l = -num; l < d.y + num; l++) {
+                    IntVector2 p = new IntVector2(k, l) + intVector4;
+                    if ((k >= 0 && l >= 0 && k < d.x && l < d.y) || array[p.x][p.y] == null) {
+                        CellData cellData = new CellData(p, CellType.WALL);
+                        cellData.positionInTilemap = cellData.positionInTilemap - intVector3 + new IntVector2(num2, num2);
+                        cellData.parentArea = cellArea;
+                        cellData.parentRoom = targetRoom;
+                        cellData.nearestRoom = targetRoom;
+                        cellData.distanceFromNearestRoom = 0f;
+                        array[p.x][p.y] = cellData;
+                    }
+                }
+            }
+            dungeon.data.rooms.Add(targetRoom);                        
+            try {
+                targetRoom.WriteRoomData(dungeon.data);
+            } catch (Exception) {
+                ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
+            } try {
+                dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, targetRoom, GameObject.Find("_Lights").transform, lightStyle);
+            } catch (Exception) {
+                ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + targetRoom.GetRoomName());
+            }
+            postProcessCellData?.Invoke(targetRoom);
+
+            if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) { targetRoom.BuildSecretRoomCover(); }
+            GameObject gameObject = (GameObject)Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
+            tk2dTileMap component = gameObject.GetComponent<tk2dTileMap>();
+            string str = UnityEngine.Random.Range(10000, 99999).ToString();
+            gameObject.name = "Glitch_" + "RuntimeTilemap_" + str;
+            component.renderData.name = "Glitch_" + "RuntimeTilemap_" + str + " Render Data";
+            component.Editor__SpriteCollection = dungeon.tileIndices.dungeonCollection;
+            try {
+                TK2DDungeonAssembler.RuntimeResizeTileMap(component, a.x + num2 * 2, a.y + num2 * 2, m_tilemap.partitionSizeX, m_tilemap.partitionSizeY);
+                IntVector2 intVector5 = new IntVector2(prototype.Width, prototype.Height);
+                IntVector2 b3 = basePosition + b;
+                IntVector2 intVector6 = intVector3 + b3;
+                for (int num4 = -num2; num4 < intVector5.x + num2; num4++) {
+                    for (int num5 = -num2; num5 < intVector5.y + num2 + 2; num5++) {
+                        assembler.BuildTileIndicesForCell(dungeon, component, intVector6.x + num4, intVector6.y + num5);
+                    }
+                }
+                RenderMeshBuilder.CurrentCellXOffset = intVector3.x - num2;
+                RenderMeshBuilder.CurrentCellYOffset = intVector3.y - num2;
+                component.ForceBuild();
+                RenderMeshBuilder.CurrentCellXOffset = 0;
+                RenderMeshBuilder.CurrentCellYOffset = 0;
+                component.renderData.transform.position = new Vector3(intVector3.x - num2, intVector3.y - num2, intVector3.y - num2);
+            } catch (Exception ex) {
+                ETGModConsole.Log("WARNING: Exception occured during RuntimeResizeTileMap / RenderMeshBuilder steps!");
+                Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
+                Debug.LogException(ex);
+            }
+            targetRoom.OverrideTilemap = component;
+            for (int num7 = 0; num7 < targetRoom.area.dimensions.x; num7++) {
+                for (int num8 = 0; num8 < targetRoom.area.dimensions.y + 2; num8++) {
+                    IntVector2 intVector7 = targetRoom.area.basePosition + new IntVector2(num7, num8);
+                    if (dungeon.data.CheckInBoundsAndValid(intVector7)) {
+                        CellData currentCell = dungeon.data[intVector7];
+                        TK2DInteriorDecorator.PlaceLightDecorationForCell(dungeon, component, currentCell, intVector7);
+                    }
+                }
+            }
+
+            Pathfinder.Instance.InitializeRegion(dungeon.data, targetRoom.area.basePosition + new IntVector2(-3, -3), targetRoom.area.dimensions + new IntVector2(3, 3));
+            
+            if (prototype.usesProceduralDecoration && prototype.allowFloorDecoration) {
+                TK2DInteriorDecorator decorator = new TK2DInteriorDecorator(assembler);
+                decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
+            }
+            targetRoom.PostGenerationCleanup();
+
+            if (addRoomToMinimap) {
+                targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
+                StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(targetRoom, true, true, false));
+                if (isSecretRatExitRoom) { targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED; }
+            }         
+            if (addTeleporter) { targetRoom.AddProceduralTeleporterToRoom(); }
+            if (addRoomToMinimap) { Minimap.Instance.InitializeMinimap(dungeon.data); }
+            DeadlyDeadlyGoopManager.ReinitializeData();
+            return targetRoom;
+        }
+
+        public static void ApplyCustomTexture(AIActor targetActor, Texture2D newTexture = null, List<Texture2D> spriteList = null, tk2dSpriteCollectionData prebuiltCollection = null, Shader overrideShader = null, bool disablePalette = false, bool makeStatic = false) {
+            if (prebuiltCollection != null) {
+                tk2dSpriteAnimation spriteAnimator = Instantiate(targetActor.spriteAnimator.Library);
+                if (makeStatic) { DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
+                foreach (tk2dSpriteAnimationClip tk2dSpriteAnimationClip in spriteAnimator.clips) {
+                    foreach (tk2dSpriteAnimationFrame frame in tk2dSpriteAnimationClip.frames) { frame.spriteCollection = prebuiltCollection; }
+                }
+                prebuiltCollection.name = targetActor.OverrideDisplayName;
+                targetActor.sprite.Collection = prebuiltCollection;
+                targetActor.spriteAnimator.Library = spriteAnimator;
+                return;
+            } 
+            tk2dSpriteCollectionData collectionData = Instantiate(targetActor.sprite.Collection);
+            if (makeStatic) { DontDestroyOnLoad(collectionData); }
+            tk2dSpriteDefinition[] spriteDefinitions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
+            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinitions[i] = collectionData.spriteDefinitions[i].Copy(); }
+            collectionData.spriteDefinitions = spriteDefinitions;
+            if (newTexture != null) {
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetActor.GetActorName(), false); }
+                Material[] materials = targetActor.sprite.Collection.materials;
+                Material[] newMaterials = new Material[materials.Length];
+                // collectionData.materials = new Material[materials.Length];
+
+                if (materials != null) {
+                    for (int i = 0; i < materials.Length; i++) {
+                        newMaterials[i] = materials[i].Copy(newTexture);
+                        if (overrideShader) { newMaterials[i].shader = overrideShader; }
+                    }
+                    collectionData.materials = newMaterials;
+
+                    foreach (Material material2 in collectionData.materials) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in collectionData.spriteDefinitions) {
+                            bool flag3 = material2 != null && spriteDefinition.material.name.Equals(material2.name);
+                            if (flag3) {
+                                spriteDefinition.material = material2;
+                                spriteDefinition.materialInst = new Material(material2);
+                                if (overrideShader) {
+                                    spriteDefinition.material.shader = overrideShader;
+                                    spriteDefinition.materialInst.shader = overrideShader;
+                                }
+                                // spriteDefinition.material = new Material(material2);
+                                // spriteDefinition.materialInst = new Material(material2);
+                            }
+                        }
+                    }
+                }
+                /*if (materials != null) {
+                    for (int i = 0; i < collectionData.materials.Length; i++) {
+                        Material material = new Material(materials[i]);
+                        // DontDestroyOnLoad(material);
+                        collectionData.materials[i].mainTexture = newTexture;
+                        collectionData.materials[i].name = materials[i].name;
+                        collectionData.materials[i] = material;
+                    }
+                }*/
+                
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Step 3"); }
+            } else if (spriteList != null) {
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetActor.GetActorName(), false); }
+
+                RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
+                for (int m = 0; m < spriteList.Count; m++) {
+                    Texture2D texture2D = spriteList[m];
+                    float num = texture2D.width / 16f;
+                    float num2 = texture2D.height / 16f;
+                    tk2dSpriteDefinition spriteData = collectionData.GetSpriteDefinition(texture2D.name);
+                    bool flag6 = spriteData != null;
+                    if (flag6) {
+                        bool flag7 = spriteData.boundsDataCenter != Vector3.zero;
+                        if (flag7) {
+                            RuntimeAtlasSegment runtimeAtlasSegment = runtimeAtlasPage.Pack(texture2D, false);
+                            spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
+                            spriteData.uvs = runtimeAtlasSegment.uvs;
+                            spriteData.extractRegion = true;
+                            spriteData.position0 = new Vector3(0f, 0f, 0f);
+                            spriteData.position1 = new Vector3(num, 0f, 0f);
+                            spriteData.position2 = new Vector3(0f, num2, 0f);
+                            spriteData.position3 = new Vector3(num, num2, 0f);
+                            spriteData.boundsDataCenter = new Vector2(num / 2f, num2 / 2f);
+                            spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
+                            spriteData.boundsDataExtents = new Vector2(num, num2);
+                            spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
+                        } else {
+                            ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                        }
+                    }
+                }
+                runtimeAtlasPage.Apply();
+            } else {
+                ETGModConsole.Log("Not replacing sprites on " + targetActor.GetActorName(), false);                
+            }
+
+            tk2dSpriteAnimation spriteAnimator2 = Instantiate(targetActor.spriteAnimator.Library);            
+            if (makeStatic) { DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
+            foreach (tk2dSpriteAnimationClip tk2dSpriteAnimationClip in spriteAnimator2.clips) {
+                foreach (tk2dSpriteAnimationFrame frame in tk2dSpriteAnimationClip.frames) { frame.spriteCollection = collectionData; }
+            }
+            collectionData.name = targetActor.OverrideDisplayName;
+            targetActor.sprite.Collection = collectionData;
+            targetActor.spriteAnimator.Library = spriteAnimator2;
+        }
+
+        public static tk2dSpriteCollectionData BuildSpriteCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<Texture2D> spriteList = null, Shader overrideShader = null, bool IsStatic = false) {
+            if (sourceCollection == null) { return null; }
+            tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
+            if (IsStatic) { DontDestroyOnLoad(collectionData); }
+            tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
+            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinietions[i] = collectionData.spriteDefinitions[i].Copy(); }
+            collectionData.spriteDefinitions = spriteDefinietions;
+            if (spriteSheet != null) {                
+                Material[] materials = sourceCollection.materials;
+                Material[] newMaterials = new Material[materials.Length];
+
+                if (materials != null) {
+                    for (int i = 0; i < materials.Length; i++) {
+                        newMaterials[i] = materials[i].Copy(spriteSheet);
+                        if (overrideShader) { newMaterials[i].shader = overrideShader; }
+                    }
+                    collectionData.materials = newMaterials;
+
+                    foreach (Material material2 in collectionData.materials) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in collectionData.spriteDefinitions) {
+                            bool flag3 = material2 != null && spriteDefinition.material.name.Equals(material2.name);
+                            if (flag3) {
+                                spriteDefinition.material = material2;
+                                spriteDefinition.materialInst = new Material(material2);
+                                if (overrideShader) {
+                                    spriteDefinition.material.shader = overrideShader;
+                                    spriteDefinition.materialInst.shader = overrideShader;
+                                }
+                            }
+                        }
+                    }
+                }                
+            } else if (spriteList != null) {
+                RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
+                for (int m = 0; m < spriteList.Count; m++) {
+                    Texture2D texture2D = spriteList[m];
+                    float num = texture2D.width / 16f;
+                    float num2 = texture2D.height / 16f;
+                    tk2dSpriteDefinition spriteData = collectionData.GetSpriteDefinition(texture2D.name);
+                    bool flag6 = spriteData != null;
+                    if (flag6) {
+                        bool flag7 = spriteData.boundsDataCenter != Vector3.zero;
+                        if (flag7) {
+                            RuntimeAtlasSegment runtimeAtlasSegment = runtimeAtlasPage.Pack(texture2D, false);                            
+                            spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
+                            if (overrideShader != null) { spriteData.materialInst.shader = overrideShader; }
+                            spriteData.uvs = runtimeAtlasSegment.uvs;
+                            spriteData.extractRegion = true;
+                            spriteData.position0 = new Vector3(0f, 0f, 0f);
+                            spriteData.position1 = new Vector3(num, 0f, 0f);
+                            spriteData.position2 = new Vector3(0f, num2, 0f);
+                            spriteData.position3 = new Vector3(num, num2, 0f);
+                            spriteData.boundsDataCenter = new Vector2(num / 2f, num2 / 2f);
+                            spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
+                            spriteData.boundsDataExtents = new Vector2(num, num2);
+                            spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
+                        } else {
+                            ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                        }
+                    }
+                }
+                runtimeAtlasPage.Apply();
+            }
+            return collectionData;
+        }
+
+        public static void MakeCompanion(AIActor targetActor, AIActor sourceCompanion = null, PlayerController Owner = null, bool targetIsNewAIActor = false, bool ApplyCharmedColorOverride = true, bool blocksEnemyBullets = true, bool ImmuneToAllDamage = false) {
+
+            if (sourceCompanion == null) { sourceCompanion = EnemyDatabase.GetOrLoadByGuid("3a077fa5872d462196bb9a3cb1af02a3"); }
+
+            if (targetActor.EnemyGuid == "479556d05c7c44f3b6abb3b2067fc778") {
+                targetActor.CanTargetPlayers = false;
+                targetActor.CanTargetEnemies = true;
+                targetActor.IgnoreForRoomClear = true;
+                targetActor.HitByEnemyBullets = blocksEnemyBullets;
+                if (ApplyCharmedColorOverride) { targetActor.RegisterOverrideColor(new Color(0.5f, 0, 0.5f), "Chaos Charm Effect"); }
+                return;
+            }
+
+            if (!targetIsNewAIActor) { targetActor.behaviorSpeculator.MovementBehaviors.Add(sourceCompanion.behaviorSpeculator.MovementBehaviors[0]); }
+            
+            targetActor.CanTargetPlayers = false;
+            targetActor.CanTargetEnemies = true;
+            targetActor.IgnoreForRoomClear = true;
+            targetActor.HitByEnemyBullets = blocksEnemyBullets;
+            if (!targetIsNewAIActor) { targetActor.name = "CompanionPet"; }
+            if (ApplyCharmedColorOverride) { targetActor.RegisterOverrideColor(new Color(0.5f, 0, 0.5f), "Chaos Charm Effect"); }
+
+            targetActor.gameObject.AddComponent<CompanionController>();
+            CompanionController companionController = targetActor.gameObject.GetComponent<CompanionController>();
+            companionController.CanInterceptBullets = blocksEnemyBullets;
+            companionController.IsCop = false;
+            companionController.IsCopDead = false;
+            companionController.CopDeathStatModifier = new StatModifier() {
+                statToBoost = 0,
+                modifyType = StatModifier.ModifyMethod.ADDITIVE,
+                amount = 0
+            };
+            companionController.CurseOnCopDeath = 2;
+            if (targetActor.IsFlying) {
+                companionController.CanCrossPits = true;
+            } else {
+                companionController.CanCrossPits = false;
+            }
+            companionController.BlanksOnActiveItemUsed = false;
+            companionController.InternalBlankCooldown = 10;
+            companionController.HasStealthMode = false;
+            companionController.PredictsChests = false;
+            companionController.PredictsChestSynergy = 0;
+            companionController.CanBePet = false;
+            companionController.companionID = CompanionController.CompanionIdentifier.NONE;
+            companionController.TeaSynergyHeatRing = new HeatRingModule();
+            companionController.m_petOffset = new Vector2(0, 0);
+
+            if (Owner) { companionController.Initialize(Owner); }
+
+            if (targetActor.EnemyGuid == "d4dd2b2bbda64cc9bcec534b4e920518" | 
+                targetActor.EnemyGuid == "98fdf153a4dd4d51bf0bafe43f3c77ff" | 
+                targetActor.EnemyGuid == "be0683affb0e41bbb699cb7125fdded6" |
+                targetActor.EnemyGuid == "c2f902b7cbe745efb3db4399927eab34" |
+                targetActor.EnemyGuid == "249db525a9464e5282d02162c88e0357" |
+                targetIsNewAIActor)
+            {
+                targetActor.OverrideHitEnemies = true;
+                targetActor.CollisionDamage = 1f;
+                targetActor.CollisionDamageTypes = CoreDamageTypes.Electric;
+            }
+
+            if (ImmuneToAllDamage) {
+                targetActor.healthHaver.SetHealthMaximum(15000);
+                targetActor.healthHaver.ForceSetCurrentHealth(15);
+                targetActor.healthHaver.PreventAllDamage = true;
+            }
+        }
+
+        // Spawns objects via DungeonPlacable system. Setup to spawn chests by default if no arguments are supplied.
+        public static DungeonPlaceable GenerateDungeonPlacable(GameObject ObjectPrefab = null, bool spawnsEnemy = false, bool useExternalPrefab = false, bool spawnsItem = false, string EnemyGUID = "479556d05c7c44f3b6abb3b2067fc778", int itemID = 307, Vector2? CustomOffset = null, bool itemHasDebrisObject = true, float spawnChance = 1f) {
+            AssetBundle m_assetBundle = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle m_assetBundle2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            AssetBundle m_resourceBundle = ResourceManager.LoadAssetBundle("brave_resources_001");
+
+            // Used with custom DungeonPlacable        
+            GameObject ChestBrownTwoItems = m_assetBundle.LoadAsset<GameObject>("Chest_Wood_Two_Items");
+            GameObject Chest_Silver = m_assetBundle.LoadAsset<GameObject>("chest_silver");
+            GameObject Chest_Green = m_assetBundle.LoadAsset<GameObject>("chest_green");
+            GameObject Chest_Synergy = m_assetBundle.LoadAsset<GameObject>("chest_synergy");
+            GameObject Chest_Red = m_assetBundle.LoadAsset<GameObject>("chest_red");
+            GameObject Chest_Black = m_assetBundle.LoadAsset<GameObject>("Chest_Black");
+            GameObject Chest_Rainbow = m_assetBundle.LoadAsset<GameObject>("Chest_Rainbow");
+            // GameObject Chest_Rat = m_assetBundle.LoadAsset<GameObject>("Chest_Rat");
+
+            m_assetBundle = null;
+            m_assetBundle2 = null;
+            m_resourceBundle = null;
+
+            DungeonPlaceableVariant BlueChestVariant = new DungeonPlaceableVariant();
+            BlueChestVariant.percentChance = 0.35f;
+            BlueChestVariant.unitOffset = new Vector2(1, 0.8f);
+            BlueChestVariant.enemyPlaceableGuid = string.Empty;
+            BlueChestVariant.pickupObjectPlaceableId = -1;
+            BlueChestVariant.forceBlackPhantom = false;
+            BlueChestVariant.addDebrisObject = false;
+            BlueChestVariant.prerequisites = null;
+            BlueChestVariant.materialRequirements = null;
+            BlueChestVariant.nonDatabasePlaceable = Chest_Silver;
+
+            DungeonPlaceableVariant BrownChestVariant = new DungeonPlaceableVariant();
+            BrownChestVariant.percentChance = 0.28f;
+            BrownChestVariant.unitOffset = new Vector2(1, 0.8f);
+            BrownChestVariant.enemyPlaceableGuid = string.Empty;
+            BrownChestVariant.pickupObjectPlaceableId = -1;
+            BrownChestVariant.forceBlackPhantom = false;
+            BrownChestVariant.addDebrisObject = false;
+            BrownChestVariant.prerequisites = null;
+            BrownChestVariant.materialRequirements = null;
+            BrownChestVariant.nonDatabasePlaceable = ChestBrownTwoItems;
+
+            DungeonPlaceableVariant GreenChestVariant = new DungeonPlaceableVariant();
+            GreenChestVariant.percentChance = 0.25f;
+            GreenChestVariant.unitOffset = new Vector2(1, 0.8f);
+            GreenChestVariant.enemyPlaceableGuid = string.Empty;
+            GreenChestVariant.pickupObjectPlaceableId = -1;
+            GreenChestVariant.forceBlackPhantom = false;
+            GreenChestVariant.addDebrisObject = false;
+            GreenChestVariant.prerequisites = null;
+            GreenChestVariant.materialRequirements = null;
+            GreenChestVariant.nonDatabasePlaceable = Chest_Green;
+
+            DungeonPlaceableVariant SynergyChestVariant = new DungeonPlaceableVariant();
+            SynergyChestVariant.percentChance = 0.2f;
+            SynergyChestVariant.unitOffset = new Vector2(1, 0.8f);
+            SynergyChestVariant.enemyPlaceableGuid = string.Empty;
+            SynergyChestVariant.pickupObjectPlaceableId = -1;
+            SynergyChestVariant.forceBlackPhantom = false;
+            SynergyChestVariant.addDebrisObject = false;
+            SynergyChestVariant.prerequisites = null;
+            SynergyChestVariant.materialRequirements = null;
+            SynergyChestVariant.nonDatabasePlaceable = Chest_Synergy;
+
+            DungeonPlaceableVariant RedChestVariant = new DungeonPlaceableVariant();
+            RedChestVariant.percentChance = 0.15f;
+            RedChestVariant.unitOffset = new Vector2(0.5f, 0.5f);
+            RedChestVariant.enemyPlaceableGuid = string.Empty;
+            RedChestVariant.pickupObjectPlaceableId = -1;
+            RedChestVariant.forceBlackPhantom = false;
+            RedChestVariant.addDebrisObject = false;
+            RedChestVariant.prerequisites = null;
+            RedChestVariant.materialRequirements = null;
+            RedChestVariant.nonDatabasePlaceable = Chest_Red;
+
+            DungeonPlaceableVariant BlackChestVariant = new DungeonPlaceableVariant();
+            BlackChestVariant.percentChance = 0.1f;
+            BlackChestVariant.unitOffset = new Vector2(0.5f, 0.5f);
+            BlackChestVariant.enemyPlaceableGuid = string.Empty;
+            BlackChestVariant.pickupObjectPlaceableId = -1;
+            BlackChestVariant.forceBlackPhantom = false;
+            BlackChestVariant.addDebrisObject = false;
+            BlackChestVariant.prerequisites = null;
+            BlackChestVariant.materialRequirements = null;
+            BlackChestVariant.nonDatabasePlaceable = Chest_Black;
+
+            DungeonPlaceableVariant RainbowChestVariant = new DungeonPlaceableVariant();
+            RainbowChestVariant.percentChance = 0.005f;
+            RainbowChestVariant.unitOffset = new Vector2(0.5f, 0.5f);
+            RainbowChestVariant.enemyPlaceableGuid = string.Empty;
+            RainbowChestVariant.pickupObjectPlaceableId = -1;
+            RainbowChestVariant.forceBlackPhantom = false;
+            RainbowChestVariant.addDebrisObject = false;
+            RainbowChestVariant.prerequisites = null;
+            RainbowChestVariant.materialRequirements = null;
+            RainbowChestVariant.nonDatabasePlaceable = Chest_Rainbow;
+
+            DungeonPlaceableVariant ItemVariant = new DungeonPlaceableVariant();
+            ItemVariant.percentChance = spawnChance;
+            if (CustomOffset.HasValue) {
+                ItemVariant.unitOffset = CustomOffset.Value;
+            } else {
+                ItemVariant.unitOffset = Vector2.zero;
+            }
+            // ItemVariant.unitOffset = new Vector2(0.5f, 0.8f);
+            ItemVariant.enemyPlaceableGuid = string.Empty;
+            ItemVariant.pickupObjectPlaceableId = itemID;
+            ItemVariant.forceBlackPhantom = false;
+            if (itemHasDebrisObject) {
+                ItemVariant.addDebrisObject = true;
+            } else {
+                ItemVariant.addDebrisObject = false;
+            }            
+            RainbowChestVariant.prerequisites = null;
+            RainbowChestVariant.materialRequirements = null;
+
+            List<DungeonPlaceableVariant> ChestTiers = new List<DungeonPlaceableVariant>();
+            ChestTiers.Add(BrownChestVariant);
+            ChestTiers.Add(BlueChestVariant);
+            ChestTiers.Add(GreenChestVariant);
+            ChestTiers.Add(SynergyChestVariant);
+            ChestTiers.Add(RedChestVariant);
+            ChestTiers.Add(BlackChestVariant);
+            ChestTiers.Add(RainbowChestVariant);
+
+            DungeonPlaceableVariant EnemyVariant = new DungeonPlaceableVariant();
+            EnemyVariant.percentChance = spawnChance;
+            EnemyVariant.unitOffset = Vector2.zero;
+            EnemyVariant.enemyPlaceableGuid = EnemyGUID;
+            EnemyVariant.pickupObjectPlaceableId = -1;
+            EnemyVariant.forceBlackPhantom = false;
+            EnemyVariant.addDebrisObject = false;
+            EnemyVariant.prerequisites = null;
+            EnemyVariant.materialRequirements = null;
+
+            List<DungeonPlaceableVariant> EnemyTiers = new List<DungeonPlaceableVariant>();
+            EnemyTiers.Add(EnemyVariant);
+
+            List<DungeonPlaceableVariant> ItemTiers = new List<DungeonPlaceableVariant>();
+            ItemTiers.Add(ItemVariant);
+
+            DungeonPlaceable m_cachedCustomPlacable = ScriptableObject.CreateInstance<DungeonPlaceable>();
+            m_cachedCustomPlacable.name = "CustomChestPlacable";
+            if (spawnsEnemy | useExternalPrefab) {
+                m_cachedCustomPlacable.width = 2;
+                m_cachedCustomPlacable.height = 2;
+            } else if (spawnsItem) {
+                m_cachedCustomPlacable.width = 1;
+                m_cachedCustomPlacable.height = 1;
+            } else {
+                m_cachedCustomPlacable.width = 4;
+                m_cachedCustomPlacable.height = 1;
+            }
+            m_cachedCustomPlacable.roomSequential = false;
+            m_cachedCustomPlacable.respectsEncounterableDifferentiator = true;
+            m_cachedCustomPlacable.UsePrefabTransformOffset = false;
+            m_cachedCustomPlacable.isPassable = true;
+            if (spawnsItem) {
+                m_cachedCustomPlacable.MarkSpawnedItemsAsRatIgnored = true;
+            } else {
+                m_cachedCustomPlacable.MarkSpawnedItemsAsRatIgnored = false;
+            }
+            
+            m_cachedCustomPlacable.DebugThisPlaceable = false;
+            if (useExternalPrefab && ObjectPrefab != null) {
+                DungeonPlaceableVariant ExternalObjectVariant = new DungeonPlaceableVariant();
+                ExternalObjectVariant.percentChance = spawnChance;
+                if (CustomOffset.HasValue) {
+                    ExternalObjectVariant.unitOffset = CustomOffset.Value;
+                } else {
+                    ExternalObjectVariant.unitOffset = Vector2.zero;
+                }
+                ExternalObjectVariant.enemyPlaceableGuid = string.Empty;
+                ExternalObjectVariant.pickupObjectPlaceableId = -1;
+                ExternalObjectVariant.forceBlackPhantom = false;
+                ExternalObjectVariant.addDebrisObject = false;
+                ExternalObjectVariant.nonDatabasePlaceable = ObjectPrefab;
+                List<DungeonPlaceableVariant> ExternalObjectTiers = new List<DungeonPlaceableVariant>();
+                ExternalObjectTiers.Add(ExternalObjectVariant);
+                m_cachedCustomPlacable.variantTiers = ExternalObjectTiers;
+            } else if (spawnsEnemy) {
+                m_cachedCustomPlacable.variantTiers = EnemyTiers;
+            } else if (spawnsItem) {
+                m_cachedCustomPlacable.variantTiers = ItemTiers;
+            } else {
+                m_cachedCustomPlacable.variantTiers = ChestTiers;
+            }
+            return m_cachedCustomPlacable;
+        }
+
+        public static Chest GenerateChest(IntVector2 positionInRoom, RoomHandler targetRoom, PickupObject.ItemQuality? targetQuality = null, float overrideMimicChance = -1f, bool allowSynergyChest = true, bool deferConfiguration = true) {
+            System.Random random = (!GameManager.Instance.IsSeeded) ? null : BraveRandom.GeneratorRandom;
+            FloorRewardData rewardDataForFloor = GameManager.Instance.RewardManager.CurrentRewardData;
+            bool forceDChanceZero = StaticReferenceManager.DChestsSpawnedInTotal >= 2;
+            if (targetQuality == null) {
+                targetQuality = new PickupObject.ItemQuality?(rewardDataForFloor.GetRandomTargetQuality(true, forceDChanceZero));
+                if (PassiveItem.IsFlagSetAtAll(typeof(SevenLeafCloverItem))) {
+                    targetQuality = new PickupObject.ItemQuality?((((random == null) ? UnityEngine.Random.value : ((float)random.NextDouble())) >= 0.5f) ? PickupObject.ItemQuality.S : PickupObject.ItemQuality.A);
+                }
+            }
+            if (targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.D && targetQuality != null && StaticReferenceManager.DChestsSpawnedOnFloor >= 1 && GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CASTLEGEON) {
+                targetQuality = new PickupObject.ItemQuality?(PickupObject.ItemQuality.C);
+            }
+            Vector2 zero = Vector2.zero;
+            if ((targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.A && targetQuality != null) || (targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.S && targetQuality != null)) {
+                zero = new Vector2(-0.5f, 0f);
+            }
+            Chest chest = GetTargetChestPrefab(GameManager.Instance.RewardManager, targetQuality.Value);
+            if (GameStatsManager.Instance.GetFlag(GungeonFlags.SYNERGRACE_UNLOCKED) && GameManager.Instance.BestGenerationDungeonPrefab.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CASTLEGEON && allowSynergyChest) {
+                float num = (random == null) ? UnityEngine.Random.value : ((float)random.NextDouble());
+                if (num < GameManager.Instance.RewardManager.GlobalSynerchestChance) {
+                    chest = GameManager.Instance.RewardManager.Synergy_Chest;
+                    zero = new Vector2(-0.1875f, 0f);
+                }
+            }
+            Chest.GeneralChestType generalChestType = (BraveRandom.GenerationRandomValue() >= rewardDataForFloor.GunVersusItemPercentChance) ? Chest.GeneralChestType.ITEM : Chest.GeneralChestType.WEAPON;
+            if (StaticReferenceManager.ItemChestsSpawnedOnFloor > 0 && StaticReferenceManager.WeaponChestsSpawnedOnFloor == 0) {
+                generalChestType = Chest.GeneralChestType.WEAPON;
+            } else if (StaticReferenceManager.WeaponChestsSpawnedOnFloor > 0 && StaticReferenceManager.ItemChestsSpawnedOnFloor == 0) {
+                generalChestType = Chest.GeneralChestType.ITEM;
+            }
+            GenericLootTable genericLootTable = (generalChestType != Chest.GeneralChestType.WEAPON) ? GameManager.Instance.RewardManager.ItemsLootTable : GameManager.Instance.RewardManager.GunsLootTable;
+            GameObject chestObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(chest.gameObject, targetRoom, positionInRoom, true, AIActor.AwakenAnimationType.Default, false);
+            chestObject.transform.position = chestObject.transform.position + zero.ToVector3ZUp(0f);
+            Chest chestComponent = chestObject.GetComponent<Chest>();
+            Component[] componentsInChildren = chestObject.GetComponentsInChildren(typeof(IPlaceConfigurable));
+            for (int i = 0; i < componentsInChildren.Length; i++) {
+                IPlaceConfigurable placeConfigurable = componentsInChildren[i] as IPlaceConfigurable;
+                if (placeConfigurable != null) { placeConfigurable.ConfigureOnPlacement(targetRoom); }
+            }
+            if (overrideMimicChance >= 0f) { chestComponent.overrideMimicChance = overrideMimicChance; }            
+            if (targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.A && targetQuality != null) {
+                GameManager.Instance.Dungeon.GeneratedMagnificence += 1f;
+                chestComponent.GeneratedMagnificence += 1f;
+            } else if (targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.S && targetQuality != null) {
+                GameManager.Instance.Dungeon.GeneratedMagnificence += 1f;
+                chestComponent.GeneratedMagnificence += 1f;
+            }
+            if (chestComponent.specRigidbody) { chestComponent.specRigidbody.Reinitialize(); }
+            chestComponent.ChestType = generalChestType;
+            chestComponent.lootTable.lootTable = genericLootTable;
+            if (chestComponent.lootTable.canDropMultipleItems && chestComponent.lootTable.overrideItemLootTables != null && chestComponent.lootTable.overrideItemLootTables.Count > 0) {
+                chestComponent.lootTable.overrideItemLootTables[0] = genericLootTable;
+            }
+            if (targetQuality.GetValueOrDefault() == PickupObject.ItemQuality.D && targetQuality != null && !chestComponent.IsMimic) {
+                StaticReferenceManager.DChestsSpawnedOnFloor++;
+                StaticReferenceManager.DChestsSpawnedInTotal++;
+                chestComponent.IsLocked = true;
+                if (chestComponent.LockAnimator) { chestComponent.LockAnimator.renderer.enabled = true; }
+            }
+            targetRoom.RegisterInteractable(chestComponent);
+            if (GameManager.Instance.RewardManager.SeededRunManifests.ContainsKey(GameManager.Instance.BestGenerationDungeonPrefab.tileIndices.tilesetId)) {
+                chestComponent.GenerationDetermineContents(GameManager.Instance.RewardManager.SeededRunManifests[GameManager.Instance.BestGenerationDungeonPrefab.tileIndices.tilesetId], random);
+            }
+            return chestComponent;
+        }
+
+        private static Chest GetTargetChestPrefab(RewardManager rewardManager, PickupObject.ItemQuality targetQuality) {
+            Chest result = null;
+            switch (targetQuality) {
+                case PickupObject.ItemQuality.D:
+                    result = rewardManager.D_Chest;
+                    break;
+                case PickupObject.ItemQuality.C:
+                    result = rewardManager.C_Chest;
+                    break;
+                case PickupObject.ItemQuality.B:
+                    result = rewardManager.B_Chest;
+                    break;
+                case PickupObject.ItemQuality.A:
+                    result = rewardManager.A_Chest;
+                    break;
+                case PickupObject.ItemQuality.S:
+                    result = rewardManager.S_Chest;
+                    break;
+            }
+            return result;
+        }
+
+        public static void WallStamper(Dungeon dungeon, RoomHandler target, IntVector2 targetPosition, int length = 2, int height = 2, bool isVerticalWall = false, bool useBlockFillMethod = false, bool deferRebuild = true) {
+            int X = targetPosition.X + target.area.basePosition.x;
+            int Y = targetPosition.Y + target.area.basePosition.y;
+
+            try {
+                if (useBlockFillMethod) {
+                    for (int i = 0; i < length; i++) {
+                        for (int i2 = 0; i2 < height; i2++) {
+                            dungeon.ConstructWallAtPosition(X + i, Y + i2, deferRebuild);
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < length; i++) {
+                        if (isVerticalWall) {
+                            dungeon.ConstructWallAtPosition(X, Y + i, deferRebuild);
+                        } else {
+                            dungeon.ConstructWallAtPosition(X + i, Y, deferRebuild);
+                            dungeon.ConstructWallAtPosition(X + i, Y + 1, deferRebuild);
+                        }
+                    }                
+                }
+            } catch (Exception ex) {
+                ETGModConsole.Log("WARNING: Exception occured while generating wall cells!\nException details will be in log file.");
+                Debug.Log("WARNING: Exception occured while generating wall cells!");
+                Debug.LogException(ex);
+            }            
+        }
+
+        public static void FloorStamper(RoomHandler target, IntVector2 targetPosition, int sizeX = 2, int sizeY = 2, CellType floorType = CellType.PIT) {
+            int X = targetPosition.X + target.area.basePosition.x;
+            int Y = targetPosition.Y + target.area.basePosition.y;
+
+            for (int i = 0; i < sizeX; i++) {
+                for (int i2 = 0; i2 < sizeY; i2++) {
+                    target.RuntimeStampCellComplex(X + i, Y + i2, floorType, DiagonalWallType.NONE);
+                }
+            }
+        }
+
+        public static void GenerateFakeWall(DungeonData.Direction m_facingDirection, IntVector2 targetPosition, RoomHandler targetRoom, string wallName = "Fake Wall", bool markAsSecret = false, bool hasCollision = false, bool updateMinimapOnly = false, bool isGlitched = false) {
+            if (targetRoom == null) { return; }
+
+            IntVector2 pos1 = targetPosition + targetRoom.area.basePosition;
+            IntVector2 pos2 = pos1 + IntVector2.Right;
+
+            if (m_facingDirection == DungeonData.Direction.WEST) {
+                pos1 = pos2;
+            } else if (m_facingDirection == DungeonData.Direction.EAST) {
+                pos2 = pos1;
+            }
+
+            if (!updateMinimapOnly) {
+                try {
+                    GameObject m_fakeWall = GenerateWallMesh(m_facingDirection, pos1, wallName, null, true, isGlitched);
+                    m_fakeWall.transform.parent = targetRoom.hierarchyParent;
+                    m_fakeWall.transform.position = pos1.ToVector3().WithZ(pos1.y - 2) + Vector3.down;
+                    if (m_facingDirection == DungeonData.Direction.SOUTH) {
+                        StaticReferenceManager.AllShadowSystemDepthHavers.Add(m_fakeWall.transform);
+                    } else if (m_facingDirection == DungeonData.Direction.WEST) {
+                        m_fakeWall.transform.position = m_fakeWall.transform.position + new Vector3(-0.1875f, 0f);
+                    }
+                    if (isGlitched && m_fakeWall.GetComponent<MeshRenderer>() != null) {
+                        MeshRenderer meshRenderer = m_fakeWall.GetComponent<MeshRenderer>();
+                        foreach (Material cellMaterial in meshRenderer.materials) {
+                            float GlitchInterval = UnityEngine.Random.Range(0.038f, 0.042f);
+                            float DispProbability = UnityEngine.Random.Range(0.066f, 0.074f);
+                            float DispIntensity = UnityEngine.Random.Range(0.048f, 0.052f);
+                            float ColorProbability = UnityEngine.Random.Range(0.069f, 0.071f);
+                            float ColorIntensity = UnityEngine.Random.Range(0.0495f, 0.0605f);
+                            ExpandShaders.ApplyGlitchMaterial(cellMaterial, GlitchInterval, DispProbability, DispIntensity, ColorProbability, 0.05f);
+                        }
+                    }
+                } catch (Exception) { }
+
+                try {
+                    GameObject m_fakeCeiling = GenerateRoomCeilingMesh(GetCeilingTileSet(pos1, pos2, m_facingDirection), "Fake Ceiling", null, true, isGlitched);
+                    m_fakeCeiling.transform.parent = targetRoom.hierarchyParent;
+                    m_fakeCeiling.transform.position = pos1.ToVector3().WithZ(pos1.y - 4);
+                    if (m_facingDirection == DungeonData.Direction.NORTH) {
+                        m_fakeCeiling.transform.position += new Vector3(-1f, 0f);
+                    } else if (m_facingDirection == DungeonData.Direction.SOUTH) {
+                        m_fakeCeiling.transform.position += new Vector3(-1f, 2f);
+                    } else if (m_facingDirection == DungeonData.Direction.EAST) {
+                        m_fakeCeiling.transform.position += new Vector3(-1f, 0f);
+                    }
+                    m_fakeCeiling.transform.position = m_fakeCeiling.transform.position.WithZ(m_fakeCeiling.transform.position.y - 5f);
+                    if (isGlitched && m_fakeCeiling.GetComponent<MeshRenderer>() != null) {
+                        MeshRenderer meshRenderer = m_fakeCeiling.GetComponent<MeshRenderer>();
+                        foreach (Material cellMaterial in meshRenderer.materials) {
+                            float GlitchInterval = UnityEngine.Random.Range(0.038f, 0.042f);
+                            float DispProbability = UnityEngine.Random.Range(0.066f, 0.074f);
+                            float DispIntensity = UnityEngine.Random.Range(0.048f, 0.052f);
+                            float ColorProbability = UnityEngine.Random.Range(0.069f, 0.071f);
+                            float ColorIntensity = UnityEngine.Random.Range(0.0495f, 0.0605f);
+                            ExpandShaders.ApplyGlitchMaterial(cellMaterial, GlitchInterval, DispProbability, DispIntensity, ColorProbability, 0.05f);
+                        }
+                    }
+                } catch (Exception) { }
+            }           
+
+            if (markAsSecret | updateMinimapOnly) {
+                CellData cellData = GameManager.Instance.Dungeon.data[pos1];
+                CellData cellData2 = GameManager.Instance.Dungeon.data[pos2];
+                cellData.isSecretRoomCell = true;
+                cellData2.isSecretRoomCell = true;
+                cellData.forceDisallowGoop = true;
+                cellData2.forceDisallowGoop = true;
+                cellData.cellVisualData.preventFloorStamping = true;
+                cellData2.cellVisualData.preventFloorStamping = true;
+                cellData.isWallMimicHideout = true;
+                cellData2.isWallMimicHideout = true;
+                if (m_facingDirection == DungeonData.Direction.WEST || m_facingDirection == DungeonData.Direction.EAST) {
+                    GameManager.Instance.Dungeon.data[pos1 + IntVector2.Up].isSecretRoomCell = true;
+                }
+            }
+        }        
+
+        public static void DestroyWallAtPosition(Dungeon dungeon, RoomHandler targetRoom, IntVector2 position, bool physicsOnly = false, bool deferRebuild = true) {
+            int ix = position.x + targetRoom.area.basePosition.x;
+            int iy = position.y + targetRoom.area.basePosition.y;
+
+            TK2DDungeonAssembler assembler = new TK2DDungeonAssembler();
+            assembler.Initialize(dungeon.tileIndices);
+            tk2dTileMap m_tilemap = dungeon.MainTilemap;
+
+            if (dungeon.data.cellData[ix][iy] == null) { return; }
+            if (dungeon.data.cellData[ix][iy].type != CellType.WALL) { return; }
+            // if (!dungeon.data.cellData[ix][iy].breakable) { return null; }
+
+            dungeon.data.cellData[ix][iy].type = CellType.FLOOR;
+            if (dungeon.data.isSingleCellWall(ix, iy + 1)) { dungeon.data[ix, iy + 1].type = CellType.FLOOR; }
+            if (dungeon.data.isSingleCellWall(ix, iy - 1)) { dungeon.data[ix, iy - 1].type = CellType.FLOOR; }
+            RoomHandler parentRoom = dungeon.data.cellData[ix][iy].parentRoom;
+            tk2dTileMap tk2dTileMap = (parentRoom == null || !(parentRoom.OverrideTilemap != null)) ? m_tilemap : parentRoom.OverrideTilemap;
+            for (int i = -1; i < 2; i++) {
+                for (int j = -2; j < 4; j++) {
+                    CellData cellData = dungeon.data.cellData[ix + i][iy + j];
+                    if (cellData != null) {
+                        cellData.hasBeenGenerated = false;
+                        if (!physicsOnly) {
+                            if (cellData.parentRoom != null) {
+                                List<GameObject> list = new List<GameObject>();
+                                for (int k = 0; k < cellData.parentRoom.hierarchyParent.childCount; k++) {
+                                    Transform child = cellData.parentRoom.hierarchyParent.GetChild(k);
+                                    if (child.name.StartsWith("Chunk_")) { list.Add(child.gameObject); }
+                                }
+                                for (int l = list.Count - 1; l >= 0; l--) { Destroy(list[l]); }
+                            }
+                        }
+                        try {
+                            assembler.ClearTileIndicesForCell(dungeon, tk2dTileMap, cellData.position.x, cellData.position.y);
+                            assembler.BuildTileIndicesForCell(dungeon, tk2dTileMap, cellData.position.x, cellData.position.y);
+                        } catch (Exception ex) {
+                            if (ExpandStats.debugMode) {
+                                ETGModConsole.Log("[DEBUG] Warning: Exception caught in TK2DDungeonAssembler.ClearTileIndicesForCell and/or TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                                Debug.Log("Warning: Exception caught in TK2DDungeonAssembler.ClearTileIndicesForCell and/or TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                                Debug.LogException(ex);
+                            }
+                        }                        
+                        cellData.HasCachedPhysicsTile = false;
+                        cellData.CachedPhysicsTile = null;
+                    }
+                }
+            }
+            if (!deferRebuild) { dungeon.RebuildTilemap(tk2dTileMap); }
+            return;
+        }
+
+        public static void AddHealthHaver(GameObject target, float maxHealth = 25, bool explodesOnDeath = true, OnDeathBehavior.DeathType explosionDeathType = OnDeathBehavior.DeathType.Death, bool flashesOnDamage = false, bool exploderSpawnsItem = false) {
+            if (target.GetComponent<HealthHaver>() != null | target.GetComponentInChildren<HealthHaver>(true) != null |
+                target.GetComponent<PlayerController>() != null | target.GetComponentInChildren<PlayerController>(true) != null |
+                target.GetComponentInChildren<SpeculativeRigidbody>() == null)
+            { return; }
+
+            /*if (target.GetComponentInChildren<TalkDoerLite>() != null) {
+                TalkDoerLite npcComponent = target.GetComponentInChildren<TalkDoerLite>();
+                Destroy(npcComponent.ultraFortunesFavor);
+            }*/
+
+            target.AddComponent<HealthHaver>();
+            HealthHaver m_healthHaver = target.GetComponent<HealthHaver>();
+            // FieldInfo field = typeof(HealthHaver).GetField("usesInvulnerabilityPeriod", BindingFlags.Instance | BindingFlags.NonPublic);
+            // FieldInfo field2 = typeof(HealthHaver).GetField("m_isFlashing", BindingFlags.Instance | BindingFlags.NonPublic);
+            // isPlayerCharacter
+            FieldInfo field = typeof(HealthHaver).GetField("isPlayerCharacter", BindingFlags.Instance | BindingFlags.NonPublic);
+            field.SetValue(m_healthHaver, false);
+            m_healthHaver.quantizeHealth = false;
+            m_healthHaver.quantizedIncrement = 0.5f;
+            m_healthHaver.flashesOnDamage = flashesOnDamage;
+            m_healthHaver.incorporealityOnDamage = false;
+            m_healthHaver.incorporealityTime = 0;
+            m_healthHaver.PreventAllDamage = false;
+            m_healthHaver.persistsOnDeath = false;
+            // field.SetValue(m_healthHaver, false);
+            // field2.SetValue(m_healthHaver, false);
+            m_healthHaver.SetHealthMaximum(maxHealth);
+            m_healthHaver.Armor = 0;
+            m_healthHaver.CursedMaximum = maxHealth * 3;            
+            m_healthHaver.useFortunesFavorInvulnerability = false;
+            m_healthHaver.damagedAudioEvent = string.Empty;
+            m_healthHaver.overrideDeathAudioEvent = string.Empty;
+            m_healthHaver.overrideDeathAnimation = string.Empty;
+            m_healthHaver.shakesCameraOnDamage = false;
+            m_healthHaver.cameraShakeOnDamage = new ScreenShakeSettings() {
+                magnitude = 0.35f,
+                speed = 6,
+                time = 0.06f,
+                falloff = 0,
+                direction = Vector2.zero,
+                vibrationType = ScreenShakeSettings.VibrationType.Auto,
+                simpleVibrationTime = Vibration.Time.Normal,
+                simpleVibrationStrength = Vibration.Strength.Medium
+            };
+            m_healthHaver.damageTypeModifiers = new List<DamageTypeModifier>(0);
+            m_healthHaver.healthIsNumberOfHits = false;
+            m_healthHaver.OnlyAllowSpecialBossDamage = false;
+            m_healthHaver.overrideDeathAnimBulletScript = string.Empty;
+            m_healthHaver.noCorpseWhenBulletScriptDeath = false;
+            m_healthHaver.spawnBulletScript = false;
+            m_healthHaver.chanceToSpawnBulletScript = 0;
+            m_healthHaver.bulletScriptType = HealthHaver.BulletScriptType.OnPreDeath;
+            m_healthHaver.bulletScript = new BulletScriptSelector() { scriptTypeName = string.Empty };
+            m_healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
+            m_healthHaver.overrideBossName = string.Empty;
+            m_healthHaver.forcePreventVictoryMusic = false;
+            m_healthHaver.GlobalPixelColliderDamageMultiplier = 1;
+            m_healthHaver.IsVulnerable = true;
+           
+            if (explodesOnDeath) {
+                m_healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
+                ExpandExplodeOnDeath corpseExploder = m_healthHaver.gameObject.GetComponent<ExpandExplodeOnDeath>();
+                corpseExploder.deathType = explosionDeathType;
+                if (exploderSpawnsItem) { corpseExploder.spawnItemsOnExplosion = true; }
+            }
+        }
+
+        public static void GenerateHealthHaver(GameObject target, float maxHealth = 25, bool disableAnimator = true, bool explodesOnDeath = true, OnDeathBehavior.DeathType explosionDeathType = OnDeathBehavior.DeathType.Death, bool flashesOnDamage = true, bool exploderSpawnsItem = false, bool isCorruptedObject = true, bool isRatNPC = false, bool skipAnimatorCheck = false, bool buildLists = false) {
+            if (target.GetComponent<HealthHaver>() != null | 
+                target.GetComponentInChildren<HealthHaver>(true) != null |
+                target.GetComponent<tk2dBaseSprite>() == null |
+                target.GetComponentInChildren<SpeculativeRigidbody>() == null
+            ) {
+                return;
+            }
+
+            if (!isRatNPC && !skipAnimatorCheck) {
+                // A spriteAnimator is required for a HealthHaver to work properly!
+                tk2dBaseSprite baseSprite = target.GetComponent<tk2dBaseSprite>();
+
+                if (disableAnimator) {
+                    if (target.GetComponent<AIAnimator>()) { Destroy(target.GetComponent<AIAnimator>()); }
+                    if (target.GetComponent<tk2dSpriteAnimator>()) { Destroy(target.GetComponent<tk2dSpriteAnimator>()); }
+                    target.AddComponent<tk2dSpriteAnimator>();
+                    tk2dSpriteAnimator shrineDummyAnimator = target.GetComponent<tk2dSpriteAnimator>();
+                    shrineDummyAnimator.Library = null;
+                    shrineDummyAnimator.DefaultClipId = 0;
+                    shrineDummyAnimator.AdditionalCameraVisibilityRadius = 0;
+                    shrineDummyAnimator.AnimateDuringBossIntros = false;
+                    shrineDummyAnimator.AlwaysIgnoreTimeScale = true;
+                    shrineDummyAnimator.ForceSetEveryFrame = false;
+                    shrineDummyAnimator.playAutomatically = false;
+                    shrineDummyAnimator.IsFrameBlendedAnimation = false;
+                    shrineDummyAnimator.clipTime = 0;
+                    shrineDummyAnimator.deferNextStartClip = false;
+                    SpriteBuilder.AddAnimation(shrineDummyAnimator, baseSprite.Collection, new List<int>() { baseSprite.spriteId }, "DummyFrame", tk2dSpriteAnimationClip.WrapMode.Once);
+                } else if (!target.GetComponent<tk2dSpriteAnimator>() && baseSprite.Collection != null) {
+                    target.AddComponent<tk2dSpriteAnimator>();
+                    tk2dSpriteAnimator shrineDummyAnimator = target.GetComponent<tk2dSpriteAnimator>();
+                    shrineDummyAnimator.Library = null;
+                    shrineDummyAnimator.DefaultClipId = 0;
+                    shrineDummyAnimator.AdditionalCameraVisibilityRadius = 0;
+                    shrineDummyAnimator.AnimateDuringBossIntros = false;
+                    shrineDummyAnimator.AlwaysIgnoreTimeScale = true;
+                    shrineDummyAnimator.ForceSetEveryFrame = false;
+                    shrineDummyAnimator.playAutomatically = false;
+                    shrineDummyAnimator.IsFrameBlendedAnimation = false;
+                    shrineDummyAnimator.clipTime = 0;
+                    shrineDummyAnimator.deferNextStartClip = false;
+                    SpriteBuilder.AddAnimation(shrineDummyAnimator, baseSprite.Collection, new List<int>() { baseSprite.spriteId }, "DummyFrame", tk2dSpriteAnimationClip.WrapMode.Once);
+                } else if (target.GetComponent<tk2dSpriteAnimator>() && !disableAnimator) {
+                    // We need to set all frames in the animator to vulnerable else it may not dake damage from projectiles correctly!
+                    tk2dSpriteAnimator existingAnimator = target.GetComponent<tk2dSpriteAnimator>();
+                    if (existingAnimator.Library != null && existingAnimator.Library.clips != null && existingAnimator.Library.clips.Length > 0) {
+                        tk2dSpriteAnimationClip[] existingClips = existingAnimator.Library.clips;
+                        foreach (tk2dSpriteAnimationClip clip in existingClips) {
+                            if (clip.frames != null && clip.frames.Length > 0) {
+                                foreach (tk2dSpriteAnimationFrame Frame in clip.frames) {
+                                    Frame.invulnerableFrame = false;
+                                }
+                            }
+                        }
+                    } else {
+                        return;
+                    }
+                } else if (!target.GetComponent<tk2dSpriteAnimator>() && !disableAnimator) {
+                    return;
+                }
+            }
+                
+
+            target.AddComponent<HealthHaver>();
+            HealthHaver m_healthHaver = target.GetComponent<HealthHaver>();
+            FieldInfo field = typeof(HealthHaver).GetField("isPlayerCharacter", BindingFlags.Instance | BindingFlags.NonPublic);
+            field.SetValue(m_healthHaver, false);
+            m_healthHaver.IsVulnerable = true;
+            m_healthHaver.quantizeHealth = false;
+            m_healthHaver.quantizedIncrement = 0.5f;
+            m_healthHaver.flashesOnDamage = flashesOnDamage;
+            m_healthHaver.incorporealityOnDamage = false;
+            m_healthHaver.incorporealityTime = 0;
+            m_healthHaver.PreventAllDamage = false;
+            m_healthHaver.persistsOnDeath = false;
+            m_healthHaver.SetHealthMaximum(maxHealth);
+            m_healthHaver.Armor = 0;
+            m_healthHaver.CursedMaximum = maxHealth * 3;            
+            m_healthHaver.useFortunesFavorInvulnerability = false;
+            m_healthHaver.damagedAudioEvent = string.Empty;
+            m_healthHaver.overrideDeathAudioEvent = string.Empty;
+            m_healthHaver.overrideDeathAnimation = string.Empty;
+            m_healthHaver.shakesCameraOnDamage = false;
+            m_healthHaver.cameraShakeOnDamage = new ScreenShakeSettings() {
+                magnitude = 0.35f,
+                speed = 6,
+                time = 0.06f,
+                falloff = 0,
+                direction = Vector2.zero,
+                vibrationType = ScreenShakeSettings.VibrationType.Auto,
+                simpleVibrationTime = Vibration.Time.Normal,
+                simpleVibrationStrength = Vibration.Strength.Medium
+            };
+            m_healthHaver.damageTypeModifiers = new List<DamageTypeModifier>(0);
+            m_healthHaver.healthIsNumberOfHits = false;
+            m_healthHaver.OnlyAllowSpecialBossDamage = false;
+            m_healthHaver.overrideDeathAnimBulletScript = string.Empty;
+            m_healthHaver.noCorpseWhenBulletScriptDeath = false;
+            m_healthHaver.spawnBulletScript = false;
+            m_healthHaver.chanceToSpawnBulletScript = 0;
+            m_healthHaver.bulletScriptType = HealthHaver.BulletScriptType.OnPreDeath;
+            m_healthHaver.bulletScript = new BulletScriptSelector() { scriptTypeName = string.Empty };
+            m_healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
+            m_healthHaver.overrideBossName = string.Empty;
+            m_healthHaver.forcePreventVictoryMusic = false;
+            m_healthHaver.GlobalPixelColliderDamageMultiplier = 1;
+           
+            if (explodesOnDeath) {
+                m_healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
+                ExpandExplodeOnDeath corpseExploder = m_healthHaver.gameObject.GetComponent<ExpandExplodeOnDeath>();
+                corpseExploder.deathType = explosionDeathType;
+                corpseExploder.spawnItemsOnExplosion = exploderSpawnsItem;
+                corpseExploder.isCorruptedObject = isCorruptedObject;
+            }
+
+            if (buildLists) {
+                m_healthHaver.DamageableColliders = new List<PixelCollider>();
+
+                if (target.GetComponentsInChildren<SpeculativeRigidbody>(true) != null && target.GetComponentsInChildren<SpeculativeRigidbody>(true).Length > 0) {
+                    m_healthHaver.bodyRigidbodies = new List<SpeculativeRigidbody>();
+                    foreach (SpeculativeRigidbody rigidBody in target.GetComponentsInChildren<SpeculativeRigidbody>(true)) {
+                        m_healthHaver.bodyRigidbodies.Add(rigidBody);
+                        if (rigidBody.PixelColliders != null && rigidBody.PixelColliders.Count > 0) {
+                            foreach (PixelCollider collider in rigidBody.PixelColliders) { m_healthHaver.DamageableColliders.Add(collider); }
+                        }
+                    }
+                } else {
+                    m_healthHaver.bodyRigidbodies = new List<SpeculativeRigidbody>() { target.GetComponent<SpeculativeRigidbody>() };
+                    if (target.GetComponent<SpeculativeRigidbody>().PixelColliders != null && target.GetComponent<SpeculativeRigidbody>().PixelColliders.Count > 0) {
+                        foreach (PixelCollider collider in target.GetComponent<SpeculativeRigidbody>().PixelColliders) { m_healthHaver.DamageableColliders.Add(collider); }
+                    };
+                }
+
+                if (target.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
+                    m_healthHaver.bodySprites = new List<tk2dBaseSprite>();
+                    tk2dBaseSprite[] BaseSprites = target.GetComponentsInChildren<tk2dBaseSprite>(true);
+                    foreach (tk2dBaseSprite BaseSprite in BaseSprites) { m_healthHaver.bodySprites.Add(BaseSprite); }
+                }
+            }
+
+            if (isCorruptedObject) {
+                if (string.IsNullOrEmpty(target.name)) {
+                    target.name = "Corrupted Object";
+                } else if (!target.name.StartsWith("Corrupted")){
+                    target.name = ("Corrupted " + target.name);
+                }
+            }
+            try { m_healthHaver.RegenerateCache(); } catch (Exception) { }
+        }
+
+        public static ExplosionData GenerateExplosionData(GameObject DefaultVFX = null, GameObject overrideRangeIndicatorEffect = null, List<SpeculativeRigidbody> ignoreList = null, GameActorFreezeEffect freezeEffect = null, bool useDefaultExplosion = false, bool doDamage = true, bool forceUseThisRadius = true, float damageRadius = 3, bool DamagesPlayer = true, float damage = 40, bool breakSecretWalls = false, float secretWallsRadius = 4.5f, bool forcePreventSecretWallDamage = false, bool doDestroyProjectiles = true, bool doForce = true, float pushRadius = 5, float force = 100, float debrisForce = 50, bool preventPlayerForce = false, float explosionDelay = 0.1f, bool usesComprehensiveDelay = false, float comprehensiveDelay = 0, bool doScreenShake = true, bool doStickyFriction = true, bool doExplosionRing = true, bool isFreezeExplosion = false, float freezeRadius = 5, bool playDefaultSFX = true, bool IsChandelierExplosion = false, bool rotateEffectToNormal = false) {
+            
+            if (DefaultVFX == null) {
+                AssetBundle m_sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+                DefaultVFX = m_sharedAssets.LoadAsset<GameObject>("VFX_Ring_Explosion_001");
+                m_sharedAssets = null;
+            }
+            if (DefaultVFX == null) { return null; }
+            if (isFreezeExplosion && freezeEffect == null) { isFreezeExplosion = false; }
+
+            if (ignoreList == null) { ignoreList = new List<SpeculativeRigidbody>(0); }
+
+            float m_DamageToPlayer = 0.5f;
+            if (!DamagesPlayer) { m_DamageToPlayer = 0; }
+
+            ExplosionData m_CachedExplosionData = new ExplosionData() {
+                useDefaultExplosion = useDefaultExplosion,
+                doDamage = doDamage,
+                forceUseThisRadius = forceUseThisRadius,
+                damageRadius = damageRadius,
+                damageToPlayer = m_DamageToPlayer,
+                damage = damage,
+                breakSecretWalls = breakSecretWalls,
+                secretWallsRadius = secretWallsRadius,
+                forcePreventSecretWallDamage = forcePreventSecretWallDamage,
+                doDestroyProjectiles = doDestroyProjectiles,
+                doForce = doForce,
+                pushRadius = pushRadius,
+                force = force,
+                debrisForce = debrisForce,
+                preventPlayerForce = preventPlayerForce,
+                explosionDelay = explosionDelay,
+                usesComprehensiveDelay = usesComprehensiveDelay,
+                comprehensiveDelay = comprehensiveDelay,
+                effect = DefaultVFX,
+                doScreenShake = doScreenShake,
+                ss = new ScreenShakeSettings() {
+                    magnitude = 2,
+                    speed = 7,
+                    time = 0.1f,
+                    falloff = 0.3f,
+                    direction = Vector2.zero,
+                    vibrationType = ScreenShakeSettings.VibrationType.Auto,
+                    simpleVibrationTime = Vibration.Time.Normal,
+                    simpleVibrationStrength = Vibration.Strength.Medium
+                },
+                doStickyFriction = doStickyFriction,
+                doExplosionRing = doExplosionRing,
+                isFreezeExplosion = isFreezeExplosion,
+                freezeRadius = freezeRadius,
+                freezeEffect = freezeEffect,
+                playDefaultSFX = playDefaultSFX,
+                IsChandelierExplosion = IsChandelierExplosion,
+                rotateEffectToNormal = rotateEffectToNormal,
+                ignoreList = ignoreList,
+                overrideRangeIndicatorEffect = overrideRangeIndicatorEffect
+            };
+
+            if (m_CachedExplosionData == null) { return null; }
+
+            return m_CachedExplosionData;
+        }
+        
+        public static IEnumerator DelayedGlitchLevelLoad(float delay, string flowPath, bool IsSecretRatFloor = false, bool useNakatomiTileset = false) {
+            if (string.IsNullOrEmpty(flowPath)) { yield break; }            
+            if (IsSecretRatFloor) {
+                GameManager.Instance.InjectedFlowPath = flowPath;
+                yield return new WaitForSeconds(delay);
+                ExpandTheGungeon.isGlitchFloor = true;
+                GameManager.Instance.LoadCustomLevel("ss_resourcefulrat");
+            } else {
+                string flow = flowPath;
+                ExpandDungeonFlow.isGlitchFlow = true;
+                if (BraveUtility.RandomBool()) { flow = "custom_glitch_flow"; }
+                if (useNakatomiTileset) {
+                    yield return new WaitForSeconds(delay);
+                    GameManager.Instance.LoadCustomFlowForDebug(flow, "Base_Nakatomi", "tt_nakatomi");
+                } else {
+                    GameManager.Instance.InjectedFlowPath = flowPath;
+                    GameManager.Instance.DelayedLoadNextLevel(delay);
+                }
+            }            
+            yield break;
+        }
+
+        public static GameObject GenerateRoomCeilingMesh(HashSet<IntVector2> cells, string objectName = "secret room ceiling object", DungeonData dungeonData = null, bool mimicCheck = false, bool isGlitched = false) {
+            if (dungeonData == null) { dungeonData = GameManager.Instance.Dungeon.data; }
+            Mesh mesh = new Mesh();
+            List<Vector3> list = new List<Vector3>();
+            List<int> list2 = new List<int>();
+            List<int> list3 = new List<int>();
+            List<Vector2> list4 = new List<Vector2>();
+            Material material = null;
+            Material material2 = null;
+            tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
+            if (isGlitched) {
+                dungeonCollection = Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
+                    ExpandShaders.ApplyGlitchShaderUnlit(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
+                }
+            }
+            Vector3 b = new Vector3(0f, 0f, -3.01f);
+            Vector3 b2 = new Vector3(0f, 0f, -3.02f);
+            foreach (IntVector2 position in cells) {
+                TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(position, dungeonData);
+                int indexByWeight = borderGridForCellPosition.centerIndices.GetIndexByWeight();
+                int tileFromRawTile = BuilderUtil.GetTileFromRawTile(indexByWeight);
+                tk2dSpriteDefinition tk2dSpriteDefinition = dungeonCollection.spriteDefinitions[tileFromRawTile];
+                if (material == null) { material = tk2dSpriteDefinition.material; }               
+                int count = list.Count;
+                Vector3 a = position.ToVector3(position.y);
+                Vector3[] array = tk2dSpriteDefinition.ConstructExpensivePositions();
+                for (int i = 0; i < array.Length; i++) {
+                    Vector3 b3 = array[i].WithZ(array[i].y);
+                    list.Add(a + b3 + b);
+                    list4.Add(tk2dSpriteDefinition.uvs[i]);
+                }
+                for (int j = 0; j < tk2dSpriteDefinition.indices.Length; j++) { list2.Add(count + tk2dSpriteDefinition.indices[j]); }
+                int x = position.x;
+                int y = position.y;
+                bool flag = IsTopWall(x, y, dungeonData, cells);
+                bool flag2 = IsTopWall(x + 1, y, dungeonData, cells) && !IsTopWall(x, y, dungeonData, cells) && (IsWall(x, y + 1, dungeonData, cells) || IsTopWall(x, y + 1, dungeonData, cells));
+                bool flag3 = (!IsWall(x + 1, y, dungeonData, cells) && !IsTopWall(x + 1, y, dungeonData, cells)) || IsFaceWallHigher(x + 1, y, dungeonData, cells);
+                bool flag4 = y > 3 && IsFaceWallHigher(x + 1, y - 1, dungeonData, cells) && !IsFaceWallHigher(x, y - 1, dungeonData, cells);
+                bool flag5 = y > 3 && IsFaceWallHigher(x, y - 1, dungeonData, cells);
+                bool flag6 = y > 3 && IsFaceWallHigher(x - 1, y - 1, dungeonData, cells) && !IsFaceWallHigher(x, y - 1, dungeonData, cells);
+                bool flag7 = (!IsWall(x - 1, y, dungeonData, cells) && !IsTopWall(x - 1, y, dungeonData, cells)) || IsFaceWallHigher(x - 1, y, dungeonData, cells);
+                bool flag8 = IsTopWall(x - 1, y, dungeonData, cells) && !IsTopWall(x, y, dungeonData, cells) && (IsWall(x, y + 1, dungeonData, cells) || IsTopWall(x, y + 1, dungeonData, cells));
+                if (mimicCheck) {
+                    flag = IsTopWallOrSecret(x, y, dungeonData, cells);
+                    flag2 = (IsTopWallOrSecret(x + 1, y, dungeonData, cells) && !IsTopWallOrSecret(x, y, dungeonData, cells) && (IsWallOrSecret(x, y + 1, dungeonData, cells) || IsTopWallOrSecret(x, y + 1, dungeonData, cells)));
+                    flag3 = ((!IsWallOrSecret(x + 1, y, dungeonData, cells) && !IsTopWallOrSecret(x + 1, y, dungeonData, cells)) || IsFaceWallHigherOrSecret(x + 1, y, dungeonData, cells));
+                    flag4 = (y > 3 && IsFaceWallHigherOrSecret(x + 1, y - 1, dungeonData, cells) && !IsFaceWallHigherOrSecret(x, y - 1, dungeonData, cells));
+                    flag5 = (y > 3 && IsFaceWallHigherOrSecret(x, y - 1, dungeonData, cells));
+                    flag6 = (y > 3 && IsFaceWallHigherOrSecret(x - 1, y - 1, dungeonData, cells) && !IsFaceWallHigherOrSecret(x, y - 1, dungeonData, cells));
+                    flag7 = ((!IsWallOrSecret(x - 1, y, dungeonData, cells) && !IsTopWallOrSecret(x - 1, y, dungeonData, cells)) || IsFaceWallHigherOrSecret(x - 1, y, dungeonData, cells));
+                    flag8 = (IsTopWallOrSecret(x - 1, y, dungeonData, cells) && !IsTopWallOrSecret(x, y, dungeonData, cells) && (IsWallOrSecret(x, y + 1, dungeonData, cells) || IsTopWallOrSecret(x, y + 1, dungeonData, cells)));
+                }               
+                if (flag || flag2 || flag3 || flag4 || flag5 || flag6 || flag7 || flag8) {
+                    int rawTile = borderGridForCellPosition.GetIndexGivenSides(flag, flag2, flag3, flag4, flag5, flag6, flag7, flag8);
+                    if (borderGridForCellPosition.UsesRatChunkBorders) {
+                        bool flag9 = y > 3;
+                        if (flag9) { flag9 = !dungeonData[x, y - 1].HasFloorNeighbor(dungeonData, false, true); }
+                        TileIndexGrid.RatChunkResult ratChunkResult = TileIndexGrid.RatChunkResult.NONE;
+                        rawTile = borderGridForCellPosition.GetRatChunkIndexGivenSides(flag, flag2, flag3, flag4, flag5, flag6, flag7, flag8, flag9, out ratChunkResult);
+                    }
+                    int tileFromRawTile2 = BuilderUtil.GetTileFromRawTile(rawTile);
+                    tk2dSpriteDefinition tk2dSpriteDefinition2 = dungeonCollection.spriteDefinitions[tileFromRawTile2];
+                    if (material2 == null) { material2 = tk2dSpriteDefinition2.material; }                    
+                    int count2 = list.Count;
+                    Vector3 a2 = position.ToVector3(position.y);
+                    Vector3[] array2 = tk2dSpriteDefinition2.ConstructExpensivePositions();
+                    for (int k = 0; k < array2.Length; k++) {
+                        Vector3 b4 = array2[k].WithZ(array2[k].y);
+                        list.Add(a2 + b4 + b2);
+                        list4.Add(tk2dSpriteDefinition2.uvs[k]);
+                    }
+                    for (int l = 0; l < tk2dSpriteDefinition2.indices.Length; l++) { list3.Add(count2 + tk2dSpriteDefinition2.indices[l]); }                    
+                }
+            }
+            Vector3 vector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            for (int m = 0; m < list.Count; m++) { vector = Vector3.Min(vector, list[m]); }
+            for (int n = 0; n < list.Count; n++) { list[n] -= vector; }
+            mesh.vertices = list.ToArray();
+            mesh.uv = list4.ToArray();
+            mesh.subMeshCount = 2;
+            mesh.SetTriangles(list2.ToArray(), 0);
+            mesh.SetTriangles(list3.ToArray(), 1);
+            mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
+            GameObject gameObject = new GameObject(objectName);
+            MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            gameObject.transform.position = vector;
+            meshFilter.mesh = mesh;            
+            meshRenderer.materials = new Material[] { material, material2 };
+            return gameObject;
+        }
+
+        public static GameObject GenerateWallMesh(DungeonData.Direction exitDirection, IntVector2 exitBasePosition, string objectName = "secret room door object", DungeonData dungeonData = null, bool abridged = false, bool isGlitched = false) {
+            if (dungeonData == null) { dungeonData = GameManager.Instance.Dungeon.data; }
+            Mesh mesh = new Mesh();
+            List<Vector3> list = new List<Vector3>();
+            List<int> list2 = new List<int>();
+            List<int> list3 = new List<int>();
+            List<int> list4 = new List<int>();
+            List<int> list5 = new List<int>();
+            List<Vector2> list6 = new List<Vector2>();
+            List<Color> list7 = new List<Color>();
+            Material material = null;
+            Material material2 = null;
+            Material material3 = null;
+            Material material4 = null;
+            tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
+            if (isGlitched) {
+                dungeonCollection = Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
+                    ExpandShaders.ApplyGlitchShader(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
+                }
+            }
+            TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(exitBasePosition, dungeonData);
+            CellData cellData = dungeonData[exitBasePosition];
+            switch (exitDirection) {
+                case DungeonData.Direction.NORTH: {
+                        AddCeilingTileAtPosition(exitBasePosition, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Right, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddTileAtPosition(exitBasePosition, borderGridForCellPosition.leftCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Right, borderGridForCellPosition.rightCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        int indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_UPPER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, -0.4f, true, new Color(0f, 1f, 1f), new Color(0f, 0.5f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_UPPER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down + IntVector2.Right, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, -0.4f, true, new Color(0f, 1f, 1f), new Color(0f, 0.5f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_LOWER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down * 2, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, 1.6f, true, new Color(0f, 0.5f, 1f), new Color(0f, 0f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_LOWER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down * 2 + IntVector2.Right, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, 1.6f, true, new Color(0f, 0.5f, 1f), new Color(0f, 0f, 1f));
+                        break;
+                    }
+                case DungeonData.Direction.EAST: {
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Down, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Zero, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 3, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up, borderGridForCellPosition.bottomCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition.verticalIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        if (!abridged) {
+                            AddTileAtPosition(exitBasePosition + IntVector2.Up * 3, borderGridForCellPosition.topCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        }
+                        Color color = new Color(0f, 0f, 1f, 0f);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down + IntVector2.Right, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallLeft, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color, color);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Right, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallLeft, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color, color);
+                        if (!abridged) {
+                            AddTileAtPosition(exitBasePosition + IntVector2.Up + IntVector2.Right, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallLeft, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color, color);
+                        }
+                        break;
+                    }
+                case DungeonData.Direction.SOUTH: {
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 2 + IntVector2.Right, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition.leftCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up * 2 + IntVector2.Right, borderGridForCellPosition.rightCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        int indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_UPPER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, -0.4f, true, new Color(0f, 1f, 1f), new Color(0f, 0.5f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_UPPER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up + IntVector2.Right, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, -0.4f, true, new Color(0f, 1f, 1f), new Color(0f, 0.5f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_LOWER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, 1.6f, true, new Color(0f, 0.5f, 1f), new Color(0f, 0f, 1f));
+                        indexFromTupleArray = SecretRoomBuilder.GetIndexFromTupleArray(cellData, SecretRoomUtility.metadataLookupTableRef[TilesetIndexMetadata.TilesetFlagType.FACEWALL_LOWER], cellData.cellVisualData.roomVisualTypeIndex);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Right, indexFromTupleArray, list, list4, list6, list7, out material3, dungeonCollection, 1.6f, true, new Color(0f, 0.5f, 1f), new Color(0f, 0f, 1f));
+                        Color color2 = new Color(0f, 0f, 1f, 0f);
+                        AddTileAtPosition(exitBasePosition, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOBottomWallBaseTileIndex, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color2, color2);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Right, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOBottomWallBaseTileIndex, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color2, color2);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorTileIndex, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, false, color2, color2);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down + IntVector2.Right, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorTileIndex, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, false, color2, color2);
+                        break;
+                    }
+                case DungeonData.Direction.WEST: {
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Down, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Zero, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        if (!abridged) {
+                            AddCeilingTileAtPosition(exitBasePosition + IntVector2.Up * 3, borderGridForCellPosition, list, list2, list6, list7, out material, dungeonCollection);
+                        }
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up, borderGridForCellPosition.bottomCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Up * 2, borderGridForCellPosition.verticalIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        if (!abridged) {
+                            AddTileAtPosition(exitBasePosition + IntVector2.Up * 3, borderGridForCellPosition.topCapIndices.GetIndexByWeight(), list, list3, list6, list7, ref material2, dungeonCollection, -2.45f, false);
+                        }
+                        Color color3 = new Color(0f, 0f, 1f, 0f);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Down + IntVector2.Left, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallRight, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color3, color3);
+                        AddTileAtPosition(exitBasePosition + IntVector2.Left, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallRight, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color3, color3);
+                        if (!abridged) {
+                            AddTileAtPosition(exitBasePosition + IntVector2.Up + IntVector2.Left, GameManager.Instance.Dungeon.tileIndices.aoTileIndices.AOFloorWallRight, list, list5, list6, list7, out material4, dungeonCollection, 1.55f, true, color3, color3);
+                        }
+                        break;
+                    }
+            }
+            Vector3 vector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            for (int i = 0; i < list.Count; i++) { vector = Vector3.Min(vector, list[i]); }
+            vector.x = Mathf.FloorToInt(vector.x);
+            vector.y = Mathf.FloorToInt(vector.y);
+            vector.z = Mathf.FloorToInt(vector.z);
+            for (int j = 0; j < list.Count; j++) { list[j] -= vector; }
+            mesh.vertices = list.ToArray();
+            mesh.uv = list6.ToArray();
+            mesh.colors = list7.ToArray();
+            mesh.subMeshCount = 4;
+            mesh.SetTriangles(list2.ToArray(), 0);
+            mesh.SetTriangles(list3.ToArray(), 1);
+            mesh.SetTriangles(list4.ToArray(), 2);
+            mesh.SetTriangles(list5.ToArray(), 3);
+            mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
+            GameObject gameObject = new GameObject(objectName);
+            gameObject.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
+            MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            gameObject.transform.position = vector;
+            meshFilter.mesh = mesh;
+            meshRenderer.materials = new Material[] {
+                material,
+                material2,
+                material3,
+                material4
+            };
+            if (!isGlitched) { gameObject.SetLayerRecursively(LayerMask.NameToLayer("ShadowCaster")); }
+            return gameObject;
+        }
+
+        public static tk2dSprite DuplicateSprite(tk2dSprite sourceSprite) {
+            tk2dSprite m_Sprite = new tk2dSprite();
+
+            m_Sprite.automaticallyManagesDepth = sourceSprite.automaticallyManagesDepth;
+            m_Sprite.ignoresTiltworldDepth = sourceSprite.ignoresTiltworldDepth;
+            m_Sprite.depthUsesTrimmedBounds = sourceSprite.depthUsesTrimmedBounds;
+            m_Sprite.allowDefaultLayer = sourceSprite.allowDefaultLayer;
+            m_Sprite.attachParent = sourceSprite.attachParent;
+            m_Sprite.OverrideMaterialMode = sourceSprite.OverrideMaterialMode;
+            m_Sprite.independentOrientation = sourceSprite.independentOrientation;
+            m_Sprite.autodetectFootprint = sourceSprite.autodetectFootprint;
+            m_Sprite.customFootprintOrigin = sourceSprite.customFootprintOrigin;
+            m_Sprite.customFootprint = sourceSprite.customFootprint;
+            m_Sprite.hasOffScreenCachedUpdate = sourceSprite.hasOffScreenCachedUpdate;
+            m_Sprite.offScreenCachedCollection = sourceSprite.offScreenCachedCollection;
+            m_Sprite.offScreenCachedID = sourceSprite.offScreenCachedID;
+            m_Sprite.Collection = sourceSprite.Collection;
+            m_Sprite.color = sourceSprite.color;
+            m_Sprite.scale = sourceSprite.scale;
+            m_Sprite.spriteId = sourceSprite.spriteId;
+            m_Sprite.boxCollider2D = sourceSprite.boxCollider2D;
+            m_Sprite.boxCollider = sourceSprite.boxCollider;
+            m_Sprite.meshCollider = sourceSprite.meshCollider;
+            m_Sprite.meshColliderPositions = sourceSprite.meshColliderPositions;
+            m_Sprite.meshColliderMesh = sourceSprite.meshColliderMesh;
+            m_Sprite.CachedPerpState = sourceSprite.CachedPerpState;
+            m_Sprite.HeightOffGround = sourceSprite.HeightOffGround;
+            m_Sprite.SortingOrder = sourceSprite.SortingOrder;
+            m_Sprite.IsBraveOutlineSprite = sourceSprite.IsBraveOutlineSprite;
+            m_Sprite.IsZDepthDirty = sourceSprite.IsZDepthDirty;
+            m_Sprite.ApplyEmissivePropertyBlock = sourceSprite.ApplyEmissivePropertyBlock;
+            m_Sprite.GenerateUV2 = sourceSprite.GenerateUV2;
+            m_Sprite.LockUV2OnFrameOne = sourceSprite.LockUV2OnFrameOne;
+            m_Sprite.StaticPositions = sourceSprite.StaticPositions;
+
+            return m_Sprite;
+        }
+
+        public static void DuplicateSprite(tk2dSprite targetSprite, tk2dSprite sourceSprite) {
+            targetSprite.automaticallyManagesDepth = sourceSprite.automaticallyManagesDepth;
+            targetSprite.ignoresTiltworldDepth = sourceSprite.ignoresTiltworldDepth;
+            targetSprite.depthUsesTrimmedBounds = sourceSprite.depthUsesTrimmedBounds;
+            targetSprite.allowDefaultLayer = sourceSprite.allowDefaultLayer;
+            targetSprite.attachParent = sourceSprite.attachParent;
+            targetSprite.OverrideMaterialMode = sourceSprite.OverrideMaterialMode;
+            targetSprite.independentOrientation = sourceSprite.independentOrientation;
+            targetSprite.autodetectFootprint = sourceSprite.autodetectFootprint;
+            targetSprite.customFootprintOrigin = sourceSprite.customFootprintOrigin;
+            targetSprite.customFootprint = sourceSprite.customFootprint;
+            targetSprite.hasOffScreenCachedUpdate = sourceSprite.hasOffScreenCachedUpdate;
+            targetSprite.offScreenCachedCollection = sourceSprite.offScreenCachedCollection;
+            targetSprite.offScreenCachedID = sourceSprite.offScreenCachedID;
+            targetSprite.Collection = sourceSprite.Collection;
+            targetSprite.color = sourceSprite.color;
+            targetSprite.scale = sourceSprite.scale;
+            targetSprite.spriteId = sourceSprite.spriteId;
+            targetSprite.boxCollider2D = sourceSprite.boxCollider2D;
+            targetSprite.boxCollider = sourceSprite.boxCollider;
+            targetSprite.meshCollider = sourceSprite.meshCollider;
+            targetSprite.meshColliderPositions = sourceSprite.meshColliderPositions;
+            targetSprite.meshColliderMesh = sourceSprite.meshColliderMesh;
+            targetSprite.CachedPerpState = sourceSprite.CachedPerpState;
+            targetSprite.HeightOffGround = sourceSprite.HeightOffGround;
+            targetSprite.SortingOrder = sourceSprite.SortingOrder;
+            targetSprite.IsBraveOutlineSprite = sourceSprite.IsBraveOutlineSprite;
+            targetSprite.IsZDepthDirty = sourceSprite.IsZDepthDirty;
+            targetSprite.ApplyEmissivePropertyBlock = sourceSprite.ApplyEmissivePropertyBlock;
+            targetSprite.GenerateUV2 = sourceSprite.GenerateUV2;
+            targetSprite.LockUV2OnFrameOne = sourceSprite.LockUV2OnFrameOne;
+            targetSprite.StaticPositions = sourceSprite.StaticPositions;
+        }
+
+        public static void DuplicateSlicedSprite(tk2dSlicedSprite targetSprite, tk2dSlicedSprite sourceSprite) {
+            targetSprite.automaticallyManagesDepth = sourceSprite.automaticallyManagesDepth;
+            targetSprite.ignoresTiltworldDepth = sourceSprite.ignoresTiltworldDepth;
+            targetSprite.depthUsesTrimmedBounds = sourceSprite.depthUsesTrimmedBounds;
+            targetSprite.allowDefaultLayer = sourceSprite.allowDefaultLayer;
+            targetSprite.attachParent = sourceSprite.attachParent;
+            targetSprite.OverrideMaterialMode = sourceSprite.OverrideMaterialMode;
+            targetSprite.independentOrientation = sourceSprite.independentOrientation;
+            targetSprite.autodetectFootprint = sourceSprite.autodetectFootprint;
+            targetSprite.customFootprintOrigin = sourceSprite.customFootprintOrigin;
+            targetSprite.customFootprint = sourceSprite.customFootprint;
+            targetSprite.hasOffScreenCachedUpdate = sourceSprite.hasOffScreenCachedUpdate;
+            targetSprite.offScreenCachedCollection = sourceSprite.offScreenCachedCollection;
+            targetSprite.offScreenCachedID = sourceSprite.offScreenCachedID;
+            targetSprite.Collection = sourceSprite.Collection;
+            targetSprite.color = sourceSprite.color;
+            targetSprite.scale = sourceSprite.scale;
+            targetSprite.spriteId = sourceSprite.spriteId;
+            targetSprite.boxCollider2D = sourceSprite.boxCollider2D;
+            targetSprite.boxCollider = sourceSprite.boxCollider;
+            targetSprite.meshCollider = sourceSprite.meshCollider;
+            targetSprite.meshColliderPositions = sourceSprite.meshColliderPositions;
+            targetSprite.meshColliderMesh = sourceSprite.meshColliderMesh;
+            targetSprite.CachedPerpState = sourceSprite.CachedPerpState;
+            targetSprite.HeightOffGround = sourceSprite.HeightOffGround;
+            targetSprite.SortingOrder = sourceSprite.SortingOrder;
+            targetSprite.IsBraveOutlineSprite = sourceSprite.IsBraveOutlineSprite;
+            targetSprite.IsZDepthDirty = sourceSprite.IsZDepthDirty;
+            targetSprite.dimensions = sourceSprite.dimensions;
+            targetSprite.anchor = sourceSprite.anchor;
+            targetSprite.TileStretchedSprites = sourceSprite.TileStretchedSprites;
+            targetSprite.borderTop = sourceSprite.borderTop;
+            targetSprite.borderBottom = sourceSprite.borderBottom;
+            targetSprite.borderLeft = sourceSprite.borderLeft;
+            targetSprite.borderRight = sourceSprite.borderRight;
+            targetSprite.borderCornerBottom = sourceSprite.borderCornerBottom;
+            sourceSprite.CreateBoxCollider = sourceSprite.CreateBoxCollider;
+        }
+
+        public static void DuplicateRigidBody(SpeculativeRigidbody targetRigidBody, SpeculativeRigidbody sourceRigidBody) {
+
+            targetRigidBody.CollideWithTileMap = sourceRigidBody.CollideWithTileMap;
+            targetRigidBody.CollideWithOthers = sourceRigidBody.CollideWithOthers;
+            targetRigidBody.Velocity = sourceRigidBody.Velocity;
+            targetRigidBody.CapVelocity = sourceRigidBody.CapVelocity;
+            targetRigidBody.MaxVelocity = sourceRigidBody.MaxVelocity;
+            targetRigidBody.ForceAlwaysUpdate = sourceRigidBody.ForceAlwaysUpdate;
+            targetRigidBody.CanPush = sourceRigidBody.CanPush;
+            targetRigidBody.CanBePushed = sourceRigidBody.CanBePushed;
+            targetRigidBody.PushSpeedModifier = sourceRigidBody.PushSpeedModifier;
+            targetRigidBody.CanCarry = sourceRigidBody.CanCarry;
+            targetRigidBody.CanBeCarried = sourceRigidBody.CanBeCarried;
+            targetRigidBody.PreventPiercing = sourceRigidBody.PreventPiercing;
+            targetRigidBody.SkipEmptyColliders = sourceRigidBody.SkipEmptyColliders;
+            targetRigidBody.TK2DSprite = sourceRigidBody.TK2DSprite;
+            targetRigidBody.RecheckTriggers = sourceRigidBody.RecheckTriggers;
+            targetRigidBody.UpdateCollidersOnRotation = sourceRigidBody.UpdateCollidersOnRotation;
+            targetRigidBody.UpdateCollidersOnScale = sourceRigidBody.UpdateCollidersOnScale;
+            targetRigidBody.AxialScale = sourceRigidBody.AxialScale;
+            targetRigidBody.DebugParams = sourceRigidBody.DebugParams;
+            targetRigidBody.IgnorePixelGrid = sourceRigidBody.IgnorePixelGrid;
+            targetRigidBody.PixelColliders = new List<PixelCollider>();
+            targetRigidBody.m_position = sourceRigidBody.m_position;
+            
+
+            if (sourceRigidBody.PixelColliders != null && sourceRigidBody.PixelColliders.Count > 0) {
+                foreach (PixelCollider collider in sourceRigidBody.PixelColliders) {
+                    targetRigidBody.PixelColliders.Add(new PixelCollider(){
+                        Enabled = collider.Enabled,
+                        CollisionLayer = collider.CollisionLayer,
+                        IsTrigger = collider.IsTrigger,
+                        ColliderGenerationMode = collider.ColliderGenerationMode,
+                        BagleUseFirstFrameOnly = collider.BagleUseFirstFrameOnly,
+                        SpecifyBagelFrame = collider.SpecifyBagelFrame,
+                        BagelColliderNumber = collider.BagelColliderNumber,
+                        ManualOffsetX = collider.ManualOffsetX,
+                        ManualOffsetY = collider.ManualOffsetY,
+                        ManualWidth = collider.ManualWidth,
+                        ManualHeight = collider.ManualHeight,
+                        ManualDiameter = collider.ManualDiameter,
+                        ManualLeftX = collider.ManualLeftX,
+                        ManualLeftY = collider.ManualLeftY,
+                        ManualRightX = collider.ManualRightX,
+                        ManualRightY = collider.ManualRightY
+                    });
+                }
+            }
+        }
+        
+        public static SpeculativeRigidbody GenerateNewEnemyRigidBody(AIActor targetEnemy, IntVector2 offset, IntVector2 dimensions) {
+            SpeculativeRigidbody orAddComponent = GameObjectExtensions.GetOrAddComponent<SpeculativeRigidbody>(targetEnemy.gameObject);
+            PixelCollider enemyCollider = new PixelCollider() {
+                CollisionLayer = CollisionLayer.EnemyCollider,
+                ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                SpecifyBagelFrame = string.Empty,
+                BagelColliderNumber = 0,
+                ManualOffsetX = offset.x,
+                ManualOffsetY = offset.y,
+                ManualWidth = dimensions.x,
+                ManualHeight = dimensions.y,
+                ManualDiameter = 0,
+                ManualLeftX = 0,
+                ManualLeftY = 0,
+                ManualRightX = 0,
+                ManualRightY = 0                
+            };
+            PixelCollider enemyHitBox = new PixelCollider() {
+                ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                CollisionLayer = CollisionLayer.EnemyHitBox,
+                SpecifyBagelFrame = string.Empty,
+                BagelColliderNumber = 0,
+                ManualOffsetX = offset.x,
+                ManualOffsetY = offset.y,
+                ManualWidth = dimensions.x,
+                ManualHeight = dimensions.y,
+                ManualDiameter = 0,
+                ManualLeftX = 0,
+                ManualLeftY = 0,
+                ManualRightX = 0,
+                ManualRightY = 0
+            };            
+            orAddComponent.PixelColliders = new List<PixelCollider> { enemyCollider, enemyHitBox };
+            return orAddComponent;
+        }
+
+        public static SpeculativeRigidbody GenerateNewEnemyRigidBody(GameObject targetObject, IntVector2 dimensions, IntVector2? offset = null) {
+            SpeculativeRigidbody orAddComponent = GameObjectExtensions.GetOrAddComponent<SpeculativeRigidbody>(targetObject);
+            IntVector2 Offset = IntVector2.Zero;
+            IntVector2 Dimensions = new IntVector2(dimensions.x * 16, dimensions.y * 16);
+            if (offset.HasValue) {
+                Offset = offset.Value;
+            }
+            PixelCollider enemyCollider = new PixelCollider() {
+                CollisionLayer = CollisionLayer.EnemyCollider,
+                ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                SpecifyBagelFrame = string.Empty,
+                BagelColliderNumber = 0,
+                ManualOffsetX = Offset.x,
+                ManualOffsetY = Offset.y,
+                ManualWidth = Dimensions.x,
+                ManualHeight = Dimensions.y,
+                ManualDiameter = 0,
+                ManualLeftX = 0,
+                ManualLeftY = 0,
+                ManualRightX = 0,
+                ManualRightY = 0                
+            };
+            PixelCollider enemyHitBox = new PixelCollider() {
+                ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                CollisionLayer = CollisionLayer.EnemyHitBox,
+                SpecifyBagelFrame = string.Empty,
+                BagelColliderNumber = 0,
+                ManualOffsetX = Offset.x,
+                ManualOffsetY = Offset.y,
+                ManualWidth = Dimensions.x,
+                ManualHeight = Dimensions.y,
+                ManualDiameter = 0,
+                ManualLeftX = 0,
+                ManualLeftY = 0,
+                ManualRightX = 0,
+                ManualRightY = 0
+            };            
+            orAddComponent.PixelColliders = new List<PixelCollider> { enemyCollider, enemyHitBox };
+            return orAddComponent;
+        }
+
+        public static SpeculativeRigidbody GenerateOrAddToRigidBody(GameObject targetObject, CollisionLayer collisionLayer, PixelCollider.PixelColliderGeneration colliderGenerationMode = PixelCollider.PixelColliderGeneration.Tk2dPolygon, bool collideWithTileMap = false, bool CollideWithOthers = true, bool CanBeCarried = true, bool CanBePushed = false, bool RecheckTriggers = false, bool IsTrigger = false, bool replaceExistingColliders = false, bool UsesPixelsAsUnitSize = false, IntVector2? dimensions = null, IntVector2? offset = null) {
+            SpeculativeRigidbody m_CachedRigidBody = GameObjectExtensions.GetOrAddComponent<SpeculativeRigidbody>(targetObject);
+            m_CachedRigidBody.CollideWithOthers = CollideWithOthers;
+            m_CachedRigidBody.CollideWithTileMap = collideWithTileMap;
+            m_CachedRigidBody.Velocity = Vector2.zero;
+            m_CachedRigidBody.MaxVelocity = Vector2.zero;
+            m_CachedRigidBody.ForceAlwaysUpdate = false;
+            m_CachedRigidBody.CanPush = false;
+            m_CachedRigidBody.CanBePushed = CanBePushed;
+            m_CachedRigidBody.PushSpeedModifier = 1f;
+            m_CachedRigidBody.CanCarry = false;
+            m_CachedRigidBody.CanBeCarried = CanBeCarried;
+            m_CachedRigidBody.PreventPiercing = false;
+            m_CachedRigidBody.SkipEmptyColliders = false;
+            m_CachedRigidBody.RecheckTriggers = RecheckTriggers;
+            m_CachedRigidBody.UpdateCollidersOnRotation = false;
+            m_CachedRigidBody.UpdateCollidersOnScale = false;
+
+            IntVector2 Offset = IntVector2.Zero;
+            IntVector2 Dimensions = IntVector2.Zero;
+            if (colliderGenerationMode != PixelCollider.PixelColliderGeneration.Tk2dPolygon) {
+                if (dimensions.HasValue) {
+                    Dimensions = dimensions.Value;
+                    if (!UsesPixelsAsUnitSize) {
+                        Dimensions = (new IntVector2(Dimensions.x * 16, Dimensions.y * 16));
+                    }
+                }
+                if (offset.HasValue) {
+                    Offset = offset.Value;
+                    if (!UsesPixelsAsUnitSize) {
+                        Offset = (new IntVector2(Offset.x * 16, Offset.y * 16));
+                    }
+                }
+            }
+            PixelCollider m_CachedCollider = new PixelCollider() {
+                ColliderGenerationMode = colliderGenerationMode,
+                CollisionLayer = collisionLayer,
+                IsTrigger = IsTrigger,
+                BagleUseFirstFrameOnly = (colliderGenerationMode == PixelCollider.PixelColliderGeneration.Tk2dPolygon),
+                SpecifyBagelFrame = string.Empty,                
+                BagelColliderNumber = 0,
+                ManualOffsetX = Offset.x,
+                ManualOffsetY = Offset.y,
+                ManualWidth = Dimensions.x,
+                ManualHeight = Dimensions.y,
+                ManualDiameter = 0,
+                ManualLeftX = 0,
+                ManualLeftY = 0,
+                ManualRightX = 0,
+                ManualRightY = 0
+            };
+
+            if (replaceExistingColliders | m_CachedRigidBody.PixelColliders == null) {
+                m_CachedRigidBody.PixelColliders = new List<PixelCollider> { m_CachedCollider };
+            } else {
+                m_CachedRigidBody.PixelColliders.Add(m_CachedCollider);
+            }
+
+            if (m_CachedRigidBody.sprite && colliderGenerationMode == PixelCollider.PixelColliderGeneration.Tk2dPolygon) {
+                Bounds bounds = m_CachedRigidBody.sprite.GetBounds();
+                m_CachedRigidBody.sprite.GetTrueCurrentSpriteDef().colliderVertices = new Vector3[] { bounds.center - bounds.extents, bounds.center + bounds.extents };                
+                // m_CachedRigidBody.ForceRegenerate();
+                // m_CachedRigidBody.RegenerateCache();
+            }
+
+            return m_CachedRigidBody;
+        }
+
+        private static HashSet<IntVector2> GetCeilingTileSet(IntVector2 pos1, IntVector2 pos2, DungeonData.Direction facingDirection) {
+            IntVector2 intVector;
+            IntVector2 intVector2;
+            if (facingDirection == DungeonData.Direction.NORTH) {
+                intVector = pos1 + new IntVector2(-1, 0);
+                intVector2 = pos2 + new IntVector2(1, 1);
+            } else if (facingDirection == DungeonData.Direction.SOUTH) {
+                intVector = pos1 + new IntVector2(-1, 2);
+                intVector2 = pos2 + new IntVector2(1, 3);
+            } else if (facingDirection == DungeonData.Direction.EAST) {
+                intVector = pos1 + new IntVector2(-1, 0);
+                intVector2 = pos2 + new IntVector2(0, 3);
+            } else {
+                if (facingDirection != DungeonData.Direction.WEST) { return null; }
+                intVector = pos1 + new IntVector2(0, 0);
+                intVector2 = pos2 + new IntVector2(1, 3);
+            }
+            HashSet<IntVector2> hashSet = new HashSet<IntVector2>();
+            for (int i = intVector.x; i <= intVector2.x; i++) {
+                for (int j = intVector.y; j <= intVector2.y; j++) {
+                    IntVector2 item = new IntVector2(i, j);
+                    hashSet.Add(item);
+                }
+            }
+            return hashSet;
+        }
+
+        private static bool IsTopWall(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return data.cellData[x][y].type != CellType.WALL && (data.cellData[x][y - 1].type == CellType.WALL || cells.Contains(new IntVector2(x, y - 1))) && !cells.Contains(new IntVector2(x, y + 1));
+        }
+
+        private static bool IsWall(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return cells.Contains(new IntVector2(x, y)) || data[x, y].type == CellType.WALL;
+        }
+
+        private static bool IsTopWallOrSecret(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return data[x, y].type != CellType.WALL && !data[x, y].isSecretRoomCell && IsWallOrSecret(x, y - 1, data, cells);
+        }
+
+        private static bool IsWallOrSecret(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return data[x, y].type == CellType.WALL || data[x, y].isSecretRoomCell || cells.Contains(new IntVector2(x, y));
+        }
+
+        private static bool IsFaceWallHigherOrSecret(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return IsFaceWallHigher(x, y, data, cells);
+        }
+
+        private static bool IsFaceWallHigher(int x, int y, DungeonData data, HashSet<IntVector2> cells) {
+            return !cells.Contains(new IntVector2(x, y)) && ((data.cellData[x][y].type == CellType.WALL || data.cellData[x][y].isSecretRoomCell) && data.cellData[x][y - 2].type != CellType.WALL && !data.cellData[x][y - 2].isSecretRoomCell);
+        }
+
+        private static TileIndexGrid GetBorderGridForCellPosition(IntVector2 position, DungeonData data) {
+            TileIndexGrid roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[data.cellData[position.x][position.y].cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+            if (roomCeilingBorderGrid == null) {
+                roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[0].roomCeilingBorderGrid;
+            }
+            return roomCeilingBorderGrid;
+        }
+
+        private static void AddCeilingTileAtPosition(IntVector2 position, TileIndexGrid indexGrid, List<Vector3> verts, List<int> tris, List<Vector2> uvs, List<Color> colors, out Material ceilingMaterial, tk2dSpriteCollectionData spriteData) {
+            int indexByWeight = indexGrid.centerIndices.GetIndexByWeight();
+            int tileFromRawTile = BuilderUtil.GetTileFromRawTile(indexByWeight);
+            tk2dSpriteDefinition tk2dSpriteDefinition = spriteData.spriteDefinitions[tileFromRawTile];                        
+            ceilingMaterial = tk2dSpriteDefinition.material;            
+            int count = verts.Count;
+            Vector3 a = position.ToVector3(position.y - 2.4f);
+            Vector3[] array = tk2dSpriteDefinition.ConstructExpensivePositions();
+            for (int i = 0; i < array.Length; i++) {
+                Vector3 b = array[i].WithZ(array[i].y);
+                verts.Add(a + b);
+                uvs.Add(tk2dSpriteDefinition.uvs[i]);
+                colors.Add(Color.black);
+            }
+            for (int j = 0; j < tk2dSpriteDefinition.indices.Length; j++) { tris.Add(count + tk2dSpriteDefinition.indices[j]); }
+        }
+
+        private static void AddTileAtPosition(IntVector2 position, int index, List<Vector3> verts, List<int> tris, List<Vector2> uvs, List<Color> colors, out Material targetMaterial, tk2dSpriteCollectionData spriteData, float zOffset, bool tilted, Color topColor, Color bottomColor) {
+            int tileFromRawTile = BuilderUtil.GetTileFromRawTile(index);
+            tk2dSpriteDefinition tk2dSpriteDefinition = spriteData.spriteDefinitions[tileFromRawTile];
+            targetMaterial = tk2dSpriteDefinition.material;
+            int count = verts.Count;
+            Vector3 a = position.ToVector3(position.y + zOffset);
+            Vector3[] array = tk2dSpriteDefinition.ConstructExpensivePositions();
+            for (int i = 0; i < array.Length; i++) {
+                Vector3 b = (!tilted) ? array[i].WithZ(array[i].y) : array[i].WithZ(-array[i].y);
+                verts.Add(a + b);
+                uvs.Add(tk2dSpriteDefinition.uvs[i]);
+            }
+            colors.Add(bottomColor);
+            colors.Add(bottomColor);
+            colors.Add(topColor);
+            colors.Add(topColor);
+            for (int j = 0; j < tk2dSpriteDefinition.indices.Length; j++) { tris.Add(count + tk2dSpriteDefinition.indices[j]); }            
+        }
+
+        private static void AddTileAtPosition(IntVector2 position, int index, List<Vector3> verts, List<int> tris, List<Vector2> uvs, List<Color> colors, ref Material targetMaterial, tk2dSpriteCollectionData spriteData, float zOffset, bool tilted = false) {
+            int tileFromRawTile = BuilderUtil.GetTileFromRawTile(index);
+            if (tileFromRawTile < 0 || tileFromRawTile >= spriteData.spriteDefinitions.Length) {
+                Debug.Log(tileFromRawTile.ToString() + " index is out of bounds in SecretRoomBuilder, of indices: " + spriteData.spriteDefinitions.Length.ToString());
+                return;
+            }
+            tk2dSpriteDefinition tk2dSpriteDefinition = spriteData.spriteDefinitions[tileFromRawTile];            
+            targetMaterial = tk2dSpriteDefinition.material;
+            int count = verts.Count;
+            Vector3 a = position.ToVector3(position.y + zOffset);
+            Vector3[] array = tk2dSpriteDefinition.ConstructExpensivePositions();
+            for (int i = 0; i < array.Length; i++) {
+                Vector3 b = (!tilted) ? array[i].WithZ(array[i].y) : array[i].WithZ(-array[i].y);
+                verts.Add(a + b);
+                uvs.Add(tk2dSpriteDefinition.uvs[i]);
+                colors.Add(Color.black);
+            }
+            for (int j = 0; j < tk2dSpriteDefinition.indices.Length; j++) { tris.Add(count + tk2dSpriteDefinition.indices[j]); }
+        }
+
+        public static Texture2D FlipTexture(Texture2D original) {
+            if (!original) { return null; }
+            Texture2D flipped = new Texture2D(original.width, original.height);
+            int xN = original.width;
+            int yN = original.height;
+            for (int X = 0; X < xN; X++) {
+                for (int Y = 0; Y < yN; Y++) {
+                    flipped.SetPixel((xN - X - 1), Y, original.GetPixel(X, Y));
+                }
+            }
+            flipped.Apply();
+            return flipped;
+        }
+        
+        public static Texture2D CombineTextures(Texture2D aBottom, Texture2D aTop) {
+            if (!aBottom) { return null; } else if (!aTop) { return aBottom; }
+
+            if (aBottom.width != aTop.width || aBottom.height != aTop.height) {
+                // throw new InvalidOperationException("AlphaBlend only works with two equal sized images");
+                return null;
+            }
+                
+            Color[] bData = aBottom.GetPixels();
+            Color[] tData = aTop.GetPixels();
+            int count = bData.Length;
+            var rData = new Color[count];
+            for (int i = 0; i < count; i++) {
+                Color B = bData[i];
+                Color T = tData[i];
+                float srcF = T.a;
+                float destF = 1f - T.a;
+                float alpha = srcF + destF * B.a;
+                Color R = (T * srcF + B * B.a * destF) / alpha;
+                R.a = alpha;
+                rData[i] = R;
+            }
+            Texture2D res = new Texture2D(aTop.width, aTop.height);
+            res.SetPixels(rData);
+            res.Apply();
+            return res;
+        }
+    }
+
+    public static class ExpandExtensions {
+        
+        public static Material Copy(this Material orig, Texture2D textureOverride = null, Shader shaderOverride = null) {
+            Material m_NewMaterial = new Material(orig.shader) {
+                name = orig.name,
+                shaderKeywords = orig.shaderKeywords,
+                globalIlluminationFlags = orig.globalIlluminationFlags,
+                enableInstancing = orig.enableInstancing,
+                doubleSidedGI = orig.doubleSidedGI,
+                mainTextureOffset = orig.mainTextureOffset,
+                mainTextureScale = orig.mainTextureScale,
+                renderQueue = orig.renderQueue,
+                color = orig.color,
+                hideFlags = orig.hideFlags                
+            };            
+            if (textureOverride != null) {
+                m_NewMaterial.mainTexture = textureOverride;
+            } else {
+                m_NewMaterial.mainTexture = orig.mainTexture;
+            }
+
+            if (shaderOverride != null) {
+                m_NewMaterial.shader = shaderOverride;
+            } else {
+                m_NewMaterial.shader = orig.shader;
+            }
+            return m_NewMaterial;
+        }
+
+        public static tk2dSpriteDefinition Copy(this tk2dSpriteDefinition orig) {
+            tk2dSpriteDefinition m_newSpriteCollection = new tk2dSpriteDefinition();
+
+            m_newSpriteCollection.boundsDataCenter = orig.boundsDataCenter;
+            m_newSpriteCollection.boundsDataExtents = orig.boundsDataExtents;
+            m_newSpriteCollection.colliderConvex = orig.colliderConvex;
+            m_newSpriteCollection.colliderSmoothSphereCollisions = orig.colliderSmoothSphereCollisions;
+            m_newSpriteCollection.colliderType = orig.colliderType;
+            m_newSpriteCollection.colliderVertices = orig.colliderVertices;
+            m_newSpriteCollection.collisionLayer = orig.collisionLayer;
+            m_newSpriteCollection.complexGeometry = orig.complexGeometry;
+            m_newSpriteCollection.extractRegion = orig.extractRegion;
+            m_newSpriteCollection.flipped = orig.flipped;
+            m_newSpriteCollection.indices = orig.indices;
+            if (orig.material != null) { m_newSpriteCollection.material = new Material(orig.material); }
+            m_newSpriteCollection.materialId = orig.materialId;
+            if (orig.materialInst != null) { m_newSpriteCollection.materialInst = new Material(orig.materialInst); }
+            m_newSpriteCollection.metadata = orig.metadata;
+            m_newSpriteCollection.name = orig.name;
+            m_newSpriteCollection.normals = orig.normals;
+            m_newSpriteCollection.physicsEngine = orig.physicsEngine;
+            m_newSpriteCollection.position0 = orig.position0;
+            m_newSpriteCollection.position1 = orig.position1;
+            m_newSpriteCollection.position2 = orig.position2;
+            m_newSpriteCollection.position3 = orig.position3;
+            m_newSpriteCollection.regionH = orig.regionH;
+            m_newSpriteCollection.regionW = orig.regionW;
+            m_newSpriteCollection.regionX = orig.regionX;
+            m_newSpriteCollection.regionY = orig.regionY;
+            m_newSpriteCollection.tangents = orig.tangents;
+            m_newSpriteCollection.texelSize = orig.texelSize;
+            m_newSpriteCollection.untrimmedBoundsDataCenter = orig.untrimmedBoundsDataCenter;
+            m_newSpriteCollection.untrimmedBoundsDataExtents = orig.untrimmedBoundsDataExtents;
+            m_newSpriteCollection.uvs = orig.uvs;
+
+            return m_newSpriteCollection;
+            /*return new tk2dSpriteDefinition {
+                boundsDataCenter = orig.boundsDataCenter,
+                boundsDataExtents = orig.boundsDataExtents,
+                colliderConvex = orig.colliderConvex,
+                colliderSmoothSphereCollisions = orig.colliderSmoothSphereCollisions,
+                colliderType = orig.colliderType,
+                colliderVertices = orig.colliderVertices,
+                collisionLayer = orig.collisionLayer,
+                complexGeometry = orig.complexGeometry,
+                extractRegion = orig.extractRegion,
+                flipped = orig.flipped,
+                indices = orig.indices,
+                material = new Material(orig.material),
+                materialId = orig.materialId,
+                materialInst = new Material(orig.materialInst),
+                metadata = orig.metadata,
+                name = orig.name,
+                normals = orig.normals,
+                physicsEngine = orig.physicsEngine,
+                position0 = orig.position0,
+                position1 = orig.position1,
+                position2 = orig.position2,
+                position3 = orig.position3,
+                regionH = orig.regionH,
+                regionW = orig.regionW,
+                regionX = orig.regionX,
+                regionY = orig.regionY,
+                tangents = orig.tangents,
+                texelSize = orig.texelSize,
+                untrimmedBoundsDataCenter = orig.untrimmedBoundsDataCenter,
+                untrimmedBoundsDataExtents = orig.untrimmedBoundsDataExtents,
+                uvs = orig.uvs
+            };*/
+        }
+    }
+
+    public static class ReflectionHelpers {
+        
+        public static IList CreateDynamicList(Type type) {
+            bool flag = type == null;
+            if (flag) { throw new ArgumentNullException("type", "Argument cannot be null."); }
+            ConstructorInfo[] constructors = typeof(List<>).MakeGenericType(new Type[] { type }).GetConstructors();
+            foreach (ConstructorInfo constructorInfo in constructors) {
+                ParameterInfo[] parameters = constructorInfo.GetParameters();
+                bool flag2 = parameters.Length != 0;
+                if (!flag2) { return (IList)constructorInfo.Invoke(null, null); }
+            }
+            throw new ApplicationException("Could not create a new list with type <" + type.ToString() + ">.");
+        }
+        
+        public static IDictionary CreateDynamicDictionary(Type typeKey, Type typeValue) {
+            bool flag = typeKey == null;
+            if (flag) {
+                throw new ArgumentNullException("type_key", "Argument cannot be null.");
+            }
+            bool flag2 = typeValue == null;
+            if (flag2) { throw new ArgumentNullException("type_value", "Argument cannot be null."); }
+            ConstructorInfo[] constructors = typeof(Dictionary<,>).MakeGenericType(new Type[] { typeKey, typeValue }).GetConstructors();
+            foreach (ConstructorInfo constructorInfo in constructors) {
+                ParameterInfo[] parameters = constructorInfo.GetParameters();
+                bool flag3 = parameters.Length != 0;
+                if (!flag3) { return (IDictionary)constructorInfo.Invoke(null, null); }
+            }
+            throw new ApplicationException(string.Concat(new string[] {
+                "Could not create a new dictionary with types <",
+                typeKey.ToString(),
+                ",",
+                typeValue.ToString(),
+                ">."
+            }));
+        }
+
+        public static T ReflectGetField<T>(Type classType, string fieldName, object o = null) {
+            FieldInfo field = classType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | ((o != null) ? BindingFlags.Instance : BindingFlags.Static));
+            return (T)field.GetValue(o);
+        }
+
+        public static void ReflectSetField<T>(Type classType, string fieldName, T value, object o = null) {
+            FieldInfo field = classType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | ((o != null) ? BindingFlags.Instance : BindingFlags.Static));
+            field.SetValue(o, value);
+        }
+
+        public static T ReflectGetProperty<T>(Type classType, string propName, object o = null, object[] indexes = null) {
+            PropertyInfo property = classType.GetProperty(propName, BindingFlags.Public | BindingFlags.NonPublic | ((o != null) ? BindingFlags.Instance : BindingFlags.Static));
+            return (T)property.GetValue(o, indexes);
+        }
+
+        public static void ReflectSetProperty<T>(Type classType, string propName, T value, object o = null, object[] indexes = null) {
+            PropertyInfo property = classType.GetProperty(propName, BindingFlags.Public | BindingFlags.NonPublic | ((o != null) ? BindingFlags.Instance : BindingFlags.Static));
+            property.SetValue(o, value, indexes);
+        }        
+
+        public static MethodInfo ReflectGetMethod(Type classType, string methodName, Type[] methodArgumentTypes = null, Type[] genericMethodTypes = null, bool? isStatic = null) {
+            MethodInfo[] array = ReflectTryGetMethods(classType, methodName, methodArgumentTypes, genericMethodTypes, isStatic);
+            bool flag = array.Count() == 0;
+            if (flag) { throw new MissingMethodException("Cannot reflect method, not found based on input parameters."); }
+            bool flag2 = array.Count() > 1;
+            if (flag2) { throw new InvalidOperationException("Cannot reflect method, more than one method matched based on input parameters."); }
+            return array[0];
+        }
+
+        public static MethodInfo ReflectTryGetMethod(Type classType, string methodName, Type[] methodArgumentTypes = null, Type[] genericMethodTypes = null, bool? isStatic = null) {
+            MethodInfo[] array = ReflectTryGetMethods(classType, methodName, methodArgumentTypes, genericMethodTypes, isStatic);
+            bool flag = array.Count() == 0;
+            MethodInfo result;
+            if (flag) {
+                result = null;
+            } else {
+                bool flag2 = array.Count() > 1;
+                if (flag2) { result = null; } else { result = array[0]; }
+            }
+            return result;
+        }
+
+        public static MethodInfo[] ReflectTryGetMethods(Type classType, string methodName, Type[] methodArgumentTypes = null, Type[] genericMethodTypes = null, bool? isStatic = null) {
+            BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic;
+            bool flag = isStatic == null || isStatic.Value;
+            if (flag) { bindingFlags |= BindingFlags.Static; }
+            bool flag2 = isStatic == null || !isStatic.Value;
+            if (flag2) { bindingFlags |= BindingFlags.Instance; }
+            MethodInfo[] methods = classType.GetMethods(bindingFlags);
+            List<MethodInfo> list = new List<MethodInfo>();
+            for (int i = 0; i < methods.Length; i++) { 
+            // foreach (MethodInfo methodInfo in methods) {
+                bool flag3 = methods[i].Name != methodName;
+                if (!flag3) {
+                    bool isGenericMethodDefinition = methods[i].IsGenericMethodDefinition;
+                    if (isGenericMethodDefinition) {
+                        bool flag4 = genericMethodTypes == null || genericMethodTypes.Length == 0;
+                        if (flag4) { goto IL_14D; }
+                        Type[] genericArguments = methods[i].GetGenericArguments();
+                        bool flag5 = genericArguments.Length != genericMethodTypes.Length;
+                        if (flag5) { goto IL_14D; }
+                        methods[i] = methods[i].MakeGenericMethod(genericMethodTypes);
+                    } else {
+                        bool flag6 = genericMethodTypes != null && genericMethodTypes.Length != 0;
+                        if (flag6) { goto IL_14D; }
+                    }
+                    ParameterInfo[] parameters = methods[i].GetParameters();
+                    bool flag7 = methodArgumentTypes != null;
+                    if (!flag7) { goto IL_141; }
+                    bool flag8 = parameters.Length != methodArgumentTypes.Length;
+                    if (!flag8) {
+                        for (int j = 0; j < parameters.Length; j++) {
+                            ParameterInfo parameterInfo = parameters[j];
+                            bool flag9 = parameterInfo.ParameterType != methodArgumentTypes[j];
+                            if (flag9) { goto IL_14A; }
+                        }
+                        goto IL_141;
+                    }
+                    IL_14A:
+                    goto IL_14D;
+                    IL_141:
+                    list.Add(methods[i]);
+                }
+                IL_14D:;
+            }
+            return list.ToArray();
+        }
+
+        public static object InvokeRefs<T0>(MethodInfo methodInfo, object o, T0 p0) {
+            object[] parameters = new object[] { p0 };
+            return methodInfo.Invoke(o, parameters);
+        }
+
+        public static object InvokeRefs<T0>(MethodInfo methodInfo, object o, ref T0 p0) {
+            object[] array = new object[] { p0 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1>(MethodInfo methodInfo, object o, T0 p0, T1 p1) {
+            object[] parameters = new object[] { p0, p1 };
+            return methodInfo.Invoke(o, parameters);
+        }
+
+        public static object InvokeRefs<T0, T1>(MethodInfo methodInfo, object o, ref T0 p0, T1 p1) {
+            object[] array = new object[] { p0, p1 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1>(MethodInfo methodInfo, object o, T0 p0, ref T1 p1) {
+            object[] array = new object[] { p0, p1 };
+            object result = methodInfo.Invoke(o, array);
+            p1 = (T1)array[1];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1>(MethodInfo methodInfo, object o, ref T0 p0, ref T1 p1) {
+            object[] array = new object[] { p0, p1 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            p1 = (T1)array[1];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, T0 p0, T1 p1, T2 p2) {
+            object[] parameters = new object[] { p0, p1, p2 };
+            return methodInfo.Invoke(o, parameters);
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, ref T0 p0, T1 p1, T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, T0 p0, ref T1 p1, T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p1 = (T1)array[1];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, T0 p0, T1 p1, ref T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p2 = (T2)array[2];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, ref T0 p0, ref T1 p1, T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            p1 = (T1)array[1];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, ref T0 p0, T1 p1, ref T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            p2 = (T2)array[2];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, T0 p0, ref T1 p1, ref T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p1 = (T1)array[1];
+            p2 = (T2)array[2];
+            return result;
+        }
+
+        public static object InvokeRefs<T0, T1, T2>(MethodInfo methodInfo, object o, ref T0 p0, ref T1 p1, ref T2 p2) {
+            object[] array = new object[] { p0, p1, p2 };
+            object result = methodInfo.Invoke(o, array);
+            p0 = (T0)array[0];
+            p1 = (T1)array[1];
+            p2 = (T2)array[2];
+            return result;
+        }
+    }
+}
+
