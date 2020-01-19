@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
             );
 
-            BuildBabyGoodHammerPrefab(out HammerCompanionPrefab, true);
+            BuildBabyGoodHammerPrefab(out HammerCompanionPrefab);
         }
 
         public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false) {

@@ -212,7 +212,7 @@ namespace ExpandTheGungeon.ItemAPI {
             yield return null;
             tk2dSpriteAnimator hammerAnimator = targetObject.GetComponent<tk2dSpriteAnimator>();
             if (hammerAnimator != null) {
-                hammerAnimator.Play("HammerSpawn");
+                hammerAnimator.Play("HammerReturnSpawn");
                 while (hammerAnimator.Playing) {
                     targetObject.transform.position -= new Vector3(0, 0.02f);
                     yield return null;
@@ -234,7 +234,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 targetHammer.ToggleRenderers(true);
                 targetHammer.IsGone = false;
                 targetHammer.behaviorSpeculator.enabled = true;                
-                targetHammer.gameObject.transform.position = (returnPosition - new Vector3(0, 2));
+                targetHammer.gameObject.transform.position = (returnPosition - new Vector3(0, 4.5f));
                 if (targetHammer.specRigidbody) {
                     targetHammer.specRigidbody.CollideWithOthers = true;
                     targetHammer.specRigidbody.Reinitialize();
@@ -295,7 +295,7 @@ namespace ExpandTheGungeon.ItemAPI {
                             foreach (AIActor enemy in StaticReferenceManager.AllEnemies) {
                                 if (enemy.EnemyGuid == CompanionGuid && enemy.IsGone) {
                                     RoomHandler CurrentRoom = LastOwner.GetAbsoluteParentRoom();                                    
-                                    Vector3 ReturnPosition = (LastOwner.gameObject.transform.position + new Vector3(UnityEngine.Random.Range(0, 1), 2));
+                                    Vector3 ReturnPosition = (LastOwner.gameObject.transform.position + new Vector3(UnityEngine.Random.Range(0, 0.25f), 4.5f));
                                     StartCoroutine(HandleHammerReturn(enemy, ReturnPosition));
                                 }
                             }

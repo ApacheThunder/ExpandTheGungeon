@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             Vector3 startPos = targetEnemy.transform.position;
             Vector3 finalOffset = CagedBabyDragun.WorldCenter - startPos.XY();
             tk2dBaseSprite targetSprite = targetEnemy.GetComponentInChildren<tk2dBaseSprite>();
-            targetEnemy.behaviorSpeculator.enabled = false;
+            if (targetEnemy.behaviorSpeculator) { targetEnemy.behaviorSpeculator.enabled = false; }
             RoomHandler m_ParentRoom = targetEnemy.GetAbsoluteParentRoom();
             if (m_ParentRoom != null) { m_ParentRoom.DeregisterEnemy(targetEnemy); }
             Destroy(targetEnemy);

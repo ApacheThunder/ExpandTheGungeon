@@ -109,6 +109,7 @@
     <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
+    <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
     <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
@@ -176,7 +177,7 @@
     <Compile Include="ExpandUtilities\ExpandUtility.cs" />
     <Compile Include="ExpandMain\ExpandPlaceWallMimics.cs" />
     <Compile Include="ExpandUtilities\ResourceExtractor.cs" />
-    <Compile Include="ExpandUtilities\RoomFromText.cs" />
+    <Compile Include="ExpandUtilities\RoomBuilder.cs" />
     <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
     <Compile Include="Textures\BootlegEnemies\BlueShotGunMan\BlueShotGunMan.cs" />
     <Compile Include="Textures\BootlegEnemies\Bullat\Bullat.cs" />
@@ -186,124 +187,10 @@
     <Compile Include="Textures\Rat_Grenade\Rat_Grenade.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\BigEntranceRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Giant_Elevator_Room_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Utiliroom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\SpecialWallMimicRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Utiliroom_SpecialPit_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\SpecialMaintenanceRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\ShopBackRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Utiliroom_Pitfall_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\SecretRewardRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\SecretExitRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\ThwompCrossingVertical_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\ThwompCrossingHorizontal_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\PuzzleRoom3_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Explode_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Textures\ENV_Tileset_Canyon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Stone_Cube_Collection_West.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_C_Hub_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_C_Gap_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Chain_Gap_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Challange1_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Line_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Singer_Gap_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Flying_Gap_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Cross_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Blocks_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Blocks_Pits_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Wall_Pit_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Gate_Cross_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Passage_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Jump_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Pit_Passage_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_R_Blocks_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Small_Passage_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Box_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Steps_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Hollows\Expand_SpiderMaze_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Spiral_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Apache_Hub_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Box_Hub_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Castle\Expand_Enclose_Hub_Layout.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\BulletMan_Monochrome.png" />
@@ -884,10 +771,6 @@
     <EmbeddedResource Include="Textures\EXTrapDoor\RR_mine_lair_floor_pit_001.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\SecretExitRoom2_Layout.txt" />
-    <EmbeddedResource Include="RoomCellData\SecretRatEntranceRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_00.png" />
     <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_01.png" />
     <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Close_02.png" />
@@ -917,12 +800,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\EXSecretDoor\EXSecretDoor_Frame_NoDecal_Top.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\Expand_SecretElevatorEntranceRoom_Layout.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RoomCellData\CreepyGlitchRoom_Layout.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\GungeoneerMimicAssets\PlayerMimicMirror_Base.png" />
@@ -980,6 +857,71 @@
     <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_01.png" />
     <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_02.png" />
     <EmbeddedResource Include="Textures\Items\Animations\babygoodhammer\AIActorAnimations\babygoodhammer_move_right_03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\BulletHell\Hell_Hath_No_Joery_009_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Giant_Elevator_Room_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Creepy_Glitched_Room_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_MelonTurtle_Apache_Hub_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_MelonTurtle_Box_Hub_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_MelonTurtle_Enclose_Hub_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Blocks_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Blocks_Pits_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Box_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Chain_Gap_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Challenge_1_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Cross_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_C_Gap_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_C_Hub_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Explode_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Flying_Gap_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Gate_Cross_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Passage_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Jump_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Line_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Passage_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_R_Blocks_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Singer_Gap_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Small_Passage_1_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Spiral_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Steps_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Wall_Pit_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Apache_SpiderMaze_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Secret_Exit_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Secret_Reward_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Shop_Back_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Special_Maintenance_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Special_WallMimic_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Thwomp_Crossing_Horizontal_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Thwomp_Crossing_Vertical_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Utiliroom_Pitfall_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Utiliroom_SpecialPit_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Zelda_Puzzle_Room_3_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Destination_MiniElevator_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Secret_Elevator_Exit_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Secret_MiniElevator_Room_Layout.png" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\Secret_Rat_MiniElevator_Room_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Large_Elevator_Entrance_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_FieldOfSaws_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Creepy_MirrorBoss_Room_Layout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

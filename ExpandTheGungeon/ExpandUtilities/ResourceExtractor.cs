@@ -109,7 +109,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
             }
         }
-
+        
         public static void DumpSpriteCollection(tk2dSpriteCollectionData sprites) {
             string text = "DUMPsprites/" + sprites.spriteCollectionName;
             string path = Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");

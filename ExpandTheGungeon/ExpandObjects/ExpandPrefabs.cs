@@ -80,6 +80,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom gungeon_checkerboard;
         public static PrototypeDungeonRoom gungeon_normal_fightinaroomwithtonsoftraps;
         public static PrototypeDungeonRoom gungeon_gauntlet_001;
+        
         // public static PrototypeDungeonRoom beholsterroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("beholsterroom01");
 
         // Secret rooms from Rat Trap door
@@ -98,6 +99,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom bossrush_alternate_entrance;
         public static PrototypeDungeonRoom tutorial_fakeboss;
         public static PrototypeDungeonRoom big_entrance;
+        public static PrototypeDungeonRoom Hell_Hath_No_Joery_009;
         public static PrototypeDungeonRoom[] gatlinggull_noTileVisualOverrides;
 
         // Exposed as a static array to insure changes to them stick.
@@ -133,8 +135,13 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericRoomTable boss_foyertable;
 
         // Dungeon Specific Room Tables (from Dungeon AssetBundles)
+        public static GenericRoomTable SewersRoomTable;
+        public static GenericRoomTable AbbeyRoomTable;
+        public static GenericRoomTable MinesRoomTable;
         public static GenericRoomTable CatacombsRoomTable;
         public static GenericRoomTable ForgeRoomTable;
+        public static GenericRoomTable BulletHellRoomTable;
+        
 
         // Custom Room Tables
         public static GenericRoomTable CastleGungeonMergedTable;
@@ -226,6 +233,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject EXTrapDoorBorder;
         public static GameObject EXTrapDoorPit;
         public static GameObject EXPlayerMimicBoss;
+        public static GameObject EXSawBladeTrap_4x4Zone;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -330,10 +338,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             phantomagunim_table_01 = sharedAssets.LoadAsset<GenericRoomTable>("PhantomAgunim_Table_01");
             basic_special_rooms = sharedAssets.LoadAsset<GenericRoomTable>("basic special rooms (shrines, etc)");
             winchesterroomtable = sharedAssets.LoadAsset<GenericRoomTable>("winchesterroomtable");
+            SewersRoomTable = SewerDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
+            AbbeyRoomTable = CathedralDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
+            MinesRoomTable = MinesDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             CatacombsRoomTable = CatacombsDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             ForgeRoomTable = ForgeDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
+            BulletHellRoomTable = BulletHellDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             boss_foyertable = sharedAssets2.LoadAsset<GenericRoomTable>("Boss Foyers");
 
+            
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[2].overrideExactRoom),
@@ -764,9 +777,16 @@ namespace ExpandTheGungeon.ExpandObjects {
                     CustomRoomTable.includedRooms.elements.Add(roomElement);
                     CustomRoomTable2.includedRooms.elements.Add(roomElement);
                     CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(roomElement);
+                    if (!string.IsNullOrEmpty(roomElement.room.name) && roomElement.room.name.ToLower().StartsWith("hell_hath_no_joery_009")) {
+                        Hell_Hath_No_Joery_009 = roomElement.room;
+                    }
                 }
             }
 
+            
+            if (Hell_Hath_No_Joery_009 != null) {
+                RoomBuilder.GenerateRoomLayoutFromPNG(Hell_Hath_No_Joery_009, "BulletHell\\Hell_Hath_No_Joery_009_Layout.png");
+            }
 
             List<PrototypeDungeonRoom> m_GatlingGullRooms = new List<PrototypeDungeonRoom>();
 
@@ -840,7 +860,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PrototypeDungeonRoom m_gungeon_rewardroom_1 = Instantiate(gungeon_rewardroom_1);
 
             // Add teleporter to make it like the other reward rooms post AG&D update.
-            RoomFromText.AddObjectToRoom(reward_room, new Vector2(3, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
+            RoomBuilder.AddObjectToRoom(reward_room, new Vector2(3, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
             // This Room Prefab didn't include a chest placer...lol. We'll use the one from gungeon_rewardroom_1. :P
             reward_room.additionalObjectLayers.Add(m_gungeon_rewardroom_1.additionalObjectLayers[1]);
             reward_room.additionalObjectLayers[1].placedObjects[0].contentsBasePosition = new Vector2(4f, 7.5f);
@@ -855,11 +875,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tiny_entrance.exitData.exits = new List<PrototypeRoomExit>();
             tiny_entrance.category = PrototypeDungeonRoom.RoomCategory.ENTRANCE;
             tiny_entrance.associatedMinimapIcon = elevator_entrance.associatedMinimapIcon;
-            RoomFromText.AddObjectToRoom(tiny_entrance, new Vector2(3, 8), ElevatorArrival);
-            RoomFromText.AddObjectToRoom(tiny_entrance, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddExitToRoom(tiny_entrance, new Vector2(0, 6), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(tiny_entrance, new Vector2(6, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(tiny_entrance, new Vector2(13, 6), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(tiny_entrance, new Vector2(3, 8), ElevatorArrival);
+            RoomBuilder.AddObjectToRoom(tiny_entrance, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddExitToRoom(tiny_entrance, new Vector2(0, 6), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(tiny_entrance, new Vector2(6, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(tiny_entrance, new Vector2(13, 6), DungeonData.Direction.EAST);
 
 
             tiny_exit.name = "Tiny Exit";
@@ -867,17 +887,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             tiny_exit.placedObjects = new List<PrototypePlacedObjectData>();
             tiny_exit.placedObjectPositions = new List<Vector2>();
             tiny_exit.exitData.exits = new List<PrototypeRoomExit>();
-            RoomFromText.AddObjectToRoom(tiny_exit, new Vector2(3, 8), ElevatorDeparture);
-            RoomFromText.AddObjectToRoom(tiny_exit, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
-            RoomFromText.AddObjectToRoom(tiny_exit, new Vector2(9, 6), NonEnemyBehaviour: exit_room_basic.placedObjects[2].nonenemyBehaviour);
-            RoomFromText.AddExitToRoom(tiny_exit, new Vector2(0, 6), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(tiny_exit, new Vector2(6, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(tiny_exit, new Vector2(13, 6), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(3, 8), ElevatorDeparture);
+            RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
+            RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(9, 6), NonEnemyBehaviour: exit_room_basic.placedObjects[2].nonenemyBehaviour);
+            RoomBuilder.AddExitToRoom(tiny_exit, new Vector2(0, 6), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(tiny_exit, new Vector2(6, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(tiny_exit, new Vector2(13, 6), DungeonData.Direction.EAST);
 
 
             tutorial_minibossroom.name = "Tutorial Miniboss(Custom)";
             tutorial_minibossroom.placedObjects = new List<PrototypePlacedObjectData>();
-            RoomFromText.AddObjectToRoom(tutorial_minibossroom, new Vector2(4, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(tutorial_minibossroom, new Vector2(4, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             tutorial_minibossroom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
@@ -929,7 +949,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             tutorial_fakeboss.placedObjectPositions = new List<Vector2>();
             tutorial_fakeboss.placedObjects = new List<PrototypePlacedObjectData>();
-            RoomFromText.AddObjectToRoom(tutorial_fakeboss, new Vector2(8, 20), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(tutorial_fakeboss, new Vector2(8, 20), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             tutorial_fakeboss.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
@@ -989,9 +1009,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             big_entrance.placedObjectPositions[0] = big_entrance.placedObjects[0].contentsBasePosition;
             big_entrance.placedObjectPositions[1] = big_entrance.placedObjects[1].contentsBasePosition;
-
-            // RoomFromText.AssignCellData(big_entrance, "RoomCellData.BigEntranceRoom_Layout.txt");
-            RoomFromText.GenerateRoomFromText(big_entrance, "RoomCellData.BigEntranceRoom_Layout.txt");
+                        
+            RoomBuilder.GenerateRoomLayoutFromPNG(big_entrance, "Large_Elevator_Entrance_Layout.png");
 
             MegaChallengeShrineTable.includedRooms = new WeightedRoomCollection();
             MegaChallengeShrineTable.includedRooms.elements = new List<WeightedRoom>();
@@ -1289,6 +1308,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXPlayerMimicBoss.AddComponent<ExpandGungeoneerMimicBossPlacable>();
             FakePrefab.MarkAsFakePrefab(EXPlayerMimicBoss);
             DontDestroyOnLoad(EXPlayerMimicBoss);
+
+            EXSawBladeTrap_4x4Zone = new GameObject("EX SawBlade PlacableObject") { layer = 22 };
+            EXSawBladeTrap_4x4Zone.SetActive(false);
+            EXSawBladeTrap_4x4Zone.AddComponent<ExpandSawBladeTrapPlaceable>();
+            FakePrefab.MarkAsFakePrefab(EXSawBladeTrap_4x4Zone);
+            DontDestroyOnLoad(EXSawBladeTrap_4x4Zone);
 
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");

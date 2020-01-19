@@ -13,10 +13,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 
         private static GameObject m_CorpseObject;
                 
-        public static GameObject GenerateGungeoneerMimicBoss(GameObject aiActorObject, PlayerController sourcePlayer = null, bool IsSecretFloorBoss = true) {
-
+        public static void GenerateGungeoneerMimicBoss(GameObject aiActorObject, PlayerController sourcePlayer = null, bool IsSecretFloorBoss = true) {
+            
             if (sourcePlayer == null) { sourcePlayer = GameManager.Instance.PrimaryPlayer; }
-            if (sourcePlayer == null) { return null; }
+            if (sourcePlayer == null) { return; }
             
             tk2dSprite playerSprite = aiActorObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(playerSprite, (sourcePlayer.sprite as tk2dSprite));
@@ -25,7 +25,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             AIActor CachedEnemyActor = aiActorObject.GetComponent<AIActor>();
 
-            if (!aiActorObject | !CachedEnemyActor) { return null; }
+            if (!aiActorObject | !CachedEnemyActor) { return; }
             
             if (ExpandStats.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
@@ -37,7 +37,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Texture2D BossCardBackground = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\GungeoneerMimicAssets\\MimicInMirror_BossCardBackground.png");
             // Combine foreground boss card generated from PlayerController onto the static background image loased in earlier. Resolutions must match!
             Texture2D BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
-
 
             GenericIntroDoer miniBossIntroDoer = aiActorObject.AddComponent<GenericIntroDoer>();
             CachedEnemyActor.gameObject.AddComponent<ExpandGungeoneerMimicIntroDoer>();
@@ -92,7 +91,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedEnemyActor.OverrideDisplayName = ("Gungeoneer Mimic");
             CachedEnemyActor.ActorName = ("Gungeoneer Mimic");
             CachedEnemyActor.name = ("Gungeoneer Mimic");
-
+            
             CachedEnemyActor.CanTargetEnemies = false;
             CachedEnemyActor.CanTargetPlayers = true;
 
@@ -123,9 +122,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 CachedEnemyActor.EnemySwitchState = "wallmimic";
             }
             
-            /*if (CachedEnemyActor.aiShooter.gunAttachPoint && CachedEnemyActor.aiShooter.gunAttachPoint.gameObject.GetComponent<tk2dSprite>() && sourcePlayer.gunAttachPoint && sourcePlayer.gunAttachPoint.gameObject.GetComponent<tk2dSprite>()) {
-                ExpandUtility.DuplicateSprite(CachedEnemyActor.aiShooter.gunAttachPoint.gameObject.AddComponent<tk2dSprite>(), sourcePlayer.gunAttachPoint.transform.GetComponent<tk2dSprite>());
-            }*/
 
             ExpandGungeoneerMimicBossController playerMimicController = aiActorObject.AddComponent<ExpandGungeoneerMimicBossController>();
             playerMimicController.m_Player = sourcePlayer;
@@ -137,7 +133,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 FieldInfo field = typeof(GenericIntroDoer).GetField("m_specificIntroDoer", BindingFlags.Instance | BindingFlags.NonPublic);
                 field.SetValue(genericIntroDoer, CachedEnemyActor.GetComponent<ExpandGungeoneerMimicIntroDoer>());
             }
-                        
+            
             CachedEnemyActor.aiAnimator.enabled = false;
             CachedEnemyActor.spriteAnimator.Stop();
             CachedEnemyActor.spriteAnimator.DefaultClipId = 0;
@@ -168,15 +164,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
             
-            if (m_AnimationClips.Count > 0) { CachedEnemyActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray(); }
-
+            if (m_AnimationClips.Count > 0) {
+                if (!CachedEnemyActor.spriteAnimator.Library) { CachedEnemyActor.spriteAnimator.Library = aiActorObject.AddComponent<tk2dSpriteAnimation>(); }
+                CachedEnemyActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray();
+            }
+                        
             if (IsSecretFloorBoss) {
                 PickupObject rat_key = PickupObjectDatabase.GetById(727);
                 if (rat_key) { CachedEnemyActor.AdditionalSafeItemDrops.Add(rat_key); }
             }
-
-            CachedEnemyActor.healthHaver.RegenerateCache();
             
+            CachedEnemyActor.healthHaver.RegenerateCache();
+
             BehaviorSpeculator customBehaviorSpeculator = aiActorObject.AddComponent<BehaviorSpeculator>();
             customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
             customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>(0);
@@ -197,9 +196,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]" };
-
+            
             CachedEnemyActor.RegenerateCache();
-            return aiActorObject;
+            return;
         }
 
         public ExpandGungeoneerMimicBossPlacable() { }
@@ -247,20 +246,21 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            GameObject aiActorObject = new GameObject("Gungeoneer Mimic") { layer = 28 };
+            GameObject m_CachedNewObject = new GameObject("Gungeoneer Mimic") { layer = 28 };
+
+            GenerateGungeoneerMimicBoss(m_CachedNewObject, CurrentPlayer);
             
-            GameObject PlayerMimicBoss = GenerateGungeoneerMimicBoss(aiActorObject, CurrentPlayer).GetComponent<AIActor>().InstantiateObject(room, SpawnPosition, false);
-            PlayerMimicBoss.gameObject.transform.parent = room.hierarchyParent;
-            
-            Destroy(aiActorObject);
+            GameObject SpawnedBossObject = m_CachedNewObject.GetComponent<AIActor>().InstantiateObject(room, SpawnPosition, false);
+            SpawnedBossObject.transform.parent = room.hierarchyParent;
+            Destroy(m_CachedNewObject);
 
             MirrorController mirror = ExpandPrefabs.CurrsedMirrorPlacable.gameObject.GetComponent<MirrorController>();
 
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
-            MimicMirrorObject.transform.position = (PlayerMimicBoss.transform.position - new Vector3(0.25f, 1));
+            MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
             MimicMirrorObject.transform.parent = gameObject.transform;
             ItemBuilder.AddSpriteToObject(MimicMirrorObject, (SpriteBasePath + "PlayerMimicMirror_Base"), false, false);
-            
+
             tk2dSprite MirrorBaseSprite = MimicMirrorObject.GetComponent<tk2dSprite>();
 
             SpriteBuilder.AddSpriteToCollection((SpriteBasePath + "PlayerMimicMirror_Broken"), MirrorBaseSprite.Collection);
@@ -272,12 +272,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), MirrorBaseSprite.Collection, m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
             ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), MirrorBaseSprite.Collection, m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             
-            ExpandGungeoneerMimicIntroDoer playerMimicBossIntroDoer = PlayerMimicBoss.gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
+            ExpandGungeoneerMimicIntroDoer playerMimicBossIntroDoer = SpawnedBossObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
             playerMimicBossIntroDoer.MirrorBase = MimicMirrorObject;
             playerMimicBossIntroDoer.ShatterSystem = Instantiate(mirror.ShatterSystem, MimicMirrorObject.transform.position, Quaternion.identity);
             playerMimicBossIntroDoer.ShatterSystem.SetActive(false);
             playerMimicBossIntroDoer.ShatterSystem.transform.parent = MimicMirrorObject.transform;
-
 
             GameObject MimicMirrorFXObject = new GameObject("MirrorShatterFX");
             MimicMirrorFXObject.transform.position = (MimicMirrorObject.transform.position - Vector3.one);

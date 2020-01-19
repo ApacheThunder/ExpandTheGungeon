@@ -1,12 +1,13 @@
 ﻿using Dungeonator;
+using System;
 using System.IO;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
-    class RoomDebug : MonoBehaviour {
+    public class RoomDebug : MonoBehaviour {
 
-        public void DumpRoomLayoutToText(PrototypeDungeonRoom overrideRoom = null) {
+        public static void DumpCurrentRoomLayout(PrototypeDungeonRoom overrideRoom = null) {
             try {
                 if (overrideRoom == null) { 
                     RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
@@ -51,8 +52,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         }
                     }
                     if (dungeon == null) {
-                        ETGModConsole.Log("Could not determine current floor/tileset!\n Attempting to use" + currentRoom.GetRoomName() + ".area.ProtoTypeDungeonRoom instead!", false);
-                        LogRoomLayout(currentRoom.area.prototypeRoom);
+                        ETGModConsole.Log("Could not determine current floor/tileset!\n Attempting to use" + currentRoom.GetRoomName() + ".area.ProtoTypeDungeonRoom instead!", false);                        
+                        LogRoomToPNGFile(currentRoom.area.prototypeRoom);
                         dungeon = null;
                         return;
                     }
@@ -63,8 +64,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                                     for (int i = 0; i < dungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements.Count; i++) {
                                         if (dungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements[i].room != null) {
                                             if (currentRoom.GetRoomName().ToLower().StartsWith(dungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements[i].room.name.ToLower())) {
-                                                LogRoomLayout(dungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements[i].room);
-                                                ETGModConsole.Log("Logged current room layout.", false);
+                                                LogRoomToPNGFile(dungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements[i].room);
+                                                ETGModConsole.Log("Succesfully saved current room layout to PNG.", false);
                                                 dungeon = null;
                                                 return;
                                             }
@@ -79,8 +80,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         for (int i = 0; i < dungeon.PatternSettings.flows[0].AllNodes.Count; i++) {
                             if (dungeon.PatternSettings.flows[0].AllNodes[i].overrideExactRoom != null) {
                                 if (currentRoom.GetRoomName().ToLower().StartsWith(dungeon.PatternSettings.flows[0].AllNodes[i].overrideExactRoom.name.ToLower())) {
-                                    LogRoomLayout(dungeon.PatternSettings.flows[0].AllNodes[i].overrideExactRoom);
-                                    ETGModConsole.Log("Logged current room layout.", false);
+                                    LogRoomToPNGFile(dungeon.PatternSettings.flows[0].AllNodes[i].overrideExactRoom);
+                                    ETGModConsole.Log("Succesfully saved current room layout to PNG.", false);
                                     dungeon = null;
                                     return;
                                 }
@@ -89,45 +90,121 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
 
                     ETGModConsole.Log("Current Room's ProtoTypeDungeonRoom prefab not found.\n Attempting to use [" + currentRoom.GetRoomName() + "].area.ProtoTypeDungeonRoom instead!", false);
-                    LogRoomLayout(currentRoom.area.prototypeRoom);
+                    LogRoomToPNGFile(currentRoom.area.prototypeRoom);
                     dungeon = null;
-                    ETGModConsole.Log("Logged current room layout.", false);
+                    ETGModConsole.Log("Succesfully saved current room layout to PNG.", false);
                 } else {
-                    LogRoomLayout(overrideRoom);
+                    // LogRoomLayout(overrideRoom);
+                    LogRoomToPNGFile(overrideRoom);
+                    ETGModConsole.Log("Succesfully saved room layout to PNG.", false);
                 }
-            } catch (System.Exception ex) {
-            	ETGModConsole.Log("Failed to log current room layout.", false);
+            } catch (Exception ex) {
+            	ETGModConsole.Log("Failed to save room layout!", false);
             	ETGModConsole.Log("    " + ex.Message, false);
                 Debug.LogException(ex);
             }
+
         }
 
-        public void LogRoomToFile(string data, string filename) {
-            string textstream = data;
-            using (StreamWriter streamWriter = new StreamWriter(Path.Combine(ETGMod.ResourcesDirectory, filename), false)) { streamWriter.WriteLine(data); }
-        }
-
-        public void LogRoomLayout(PrototypeDungeonRoom room) {
+        public static void LogRoomToPNGFile(PrototypeDungeonRoom room) {
             int width = room.Width;
             int height = room.Height;
-            string layout = string.Empty;
-            for (int Y = height; Y > 0; Y--) {
-                for (int X = 0; X < width; X++) {
-                    CellType? cellData = room.GetCellDataAtPoint(X, Y - 1).state;
-                    if (!cellData.HasValue) {
-                        layout += "X";
-                    } else if (cellData == CellType.FLOOR) {
-                        layout += '-';
-                    } else if (cellData == CellType.WALL) {
-                        layout += 'W';
-                    } else if (cellData == CellType.PIT) {
-                        layout += 'P';
+            
+            Texture2D m_NewImage = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            if (!string.IsNullOrEmpty(room.name)) { m_NewImage.name = room.name; }
+            
+            Color WhitePixel = new Color32(255, 255, 255, 255); // Wall Cell
+            Color PinkPixel = new Color32(255, 0, 255, 255); // Diagonal Wall Cell (North East)
+            Color YellowPixel = new Color32(255, 255, 0, 255); // Diagonal Wall Cell (North West)
+            Color HalfPinkPixel = new Color32(127, 0, 127, 255); // Diagonal Wall Cell (South East)
+            Color HalfYellowPixel = new Color32(127, 127, 0, 255); // Diagonal Wall Cell (South West)
+            
+            Color BluePixel = new Color32(0, 0, 255, 255); // Floor Cell
+
+            Color BlueHalfGreenPixel = new Color32(0, 127, 255, 255); // Floor Cell (Ice Override)
+            Color HalfBluePixel = new Color32(0, 0, 127, 255); // Floor Cell (Water Override)
+            Color HalfRedPixel = new Color32(0, 0, 127, 255); // Floor Cell (Carpet Override)
+            Color GreenHalfRBPixel = new Color32(127, 255, 127, 255); // Floor Cell (Grass Override)
+            Color HalfWhitePixel = new Color32(127, 127, 127, 255); // Floor Cell (Bone Override)
+            Color OrangePixel = new Color32(255, 127, 0, 255); // Floor Cell (Flesh Override)
+            Color RedHalfGBPixel = new Color32(255, 127, 127, 255); // Floor Cell (ThickGoop Override)
+
+            Color GreenPixel = new Color32(0, 255, 0, 255); // Damage Floor Cell
+
+            Color RedPixel = new Color32(255, 0, 0, 255); // Pit Cell
+
+            Color BlackPixel = new Color32(0, 0, 0, 255); // NULL Cell
+
+            for (int X = 0; X < width; X++) {
+                for (int Y = 0; Y < height; Y++) {
+                    CellType? cellData = room.GetCellDataAtPoint(X, Y).state;
+                    bool DamageCell = false;
+                    DiagonalWallType diagonalWallType = DiagonalWallType.NONE;                    
+                    if (room.GetCellDataAtPoint(X, Y) != null && cellData.HasValue) {
+                        DamageCell = room.GetCellDataAtPoint(X, Y).doesDamage;
+                        diagonalWallType = room.GetCellDataAtPoint(X, Y).diagonalWallType;
                     }
-                    if (X == width - 1 && Y != 0) { layout += "\n"; }
+                    if (room.GetCellDataAtPoint(X, Y) == null | !cellData.HasValue) {
+                        m_NewImage.SetPixel(X, Y, BlackPixel);
+                    } else if (cellData.Value == CellType.FLOOR) {
+                        if (DamageCell) {
+                            m_NewImage.SetPixel(X, Y, GreenPixel);
+                        } else if (room.GetCellDataAtPoint(X, Y).appearance != null) {
+                            CellVisualData.CellFloorType overrideFloorType = room.GetCellDataAtPoint(X, Y).appearance.OverrideFloorType;
+                            if (overrideFloorType == CellVisualData.CellFloorType.Stone) {
+                                m_NewImage.SetPixel(X, Y, BluePixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Ice) {
+                                m_NewImage.SetPixel(X, Y, BlueHalfGreenPixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Water) {
+                                m_NewImage.SetPixel(X, Y, HalfBluePixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Carpet) {
+                                m_NewImage.SetPixel(X, Y, HalfRedPixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Grass) {
+                                m_NewImage.SetPixel(X, Y, GreenHalfRBPixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Bone) {
+                                m_NewImage.SetPixel(X, Y, HalfWhitePixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.Flesh) {
+                                m_NewImage.SetPixel(X, Y, OrangePixel);
+                            } else if (overrideFloorType == CellVisualData.CellFloorType.ThickGoop) {
+                                m_NewImage.SetPixel(X, Y, RedHalfGBPixel);
+                            } else {
+                                m_NewImage.SetPixel(X, Y, BluePixel);
+                            }
+                        } else {
+                            m_NewImage.SetPixel(X, Y, BluePixel);
+                        }
+                    } else if (cellData.Value == CellType.WALL) {
+                        if (diagonalWallType == DiagonalWallType.NORTHEAST) {
+                            m_NewImage.SetPixel(X, Y, PinkPixel);
+                        } else if (diagonalWallType == DiagonalWallType.NORTHWEST) {
+                            m_NewImage.SetPixel(X, Y, YellowPixel);
+                        } else if (diagonalWallType == DiagonalWallType.SOUTHEAST) {
+                            m_NewImage.SetPixel(X, Y, HalfPinkPixel);
+                        } else if (diagonalWallType == DiagonalWallType.SOUTHWEST) {
+                            m_NewImage.SetPixel(X, Y, HalfYellowPixel);
+                        } else {
+                            m_NewImage.SetPixel(X, Y, WhitePixel);
+                        }
+                    } else if (cellData.Value == CellType.PIT) {
+                        m_NewImage.SetPixel(X, Y, RedPixel);
+                    }
                 }
             }
-            if (string.IsNullOrEmpty(layout)) { return; }
-            LogRoomToFile(layout, room.name + "_layout.txt");
+
+            m_NewImage.Apply();
+
+            string basePath = "DumpedRoomLayouts/";
+
+            string fileName = (basePath + m_NewImage.name);
+            if (string.IsNullOrEmpty(m_NewImage.name)) { fileName += ("RoomLayout_" + Guid.NewGuid().ToString()); }
+
+            fileName += "_Layout";
+
+            string path = Path.Combine(ETGMod.ResourcesDirectory, fileName.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");
+
+            if (!File.Exists(path)) { Directory.GetParent(path).Create(); }
+
+            File.WriteAllBytes(path, ImageConversion.EncodeToPNG(m_NewImage));
         }
     }
 }

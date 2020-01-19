@@ -362,7 +362,7 @@ namespace ExpandTheGungeon.ItemAPI {
                             float num = Vector2.Distance(unitCenter, lastPosition);
                             bool modified = false;
                             string ObjectName = StaticReferenceManager.AllNpcs[i].gameObject.name;
-                            if (!modified && (string.IsNullOrEmpty(ObjectName) | !ObjectName.StartsWith("Corrupted")) && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
+                            if (!modified && (string.IsNullOrEmpty(ObjectName) | !ObjectName.StartsWith("Corrupted")) && !StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<AIActor>() && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
                                 modified = true;
                                 if (StaticReferenceManager.AllNpcs[i] != null && unitCenter.GetAbsoluteRoom() != null && unitCenter.GetAbsoluteRoom() == m_targetRoom) {
                                     tk2dBaseSprite targetBaseSprite = StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<tk2dBaseSprite>();
@@ -593,6 +593,10 @@ namespace ExpandTheGungeon.ItemAPI {
                                             enemy.healthHaver.ForceSetCurrentHealth(30);
                                         }
 
+                                        if (enemy.gameObject.GetComponent<FloatingEyeController>()) {
+                                            Destroy(enemy.gameObject.GetComponent<FloatingEyeController>());
+                                        }
+
                                         if (enemy.gameObject.GetComponent<CrazedController>()) { Destroy(enemy.gameObject.GetComponent<CrazedController>()); }
 
 
@@ -772,6 +776,9 @@ namespace ExpandTheGungeon.ItemAPI {
                                             }
                                         }
                                         
+                                        if (enemy.gameObject.GetComponent<FloatingEyeController>()) {
+                                            Destroy(enemy.gameObject.GetComponent<FloatingEyeController>());
+                                        }
 
                                         List<string> ExcludedEnemies = new List<string>() {
                                             "383175a55879441d90933b5c4e60cf6f", // spectre_gun_nut

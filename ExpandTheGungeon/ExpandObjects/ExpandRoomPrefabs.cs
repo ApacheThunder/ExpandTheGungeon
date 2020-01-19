@@ -65,6 +65,9 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Rooms for floor 4.
         public static PrototypeDungeonRoom Expand_SpiderMaze;
+
+        // Custom Trap Rooms
+        public static PrototypeDungeonRoom Expand_Apache_FieldOfSaws;
         
         // Custom Secret Rooms
         public static PrototypeDungeonRoom Expand_TinySecret;
@@ -135,6 +138,8 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Expand_SpiderMaze = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
+            Expand_Apache_FieldOfSaws = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
@@ -192,12 +197,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             FakeBossRoom.Width = 25;
             FakeBossRoom.Height = 25;
             FakeBossRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(FakeBossRoom, new Vector2(0, 12), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.AddExitToRoom(FakeBossRoom, new Vector2(12, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(FakeBossRoom, new Vector2(26, 12), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.AddExitToRoom(FakeBossRoom, new Vector2(12, 26), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.GenerateDefaultRoomLayout(FakeBossRoom);
-            RoomFromText.AddObjectToRoom(FakeBossRoom, new Vector2(8, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5");
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(0, 12), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(12, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(26, 12), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(12, 26), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.GenerateBasicRoomLayout(FakeBossRoom);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(8, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5");
             FakeBossRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
@@ -270,113 +275,113 @@ namespace ExpandTheGungeon.ExpandObjects {
             Giant_Elevator_Room.Height = 100;
             Giant_Elevator_Room.overrideRoomVisualType = 3;
             // Left/Right Exits
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 5), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 5), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 14), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 14), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 23), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 23), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 32), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 32), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 41), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 41), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 50), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 50), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 59), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 59), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 68), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 68), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 77), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 77), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 86), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 86), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 95), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 95), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 5), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 5), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 14), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 14), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 23), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 23), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 32), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 32), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 41), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 41), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 50), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 50), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 59), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 59), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 68), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 68), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 77), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 77), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 86), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 86), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 95), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 95), DungeonData.Direction.EAST);
             // Top/Bottom Exits
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(5, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(5, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(14, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(23, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(23, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(32, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(32, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(41, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(41, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(50, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(50, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(59, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(59, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(68, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(68, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(77, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(77, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(86, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(86, 101), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(95, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Giant_Elevator_Room, new Vector2(95, 101), DungeonData.Direction.NORTH);
-            // Generate Cell Data
-            RoomFromText.GenerateRoomFromText(Giant_Elevator_Room, "RoomCellData.Giant_Elevator_Room_Layout.txt");
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(5, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(5, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(14, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(23, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(23, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(32, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(32, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(41, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(41, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(50, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(50, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(59, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(59, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(68, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(68, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(77, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(77, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(86, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(86, 101), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(95, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(95, 101), DungeonData.Direction.NORTH);
             // Add Object Spawns
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(47, 49), ExpandPrefabs.ElevatorArrival);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48, 41), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(29, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(70, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(7, 24), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(87, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(14, 23), EnemyBehaviourGuid: "db35531e66ce41cbb81d507a34366dfe"); // AK47 Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 60), EnemyBehaviourGuid: "2752019b770f473193b08b4005dc781f"); // Veteran Shotgun Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 74), EnemyBehaviourGuid: "e861e59012954ab2b9b6977da85cb83c"); // Snake (Office)
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 49), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // Gun Nut
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 77), EnemyBehaviourGuid: "eed5addcc15148179f300cc0d9ee7f94"); // Spogre
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(63, 84), EnemyBehaviourGuid: "98fdf153a4dd4d51bf0bafe43f3c77ff"); // Tazie
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(35, 91), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(60, 90), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(35, 85), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // Veteran Bullet Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(75, 8), EnemyBehaviourGuid: "c5b11bfc065d417b9c4d03a5e385fe2c"); // Professional
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(72, 86), EnemyBehaviourGuid: "3b0bd258b4c9432db3339665cc61c356"); // Cactus Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(12, 39), EnemyBehaviourGuid: "3b0bd258b4c9432db3339665cc61c356"); // Cactus Kin
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(15, 14), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 14), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(15, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(59, 67), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall Mimic
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(47, 49), ExpandPrefabs.ElevatorArrival);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48, 41), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(29, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(70, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(7, 24), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(87, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(14, 23), EnemyBehaviourGuid: "db35531e66ce41cbb81d507a34366dfe"); // AK47 Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 60), EnemyBehaviourGuid: "2752019b770f473193b08b4005dc781f"); // Veteran Shotgun Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 74), EnemyBehaviourGuid: "e861e59012954ab2b9b6977da85cb83c"); // Snake (Office)
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 49), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // Gun Nut
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 77), EnemyBehaviourGuid: "eed5addcc15148179f300cc0d9ee7f94"); // Spogre
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(63, 84), EnemyBehaviourGuid: "98fdf153a4dd4d51bf0bafe43f3c77ff"); // Tazie
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(35, 91), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(60, 90), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(35, 85), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // Veteran Bullet Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(75, 8), EnemyBehaviourGuid: "c5b11bfc065d417b9c4d03a5e385fe2c"); // Professional
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(72, 86), EnemyBehaviourGuid: "3b0bd258b4c9432db3339665cc61c356"); // Cactus Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(12, 39), EnemyBehaviourGuid: "3b0bd258b4c9432db3339665cc61c356"); // Cactus Kin
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(15, 14), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 14), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(15, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(59, 67), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall Mimic
             /*RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48.55f, 27), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableHorizontalStone, useExternalPrefab: true));
             RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48.55f, 72), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableHorizontalStone, useExternalPrefab: true));
             RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(23, 48.59f), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableVertical, useExternalPrefab: true));
             RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(76, 48.59f), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableVertical, useExternalPrefab: true));*/
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(14, 10), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 10), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 10), objectDatabase.Brazier);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 89), objectDatabase.Brazier);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(9, 62), objectDatabase.Brazier);
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(89, 62), objectDatabase.Brazier);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(14, 10), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 10), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 10), objectDatabase.Brazier);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 89), objectDatabase.Brazier);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(9, 62), objectDatabase.Brazier);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(89, 62), objectDatabase.Brazier);
             // RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(50, 55), ChaosGlitchFloorGenerator.Instance.CustomGlitchDungeonPlacable(ChaosPrefabs.RainFXObject, useExternalPrefab: true));
+            // Generate Cell Data
+            RoomBuilder.GenerateRoomLayoutFromPNG(Giant_Elevator_Room, "Giant_Elevator_Room_Layout.png");
 
 
             // Replacement to Utiliroom which was removed in 2.1.8
@@ -419,11 +424,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             Utiliroom.rewardChestSpawnPosition = IntVector2.One;
             Utiliroom.Width = 4;
             Utiliroom.Height = 4;
-            RoomFromText.AddExitToRoom(Utiliroom, new Vector2(0, 2), DungeonData.Direction.WEST, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom, new Vector2(2, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom, new Vector2(2, 5), DungeonData.Direction.NORTH, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
-            RoomFromText.GenerateRoomFromText(Utiliroom, "RoomCellData.Utiliroom_Layout.txt");
+            RoomBuilder.AddExitToRoom(Utiliroom, new Vector2(0, 2), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom, new Vector2(2, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom, new Vector2(2, 5), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.GenerateBasicRoomLayout(Utiliroom);
 
             Utiliroom_SpecialPit.name = "Utiliroom (Special Pit)";
             Utiliroom_SpecialPit.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -465,9 +470,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             Utiliroom_SpecialPit.Height = 8;
             Utiliroom_SpecialPit.allowFloorDecoration = false;
             Utiliroom_SpecialPit.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(1, 4), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(8, 4), DungeonData.Direction.EAST);
-            RoomFromText.GenerateRoomFromText(Utiliroom_SpecialPit, "RoomCellData.Utiliroom_SpecialPit_Layout.txt");
+            RoomBuilder.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(1, 4), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(8, 4), DungeonData.Direction.EAST);
+            RoomBuilder.GenerateRoomLayoutFromPNG(Utiliroom_SpecialPit, "Utiliroom_SpecialPit_Layout.png");
 
 
             Utiliroom_Pitfall.name = "Utiliroom (Pitfall)";
@@ -508,11 +513,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             Utiliroom_Pitfall.rewardChestSpawnPosition = IntVector2.One;
             Utiliroom_Pitfall.Width = 8;
             Utiliroom_Pitfall.Height = 8;
-            RoomFromText.AddExitToRoom(Utiliroom_Pitfall, new Vector2(0, 4), DungeonData.Direction.WEST, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 9), DungeonData.Direction.NORTH, ContainsDoor: false);
-            RoomFromText.AddExitToRoom(Utiliroom_Pitfall, new Vector2(9, 4), DungeonData.Direction.EAST, ContainsDoor: false);
-            RoomFromText.GenerateRoomFromText(Utiliroom_Pitfall, "RoomCellData.Utiliroom_Pitfall_Layout.txt");
+            RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(0, 4), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 9), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(9, 4), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.GenerateRoomLayoutFromPNG(Utiliroom_Pitfall, "Utiliroom_Pitfall_Layout.png");
 
 
             SpecialWallMimicRoom.name = "Special WallMimic Room";
@@ -554,14 +559,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             SpecialWallMimicRoom.Width = 20;
             SpecialWallMimicRoom.Height = 20;
             SpecialWallMimicRoom.overrideRoomVisualType = 3;
-            RoomFromText.AddExitToRoom(SpecialWallMimicRoom, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(SpecialWallMimicRoom, new Vector2(21, 10), DungeonData.Direction.EAST);
-            RoomFromText.GenerateRoomFromText(SpecialWallMimicRoom, "RoomCellData.SpecialWallMimicRoom_Layout.txt");
-            RoomFromText.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 6), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
-            RoomFromText.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 13), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
-
+            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(0, 10), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(21, 10), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 6), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
+            RoomBuilder.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 13), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
+            RoomBuilder.GenerateRoomLayoutFromPNG(SpecialWallMimicRoom, "Special_WallMimic_Room_Layout.png");
 
             SpecialMaintenanceRoom.name = "Special Maintenance Room";
             SpecialMaintenanceRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -605,15 +609,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             // SpecialMaintenanceRoom.usesProceduralDecoration = false;
             SpecialMaintenanceRoom.allowFloorDecoration = false;
             SpecialMaintenanceRoom.overrideRoomVisualType = 1;
-            RoomFromText.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(31, 16), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 31), DungeonData.Direction.NORTH);
-            RoomFromText.GenerateRoomFromText(SpecialMaintenanceRoom, "RoomCellData.SpecialMaintenanceRoom_Layout.txt");
-            RoomFromText.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(8, 9), NonEnemyBehaviour: ExpandPrefabs.elevator_maintenance_room.placedObjects[0].nonenemyBehaviour);
-            RoomFromText.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(18, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(14, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
-
+            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(31, 16), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(8, 9), NonEnemyBehaviour: ExpandPrefabs.elevator_maintenance_room.placedObjects[0].nonenemyBehaviour);
+            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(18, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(14, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(SpecialMaintenanceRoom, "Special_Maintenance_Room_Layout.png");
 
             ShopBackRoom.name = "Shop Back Room";
             ShopBackRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -655,15 +658,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             ShopBackRoom.Height = 34;
             ShopBackRoom.overrideRoomVisualType = 1;
             ShopBackRoom.associatedMinimapIcon = ExpandPrefabs.basic_special_rooms.includedRooms.elements[1].room.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(ShopBackRoom, new Vector2(0, 2), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomFromText.AddExitToRoom(ShopBackRoom, new Vector2(9, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomFromText.AddExitToRoom(ShopBackRoom, new Vector2(19, 2), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomFromText.AddExitToRoom(ShopBackRoom, new Vector2(14, 35), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.GenerateRoomFromText(ShopBackRoom, "RoomCellData.ShopBackRoom_Layout.txt");
-            RoomFromText.AddObjectToRoom(ShopBackRoom, new Vector2(3, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(ShopBackRoom, new Vector2(13, 4), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(ShopBackRoom, new Vector2(13, 6), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(ShopBackRoom, new Vector2(13, 32), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(0, 2), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
+            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(9, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
+            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(19, 2), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
+            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(14, 35), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);            
+            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(3, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 4), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 6), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 32), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.GenerateRoomLayoutFromPNG(ShopBackRoom, "Shop_Back_Room_Layout.png");
 
             SecretRewardRoom.name = "Secret Reward Room";
             SecretRewardRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -705,27 +708,26 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRewardRoom.Height = 64;
             // SecretRewardRoom.usesProceduralDecoration = false;
             SecretRewardRoom.overrideRoomVisualType = 3;
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(21, 2), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(0, 31), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(21, 31), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(0, 60), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(21, 60), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(SecretRewardRoom, new Vector2(8, 65), DungeonData.Direction.NORTH);
-            RoomFromText.GenerateRoomFromText(SecretRewardRoom, "RoomCellData.SecretRewardRoom_Layout.txt");
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 9), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 11), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomFromText.AddObjectToRoom(SecretRewardRoom, new Vector2(6, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
-
-
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 2), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 31), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 31), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 60), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 60), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 65), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 9), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 11), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(6, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(SecretRewardRoom, "Secret_Reward_Room_Layout.png");
+            
             SecretBossRoom.name = "Secret Boss Room";
             SecretBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             SecretBossRoom.GUID = Guid.NewGuid().ToString();
@@ -769,9 +771,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretBossRoom.Height = 30;
             SecretBossRoom.overrideRoomVisualType = 3;
             SecretBossRoom.associatedMinimapIcon = ExpandPrefabs.DraGunRoom01.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(SecretBossRoom, new Vector2(17, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
-            RoomFromText.AddExitToRoom(SecretBossRoom, new Vector2(18, 31), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.GenerateDefaultRoomLayout(SecretBossRoom);
+            RoomBuilder.AddExitToRoom(SecretBossRoom, new Vector2(17, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
+            RoomBuilder.AddExitToRoom(SecretBossRoom, new Vector2(18, 31), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.GenerateBasicRoomLayout(SecretBossRoom);
 
 
             SecretExitRoom.name = "Secret Exit Room";
@@ -818,14 +820,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             // SecretExitRoom.allowFloorDecoration = false;            
             SecretExitRoom.usesProceduralDecoration = true;
             SecretExitRoom.usesProceduralLighting = true;
-            RoomFromText.AddExitToRoom(SecretExitRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SecretExitRoom, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(SecretExitRoom, new Vector2(9, 2), DungeonData.Direction.EAST);
-            RoomFromText.GenerateRoomFromText(SecretExitRoom, "RoomCellData.SecretExitRoom_Layout.txt");
-            RoomFromText.AddObjectToRoom(SecretExitRoom, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
-            RoomFromText.AddObjectToRoom(SecretExitRoom, new Vector2(2, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(SecretExitRoom, new Vector2(3, 1), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
-
+            RoomBuilder.AddExitToRoom(SecretExitRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SecretExitRoom, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SecretExitRoom, new Vector2(9, 2), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(2, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(3, 1), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(SecretExitRoom, "Secret_Exit_Room_Layout.png");
 
 
             ThwompCrossingVertical.name = "Thwomp_Crossing_Vertical";
@@ -866,17 +867,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             ThwompCrossingVertical.rewardChestSpawnPosition = new IntVector2(7, 7);
             ThwompCrossingVertical.Width = 14;
             ThwompCrossingVertical.Height = 30;
-            RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(7, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(7, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(ThwompCrossingVertical, new Vector2(7, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(ThwompCrossingVertical, new Vector2(7, 31), DungeonData.Direction.NORTH);
             /*RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(0, 2), DungeonData.Direction.WEST);
             RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(0, 26), DungeonData.Direction.WEST);
             RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(15, 2), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(15, 26), DungeonData.Direction.EAST);*/
-            RoomFromText.GenerateRoomFromText(ThwompCrossingVertical, "RoomCellData.ThwompCrossingVertical_Layout.txt");
-            RoomFromText.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 7), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomFromText.AddExitToRoom(ThwompCrossingVertical, new Vector2(15, 26), DungeonData.Direction.EAST);*/            
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 7), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingVertical, "TrapRooms\\Expand_Thwomp_Crossing_Vertical_Layout.png");
 
             ThwompCrossingVerticalNoRain.name = "Thwomp_Crossing_Vertical(NoRain)";
             ThwompCrossingVerticalNoRain.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -917,14 +918,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             ThwompCrossingVerticalNoRain.Width = 14;
             ThwompCrossingVerticalNoRain.Height = 30;
             ThwompCrossingVerticalNoRain.overrideRoomVisualType = 3;
-            RoomFromText.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 31), DungeonData.Direction.NORTH);
-            RoomFromText.GenerateRoomFromText(ThwompCrossingVerticalNoRain, "RoomCellData.ThwompCrossingVertical_Layout.txt");
-            RoomFromText.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 7), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-
+            RoomBuilder.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 31), DungeonData.Direction.NORTH);            
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 7), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingVerticalNoRain, "TrapRooms\\Expand_Thwomp_Crossing_Vertical_Layout.png");
 
             ThwompCrossingHorizontal.name = "Thwomp_Crossing_Horizontal";
             ThwompCrossingHorizontal.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -964,14 +964,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             ThwompCrossingHorizontal.rewardChestSpawnPosition = new IntVector2(1, 12);
             ThwompCrossingHorizontal.Width = 30;
             ThwompCrossingHorizontal.Height = 14;
-            RoomFromText.AddExitToRoom(ThwompCrossingHorizontal, new Vector2(0, 7), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(ThwompCrossingHorizontal, new Vector2(31, 7), DungeonData.Direction.EAST);
-            RoomFromText.GenerateRoomFromText(ThwompCrossingHorizontal, "RoomCellData.ThwompCrossingHorizontal_Layout.txt");
-            RoomFromText.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(7, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(11, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(16, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomFromText.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(21, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-
+            RoomBuilder.AddExitToRoom(ThwompCrossingHorizontal, new Vector2(0, 7), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(ThwompCrossingHorizontal, new Vector2(31, 7), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(7, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(11, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(16, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(21, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
+            RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingHorizontal, "TrapRooms\\Expand_Thwomp_Crossing_Horizontal_Layout.png");
 
             PuzzleRoom3.name = "Zelda Puzzle Room 3";
             PuzzleRoom3.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1016,9 +1015,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             PuzzleRoom3.Width = 38;
             PuzzleRoom3.Height = 22;
             PuzzleRoom3.overrideRoomVisualType = 3;
-            RoomFromText.AddExitToRoom(PuzzleRoom3, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(PuzzleRoom3, new Vector2(39, 10), DungeonData.Direction.EAST);
-            RoomFromText.GenerateRoomFromText(PuzzleRoom3, "RoomCellData.PuzzleRoom3_Layout.txt");
+            RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(0, 10), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(39, 10), DungeonData.Direction.EAST);
+            RoomBuilder.GenerateRoomLayoutFromPNG(PuzzleRoom3, "Zelda_Puzzle_Room_3_Layout.png");
 
 
             CreepyGlitchRoom.name = "Creepy Glitched Room";
@@ -1063,12 +1062,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             CreepyGlitchRoom.Width = 26;
             CreepyGlitchRoom.Height = 26;
             CreepyGlitchRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(CreepyGlitchRoom, new Vector2(0, 13), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(CreepyGlitchRoom, new Vector2(27, 13), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(CreepyGlitchRoom, new Vector2(13, 1), DungeonData.Direction.SOUTH);
-            RoomFromText.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
+            RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(0, 13), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(27, 13), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(13, 1), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
             // RoomFromText.AddObjectToRoom(CreepyGlitchRoom, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RoomCorruptionAmbience, useExternalPrefab: true));
-            RoomFromText.GenerateRoomFromText(CreepyGlitchRoom, "RoomCellData.CreepyGlitchRoom_Layout.txt");
+            // RoomBuilder.GenerateRoomLayoutFromPNG(CreepyGlitchRoom, "CreepyGlitchRoom_Layout.png");
+            RoomBuilder.GenerateRoomLayoutFromPNG(CreepyGlitchRoom, "Creepy_Glitched_Room_Layout.png");
 
             CreepyGlitchRoom_Entrance.name = "Creepy Glitched Room Entrance";
             CreepyGlitchRoom_Entrance.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1108,11 +1108,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CreepyGlitchRoom_Entrance.rewardChestSpawnPosition = new IntVector2(2, 8);
             CreepyGlitchRoom_Entrance.Width = 8;
             CreepyGlitchRoom_Entrance.Height = 16;            
-            RoomFromText.AddExitToRoom(CreepyGlitchRoom_Entrance, new Vector2(9, 13), DungeonData.Direction.EAST, overrideDoorObject: ExpandPrefabs.boss_foyertable.includedRooms.elements[1].room.exitData.exits[3].specifiedDoor);
-            RoomFromText.AddObjectToRoom(CreepyGlitchRoom_Entrance, new Vector2(2, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
-            RoomFromText.GenerateDefaultRoomLayout(CreepyGlitchRoom_Entrance);
+            RoomBuilder.AddExitToRoom(CreepyGlitchRoom_Entrance, new Vector2(9, 13), DungeonData.Direction.EAST, overrideDoorObject: ExpandPrefabs.boss_foyertable.includedRooms.elements[1].room.exitData.exits[3].specifiedDoor);
+            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom_Entrance, new Vector2(2, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
+            RoomBuilder.GenerateBasicRoomLayout(CreepyGlitchRoom_Entrance);
 
-            GungeoneerMimicBossRoom.name = "Creepy Glitched Room";
+            GungeoneerMimicBossRoom.name = "Creepy Mirror Boss Room";
             GungeoneerMimicBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             GungeoneerMimicBossRoom.GUID = Guid.NewGuid().ToString();
             GungeoneerMimicBossRoom.PreventMirroring = false;
@@ -1154,11 +1154,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             GungeoneerMimicBossRoom.Width = 32;
             GungeoneerMimicBossRoom.Height = 32;
             GungeoneerMimicBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
-            RoomFromText.GenerateDefaultRoomLayout(GungeoneerMimicBossRoom);
+            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
+            RoomBuilder.GenerateRoomLayoutFromPNG(GungeoneerMimicBossRoom, "Creepy_MirrorBoss_Room_Layout.png");
 
             // Castle Custom Rooms
             Expand_Explode.name = "Expand TurtleMelon Explode";
@@ -1254,18 +1254,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Explode, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Explode, new Vector2(29, 10), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Explode, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Explode, new Vector2(14, 22), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(17, 17), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(8, 6), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(4, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(4, 11.5f), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(6, 19), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(23, 3), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
-            RoomFromText.AddObjectToRoom(Expand_Explode, new Vector2(7, 11), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard (gunsinger)
-            RoomFromText.GenerateRoomFromText(Expand_Explode, "RoomCellData.Castle.Expand_Explode_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Explode, new Vector2(0, 10), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Explode, new Vector2(29, 10), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Explode, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Explode, new Vector2(14, 22), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(17, 17), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(8, 6), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(4, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(4, 11.5f), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(6, 19), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(23, 3), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
+            RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(7, 11), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard (gunsinger)
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Explode, "Castle\\Expand_TurtleMelon_Explode_Layout.png");
 
 
             Expand_C_Hub.name = "Expand TurtleMelon C Hub";
@@ -1373,18 +1373,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(0, 20), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(41, 20), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(7, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(30, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(7, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_C_Hub, new Vector2(30, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_C_Hub, new Vector2(18, 14), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_C_Hub, new Vector2(20, 2), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomFromText.AddObjectToRoom(Expand_C_Hub, new Vector2(20, 37), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomFromText.AddObjectToRoom(Expand_C_Hub, new Vector2(5, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
-            RoomFromText.AddObjectToRoom(Expand_C_Hub, new Vector2(33, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
-            RoomFromText.GenerateRoomFromText(Expand_C_Hub, "RoomCellData.Castle.Expand_C_Hub_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(0, 20), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(41, 20), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(7, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(30, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(7, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_C_Hub, new Vector2(30, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(18, 14), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(20, 2), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(20, 37), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(5, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
+            RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(33, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_C_Hub, "Castle\\Expand_TurtleMelon_C_Hub_Layout.png");
 
 
             Expand_C_Gap.name = "Expand TurtleMelon C Gap";
@@ -1506,18 +1506,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_C_Gap, new Vector2(0, 1), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_C_Gap, new Vector2(0, 20), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_C_Gap, new Vector2(29, 10), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_C_Gap, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_C_Gap, new Vector2(14, 22), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(9, 1), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(9, 19), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(13, 6), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(13, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(4, 7), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomFromText.AddObjectToRoom(Expand_C_Gap, new Vector2(3, 13), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomFromText.GenerateRoomFromText(Expand_C_Gap, "RoomCellData.Castle.Expand_C_Gap_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_C_Gap, new Vector2(0, 1), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_C_Gap, new Vector2(0, 20), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_C_Gap, new Vector2(29, 10), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_C_Gap, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_C_Gap, new Vector2(14, 22), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(9, 1), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(9, 19), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(13, 6), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(13, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(4, 7), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
+            RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(3, 13), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_C_Gap, "Castle\\Expand_TurtleMelon_C_Gap_Layout.png");
 
 
             Expand_ChainGap.name = "Expand TurtleMelon Chain Gap";
@@ -1562,25 +1562,25 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_ChainGap.Width = 28;
             Expand_ChainGap.Height = 21;
             Expand_ChainGap.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_ChainGap, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_ChainGap, new Vector2(29, 10), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_ChainGap, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_ChainGap, new Vector2(14, 22), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(13.25f, 3), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(13.25f, 17), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 9), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 9), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(9, 3), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(16, 3), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(9, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(16, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 8), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomFromText.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 12), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomFromText.GenerateRoomFromText(Expand_ChainGap, "RoomCellData.Castle.Expand_Chain_Gap_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_ChainGap, new Vector2(0, 10), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_ChainGap, new Vector2(29, 10), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_ChainGap, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_ChainGap, new Vector2(14, 22), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13.25f, 3), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13.25f, 17), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 9), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 9), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(9, 3), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(16, 3), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(9, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(16, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(4, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 8), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
+            RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 12), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_ChainGap, "Castle\\Expand_TurtleMelon_Chain_Gap_Layout.png");
 
 
             Expand_Challange1.name = "Expand TurtleMelon Challenge 1";
@@ -1664,12 +1664,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Challange1, new Vector2(19, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomFromText.AddExitToRoom(Expand_Challange1, new Vector2(4, 40), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomFromText.AddObjectToRoom(Expand_Challange1, new Vector2(3, 35), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomFromText.AddObjectToRoom(Expand_Challange1, new Vector2(4, 38), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomFromText.AddObjectToRoom(Expand_Challange1, new Vector2(20, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.GenerateRoomFromText(Expand_Challange1, "RoomCellData.Castle.Expand_Challange1_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Challange1, new Vector2(19, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
+            RoomBuilder.AddExitToRoom(Expand_Challange1, new Vector2(4, 40), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(3, 35), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
+            RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(4, 38), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
+            RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(20, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Challange1, "Castle\\Expand_TurtleMelon_Challenge_1_Layout.png");
 
 
             Expand_Pit_Line.name = "Expand TurtleMelon Pit Line";
@@ -1714,16 +1714,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Line.Width = 22;
             Expand_Pit_Line.Height = 30;
             Expand_Pit_Line.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_Pit_Line, new Vector2(0, 15), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Pit_Line, new Vector2(23, 15), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Pit_Line, new Vector2(11, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Pit_Line, new Vector2(11, 31), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Pit_Line, new Vector2(10, 2), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Line, new Vector2(10, 27), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Line, new Vector2(5, 14), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 7), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 22), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.GenerateRoomFromText(Expand_Pit_Line, "RoomCellData.Castle.Expand_Pit_Line_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Pit_Line, new Vector2(0, 15), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Pit_Line, new Vector2(23, 15), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Pit_Line, new Vector2(11, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Pit_Line, new Vector2(11, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(10, 2), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(10, 27), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(5, 14), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 7), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 22), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Pit_Line, "Castle\\Expand_TurtleMelon_Pit_Line_Layout.png");
 
 
             Expand_Singer_Gap.name = "Expand TurtleMelon Singer Gap";
@@ -1819,17 +1819,17 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Singer_Gap, new Vector2(31, 14), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Singer_Gap, new Vector2(11, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Singer_Gap, new Vector2(11, 26), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(3, 2), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(19, 2), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 10), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 19), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 15), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 23), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 17), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
-            RoomFromText.GenerateRoomFromText(Expand_Singer_Gap, "RoomCellData.Castle.Expand_Singer_Gap_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Singer_Gap, new Vector2(31, 14), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Singer_Gap, new Vector2(11, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Singer_Gap, new Vector2(11, 26), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(3, 2), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(19, 2), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 10), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 19), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 15), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 23), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 17), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Singer_Gap, "Castle\\Expand_TurtleMelon_Singer_Gap_Layout.png");
 
             Expand_Flying_Gap.name = "Expand TurtleMelon Flying Gap";
             Expand_Flying_Gap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1912,20 +1912,20 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Flying_Gap, new Vector2(0, 6), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Flying_Gap, new Vector2(29, 6), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Flying_Gap, new Vector2(3, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Flying_Gap, new Vector2(25, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Flying_Gap, new Vector2(14, 22), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(10, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(12, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(14, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 4), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 4), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 23), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 3), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
-            RoomFromText.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 10), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
-            RoomFromText.GenerateRoomFromText(Expand_Flying_Gap, "RoomCellData.Castle.Expand_Flying_Gap_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Flying_Gap, new Vector2(0, 6), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Flying_Gap, new Vector2(29, 6), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Flying_Gap, new Vector2(3, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Flying_Gap, new Vector2(25, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Flying_Gap, new Vector2(14, 22), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(10, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(12, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(14, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 4), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 4), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 23), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 3), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 10), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Flying_Gap, "Castle\\Expand_TurtleMelon_Flying_Gap_Layout.png");
 
 
             Expand_Battle.name = "Expand TurtleMelon Battle Hub";
@@ -2231,21 +2231,21 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(0, 4), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(31, 4), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(0, 26), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(31, 26), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(4, 31), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(26, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Battle, new Vector2(26, 31), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(13, 13), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(25, 7), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(6, 9), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(18, 15), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(20, 20), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Battle, new Vector2(4, 26), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
-            RoomFromText.GenerateDefaultRoomLayout(Expand_Battle);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(0, 4), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(31, 4), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(0, 26), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(31, 26), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(4, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(26, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Battle, new Vector2(26, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(13, 13), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(25, 7), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(6, 9), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(18, 15), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(20, 20), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Battle, new Vector2(4, 26), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
+            RoomBuilder.GenerateBasicRoomLayout(Expand_Battle);
 
 
             Expand_Cross.name = "Expand TurtleMelon Cross";
@@ -2392,18 +2392,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Cross, new Vector2(0, 15), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Cross, new Vector2(31, 15), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Cross, new Vector2(15, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Cross, new Vector2(15, 31), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(15, 2), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(15, 8), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(15, 15), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(15, 22), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(15, 27), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(5, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomFromText.AddObjectToRoom(Expand_Cross, new Vector2(25, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomFromText.GenerateRoomFromText(Expand_Cross, "RoomCellData.Castle.Expand_Cross_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Cross, new Vector2(0, 15), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Cross, new Vector2(31, 15), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Cross, new Vector2(15, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Cross, new Vector2(15, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 2), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 8), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 15), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 22), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 27), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(5, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
+            RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(25, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Cross, "Castle\\Expand_TurtleMelon_Cross_Layout.png");
 
 
             Expand_Blocks.name = "Expand TurtleMelon Blocks";
@@ -2488,18 +2488,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Blocks, new Vector2(0, 19), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Blocks, new Vector2(32, 13), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Blocks, new Vector2(10, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Blocks, new Vector2(16, 31), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(23, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(6, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(16, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(10, 2), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(24, 10), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(8, 18), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
-            RoomFromText.AddObjectToRoom(Expand_Blocks, new Vector2(16, 27), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
-            RoomFromText.GenerateRoomFromText(Expand_Blocks, "RoomCellData.Castle.Expand_Blocks_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Blocks, new Vector2(0, 19), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Blocks, new Vector2(32, 13), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Blocks, new Vector2(10, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Blocks, new Vector2(16, 31), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(23, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(6, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(16, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(10, 2), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(24, 10), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(8, 18), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(16, 27), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Blocks, "Castle\\Expand_TurtleMelon_Blocks_Layout.png");
 
 
 
@@ -2571,14 +2571,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Blocks_Pits, new Vector2(0, 9), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Blocks_Pits, new Vector2(23, 9), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Blocks_Pits, new Vector2(11, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Blocks_Pits, new Vector2(11, 19), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(10, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(2, 10), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(17, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.GenerateRoomFromText(Expand_Blocks_Pits, "RoomCellData.Castle.Expand_Blocks_Pits_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Blocks_Pits, new Vector2(0, 9), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Blocks_Pits, new Vector2(23, 9), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Blocks_Pits, new Vector2(11, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Blocks_Pits, new Vector2(11, 19), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(10, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(2, 10), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(17, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Blocks_Pits, "Castle\\Expand_TurtleMelon_Blocks_Pits_Layout.png");
 
 
             Expand_Wall_Pit.name = "Expand TurtleMelon Wall Pit";
@@ -2663,14 +2663,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(0, 9), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(23, 9), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(2, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(20, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(2, 19), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Wall_Pit, new Vector2(20, 19), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Wall_Pit, new Vector2(9, 8), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
-            RoomFromText.GenerateRoomFromText(Expand_Wall_Pit, "RoomCellData.Castle.Expand_Wall_Pit_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(0, 9), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(23, 9), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(2, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(20, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(2, 19), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(20, 19), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Wall_Pit, new Vector2(9, 8), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Wall_Pit, "Castle\\Expand_TurtleMelon_Wall_Pit_Layout.png");
 
 
 
@@ -2780,16 +2780,16 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Gate_Cross, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Gate_Cross, new Vector2(15, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Gate_Cross, new Vector2(15, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 1), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(5, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(5, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 7), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
-            RoomFromText.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 12), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
-            RoomFromText.GenerateRoomFromText(Expand_Gate_Cross, "RoomCellData.Castle.Expand_Gate_Cross_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Gate_Cross, new Vector2(0, 10), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Gate_Cross, new Vector2(15, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Gate_Cross, new Vector2(15, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 1), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(5, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(5, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 7), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
+            RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 12), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Gate_Cross, "Castle\\Expand_TurtleMelon_Gate_Cross_Layout.png");
 
             Expand_Passage.name = "Expand TurtleMelon Passage";
             Expand_Passage.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -2873,12 +2873,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Passage, new Vector2(12, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Passage, new Vector2(12, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Passage, new Vector2(2, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
-            RoomFromText.AddObjectToRoom(Expand_Passage, new Vector2(20, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
-            RoomFromText.AddObjectToRoom(Expand_Passage, new Vector2(11, 17), EnemyBehaviourGuid: "c0260c286c8d4538a697c5bf24976ccf"); // dynamite_kin
-            RoomFromText.GenerateRoomFromText(Expand_Passage, "RoomCellData.Castle.Expand_Passage_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Passage, new Vector2(12, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Passage, new Vector2(12, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(2, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
+            RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(20, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
+            RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(11, 17), EnemyBehaviourGuid: "c0260c286c8d4538a697c5bf24976ccf"); // dynamite_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Passage, "Castle\\Expand_TurtleMelon_Passage_Layout.png");
 
 
             Expand_Pit_Jump.name = "Expand TurtleMelon Pit Jump";
@@ -2924,12 +2924,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Jump.Width = 30;
             Expand_Pit_Jump.Height = 24;
             Expand_Pit_Jump.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_Pit_Jump, new Vector2(0, 2), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Pit_Jump, new Vector2(31, 22), DungeonData.Direction.EAST);
-            RoomFromText.AddObjectToRoom(Expand_Pit_Jump, new Vector2(12, 3), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Jump, new Vector2(15, 13), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
-            RoomFromText.AddObjectToRoom(Expand_Pit_Jump, new Vector2(16, 21), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            RoomFromText.GenerateRoomFromText(Expand_Pit_Jump, "RoomCellData.Castle.Expand_Pit_Jump_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Pit_Jump, new Vector2(0, 2), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Pit_Jump, new Vector2(31, 22), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(12, 3), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(15, 13), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(16, 21), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Pit_Jump, "Castle\\Expand_TurtleMelon_Pit_Jump_Layout.png");
 
 
             Expand_Pit_Passage.name = "Expand TurtleMelon Pit Passage";
@@ -2975,12 +2975,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Passage.Width = 20;
             Expand_Pit_Passage.Height = 20;
             Expand_Pit_Passage.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_Pit_Passage, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Pit_Passage, new Vector2(14, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Pit_Passage, new Vector2(13, 4), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Passage, new Vector2(5, 10), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.AddObjectToRoom(Expand_Pit_Passage, new Vector2(14, 15), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomFromText.GenerateRoomFromText(Expand_Pit_Passage, "RoomCellData.Castle.Expand_Pit_Passage_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Pit_Passage, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Pit_Passage, new Vector2(14, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(13, 4), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(5, 10), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(14, 15), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Pit_Passage, "Castle\\Expand_TurtleMelon_Pit_Passage_Layout.png");
 
 
             Expand_R_Blocks.name = "Expand TurtleMelon R Blocks";
@@ -3089,14 +3089,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_R_Blocks, new Vector2(42, 27), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_R_Blocks, new Vector2(10, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_R_Blocks, new Vector2(13, 35), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 3), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_R_Blocks, new Vector2(34, 8), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 28), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.GenerateRoomFromText(Expand_R_Blocks, "RoomCellData.Castle.Expand_R_Blocks_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_R_Blocks, new Vector2(42, 27), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_R_Blocks, new Vector2(10, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_R_Blocks, new Vector2(13, 35), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 3), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(34, 8), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 28), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_R_Blocks, "Castle\\Expand_TurtleMelon_R_Blocks_Layout.png");
 
 
             Expand_Small_Passage.name = "Expand TurtleMelon Small Passage 1";
@@ -3168,36 +3168,36 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 },
             };
-            RoomFromText.AddExitToRoom(Expand_Small_Passage, new Vector2(0, 1), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Small_Passage, new Vector2(20, 17), DungeonData.Direction.EAST);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 0), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 0), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 1), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 6), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 7), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(9, 7), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 16), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 17), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 17), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(2, 8), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 8), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 9), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(2, 1), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(3, 1), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(4, 1), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(5, 1), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(8, 17), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(9, 17), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 17), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 17), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 3), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 4), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 11), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 12), objectDatabase.BushFlowers);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 13), objectDatabase.Bush);
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Small_Passage, new Vector2(5, 8), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomFromText.GenerateRoomFromText(Expand_Small_Passage, "RoomCellData.Castle.Expand_Small_Passage_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Small_Passage, new Vector2(0, 1), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Small_Passage, new Vector2(20, 17), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 0), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 0), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 1), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 6), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 7), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(9, 7), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 16), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 17), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 17), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(2, 8), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 8), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 9), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(2, 1), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(3, 1), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(4, 1), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(5, 1), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(8, 17), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(9, 17), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(10, 17), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 17), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 3), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(11, 4), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 11), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 12), objectDatabase.BushFlowers);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 13), objectDatabase.Bush);
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(5, 8), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Small_Passage, "Castle\\Expand_TurtleMelon_Small_Passage_1_Layout.png");
 
 
             Expand_Box.name = "Expand TurtleMelon Box";
@@ -3332,14 +3332,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Box, new Vector2(0, 13), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Box, new Vector2(21, 4), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Box, new Vector2(14, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Box, new Vector2(14, 23), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Box, new Vector2(5, 4), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Box, new Vector2(12, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Box, new Vector2(14, 4), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomFromText.GenerateRoomFromText(Expand_Box, "RoomCellData.Castle.Expand_Box_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Box, new Vector2(0, 13), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Box, new Vector2(21, 4), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Box, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Box, new Vector2(14, 23), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(5, 4), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(12, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(14, 4), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Box, "Castle\\Expand_TurtleMelon_Box_Layout.png");
 
 
             Expand_Steps.name = "Expand TurtleMelon Steps";
@@ -3385,20 +3385,20 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Steps.Width = 20;
             Expand_Steps.Height = 20;
             Expand_Steps.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_Steps, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Steps, new Vector2(16, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Steps, new Vector2(4, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Steps, new Vector2(16, 21), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(1, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(1, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(18, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(18, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(5, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(13, 5), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(14, 11), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(4, 7), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
-            RoomFromText.AddObjectToRoom(Expand_Steps, new Vector2(4, 15), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
-            RoomFromText.GenerateRoomFromText(Expand_Steps, "RoomCellData.Castle.Expand_Steps_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Steps, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Steps, new Vector2(16, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Steps, new Vector2(4, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Steps, new Vector2(16, 21), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(1, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(1, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(18, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(18, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(5, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(13, 5), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(14, 11), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 7), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
+            RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 15), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Steps, "Castle\\Expand_TurtleMelon_Steps_Layout.png");
 
 
             Expand_Spiral.name = "Expand TurtleMelon Spiral";
@@ -3557,28 +3557,28 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Spiral, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Spiral, new Vector2(4, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Spiral, new Vector2(34, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Spiral, new Vector2(34, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(5, 8), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(27, 8), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(33, 10), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(26, 13), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(3, 15), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(36, 16), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(19, 18), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(9, 21), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(16, 23), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(34, 25), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(27, 26), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(4, 28), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(21, 31), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(0, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(13, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(36, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Spiral, new Vector2(18, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.GenerateRoomFromText(Expand_Spiral, "RoomCellData.Castle.Expand_Spiral_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(4, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(34, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(34, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(5, 8), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(27, 8), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(33, 10), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(26, 13), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(3, 15), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(36, 16), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(19, 18), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(9, 21), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(16, 23), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(34, 25), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(27, 26), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(4, 28), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(21, 31), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(0, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(13, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(36, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(18, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Spiral, "Castle\\Expand_TurtleMelon_Spiral_Layout.png");
 
 
             Expand_Apache_Hub.name = "Expand MelonTurtle Apache Hub";
@@ -3663,15 +3663,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Apache_Hub, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Apache_Hub, new Vector2(4, 51), DungeonData.Direction.NORTH);            
-            RoomFromText.AddExitToRoom(Expand_Apache_Hub, new Vector2(36, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Apache_Hub, new Vector2(36, 51), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Apache_Hub, new Vector2(18, 17), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_Apache_Hub, new Vector2(34, 25), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomFromText.AddObjectToRoom(Expand_Apache_Hub, new Vector2(3, 20), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomFromText.AddObjectToRoom(Expand_Apache_Hub, new Vector2(35, 15), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomFromText.GenerateRoomFromText(Expand_Apache_Hub, "RoomCellData.Castle.Expand_Apache_Hub_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Apache_Hub, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_Hub, new Vector2(4, 51), DungeonData.Direction.NORTH);            
+            RoomBuilder.AddExitToRoom(Expand_Apache_Hub, new Vector2(36, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_Hub, new Vector2(36, 51), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(18, 17), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(34, 25), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(3, 20), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(35, 15), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_Hub, "Castle\\Expand_MelonTurtle_Apache_Hub_Layout.png");
 
 
             Expand_Box_Hub.name = "Expand MelonTurtle Box Hub";
@@ -3817,19 +3817,19 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             };
 
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(0, 20), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(4, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(41, 20), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(35, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Box_Hub, new Vector2(35, 41), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(17, 11), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(27, 9), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(3, 20), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(11, 15), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(34, 28), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            RoomFromText.AddObjectToRoom(Expand_Box_Hub, new Vector2(10, 36), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // red_shotgun_kin
-            RoomFromText.GenerateRoomFromText(Expand_Box_Hub, "RoomCellData.Castle.Expand_Box_Hub_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(0, 20), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(4, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(41, 20), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(35, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Box_Hub, new Vector2(35, 41), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(17, 11), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(27, 9), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(3, 20), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(11, 15), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(34, 28), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(10, 36), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // red_shotgun_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Box_Hub, "Castle\\Expand_MelonTurtle_Box_Hub_Layout.png");
 
 
 
@@ -4123,27 +4123,27 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(5, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(5, 40), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(20, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(20, 40), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(35, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_Enclose_Hub, new Vector2(35, 40), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(10, 7), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(27, 13), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(10, 31), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(30, 32), objectDatabase.ExplodyBarrel);
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(28, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(23, 23), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(15, 27), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(28, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(14, 12), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(27, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(11, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(18, 18), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 6), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomFromText.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 32), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomFromText.GenerateRoomFromText(Expand_Enclose_Hub, "RoomCellData.Castle.Expand_Enclose_Hub_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(5, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(5, 40), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(20, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(20, 40), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(35, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Enclose_Hub, new Vector2(35, 40), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(10, 7), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(27, 13), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(10, 31), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(30, 32), objectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(28, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(23, 23), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(15, 27), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(28, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(14, 12), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(27, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(11, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(18, 18), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 6), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
+            RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 32), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Enclose_Hub, "Castle\\Expand_MelonTurtle_Enclose_Hub_Layout.png");
 
 
 
@@ -4190,36 +4190,103 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SpiderMaze.Width = 50;
             Expand_SpiderMaze.Height = 50;
             Expand_SpiderMaze.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(0, 13), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(0, 32), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(23, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(51, 13), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(9, 51), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(51, 29), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(46, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_SpiderMaze, new Vector2(36, 51), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(19, 20), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(17, 21), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(25, 21), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 18), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(23, 36), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(28, 36), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(25, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(41, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(2, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(15, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 40), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(45, 44), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(32, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(21, 21), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(24, 34), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(30, 30), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(6, 35), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
-            RoomFromText.AddObjectToRoom(Expand_SpiderMaze, new Vector2(29, 34), EnemyBehaviourGuid: "5288e86d20184fa69c91ceb642d31474"); // gummy
-            RoomFromText.GenerateRoomFromText(Expand_SpiderMaze, "RoomCellData.Hollows.Expand_SpiderMaze_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(0, 13), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(0, 32), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(23, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(51, 13), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(9, 51), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(51, 29), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(46, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SpiderMaze, new Vector2(36, 51), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(19, 20), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(17, 21), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(25, 21), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 18), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(23, 36), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(28, 36), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(25, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(41, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(2, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(15, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(20, 40), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(45, 44), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(32, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(21, 21), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(24, 34), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(30, 30), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(6, 35), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
+            RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(29, 34), EnemyBehaviourGuid: "5288e86d20184fa69c91ceb642d31474"); // gummy
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SpiderMaze, "Hollow\\Expand_Apache_SpiderMaze_Layout.png");
+
+
+            Expand_Apache_FieldOfSaws.name = "Apache Field of Saws";
+            Expand_Apache_FieldOfSaws.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Apache_FieldOfSaws.GUID = Guid.NewGuid().ToString();
+            Expand_Apache_FieldOfSaws.PreventMirroring = false;
+            Expand_Apache_FieldOfSaws.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Apache_FieldOfSaws.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Apache_FieldOfSaws.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_FieldOfSaws.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Apache_FieldOfSaws.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Apache_FieldOfSaws.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Apache_FieldOfSaws.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Apache_FieldOfSaws.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Apache_FieldOfSaws.placedObjectPositions = new List<Vector2>();
+            Expand_Apache_FieldOfSaws.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Apache_FieldOfSaws.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Apache_FieldOfSaws.overriddenTilesets = 0;
+            Expand_Apache_FieldOfSaws.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Apache_FieldOfSaws.InvalidInCoop = false;
+            Expand_Apache_FieldOfSaws.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Apache_FieldOfSaws.preventAddedDecoLayering = false;
+            Expand_Apache_FieldOfSaws.precludeAllTilemapDrawing = false;
+            Expand_Apache_FieldOfSaws.drawPrecludedCeilingTiles = false;
+            Expand_Apache_FieldOfSaws.preventBorders = false;
+            Expand_Apache_FieldOfSaws.preventFacewallAO = false;
+            Expand_Apache_FieldOfSaws.usesCustomAmbientLight = false;
+            Expand_Apache_FieldOfSaws.customAmbientLight = Color.white;
+            Expand_Apache_FieldOfSaws.ForceAllowDuplicates = false;
+            Expand_Apache_FieldOfSaws.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Apache_FieldOfSaws.IsLostWoodsRoom = false;
+            Expand_Apache_FieldOfSaws.UseCustomMusic = false;
+            Expand_Apache_FieldOfSaws.UseCustomMusicState = false;
+            Expand_Apache_FieldOfSaws.CustomMusicEvent = string.Empty;
+            Expand_Apache_FieldOfSaws.UseCustomMusicSwitch = false;
+            Expand_Apache_FieldOfSaws.CustomMusicSwitch = string.Empty;
+            Expand_Apache_FieldOfSaws.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Apache_FieldOfSaws.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Apache_FieldOfSaws.Width = 32;
+            Expand_Apache_FieldOfSaws.Height = 32;
+            RoomBuilder.AddExitToRoom(Expand_Apache_FieldOfSaws, new Vector2(0, 16), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_FieldOfSaws, new Vector2(33, 16), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_FieldOfSaws, new Vector2(16, 33), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_FieldOfSaws, new Vector2(16, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(5, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(11, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(17, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(23, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(5, 11), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(11, 11), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(17, 11), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(23, 11), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(5, 17), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(11, 17), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(17, 17), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(23, 17), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(5, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(11, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(17, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(23, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(9, 21), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(21, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_FieldOfSaws, "TrapRooms\\Expand_Apache_FieldOfSaws_Layout.png");
+
 
 
             SecretExitRoom2.name = "Secret Elevator Exit";
@@ -4265,10 +4332,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretExitRoom2.usesProceduralDecoration = true;
             SecretExitRoom2.usesProceduralLighting = true;
             SecretExitRoom2.allowFloorDecoration = false;
-            RoomFromText.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
-            RoomFromText.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
-            RoomFromText.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
-            RoomFromText.GenerateRoomFromText(SecretExitRoom2, "RoomCellData.SecretExitRoom2_Layout.txt");
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(SecretExitRoom2, "Secret_Elevator_Exit_Layout.png");
 
 
             SecretRatEntranceRoom.name = "Secret Rat MiniElevator Room";
@@ -4316,14 +4383,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRatEntranceRoom.usesProceduralDecoration = true;
             SecretRatEntranceRoom.usesProceduralLighting = true;
             SecretRatEntranceRoom.allowFloorDecoration = false;
-            RoomFromText.AddExitToRoom(SecretRatEntranceRoom, new Vector2(0, 8), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(SecretRatEntranceRoom, new Vector2(17, 8), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(SecretRatEntranceRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(SecretRatEntranceRoom, new Vector2(2, 19), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);            
-            RoomFromText.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomFromText.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor.GetComponent<ExpandSecretDoorPlacable>());
-            RoomFromText.GenerateRoomFromText(SecretRatEntranceRoom, "RoomCellData.SecretRatEntranceRoom_Layout.txt");
+            RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(0, 8), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(17, 8), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(2, 19), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);            
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor.GetComponent<ExpandSecretDoorPlacable>());
+            RoomBuilder.GenerateRoomLayoutFromPNG(SecretRatEntranceRoom, "Secret_Rat_MiniElevator_Room_Layout.png");
 
             
             Expand_SecretElevatorEntranceRoom.name = "Secret MiniElevator Room";
@@ -4368,13 +4435,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorEntranceRoom.usesProceduralLighting = true;
             Expand_SecretElevatorEntranceRoom.allowFloorDecoration = false;
             Expand_SecretElevatorEntranceRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(0, 4), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(11, 4), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor_Normal.GetComponent<ExpandSecretDoorPlacable>());
-            RoomFromText.GenerateRoomFromText(Expand_SecretElevatorEntranceRoom, "RoomCellData.Expand_SecretElevatorEntranceRoom_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(0, 4), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(11, 4), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor_Normal.GetComponent<ExpandSecretDoorPlacable>());
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SecretElevatorEntranceRoom, "Secret_MiniElevator_Room_Layout.png");
 
             // This will share same layout as it's entrance version.
             Expand_SecretElevatorDestinationRoom.name = "Destination MiniElevator Room";
@@ -4419,13 +4486,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorDestinationRoom.usesProceduralLighting = true;
             Expand_SecretElevatorDestinationRoom.allowFloorDecoration = false;
             Expand_SecretElevatorDestinationRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(0, 4), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(11, 4), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
-            RoomFromText.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
-            RoomFromText.GenerateRoomFromText(Expand_SecretElevatorDestinationRoom, "RoomCellData.Expand_SecretElevatorEntranceRoom_Layout.txt");
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(0, 4), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(11, 4), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SecretElevatorDestinationRoom, "Destination_MiniElevator_Room_Layout.png");
 
 
 
@@ -4470,13 +4537,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_TinySecret.Height = 2;
             Expand_TinySecret.allowFloorDecoration = false;
             Expand_TinySecret.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);            
-            RoomFromText.AddExitToRoom(Expand_TinySecret, new Vector2(0, 1), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_TinySecret, new Vector2(3, 1), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_TinySecret, new Vector2(1, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_TinySecret, new Vector2(1, 3), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_TinySecret, new Vector2(0, 0), ExpandPrefabs.TinySecretRoomJunkReward, xOffset: 1, yOffset: 10);
-            RoomFromText.AddObjectToRoom(Expand_TinySecret, new Vector2(1, 0), ExpandPrefabs.TinySecretRoomRewards, yOffset: 10);
-            RoomFromText.GenerateDefaultRoomLayout(Expand_TinySecret);
+            RoomBuilder.AddExitToRoom(Expand_TinySecret, new Vector2(0, 1), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_TinySecret, new Vector2(3, 1), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_TinySecret, new Vector2(1, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_TinySecret, new Vector2(1, 3), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_TinySecret, new Vector2(0, 0), ExpandPrefabs.TinySecretRoomJunkReward, xOffset: 1, yOffset: 10);
+            RoomBuilder.AddObjectToRoom(Expand_TinySecret, new Vector2(1, 0), ExpandPrefabs.TinySecretRoomRewards, yOffset: 10);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_TinySecret);
 
             Expand_GlitchedSecret.name = "Expand Apache Corrupted Secret";
             Expand_GlitchedSecret.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -4678,18 +4745,19 @@ namespace ExpandTheGungeon.ExpandObjects {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomFromText.AddExitToRoom(Expand_GlitchedSecret, new Vector2(0, 8), DungeonData.Direction.WEST);
-            RoomFromText.AddExitToRoom(Expand_GlitchedSecret, new Vector2(17, 8), DungeonData.Direction.EAST);
-            RoomFromText.AddExitToRoom(Expand_GlitchedSecret, new Vector2(8, 0), DungeonData.Direction.SOUTH);
-            RoomFromText.AddExitToRoom(Expand_GlitchedSecret, new Vector2(8, 17), DungeonData.Direction.NORTH);
-            RoomFromText.AddObjectToRoom(Expand_GlitchedSecret, new Vector2(8, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RoomCorruptionAmbience, useExternalPrefab: true));
-            RoomFromText.GenerateDefaultRoomLayout(Expand_GlitchedSecret);
+            RoomBuilder.AddExitToRoom(Expand_GlitchedSecret, new Vector2(0, 8), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_GlitchedSecret, new Vector2(17, 8), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_GlitchedSecret, new Vector2(8, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_GlitchedSecret, new Vector2(8, 17), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_GlitchedSecret, new Vector2(8, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RoomCorruptionAmbience, useExternalPrefab: true));
+            RoomBuilder.GenerateBasicRoomLayout(Expand_GlitchedSecret);
 
 
 
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {
-                GenerateWeightedRoom(ThwompCrossingVertical),
-                GenerateWeightedRoom(ThwompCrossingHorizontal)
+                GenerateWeightedRoom(ThwompCrossingVertical, 0.8f),
+                GenerateWeightedRoom(ThwompCrossingHorizontal, 0.8f),
+                GenerateWeightedRoom(Expand_Apache_FieldOfSaws)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {

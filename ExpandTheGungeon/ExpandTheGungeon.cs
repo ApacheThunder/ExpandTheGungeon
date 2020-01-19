@@ -93,11 +93,9 @@ namespace ExpandTheGungeon {
                 /*ExpandGlitchedEnemies glitchedEnemyDatabase = new ExpandGlitchedEnemies();
                 glitchedEnemyDatabase.SpawnGlitchedPlayerAsEnemy(CurrentPlayer.GetAbsoluteParentRoom(), new IntVector2(3, 3), true);
                 glitchedEnemyDatabase = null;*/
-                                
-                // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
 
-                GameObject NewObject = UnityEngine.Object.Instantiate(ExpandCustomEnemyDatabase.HammerCompanionPrefab, CurrentPlayer.transform.position, Quaternion.identity);
-                NewObject.GetComponent<CompanionController>().Initialize(CurrentPlayer);
+                // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
+                // Rooms for floor 4.
             });
             
             ETGModConsole.Commands.GetGroup("expand").AddUnit("list_items", delegate (string[] e) {
@@ -128,10 +126,37 @@ namespace ExpandTheGungeon {
                 ETGModConsole.Log("Debug Exceptions: " + ExpandStats.debugMode.ToString(), false);
             });
 
-            ETGModConsole.Commands.GetGroup("expand").AddUnit("debug_dumproomlayout", delegate (string[] e) {
-                RoomDebug roomDebug = new RoomDebug();
-                roomDebug.DumpRoomLayoutToText();
-                UnityEngine.Object.Destroy(roomDebug);
+            ETGModConsole.Commands.GetGroup("expand").AddUnit("debug_dumpcurrentroomlayout", delegate (string[] e) {                
+                RoomDebug.DumpCurrentRoomLayout();
+            });
+
+            ETGModConsole.Commands.GetGroup("expand").AddUnit("debug_dumpallroomlayouts", delegate (string[] e) {
+                ETGModConsole.Log("Saving room layouts to PNG files. Please wait...");
+                foreach (WeightedRoom wRoom in ExpandPrefabs.CastleRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.SewersRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.AbbeyRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.MinesRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.CatacombsRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.ForgeRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                foreach (WeightedRoom wRoom in ExpandPrefabs.BulletHellRoomTable.includedRooms.elements) {
+                    if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                }
+                ETGModConsole.Log("Room dump process complete!");
             });
 
             ETGModConsole.Commands.GetGroup("expand").AddUnit("debug_clearroom", delegate (string[] e) {

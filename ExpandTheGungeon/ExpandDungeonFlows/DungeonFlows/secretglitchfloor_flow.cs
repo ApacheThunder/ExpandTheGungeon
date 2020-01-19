@@ -326,7 +326,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 RoomHandler TinyBlankRoom1 = null;
                 RoomHandler TinyBlankRoom2 = null;
 
-                GameObject PlacedSecretKeyPedestal1 = null;
+                // GameObject PlacedSecretKeyPedestal1 = null;
                 GameObject PlacedSecretKeyPedestal2 = null;
                 GameObject PlacedSecretKeyPedestal3 = null;
                 GameObject PlacedSecretKeyPedestal4 = null;
