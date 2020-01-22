@@ -2,7 +2,7 @@
 using UnityEngine;
 using Dungeonator;
 
-namespace ExpandTheGungeon.ExpandMain {
+namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandObjectDatabase : MonoBehaviour {
 
@@ -12,6 +12,8 @@ namespace ExpandTheGungeon.ExpandMain {
         
         private Dungeon convictPastDungeon;
         private Dungeon catacombsDungeon;
+        private Dungeon sewersDungeon;
+        private Dungeon forgeDungeon;
         private ConvictPastController pastController;
         private NightclubCrowdController crowdController;
 
@@ -89,6 +91,8 @@ namespace ExpandTheGungeon.ExpandMain {
         public GameObject DoorsHorizontal_Catacombs;
         public GameObject FoldingTable;
         public GameObject WinchesterMinimapIcon;
+        public GameObject CrushDoor_Horizontal;
+        public GameObject CrushDoor_Vertical;
 
         // DungeonPlacables
         public DungeonPlaceable ExplodyBarrel;
@@ -109,6 +113,8 @@ namespace ExpandTheGungeon.ExpandMain {
             braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             convictPastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_convict");
             catacombsDungeon = DungeonDatabase.GetOrLoadByName("base_catacombs");
+            sewersDungeon = DungeonDatabase.GetOrLoadByName("base_sewer");
+            forgeDungeon = DungeonDatabase.GetOrLoadByName("base_forge");
 
             YellowDrum = sharedAssets2.LoadAsset<GameObject>("Yellow Drum");
             RedDrum = sharedAssets.LoadAsset<GameObject>("Red Drum");
@@ -164,6 +170,22 @@ namespace ExpandTheGungeon.ExpandMain {
             ChestRat = sharedAssets.LoadAsset<GameObject>("Chest_Rat");
             ChestMirror = sharedAssets.LoadAsset<GameObject>("Shrine_Mirror");
             WinchesterMinimapIcon = sharedAssets.LoadAsset<GameObject>("minimap_winchester_icon");
+
+            foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
+                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
+                    if (wRoom.room.name.ToLower().StartsWith("sewer_trash_compactor_001")) {
+                        CrushDoor_Horizontal = wRoom.room.placedObjects[0].nonenemyBehaviour.gameObject;
+                    }
+                }
+            }
+
+            foreach (WeightedRoom wRoom in forgeDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
+                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
+                    if (wRoom.room.name.ToLower().StartsWith("forge_normal_cubulead_03")) {
+                        CrushDoor_Vertical = wRoom.room.placedObjects[0].nonenemyBehaviour.gameObject;
+                    }
+                }
+            }
 
             // Dungeon Placables
             ExplodyBarrel = sharedAssets2.LoadAsset<DungeonPlaceable>("ExplodyBarrel_Maybe");
@@ -223,6 +245,8 @@ namespace ExpandTheGungeon.ExpandMain {
             braveResources = null;
             convictPastDungeon = null;
             catacombsDungeon = null;
+            sewersDungeon = null;
+            forgeDungeon = null;
         }
         
 

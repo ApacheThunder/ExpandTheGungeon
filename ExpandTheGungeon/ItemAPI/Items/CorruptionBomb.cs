@@ -57,7 +57,7 @@ namespace ExpandTheGungeon.ItemAPI {
             glitchBombMinimapObject = new GameObject("CorruptionBomb_MinimapIcon");
             ItemBuilder.AddSpriteToObject(glitchBombMinimapObject.name, "ExpandTheGungeon/Textures/Items/corruptionbomb_minimapicon", glitchBombMinimapObject, true);
             DontDestroyOnLoad(glitchBombMinimapObject);
-            corruptionBomb.minimapIcon = glitchBombMinimapObject;
+            // corruptionBomb.minimapIcon = glitchBombMinimapObject;
 
 
             // Bomb Spawn FX Object

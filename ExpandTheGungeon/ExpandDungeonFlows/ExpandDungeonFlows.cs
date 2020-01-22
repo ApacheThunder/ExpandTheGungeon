@@ -25,7 +25,11 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
             if (flowName.ToLower().EndsWith("secret_doublebeholster_flow")) {
                 GlitchChestFlows = GlitchChestFlows.Shuffle();
-                flowName = BraveUtility.RandomElement(GlitchChestFlows);                
+                if (ExpandStats.randomSeed <= 0.5f) {
+                    flowName = BraveUtility.RandomElement(GlitchChestFlows);
+                } else {
+                    flowName = GlitchChestFlows[UnityEngine.Random.Range(0, GlitchChestFlows.Count)];
+                }
             } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
                 flowName = "secret_doublebeholster_flow";
             }

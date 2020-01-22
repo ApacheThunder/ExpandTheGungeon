@@ -21,13 +21,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             DungeonFlowNode testConnectorNode01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
             // DungeonFlowNode testConnectorNode02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room);
-            // DungeonFlowNode testConnectorNode03 = GenerateDefaultNode(m_CachedFlow, ExpandPrefabs.shop02.category, overrideTable: ExpandPrefabs.shop_room_table);
+            DungeonFlowNode testConnectorNode03 = GenerateDefaultNode(m_CachedFlow, ExpandPrefabs.shop02.category, overrideTable: ExpandPrefabs.shop_room_table);
             // DungeonFlowNode testConnectorNode04 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
-            /*DungeonFlowNode testConnectorNode05 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
-            DungeonFlowNode testConnectorNode06 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
+            //DungeonFlowNode testConnectorNode05 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
+            /*DungeonFlowNode testConnectorNode06 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
             DungeonFlowNode testConnectorNode07 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);*/
 
-            DungeonFlowNode TestRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Apache_FieldOfSaws);
+            DungeonFlowNode TestRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_BootlegRoom);
             DungeonFlowNode TestSecretRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_GlitchedSecret);
 
             m_CachedFlow.name = "Test_CustomRoom_Flow";
@@ -41,16 +41,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(entranceNode, null);
             // m_CachedFlow.AddNodeToFlow(firstConnectorNode, entranceNode);
             // m_CachedFlow.AddNodeToFlow(TestRoomNode_01, firstConnectorNode);
-
             m_CachedFlow.AddNodeToFlow(TestRoomNode_01, entranceNode);
-            m_CachedFlow.AddNodeToFlow(TestSecretRoomNode_01, TestRoomNode_01);
-
+            
             m_CachedFlow.AddNodeToFlow(testConnectorNode01, TestRoomNode_01);
+            m_CachedFlow.AddNodeToFlow(TestSecretRoomNode_01, testConnectorNode01);
+
             // m_CachedFlow.AddNodeToFlow(testConnectorNode02, TestRoomNode_01);
-            // m_CachedFlow.AddNodeToFlow(testConnectorNode03, TestRoomNode_01);
-            //m_CachedFlow.AddNodeToFlow(testConnectorNode04, TestRoomNode_01);
-            /*m_CachedFlow.AddNodeToFlow(testConnectorNode05, TestRoomNode_01);
-            m_CachedFlow.AddNodeToFlow(testConnectorNode06, TestRoomNode_01);
+            m_CachedFlow.AddNodeToFlow(testConnectorNode03, TestRoomNode_01);
+            // m_CachedFlow.AddNodeToFlow(testConnectorNode04, TestRoomNode_01);
+            //m_CachedFlow.AddNodeToFlow(testConnectorNode05, TestRoomNode_01);
+            /*m_CachedFlow.AddNodeToFlow(testConnectorNode06, TestRoomNode_01);
             m_CachedFlow.AddNodeToFlow(testConnectorNode07, TestRoomNode_01);*/
 
             // m_CachedFlow.AddNodeToFlow(lastConnectorNode, TestRoomNode_01);

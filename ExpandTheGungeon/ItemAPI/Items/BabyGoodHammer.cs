@@ -255,7 +255,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!spawnPosition.HasValue) { spawnPosition = (user.CenterPosition.ToIntVector2() - user.CurrentRoom.area.basePosition);  }
 			if (spawnPosition.HasValue) {
                 RoomHandler currentRoom = user.CurrentRoom;
-                GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.ForgeHammer, currentRoom, spawnPosition.Value, true);
+                GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.EXFriendlyForgeHammer, currentRoom, spawnPosition.Value, true);
                 yield return null;
                 
                 if (ForgeHammer) {

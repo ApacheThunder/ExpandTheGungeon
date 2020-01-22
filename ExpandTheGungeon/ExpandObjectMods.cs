@@ -15,7 +15,9 @@ namespace ExpandTheGungeon {
 
         public static ExpandObjectMods Instance { get { return new ExpandObjectMods(); } }
         
-        public void InitSpecialMods() {            
+        public void InitSpecialMods() {
+
+            ExpandStats.randomSeed = Random.value;
 
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
                 List<AGDEnemyReplacementTier> m_cachedReplacementTiers = GameManager.Instance.EnemyReplacementTiers;

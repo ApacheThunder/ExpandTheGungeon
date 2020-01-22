@@ -234,6 +234,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject EXTrapDoorPit;
         public static GameObject EXPlayerMimicBoss;
         public static GameObject EXSawBladeTrap_4x4Zone;
+        public static GameObject EXFriendlyForgeHammer;
+        public static GameObject EXFriendlyForgeHammerBullet;
+        public static GameObject EXBootlegRoomObject;
+        public static GameObject EXBootlegRoomDoorTriggers;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -410,6 +414,15 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             // Forge Hammer prefab for Baby Good Hammer
             ForgeHammer = sharedAssets.LoadAsset<GameObject>("Forge_Hammer");
+
+            EXFriendlyForgeHammerBullet = Instantiate(ForgeHammer.GetComponent<ForgeHammerController>().bulletBank.Bullets[0].BulletObject);
+            EXFriendlyForgeHammerBullet.SetActive(false);
+            EXFriendlyForgeHammerBullet.name = "8x8_fireball_companion_projectile_dark";
+            FakePrefab.MarkAsFakePrefab(EXFriendlyForgeHammerBullet);
+            DontDestroyOnLoad(EXFriendlyForgeHammerBullet);
+
+            ExpandForgeHammerComponent.BuildPrefab();
+
 
             // SquareLightCookie = sharedAssets2.LoadAsset<GameObject>("SquareLightCookie");
             // Arrival = SquareLightCookie.transform.Find("Arrival");
@@ -1314,6 +1327,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXSawBladeTrap_4x4Zone.AddComponent<ExpandSawBladeTrapPlaceable>();
             FakePrefab.MarkAsFakePrefab(EXSawBladeTrap_4x4Zone);
             DontDestroyOnLoad(EXSawBladeTrap_4x4Zone);
+
+            ExpandBootlegRoomPlaceable.BuildPrefab();
 
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");

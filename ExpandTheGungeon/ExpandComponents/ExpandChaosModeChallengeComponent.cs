@@ -258,11 +258,11 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             yield return null;
 
-            if (UnityEngine.Random.value <= 0.6f) {
+            /*if (UnityEngine.Random.value <= 0.6f) {
                 ExpandPlaceCorruptTiles m_ExpandPlaceCorruptTiles = new ExpandPlaceCorruptTiles();
                 m_ExpandPlaceCorruptTiles.PlaceCorruptTiles(GameManager.Instance.Dungeon, currentRoom);
                 Destroy(m_ExpandPlaceCorruptTiles);
-            }
+            }*/
             yield break;
         }
 

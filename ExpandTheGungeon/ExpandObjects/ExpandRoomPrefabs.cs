@@ -1,5 +1,4 @@
-﻿using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandUtilities;
+﻿using ExpandTheGungeon.ExpandUtilities;
 using Dungeonator;
 using System;
 using System.Collections.Generic;
@@ -23,10 +22,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom SecretBossRoom;
         public static PrototypeDungeonRoom FakeBossRoom;
         public static PrototypeDungeonRoom SecretExitRoom;
-        public static PrototypeDungeonRoom ThwompCrossingVertical;
-        public static PrototypeDungeonRoom ThwompCrossingVerticalNoRain;
-        public static PrototypeDungeonRoom ThwompCrossingHorizontal;
         public static PrototypeDungeonRoom PuzzleRoom3;
+        public static PrototypeDungeonRoom ThwompCrossingVerticalNoRain;
 
         // Special Rooms used under certain circumstances when Player picks up Corrupted Junk.
         public static PrototypeDungeonRoom CreepyGlitchRoom;
@@ -66,9 +63,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Rooms for floor 4.
         public static PrototypeDungeonRoom Expand_SpiderMaze;
 
-        // Custom Trap Rooms
+        // Custom Trap Rooms        
+        public static PrototypeDungeonRoom ThwompCrossingVertical;        
+        public static PrototypeDungeonRoom ThwompCrossingHorizontal;
         public static PrototypeDungeonRoom Expand_Apache_FieldOfSaws;
-        
+        public static PrototypeDungeonRoom Expand_Apache_TheCrushZone;
+
         // Custom Secret Rooms
         public static PrototypeDungeonRoom Expand_TinySecret;
         public static PrototypeDungeonRoom Expand_GlitchedSecret;
@@ -80,6 +80,9 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // General purpose destination room for "normal" version of custom elevator object.
         public static PrototypeDungeonRoom Expand_SecretElevatorDestinationRoom;
+
+        // Misc Custom Rooms
+        public static PrototypeDungeonRoom Expand_BootlegRoom;
 
         public static WeightedRoom GenerateWeightedRoom(PrototypeDungeonRoom Room, float Weight = 1, bool LimitedCopies = true, int MaxCopies = 1, DungeonPrerequisite[] AdditionalPrerequisites = null) {
             if (Room == null) { return null; }
@@ -101,9 +104,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             FakeBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            ThwompCrossingVertical = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ThwompCrossingVerticalNoRain = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            ThwompCrossingHorizontal = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -138,7 +139,10 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Expand_SpiderMaze = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
+            ThwompCrossingVertical = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            ThwompCrossingHorizontal = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_FieldOfSaws = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Apache_TheCrushZone = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -149,7 +153,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_GlitchedSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_SecretElevatorEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
-
+            Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
@@ -4288,6 +4292,215 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_FieldOfSaws, "TrapRooms\\Expand_Apache_FieldOfSaws_Layout.png");
 
 
+            Expand_Apache_TheCrushZone.name = "Apache Field of Saws";
+            Expand_Apache_TheCrushZone.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Apache_TheCrushZone.GUID = Guid.NewGuid().ToString();
+            Expand_Apache_TheCrushZone.PreventMirroring = false;
+            Expand_Apache_TheCrushZone.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Apache_TheCrushZone.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Apache_TheCrushZone.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_TheCrushZone.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Apache_TheCrushZone.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Apache_TheCrushZone.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Apache_TheCrushZone.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Apache_TheCrushZone.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Apache_TheCrushZone.placedObjectPositions = new List<Vector2>();
+            Expand_Apache_TheCrushZone.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Apache_TheCrushZone.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Apache_TheCrushZone.overriddenTilesets = 0;
+            Expand_Apache_TheCrushZone.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Apache_TheCrushZone.InvalidInCoop = false;
+            Expand_Apache_TheCrushZone.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Apache_TheCrushZone.preventAddedDecoLayering = false;
+            Expand_Apache_TheCrushZone.precludeAllTilemapDrawing = false;
+            Expand_Apache_TheCrushZone.drawPrecludedCeilingTiles = false;
+            Expand_Apache_TheCrushZone.preventBorders = false;
+            Expand_Apache_TheCrushZone.preventFacewallAO = false;
+            Expand_Apache_TheCrushZone.usesCustomAmbientLight = false;
+            Expand_Apache_TheCrushZone.customAmbientLight = Color.white;
+            Expand_Apache_TheCrushZone.ForceAllowDuplicates = false;
+            Expand_Apache_TheCrushZone.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Apache_TheCrushZone.IsLostWoodsRoom = false;
+            Expand_Apache_TheCrushZone.UseCustomMusic = false;
+            Expand_Apache_TheCrushZone.UseCustomMusicState = false;
+            Expand_Apache_TheCrushZone.CustomMusicEvent = string.Empty;
+            Expand_Apache_TheCrushZone.UseCustomMusicSwitch = false;
+            Expand_Apache_TheCrushZone.CustomMusicSwitch = string.Empty;
+            Expand_Apache_TheCrushZone.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Apache_TheCrushZone.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Apache_TheCrushZone.Width = 37;
+            Expand_Apache_TheCrushZone.Height = 37;
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(0, 5), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(38, 32), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(0, 32), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(38, 5), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(5, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(32, 38), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(32, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_TheCrushZone, new Vector2(5, 38), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 8), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 17), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 26), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 8), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 17), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 26), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 8), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 17), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 26), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 8), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 17), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 26), NonEnemyBehaviour: objectDatabase.CrushDoor_Horizontal.GetComponent<ForgeCrushDoorController>(), yOffset: 2);            
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(8, 4), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(8, 13), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(8, 22), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(8, 31), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(17, 4), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(17, 13), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(17, 22), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(17, 31), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(26, 4), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(26, 13), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(26, 22), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(26, 31), NonEnemyBehaviour: objectDatabase.CrushDoor_Vertical.GetComponent<ForgeCrushDoorController>());
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 29), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 31), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(2, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(4, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(6, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(11, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(13, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(15, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(20, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(22, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(29, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(31, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(12, 13), EnemyBehaviourGuid: "e61cab252cfb435db9172adc96ded75f"); // poisbulon
+            RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 22), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_TheCrushZone, "TrapRooms\\Expand_Apache_TheCrushZone_Layout.png");
+            
 
             SecretExitRoom2.name = "Secret Elevator Exit";
             SecretExitRoom2.QAID = "AA" + UnityEngine.Random.Range(1000, 9999);
@@ -4753,11 +4966,119 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateBasicRoomLayout(Expand_GlitchedSecret);
 
 
+            Expand_BootlegRoom.name = "Expand Apache Bootleg";
+            Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
+            Expand_BootlegRoom.PreventMirroring = false;
+            Expand_BootlegRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_BootlegRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_BootlegRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_BootlegRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_BootlegRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_BootlegRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_BootlegRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_BootlegRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_BootlegRoom.placedObjectPositions = new List<Vector2>();
+            Expand_BootlegRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_BootlegRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_BootlegRoom.overriddenTilesets = 0;
+            Expand_BootlegRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_BootlegRoom.InvalidInCoop = false;
+            Expand_BootlegRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_BootlegRoom.preventAddedDecoLayering = true;
+            Expand_BootlegRoom.precludeAllTilemapDrawing = true;
+            Expand_BootlegRoom.drawPrecludedCeilingTiles = false;
+            Expand_BootlegRoom.preventBorders = false;
+            Expand_BootlegRoom.preventFacewallAO = false;
+            Expand_BootlegRoom.usesCustomAmbientLight = true;
+            Expand_BootlegRoom.customAmbientLight = new Color(0.8f, 0.8f, 0.8f, 1);
+            Expand_BootlegRoom.ForceAllowDuplicates = false;
+            Expand_BootlegRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_BootlegRoom.IsLostWoodsRoom = false;
+            Expand_BootlegRoom.UseCustomMusic = false;
+            Expand_BootlegRoom.UseCustomMusicState = false;
+            Expand_BootlegRoom.CustomMusicEvent = string.Empty;
+            Expand_BootlegRoom.UseCustomMusicSwitch = false;
+            Expand_BootlegRoom.CustomMusicSwitch = string.Empty;
+            Expand_BootlegRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_BootlegRoom.rewardChestSpawnPosition = new IntVector2(-1, -1);            
+            Expand_BootlegRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
+                new PrototypeRoomObjectLayer() {
+                    placedObjects = new List<PrototypePlacedObjectData>() {
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            contentsBasePosition = new Vector2(12, 12),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "0239c0680f9f467dbe5c4aab7dd1eca6", // blobulon
+                            contentsBasePosition = new Vector2(4, 6),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            contentsBasePosition = new Vector2(10, 6),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        }
+                    },
+                    placedObjectBasePositions = new List<Vector2>() {
+                        new Vector2(12, 12),
+                        new Vector2(4, 6),
+                        new Vector2(10, 6)
+                    },
+                    layerIsReinforcementLayer = true,
+                    shuffle = false,
+                    randomize = 0,
+                    suppressPlayerChecks = true,
+                    delayTime = 4,
+                    reinforcementTriggerCondition = RoomEventTriggerCondition.ON_ENEMIES_CLEARED,
+                    probability = 1,
+                    numberTimesEncounteredRequired = 0
+                }
+            };
+            Expand_BootlegRoom.Width = 20;
+            Expand_BootlegRoom.Height = 14;
+            Expand_BootlegRoom.usesProceduralLighting = false;
+            Expand_BootlegRoom.allowFloorDecoration = false;
+            Expand_BootlegRoom.allowWallDecoration = false;
+            Expand_BootlegRoom.usesProceduralDecoration = false;
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(0, 7), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(21, 7), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 15), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomObject.GetComponent<ExpandBootlegRoomPlaceable>());
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomDoorTriggers.GetComponent<ExpandBootlegRoomDoorBlockerPlacables>());
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard (gunsinger)
+            RoomBuilder.GenerateBasicRoomLayout(Expand_BootlegRoom);
+
 
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(ThwompCrossingVertical, 0.8f),
                 GenerateWeightedRoom(ThwompCrossingHorizontal, 0.8f),
-                GenerateWeightedRoom(Expand_Apache_FieldOfSaws)
+                GenerateWeightedRoom(Expand_Apache_FieldOfSaws),
+                GenerateWeightedRoom(Expand_Apache_TheCrushZone)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {

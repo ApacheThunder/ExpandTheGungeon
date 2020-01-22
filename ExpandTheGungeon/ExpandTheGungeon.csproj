@@ -107,6 +107,7 @@
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
+    <Compile Include="ExpandObjects\ExpandBootlegRoomPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
@@ -157,7 +158,7 @@
     <Compile Include="ExpandObjects\ExpandLists.cs" />
     <Compile Include="DungeonFlowModule.cs" />
     <Compile Include="ExpandTheGungeon.cs" />
-    <Compile Include="ExpandMain\ExpandObjectDatabase.cs" />
+    <Compile Include="ExpandObjects\ExpandObjectDatabase.cs" />
     <Compile Include="ExpandComponents\ExpandKickableObject.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\BossrushFlows.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\complex_flow_test.cs" />
@@ -922,6 +923,44 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\Creepy_MirrorBoss_Room_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_TheCrushZone_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegRoom\BootlegRoom_BottomLayer.png" />
+    <EmbeddedResource Include="Textures\BootlegRoom\BootlegRoom_Doors.png" />
+    <EmbeddedResource Include="Textures\BootlegRoom\BootlegRoom_TopLayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegRoom\BootlegRoom_Border.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_cover_left_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_cover_left_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_cover_right_idle_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_cover_right_leap_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_hit_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_hit_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_idle_down_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_idle_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_idle_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_idle_up_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_pitfall_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_pitfall_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_pitfall_003.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_pitfall_004.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_pitfall_005.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_run_down_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_run_left_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_run_right_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_run_up_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_spawn_001.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_spawn_002.png" />
+    <EmbeddedResource Include="Textures\BootlegEnemies2\BulletMan\bulletman_spawn_003.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BehaviorScripts\BootlegBulletMan_BehaviorScript.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,11 +4,118 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandComponents { 
         
     public class ExpandForgeHammerComponent : DungeonPlaceableBehaviour, IPlaceConfigurable {
-    
+        
+        public static void BuildPrefab() {
+
+            ExpandPrefabs.EXFriendlyForgeHammer = new GameObject("Friendly_Forge_Hammer") { layer = 22 };
+            
+            GameObject m_HitEffectObject = Instantiate(ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().HitEffectAnimator.gameObject);
+            GameObject m_TargetAnimatorObject = Instantiate(ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().TargetAnimator.gameObject);
+            GameObject m_ShadowObject = Instantiate(ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().ShadowAnimator.gameObject);
+            GameObject m_ShootPointObject = Instantiate(ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().ShootPoint.gameObject);
+            m_ShootPointObject.name = ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().ShootPoint.gameObject.name;
+
+            m_HitEffectObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
+            m_TargetAnimatorObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
+            m_ShadowObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
+            m_ShootPointObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
+            
+            ExpandPrefabs.EXFriendlyForgeHammer.SetActive(false);
+
+            m_ShadowObject.GetComponent<tk2dSpriteAnimator>().playAutomatically = false;
+            m_ShadowObject.GetComponent<tk2dSpriteAnimator>().DefaultClipId = 28;
+                        
+            tk2dSprite m_NewHammerSprite = ExpandPrefabs.EXFriendlyForgeHammer.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(m_NewHammerSprite, ExpandPrefabs.ForgeHammer.GetComponent<tk2dSprite>());
+                                    
+            tk2dSpriteAnimation m_SourceHammerAnimationLibrary = ExpandPrefabs.ForgeHammer.GetComponent<tk2dSpriteAnimator>().Library;
+            tk2dSpriteAnimation m_HammerAnimationLibrary = ExpandPrefabs.EXFriendlyForgeHammer.AddComponent<tk2dSpriteAnimation>();
+
+            List<tk2dSpriteAnimationClip> m_Clips = new List<tk2dSpriteAnimationClip>();
+
+            foreach (tk2dSpriteAnimationClip clip in m_SourceHammerAnimationLibrary.clips) {
+                if (!string.IsNullOrEmpty(clip.name)) {
+                    if (clip.name.ToLower().StartsWith("hammer_right_out")) {
+                        m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+                    } else if (clip.name.ToLower().StartsWith("hammer_left_out")) {
+                        m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+                    } else if (clip.name.ToLower().StartsWith("hammer_right_slam")) {
+                        m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+                    } else if (clip.name.ToLower().StartsWith("hammer_left_slam")) {
+                        m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+                    }
+                }
+            }
+            
+            if (m_Clips.Count > 0) { m_HammerAnimationLibrary.clips = m_Clips.ToArray(); }
+            
+            ExpandUtility.GenerateSpriteAnimator(ExpandPrefabs.EXFriendlyForgeHammer, m_HammerAnimationLibrary, 0, 0, false, false, false, false, false, false, 0, 0, false, false, false);
+                        
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXFriendlyForgeHammer, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, true, true, false, false, false, false, false, true, new IntVector2(30, 24), new IntVector2(16, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXFriendlyForgeHammer, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, true, true, false, false, false, false, false, true, new IntVector2(30, 8), new IntVector2(16, 16));
+            
+            AIBulletBank m_HammerBulletBank = ExpandPrefabs.EXFriendlyForgeHammer.AddComponent<AIBulletBank>();
+            m_HammerBulletBank.useDefaultBulletIfMissing = true;
+            m_HammerBulletBank.transforms = new List<Transform>(0);
+            m_HammerBulletBank.Bullets = new List<AIBulletBank.Entry>() {
+                new AIBulletBank.Entry() {
+                    Name = "default",
+                    BulletObject = ExpandPrefabs.EXFriendlyForgeHammerBullet,
+                    OverrideProjectile = false,
+                    PlayAudio = false,
+                    AudioSwitch = string.Empty,
+                    AudioEvent = string.Empty,
+                    AudioLimitOncePerFrame = false,
+                    AudioLimitOncePerAttack = false,
+                    MuzzleLimitOncePerFrame = false,
+                    MuzzleInheritsTransformDirection = false,
+                    SpawnShells = false,
+                    ShellForce = 1.75f,
+                    ShellForceVariance = 0.75f,
+                    DontRotateShell = false,
+                    ShellGroundOffset = 0,
+                    ShellsLimitOncePerFrame = false,
+                    rampBullets = false,
+                    rampStartHeight = 0,
+                    rampTime = 0,
+                    conditionalMinDegFromNorth = 0,
+                    forceCanHitEnemies = true,
+                    suppressHitEffectsIfOffscreen = false,
+                    preloadCount = 0,
+                    ProjectileData = new ProjectileData() {
+                        damage = 0,
+                        speed = 0,
+                        range = 0,
+                        damping = 0,
+                        UsesCustomAccelerationCurve = false,
+                        AccelerationCurve = new AnimationCurve(),
+                        CustomAccelerationCurveDuration = 0,
+                        onDestroyBulletScript = new BulletScriptSelector() { scriptTypeName = string.Empty }
+                    },
+                    MuzzleFlashEffects = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] }
+                }
+            };
+
+            GoopDefinition m_HammerGoopDefinition = Instantiate(ExpandPrefabs.ForgeHammer.GetComponent<ForgeHammerController>().GoopToDo);
+            
+            ExpandForgeHammerComponent EXFriendlyHammerController = ExpandPrefabs.EXFriendlyForgeHammer.AddComponent<ExpandForgeHammerComponent>();
+            EXFriendlyHammerController.HitEffectAnimator = m_HitEffectObject.GetComponent<tk2dSpriteAnimator>();
+            EXFriendlyHammerController.TargetAnimator = m_TargetAnimatorObject.GetComponent<tk2dSpriteAnimator>();
+            EXFriendlyHammerController.ShadowAnimator = m_ShadowObject.GetComponent<tk2dSpriteAnimator>();
+            EXFriendlyHammerController.ShootPoint = m_ShootPointObject.transform;
+            EXFriendlyHammerController.GoopToDo = m_HammerGoopDefinition;
+
+            FakePrefab.MarkAsFakePrefab(ExpandPrefabs.EXFriendlyForgeHammer);
+            DontDestroyOnLoad(ExpandPrefabs.EXFriendlyForgeHammer);
+        }
+        
         public ExpandForgeHammerComponent() {
             TracksPlayer = false;
             TracksRandomEnemy = true;
@@ -51,12 +158,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             Hammer_Anim_Out_Right = "hammer_right_out";
 
             BulletScript = new BulletScriptSelector() { scriptTypeName = "ForgeHammerCircle1" };
-            HitEffectAnimator = gameObject.GetComponent<ForgeHammerController>().HitEffectAnimator;
-            TargetAnimator = gameObject.GetComponent<ForgeHammerController>().TargetAnimator;
-            ShadowAnimator = gameObject.GetComponent<ForgeHammerController>().ShadowAnimator;
-            GoopToDo = gameObject.GetComponent<ForgeHammerController>().GoopToDo;
-            ShootPoint = gameObject.GetComponent<ForgeHammerController>().ShootPoint;            
-            Destroy(gameObject.GetComponent<ForgeHammerController>());
 
             m_localTimeScale = 1f;
             m_state = ExpandHammerState.Gone;
@@ -233,14 +334,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                     DoesBulletsOnImpact = false;
                     DoGoopOnImpact = true;
                 } else if (currentTileset == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                    // Downgrade damage on Forge+ since bullets it spawns also end up impacting the enemy too.
-                    DamageToEnemies = 45f;
+                    DamageToEnemies = 60f;
                     DoesBulletsOnImpact = true;
                     DoGoopOnImpact = true;
                     MinTimeBetweenAttacks = 1.25f;
                     MaxTimeBetweenAttacks = 2.5f;
                 } else if (currentTileset == GlobalDungeonData.ValidTilesets.HELLGEON) {
-                    DamageToEnemies = 45f;
+                    DamageToEnemies = 65f;
                     DoesBulletsOnImpact = true;
                     DoGoopOnImpact = true;
                     MinTimeBetweenAttacks = 1.25f;
@@ -284,7 +384,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (m_SelectedEnemy.healthHaver) {
                         if (!m_SelectedEnemy.healthHaver.IsDead) {
                             if (m_SelectedEnemy.specRigidbody) {
-                                m_LastKnownPosition = m_SelectedEnemy.specRigidbody.UnitCenter;
+                                m_LastKnownPosition = m_SelectedEnemy.specRigidbody.GetUnitCenter(ColliderType.Ground);
                             } else {
                                 m_LastKnownPosition = m_SelectedEnemy.sprite.WorldCenter;
                             }
@@ -298,6 +398,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_LastKnownPosition = transform.position;
                 }
             }
+            
             IsActive = true;
             m_isActive = true;
             if (SetState(null) == ExpandHammerState.Gone) { SetState(ExpandHammerState.InitialDelay); }
@@ -308,6 +409,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (encounterTrackable) {
                 GameStatsManager.Instance.HandleEncounteredObject(encounterTrackable);
             }
+            
             IsActive = false;
             m_isActive = false;
         }
@@ -436,10 +538,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         if (TracksRandomEnemy && m_Owner != null) {
                             if (bulletBank) {
                                 bulletBank.OnProjectileCreated = (Action<Projectile>)Delegate.Combine(bulletBank.OnProjectileCreated, new Action<Projectile>(HandleForgeHammerPostProcessProjectile));
-                                if (gameObject.GetComponent<AIBulletBank>()) {
+                                /*if (gameObject.GetComponent<AIBulletBank>()) {
                                     AIBulletBank aiBulletBank = gameObject.GetComponent<AIBulletBank>();
                                     aiBulletBank.Bullets[0].forceCanHitEnemies = true;
-                                }
+                                }*/
                             }
                         }
                     }
@@ -479,6 +581,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void ConfigureOnPlacement(RoomHandler room) {
             ExpandStaticReferenceManager.AllFriendlyHammers.Add(this);            
             m_room = room;
+            gameObject.SetActive(true);
+            ShootPoint.gameObject.SetActive(true);
+            enabled = true;
+
             if (room.visibility == RoomHandler.VisibilityStatus.CURRENT) {
                 DoRealConfigure(true);
             } else {
@@ -533,7 +639,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (targetActor != null && targetActor.healthHaver != null) {
                     if (!targetActor.healthHaver.IsDead) {
                         if (targetActor.specRigidbody) {
-                            m_LastKnownPosition = targetActor.specRigidbody.UnitCenter;
+                            m_LastKnownPosition = targetActor.specRigidbody.GetUnitCenter(ColliderType.Ground);
                         } else {
                             m_LastKnownPosition = targetActor.sprite.WorldCenter;
                         }
@@ -562,10 +668,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         obj.RuntimeUpdateScale(1f / obj.AdditionalScaleMultiplier);
                         obj.RuntimeUpdateScale(1.75f);
                     }
-                    obj.baseData.damage *= 10f;
-                    // m_Owner.DoPostProcessProjectile(obj);
+                    obj.baseData.damage *= 5f;
+                    m_Owner.DoPostProcessProjectile(obj);
                 } else {
-                    obj.baseData.damage *= 10f;
+                    obj.baseData.damage *= 4;
                 }
             }
         }

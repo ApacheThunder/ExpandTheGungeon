@@ -1166,6 +1166,195 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             return collectionData;
         }
+        
+        public static tk2dSpriteCollectionData DuplicateSpriteCollection(GameObject targetObject, tk2dSpriteCollectionData sourceCollection, bool attachCollectionToObject = true, Texture2D spriteSheet = null, List<Texture2D>spriteList = null, Shader overrideShader = null) {
+            if (sourceCollection == null) { return null; }
+
+            tk2dSpriteCollectionData newCollection = null;
+
+            if (attachCollectionToObject) {
+                if (!targetObject.GetComponent<tk2dSpriteCollectionData>()) { targetObject.AddComponent<tk2dSpriteCollectionData>(); }
+                newCollection = targetObject.GetComponent<tk2dSpriteCollectionData>();
+            } else {
+                newCollection = new tk2dSpriteCollectionData();
+            }
+            
+            if (!newCollection) { return null; }
+
+            newCollection.version = sourceCollection.version;
+            newCollection.materialIdsValid = sourceCollection.materialIdsValid;
+            newCollection.premultipliedAlpha = sourceCollection.premultipliedAlpha;
+            newCollection.shouldGenerateTilemapReflectionData = sourceCollection.shouldGenerateTilemapReflectionData;
+            newCollection.textureFilterMode = sourceCollection.textureFilterMode;
+            newCollection.textureMipMaps = sourceCollection.textureMipMaps;
+            newCollection.allowMultipleAtlases = sourceCollection.allowMultipleAtlases;
+            newCollection.spriteCollectionGUID = Guid.NewGuid().ToString();
+            newCollection.spriteCollectionName = (sourceCollection.spriteCollectionName + "(Modified)");
+            newCollection.assetName = sourceCollection.assetName;
+            newCollection.loadable = sourceCollection.loadable;
+            newCollection.invOrthoSize = sourceCollection.invOrthoSize;
+            newCollection.halfTargetHeight = sourceCollection.halfTargetHeight;
+            newCollection.buildKey = sourceCollection.buildKey;
+            newCollection.dataGuid = Guid.NewGuid().ToString();
+            newCollection.managedSpriteCollection = sourceCollection.managedSpriteCollection;
+            newCollection.hasPlatformData = sourceCollection.hasPlatformData;
+            newCollection.spriteCollectionPlatforms = sourceCollection.spriteCollectionPlatforms;
+            newCollection.SpriteDefinedBagelColliders = new List<BagelColliderData>();
+            newCollection.SpriteIDsWithAttachPoints = new List<int>();
+            newCollection.SpriteDefinedAttachPoints = new List<AttachPointData>();
+            newCollection.SpriteIDsWithNeighborDependencies = new List<int>();
+            newCollection.SpriteDefinedIndexNeighborDependencies = new List<NeighborDependencyData>();
+            newCollection.SpriteIDsWithAnimationSequences = new List<int>();
+            newCollection.SpriteDefinedAnimationSequences = new List<SimpleTilesetAnimationSequence>();
+            
+            if (sourceCollection.spriteCollectionPlatformGUIDs != null && sourceCollection.spriteCollectionPlatformGUIDs.Length > 0) {
+                List<string> m_GUIDList = new List<string>();
+                foreach (string GUID in sourceCollection.spriteCollectionPlatformGUIDs) { m_GUIDList.Add(Guid.NewGuid().ToString()); }
+                if (m_GUIDList.Count > 0) { newCollection.spriteCollectionPlatformGUIDs = m_GUIDList.ToArray(); }
+            }
+            newCollection.SpriteIDsWithBagelColliders = new List<int>();
+            if (sourceCollection.SpriteIDsWithBagelColliders.Count > 0) {
+                foreach (int spriteID in sourceCollection.SpriteIDsWithBagelColliders) { newCollection.SpriteIDsWithBagelColliders.Add(spriteID); }
+            }            
+            if (sourceCollection.SpriteDefinedBagelColliders.Count > 0) {
+                foreach (BagelColliderData colliderData in sourceCollection.SpriteDefinedBagelColliders) {
+                    newCollection.SpriteDefinedBagelColliders.Add(
+                        new BagelColliderData(colliderData.bagelColliders) { bagelColliders = colliderData.bagelColliders }
+                    );
+                }
+            }
+            if (sourceCollection.SpriteIDsWithAttachPoints.Count > 0) {
+                foreach (int spriteID in sourceCollection.SpriteIDsWithAttachPoints) { newCollection.SpriteIDsWithAttachPoints.Add(spriteID); }
+            }
+            if (sourceCollection.SpriteDefinedAttachPoints.Count > 0) {
+                foreach (AttachPointData attachPoint in sourceCollection.SpriteDefinedAttachPoints) {
+                    newCollection.SpriteDefinedAttachPoints.Add(new AttachPointData(attachPoint.attachPoints) { attachPoints = attachPoint.attachPoints });
+                }
+            }
+            if (sourceCollection.SpriteIDsWithNeighborDependencies.Count > 0) {
+                foreach (int spriteID in sourceCollection.SpriteIDsWithNeighborDependencies) { newCollection.SpriteIDsWithNeighborDependencies.Add(spriteID); }
+            }
+            if (sourceCollection.SpriteDefinedIndexNeighborDependencies.Count > 0) {
+                foreach (NeighborDependencyData dependencyData in sourceCollection.SpriteDefinedIndexNeighborDependencies) {
+                    newCollection.SpriteDefinedIndexNeighborDependencies.Add(
+                        new NeighborDependencyData(dependencyData.neighborDependencies) { neighborDependencies = dependencyData.neighborDependencies }
+                    );
+                }
+            }
+            if (sourceCollection.SpriteIDsWithAnimationSequences.Count > 0) {
+                foreach (int spriteID in sourceCollection.SpriteIDsWithAnimationSequences) { newCollection.SpriteIDsWithAnimationSequences.Add(spriteID); }
+            }
+            if (sourceCollection.SpriteDefinedAnimationSequences.Count > 0) {
+                foreach (SimpleTilesetAnimationSequence tilesetAnimation in sourceCollection.SpriteDefinedAnimationSequences) {
+                    newCollection.SpriteDefinedAnimationSequences.Add(
+                        new SimpleTilesetAnimationSequence() {
+                            coreceptionMax = tilesetAnimation.coreceptionMax,
+                            coreceptionMin = tilesetAnimation.coreceptionMin,
+                            entries = tilesetAnimation.entries,
+                            loopceptionMax = tilesetAnimation.loopceptionMax,
+                            loopceptionMin = tilesetAnimation.loopceptionMin,
+                            loopceptionTarget = tilesetAnimation.loopceptionTarget,
+                            loopDelayMax = tilesetAnimation.loopDelayMax,
+                            loopDelayMin = tilesetAnimation.loopDelayMin,
+                            playstyle = tilesetAnimation.playstyle,
+                            randomStartFrame = tilesetAnimation.randomStartFrame
+                        }
+                    );
+                }
+            }
+            if (sourceCollection.materialPngTextureId.Length > 0) {
+                List<int> m_materialIDs = new List<int>();
+                foreach (int materialID in sourceCollection.materialPngTextureId) { m_materialIDs.Add(materialID); }
+                if (m_materialIDs.Count > 0) {
+                    newCollection.materialPngTextureId = m_materialIDs.ToArray();
+                } else {
+                    newCollection.materialPngTextureId = new int[0];
+                }
+            } else {
+                newCollection.materialPngTextureId = new int[0];
+            }
+            if (sourceCollection.textures.Length > 0 && spriteSheet != null) {
+                newCollection.textures = new Texture[] { spriteSheet };
+            } else if (sourceCollection.textures.Length > 0) {
+                List<Texture> m_Textures = new List<Texture>();
+                foreach (Texture texture in sourceCollection.textures) { m_Textures.Add(texture); }
+                if (m_Textures.Count > 0) {
+                    newCollection.textures = m_Textures.ToArray();
+                } else {
+                    newCollection.textures = new Texture[0];
+                }
+            } else {
+                newCollection.textures = new Texture[0];
+            }
+            if (sourceCollection.material) { newCollection.material = sourceCollection.material.Copy(spriteSheet, overrideShader); }
+            if (sourceCollection.materials != null && sourceCollection.materials.Length > 0) {
+                List<Material> m_Materials = new List<Material>();
+                foreach (Material material in sourceCollection.materials) { m_Materials.Add(new Material(material)); }
+                if (m_Materials.Count > 0) {
+                    newCollection.materials = m_Materials.ToArray();
+                } else {
+                    newCollection.materials = new Material[0];
+                }
+            } else {
+                sourceCollection.materials = new Material[0];
+            }
+            if (sourceCollection.spriteDefinitions.Length > 0) {
+                List<tk2dSpriteDefinition> m_SpriteDefinitions = new List<tk2dSpriteDefinition>();
+                foreach (tk2dSpriteDefinition spriteDefinition in sourceCollection.spriteDefinitions) { m_SpriteDefinitions.Add(spriteDefinition.Copy()); }
+                if (m_SpriteDefinitions.Count > 0) {
+                    if (overrideShader) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in m_SpriteDefinitions) {
+                            spriteDefinition.material.shader = overrideShader;
+                            spriteDefinition.materialInst = new Material(spriteDefinition.material);
+                        }
+                    }
+                    if (spriteSheet) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in m_SpriteDefinitions) {
+                            spriteDefinition.material.SetTexture("_MainTex", spriteSheet);
+                            spriteDefinition.materialInst = new Material(spriteDefinition.material);
+                        }
+                    }
+                    newCollection.spriteDefinitions = m_SpriteDefinitions.ToArray();
+                } else {
+                    newCollection.spriteDefinitions = new tk2dSpriteDefinition[0];
+                }
+            } else {
+                newCollection.spriteDefinitions = new tk2dSpriteDefinition[0];
+            }
+            if (spriteList != null) {
+                RuntimeAtlasPage m_runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
+                foreach (Texture2D spriteTexture in spriteList) {
+                    float width = (spriteTexture.width / 16);
+                    float height = (spriteTexture.height / 16);
+                    tk2dSpriteDefinition spriteData = newCollection.GetSpriteDefinition(spriteTexture.name);
+                    if (spriteData != null) {
+                        if (spriteData.boundsDataCenter != Vector3.zero) {
+                            RuntimeAtlasSegment runtimeAtlasSegment = m_runtimeAtlasPage.Pack(spriteTexture, false);
+                            spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
+                            if (overrideShader != null) { spriteData.materialInst.shader = overrideShader; }
+                            spriteData.uvs = runtimeAtlasSegment.uvs;
+                            spriteData.extractRegion = true;
+                            spriteData.position0 = new Vector3(0f, 0f, 0f);
+                            spriteData.position1 = new Vector3(width, 0f, 0f);
+                            spriteData.position2 = new Vector3(0f, height, 0f);
+                            spriteData.position3 = new Vector3(width, height, 0f);
+                            spriteData.boundsDataCenter = new Vector2(width / 2f, width / 2f);
+                            spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
+                            spriteData.boundsDataExtents = new Vector2(width, height);
+                            spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
+                        } else {
+                            ETGMod.ReplaceTexture(spriteData, spriteTexture, true);
+                        }
+                    }
+                }
+                m_runtimeAtlasPage.Apply();
+            }
+
+            newCollection.InitDictionary();
+            newCollection.InitMaterialIds();
+
+            return newCollection;
+        }
 
         public static void MakeCompanion(AIActor targetActor, AIActor sourceCompanion = null, PlayerController Owner = null, bool targetIsNewAIActor = false, bool ApplyCharmedColorOverride = true, bool blocksEnemyBullets = true, bool ImmuneToAllDamage = false) {
 

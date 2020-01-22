@@ -13,7 +13,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 
         private static GameObject m_CorpseObject;
                 
-        public static void GenerateGungeoneerMimicBoss(GameObject aiActorObject, PlayerController sourcePlayer = null, bool IsSecretFloorBoss = true) {
+        public static void GenerateGungeoneerMimicBoss(GameObject aiActorObject, PlayerController sourcePlayer = null) {
             
             if (sourcePlayer == null) { sourcePlayer = GameManager.Instance.PrimaryPlayer; }
             if (sourcePlayer == null) { return; }
@@ -168,11 +168,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 if (!CachedEnemyActor.spriteAnimator.Library) { CachedEnemyActor.spriteAnimator.Library = aiActorObject.AddComponent<tk2dSpriteAnimation>(); }
                 CachedEnemyActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray();
             }
-                        
-            if (IsSecretFloorBoss) {
-                PickupObject rat_key = PickupObjectDatabase.GetById(727);
-                if (rat_key) { CachedEnemyActor.AdditionalSafeItemDrops.Add(rat_key); }
-            }
             
             CachedEnemyActor.healthHaver.RegenerateCache();
 
@@ -201,7 +196,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             return;
         }
 
-        public ExpandGungeoneerMimicBossPlacable() { }
+        public ExpandGungeoneerMimicBossPlacable() { isSecretRatFloorBoss = true; }
+
+        bool isSecretRatFloorBoss;
 
         private void Start() { }
 
@@ -253,6 +250,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject SpawnedBossObject = m_CachedNewObject.GetComponent<AIActor>().InstantiateObject(room, SpawnPosition, false);
             SpawnedBossObject.transform.parent = room.hierarchyParent;
             Destroy(m_CachedNewObject);
+
+
+            if (isSecretRatFloorBoss) {
+                PickupObject rat_key = PickupObjectDatabase.GetById(727);
+                if (rat_key) { SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(rat_key); }
+            }
 
             MirrorController mirror = ExpandPrefabs.CurrsedMirrorPlacable.gameObject.GetComponent<MirrorController>();
 
