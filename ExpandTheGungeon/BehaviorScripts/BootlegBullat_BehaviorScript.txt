@@ -1,0 +1,5 @@
+[]
+[{"Radius":35.0,"LineOfSight":false,"ObjectPermanence":true,"SearchInterval":0.25,"PauseOnTargetSwitch":false,"PauseTime":0.25,"$type":"TargetPlayerBehavior"}]   
+[{"StopWhenInRange":false,"CustomRange":6.0,"LineOfSight":true,"ReturnToSpawn":true,"SpawnTetherDistance":0.0,"PathInterval":0.5,"SpecifyRange":false,"MinActiveRange":0.0,"MaxActiveRange":0.0,"$type":"SeekTargetBehavior"}]
+[]
+[]

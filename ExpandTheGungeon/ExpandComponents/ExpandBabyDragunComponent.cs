@@ -92,12 +92,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             float duration = 0.5f;
             Vector3 startPos = targetEnemy.transform.position;
             Vector3 finalOffset = CagedBabyDragun.WorldCenter - startPos.XY();
-            tk2dBaseSprite targetSprite = targetEnemy.GetComponentInChildren<tk2dBaseSprite>();
+            tk2dSprite targetSprite = targetEnemy.GetComponentInChildren<tk2dSprite>();
             if (targetEnemy.behaviorSpeculator) { targetEnemy.behaviorSpeculator.enabled = false; }
             RoomHandler m_ParentRoom = targetEnemy.GetAbsoluteParentRoom();
             if (m_ParentRoom != null) { m_ParentRoom.DeregisterEnemy(targetEnemy); }
-            Destroy(targetEnemy);
-            Destroy(targetEnemy.specRigidbody);
+            // Destroy(targetEnemy);
+            // Destroy(targetEnemy.specRigidbody);
+            targetEnemy.specRigidbody.CollideWithOthers = false;
             CagedBabyDragun.spriteAnimator.PlayForDuration("baby_dragun_weak_eat", -1f, "baby_dragun_weak_idle", false);
             AkSoundEngine.PostEvent("Play_NPC_BabyDragun_Munch_01", gameObject);
             while (elapsed < duration) {
@@ -108,7 +109,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                 yield return null;
             }
             if (!targetSprite || !targetSprite.transform) { m_currentlyEatingEnemy = false; yield break; }
-            Destroy(targetSprite.gameObject);
+            yield return null;
+            // Destroy(targetSprite.gameObject);
+            m_ParentRoom.DeregisterEnemy(targetEnemy);
+            targetEnemy.EraseFromExistence(true);
             m_enemiesEaten++;
             if (m_enemiesEaten >= RequiredEnemies) {
                 while (CagedBabyDragun.spriteAnimator.IsPlaying("baby_dragun_weak_eat")) { yield return null; }

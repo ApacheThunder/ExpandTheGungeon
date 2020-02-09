@@ -4998,18 +4998,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom.ForceAllowDuplicates = false;
             Expand_BootlegRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
             Expand_BootlegRoom.IsLostWoodsRoom = false;
-            Expand_BootlegRoom.UseCustomMusic = false;
+            Expand_BootlegRoom.UseCustomMusic = true;
             Expand_BootlegRoom.UseCustomMusicState = false;
-            Expand_BootlegRoom.CustomMusicEvent = string.Empty;
-            Expand_BootlegRoom.UseCustomMusicSwitch = false;
-            Expand_BootlegRoom.CustomMusicSwitch = string.Empty;
+            Expand_BootlegRoom.CustomMusicEvent = "Play_MUS_Dungeon_State_Winner";
+            Expand_BootlegRoom.UseCustomMusicSwitch = true;
+            Expand_BootlegRoom.CustomMusicSwitch = "Play_EX_MUS_BootlegMusic_01";
             Expand_BootlegRoom.overrideRoomVisualTypeForSecretRooms = false;
             Expand_BootlegRoom.rewardChestSpawnPosition = new IntVector2(-1, -1);            
             Expand_BootlegRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID, // bootleg_shotgunmanred
                             contentsBasePosition = new Vector2(12, 12),
                             layer = 0,
                             xMPxOffset = 0,
@@ -5020,7 +5020,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "0239c0680f9f467dbe5c4aab7dd1eca6", // blobulon
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegBullatGUID, // bootleg_bullat
                             contentsBasePosition = new Vector2(4, 6),
                             layer = 0,
                             xMPxOffset = 0,
@@ -5031,7 +5031,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID, // bootleg_shotgunmanblue
                             contentsBasePosition = new Vector2(10, 6),
                             layer = 0,
                             xMPxOffset = 0,
@@ -5048,7 +5048,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                         new Vector2(10, 6)
                     },
                     layerIsReinforcementLayer = true,
-                    shuffle = false,
+                    shuffle = true,
                     randomize = 0,
                     suppressPlayerChecks = true,
                     delayTime = 4,
@@ -5068,9 +5068,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 15), DungeonData.Direction.NORTH, ContainsDoor: false);
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomObject.GetComponent<ExpandBootlegRoomPlaceable>());
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomDoorTriggers.GetComponent<ExpandBootlegRoomDoorBlockerPlacables>());
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard (gunsinger)
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomDoorTriggers.GetComponent<ExpandBootlegRoomDoorsPlacables>());
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
             RoomBuilder.GenerateBasicRoomLayout(Expand_BootlegRoom);
 
 
@@ -5083,9 +5085,12 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             foreach (WeightedRoom room in CustomTrapRooms) {
                 ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
@@ -5095,6 +5100,18 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_TinySecret, 8),
                 GenerateWeightedRoom(Expand_GlitchedSecret, 2)
             };
+
+            WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };
+
+            foreach (WeightedRoom room in CustomMiscRooms) {
+                ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
+            }
 
             WeightedRoom[] CustomCastleRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_Explode),
@@ -5124,6 +5141,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Enclose_Hub)
             };
 
+           
             WeightedRoom[] CustomHollowsRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_SpiderMaze)
             };
@@ -5147,7 +5165,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             foreach (WeightedRoom room in CustomSecretRooms) {
                 ExpandPrefabs.SecretRoomTable.includedRooms.elements.Add(room);
             }
-            
+
             objectDatabase = null;
             sharedAssets = null;
             sharedAssets2 = null;

@@ -26,55 +26,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             663, // resourceful_sack
             667 // rat_boots
         };
-
-        public static List<string> PotEnemiesList = new List<string> {
-            // "c182a5cb704d460d9d099a47af49c913", // pot_fairy
-            "6ad1cafc268f4214a101dca7af61bc91", // rat
-            "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
-            "76bc43539fc24648bff4568c75c686d1", // chicken
-            "1386da0f42fb4bcabc5be8feb16a7c38", // snake
-            "2feb50a6a40f4f50982e89fd276f6f15", // bullat
-            "b4666cb6ef4f4b038ba8924fd8adf38f", // grenat
-            "2d4f8b5404614e7d8b235006acde427a", // shotgat
-            "7ec3e8146f634c559a7d58b19191cd43", // spirat
-            "d4dd2b2bbda64cc9bcec534b4e920518", // bullet_kings_toadie_revenge
-            "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
-            "95ea1a31fc9e4415a5f271b9aedf9b15", // robots_past_critter_1
-            "42432592685e47c9941e339879379d3a", // robots_past_critter_2
-            "4254a93fc3c84c0dbe0a8f0dddf48a5a", // robots_past_critter_3
-            "b5e699a0abb94666bda567ab23bd91c4", // bullet_kings_toadie
-            "02a14dec58ab45fb8aacde7aacd25b01", // old_kings_toadie
-            "566ecca5f3b04945ac6ce1f26dedbf4f", // mine_flayers_claymore
-            "78a8ee40dff2477e9c2134f6990ef297", // mine_flayers_bell
-            "8b43a5c59b854eb780f9ab669ec26b7a", // dragun_egg_slimeguy
-            "d1c9781fdac54d9e8498ed89210a0238", // tiny_blobulord
-            "4538456236f64ea79f483784370bc62f", // fusebot
-            "b8103805af174924b578c98e95313074", // poisbulin
-            "be0683affb0e41bbb699cb7125fdded6", // mouser
-            "42be66373a3d4d89b91a35c9ff8adfec", // blobulin
-            "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
-            "98fdf153a4dd4d51bf0bafe43f3c77ff", // tazie
-            "226fd90be3a64958a5b13cb0a4f43e97" // musket_kin            
-        };
-
-        public static List<string> PotCritterGUIDList = new List<string>() {
-            "6ad1cafc268f4214a101dca7af61bc91", // rat
-            "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
-            "76bc43539fc24648bff4568c75c686d1", // chicken
-            "1386da0f42fb4bcabc5be8feb16a7c38", // snake
-            "95ea1a31fc9e4415a5f271b9aedf9b15", // robots_past_critter_1
-            "42432592685e47c9941e339879379d3a", // robots_past_critter_2
-            "4254a93fc3c84c0dbe0a8f0dddf48a5a" // robots_past_critter_3
-        };
-
-        public static List<string> PotPestGUIDList = new List<string>() {
-            "6ad1cafc268f4214a101dca7af61bc91", // rat
-            "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
-            "1386da0f42fb4bcabc5be8feb16a7c38", // snake
-            "8b43a5c59b854eb780f9ab669ec26b7a", // dragun_egg_slimeguy
-            "d1c9781fdac54d9e8498ed89210a0238", // tiny_blobulord
-        };
-
+        
         public static List<string> OverrideFallIntoPitsList = new List<string>() {
             "ed37fa13e0fa4fcf8239643957c51293", // gigi
             "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
@@ -415,6 +367,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             "9eba44a0ea6c4ea386ff02286dd0e6bd", // bullet_kin_officesuit
             "2b6854c0849b4b8fb98eb15519d7db1c", // bullet_kin_mech
             "05cb719e0178478685dc610f8b3e8bfc", // bullet_kin_vest
+        };
+
+
+        public static List<string> PotCritterGUIDList = new List<string>() {
+            "6ad1cafc268f4214a101dca7af61bc91", // rat
+            "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
+            "76bc43539fc24648bff4568c75c686d1", // chicken
+            "1386da0f42fb4bcabc5be8feb16a7c38", // snake
+            "95ea1a31fc9e4415a5f271b9aedf9b15", // robots_past_critter_1
+            "42432592685e47c9941e339879379d3a", // robots_past_critter_2
+            "4254a93fc3c84c0dbe0a8f0dddf48a5a" // robots_past_critter_3
         };
 
         

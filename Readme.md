@@ -37,7 +37,8 @@ Features:
  * "Corruption Bomb". A power bomb that corrupts the reality around you. Corrupted enemies can no longer attack. May have suprising effects on other objects. Test it out on things if you dare!
  * "Table Tech Assassin". Tables flipped by enmies are betrayed by their tables. Tabled flipped by enemies explode.
  * "Corrupted Junk". Junk warped by corruption. May grant player an obscene amount of a random consumable. It may also have other unexpected effects.
-
+ * "Cronenberg Bullets". Bullets that have a chance to transmorgify enemies into a horrible cronenberg abomination. Sprite work courtasy of Neighborino!
+ 
 14. Certain NPCs and objects and even a copy of the player can appear as enemies on glitch floors.
 
 15. An unused trap "Alarm Mushroom" has been revived and made usable. It currently appears in random rooms on the Mines, the floor the trap object was intended to appear on.
@@ -58,3 +59,4 @@ Credits:
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
 * Retrash for the Baby Good Hammer item sprite.
 * Charcola for the Table Tech Assassin sprite design.
+* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into.

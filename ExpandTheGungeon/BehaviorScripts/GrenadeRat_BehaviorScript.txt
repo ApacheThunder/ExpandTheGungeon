@@ -1,0 +1,5 @@
+[]
+[]
+[{"PathInterval":0.25,"PointReachedPauseTime":3.0,"PreventFiringWhileMoving":false,"InitialDelay":1.0,"StayOnScreen":false,"AvoidTarget":false,"UseTargetsRoom":false,"$type":"MoveErraticallyBehavior"}]
+[]
+[]

@@ -5,14 +5,11 @@ using System;
 using System.Collections;
 using Pathfinding;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandObjects;
-using ExpandTheGungeon.Resources;
-using System.Reflection;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
-    class ExpandChaosChallengeComponent : ChallengeModifier {
+    public class ExpandChaosChallengeComponent : ChallengeModifier {
 
         public ExpandChaosChallengeComponent() {
             DisplayName = "Apache Thunder's Revenge!";
@@ -156,6 +153,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         public List<string> PotEnemiesBannedRooms;
         public List<string> KillOnRoomClearList;
         public List<string> RoomEnemyGUIDList;
+        public List<string> PotEnemiesList;
+        public List<string> PotPestGUIDList;
 
         public float EnemySpawnOdds;
         public float EnemyResizeOdds;
@@ -166,18 +165,54 @@ namespace ExpandTheGungeon.ExpandComponents {
         private GameObject m_LootCratePrefab;
 
         private IEnumerator Start() {
-
+            
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER | GameManager.Instance.IsLoadingLevel | Dungeon.IsGenerating) { yield break; }
+
+            AlreadyIgnoredForRoomClearList.Add(ExpandCustomEnemyDatabase.RatGrenadeGUID); // rat_granade
+            
+            PotPestGUIDList = new List<string>() {
+                "6ad1cafc268f4214a101dca7af61bc91", // rat
+                "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
+                ExpandCustomEnemyDatabase.RatGrenadeGUID,
+                "1386da0f42fb4bcabc5be8feb16a7c38", // snake
+                "8b43a5c59b854eb780f9ab669ec26b7a", // dragun_egg_slimeguy
+                "d1c9781fdac54d9e8498ed89210a0238", // tiny_blobulord
+            };
+
+            PotEnemiesList = new List<string> {
+                "6ad1cafc268f4214a101dca7af61bc91", // rat
+                "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
+                ExpandCustomEnemyDatabase.RatGrenadeGUID,
+                "76bc43539fc24648bff4568c75c686d1", // chicken
+                "1386da0f42fb4bcabc5be8feb16a7c38", // snake
+                "2feb50a6a40f4f50982e89fd276f6f15", // bullat
+                "b4666cb6ef4f4b038ba8924fd8adf38f", // grenat
+                "2d4f8b5404614e7d8b235006acde427a", // shotgat
+                "7ec3e8146f634c559a7d58b19191cd43", // spirat
+                "d4dd2b2bbda64cc9bcec534b4e920518", // bullet_kings_toadie_revenge
+                "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                "95ea1a31fc9e4415a5f271b9aedf9b15", // robots_past_critter_1
+                "42432592685e47c9941e339879379d3a", // robots_past_critter_2
+                "4254a93fc3c84c0dbe0a8f0dddf48a5a", // robots_past_critter_3
+                "b5e699a0abb94666bda567ab23bd91c4", // bullet_kings_toadie
+                "02a14dec58ab45fb8aacde7aacd25b01", // old_kings_toadie
+                "566ecca5f3b04945ac6ce1f26dedbf4f", // mine_flayers_claymore
+                "78a8ee40dff2477e9c2134f6990ef297", // mine_flayers_bell
+                "8b43a5c59b854eb780f9ab669ec26b7a", // dragun_egg_slimeguy
+                "d1c9781fdac54d9e8498ed89210a0238", // tiny_blobulord
+                "4538456236f64ea79f483784370bc62f", // fusebot
+                "b8103805af174924b578c98e95313074", // poisbulin
+                "be0683affb0e41bbb699cb7125fdded6", // mouser
+                "42be66373a3d4d89b91a35c9ff8adfec", // blobulin
+                "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
+                "98fdf153a4dd4d51bf0bafe43f3c77ff", // tazie
+                "226fd90be3a64958a5b13cb0a4f43e97" // musket_kin            
+            };
+
 
             RoomHandler currentRoom = GameManager.Instance.BestActivePlayer.CurrentRoom;
             if (currentRoom == null) { yield break; }
-
-            if (RatGrenade.RatGrenadeCollection == null) { RatGrenade.Init(); }
-            if (BlueShotGunMan.BootlegBlueShotGunManCollection == null) { BlueShotGunMan.Init(); }
-            if (Bullat.BootlegBullatCollection == null) { Bullat.Init(); }
-            if (BulletMan.BootlegBulletManCollection == null) { BulletMan.Init(); }
-            if (BulletManBandana.BootlegBulletManBandanaCollection == null) { BulletManBandana.Init(); }
-            if (RedShotGunMan.BootlegRedShotGunManCollection == null) { RedShotGunMan.Init(); }            
+                        
             if (ExpandPrefabs.BulletManMonochromeCollection == null) {
                 ExpandPrefabs.BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), true);
             }
@@ -256,13 +291,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
 
-            yield return null;
-
-            /*if (UnityEngine.Random.value <= 0.6f) {
-                ExpandPlaceCorruptTiles m_ExpandPlaceCorruptTiles = new ExpandPlaceCorruptTiles();
-                m_ExpandPlaceCorruptTiles.PlaceCorruptTiles(GameManager.Instance.Dungeon, currentRoom);
-                Destroy(m_ExpandPlaceCorruptTiles);
-            }*/
             yield break;
         }
 
@@ -271,7 +299,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (breakable.CenterPoint.GetAbsoluteRoom() != null) {
                 if(breakable.CenterPoint.GetAbsoluteRoom().IsSealed && UnityEngine.Random.value <= EnemySpawnOdds) {
                     RoomHandler currentRoom = breakable.CenterPoint.GetAbsoluteRoom();
-                    StartCoroutine(DelayedEnemySpawn(EnemySpawnDelay, currentRoom, breakable.CenterPoint, ExpandLists.PotEnemiesList));
+                    StartCoroutine(DelayedEnemySpawn(EnemySpawnDelay, currentRoom, breakable.CenterPoint, PotEnemiesList));
                 }
             }
         }
@@ -289,7 +317,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (breakable.CenterPoint.GetAbsoluteRoom() != null) {
                 if(breakable.CenterPoint.GetAbsoluteRoom().IsSealed && UnityEngine.Random.value <= EnemySpawnOdds) {
                     RoomHandler currentRoom = breakable.CenterPoint.GetAbsoluteRoom();
-                    StartCoroutine(DelayedEnemySpawn(EnemySpawnDelay, currentRoom, breakable.CenterPoint, ExpandLists.PotPestGUIDList));
+                    StartCoroutine(DelayedEnemySpawn(EnemySpawnDelay, currentRoom, breakable.CenterPoint, PotPestGUIDList));
                 }
             }
         }
@@ -977,72 +1005,61 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
-        private void MaybeSwapEnemySprites(AIActor targetActor) {            
-
-            if (targetActor.EnemyGuid == "14ea47ff46b54bb4a98f91ffcffb656d") {
-                if (UnityEngine.Random.value <= 0.5) {
-                    return;
-                } else {
-                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: RatGrenade.RatGrenadeCollection);
-                    targetActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
-                    ExpandExplodeOnDeath RatExplodeComponent = targetActor.healthHaver.gameObject.GetComponent<ExpandExplodeOnDeath>();
-                    RatExplodeComponent.explosionData = EnemyDatabase.GetOrLoadByGuid("b4666cb6ef4f4b038ba8924fd8adf38f").gameObject.GetComponent<ExplodeOnDeath>().explosionData;
-                    RatExplodeComponent.deathType = OnDeathBehavior.DeathType.Death;
-                    RatExplodeComponent.triggerName = string.Empty;
-                    RatExplodeComponent.immuneToIBombApp = false;
-                    RatExplodeComponent.LinearChainExplosion = false;
-                    RatExplodeComponent.LinearChainExplosionData = EnemyDatabase.GetOrLoadByGuid("b4666cb6ef4f4b038ba8924fd8adf38f").gameObject.GetComponent<ExplodeOnDeath>().LinearChainExplosionData;
-                    targetActor.CorpseObject = null;
-                    return;
-                }
-            } else {
-                if (UnityEngine.Random.value > 0.35f) { return; }
-            }
+        private void MaybeSwapEnemySprites(AIActor targetActor) {
+            if (UnityEngine.Random.value > 0.35f) { return; }
 
             if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47" | targetActor.EnemyGuid == "b54d89f9e802455cbb2b8a96a31e8259") {
-	        	targetActor.optionalPalette = null;
-	        	targetActor.procedurallyOutlined = false;
-	        	targetActor.sprite.OverrideMaterialMode = tk2dBaseSprite.SpriteMaterialOverrideMode.NONE;
-	        	targetActor.sprite.renderer.material.SetTexture("_PaletteTex", null);
-	        	FieldInfo field = typeof(AIActor).GetField("m_isPaletteSwapped", BindingFlags.Instance | BindingFlags.NonPublic);
-	        	field.SetValue(targetActor, false);
-	        	if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {
-	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: RedShotGunMan.BootlegRedShotGunManCollection);
+                IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                
+	        	if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {	        		
+                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
+                    Destroy(targetActor.gameObject);
 	        	} else {
-	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: BlueShotGunMan.BootlegBlueShotGunManCollection);
-	        	}
-	        	targetActor.OverrideDisplayName = ("Bootleg " + targetActor.GetActorName());
-	        	targetActor.ActorName += "ALT";
+                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
+                    Destroy(targetActor.gameObject);
+                }
+	        	
 	        	return;
 	        }
 
 	        if (targetActor.EnemyGuid == "01972dee89fc4404a5c408d50007dad5" | targetActor.EnemyGuid == "db35531e66ce41cbb81d507a34366dfe") {
-	        	float Selector = UnityEngine.Random.Range(0, 3);
-	        	if (Selector < 1) {
-	        		if (BulletMan.BootlegBulletManCollection == null) { BulletMan.Init(targetActor); }
+                int Selector = UnityEngine.Random.Range(0, 3);
+                if (Selector == 0) {
+	        		if (ExpandPrefabs.BulletManMonochromeCollection == null) {
+                        ExpandPrefabs.BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
+                    }
 	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManMonochromeCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
 	        		targetActor.OverrideDisplayName = ("1-Bit " + targetActor.GetActorName());
 	        		targetActor.ActorName += "ALT";	        		
 	        		return;
-	        	} else if (Selector >= 1) {
-	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManUpsideDownCollection);
+	        	} else if (Selector == 1){
+                    if (ExpandPrefabs.BulletManUpsideDownCollection == null) {
+                        ExpandPrefabs.BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManUpsideDownTexture, null, null, false);
+                    }
+                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManUpsideDownCollection);
 	        		targetActor.OverrideDisplayName = ("Bizarro " + targetActor.GetActorName());
 	        		targetActor.ActorName += "ALT";
 	        		return;
-	        	} else if (Selector >= 2) {
-	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: BulletMan.BootlegBulletManCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
-	        		targetActor.OverrideDisplayName = ("Bootleg " + targetActor.GetActorName());
-	        		targetActor.ActorName += "ALT";
-	        		return;
-	        	}
-	        	return;
+	        	} else if (Selector > 1) {
+                    IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                    if (targetActor.EnemyGuid == "db35531e66ce41cbb81d507a34366dfe") {
+                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    } else {
+                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    }
+                    targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
+                    Destroy(targetActor.gameObject);
+                }
 	        }
 
 	        if (targetActor.EnemyGuid == "88b6b6a93d4b4234a67844ef4728382c") {
-	        	ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: BulletManBandana.BootlegBulletManBandanaCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
-	        	targetActor.OverrideDisplayName = ("Bootleg " + targetActor.GetActorName());
-	        	targetActor.ActorName += "ALT";
-	        	return;
+                IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
+                Destroy(targetActor.gameObject);
+                return;
 	        }
             return;
         }

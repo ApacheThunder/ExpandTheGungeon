@@ -26,7 +26,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static DungeonFlow Bossrush_01_Castle_Modded = ScriptableObject.CreateInstance<DungeonFlow>();
         public static DungeonFlow MiniBossrush_01 = ScriptableObject.CreateInstance<DungeonFlow>();
 
-        private static PrototypeDungeonRoom gungeon_entrance_modded = Instantiate(sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance"));
+        private static PrototypeDungeonRoom gungeon_entrance_modded = UnityEngine.Object.Instantiate(sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance"));
         
         public static void InitBossrushFlows() {
 

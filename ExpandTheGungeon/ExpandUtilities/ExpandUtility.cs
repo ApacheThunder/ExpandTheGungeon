@@ -28,7 +28,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static Dungeon RatDungeon = null;
 
-        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false) {
+        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }
 
@@ -36,36 +36,31 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             corpseObject = null;
 
-            if (instantiateCorpseObject) {
+            if (instantiateCorpseObject && !EnemyHasNoCorpse) {
                 corpseObject = Instantiate(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").CorpseObject);
                 corpseObject.SetActive(false);
                 FakePrefab.MarkAsFakePrefab(corpseObject);
-            } else if (ExternalCorpseObject) {
+            } else if (ExternalCorpseObject && !EnemyHasNoCorpse) {
                 corpseObject = ExternalCorpseObject;
             }
 
             if (!targetObject.GetComponent<AIActor>() && !gunAttachObjectOverride && !EnemyHasNoShooter) {
                 m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
                 m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
-                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
                 if (GunAttachOffset.HasValue) {
-                    m_CachedGunAttachPoint.transform.localPosition = GunAttachOffset.Value;
+                    m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
                 } else {
-                    m_CachedGunAttachPoint.transform.localPosition = new Vector3(0.3125f, 0.25f, 0);
+                    m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
                 }
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
             } else if (!targetObject.GetComponent<AIActor>() && gunAttachObjectOverride && !EnemyHasNoShooter) {
                 m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-                if (gunAttachObjectOverride.GetComponent<tk2dSprite>()) {
-                    m_CachedGunAttachPoint.AddComponent<tk2dSprite>();
-                    DuplicateSprite(m_CachedGunAttachPoint.GetComponent<tk2dSprite>(), gunAttachObjectOverride.GetComponent<tk2dSprite>());
-                }
-                m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
-                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
                 if (GunAttachOffset.HasValue) {
-                    m_CachedGunAttachPoint.transform.localPosition = GunAttachOffset.Value;
+                    m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
                 } else {
-                    m_CachedGunAttachPoint.transform.localPosition = new Vector3(0.3125f, 0.25f, 0);
+                    m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
                 }
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
             }
 
             if (!targetObject.GetComponent<tk2dSprite>() && spriteSource) {
@@ -103,7 +98,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (!targetObject.GetComponent<HealthHaver>()) {
                 GenerateHealthHaver(targetObject, 15, false, false, OnDeathBehavior.DeathType.Death, true, false, false, false, true, true);
             }
-
+            
             if (!targetObject.GetComponent<HitEffectHandler>()) { targetObject.AddComponent<HitEffectHandler>(); }
 
             HitEffectHandler hitEffectHandler = targetObject.GetComponent<HitEffectHandler>();
@@ -191,10 +186,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_CachedAIActor.ChanceToDropCustomChest = 0;
             m_CachedAIActor.IgnoreForRoomClear = false;
             m_CachedAIActor.SpawnLootAtRewardChestPos = false;
-            if (corpseObject && !ExternalCorpseObject) {
+            if (!EnemyHasNoCorpse && corpseObject && !ExternalCorpseObject) {
                 m_CachedAIActor.CorpseObject = corpseObject;
-            } else if (ExternalCorpseObject) {
+            } else if (!EnemyHasNoCorpse && ExternalCorpseObject) {
                 m_CachedAIActor.CorpseObject = ExternalCorpseObject;
+            } else {
+                m_CachedAIActor.CorpseObject = null;
             }
             m_CachedAIActor.CorpseShadow = true;
             m_CachedAIActor.TransferShadowToCorpse = false;
@@ -491,11 +488,61 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public static void AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+        public static tk2dSpriteAnimationClip AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
             if (!targetAnimator.Library) {
                 targetAnimator.Library = targetAnimator.gameObject.AddComponent<tk2dSpriteAnimation>();
                 targetAnimator.Library.clips = new tk2dSpriteAnimationClip[0];
 			}
+            List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
+			for (int i = 0; i < spriteNameList.Count; i++) {
+                tk2dSpriteDefinition spriteDefinition = collection.GetSpriteDefinition(spriteNameList[i]);
+                if (spriteDefinition != null && spriteDefinition.Valid) {
+                    animationList.Add(
+                        new tk2dSpriteAnimationFrame {
+                            spriteCollection = collection,
+                            spriteId = collection.GetSpriteIdByName(spriteNameList[i]),
+                            invulnerableFrame = false,
+                            groundedFrame = true,
+                            requiresOffscreenUpdate = false,
+                            eventAudio = string.Empty,
+                            eventVfx = string.Empty,
+                            eventStopVfx = string.Empty,
+                            eventLerpEmissive = false,
+                            eventLerpEmissiveTime = 0.5f,
+                            eventLerpEmissivePower = 30,
+                            forceMaterialUpdate = false,
+                            finishedSpawning = false,
+                            triggerEvent = false,
+                            eventInfo = string.Empty,
+                            eventInt = 0,
+                            eventFloat = 0,
+                            eventOutline = tk2dSpriteAnimationFrame.OutlineModifier.Unspecified,
+					    }
+                    );
+				}
+			}
+
+            if (animationList.Count <= 0) {
+                ETGModConsole.Log("[ExpandTheGungeon] AddAnimation: ERROR! Animation list is empty! No valid sprites found in specified list!");
+                return null;
+            }
+
+            tk2dSpriteAnimationClip animationClip = new tk2dSpriteAnimationClip() {
+                name = clipName,
+                frames = animationList.ToArray(),
+                fps = frameRate,
+                wrapMode = wrapMode,
+                loopStart = loopStart,
+                minFidgetDuration = minFidgetDuration,
+                maxFidgetDuration = maxFidgetDuration,
+            };
+            Array.Resize(ref targetAnimator.Library.clips, targetAnimator.Library.clips.Length + 1);
+            targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
+            return animationClip;
+        }
+
+        public static void AddAnimation(tk2dSpriteAnimation targetAnimation, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            if (targetAnimation.clips == null) { targetAnimation.clips = new tk2dSpriteAnimationClip[0]; }
             List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
 			for (int i = 0; i < spriteNameList.Count; i++) {
                 tk2dSpriteDefinition spriteDefinition = collection.GetSpriteDefinition(spriteNameList[i]);
@@ -533,8 +580,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 minFidgetDuration = minFidgetDuration,
                 maxFidgetDuration = maxFidgetDuration,
             };
-            Array.Resize(ref targetAnimator.Library.clips, targetAnimator.Library.clips.Length + 1);
-            targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
+            Array.Resize(ref targetAnimation.clips, targetAnimation.clips.Length + 1);
+            targetAnimation.clips[targetAnimation.clips.Length - 1] = animationClip;
             return;
         }
 
@@ -1101,6 +1148,114 @@ namespace ExpandTheGungeon.ExpandUtilities {
             targetActor.spriteAnimator.Library = spriteAnimator2;
         }
 
+        public static void ApplyCustomTexture(GameObject targetObject, Texture2D newTexture = null, List<Texture2D> spriteList = null, tk2dSpriteCollectionData prebuiltCollection = null, Shader overrideShader = null, bool disablePalette = false) {
+            tk2dSprite m_Sprite = targetObject.GetComponent<tk2dSprite>();
+            tk2dSpriteAnimator m_SpriteAnimator = targetObject.GetComponent<tk2dSpriteAnimator>();
+
+            if (!m_Sprite | ! m_SpriteAnimator) {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Target sprite component or sprite animator component is null on target object: '" + targetObject.name + "'!");
+                return;
+            }
+            if (targetObject.GetComponent<tk2dSpriteAnimation>()) { Destroy(targetObject.GetComponent<tk2dSpriteAnimation>()); }
+
+            tk2dSpriteAnimation m_SpriteAnimation = targetObject.AddComponent<tk2dSpriteAnimation>();
+            List<tk2dSpriteAnimationClip> m_ClipList = new List<tk2dSpriteAnimationClip>();
+
+            foreach (tk2dSpriteAnimationClip clip in m_SpriteAnimator.Library.clips) { m_ClipList.Add(DuplicateAnimationClip(clip)); }
+
+            if (m_ClipList.Count <= 0) {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Target object: '" + targetObject.name + "' has no sprite animations!");
+                return;
+            }
+
+            m_SpriteAnimation.clips = m_ClipList.ToArray();
+
+            if (prebuiltCollection != null) {
+                                
+                foreach (tk2dSpriteAnimationClip clip in m_SpriteAnimation.clips) {
+                    foreach (tk2dSpriteAnimationFrame frame in clip.frames) { frame.spriteCollection = prebuiltCollection; }
+                }
+                
+                m_Sprite.sprite.Collection = prebuiltCollection;
+                m_SpriteAnimator.Library = m_SpriteAnimation;
+                return;
+            }
+
+            tk2dSpriteCollectionData m_CollectionData = DuplicateSpriteCollection(targetObject, m_Sprite.Collection);
+            /*tk2dSpriteDefinition[] spriteDefinitions = new tk2dSpriteDefinition[m_CollectionData.spriteDefinitions.Length];
+            for (int i = 0; i < m_CollectionData.spriteDefinitions.Length; i++) { spriteDefinitions[i] = m_CollectionData.spriteDefinitions[i].Copy(); }
+            m_CollectionData.spriteDefinitions = spriteDefinitions;*/
+           
+            if (newTexture != null) {
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetObject.name, false); }
+                Material[] materials = m_CollectionData.materials;
+                Material[] newMaterials = new Material[materials.Length];
+                if (materials != null) {
+                    for (int i = 0; i < materials.Length; i++) {
+                        newMaterials[i] = materials[i].Copy(newTexture);
+                        if (overrideShader) { newMaterials[i].shader = overrideShader; }
+                    }
+                    m_CollectionData.materials = newMaterials;
+                    foreach (Material material2 in m_CollectionData.materials) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in m_CollectionData.spriteDefinitions) {
+                            if (material2 != null && spriteDefinition.material.name.Equals(material2.name)) {
+                                spriteDefinition.material = material2;
+                                spriteDefinition.materialInst = new Material(material2);
+                                if (overrideShader) {
+                                    spriteDefinition.material.shader = overrideShader;
+                                    spriteDefinition.materialInst.shader = overrideShader;
+                                }
+                            }
+                        }
+                    }
+                }                
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Step 3"); }
+
+                m_Sprite.Collection = m_CollectionData;
+                m_Sprite.SetSprite(m_SpriteAnimator.DefaultClip.frames[0].spriteId);
+                foreach (tk2dSpriteAnimationClip clip in m_SpriteAnimation.clips) {
+                    foreach (tk2dSpriteAnimationFrame frame in clip.frames) { frame.spriteCollection = m_CollectionData; }
+                }
+                return;
+            } else if (spriteList != null) {
+                if (ExpandStats.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetObject.name); }
+                RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
+                foreach (Texture2D texture in spriteList) {
+                    float Width = (texture.width / 16f);
+                    float Height = (texture.height / 16f);
+                    tk2dSpriteDefinition spriteData = m_CollectionData.GetSpriteDefinition(texture.name);
+                    if (spriteData != null) {
+                        if (spriteData.boundsDataCenter != Vector3.zero) {
+                            RuntimeAtlasSegment runtimeAtlasSegment = runtimeAtlasPage.Pack(texture, false);
+                            spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
+                            spriteData.uvs = runtimeAtlasSegment.uvs;
+                            spriteData.extractRegion = true;
+                            spriteData.position0 = Vector3.zero;
+                            spriteData.position1 = new Vector3(Width, 0, 0);
+                            spriteData.position2 = new Vector3(0, Height, 0);
+                            spriteData.position3 = new Vector3(Width, Height, 0);
+                            spriteData.boundsDataCenter = new Vector2((Width / 2f), (Height / 2f));
+                            spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
+                            spriteData.boundsDataExtents = new Vector2(Width, Height);
+                            spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
+                        } else {
+                            ETGMod.ReplaceTexture(spriteData, texture, true);
+                        }
+                    }
+                }
+                runtimeAtlasPage.Apply();
+                m_Sprite.Collection = m_CollectionData;
+                m_Sprite.SetSprite(m_SpriteAnimator.DefaultClip.frames[0].spriteId);
+                foreach (tk2dSpriteAnimationClip clip in m_SpriteAnimation.clips) {
+                    foreach (tk2dSpriteAnimationFrame frame in clip.frames) { frame.spriteCollection = m_CollectionData; }
+                }
+                return;
+            } else {
+                ETGModConsole.Log("Not replacing sprites on " + targetObject.name);
+                return;         
+            }
+        }
+
         public static tk2dSpriteCollectionData BuildSpriteCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<Texture2D> spriteList = null, Shader overrideShader = null, bool IsStatic = false) {
             if (sourceCollection == null) { return null; }
             tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
@@ -1349,10 +1504,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
                 m_runtimeAtlasPage.Apply();
             }
-
-            newCollection.InitDictionary();
-            newCollection.InitMaterialIds();
-
+            // newCollection.InitDictionary();
+            // newCollection.InitMaterialIds();
             return newCollection;
         }
 
@@ -2157,10 +2310,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static IEnumerator DelayedGlitchLevelLoad(float delay, string flowPath, bool IsSecretRatFloor = false, bool useNakatomiTileset = false) {
             if (string.IsNullOrEmpty(flowPath)) { yield break; }            
             if (IsSecretRatFloor) {
-                GameManager.Instance.InjectedFlowPath = flowPath;
                 yield return new WaitForSeconds(delay);
                 ExpandTheGungeon.isGlitchFloor = true;
-                GameManager.Instance.LoadCustomLevel("ss_resourcefulrat");
+                GameManager.Instance.LoadCustomLevel("tt_canyon");
             } else {
                 string flow = flowPath;
                 ExpandDungeonFlow.isGlitchFlow = true;

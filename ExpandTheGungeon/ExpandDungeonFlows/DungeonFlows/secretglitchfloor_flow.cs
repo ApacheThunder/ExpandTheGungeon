@@ -80,8 +80,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_ShopBackRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.ShopBackRoom);
             DungeonFlowNode m_ShopBackRoomExitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom_Pitfall);
 
-            DungeonFlowNode m_SecretKeyShop = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, Instantiate(ExpandPrefabs.shop_special_key_01));
-            DungeonFlowNode m_SecretHubRoom = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, Instantiate(ExpandPrefabs.square_hub));
+            DungeonFlowNode m_SecretKeyShop = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, UnityEngine.Object.Instantiate(ExpandPrefabs.shop_special_key_01));
+            DungeonFlowNode m_SecretHubRoom = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, UnityEngine.Object.Instantiate(ExpandPrefabs.square_hub));
             m_SecretKeyShop.overrideExactRoom.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             m_SecretHubRoom.overrideExactRoom.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             m_SecretHubRoom.overrideExactRoom.name = "Secret Hub Room";
@@ -107,9 +107,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             // m_FirstChainKeyRoomNode.overrideExactRoom.name = "Special Key Room 1";
 
             DungeonFlowNode m_FirstSecretChainNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode m_FirstSecretChainBlankRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandRoomPrefabs.Utiliroom));
-            DungeonFlowNode m_FirstSecretChainBlankRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandRoomPrefabs.Utiliroom));
-            DungeonFlowNode m_FirstSecretChainKeyRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_FirstSecretChainBlankRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_FirstSecretChainBlankRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_FirstSecretChainKeyRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
             m_FirstSecretChainBlankRoomNode_01.overrideExactRoom.name = "Blank Room 1";
             m_FirstSecretChainBlankRoomNode_02.overrideExactRoom.name = "Blank Room 2";
             m_FirstSecretChainKeyRoomNode.overrideExactRoom.name = "Special Key Room 2";
@@ -121,8 +121,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_FirstSecretChainHubNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB);
             DungeonFlowNode m_FirstSecretSpecialSecretNode1 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
             DungeonFlowNode m_FirstSecretSpecialSecretNode2 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom_SpecialPit);
-            DungeonFlowNode m_FirstSecretSpecialSecretNode3 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, Instantiate(ExpandRoomPrefabs.Utiliroom));
-            DungeonFlowNode m_FirstSecretSpecialSecretNode4 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_FirstSecretSpecialSecretNode3 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_FirstSecretSpecialSecretNode4 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
             m_FirstSecretSpecialSecretNode3.overrideExactRoom.name = "Tiny Secret Room 1";
             m_FirstSecretSpecialSecretNode4.overrideExactRoom.name = "Tiny Secret Room 2";
             m_FirstSecretSpecialSecretNode3.overrideExactRoom.category = PrototypeDungeonRoom.RoomCategory.SECRET;
@@ -149,16 +149,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SingleRoomChainNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
 
             DungeonFlowNode m_SpecialMaintenanceHubNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, ExpandRoomPrefabs.SpecialMaintenanceRoom, isWarpWingNode: true);
-            DungeonFlowNode m_SpecialMaintenanceEntranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, Instantiate(ExpandRoomPrefabs.Utiliroom));
+            DungeonFlowNode m_SpecialMaintenanceEntranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
             m_SpecialMaintenanceEntranceNode.overrideExactRoom.name = "Special Entrance";
             DungeonFlowNode m_ThwompTrapRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.ThwompCrossingVerticalNoRain);
 
 
             DungeonFlowNode m_SpecialMaintenanceSecretRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
 
-            DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandPrefabs.gungeon_checkerboard));
+            DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_checkerboard));
             m_PuzzleNode_01.overrideExactRoom.name = "Zelda Puzzle Room 1";
-            DungeonFlowNode m_PuzzleNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandPrefabs.gungeon_normal_fightinaroomwithtonsoftraps));
+            DungeonFlowNode m_PuzzleNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_normal_fightinaroomwithtonsoftraps));
             m_PuzzleNode_02.overrideExactRoom.name = "Zelda Puzzle Room 2";
             // Zelda Puzzle Room 3
             DungeonFlowNode m_PuzzleNode_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom3);
@@ -287,7 +287,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             yield return null;
 
-            GameObject[] GameObjects = FindObjectsOfType<GameObject>();
+            GameObject[] GameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
             if (GameObjects != null) {
                 foreach (GameObject obj in GameObjects) {
                     if (!string.IsNullOrEmpty(obj.name)) {
@@ -338,8 +338,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     GameUIRoot.Instance.UpdatePlayerConsumables(PrimaryPlayer.carriedConsumables);
                 }
 
-                if (FindObjectsOfType<ElevatorArrivalController>() != null) {
-                    foreach (ElevatorArrivalController elevatorArrivalController in FindObjectsOfType<ElevatorArrivalController>()) {
+                if (UnityEngine.Object.FindObjectsOfType<ElevatorArrivalController>() != null) {
+                    foreach (ElevatorArrivalController elevatorArrivalController in UnityEngine.Object.FindObjectsOfType<ElevatorArrivalController>()) {
                         if (elevatorArrivalController.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
                             foreach (tk2dBaseSprite baseSprite in elevatorArrivalController.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true)) {
                                 ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
@@ -348,8 +348,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     }
                 }
 
-                if (FindObjectsOfType<ElevatorDepartureController>() != null) {                    
-                    foreach (ElevatorDepartureController elevatorDepartureController in FindObjectsOfType<ElevatorDepartureController>()) {
+                if (UnityEngine.Object.FindObjectsOfType<ElevatorDepartureController>() != null) {                    
+                    foreach (ElevatorDepartureController elevatorDepartureController in UnityEngine.Object.FindObjectsOfType<ElevatorDepartureController>()) {
                         elevatorDepartureController.UsesOverrideTargetFloor = true;
                         elevatorDepartureController.OverrideTargetFloor = GlobalDungeonData.ValidTilesets.FORGEGEON;
                     }
@@ -387,8 +387,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     GiantElevatorEntranceRoom.ForcePitfallForFliers = true;
                     ExpandUtility.FloorStamper(SpecialMaintenanceRoom, new IntVector2(8, 8), 14, 13, CellType.FLOOR);
 
-                    if (FindObjectsOfType<NoteDoer>() != null) {
-                        foreach (NoteDoer note in FindObjectsOfType<NoteDoer>()) {
+                    if (UnityEngine.Object.FindObjectsOfType<NoteDoer>() != null) {
+                        foreach (NoteDoer note in UnityEngine.Object.FindObjectsOfType<NoteDoer>()) {
                             if (note.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(SpecialMaintenanceRoom.GetRoomName())) {
                                 note.stringKey = "A mini dungeon strung together by Lunk based on previous Dungeons he had encountered.\nFind the keys to gain access to the final puzzle.";
                                 note.alreadyLocalized = true;
@@ -439,7 +439,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     SecretRewardRoom.RegisterInteractable(PlacedRainbowChestComponent);
 
                     Vector3 SpecialLockedDoorPosition = new Vector3(9, 52.25f) + SecretRewardRoom.area.basePosition.ToVector3();
-                    GameObject SpecialLockedDoor = Instantiate(objectDatabase.LockedJailDoor, SpecialLockedDoorPosition, Quaternion.identity);
+                    GameObject SpecialLockedDoor = UnityEngine.Object.Instantiate(objectDatabase.LockedJailDoor, SpecialLockedDoorPosition, Quaternion.identity);
                     SpecialLockedDoor.transform.parent = SecretRewardRoom.hierarchyParent;
                     InteractableLock SpecialLockedDoorComponent = SpecialLockedDoor.GetComponentInChildren<InteractableLock>();
                     SpecialLockedDoorComponent.lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
@@ -552,8 +552,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     SecretRewardRoom.RegisterInteractable(PuzzleRatChest6Component);
 
 
-                    if (FindObjectsOfType<NoteDoer>() != null) {
-                        foreach (NoteDoer note in FindObjectsOfType<NoteDoer>()) {
+                    if (UnityEngine.Object.FindObjectsOfType<NoteDoer>() != null) {
+                        foreach (NoteDoer note in UnityEngine.Object.FindObjectsOfType<NoteDoer>()) {
                             if (note.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(SecretRewardRoom.GetRoomName())) {
                                 note.stringKey = "A minigame Lunk created based on a game he used to play in a land far away.\nGuess the right chest to continue forward.\n If you can guess the correct chest 3 times, the ultimate prize shall be gained!";
                                 note.alreadyLocalized = true;
@@ -675,8 +675,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
                 if (PuzzleRoom1 != null) {
                     List<AIActor> PuzzleEnemyList = new List<AIActor>();
-                    if (FindObjectsOfType<AIActor>() != null) {
-                        foreach (AIActor actor in FindObjectsOfType<AIActor>()) {
+                    if (UnityEngine.Object.FindObjectsOfType<AIActor>() != null) {
+                        foreach (AIActor actor in UnityEngine.Object.FindObjectsOfType<AIActor>()) {
                             if (actor.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(PuzzleRoom1.GetRoomName())) {
                                 PuzzleEnemyList.Add(actor);
                             }
@@ -755,9 +755,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.B;
                         GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
                         PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
-                        PickupObject item2 = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);                        
-                        Destroy(RatBossAIActor.gameObject.GetComponent<ResourcefulRatDeathController>());
-                        Destroy(RatBossAIActor.gameObject.GetComponent<ResourcefulRatRewardRoomController>());
+                        PickupObject item2 = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
+                        UnityEngine.Object.Destroy(RatBossAIActor.gameObject.GetComponent<ResourcefulRatDeathController>());
+                        UnityEngine.Object.Destroy(RatBossAIActor.gameObject.GetComponent<ResourcefulRatRewardRoomController>());
                         RatBossAIActor.State = AIActor.ActorState.Awakening;
                         RatBossAIActor.StealthDeath = true;
                         RatBossAIActor.healthHaver.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
@@ -799,7 +799,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
 
             yield return null;
-            Destroy(objectDatabase);
+            UnityEngine.Object.Destroy(objectDatabase);
             assetBundle = null;
             assetBundle2 = null;
             yield return new WaitForSeconds(1.2f);

@@ -216,10 +216,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                             } else {
                                 GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), useNakatomiTileset: BraveUtility.RandomBool()));
                             }
-                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {                            
-                            ExpandUtility.RatDungeon = DungeonDatabase.GetOrLoadByName("Base_ResourcefulRat");
-                            ExpandUtility.RatDungeon.LevelOverrideType = GameManager.LevelOverrideState.NONE;
-                            ExpandPrefabs.InitCanyonTileSet(ExpandUtility.RatDungeon, GlobalDungeonData.ValidTilesets.PHOBOSGEON);
+                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                             GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, "SecretGlitchFloor_Flow", true));
                         } else {
                             GameManager.Instance.DelayedLoadNextLevel(delay);

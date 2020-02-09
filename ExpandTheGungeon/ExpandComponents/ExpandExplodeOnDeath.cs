@@ -17,12 +17,22 @@ namespace ExpandTheGungeon.ExpandComponents {
             isCorruptedObject = false;
             ExplosionNotGuranteed = false;
             isCorruptedNPC = false;
+            spawnShardsOnDeath = false;
 
             numberOfDefaultItemsToSpawn = 1;
 
             ExplosionOdds = 0.3f;
             ExplosionDamage = 120f;
-            
+
+            breakStyle = MinorBreakable.BreakStyle.BURST;
+            direction = Vector2.zero;
+            minAngle = 0;
+            maxAngle = 0;
+            verticalSpeed = 0.4f;
+            minMagnitude = 0.25f;
+            maxMagnitude = 0.5f;
+            heightOffGround = 0.1f;
+
             m_hasTriggered = false;
             // m_GrenadeGuyPrefab = EnemyDatabase.GetOrLoadByGuid("4d37ce3d666b4ddda8039929225b7ede").gameObject;            
             // ExpandExplosionData = m_GrenadeGuyPrefab.gameObject.GetComponent<ExplodeOnDeath>().explosionData;
@@ -35,6 +45,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool isCorruptedObject;
         public bool isCorruptedNPC;
         public bool ExplosionNotGuranteed;
+        public bool spawnShardsOnDeath;
 
         public int numberOfDefaultItemsToSpawn;
 
@@ -49,6 +60,19 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public BaseShopController NPCShop;
 
+        public MinorBreakable.BreakStyle breakStyle;
+
+        public Vector2 direction;
+
+        public float minAngle;
+        public float maxAngle;
+        public float verticalSpeed;
+        public float minMagnitude;
+        public float maxMagnitude;
+        public float heightOffGround;
+
+        public ShardCluster[] shardClusters;
+
         public void ManuallyTrigger(Vector2 damageDirection) { OnTrigger(damageDirection); }
 
         protected override void OnTrigger(Vector2 dirVec) {
@@ -60,6 +84,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 if (isCorruptedNPC) { EnableShopTheftAndCurse(); }
                 if (isCorruptedObject) { DoCorruptedDeathSFX(); }
+
+                if (spawnShardsOnDeath) { HandleShardSpawns(dirVec); }
 
                 DoExplosion();
 
@@ -139,6 +165,56 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield break;
         }
 
+        public void HandleShardSpawns(Vector2 sourceVelocity) {
+            MinorBreakable.BreakStyle breakStyle = this.breakStyle;
+            if (sourceVelocity == Vector2.zero && this.breakStyle != MinorBreakable.BreakStyle.CUSTOM) { breakStyle = MinorBreakable.BreakStyle.BURST; }
+            float num = 1.5f;
+            switch (breakStyle) {
+                case MinorBreakable.BreakStyle.CONE:
+                    SpawnShards(sourceVelocity, -45f, 45f, num, sourceVelocity.magnitude * 0.5f, sourceVelocity.magnitude * 1.5f);
+                    break;
+                case MinorBreakable.BreakStyle.BURST:
+                    SpawnShards(Vector2.right, -180f, 180f, num, 1f, 2f);
+                    break;
+                case MinorBreakable.BreakStyle.JET:
+                    SpawnShards(sourceVelocity, -15f, 15f, num, sourceVelocity.magnitude * 0.5f, sourceVelocity.magnitude * 1.5f);
+                    break;
+                default:
+                    if (breakStyle == MinorBreakable.BreakStyle.CUSTOM) {
+                        SpawnShards(direction, minAngle, maxAngle, verticalSpeed, minMagnitude, maxMagnitude);
+                    }
+                    break;
+            }
+        }
+
+        public void SpawnShards(Vector2 direction, float minAngle, float maxAngle, float verticalSpeed, float minMagnitude, float maxMagnitude) {
+            Vector3 position = specRigidbody.GetUnitCenter(ColliderType.HitBox);
+            if (shardClusters != null && shardClusters.Length > 0) {
+                int num = Random.Range(0, 10);
+                for (int i = 0; i < shardClusters.Length; i++) {
+                    ShardCluster shardCluster = shardClusters[i];
+                    int num2 = Random.Range(shardCluster.minFromCluster, shardCluster.maxFromCluster + 1);
+                    int num3 = Random.Range(0, shardCluster.clusterObjects.Length);
+                    for (int j = 0; j < num2; j++) {
+                        float lowDiscrepancyRandom = BraveMathCollege.GetLowDiscrepancyRandom(num);
+                        num++;
+                        float z = Mathf.Lerp(minAngle, maxAngle, lowDiscrepancyRandom);
+                        Vector3 vector = Quaternion.Euler(0f, 0f, z) * (direction.normalized * Random.Range(minMagnitude, maxMagnitude)).ToVector3ZUp(verticalSpeed);
+                        int num4 = (num3 + j) % shardCluster.clusterObjects.Length;
+                        GameObject gameObject = SpawnManager.SpawnDebris(shardCluster.clusterObjects[num4].gameObject, position, Quaternion.identity);
+                        tk2dSprite component = gameObject.GetComponent<tk2dSprite>();
+                        if (sprite.attachParent != null && component != null) {
+                            component.attachParent = sprite.attachParent;
+                            component.HeightOffGround = sprite.HeightOffGround;
+                        }
+                        DebrisObject component2 = gameObject.GetComponent<DebrisObject>();
+                        vector = Vector3.Scale(vector, shardCluster.forceAxialMultiplier) * shardCluster.forceMultiplier;
+                        component2.Trigger(vector, heightOffGround, shardCluster.rotationMultiplier);
+                    }
+                }
+            }
+        }
+        
         protected override void OnDestroy() { base.OnDestroy(); }
     }
 }

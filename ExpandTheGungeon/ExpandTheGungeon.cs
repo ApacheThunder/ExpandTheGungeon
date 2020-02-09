@@ -17,10 +17,14 @@ namespace ExpandTheGungeon {
 
         public static string ConsoleCommandName;
 
+        public static Texture2D ModLogo;
         public static Hook GameManagerHook;
+        public static Hook MainMenuFoyerUpdateHook;
         
         public static bool isGlitchFloor = false;
         public static bool ItemAPISetup = false;
+        public static bool LogoEnabled = false;
+
 
         // public static GameObject TestObject;
 
@@ -50,12 +54,22 @@ namespace ExpandTheGungeon {
                 "Baby Good Hammer",
                 "Corruption Bomb",
                 "Table Tech Assassin",
-                "ex:bloodied_scarf"
+                "ex:bloodied_scarf",
+                "Cronenberg Bullets"
             };
-
+            
             AudioResourceLoader.InitAudio();
 
+            ModLogo = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\logo.png");
+            ModLogo.filterMode = FilterMode.Point;
+            
+
             try {
+                MainMenuFoyerUpdateHook = new Hook(
+                    typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(ExpandTheGungeon).GetMethod("MainMenuUpdateHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(MainMenuFoyerController)
+                );
                 ExpandSharedHooks.InstallRequiredHooks();
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
             } catch (Exception ex) {
@@ -75,7 +89,9 @@ namespace ExpandTheGungeon {
                 // Init Custom Room Prefabs
                 ExpandRoomPrefabs.InitCustomRooms();
                 // Init Custom DungeonFlow(s)
-                ExpandDungeonFlow.InitDungeonFlows();                
+                ExpandDungeonFlow.InitDungeonFlows();
+                // Init Custom Dungeons Prefabs
+                ExpandCustomDungeonPrefabs.InitCustomDungeons();             
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
@@ -105,6 +121,8 @@ namespace ExpandTheGungeon {
                     ExpandRedScarf.Init();
                     TableTechAssassin.Init();
                     CorruptedJunk.Init();
+                    BootlegGuns.Init();
+                    CronenbergBullets.Init();
                     ItemAPISetup = true;
                 } catch (Exception e2) {
                     Tools.PrintException(e2, "FF0000");
@@ -115,6 +133,14 @@ namespace ExpandTheGungeon {
         private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
+        }
+
+        private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
+            orig(self);
+            if (((dfTextureSprite)self.TitleCard).Texture.name != ModLogo.name) {
+                ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
+                LogoEnabled = true;
+            }
         }
 
         private void InitConsoleCommands(string MainCommandName) {
@@ -244,12 +270,12 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandTestCommand(string[] consoleText) {
-            // GameObject soundObject = new GameObject("SoundSource");
+            GameObject soundObject = new GameObject("SoundSource");
             // soundObject.transform.position = GameManager.Instance.BestActivePlayer.transform.position;
             // AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", soundObject);
-            // AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
+            AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
             // ETGModConsole.Log(TestObject.name);
-            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
             /*Dungeon dungeon = GameManager.Instance.Dungeon;
 
             if (dungeon && CurrentPlayer) {
@@ -280,10 +306,8 @@ namespace ExpandTheGungeon {
 
             // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
             // Rooms for floor 4.
-
-            AIActor bootlegbulletman = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManGUID), (CurrentPlayer.transform.PositionVector2().ToIntVector2() - new IntVector2(2, 0)), CurrentPlayer.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
-            bootlegbulletman.HandleReinforcementFallIntoRoom();
-
+            isGlitchFloor = true;
+            GameManager.Instance.LoadCustomLevel("tt_canyon");
             return;
         }        
     }

@@ -11,10 +11,10 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandGungeoneerMimicBossController : BraveBehaviour {
         
         public ExpandGungeoneerMimicBossController() {
-            IntroDone = false;
+            IntroDone = true;
             MovedToCenter = false;
             RotationAngle = 90;
-            UsesRotationInsteadOfInversion = true;
+            UsesRotationInsteadOfInversion = false;
             UseGlitchShader = false;
             EnableFallBackAttacks = true;
 
@@ -80,6 +80,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_IsDisconnected;
         
         private RoomHandler m_ParentRoom;
+        private ExpandGungeoneerMimicIntroDoer m_IntroDoer;
 
         protected bool m_CanAttack {
             get {
@@ -99,6 +100,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!m_Player) { m_Player = GameManager.Instance.PrimaryPlayer; }
            
             m_AIActor = aiActor;
+            m_IntroDoer = gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
 
             if (!m_AIActor | !m_Player) {
                 Destroy(gameObject);
@@ -110,9 +112,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_ParentRoom = m_AIActor.GetAbsoluteParentRoom();
             
             if (m_StartingGuns != null && m_StartingGuns.Count > 0) {
-                foreach (int GunID in m_StartingGuns) {
-                    ChangeOrAddGun(m_AIActor.aiShooter.Inventory, GunID);
-                }
+                foreach (int GunID in m_StartingGuns) { ChangeOrAddGun(m_AIActor.aiShooter.Inventory, GunID); }
             }
 
             if (UseGlitchShader) { SetupPlayerGlitchShader(); };
@@ -131,7 +131,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void Update() {
 
             if (!m_HasBeenActivated && m_Player && m_Player.GetAbsoluteParentRoom() != null && transform.position.GetAbsoluteRoom() != null && m_Player.GetAbsoluteParentRoom() == transform.position.GetAbsoluteRoom()) {
-                // m_Player.PostProcessProjectile += HandleProjectile;
                 m_Player.PostProcessBeam += HandleBeam;
                 m_AIActor.specRigidbody.CollideWithTileMap = true;
                 m_AIActor.BehaviorOverridesVelocity = true;
@@ -141,7 +140,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (m_HasBeenActivated && m_Player == null) { m_Player = GameManager.Instance.BestActivePlayer; }
 
-            if (!IntroDone | m_AIActor.healthHaver.IsDead | m_Player.spriteAnimator.IsPlaying("death_shot") | m_Player.spriteAnimator.IsPlaying("death_shot_armorless")) { return; }
+            if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead | m_Player.spriteAnimator.IsPlaying("death_shot") | m_Player.spriteAnimator.IsPlaying("death_shot_armorless")) { return; }
 
             if (!MovedToCenter) {
                 m_IsPathfindingToCenter = true;
@@ -153,9 +152,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (m_DelayedActive && m_Player && m_AIActor) {
                 UpdateSprites();
-                /*if (m_AIActor.aiShooter.CurrentGun.Handedness == GunHandedness.TwoHanded) {
-                    if (!m_AIActor.aiShooter.AllowTwoHands) { m_AIActor.aiShooter.AllowTwoHands = true; }
-                }*/
                 if (m_AIActor.spriteAnimator.IsPlaying("run_down")) { m_AIActor.spriteAnimator.Stop(); }
             }
 
@@ -217,7 +213,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (m_IsDisconnected) { return; }
 
-            if (!IntroDone | m_AIActor.healthHaver.IsDead) { return; }
+            if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead) { return; }
 
             m_RandomRefresh -= BraveTime.DeltaTime;
 
@@ -270,10 +266,32 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (!m_AIActor.BehaviorOverridesVelocity && !m_IsPathfindingToCenter) { m_AIActor.BehaviorOverridesVelocity = true; }
                 if (!m_IsPathfindingToCenter && UsesRotationInsteadOfInversion) {
                     if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                    if (!m_MovementStutter) { m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY(); }
+                    if (!m_MovementStutter) {
+                        if (m_MirrorGunToggle) {
+                            m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
+                        } else {
+                            Vector2 m_CurrentVector = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
+                            float Div = 1.1f;
+                            if (GameManager.IsTurboMode) { Div = 1.25f; }
+                            float X = (m_CurrentVector.x / Div);
+                            float Y = (m_CurrentVector.y / Div);
+                            m_AIActor.BehaviorVelocity = new Vector2(X, Y);
+                        }
+                    }
                 } else if (!m_IsPathfindingToCenter) {
                     if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                    if (!m_MovementStutter) { m_AIActor.BehaviorVelocity = m_AIActor.TargetRigidbody.Velocity * -1f; }
+                    if (!m_MovementStutter) {
+                        if (m_MirrorGunToggle) {
+                            m_AIActor.BehaviorVelocity = (m_AIActor.TargetRigidbody.Velocity * -1f);
+                        } else {
+                            Vector2 m_CurrentVector = (m_AIActor.TargetRigidbody.Velocity * -1f);
+                            float Div = 1.1f;
+                            if (GameManager.IsTurboMode) { Div = 1.25f; }
+                            float X = (m_CurrentVector.x / Div);
+                            float Y = (m_CurrentVector.y / Div);
+                            m_AIActor.BehaviorVelocity = m_CurrentVector;
+                        }
+                    }
                 }
             }
         }
@@ -334,7 +352,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             source.SetNewShooter(m_AIActor.specRigidbody);
             source.MakeLookLikeEnemyBullet(true);
             // source.RemovePlayerOnlyModifiers();
-            if (source.baseData != null) { source.baseData.speed = (source.baseData.speed / 1.15f); }
+            if (source.baseData != null) {
+                if (!GameManager.IsTurboMode) {
+                    source.baseData.speed = (source.baseData.speed / 1.2f);
+                } else {
+                    source.baseData.speed = (source.baseData.speed / 1.27f);
+                }
+            }
         }
         
         private void HandleBeam(BeamController obj) {

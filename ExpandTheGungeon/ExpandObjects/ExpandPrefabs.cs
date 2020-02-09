@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Gungeon;
-using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
@@ -11,7 +10,7 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
-    class ExpandPrefabs : MonoBehaviour {
+    public class ExpandPrefabs : MonoBehaviour {
 
         private static AssetBundle sharedAssets;
         private static AssetBundle sharedAssets2;
@@ -267,8 +266,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             BulletManMonochromeTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_Monochrome.png");
             BulletManUpsideDownTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_UpsideDown.png");
             
-            BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
-            BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManUpsideDownTexture, null, null, false);
+            // BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
+            // BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManUpsideDownTexture, null, null, false);
             
             RedBulletShotgunManTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\RedBulletShotgunMan.png");
             BlueBulletShotgunManTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BlueBulletShotgunMan.png");
@@ -1250,7 +1249,104 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_AlarmMushroomAnimator, m_AlarmMushroomSprite.Collection, m_AlarmMushroom_breakSprites, "alarm_mushroom_break", frameRate: 8, wrapMode: tk2dSpriteAnimationClip.WrapMode.Once);
             SpeculativeRigidbody m_EXAlarmMushroomRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EXAlarmMushroom, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(7, 10), offset: new IntVector2(2, 7));
 
-            EXAlarmMushroom.AddComponent<ExpandAlarmMushroomPlacable>();
+            ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = EXAlarmMushroom.AddComponent<ExpandAlarmMushroomPlacable>();
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride = ScriptableObject.CreateInstance<DungeonPlaceable>();
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.width = 1;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.height = 1;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.isPassable = true;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.roomSequential = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.respectsEncounterableDifferentiator = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.UsePrefabTransformOffset = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.MarkSpawnedItemsAsRatIgnored = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.DebugThisPlaceable = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.IsAnnexTable = false;
+            m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.variantTiers = new List<DungeonPlaceableVariant>() {
+                new DungeonPlaceableVariant() {
+                    percentChance = 50,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 25,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "f905765488874846b7ff257ff81d6d0c", // fungun
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 25,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "70216cae6c1346309d86d4a0b4603045", // veteran_bullet_kin
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 25,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "db35531e66ce41cbb81d507a34366dfe", // ak47_bullet_kin
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 50,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 60,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "3cadf10c489b461f9fb8814abc1a09c1", // minelet
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 30,
+                    percentChanceMultiplier = 1,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = "df7fb62405dc4697b7721862c7b6b3cd", // treadnaughts_bullet_kin
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                }
+            };
+
             FakePrefab.MarkAsFakePrefab(EXAlarmMushroom);
             DontDestroyOnLoad(EXAlarmMushroom);
             
@@ -1566,9 +1662,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 MinesDungeonPrefab.roomMaterialDefinitions[7]
             };
             dungeon.pathGridDefinitions = MinesDungeonPrefab.pathGridDefinitions;            
-            dungeon.doorObjects = FinalScenarioPilotPrefab.doorObjects;
-            dungeon.oneWayDoorObjects = FinalScenarioPilotPrefab.oneWayDoorObjects;
-            dungeon.oneWayDoorPressurePlate = FinalScenarioPilotPrefab.oneWayDoorPressurePlate;
+            dungeon.doorObjects = MinesDungeonPrefab.doorObjects;
+            dungeon.oneWayDoorObjects = MinesDungeonPrefab.oneWayDoorObjects;
+            dungeon.oneWayDoorPressurePlate = MinesDungeonPrefab.oneWayDoorPressurePlate;
+            dungeon.lockedDoorObjects = MinesDungeonPrefab.lockedDoorObjects;
             dungeon.PlayerLightColor = MinesDungeonPrefab.PlayerLightColor;
             dungeon.PlayerLightIntensity = MinesDungeonPrefab.PlayerLightIntensity;
             dungeon.PlayerLightRadius = MinesDungeonPrefab.PlayerLightRadius;
@@ -1598,10 +1695,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.decoSettings.minLightExpanseWidth = MinesDungeonPrefab.decoSettings.minLightExpanseWidth;
             dungeon.decoSettings.lightHeight = MinesDungeonPrefab.decoSettings.lightHeight;
             dungeon.decoSettings.lightCookies = MinesDungeonPrefab.decoSettings.lightCookies;*/
-            dungeon.doorObjects = MinesDungeonPrefab.doorObjects;
-            dungeon.oneWayDoorObjects = MinesDungeonPrefab.oneWayDoorObjects;
-            dungeon.oneWayDoorPressurePlate = MinesDungeonPrefab.oneWayDoorPressurePlate;
-            dungeon.lockedDoorObjects = MinesDungeonPrefab.lockedDoorObjects;
+            
 
             dungeon.PlayerLightColor = FinalScenarioBulletPrefab.PlayerLightColor;
             dungeon.PlayerLightIntensity = FinalScenarioBulletPrefab.PlayerLightIntensity;
@@ -1624,7 +1718,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             FinalScenarioPilotPrefab = null;
             MinesDungeonPrefab = null;
             // SewerDungeonPrefab = null;
-        }        
+        }
     }
 }
 

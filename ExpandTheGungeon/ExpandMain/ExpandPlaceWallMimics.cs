@@ -30,6 +30,8 @@ namespace ExpandTheGungeon.ExpandMain {
             int WallMimicsPlaced = 0;
             int iterations = 0;
 
+            if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
+
             if (ExpandTheGungeon.GameManagerHook == null) {
                 if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                 ExpandTheGungeon.GameManagerHook = new Hook(
@@ -58,11 +60,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     ETGModConsole.Log("[DEBUG] Wall Mimics assigned by RewardManager: " + numWallMimicsForFloor, false);
                 }
 
-                if (ExpandTheGungeon.isGlitchFloor && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                /*if (ExpandTheGungeon.isGlitchFloor && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                     dungeon.DungeonFloorName = "A Corrupted Place.";
                     dungeon.DungeonShortName = "A Corrupted Place.";
                     dungeon.DungeonFloorLevelTextOverride = "Beneath the Melting Permafrost.";
-                }
+                }*/
 
 
                 /*if (!ExpandStats.allowGlitchFloor && GameManager.Instance.PrimaryPlayer.HasPickupID(316)) {
@@ -338,105 +340,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.MINEGEON) { return; }
 
             int MushroomCount = BraveRandom.GenerationRandomRange(10, 25);
-
-            DungeonPlaceable MinesEnemySpawns = ScriptableObject.CreateInstance<DungeonPlaceable>();
-            MinesEnemySpawns.width = 1;
-            MinesEnemySpawns.height = 1;
-            MinesEnemySpawns.isPassable = true;
-            MinesEnemySpawns.roomSequential = false;
-            MinesEnemySpawns.respectsEncounterableDifferentiator = false;
-            MinesEnemySpawns.UsePrefabTransformOffset = false;
-            MinesEnemySpawns.MarkSpawnedItemsAsRatIgnored = false;
-            MinesEnemySpawns.DebugThisPlaceable = false;
-            MinesEnemySpawns.IsAnnexTable = false;
-            MinesEnemySpawns.variantTiers = new List<DungeonPlaceableVariant>() {
-                new DungeonPlaceableVariant() {
-                    percentChance = 50,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 25,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "f905765488874846b7ff257ff81d6d0c", // fungun
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 25,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "70216cae6c1346309d86d4a0b4603045", // veteran_bullet_kin
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 25,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "db35531e66ce41cbb81d507a34366dfe", // ak47_bullet_kin
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 50,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 60,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "3cadf10c489b461f9fb8814abc1a09c1", // minelet
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                },
-                new DungeonPlaceableVariant() {
-                    percentChance = 30,
-                    percentChanceMultiplier = 1,
-                    unitOffset = Vector2.zero,
-                    nonDatabasePlaceable = null,
-                    enemyPlaceableGuid = "df7fb62405dc4697b7721862c7b6b3cd", // treadnaughts_bullet_kin
-                    pickupObjectPlaceableId = -1,
-                    forceBlackPhantom = false,
-                    addDebrisObject = false,
-                    prerequisites = new DungeonPrerequisite[0],
-                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
-                }
-            };
-
-            
+                        
             List<IntVector2> spawnList = new List<IntVector2>();
             for (int i = 0; i < dungeon.data.rooms.Count; i++) {
                 RoomHandler roomHandler = dungeon.data.rooms[i];
@@ -458,7 +362,6 @@ namespace ExpandTheGungeon.ExpandMain {
                     alarmMushroomObject.transform.parent = absoluteRoom.hierarchyParent;
 
                     ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>();
-                    m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride = MinesEnemySpawns;
                     m_AlarmMushRoomPlacable.ConfigureOnPlacement(absoluteRoom);
                     if (spawnList.Count <= 0) { return; }
                 }

@@ -159,7 +159,35 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(SecretRoomBuilder).GetMethod("GenerateRoomDoorMesh", BindingFlags.NonPublic | BindingFlags.Static),
                 typeof(ExpandSharedHooks).GetMethod("GenerateRoomDoorMeshHook", BindingFlags.NonPublic | BindingFlags.Static)
             );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AIAnimator.AnimationCompleted Hook...."); }
+            Hook animationCompletedHook = new Hook(
+                typeof(AIAnimator).GetMethod("AnimationCompleted", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("AnimationCompletedHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(AIAnimator)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
+            Hook flushMusicAudioHook = new Hook(
+                typeof(GameManager).GetMethod("FlushMusicAudio", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("FlushMusicAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToState Hook...."); }
+            Hook switchToStateHook = new Hook(
+                typeof(DungeonFloorMusicController).GetMethod("SwitchToState", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("SwitchToStateHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(DungeonFloorMusicController)
+            );
             
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
+            Hook flushAudioHook = new Hook(
+                typeof(GameManager).GetMethod("FlushAudio", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("FlushAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+
             return;
         }
 
@@ -616,44 +644,81 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private static GameObject GenerateRoomDoorMeshHook(RuntimeExitDefinition exit, RoomHandler room, DungeonData dungeonData) {
-            DungeonData.Direction directionFromRoom = exit.GetDirectionFromRoom(room);
-            IntVector2 intVector;
-            if (exit.upstreamRoom == room) {
-                intVector = exit.GetDownstreamBasePosition();
-            } else {
-                intVector = exit.GetUpstreamBasePosition();
-            }
-            DungeonData.Direction exitDirection = directionFromRoom;
-            IntVector2 exitBasePosition = intVector;         
-            if (!string.IsNullOrEmpty(room.GetRoomName())) {
-                if (room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_GlitchedSecret.name)) {
-                    IntVector2 TilePositionOffset = (exitBasePosition + new IntVector2(1, 0));
-                    IntVector2 TilePlacerSize = new IntVector2(8, 4);
-                    int OffsetAmount = 1;
-                    int OffsetAmount2 = 3;
-                    if (exitDirection == DungeonData.Direction.NORTH) {
-                        TilePositionOffset += new IntVector2(0, OffsetAmount);
-                    } else if (exitDirection == DungeonData.Direction.SOUTH) {
-                        TilePositionOffset += new IntVector2(0, OffsetAmount);
-                    } else if (exitDirection == DungeonData.Direction.EAST) {
-                        TilePositionOffset += new IntVector2(0, OffsetAmount2);
-                        TilePlacerSize = new IntVector2(4, 8);
+            try { 
+                DungeonData.Direction directionFromRoom = exit.GetDirectionFromRoom(room);
+                IntVector2 intVector;
+                if (exit.upstreamRoom == room) {
+                    intVector = exit.GetDownstreamBasePosition();
+                } else {
+                    intVector = exit.GetUpstreamBasePosition();
+                }
+                DungeonData.Direction exitDirection = directionFromRoom;
+                IntVector2 exitBasePosition = intVector;         
+                if (!string.IsNullOrEmpty(room.GetRoomName())) {
+                    if (room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_GlitchedSecret.name)) {
+                        IntVector2 TilePositionOffset = (exitBasePosition + new IntVector2(1, 0));
+                        IntVector2 TilePlacerSize = new IntVector2(8, 4);
+                        int OffsetAmount = 1;
+                        int OffsetAmount2 = 3;
+                        if (exitDirection == DungeonData.Direction.NORTH) {
+                            TilePositionOffset += new IntVector2(0, OffsetAmount);
+                        } else if (exitDirection == DungeonData.Direction.SOUTH) {
+                            TilePositionOffset += new IntVector2(0, OffsetAmount);
+                        } else if (exitDirection == DungeonData.Direction.EAST) {
+                            TilePositionOffset += new IntVector2(0, OffsetAmount2);
+                            TilePlacerSize = new IntVector2(4, 8);
+                        } else {
+                            TilePositionOffset += new IntVector2(0, OffsetAmount2);
+                            TilePositionOffset -= new IntVector2(OffsetAmount, 0);
+                            TilePlacerSize = new IntVector2(4, 8);
+                        }
+                        GameObject m_SecretWallMesh = ExpandUtility.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false, true);
+                        ExpandUtility.GenerateCorruptedTilesAtPosition(GameManager.Instance.Dungeon, exit.upstreamRoom, TilePositionOffset, TilePlacerSize, m_SecretWallMesh, 0.55f);
+                        return m_SecretWallMesh;
                     } else {
-                        TilePositionOffset += new IntVector2(0, OffsetAmount2);
-                        TilePositionOffset -= new IntVector2(OffsetAmount, 0);
-                        TilePlacerSize = new IntVector2(4, 8);
+                        return SecretRoomBuilder.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false);
                     }
-                    GameObject m_SecretWallMesh = ExpandUtility.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false, true);
-                    ExpandUtility.GenerateCorruptedTilesAtPosition(GameManager.Instance.Dungeon, exit.upstreamRoom, TilePositionOffset, TilePlacerSize, m_SecretWallMesh, 0.55f);
-                    return m_SecretWallMesh;
                 } else {
                     return SecretRoomBuilder.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false);
                 }
-            } else {
-                return SecretRoomBuilder.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false);
+            } catch (Exception ex) {
+                if (ExpandStats.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in SecretRoomBuilder.GenerateRoomDoorMesh!");
+                    Debug.Log(ex);
+                }
+                return new GameObject("NULL Secret Room Door") { layer = 0 };
             }
         }
         
+        private void AnimationCompletedHook(Action<AIAnimator, tk2dSpriteAnimator, tk2dSpriteAnimationClip> orig, AIAnimator self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
+            try {
+                orig(self, animator, clip);
+            } catch (Exception ex) {
+                if (ExpandStats.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in AIAnimator.AnimationCompleted on object '" + self.gameObject.name + "'!");
+                    Debug.Log("[ExpandTheGungeon] Warning: Exception caught in AIAnimator.AnimationCompleted on object '" + self.gameObject.name + "'!");
+                    Debug.LogException(ex);
+                }
+                return;
+            }
+        }
+
+        // These hooks ensure our custom music/audio gets stopped properly.
+        private void FlushMusicAudioHook(Action<GameManager>orig, GameManager self) {
+            orig(self);
+            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
+        }
+
+        private void SwitchToStateHook(Action<DungeonFloorMusicController, DungeonFloorMusicController.DungeonMusicState> orig, DungeonFloorMusicController self, DungeonFloorMusicController.DungeonMusicState targetState) {
+            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
+            orig(self, targetState);
+        }
+
+        private void FlushAudioHook(Action<GameManager> orig, GameManager self) {
+            orig(self);
+            AkSoundEngine.PostEvent("Stop_EX_SFX_All", self.gameObject);
+        }
+
     }
 }
 

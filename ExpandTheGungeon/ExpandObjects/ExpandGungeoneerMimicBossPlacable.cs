@@ -21,8 +21,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dSprite playerSprite = aiActorObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(playerSprite, (sourcePlayer.sprite as tk2dSprite));
             
-            ExpandUtility.GenerateAIActorTemplate(aiActorObject, out m_CorpseObject, aiActorObject.name, System.Guid.NewGuid().ToString(), gunAttachObjectOverride: sourcePlayer.gunAttachPoint.gameObject, StartingGunID: 472);
-
+            ExpandUtility.GenerateAIActorTemplate(aiActorObject, out m_CorpseObject, aiActorObject.name, System.Guid.NewGuid().ToString(), GunAttachOffset: new Vector3(0.3f, 0.25f, 0), StartingGunID: 472);
+            
             AIActor CachedEnemyActor = aiActorObject.GetComponent<AIActor>();
 
             if (!aiActorObject | !CachedEnemyActor) { return; }
@@ -30,6 +30,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (ExpandStats.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
             }
+
+            GameObject m_NewHandObject = new GameObject("PlayerMimicHand");
+            tk2dSprite m_HandSprite = m_NewHandObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(m_HandSprite, sourcePlayer.primaryHand.gameObject.GetComponent<tk2dSprite>());
+            PlayerHandController m_HandController = m_NewHandObject.AddComponent<PlayerHandController>();
+            m_HandController.ForceRenderersOff = false;
+            m_HandController.handHeightFromGun = 0.05f;
+
+            CachedEnemyActor.aiShooter.handObject = m_HandController;
 
             // Generate BossCard based on current Player.
             Texture2D BossCardForeground = ExpandUtility.FlipTexture(Instantiate(sourcePlayer.BosscardSprites[0]));
@@ -81,8 +90,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedEnemyActor.BaseMovementSpeed = 8f;
             CachedEnemyActor.MovementSpeed = 8f;
 
-            CachedEnemyActor.healthHaver.SetHealthMaximum(1850);
-            CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1850);
+            CachedEnemyActor.healthHaver.SetHealthMaximum(1350);
+            CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1350);
             CachedEnemyActor.healthHaver.overrideBossName = "Gungeoneer Mimic";
             CachedEnemyActor.healthHaver.RegenerateCache();
 

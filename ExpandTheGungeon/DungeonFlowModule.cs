@@ -39,7 +39,7 @@ namespace ExpandTheGungeon {
                     knownScenes.Add(dungeonFloors.dungeonSceneName.ToLower());
                 }
             }
-
+            
             foreach (GameLevelDefinition customFloors in GameManager.Instance.customFloors) {
                 if (customFloors.dungeonPrefabPath != null && customFloors.dungeonPrefabPath != string.Empty) {
                     knownTilesets.Add(customFloors.dungeonPrefabPath.ToLower());

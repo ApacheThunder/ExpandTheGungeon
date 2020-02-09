@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
     
-    public class ExpandDungeonFlow : MonoBehaviour {
+    public class ExpandDungeonFlow : FlowDatabase {
 
         public static bool isGlitchFlow = false;
 
@@ -20,7 +20,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
        
         private static AssetBundle sharedAssets2;
 
-        public static DungeonFlow LoadCustomFlow(string target) {
+        public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
             if (flowName.ToLower().EndsWith("secret_doublebeholster_flow")) {
@@ -41,28 +41,29 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                             if (GlitchChestFlows.Contains(flow.name.ToLower())) {
                                 flow.sharedInjectionData = RetrieveSharedInjectionDataListFromCurrentFloor();
                             }
+                            DebugTime.RecordStartTime();
+                            DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
                             return flow;
                         }
                     }
                 }
             }
-            // If didn't return match, then try finding it in flow_base_001.
-            return LoadOfficialFlow(flowName);
+            return orig(target);
         }
-
-        private static AssetBundle m_assetBundle;
-
+        
         public static DungeonFlow LoadOfficialFlow(string target) {
             string flowName = target;
-            if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }            
-            if (!m_assetBundle) { m_assetBundle = ResourceManager.LoadAssetBundle("flows_base_001"); }
+            if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
+            AssetBundle m_assetBundle_orig = ResourceManager.LoadAssetBundle("flows_base_001");
             DebugTime.RecordStartTime();
-            DungeonFlow result = m_assetBundle.LoadAsset<DungeonFlow>(flowName);
+            DungeonFlow result = m_assetBundle_orig.LoadAsset<DungeonFlow>(flowName);
             DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
             if (result == null) {
                 Debug.Log("ERROR: Requested DungeonFlow not found!\nCheck that you provided correct DungeonFlow name and that it actually exists!");
+                m_assetBundle_orig = null;
                 return null;
             } else {
+                m_assetBundle_orig = null;
                 return result;
             }
         }

@@ -9,10 +9,6 @@ namespace ExpandTheGungeon.ExpandObjects {
     public class ExpandAlarmMushroomPlacable : DungeonPlaceableBehaviour, IPlaceConfigurable {
 
         public ExpandAlarmMushroomPlacable() {
-            // BlinkPassiveItem m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
-            // DestroyVFX = m_BlinkPassive.BlinkpoofVfx;
-            // m_BlinkPassive = null;
-
             TriggerAnimation = "alarm_mushroom_alarm";
             BreakAnimation = "alarm_mushroom_break";
             TriggerSFX = "Play_EXAlarmMushroom_01";
@@ -63,36 +59,45 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (EnemySpawnOffset.HasValue) { SpawnOffset = EnemySpawnOffset.Value; }
             if (TriggerVFX) { SpawnManager.SpawnVFX(TriggerVFX, specRigidbody.UnitCenter + SpawnOffset, Quaternion.identity); }
             if (useAirDropSpawn) {
-                RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
-                DungeonPlaceable backupEnemyPlaceable = targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)];
-                if (EnemySpawnPlacableOverride) { backupEnemyPlaceable = EnemySpawnPlacableOverride; }
-                EmergencyCrateController spawnedEnemyCrate = EnemyAirDrop(m_room, sprite.WorldCenter, backupEnemyPlaceable);
+                EmergencyCrateController spawnedEnemyCrate = null;
+                if (!EnemySpawnPlacableOverride) {
+                    RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
+                    spawnedEnemyCrate = EnemyAirDrop(m_room, sprite.WorldCenter, targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)]);
+                } else {
+                    spawnedEnemyCrate = EnemyAirDrop(m_room, sprite.WorldCenter, EnemySpawnPlacableOverride);
+                }                
                 if (!m_room.IsSealed) { m_room.SealRoom(); }
                 m_room.npcSealState = RoomHandler.NPCSealState.SealAll;
                 yield return new WaitForSeconds(2.25f);
                 DestroyMushroom(false);
-                while (ReflectionHelpers.ReflectGetField<bool>(typeof(EmergencyCrateController), "m_hasBeenTriggered", spawnedEnemyCrate)) {
-                    yield return null;
+                if (spawnedEnemyCrate) {
+                    while (ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", spawnedEnemyCrate).HasValue && ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", spawnedEnemyCrate).Value) {
+                        if (!spawnedEnemyCrate) { break; }
+                        yield return null;
+                    }
                 }
                 yield return new WaitForSeconds(1f);
                 m_room.npcSealState = RoomHandler.NPCSealState.SealNone;
-
                 if (spriteAnimator.IsPlaying(BreakAnimation)) {
                     while (spriteAnimator.IsPlaying(BreakAnimation)) { yield return null; }
                 }
                 Destroy(gameObject);
             } else {
-                RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
-                DungeonPlaceable backupEnemyPlaceable = targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)];
-                if (EnemySpawnPlacableOverride) { backupEnemyPlaceable = EnemySpawnPlacableOverride; }
-                DungeonPlaceableVariant enemyVariant = backupEnemyPlaceable.SelectFromTiersFull();
-                AIActor selectedEnemy = enemyVariant.GetOrLoadPlaceableObject.GetComponent<AIActor>();
+                AIActor selectedEnemy = null;
+                if (EnemySpawnPlacableOverride) {
+                    DungeonPlaceableVariant enemyVariant = EnemySpawnPlacableOverride.SelectFromTiersFull();
+                    selectedEnemy = enemyVariant.GetOrLoadPlaceableObject.GetComponent<AIActor>();
+                } else {
+                    RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
+                    DungeonPlaceable backupEnemyPlaceable = targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)];
+                    DungeonPlaceableVariant enemyVariant = backupEnemyPlaceable.SelectFromTiersFull();
+                }
                 if (selectedEnemy) {
-                    AIActor aiactor = AIActor.Spawn(selectedEnemy, specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) + SpawnOffset.ToIntVector2(), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
-                    aiactor.reinforceType = AIActor.ReinforceType.SkipVfx;
-                    aiactor.HandleReinforcementFallIntoRoom(0.8f);
+                    AIActor targetAIActor = AIActor.Spawn(selectedEnemy, specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) + SpawnOffset.ToIntVector2(), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
+                    targetAIActor.reinforceType = AIActor.ReinforceType.SkipVfx;
+                    targetAIActor.HandleReinforcementFallIntoRoom(0.8f);
                     if (!m_room.IsSealed) { m_room.SealRoom(); }
-                    while (aiactor.IsGone) { yield return null; }
+                    while (targetAIActor.IsGone) { yield return null; }
                     DestroyMushroom();
                 }
             }

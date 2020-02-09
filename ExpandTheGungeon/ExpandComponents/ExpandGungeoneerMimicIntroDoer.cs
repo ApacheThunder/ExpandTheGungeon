@@ -10,9 +10,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public GameObject MirrorBase;
         public GameObject MirrorShatterFX;
         public GameObject ShatterSystem;
-        
-        private bool m_initialized;
-        private bool m_finished;
+
+        public bool m_finished;
+
+        private bool m_initialized;        
         private bool m_MirrorHasShattered;
         private bool m_MirrorDepthUpdated;
 
@@ -38,6 +39,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (m_AIActor) {
                 m_AIActor.GetAbsoluteParentRoom().CompletelyPreventLeaving = true;
                 m_AIActor.ToggleRenderers(false);
+                m_AIActor.aiShooter.handObject.gameObject.SetActive(false);
                 m_AIActor.IsGone = true;
                 m_AIActor.State = AIActor.ActorState.Inactive;
             }
@@ -147,6 +149,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.State = AIActor.ActorState.Normal;
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.ToggleRenderers(true);
+            m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
             if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
@@ -164,7 +167,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else {
                 m_AIActor.spriteAnimator.Play("dodge");
                 while (m_AIActor.spriteAnimator.IsPlaying("dodge")) {
-                    float Y = 0.025f;
+                    float Y = 0.05f;
                     m_AIActor.gameObject.transform.position -= new Vector3(0, Y);
                     m_AIActor.specRigidbody.Reinitialize();
                     m_AIActor.spriteAnimator.UpdateAnimation(GameManager.INVARIANT_DELTA_TIME);
@@ -197,11 +200,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.aiActor.State = AIActor.ActorState.Normal;
             m_AIActor.aiShooter.AimAtPoint(m_AIActor.CenterPosition - new Vector2(0, -2));
             m_AIActor.aiShooter.gunAttachPoint.gameObject.SetActive(true);
+            m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
             if (!m_MirrorDepthUpdated && MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
             }
-            if (m_GungeoneerMimicController) { m_GungeoneerMimicController.IntroDone = true; }
+            // if (m_GungeoneerMimicController) { m_GungeoneerMimicController.IntroDone = true; }
             if (!m_MirrorHasShattered) {
                 if (MirrorBase.GetComponent<tk2dSprite>()) { MirrorBase.GetComponent<tk2dSprite>().SetSprite("PlayerMimicMirror_Broken"); }
                 if (MirrorBase) { AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", gameObject); }
