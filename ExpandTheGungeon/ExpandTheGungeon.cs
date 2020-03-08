@@ -175,7 +175,7 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandDebug(string[] consoleText) {
-            string validSubCommands = "toggledebugstats\nclearroom";
+            string validSubCommands = "toggledebugstats\nclearroom\nunsealroom";
             
             if (!m_IsCommandValid(consoleText, validSubCommands, "debug")) { return; }
 
@@ -203,7 +203,7 @@ namespace ExpandTheGungeon {
             } else if (consoleText[0] == "clearroom") {
                 RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
                 if (currentRoom != null) {
-                    System.Collections.Generic.List<AIActor> enemies = currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear);
+                    List<AIActor> enemies = currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear);
 
                     if (enemies != null && enemies.Count > 0) {
                         for (int i = 0; i < enemies.Count; i++) {
@@ -211,6 +211,11 @@ namespace ExpandTheGungeon {
                             UnityEngine.Object.Destroy(enemies[i].gameObject);
                         }
                     }
+                }
+            } else if (consoleText[0] == "unsealroom") {
+                RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
+                if (currentRoom != null) {
+                    if (currentRoom.IsSealed) { currentRoom.UnsealRoom(); }
                 }
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);
@@ -275,7 +280,8 @@ namespace ExpandTheGungeon {
             // AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", soundObject);
             AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
             // ETGModConsole.Log(TestObject.name);
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            
             /*Dungeon dungeon = GameManager.Instance.Dungeon;
 
             if (dungeon && CurrentPlayer) {

@@ -747,6 +747,24 @@
     <EmbeddedResource Include="Textures\MiscEnemies\Cronenberg\Cronenberg_Move_004.png" />
     <EmbeddedResource Include="Textures\MiscEnemies\Cronenberg\Cronenberg_Move_005.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_Crosshair_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_Basic_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_JumpInThePit_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_LongSpikeTrap_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_SpikeTrap_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_SpikeAndPits_Layout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

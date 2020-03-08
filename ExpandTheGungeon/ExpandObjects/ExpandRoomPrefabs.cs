@@ -60,6 +60,15 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Box_Hub;
         public static PrototypeDungeonRoom Expand_Enclose_Hub;
 
+        // Rooms for floor 2.
+        public static PrototypeDungeonRoom Expand_Crosshairs;
+        public static PrototypeDungeonRoom Expand_Basic;
+        public static PrototypeDungeonRoom Expand_JumpInThePit;
+        public static PrototypeDungeonRoom Expand_LongSpikeTrap;
+        public static PrototypeDungeonRoom Expand_SpikeTrap;
+        public static PrototypeDungeonRoom Expand_ThinRoom;
+
+
         // Rooms for floor 4.
         public static PrototypeDungeonRoom Expand_SpiderMaze;
 
@@ -68,6 +77,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom ThwompCrossingHorizontal;
         public static PrototypeDungeonRoom Expand_Apache_FieldOfSaws;
         public static PrototypeDungeonRoom Expand_Apache_TheCrushZone;
+        public static PrototypeDungeonRoom Expand_Apache_SpikeAndPits;
+
 
         // Custom Secret Rooms
         public static PrototypeDungeonRoom Expand_TinySecret;
@@ -137,12 +148,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Box_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Enclose_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
+            Expand_Crosshairs = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Basic = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_JumpInThePit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_LongSpikeTrap = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_SpikeTrap = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_ThinRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
+
             Expand_SpiderMaze = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             ThwompCrossingVertical = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ThwompCrossingHorizontal = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_FieldOfSaws = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_TheCrushZone = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Apache_SpikeAndPits = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1171,7 +1191,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Explode.PreventMirroring = false;
             Expand_Explode.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Explode.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Explode.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Explode.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Explode.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Explode.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Explode.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1278,7 +1298,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_C_Hub.PreventMirroring = false;
             Expand_C_Hub.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_C_Hub.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_C_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_C_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_C_Hub.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_C_Hub.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_C_Hub.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1397,7 +1417,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_C_Gap.PreventMirroring = false;
             Expand_C_Gap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_C_Gap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_C_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_C_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_C_Gap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_C_Gap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_C_Gap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1530,7 +1550,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_ChainGap.PreventMirroring = false;
             Expand_ChainGap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_ChainGap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_ChainGap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_ChainGap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_ChainGap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_ChainGap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_ChainGap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1593,7 +1613,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Challange1.PreventMirroring = false;
             Expand_Challange1.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Challange1.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Challange1.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Challange1.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Challange1.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Challange1.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Challange1.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1682,7 +1702,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Line.PreventMirroring = false;
             Expand_Pit_Line.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Pit_Line.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Pit_Line.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Pit_Line.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Pit_Line.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Pit_Line.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Pit_Line.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1736,7 +1756,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Singer_Gap.PreventMirroring = false;
             Expand_Singer_Gap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Singer_Gap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Singer_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Singer_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Singer_Gap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Singer_Gap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Singer_Gap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1841,7 +1861,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Flying_Gap.PreventMirroring = false;
             Expand_Flying_Gap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Flying_Gap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Flying_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Flying_Gap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Flying_Gap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Flying_Gap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Flying_Gap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -1938,7 +1958,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Battle.PreventMirroring = false;
             Expand_Battle.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_Battle.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Battle.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Battle.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Battle.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Battle.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Battle.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2258,7 +2278,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Cross.PreventMirroring = false;
             Expand_Cross.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Cross.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Cross.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Cross.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Cross.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Cross.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Cross.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2416,7 +2436,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Blocks.PreventMirroring = false;
             Expand_Blocks.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Blocks.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Blocks.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Blocks.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Blocks.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Blocks.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Blocks.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2513,7 +2533,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Blocks_Pits.PreventMirroring = false;
             Expand_Blocks_Pits.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Blocks_Pits.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Blocks_Pits.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Blocks_Pits.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Blocks_Pits.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Blocks_Pits.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Blocks_Pits.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2591,7 +2611,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Wall_Pit.PreventMirroring = false;
             Expand_Wall_Pit.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Wall_Pit.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Wall_Pit.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Wall_Pit.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Wall_Pit.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Wall_Pit.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Wall_Pit.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2684,7 +2704,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Gate_Cross.PreventMirroring = false;
             Expand_Gate_Cross.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Gate_Cross.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Gate_Cross.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Gate_Cross.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Gate_Cross.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Gate_Cross.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Gate_Cross.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2801,7 +2821,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Passage.PreventMirroring = false;
             Expand_Passage.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Passage.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Passage.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Passage.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Passage.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2891,7 +2911,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Jump.PreventMirroring = false;
             Expand_Pit_Jump.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Pit_Jump.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Pit_Jump.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Pit_Jump.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Pit_Jump.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Pit_Jump.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Pit_Jump.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2942,7 +2962,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Pit_Passage.PreventMirroring = false;
             Expand_Pit_Passage.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Pit_Passage.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Pit_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Pit_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Pit_Passage.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Pit_Passage.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Pit_Passage.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -2993,7 +3013,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_R_Blocks.PreventMirroring = false;
             Expand_R_Blocks.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_R_Blocks.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_R_Blocks.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_R_Blocks.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_R_Blocks.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_R_Blocks.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_R_Blocks.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3109,7 +3129,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Small_Passage.PreventMirroring = false;
             Expand_Small_Passage.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Small_Passage.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Small_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Small_Passage.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Small_Passage.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Small_Passage.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Small_Passage.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3210,7 +3230,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Box.PreventMirroring = false;
             Expand_Box.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Box.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Box.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Box.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Box.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Box.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Box.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3352,7 +3372,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Steps.PreventMirroring = false;
             Expand_Steps.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Steps.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Steps.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Steps.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Steps.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Steps.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Steps.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3411,7 +3431,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Spiral.PreventMirroring = false;
             Expand_Spiral.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_Spiral.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Spiral.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Spiral.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Spiral.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Spiral.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Spiral.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3591,7 +3611,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_Hub.PreventMirroring = false;
             Expand_Apache_Hub.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_Apache_Hub.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Apache_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Apache_Hub.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Apache_Hub.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Apache_Hub.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3684,7 +3704,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Box_Hub.PreventMirroring = false;
             Expand_Box_Hub.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_Box_Hub.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Box_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Box_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Box_Hub.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Box_Hub.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Box_Hub.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -3843,7 +3863,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Enclose_Hub.PreventMirroring = false;
             Expand_Enclose_Hub.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_Enclose_Hub.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Enclose_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Enclose_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Enclose_Hub.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Enclose_Hub.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Enclose_Hub.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4150,6 +4170,480 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Enclose_Hub, "Castle\\Expand_MelonTurtle_Enclose_Hub_Layout.png");
 
 
+            Expand_Crosshairs.name = "Expand Neighborino Crosshairs";
+            Expand_Crosshairs.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Crosshairs.GUID = Guid.NewGuid().ToString();
+            Expand_Crosshairs.PreventMirroring = false;
+            Expand_Crosshairs.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Crosshairs.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Crosshairs.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Crosshairs.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Crosshairs.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Crosshairs.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Crosshairs.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Crosshairs.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Crosshairs.placedObjectPositions = new List<Vector2>();
+            Expand_Crosshairs.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Crosshairs.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Crosshairs.overriddenTilesets = 0;
+            Expand_Crosshairs.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Crosshairs.InvalidInCoop = false;
+            Expand_Crosshairs.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Crosshairs.preventAddedDecoLayering = false;
+            Expand_Crosshairs.precludeAllTilemapDrawing = false;
+            Expand_Crosshairs.drawPrecludedCeilingTiles = false;
+            Expand_Crosshairs.preventBorders = false;
+            Expand_Crosshairs.preventFacewallAO = false;
+            Expand_Crosshairs.usesCustomAmbientLight = false;
+            Expand_Crosshairs.customAmbientLight = Color.white;
+            Expand_Crosshairs.ForceAllowDuplicates = false;
+            Expand_Crosshairs.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Crosshairs.IsLostWoodsRoom = false;
+            Expand_Crosshairs.UseCustomMusic = false;
+            Expand_Crosshairs.UseCustomMusicState = false;
+            Expand_Crosshairs.CustomMusicEvent = string.Empty;
+            Expand_Crosshairs.UseCustomMusicSwitch = false;
+            Expand_Crosshairs.CustomMusicSwitch = string.Empty;
+            Expand_Crosshairs.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Crosshairs.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Crosshairs.Width = 34;
+            Expand_Crosshairs.Height = 34;
+            Expand_Crosshairs.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_Crosshairs, new Vector2(0, 16), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Crosshairs, new Vector2(35, 16), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Crosshairs, new Vector2(16, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Crosshairs, new Vector2(16, 35), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(7, 6), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(7, 22), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(23, 7), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(23, 22), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(15, 4), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(15, 24), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(4, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
+            RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(24, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Crosshairs, "GungeonProper\\Expand_Neighborino_Crosshair_Layout.png");
+
+            Expand_Basic.name = "Expand Neighborino Basic";
+            Expand_Basic.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Basic.GUID = Guid.NewGuid().ToString();
+            Expand_Basic.PreventMirroring = false;
+            Expand_Basic.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Basic.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Basic.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Basic.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Basic.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Basic.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Basic.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Basic.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Basic.placedObjectPositions = new List<Vector2>();
+            Expand_Basic.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Basic.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Basic.overriddenTilesets = 0;
+            Expand_Basic.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Basic.InvalidInCoop = false;
+            Expand_Basic.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Basic.preventAddedDecoLayering = false;
+            Expand_Basic.precludeAllTilemapDrawing = false;
+            Expand_Basic.drawPrecludedCeilingTiles = false;
+            Expand_Basic.preventBorders = false;
+            Expand_Basic.preventFacewallAO = false;
+            Expand_Basic.usesCustomAmbientLight = false;
+            Expand_Basic.customAmbientLight = Color.white;
+            Expand_Basic.ForceAllowDuplicates = false;
+            Expand_Basic.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Basic.IsLostWoodsRoom = false;
+            Expand_Basic.UseCustomMusic = false;
+            Expand_Basic.UseCustomMusicState = false;
+            Expand_Basic.CustomMusicEvent = string.Empty;
+            Expand_Basic.UseCustomMusicSwitch = false;
+            Expand_Basic.CustomMusicSwitch = string.Empty;
+            Expand_Basic.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Basic.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Basic.Width = 28;
+            Expand_Basic.Height = 26;
+            Expand_Basic.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_Basic, new Vector2(0, 13), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Basic, new Vector2(29, 13), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Basic, new Vector2(14, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Basic, new Vector2(14, 27), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(12, 7), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(13, 7), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(14, 7), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(15, 7), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(12, 8), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(13, 8), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(14, 8), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(15, 8), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(12, 17), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(13, 17), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(14, 17), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(15, 17), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(12, 18), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(13, 18), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(14, 18), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(15, 18), objectDatabase.WoodenBarrel);
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(21, 4), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(7, 21), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(7, 4), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(24, 21), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(8, 12), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(18, 12), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Basic, "GungeonProper\\Expand_Neighborino_Basic_Layout.png");
+
+            Expand_JumpInThePit.name = "Expand Neighborino JumpInThePit";
+            Expand_JumpInThePit.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_JumpInThePit.GUID = Guid.NewGuid().ToString();
+            Expand_JumpInThePit.PreventMirroring = false;
+            Expand_JumpInThePit.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_JumpInThePit.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_JumpInThePit.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_JumpInThePit.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_JumpInThePit.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_JumpInThePit.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_JumpInThePit.pits = new List<PrototypeRoomPitEntry>();
+            Expand_JumpInThePit.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_JumpInThePit.placedObjectPositions = new List<Vector2>();
+            Expand_JumpInThePit.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_JumpInThePit.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_JumpInThePit.overriddenTilesets = 0;
+            Expand_JumpInThePit.prerequisites = new List<DungeonPrerequisite>();
+            Expand_JumpInThePit.InvalidInCoop = false;
+            Expand_JumpInThePit.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_JumpInThePit.preventAddedDecoLayering = false;
+            Expand_JumpInThePit.precludeAllTilemapDrawing = false;
+            Expand_JumpInThePit.drawPrecludedCeilingTiles = false;
+            Expand_JumpInThePit.preventBorders = false;
+            Expand_JumpInThePit.preventFacewallAO = false;
+            Expand_JumpInThePit.usesCustomAmbientLight = false;
+            Expand_JumpInThePit.customAmbientLight = Color.white;
+            Expand_JumpInThePit.ForceAllowDuplicates = false;
+            Expand_JumpInThePit.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_JumpInThePit.IsLostWoodsRoom = false;
+            Expand_JumpInThePit.UseCustomMusic = false;
+            Expand_JumpInThePit.UseCustomMusicState = false;
+            Expand_JumpInThePit.CustomMusicEvent = string.Empty;
+            Expand_JumpInThePit.UseCustomMusicSwitch = false;
+            Expand_JumpInThePit.CustomMusicSwitch = string.Empty;
+            Expand_JumpInThePit.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_JumpInThePit.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_JumpInThePit.Width = 26;
+            Expand_JumpInThePit.Height = 35;
+            Expand_JumpInThePit.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
+                new PrototypeRoomObjectLayer() {
+                    placedObjects = new List<PrototypePlacedObjectData>() {
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
+                            contentsBasePosition = new Vector2(18, 14),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
+                            contentsBasePosition = new Vector2(7, 14),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
+                            contentsBasePosition = new Vector2(18, 20),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin
+                            contentsBasePosition = new Vector2(7, 20),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        }
+                    },
+                    placedObjectBasePositions = new List<Vector2>() {
+                        new Vector2(18, 14),
+                        new Vector2(7, 14),
+                        new Vector2(18, 20),
+                        new Vector2(7, 20)
+                    },
+                    layerIsReinforcementLayer = true,
+                    shuffle = false,
+                    randomize = 0,
+                    suppressPlayerChecks = true,
+                    delayTime = 1,
+                    reinforcementTriggerCondition = RoomEventTriggerCondition.ON_ENEMIES_CLEARED,
+                    probability = 1,
+                    numberTimesEncounteredRequired = 0
+                }
+            };
+            RoomBuilder.AddExitToRoom(Expand_JumpInThePit, new Vector2(13, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_JumpInThePit, new Vector2(13, 36), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_JumpInThePit, new Vector2(5, 4), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
+            RoomBuilder.AddObjectToRoom(Expand_JumpInThePit, new Vector2(19, 28), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_JumpInThePit, "GungeonProper\\Expand_Neighborino_JumpInThePit_Layout.png");
+
+            Expand_LongSpikeTrap.name = "Expand Neighborino Long SpikeTrap";
+            Expand_LongSpikeTrap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_LongSpikeTrap.GUID = Guid.NewGuid().ToString();
+            Expand_LongSpikeTrap.PreventMirroring = false;
+            Expand_LongSpikeTrap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_LongSpikeTrap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_LongSpikeTrap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_LongSpikeTrap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_LongSpikeTrap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_LongSpikeTrap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_LongSpikeTrap.pits = new List<PrototypeRoomPitEntry>();
+            Expand_LongSpikeTrap.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_LongSpikeTrap.placedObjectPositions = new List<Vector2>();
+            Expand_LongSpikeTrap.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_LongSpikeTrap.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_LongSpikeTrap.overriddenTilesets = 0;
+            Expand_LongSpikeTrap.prerequisites = new List<DungeonPrerequisite>();
+            Expand_LongSpikeTrap.InvalidInCoop = false;
+            Expand_LongSpikeTrap.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_LongSpikeTrap.preventAddedDecoLayering = false;
+            Expand_LongSpikeTrap.precludeAllTilemapDrawing = false;
+            Expand_LongSpikeTrap.drawPrecludedCeilingTiles = false;
+            Expand_LongSpikeTrap.preventBorders = false;
+            Expand_LongSpikeTrap.preventFacewallAO = false;
+            Expand_LongSpikeTrap.usesCustomAmbientLight = false;
+            Expand_LongSpikeTrap.customAmbientLight = Color.white;
+            Expand_LongSpikeTrap.ForceAllowDuplicates = false;
+            Expand_LongSpikeTrap.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_LongSpikeTrap.IsLostWoodsRoom = false;
+            Expand_LongSpikeTrap.UseCustomMusic = false;
+            Expand_LongSpikeTrap.UseCustomMusicState = false;
+            Expand_LongSpikeTrap.CustomMusicEvent = string.Empty;
+            Expand_LongSpikeTrap.UseCustomMusicSwitch = false;
+            Expand_LongSpikeTrap.CustomMusicSwitch = string.Empty;
+            Expand_LongSpikeTrap.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_LongSpikeTrap.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_LongSpikeTrap.Width = 15;
+            Expand_LongSpikeTrap.Height = 37;
+            Expand_LongSpikeTrap.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_LongSpikeTrap, new Vector2(4, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_LongSpikeTrap, new Vector2(1, 35), DungeonData.Direction.WEST);
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 12), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 14), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 18), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 20), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 22), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 28), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 30), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(11, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_LongSpikeTrap, "GungeonProper\\Expand_Neighborino_LongSpikeTrap_Layout.png");
+
+            Expand_SpikeTrap.name = "Expand Neighborino SpikeTrap";
+            Expand_SpikeTrap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_SpikeTrap.GUID = Guid.NewGuid().ToString();
+            Expand_SpikeTrap.PreventMirroring = false;
+            Expand_SpikeTrap.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_SpikeTrap.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_SpikeTrap.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_SpikeTrap.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_SpikeTrap.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_SpikeTrap.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_SpikeTrap.pits = new List<PrototypeRoomPitEntry>();
+            Expand_SpikeTrap.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_SpikeTrap.placedObjectPositions = new List<Vector2>();
+            Expand_SpikeTrap.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_SpikeTrap.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_SpikeTrap.overriddenTilesets = 0;
+            Expand_SpikeTrap.prerequisites = new List<DungeonPrerequisite>();
+            Expand_SpikeTrap.InvalidInCoop = false;
+            Expand_SpikeTrap.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_SpikeTrap.preventAddedDecoLayering = false;
+            Expand_SpikeTrap.precludeAllTilemapDrawing = false;
+            Expand_SpikeTrap.drawPrecludedCeilingTiles = false;
+            Expand_SpikeTrap.preventBorders = false;
+            Expand_SpikeTrap.preventFacewallAO = false;
+            Expand_SpikeTrap.usesCustomAmbientLight = false;
+            Expand_SpikeTrap.customAmbientLight = Color.white;
+            Expand_SpikeTrap.ForceAllowDuplicates = false;
+            Expand_SpikeTrap.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_SpikeTrap.IsLostWoodsRoom = false;
+            Expand_SpikeTrap.UseCustomMusic = false;
+            Expand_SpikeTrap.UseCustomMusicState = false;
+            Expand_SpikeTrap.CustomMusicEvent = string.Empty;
+            Expand_SpikeTrap.UseCustomMusicSwitch = false;
+            Expand_SpikeTrap.CustomMusicSwitch = string.Empty;
+            Expand_SpikeTrap.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_SpikeTrap.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_SpikeTrap.Width = 26;
+            Expand_SpikeTrap.Height = 22;
+            Expand_SpikeTrap.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_SpikeTrap, new Vector2(0, 11), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_SpikeTrap, new Vector2(27, 11), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_SpikeTrap, new Vector2(13, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_SpikeTrap, new Vector2(13, 23), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(2, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(4, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(6, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(8, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(16, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(18, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(20, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(22, 10), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 6), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 14), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 18), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SpikeTrap, "GungeonProper\\Expand_Neighborino_SpikeTrap_Layout.png");
+
+            Expand_ThinRoom.name = "Expand Neighborino Thin Room";
+            Expand_ThinRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_ThinRoom.GUID = Guid.NewGuid().ToString();
+            Expand_ThinRoom.PreventMirroring = false;
+            Expand_ThinRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_ThinRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_ThinRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_ThinRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_ThinRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_ThinRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_ThinRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_ThinRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_ThinRoom.placedObjectPositions = new List<Vector2>();
+            Expand_ThinRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_ThinRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_ThinRoom.overriddenTilesets = 0;
+            Expand_ThinRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_ThinRoom.InvalidInCoop = false;
+            Expand_ThinRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_ThinRoom.preventAddedDecoLayering = false;
+            Expand_ThinRoom.precludeAllTilemapDrawing = false;
+            Expand_ThinRoom.drawPrecludedCeilingTiles = false;
+            Expand_ThinRoom.preventBorders = false;
+            Expand_ThinRoom.preventFacewallAO = false;
+            Expand_ThinRoom.usesCustomAmbientLight = false;
+            Expand_ThinRoom.customAmbientLight = Color.white;
+            Expand_ThinRoom.ForceAllowDuplicates = false;
+            Expand_ThinRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_ThinRoom.IsLostWoodsRoom = false;
+            Expand_ThinRoom.UseCustomMusic = false;
+            Expand_ThinRoom.UseCustomMusicState = false;
+            Expand_ThinRoom.CustomMusicEvent = string.Empty;
+            Expand_ThinRoom.UseCustomMusicSwitch = false;
+            Expand_ThinRoom.CustomMusicSwitch = string.Empty;
+            Expand_ThinRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_ThinRoom.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_ThinRoom.Width = 24;
+            Expand_ThinRoom.Height = 4;
+            Expand_ThinRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
+                new PrototypeRoomObjectLayer() {
+                    placedObjects = new List<PrototypePlacedObjectData>() {
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            contentsBasePosition = new Vector2(15, 1),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                            contentsBasePosition = new Vector2(4, 1),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        }
+                    },
+                    placedObjectBasePositions = new List<Vector2>() {
+                        new Vector2(15, 1),
+                        new Vector2(4, 1)
+                    },
+                    layerIsReinforcementLayer = true,
+                    shuffle = false,
+                    randomize = 0,
+                    suppressPlayerChecks = true,
+                    delayTime = 1,
+                    reinforcementTriggerCondition = RoomEventTriggerCondition.ON_ENEMIES_CLEARED,
+                    probability = 1,
+                    numberTimesEncounteredRequired = 0
+                }
+            };
+            RoomBuilder.AddExitToRoom(Expand_ThinRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_ThinRoom, new Vector2(25, 2), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(6, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(8, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(8, 3), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(10, 2), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(10, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(12, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.AddObjectToRoom(Expand_ThinRoom, new Vector2(14, 2), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
+            RoomBuilder.GenerateBasicRoomLayout(Expand_ThinRoom);
+
+
 
             Expand_SpiderMaze.name = "Expand Apache SpiderMaze";
             Expand_SpiderMaze.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -4157,7 +4651,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SpiderMaze.PreventMirroring = false;
             Expand_SpiderMaze.category = PrototypeDungeonRoom.RoomCategory.HUB;
             Expand_SpiderMaze.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_SpiderMaze.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_SpiderMaze.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_SpiderMaze.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_SpiderMaze.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_SpiderMaze.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4292,7 +4786,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_FieldOfSaws, "TrapRooms\\Expand_Apache_FieldOfSaws_Layout.png");
 
 
-            Expand_Apache_TheCrushZone.name = "Apache Field of Saws";
+            Expand_Apache_TheCrushZone.name = "Apache The Crush Zone";
             Expand_Apache_TheCrushZone.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_Apache_TheCrushZone.GUID = Guid.NewGuid().ToString();
             Expand_Apache_TheCrushZone.PreventMirroring = false;
@@ -4500,6 +4994,90 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(12, 13), EnemyBehaviourGuid: "e61cab252cfb435db9172adc96ded75f"); // poisbulon
             RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 22), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_TheCrushZone, "TrapRooms\\Expand_Apache_TheCrushZone_Layout.png");
+
+            Expand_Apache_SpikeAndPits.name = "Apache Spikes and Pits";
+            Expand_Apache_SpikeAndPits.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Apache_SpikeAndPits.GUID = Guid.NewGuid().ToString();
+            Expand_Apache_SpikeAndPits.PreventMirroring = false;
+            Expand_Apache_SpikeAndPits.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Apache_SpikeAndPits.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Apache_SpikeAndPits.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_SpikeAndPits.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Apache_SpikeAndPits.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Apache_SpikeAndPits.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Apache_SpikeAndPits.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Apache_SpikeAndPits.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Apache_SpikeAndPits.placedObjectPositions = new List<Vector2>();
+            Expand_Apache_SpikeAndPits.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Apache_SpikeAndPits.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Apache_SpikeAndPits.overriddenTilesets = 0;
+            Expand_Apache_SpikeAndPits.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Apache_SpikeAndPits.InvalidInCoop = false;
+            Expand_Apache_SpikeAndPits.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Apache_SpikeAndPits.preventAddedDecoLayering = false;
+            Expand_Apache_SpikeAndPits.precludeAllTilemapDrawing = false;
+            Expand_Apache_SpikeAndPits.drawPrecludedCeilingTiles = false;
+            Expand_Apache_SpikeAndPits.preventBorders = false;
+            Expand_Apache_SpikeAndPits.preventFacewallAO = false;
+            Expand_Apache_SpikeAndPits.usesCustomAmbientLight = false;
+            Expand_Apache_SpikeAndPits.customAmbientLight = Color.white;
+            Expand_Apache_SpikeAndPits.ForceAllowDuplicates = false;
+            Expand_Apache_SpikeAndPits.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Apache_SpikeAndPits.IsLostWoodsRoom = false;
+            Expand_Apache_SpikeAndPits.UseCustomMusic = false;
+            Expand_Apache_SpikeAndPits.UseCustomMusicState = false;
+            Expand_Apache_SpikeAndPits.CustomMusicEvent = string.Empty;
+            Expand_Apache_SpikeAndPits.UseCustomMusicSwitch = false;
+            Expand_Apache_SpikeAndPits.CustomMusicSwitch = string.Empty;
+            Expand_Apache_SpikeAndPits.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Apache_SpikeAndPits.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Apache_SpikeAndPits.Width = 26;
+            Expand_Apache_SpikeAndPits.Height = 26;
+            RoomBuilder.AddExitToRoom(Expand_Apache_SpikeAndPits, new Vector2(0, 13), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_SpikeAndPits, new Vector2(27, 13), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 27), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 11), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 13), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(5, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(7, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(11, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(13, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.SpikeTrap, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(15, 10), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // hollowpoint
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_SpikeAndPits, "TrapRooms\\Expand_Apache_SpikeAndPits_Layout.png");
             
 
             SecretExitRoom2.name = "Secret Elevator Exit";
@@ -4557,7 +5135,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRatEntranceRoom.PreventMirroring = false;
             SecretRatEntranceRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             SecretRatEntranceRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            SecretRatEntranceRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            SecretRatEntranceRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             SecretRatEntranceRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             SecretRatEntranceRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             SecretRatEntranceRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4612,7 +5190,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorEntranceRoom.PreventMirroring = false;
             Expand_SecretElevatorEntranceRoom.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             Expand_SecretElevatorEntranceRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_SecretElevatorEntranceRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_SecretElevatorEntranceRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_SecretElevatorEntranceRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_SecretElevatorEntranceRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_SecretElevatorEntranceRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4663,7 +5241,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorDestinationRoom.PreventMirroring = false;
             Expand_SecretElevatorDestinationRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_SecretElevatorDestinationRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_SecretElevatorDestinationRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_SecretElevatorDestinationRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_SecretElevatorDestinationRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_SecretElevatorDestinationRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_SecretElevatorDestinationRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4715,7 +5293,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_TinySecret.PreventMirroring = false;
             Expand_TinySecret.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             Expand_TinySecret.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_TinySecret.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_TinySecret.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_TinySecret.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_TinySecret.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_TinySecret.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4764,7 +5342,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_GlitchedSecret.PreventMirroring = false;
             Expand_GlitchedSecret.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             Expand_GlitchedSecret.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_GlitchedSecret.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_GlitchedSecret.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_GlitchedSecret.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_GlitchedSecret.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_GlitchedSecret.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -4970,9 +5548,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
             Expand_BootlegRoom.PreventMirroring = false;
-            Expand_BootlegRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_BootlegRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             Expand_BootlegRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_BootlegRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_BootlegRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_BootlegRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_BootlegRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_BootlegRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -5080,7 +5658,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(ThwompCrossingVertical, 0.8f),
                 GenerateWeightedRoom(ThwompCrossingHorizontal, 0.8f),
                 GenerateWeightedRoom(Expand_Apache_FieldOfSaws),
-                GenerateWeightedRoom(Expand_Apache_TheCrushZone)
+                GenerateWeightedRoom(Expand_Apache_TheCrushZone),
+                GenerateWeightedRoom(Expand_Apache_SpikeAndPits)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
@@ -5108,6 +5687,9 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.MinesRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
@@ -5141,7 +5723,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Enclose_Hub)
             };
 
-           
+            WeightedRoom[] CustomGungeonProperRooms = new WeightedRoom[] {
+                GenerateWeightedRoom(Expand_Crosshairs),
+                GenerateWeightedRoom(Expand_Basic),
+                GenerateWeightedRoom(Expand_JumpInThePit),
+                GenerateWeightedRoom(Expand_LongSpikeTrap),
+                GenerateWeightedRoom(Expand_SpikeTrap),
+                GenerateWeightedRoom(Expand_ThinRoom)
+            };
+
             WeightedRoom[] CustomHollowsRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_SpiderMaze)
             };
@@ -5153,6 +5743,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                     ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                     ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
                 }
+            }
+            foreach (WeightedRoom room in CustomGungeonProperRooms) {
+                ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
             }
             foreach (WeightedRoom room in CustomHollowsRooms) {
                 ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);

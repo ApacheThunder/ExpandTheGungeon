@@ -138,9 +138,7 @@ namespace ExpandTheGungeon.ExpandComponents {
     		RoomHandler.unassignedInteractableObjects.Remove(this);
     	}
     
-    	protected override void OnDestroy() {
-            base.OnDestroy();
-        }
+    	protected override void OnDestroy() { base.OnDestroy(); }
     
     	public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
     		shouldBeFlipped = false;

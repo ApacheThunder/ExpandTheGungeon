@@ -90,8 +90,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedEnemyActor.BaseMovementSpeed = 8f;
             CachedEnemyActor.MovementSpeed = 8f;
 
-            CachedEnemyActor.healthHaver.SetHealthMaximum(1350);
-            CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1350);
+            CachedEnemyActor.healthHaver.SetHealthMaximum(1000);
+            CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1000);
             CachedEnemyActor.healthHaver.overrideBossName = "Gungeoneer Mimic";
             CachedEnemyActor.healthHaver.RegenerateCache();
 

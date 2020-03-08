@@ -59,4 +59,4 @@ Credits:
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
 * Retrash for the Baby Good Hammer item sprite.
 * Charcola for the Table Tech Assassin sprite design.
-* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into.
+* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided room designs for the Gungeon Proper.

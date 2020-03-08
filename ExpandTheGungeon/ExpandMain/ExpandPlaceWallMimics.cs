@@ -339,12 +339,12 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.MINEGEON) { return; }
 
-            int MushroomCount = BraveRandom.GenerationRandomRange(10, 25);
+            int MushroomCount = BraveRandom.GenerationRandomRange(20, 35);
                         
             List<IntVector2> spawnList = new List<IntVector2>();
             for (int i = 0; i < dungeon.data.rooms.Count; i++) {
                 RoomHandler roomHandler = dungeon.data.rooms[i];
-                if (!roomHandler.area.IsProceduralRoom && roomHandler.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.NORMAL && !roomHandler.OptionalDoorTopDecorable && !roomHandler.area.prototypeRoom.UseCustomMusic) {
+                if (roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
                     for (int X = roomHandler.area.basePosition.x; X < roomHandler.area.basePosition.x + roomHandler.area.dimensions.x; X++) {
                         for (int Y = roomHandler.area.basePosition.y; Y < roomHandler.area.basePosition.y + roomHandler.area.dimensions.y; Y++) {
                             if (ClearForAlarmMushroom(dungeon, Clearence, Clearence, X, Y)) { spawnList.Add(new IntVector2(X, Y)); }

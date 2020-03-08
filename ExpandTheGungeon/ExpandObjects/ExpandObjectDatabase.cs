@@ -106,6 +106,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public DungeonPlaceable PitTrap;
         public DungeonPlaceable Bush;
         public DungeonPlaceable BushFlowers;
+        public DungeonPlaceable WoodenBarrel;
 
         public ExpandObjectDatabase() {
             sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
@@ -199,6 +200,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PitTrap = sharedAssets2.LoadAsset<DungeonPlaceable>("Pit Trap");
             Bush = sharedAssets2.LoadAsset<DungeonPlaceable>("Bush");
             BushFlowers = sharedAssets2.LoadAsset<DungeonPlaceable>("Bush Flowers");
+            WoodenBarrel = sharedAssets.LoadAsset<DungeonPlaceable>("Barrel_collection");
             pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
             crowdController = pastController.crowdController;
 

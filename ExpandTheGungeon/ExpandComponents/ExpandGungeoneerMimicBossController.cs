@@ -346,7 +346,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!source) { return; }
             if (m_IsDisconnected) { return; }
             if (m_AIActor.TargetRigidbody != null) { source.specRigidbody.specRigidbody.DeregisterSpecificCollisionException(m_AIActor.TargetRigidbody); }
-            if (m_Player) { m_Player.DoPostProcessProjectile(source); }
+            // if (m_Player) { m_Player.DoPostProcessProjectile(source); }
             source.SetOwnerSafe(m_AIActor, m_AIActor.ActorName);
             source.Shooter = m_AIActor.specRigidbody;
             source.SetNewShooter(m_AIActor.specRigidbody);
