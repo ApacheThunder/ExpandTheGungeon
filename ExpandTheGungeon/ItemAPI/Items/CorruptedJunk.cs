@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System;
-using MonoMod.RuntimeDetour;
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandUtilities;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandComponents;
 using System.Collections.ObjectModel;
 using tk2dRuntime.TileMap;
 using Pathfinding;
@@ -17,18 +15,7 @@ namespace ExpandTheGungeon.ItemAPI {
     
     public class CorruptedJunk : PassiveItem {
 
-        private static string[] spritePaths = new string[] {            
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_01",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_02",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_03",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_04",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_05",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_06",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_07",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_08",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_09",
-            "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/corrupted_poopsack_10"            
-        };
+        private static string basePath = "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/";
 
         private static List<string> m_SpriteNames = new List<string> {            
             "corrupted_poopsack_01",
@@ -43,10 +30,6 @@ namespace ExpandTheGungeon.ItemAPI {
             "corrupted_poopsack_10"            
         };
 
-        // ExpandTheGungeon/Textures/Items/corrupted_poopsack
-        private static int firstSpriteID;
-        private static int lastSpriteID;
-
         public static GameObject CorruptedJunkObject;
 
         public static void Init() {
@@ -56,27 +39,19 @@ namespace ExpandTheGungeon.ItemAPI {
             CorruptedJunkObject = new GameObject(itemName);
 
             CorruptedJunk item = CorruptedJunkObject.AddComponent<CorruptedJunk>();
-            ItemBuilder.AddSpriteToObject(itemName, spritePaths[8], CorruptedJunkObject, false);
+            ItemBuilder.AddSpriteToObject(itemName, (basePath + m_SpriteNames[8]), CorruptedJunkObject, false);
 
             string shortDesc = "Next Time... What even is this!?";
             string longDesc = "Just some corrupted junk.\n\nCarrying this around makes you question your sanity...";
 
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");
-            // item.quality = ItemQuality.S;
-            item.quality = ItemQuality.EXCLUDED;
-
-            firstSpriteID = (item.sprite.Collection.spriteDefinitions.Length - 1);
-
-            for (int i = 0; i < spritePaths.Length; i++) { SpriteBuilder.AddSpriteToCollection(spritePaths[i], item.sprite.Collection); }
-
-            lastSpriteID = (firstSpriteID + 10);
-
-            List<int> m_SpriteIDs = new List<int>();
-
-            for (int i = firstSpriteID; i < lastSpriteID; i++) { m_SpriteIDs.Add(i); }
+            item.quality = ItemQuality.S;
+            item.CanBeDropped = false;
+            
+            foreach (string spritePath in m_SpriteNames) { SpriteBuilder.AddSpriteToCollection((basePath + spritePath), item.sprite.Collection); }
 
             ExpandUtility.GenerateSpriteAnimator(item.gameObject, playAutomatically: true);
-            ExpandUtility.AddAnimation(item.spriteAnimator, item.sprite.Collection, m_SpriteIDs, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);            
+            ExpandUtility.AddAnimation(item.spriteAnimator, item.sprite.Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
         }
         
 
@@ -106,13 +81,13 @@ namespace ExpandTheGungeon.ItemAPI {
             base.Pickup(player);
             HandleUIAnimation();
             HandleRandomEffect(player);
-            HandleGlitchRoomSpawn(player);
+            // HandleGlitchRoomSpawn(player);
             m_PickedUp = true;
         }
 
         private void HandleUIAnimation() {
 
-            if (m_PickedUp) { return; }
+            // if (m_PickedUp) { return; }
 
             MinimapUIController minimapDock = null;
 
@@ -129,10 +104,8 @@ namespace ExpandTheGungeon.ItemAPI {
                     for (int i = 0; i < m_DockItems.Count; i++) {
                         if (m_DockItems[i].Second is CorruptedJunk) {
                             if (!m_DockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>()) {
-                                List<int> m_SpriteIDs = new List<int>();
-                                for (int I = firstSpriteID; I < lastSpriteID; I++) { m_SpriteIDs.Add(I); }
                                 ExpandUtility.GenerateSpriteAnimator(m_DockItems[i].First.gameObject, playAutomatically: true);
-                                ExpandUtility.AddAnimation(m_DockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>(), m_DockItems[i].First.Collection, m_SpriteIDs, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
+                                ExpandUtility.AddAnimation(m_DockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>(), m_DockItems[i].First.Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
                             }
                             if (m_DockItems[i].First.spriteAnimator) {
                                 if (!m_DockItems[i].First.spriteAnimator.IsPlaying("idle")) {
@@ -151,10 +124,8 @@ namespace ExpandTheGungeon.ItemAPI {
                     for (int i = 0; i < m_secondaryDockItems.Count; i++) {
                         if (m_secondaryDockItems[i].Second is CorruptedJunk) {
                             if (!m_secondaryDockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>()) {
-                                List<int> m_SpriteIDs = new List<int>();
-                                for (int I = firstSpriteID; I < lastSpriteID; I++) { m_SpriteIDs.Add(I); }
                                 ExpandUtility.GenerateSpriteAnimator(m_secondaryDockItems[i].First.gameObject, playAutomatically: true);
-                                ExpandUtility.AddAnimation(m_secondaryDockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>(), m_secondaryDockItems[i].First.Collection, m_SpriteIDs, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
+                                ExpandUtility.AddAnimation(m_secondaryDockItems[i].First.gameObject.GetComponent<tk2dSpriteAnimator>(), m_secondaryDockItems[i].First.Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
                             }
                             if (m_secondaryDockItems[i].First.spriteAnimator) {
                                 if (!m_secondaryDockItems[i].First.spriteAnimator.IsPlaying("idle")) {

@@ -33,10 +33,10 @@ Features:
  * Two new DD20 modifiers. "Apache Thunder's Revenge". A custom modifier that has most of the Chaos mode mayhem from ChaosGlitchMod!. The second modifier is "Triple Trouble. A modifier for the Trigger Twins boss. As you can guess a third trigger twin will spawn.
  
 13. Custom items!:
- * "Baby Good Hammer". An active item that summons a Dead Blow Forge Hammer to do your bidding! Thanks to Retrash for providing the item sprite.
- * "Corruption Bomb". A power bomb that corrupts the reality around you. Corrupted enemies can no longer attack. May have suprising effects on other objects. Test it out on things if you dare!
- * "Table Tech Assassin". Tables flipped by enmies are betrayed by their tables. Tabled flipped by enemies explode.
- * "Corrupted Junk". Junk warped by corruption. May grant player an obscene amount of a random consumable. It may also have other unexpected effects.
+ * "Baby Good Hammer". An active item companion that summons a Dead Blow Forge Hammer to do your bidding! Thanks to Retrash for providing the item sprite.
+ * "Corruption Bomb". A powerful bomb that corrupts the reality around you. Corrupted enemies can no longer attack. May have suprising effects on other objects. Test it out on things if you dare!
+ * "Table Tech Assassin". Tables flipped by enemies are betrayed by their tables. Tabled flipped by enemies explode.
+ * "Corrupted Junk". Junk warped by corruption. May grant player an obscene amount of a random consumable.
  * "Cronenberg Bullets". Bullets that have a chance to transmorgify enemies into a horrible cronenberg abomination. Sprite work courtasy of Neighborino!
  
 14. Certain NPCs and objects and even a copy of the player can appear as enemies on glitch floors.
@@ -45,7 +45,7 @@ Features:
 
 16. New type of elevator added. A small elevator that can take the player to another room on the floor. Used as a entrance elevator to the secret glitched elevator room on Hollow.
 
-17. 1 new Custom Boss! Can be found on custom secret floor!
+17. 1 new Custom Boss! Can be found on my custom secret floor!
 
 Compiling and versions of Enter the Gungeon required:
 
@@ -59,4 +59,4 @@ Credits:
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
 * Retrash for the Baby Good Hammer item sprite.
 * Charcola for the Table Tech Assassin sprite design.
-* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided room designs for the Gungeon Proper.
+* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided some additional room designs.

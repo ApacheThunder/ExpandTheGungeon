@@ -8954,6 +8954,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dSprite newSprite = CachedTargetEnemyObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(newSprite, (m_SelectedPlayer.sprite as tk2dSprite));
 
+            // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
+            // Always set false to ensure this doesn't happen.
+            newSprite.FlipX = false;
+
             ExpandUtility.GenerateAIActorTemplate(CachedTargetEnemyObject, out m_DummyCorpseObject, "Corrupted Player Mimic", Guid.NewGuid().ToString(), null, m_SelectedPlayer.gunAttachPoint.gameObject, instantiateCorpseObject: false, ExternalCorpseObject: CachedEnemyActor.CorpseObject);
             
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();

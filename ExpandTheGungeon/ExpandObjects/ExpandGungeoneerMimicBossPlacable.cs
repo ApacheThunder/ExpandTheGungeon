@@ -20,7 +20,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             tk2dSprite playerSprite = aiActorObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(playerSprite, (sourcePlayer.sprite as tk2dSprite));
-            
+
+            // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
+            // Always set false to ensure this doesn't happen.
+            playerSprite.FlipX = false;
+
             ExpandUtility.GenerateAIActorTemplate(aiActorObject, out m_CorpseObject, aiActorObject.name, System.Guid.NewGuid().ToString(), GunAttachOffset: new Vector3(0.3f, 0.25f, 0), StartingGunID: 472);
             
             AIActor CachedEnemyActor = aiActorObject.GetComponent<AIActor>();
@@ -67,9 +71,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             miniBossIntroDoer.fusebombLock = false;
             miniBossIntroDoer.AdditionalHeightOffset = 0;
             miniBossIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
-                bossNameString = "Gungeoneer Mimic",
+                bossNameString = "Dopplegunner",
                 bossSubtitleString = "Imposter!",
-                bossQuoteString = "Most Evolved Mimic...",                    
+                bossQuoteString = "Clone gone rogue...",                    
                 bossSpritePxOffset = IntVector2.Zero,
                 topLeftTextPxOffset = IntVector2.Zero,
                 bottomRightTextPxOffset = IntVector2.Zero,
@@ -92,14 +96,14 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             CachedEnemyActor.healthHaver.SetHealthMaximum(1000);
             CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1000);
-            CachedEnemyActor.healthHaver.overrideBossName = "Gungeoneer Mimic";
+            CachedEnemyActor.healthHaver.overrideBossName = "Dopplegunner";
             CachedEnemyActor.healthHaver.RegenerateCache();
 
             CachedEnemyActor.EnemyId = Random.Range(2000, 9999);
             CachedEnemyActor.EnemyGuid = System.Guid.NewGuid().ToString();
-            CachedEnemyActor.OverrideDisplayName = ("Gungeoneer Mimic");
-            CachedEnemyActor.ActorName = ("Gungeoneer Mimic");
-            CachedEnemyActor.name = ("Gungeoneer Mimic");
+            CachedEnemyActor.OverrideDisplayName = ("Dopplegunner");
+            CachedEnemyActor.ActorName = ("Dopplegunner");
+            CachedEnemyActor.name = ("Dopplegunner");
             
             CachedEnemyActor.CanTargetEnemies = false;
             CachedEnemyActor.CanTargetPlayers = true;
@@ -128,7 +132,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 CachedEnemyActor.EnemySwitchState = "Convict";
                 ExpandShaders.ApplyParadoxPlayerShader(CachedEnemyActor.sprite);
             } else { 
-                CachedEnemyActor.EnemySwitchState = "wallmimic";
+                CachedEnemyActor.EnemySwitchState = "Gun Cultist";
             }
             
 

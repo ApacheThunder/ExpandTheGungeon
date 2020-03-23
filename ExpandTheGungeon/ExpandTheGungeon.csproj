@@ -765,6 +765,66 @@
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_SpikeAndPits_Layout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\GungeonProper\Expand_Neighborino_SniperRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Mines\Neighborino_Hopscoth_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Mines\Neighborino_GoopTroop_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Mines\Neighborino_Pit_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Mines\Neighborino_Singer_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Mines\Neighborino_Walkway_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_BlobRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_CubeRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_HellInACell_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_IceIsNice_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_IceScotch_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_MrPresident_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Hollow\Expand_Neighborino_SawRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_Arena_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_CaptainCrunch_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_CorridorOfDoomDeath_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_FireRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_Pits_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\Forge\Expand_Neighborino_SkullRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_PitTraps_Layout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

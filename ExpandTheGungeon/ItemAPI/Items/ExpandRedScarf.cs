@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ItemAPI { 
 

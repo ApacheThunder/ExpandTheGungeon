@@ -10,6 +10,7 @@ using HutongGames.PlayMaker;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -179,7 +180,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("SwitchToStateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonFloorMusicController)
             );
-            
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleCombatWaves Hook...."); }
+            Hook paydayDrillCombatWaveHook = new Hook(
+                typeof(PaydayDrillItem).GetMethod("HandleCombatWaves", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("HandleCombatWavesHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PaydayDrillItem)
+            );
+
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
             Hook flushAudioHook = new Hook(
@@ -717,6 +725,97 @@ namespace ExpandTheGungeon.ExpandMain {
         private void FlushAudioHook(Action<GameManager> orig, GameManager self) {
             orig(self);
             AkSoundEngine.PostEvent("Stop_EX_SFX_All", self.gameObject);
+        }
+
+        // Add Null checks and use fall back GUIDs if it fails. Incase Drill tries to spawn custom enemies. (the GenerateEnemyData list returns null for some reason if it tries to pull a GUID tied to a custom enemy).
+        private IEnumerator HandleCombatWavesHook(Action<PaydayDrillItem, Dungeon, RoomHandler, Chest>orig, PaydayDrillItem self, Dungeon d, RoomHandler newRoom, Chest sourceChest) {
+            DrillWaveDefinition[] wavesToUse = self.D_Quality_Waves;
+            switch (GameManager.Instance.RewardManager.GetQualityFromChest(sourceChest)) {
+                case PickupObject.ItemQuality.C:
+                    wavesToUse = self.C_Quality_Waves;
+                    break;
+                case PickupObject.ItemQuality.B:
+                    wavesToUse = self.B_Quality_Waves;
+                    break;
+                case PickupObject.ItemQuality.A:
+                    wavesToUse = self.A_Quality_Waves;
+                    break;
+                case PickupObject.ItemQuality.S:
+                    wavesToUse = self.S_Quality_Waves;
+                    break;
+            }
+            foreach (DrillWaveDefinition currentWave in wavesToUse) {
+                int numEnemiesToSpawn = UnityEngine.Random.Range(currentWave.MinEnemies, currentWave.MaxEnemies + 1);
+                for (int i = 0; i < numEnemiesToSpawn; i++) {
+                    string EnemyGUID = d.GetWeightedProceduralEnemy().enemyGuid;
+                    if (string.IsNullOrEmpty(EnemyGUID)) {
+                        List<string> FallbackGUIDs = new List<string>() {
+                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
+                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
+                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
+                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
+                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                        };
+                        FallbackGUIDs = FallbackGUIDs.Shuffle();
+                        EnemyGUID = BraveUtility.RandomElement(FallbackGUIDs);
+                    }
+                    AddSpecificEnemyToRoomProcedurallyFixed(newRoom, EnemyGUID, true);
+                }
+                yield return new WaitForSeconds(3f);
+                while (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.RoomClear) > 0) {
+                    yield return new WaitForSeconds(1f);
+                }
+                if (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.All) > 0) {
+                    List<AIActor> activeEnemies = newRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);
+                    for (int j = 0; j < activeEnemies.Count; j++) {
+                        if (activeEnemies[j].IsNormalEnemy) { activeEnemies[j].EraseFromExistence(false); }
+                    }
+                }
+            }
+            yield break;
+        }
+
+        // This function doesn't null check orLoadByGuid. If non fake prefab custom enemies are spawned (like the special rats on Hollow), then this would cause exception.
+        // Added fall back GUIDs and use one of those for AIActor instead if this happens.
+        public void AddSpecificEnemyToRoomProcedurallyFixed(RoomHandler room, string enemyGuid, bool reinforcementSpawn = false, Vector2? goalPosition = null) {
+            AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(enemyGuid);
+            if (!orLoadByGuid) {
+                List<string> FallbackGUIDs = new List<string>() {
+                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
+                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
+                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
+                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
+                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                };
+                FallbackGUIDs = FallbackGUIDs.Shuffle();
+                orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(FallbackGUIDs));
+            }
+            IntVector2 clearance = orLoadByGuid.specRigidbody.UnitDimensions.ToIntVector2(VectorConversions.Ceil);
+            CellValidator cellValidator = delegate (IntVector2 c) {
+                for (int i = 0; i < clearance.x; i++) {
+                    int x = c.x + i;
+                    for (int j = 0; j < clearance.y; j++) {
+                        int y = c.y + j;
+                        if (GameManager.Instance.Dungeon.data.isTopWall(x, y)) { return false; }
+                    }
+                }
+                return true;
+            };
+            IntVector2? intVector;
+            if (goalPosition != null) {
+                intVector = room.GetNearestAvailableCell(goalPosition.Value, new IntVector2?(clearance), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            } else {
+                intVector = room.GetRandomAvailableCell(new IntVector2?(clearance), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            }
+            if (intVector != null) {
+                AIActor aiactor = AIActor.Spawn(orLoadByGuid, intVector.Value, room, true, AIActor.AwakenAnimationType.Spawn, false);
+                if (aiactor && reinforcementSpawn) {
+                    if (aiactor.specRigidbody) { aiactor.specRigidbody.CollideWithOthers = false; }
+                    aiactor.HandleReinforcementFallIntoRoom(0f);
+                }
+            } else {
+                Debug.LogError("failed placement");
+            }
         }
 
     }

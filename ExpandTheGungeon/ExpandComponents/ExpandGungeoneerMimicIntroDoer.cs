@@ -89,43 +89,37 @@ namespace ExpandTheGungeon.ExpandComponents {
             GetComponent<GenericIntroDoer>().SuppressSkipping = true;
             TextBoxManager.TIME_INVARIANT = true;
 
-            List<int> RandomStrings = new List<int>() { 1, 2, 3, 4, 5 };
+            List<int> RandomStrings = new List<int>() { 1, 2, 3, 4 };
 
             int RandomString = BraveUtility.RandomElement(RandomStrings);
 
             string DialogOption1 = "I...MUST...BECOME...YOU!";
 
-            string DialogOption2 = "My fellow mimics have had enough of you!";
-            string DialogOption2_Line2 = "Time for me to to take your place so they may finally be free!";
+            string DialogOption2 = "I will kill you twice!";
+            string DialogOption2_Line2 = "First I will kill you here.";
+            string DialogOption2_Line3 = "Then I will get the bullet and kill your past!";
 
-            string DialogOption3 = "The mimic army shall rise!";
-            string DialogOption3_Line2 = "Your corpse shall be the proof that I need to lead them!";
+            string DialogOption3 = "I shall become the ultimate clone!";
+            string DialogOption3_Line2 = "I will kill you here so that I can take your place.";
+            string DialogOption3_Line3 = "Your fellow Gungeoneers will suspect nothing!";
 
-            string DialogOption4 = "I will kill you twice!";
-            string DialogOption4_Line2 = "First I will kill you here.";
-            string DialogOption4_Line3 = "Then I will get the bullet and kill your past!";
-
-            string DialogOption5 = "I shall become the ultimate mimic!";
-            string DialogOption5_Line2 = "I will kill you here so that I can take your place.";
-            string DialogOption5_Line3 = "Your fellow Gungeoneers will suspect nothing!";
+            string DialogOption4 = "You can kill your past, but how about your present?";
             
             if (RandomString == 1) {
                 yield return StartCoroutine(TalkRaw(DialogOption1, dialogBoxOffset));
             } else if (RandomString == 2) {
                 yield return StartCoroutine(TalkRaw(DialogOption2, dialogBoxOffset));
                 yield return StartCoroutine(TalkRaw(DialogOption2_Line2, dialogBoxOffset));
+                yield return StartCoroutine(TalkRaw(DialogOption2_Line3, dialogBoxOffset));
+
             } else if (RandomString == 3) {
                 yield return StartCoroutine(TalkRaw(DialogOption3, dialogBoxOffset));
                 yield return StartCoroutine(TalkRaw(DialogOption3_Line2, dialogBoxOffset));
+                yield return StartCoroutine(TalkRaw(DialogOption3_Line3, dialogBoxOffset));
             } else if (RandomString == 4) {
                 yield return StartCoroutine(TalkRaw(DialogOption4, dialogBoxOffset));
-                yield return StartCoroutine(TalkRaw(DialogOption4_Line2, dialogBoxOffset));
-                yield return StartCoroutine(TalkRaw(DialogOption4_Line3, dialogBoxOffset));
-            } else if (RandomString == 5) {
-                yield return StartCoroutine(TalkRaw(DialogOption5, dialogBoxOffset));
-                yield return StartCoroutine(TalkRaw(DialogOption5_Line2, dialogBoxOffset));
-                yield return StartCoroutine(TalkRaw(DialogOption5_Line3, dialogBoxOffset));
             }
+
             yield return null;
             TextBoxManager.TIME_INVARIANT = false;
             GetComponent<GenericIntroDoer>().SuppressSkipping = false;
@@ -149,7 +143,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.State = AIActor.ActorState.Normal;
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.ToggleRenderers(true);
-            m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
+            // m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
             if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
@@ -205,7 +199,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
             }
-            // if (m_GungeoneerMimicController) { m_GungeoneerMimicController.IntroDone = true; }
+            if (m_GungeoneerMimicController) { m_GungeoneerMimicController.IntroDone = true; }
             if (!m_MirrorHasShattered) {
                 if (MirrorBase.GetComponent<tk2dSprite>()) { MirrorBase.GetComponent<tk2dSprite>().SetSprite("PlayerMimicMirror_Broken"); }
                 if (MirrorBase) { AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", gameObject); }

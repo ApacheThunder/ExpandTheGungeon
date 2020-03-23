@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 DamageToPlayersPerTick = 0.5f;
                 TickFrequency = 1;
             } else if (DamageCellsType == CoreDamageTypes.Poison) {
-                // DamageCellsArePoison = true;
+                DamageCellsArePoison = true;
                 DamageToPlayersPerTick = 0.5f;
                 TickFrequency = 1;
             }
@@ -182,7 +182,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 str = string.Empty,
                 conditionalOnParentExit = false,
                 conditionalCellIsPit = false,
-                parentExitIndex = 0,
+                parentExitIndex = -1,
                 containsManuallyPlacedLight = false,
                 lightPixelsOffsetY = 0,
                 lightStampIndex = 0,
@@ -200,10 +200,23 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     IsPhantomCarpet = false,
                     ForceDisallowGoop = false,
                     OverrideFloorType = OverrideFloorType,
-                    globalOverrideIndices = new PrototypeIndexOverrideData() { indices = new List<int>() },
+                    globalOverrideIndices = new PrototypeIndexOverrideData() { indices = new List<int>(0) }
                 },
-                ForceTileNonDecorated = false,            
+                ForceTileNonDecorated = false,
+                additionalPlacedObjectIndices = new List<int>() { -1 },
+                placedObjectRUBELIndex = -1
             };
+
+            if (DamageType == CoreDamageTypes.Poison) {
+                m_NewCellData.ForceTileNonDecorated = true;
+                m_NewCellData.appearance.OverrideFloorType  = CellVisualData.CellFloorType.Stone;
+                m_NewCellData.damageDefinition.damageTypes = CoreDamageTypes.Poison;
+            } else if (DamageType == CoreDamageTypes.Fire) {
+                m_NewCellData.ForceTileNonDecorated = true;
+                m_NewCellData.appearance.OverrideFloorType = CellVisualData.CellFloorType.Stone;
+                m_NewCellData.damageDefinition.damageTypes = CoreDamageTypes.Fire;
+            }
+
             return m_NewCellData;
         }
         

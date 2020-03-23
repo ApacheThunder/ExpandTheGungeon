@@ -20,6 +20,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject YellowDrum;
         public GameObject RedDrum;
         public GameObject WaterDrum;
+        public GameObject OilDrum;
         public GameObject IceBomb;
         public GameObject TableHorizontal;
         public GameObject TableVertical;
@@ -120,6 +121,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             YellowDrum = sharedAssets2.LoadAsset<GameObject>("Yellow Drum");
             RedDrum = sharedAssets.LoadAsset<GameObject>("Red Drum");
             WaterDrum = sharedAssets2.LoadAsset<GameObject>("Blue Drum");
+            OilDrum = sharedAssets2.LoadAsset<GameObject>("Purple Drum");
             IceBomb = sharedAssets2.LoadAsset<GameObject>("Ice Cube Bomb");
             TableHorizontal = sharedAssets.LoadAsset<GameObject>("Table_Horizontal");
             TableVertical = sharedAssets.LoadAsset<GameObject>("Table_Vertical");
