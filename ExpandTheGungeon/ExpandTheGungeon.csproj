@@ -76,6 +76,10 @@
       <HintPath>..\Dependencies\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>..\Dependencies\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>..\Dependencies\UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>False</Private>
@@ -114,6 +118,7 @@
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
+    <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
     <Compile Include="ItemAPI\Items\ChronenbergBullets.cs" />
     <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
@@ -135,6 +140,7 @@
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
     <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
+    <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
     <Compile Include="ItemAPI\ResourceExtractor.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
@@ -824,6 +830,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_PitTraps_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\mimiclay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\RoomFactoryTestRoom.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\WallMimicHell.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -55,7 +55,8 @@ namespace ExpandTheGungeon {
                 "Corruption Bomb",
                 "Table Tech Assassin",
                 "ex:bloodied_scarf",
-                "Cronenberg Bullets"
+                "Cronenberg Bullets",
+                "Mimiclay"
             };
             
             AudioResourceLoader.InitAudio();
@@ -123,6 +124,7 @@ namespace ExpandTheGungeon {
                     CorruptedJunk.Init();
                     BootlegGuns.Init();
                     CronenbergBullets.Init();
+                    Mimiclay.Init();
                     ItemAPISetup = true;
                 } catch (Exception e2) {
                     Tools.PrintException(e2, "FF0000");

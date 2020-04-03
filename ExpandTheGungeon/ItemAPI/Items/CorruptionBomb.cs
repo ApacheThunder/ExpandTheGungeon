@@ -362,7 +362,12 @@ namespace ExpandTheGungeon.ItemAPI {
                             float num = Vector2.Distance(unitCenter, lastPosition);
                             bool modified = false;
                             string ObjectName = StaticReferenceManager.AllNpcs[i].gameObject.name;
-                            if (!modified && (string.IsNullOrEmpty(ObjectName) | !ObjectName.StartsWith("Corrupted")) && !StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<AIActor>() && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
+                            if (StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<UltraFortunesFavor>()) {
+                                if (!StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<UltraFortunesFavor>().enabled) { modified = true; }
+                            } else {
+                                modified = true;
+                            }
+                            if (!modified && (string.IsNullOrEmpty(ObjectName) | !ObjectName.StartsWith("Corrupted") | !StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<AIActor>()) && !StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<AIActor>() && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
                                 modified = true;
                                 if (StaticReferenceManager.AllNpcs[i] != null && unitCenter.GetAbsoluteRoom() != null && unitCenter.GetAbsoluteRoom() == m_targetRoom) {
                                     tk2dBaseSprite targetBaseSprite = StaticReferenceManager.AllNpcs[i].gameObject.GetComponent<tk2dBaseSprite>();

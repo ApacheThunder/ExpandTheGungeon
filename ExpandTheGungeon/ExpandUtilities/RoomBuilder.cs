@@ -142,6 +142,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 };
             }
             room.OnBeforeSerialize();
+            room.OnAfterDeserialize();
             room.UpdatePrecalculatedData();
         }
 

@@ -1,8 +1,8 @@
-﻿using ExpandTheGungeon.ExpandUtilities;
-using Dungeonator;
+﻿using Dungeonator;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ExpandTheGungeon.ExpandUtilities;
 
 
 namespace ExpandTheGungeon.ExpandObjects {
@@ -32,6 +32,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom GungeoneerMimicBossRoom;
 
         // Custom rooms for the regular floors. (most designs provided courtasy of TheTurtleMelon)
+
+        // Test Rooms
+        public static PrototypeDungeonRoom Expand_TestRoomFactoryRoom;
+        public static PrototypeDungeonRoom Expand_WallMimicHell;
 
         // Rooms for Floor 1. 
         public static PrototypeDungeonRoom Expand_Explode;
@@ -132,6 +136,9 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
         public static void InitCustomRooms() {
+
+            Expand_TestRoomFactoryRoom = RoomFactory.BuildFromResource("RoomFactoryTestRoom.room");
+            Expand_WallMimicHell = RoomFactory.BuildFromResource("WallMimicHell.room");
 
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();

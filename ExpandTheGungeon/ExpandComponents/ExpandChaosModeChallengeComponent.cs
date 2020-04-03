@@ -1009,9 +1009,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (UnityEngine.Random.value > 0.35f) { return; }
 
             if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47" | targetActor.EnemyGuid == "b54d89f9e802455cbb2b8a96a31e8259") {
-                IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
-                
-	        	if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {	        		
+                // IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2());
+
+                if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {	        		
                     AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
                     Destroy(targetActor.gameObject);
@@ -1032,7 +1033,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
 	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManMonochromeCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
 	        		targetActor.OverrideDisplayName = ("1-Bit " + targetActor.GetActorName());
-	        		targetActor.ActorName += "ALT";	        		
+	        		targetActor.ActorName += "ALT";
 	        		return;
 	        	} else if (Selector == 1){
                     if (ExpandPrefabs.BulletManUpsideDownCollection == null) {
@@ -1043,7 +1044,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 	        		targetActor.ActorName += "ALT";
 	        		return;
 	        	} else if (Selector > 1) {
-                    IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                    // IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
+                    IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2());
                     if (targetActor.EnemyGuid == "db35531e66ce41cbb81d507a34366dfe") {
                         AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     } else {
@@ -1076,7 +1078,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             yield return null;
 
-            AIActor spawnedActor = spawnedActor = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(GUIDList)), spawnPosition, currentRoom, correctForWalls: true); ;
+            AIActor spawnedActor = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(GUIDList)), spawnPosition, currentRoom, correctForWalls: true); ;
             
             yield return null;
 

@@ -38,6 +38,8 @@ Features:
  * "Table Tech Assassin". Tables flipped by enemies are betrayed by their tables. Tabled flipped by enemies explode.
  * "Corrupted Junk". Junk warped by corruption. May grant player an obscene amount of a random consumable.
  * "Cronenberg Bullets". Bullets that have a chance to transmorgify enemies into a horrible cronenberg abomination. Sprite work courtasy of Neighborino!
+ * "Mimiclay". Special item dropped by custom boss on custom secret floor. One time use active item. Clones another active or passive when used while said active/passive is spawned/near the player. This item idea/code was created thanks to Retrash.
+ 
  
 14. Certain NPCs and objects and even a copy of the player can appear as enemies on glitch floors.
 

@@ -270,6 +270,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                 if (rat_key) { SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(rat_key); }
             }
 
+            PickupObject MimiclayItem = PickupObjectDatabase.GetById(Mimiclay.MimiclayPickupID);
+
+            if (MimiclayItem) {
+                SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(MimiclayItem);
+            }
+
             MirrorController mirror = ExpandPrefabs.CurrsedMirrorPlacable.gameObject.GetComponent<MirrorController>();
 
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");

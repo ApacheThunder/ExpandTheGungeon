@@ -264,10 +264,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
 			}
 			return result;
 		}
-
-		
-
-		public static string[] GetResourceNames() {
+                
+        public static string[] GetResourceNames() {
 			Assembly callingAssembly = Assembly.GetCallingAssembly();
 			string[] manifestResourceNames = callingAssembly.GetManifestResourceNames();
 			bool flag = manifestResourceNames == null;

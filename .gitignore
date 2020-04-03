@@ -20,6 +20,7 @@ UnityEngine.CoreModule.Base.mm.dll
 UnityEngine.CoreModule.dll
 UnityEngine.dll
 UnityEngine.ParticleSystemModule.dll
+UnityEngine.JSONSerializeModule.dll
 
 
 
