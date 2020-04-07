@@ -135,6 +135,7 @@ namespace ExpandTheGungeon {
         private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
+            ExpandCustomDungeonPrefabs.ReInitFloorDefinitions();
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {

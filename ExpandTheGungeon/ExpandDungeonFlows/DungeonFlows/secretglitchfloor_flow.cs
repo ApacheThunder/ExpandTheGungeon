@@ -769,6 +769,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         RatBossAIActor.healthHaver.enabled = true;
                         RatBossAIActor.healthHaver.forcePreventVictoryMusic = true;
                         RatBossAIActor.ConfigureOnPlacement(SecretBossRoom);
+                        RatBossAIActor.specRigidbody.CollideWithOthers = true;
                     }
                 }
 
@@ -799,7 +800,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
 
             yield return null;
-            UnityEngine.Object.Destroy(objectDatabase);
+            objectDatabase = null;
             assetBundle = null;
             assetBundle2 = null;
             yield return new WaitForSeconds(1.2f);

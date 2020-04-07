@@ -835,10 +835,29 @@
     <EmbeddedResource Include="Textures\Items\mimiclay.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\RoomFactoryTestRoom.room" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\WallMimicHell.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_4wave.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Bat.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Batsmall.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_BIRDS.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Blobs.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_BoogalooFailure2.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Chess.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Cornerpits.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Enclosed.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Funky.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Gapsniper.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Hallway.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_HUB_1wave.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Islands.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Long.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mushroom.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mutant.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Oddshroom.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Pitzag.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Secret_Falsechest.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Shotgun.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Smallcentral.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Spiralbomb.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

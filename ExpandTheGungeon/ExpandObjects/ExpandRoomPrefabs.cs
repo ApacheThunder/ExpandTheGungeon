@@ -8,6 +8,7 @@ using ExpandTheGungeon.ExpandUtilities;
 namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandRoomPrefabs : MonoBehaviour {
+
         // Custom Room Prefabs
         public static PrototypeDungeonRoom Giant_Elevator_Room;
         // This room prefab was removed in 2.1.8. I will recreate in code now plus with a few extras of my own design.
@@ -32,11 +33,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom GungeoneerMimicBossRoom;
 
         // Custom rooms for the regular floors. (most designs provided courtasy of TheTurtleMelon)
-
-        // Test Rooms
-        public static PrototypeDungeonRoom Expand_TestRoomFactoryRoom;
-        public static PrototypeDungeonRoom Expand_WallMimicHell;
-
+                
         // Rooms for Floor 1. 
         public static PrototypeDungeonRoom Expand_Explode;
         public static PrototypeDungeonRoom Expand_C_Hub;
@@ -103,6 +100,31 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_SkullRoom;
         public static PrototypeDungeonRoom Expand_TableRoomAgain;
 
+        // Rooms for Sewers
+        public static PrototypeDungeonRoom Expand_4wave;
+        public static PrototypeDungeonRoom Expand_Spiralbomb;
+        public static PrototypeDungeonRoom Expand_Bat;
+        public static PrototypeDungeonRoom Expand_Batsmall;
+        public static PrototypeDungeonRoom Expand_BIRDS;
+        public static PrototypeDungeonRoom Expand_Blobs;
+        public static PrototypeDungeonRoom Expand_BoogalooFailure2;
+        public static PrototypeDungeonRoom Expand_Chess;
+        public static PrototypeDungeonRoom Expand_Cornerpits;
+        public static PrototypeDungeonRoom Expand_Enclosed;
+        public static PrototypeDungeonRoom Expand_Funky;
+        public static PrototypeDungeonRoom Expand_Gapsniper;
+        public static PrototypeDungeonRoom Expand_Hallway;
+        public static PrototypeDungeonRoom Expand_HUB_1wave;
+        public static PrototypeDungeonRoom Expand_Islands;
+        public static PrototypeDungeonRoom Expand_Long;
+        public static PrototypeDungeonRoom Expand_Mushroom;
+        public static PrototypeDungeonRoom Expand_Mutant;
+        public static PrototypeDungeonRoom Expand_Oddshroom;
+        public static PrototypeDungeonRoom Expand_Pitzag;
+        public static PrototypeDungeonRoom Expand_Secret_Falsechest;
+        public static PrototypeDungeonRoom Expand_Shotgun;
+        public static PrototypeDungeonRoom Expand_Smallcentral;
+
 
         // Custom Trap Rooms        
         public static PrototypeDungeonRoom ThwompCrossingVertical;        
@@ -136,10 +158,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
         public static void InitCustomRooms() {
-
-            Expand_TestRoomFactoryRoom = RoomFactory.BuildFromResource("RoomFactoryTestRoom.room");
-            Expand_WallMimicHell = RoomFactory.BuildFromResource("WallMimicHell.room");
-
+            
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_SpecialPit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -7345,6 +7364,41 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateBasicRoomLayout(Expand_TableRoomAgain);
 
 
+
+            Expand_4wave = RoomFactory.BuildFromResource("Expand_4wave.room");
+            Expand_Bat = RoomFactory.BuildFromResource("Expand_Bat.room");
+            Expand_Spiralbomb = RoomFactory.BuildFromResource("Expand_Spiralbomb.room");
+            Expand_Bat = RoomFactory.BuildFromResource("Expand_Bat.room");
+            Expand_Batsmall = RoomFactory.BuildFromResource("Expand_Batsmall.room");
+            Expand_BIRDS = RoomFactory.BuildFromResource("Expand_BIRDS.room");
+            Expand_Blobs = RoomFactory.BuildFromResource("Expand_Blobs.room");
+            Expand_BoogalooFailure2 = RoomFactory.BuildFromResource("Expand_BoogalooFailure2.room");
+            Expand_Chess = RoomFactory.BuildFromResource("Expand_Chess.room");
+            Expand_Cornerpits = RoomFactory.BuildFromResource("Expand_Cornerpits.room");
+            Expand_Enclosed = RoomFactory.BuildFromResource("Expand_Enclosed.room");
+            Expand_Funky = RoomFactory.BuildFromResource("Expand_Funky.room");
+            Expand_Gapsniper = RoomFactory.BuildFromResource("Expand_Gapsniper.room");
+            Expand_Hallway = RoomFactory.BuildFromResource("Expand_Hallway.room");
+
+            Expand_HUB_1wave = RoomFactory.BuildFromResource("Expand_HUB_1wave.room");
+            Expand_HUB_1wave.category = PrototypeDungeonRoom.RoomCategory.HUB;
+            RoomBuilder.AddObjectToRoom(Expand_HUB_1wave, new Vector2(19, 14), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+
+            Expand_Islands = RoomFactory.BuildFromResource("Expand_Islands.room");
+            Expand_Long = RoomFactory.BuildFromResource("Expand_Long.room");
+            Expand_Mushroom = RoomFactory.BuildFromResource("Expand_Mushroom.room");
+            Expand_Mutant = RoomFactory.BuildFromResource("Expand_Mutant.room");
+            Expand_Oddshroom = RoomFactory.BuildFromResource("Expand_Oddshroom.room");
+            Expand_Pitzag = RoomFactory.BuildFromResource("Expand_Pitzag.room");
+            Expand_Secret_Falsechest = RoomFactory.BuildFromResource("Expand_Secret_Falsechest.room");
+            Expand_Shotgun = RoomFactory.BuildFromResource("Expand_Shotgun.room");
+            Expand_Smallcentral = RoomFactory.BuildFromResource("Expand_Smallcentral.room");
+
+
+
+
+
+
             Expand_Apache_FieldOfSaws.name = "Apache Field of Saws";
             Expand_Apache_FieldOfSaws.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_Apache_FieldOfSaws.GUID = Guid.NewGuid().ToString();
@@ -8502,6 +8556,32 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Enclose_Hub)
             };
 
+            WeightedRoom[] CustomSewersRooms = new WeightedRoom[] {
+                GenerateWeightedRoom(Expand_4wave),
+                GenerateWeightedRoom(Expand_Spiralbomb),
+                GenerateWeightedRoom(Expand_Bat),
+                GenerateWeightedRoom(Expand_Batsmall),
+                GenerateWeightedRoom(Expand_BIRDS),
+                GenerateWeightedRoom(Expand_Blobs),
+                GenerateWeightedRoom(Expand_BoogalooFailure2),
+                GenerateWeightedRoom(Expand_Chess),
+                GenerateWeightedRoom(Expand_Cornerpits),
+                GenerateWeightedRoom(Expand_Enclosed),
+                GenerateWeightedRoom(Expand_Funky),
+                GenerateWeightedRoom(Expand_Gapsniper),
+                GenerateWeightedRoom(Expand_Hallway),
+                GenerateWeightedRoom(Expand_HUB_1wave),
+                GenerateWeightedRoom(Expand_Islands),
+                GenerateWeightedRoom(Expand_Long),
+                GenerateWeightedRoom(Expand_Mushroom),
+                GenerateWeightedRoom(Expand_Mutant),
+                GenerateWeightedRoom(Expand_Oddshroom),
+                GenerateWeightedRoom(Expand_Pitzag),
+                GenerateWeightedRoom(Expand_Secret_Falsechest),
+                GenerateWeightedRoom(Expand_Shotgun),
+                GenerateWeightedRoom(Expand_Smallcentral)
+            };
+
             WeightedRoom[] CustomGungeonProperRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_Crosshairs),
                 GenerateWeightedRoom(Expand_Basic),
@@ -8551,6 +8631,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                     ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
                 }
             }
+
+
             foreach (WeightedRoom room in CustomGungeonProperRooms) {
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
                 if (room.room.overrideRoomVisualType == -1) {
@@ -8558,6 +8640,13 @@ namespace ExpandTheGungeon.ExpandObjects {
                     ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                     ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
                 }
+            }
+
+            foreach (WeightedRoom room in CustomSewersRooms) {
+                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
+                ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
             }
 
             foreach (WeightedRoom room in CustomMinesRooms) {

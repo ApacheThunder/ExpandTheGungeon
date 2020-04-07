@@ -95,7 +95,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static RoomData ExtractRoomData(string data) {
-            if (data.Contains(dataHeader)) {
+           if (data.Contains(dataHeader)) {
                 string dataContent = data.Substring(data.IndexOf(dataHeader) + dataHeader.Length);
                 return JsonUtility.FromJson<RoomData>(dataContent);
             }
@@ -181,7 +181,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         /*public static int GetStyleValue(string dungeonName, string shrineID) {
             if (ShrineFactory.builtShrines != null && ShrineFactory.builtShrines.ContainsKey(shrineID)) {
-                var shrineData = ShrineFactory.builtShrines[shrineID]?.GetComponent<CustomShrineData>();
+                CustomShrineData shrineData = ShrineFactory.builtShrines[shrineID]?.GetComponent<CustomShrineData>();
                 if (shrineData != null && shrineData.roomStyles != null && shrineData.roomStyles.ContainsKey(dungeonName))
                     return shrineData.roomStyles[dungeonName];
             }
@@ -212,18 +212,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 placeableContents = placeableContents,
             };
 
-
-            if (layer > 0)
+            if (layer > 0) {
                 AddObjectDataToReinforcementLayer(room, objectData, layer - 1, location);
-            else {
+            } else {
                 room.placedObjects.Add(objectData);
                 room.placedObjectPositions.Add(location);
             }
 
-            if (!room.roomEvents.Contains(sealOnEnterWithEnemies))
-                room.roomEvents.Add(sealOnEnterWithEnemies);
-            if (!room.roomEvents.Contains(unsealOnRoomClear))
-                room.roomEvents.Add(unsealOnRoomClear);
+            if (!room.roomEvents.Contains(sealOnEnterWithEnemies)) { room.roomEvents.Add(sealOnEnterWithEnemies); }
+            if (!room.roomEvents.Contains(unsealOnRoomClear)) { room.roomEvents.Add(unsealOnRoomClear); }
         }
 
         public static void AddObjectDataToReinforcementLayer(PrototypeDungeonRoom room, PrototypePlacedObjectData objectData, int layer, Vector2 location) {

@@ -266,7 +266,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.exitData.exits.Add(m_NewExit);
         }
 
-        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpwanChance = 1f, int xOffset = 0, int yOffset = 0) {
+        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpawnChance = 1f, int xOffset = 0, int yOffset = 0) {
             if (room == null) { return; }
             if (room.placedObjects == null) { room.placedObjects = new List<PrototypePlacedObjectData>(); }
             if (room.placedObjectPositions == null) { room.placedObjectPositions = new List<Vector2>(); }
@@ -274,7 +274,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             PrototypePlacedObjectData m_NewObjectData = new PrototypePlacedObjectData() {
                 placeableContents = null,
                 nonenemyBehaviour = null,
-                spawnChance = SpwanChance,
+                spawnChance = SpawnChance,
                 // unspecifiedContents = null,
                 enemyBehaviourGuid = string.Empty,
                 contentsBasePosition = position,
