@@ -34,7 +34,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 ExpandPrefabs.MouseTrap2,
                 ExpandPrefabs.MouseTrap3,
                 ExpandPrefabs.PlayerLostRatNote,
-                ExpandPrefabs.NPCBabyDragun,
+                ExpandPrefabs.NPCBabyDragunChaos,
                 objectDatabase.NPCTruthKnower,
                 objectDatabase.ChestTruth,
                 objectDatabase.ConvictPastDancers[UnityEngine.Random.Range(0, 15)],

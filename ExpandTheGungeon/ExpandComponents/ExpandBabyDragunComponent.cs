@@ -8,9 +8,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public ExpandBabyDragunComponent() { 
 			
-            CagedBabyDragun = gameObject.GetComponent<BabyDragunJailController>().CagedBabyDragun;
-            SellRegionRigidbody = gameObject.GetComponent<BabyDragunJailController>().SellRegionRigidbody;
-
             RequiredEnemies = 6;
             ItemID = 735;
 
@@ -18,15 +15,18 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_currentlyEatingNPC = false;
 
             m_enemiesEaten = 0;
+
+            EatsNPCs = false;
+            EatsEnemies = true;
         }
 
         public int RequiredEnemies;
+        public bool EatsNPCs;
+        public bool EatsEnemies;        
 
         [PickupIdentifier]
         public int ItemID;
 
-        private tk2dSprite CagedBabyDragun;
-        private SpeculativeRigidbody SellRegionRigidbody;
         private RoomHandler m_room;
         private int m_enemiesEaten;
         private bool m_isOpen;
@@ -42,23 +42,30 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (Dungeon.IsGenerating | !m_isOpen) { return; }
             bool PlayerEnteredRoom = false;
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { if (GameManager.Instance.AllPlayers[i].CurrentRoom == m_room) { PlayerEnteredRoom = true; break; } }
-            if (PlayerEnteredRoom && m_enemiesEaten < RequiredEnemies) {
-                if (!m_currentlyEatingEnemy && !m_currentlyEatingNPC) {
-                    for (int k = 0; k < StaticReferenceManager.AllNpcs.Count; k++) {
-                        TalkDoerLite talkDoerLite = StaticReferenceManager.AllNpcs[k];
-                        if (talkDoerLite && !talkDoerLite.name.Contains("ResourcefulRat_Beaten")) {
-                            float magnitude = (talkDoerLite.specRigidbody.UnitCenter - CagedBabyDragun.WorldCenter).magnitude;
-                            if (magnitude < 3f) {
-                                RoomHandler.unassignedInteractableObjects.Remove(talkDoerLite);
-                                StartCoroutine(EatNPC(talkDoerLite));
-                            }
-                        }
-                    }
+            
+            if (PlayerEnteredRoom) {
+                if (!m_currentlyEatingEnemy && m_enemiesEaten < RequiredEnemies) {
                     for (int i = 0; i < StaticReferenceManager.AllEnemies.Count; i++) {
                         AIActor targetEnemy = StaticReferenceManager.AllEnemies[i];
                         if (targetEnemy && !targetEnemy.healthHaver.IsBoss && !targetEnemy.IgnoreForRoomClear) {
-                            float magnitude = (targetEnemy.specRigidbody.UnitCenter - CagedBabyDragun.WorldCenter).magnitude;
-                            if (magnitude < 3f) { StartCoroutine(EatEnemy(targetEnemy)); }
+                            float magnitude = (targetEnemy.specRigidbody.UnitCenter - sprite.WorldCenter).magnitude;
+                            if (magnitude < 3f) {
+                                m_currentlyEatingEnemy = true;
+                                StartCoroutine(EatEnemy(targetEnemy));
+                            }
+                        }
+                    }
+                }
+                if (!m_currentlyEatingNPC) {
+                    for (int k = 0; k < StaticReferenceManager.AllNpcs.Count; k++) {
+                        TalkDoerLite talkDoerLite = StaticReferenceManager.AllNpcs[k];
+                        if (talkDoerLite && !talkDoerLite.name.Contains("ResourcefulRat_Beaten")) {
+                            float magnitude = (talkDoerLite.specRigidbody.UnitCenter - sprite.WorldCenter).magnitude;
+                            if (magnitude < 3f) {
+                                m_currentlyEatingNPC = true;
+                                RoomHandler.unassignedInteractableObjects.Remove(talkDoerLite);
+                                StartCoroutine(EatNPC(talkDoerLite));
+                            }
                         }
                     }
                 }
@@ -69,11 +76,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             float elapsed = 0f;
             float duration = 0.5f;
             Vector3 startPos = targetNPC.transform.position;
-            Vector3 finalOffset = CagedBabyDragun.WorldCenter - startPos.XY();
+            Vector3 finalOffset = sprite.WorldCenter - startPos.XY();
             tk2dBaseSprite targetSprite = targetNPC.GetComponentInChildren<tk2dBaseSprite>();
             Destroy(targetNPC);
             Destroy(targetNPC.specRigidbody);
-            CagedBabyDragun.spriteAnimator.PlayForDuration("baby_dragun_weak_eat", -1f, "baby_dragun_weak_idle", false);
+            spriteAnimator.PlayForDuration("baby_dragun_weak_eat", -1f, "baby_dragun_weak_idle", false);
             AkSoundEngine.PostEvent("Play_NPC_BabyDragun_Munch_01", gameObject);
             while (elapsed < duration) {
                 elapsed += BraveTime.DeltaTime;
@@ -84,14 +91,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             if (!targetSprite || !targetSprite.transform) { m_currentlyEatingNPC = false; yield break; }
             Destroy(targetSprite.gameObject);
+            yield return null;
+            m_currentlyEatingNPC = false;
             yield break;
         }
 
-        private IEnumerator EatEnemy(AIActor targetEnemy) {
+        private IEnumerator EatEnemy(AIActor targetEnemy) {            
             float elapsed = 0f;
             float duration = 0.5f;
             Vector3 startPos = targetEnemy.transform.position;
-            Vector3 finalOffset = CagedBabyDragun.WorldCenter - startPos.XY();
+            Vector3 finalOffset = sprite.WorldCenter - startPos.XY();
             tk2dSprite targetSprite = targetEnemy.GetComponentInChildren<tk2dSprite>();
             if (targetEnemy.behaviorSpeculator) { targetEnemy.behaviorSpeculator.enabled = false; }
             RoomHandler m_ParentRoom = targetEnemy.GetAbsoluteParentRoom();
@@ -99,7 +108,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             // Destroy(targetEnemy);
             // Destroy(targetEnemy.specRigidbody);
             targetEnemy.specRigidbody.CollideWithOthers = false;
-            CagedBabyDragun.spriteAnimator.PlayForDuration("baby_dragun_weak_eat", -1f, "baby_dragun_weak_idle", false);
+            spriteAnimator.PlayForDuration("baby_dragun_weak_eat", -1f, "baby_dragun_weak_idle", false);
             AkSoundEngine.PostEvent("Play_NPC_BabyDragun_Munch_01", gameObject);
             while (elapsed < duration) {
                 elapsed += BraveTime.DeltaTime;
@@ -115,13 +124,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetEnemy.EraseFromExistence(true);
             m_enemiesEaten++;
             if (m_enemiesEaten >= RequiredEnemies) {
-                while (CagedBabyDragun.spriteAnimator.IsPlaying("baby_dragun_weak_eat")) { yield return null; }
+                while (spriteAnimator.IsPlaying("baby_dragun_weak_eat")) { yield return null; }
                 LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(ItemID).gameObject, GameManager.Instance.BestActivePlayer);
                 Destroy(gameObject);
             }
+            yield return null;
+            m_currentlyEatingEnemy = false;
             yield break;
         }
-
+                
         protected override void OnDestroy() { base.OnDestroy(); }
     }
 }

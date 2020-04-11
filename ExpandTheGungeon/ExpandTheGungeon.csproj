@@ -859,6 +859,21 @@
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Smallcentral.room" />
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Spiralbomb.room" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Agony.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_ice1.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Ice2.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Ice3.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Ice4.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_LargeMany.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Roundabout.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Shells.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Spooky.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead1.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead2.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead3.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead4.room" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

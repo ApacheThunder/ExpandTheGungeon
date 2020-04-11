@@ -192,8 +192,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Use for Arrival location for destination rooms setup by TargetPitFallRoom
         public static GameObject Arrival;
 
-        public static GameObject NPCBabyDragun;
-        public static GameObject SellPit;
+        public static GameObject NPCBabyDragunChaos;
+        // public static GameObject SellPit;
 
 
         // DungeonPlacables        
@@ -431,8 +431,39 @@ namespace ExpandTheGungeon.ExpandObjects {
             Arrival.SetActive(false);
             DontDestroyOnLoad(Arrival);
 
-            NPCBabyDragun = sharedAssets2.LoadAsset<GameObject>("BabyDragunJail");
-            SellPit = sharedAssets2.LoadAsset<GameObject>("SellPit");
+            // NPCBabyDragunChaos = Instantiate(sharedAssets2.LoadAsset<GameObject>("BabyDragunJail"));
+            NPCBabyDragunChaos = new GameObject("Chaos Baby Dragun");
+            NPCBabyDragunChaos.SetActive(false);
+            NPCBabyDragunChaos.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(NPCBabyDragunChaos.GetComponent<tk2dSprite>(), sharedAssets2.LoadAsset<GameObject>("BabyDragunJail").GetComponentInChildren<tk2dSprite>());
+            NPCBabyDragunChaos.AddComponent<tk2dSpriteAnimation>();
+            NPCBabyDragunChaos.AddComponent<tk2dSpriteAnimator>();
+
+            tk2dSpriteAnimation BabyDragunAnimation = NPCBabyDragunChaos.AddComponent<tk2dSpriteAnimation>();
+            List<tk2dSpriteAnimationClip> m_NPCBabyDragunAnimationClips = new List<tk2dSpriteAnimationClip>();
+            foreach (tk2dSpriteAnimationClip clip in sharedAssets2.LoadAsset<GameObject>("BabyDragunJail").GetComponentInChildren<tk2dSpriteAnimator>().Library.clips) {
+                if (clip.name == "baby_dragun_weak_idle" | clip.name == "baby_dragun_weak_eat") { m_NPCBabyDragunAnimationClips.Add(clip); }
+            }
+            BabyDragunAnimation.clips = m_NPCBabyDragunAnimationClips.ToArray();
+
+            tk2dSpriteAnimator NPCBabyDragunAnimator = NPCBabyDragunChaos.GetComponent<tk2dSpriteAnimator>();
+            NPCBabyDragunAnimator.Library = BabyDragunAnimation;
+            NPCBabyDragunAnimator.DefaultClipId = 0;
+            NPCBabyDragunAnimator.AdditionalCameraVisibilityRadius = 0;
+            NPCBabyDragunAnimator.AnimateDuringBossIntros = false;
+            NPCBabyDragunAnimator.AlwaysIgnoreTimeScale = false;
+            NPCBabyDragunAnimator.ForceSetEveryFrame = false;
+            NPCBabyDragunAnimator.playAutomatically = false;
+            NPCBabyDragunAnimator.IsFrameBlendedAnimation = false;
+            NPCBabyDragunAnimator.clipTime = 0;
+            NPCBabyDragunAnimator.deferNextStartClip = false;
+
+            NPCBabyDragunChaos.AddComponent<ExpandBabyDragunComponent>();
+            DontDestroyOnLoad(NPCBabyDragunChaos);
+            FakePrefab.MarkAsFakePrefab(NPCBabyDragunChaos);
+
+
+            // SellPit = sharedAssets2.LoadAsset<GameObject>("SellPit");
 
             ElevatorDeparture = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Departure");
             ElevatorArrival = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Arrival");
@@ -1506,6 +1537,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 challengeMegaManager.PossibleChallenges[4].challenge,
                 challengeMegaManager.PossibleChallenges[10].challenge
             };
+
+            // Clear challenges to test just one.
+            // challengeManager.PossibleChallenges.Clear();
+            // challengeMegaManager.PossibleChallenges.Clear();
 
             challengeManager.PossibleChallenges.Add(new ChallengeDataEntry() {
                 Annotation = "Apache Thunder's Chaos Mode in a room!",

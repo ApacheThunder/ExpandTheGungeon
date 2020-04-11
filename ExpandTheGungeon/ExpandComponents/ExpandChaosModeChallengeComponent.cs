@@ -817,7 +817,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }  
                     
                     if (RandomBabyDragunVector != IntVector2.Zero && UnityEngine.Random.value <= 0.08) {
-                        GameObject babyDragun = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.NPCBabyDragun, currentRoom, RandomMiscObjectVector, false);
+                        GameObject babyDragun = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.NPCBabyDragunChaos, currentRoom, RandomMiscObjectVector, false);
                         if (babyDragun) { babyDragun.AddComponent<ExpandBabyDragunComponent>(); }
                         if (!BabyDragunPlaced) { BabyDragunPlaced = true; }
                     }

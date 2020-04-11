@@ -89,6 +89,22 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_IceScotch;
         public static PrototypeDungeonRoom Expand_MrPresident;
         public static PrototypeDungeonRoom Expand_SawRoom;
+        // RoomFactory Rooms
+        public static PrototypeDungeonRoom Expand_Agony;
+        public static PrototypeDungeonRoom Expand_ice1;
+        public static PrototypeDungeonRoom Expand_Ice2;
+        public static PrototypeDungeonRoom Expand_Ice3;
+        public static PrototypeDungeonRoom Expand_Ice4;
+        public static PrototypeDungeonRoom Expand_LargeMany;
+        public static PrototypeDungeonRoom Expand_Roundabout;
+        public static PrototypeDungeonRoom Expand_Shells;
+        public static PrototypeDungeonRoom Expand_Spooky;
+        public static PrototypeDungeonRoom Expand_Undead1;
+        public static PrototypeDungeonRoom Expand_Undead2;
+        public static PrototypeDungeonRoom Expand_Undead3;
+        public static PrototypeDungeonRoom Expand_Undead4;
+
+
 
 
         // Rooms for floor 5.
@@ -228,6 +244,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_IceScotch = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_MrPresident = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_SawRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Agony = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_ice1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Ice2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Ice3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Ice4 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_LargeMany = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Roundabout = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Shells = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Spooky = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Undead1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Undead2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Undead3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Undead4 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
+
 
             Expand_Arena = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_CaptainCrunch = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -6513,6 +6544,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_SawRoom, new Vector2(9, 12), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SawRoom, "Hollow\\Expand_Neighborino_SawRoom_Layout.png");
 
+
+
+
+
+
             Expand_Arena.name = "Expand Neighborino Arena";
             Expand_Arena.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_Arena.GUID = Guid.NewGuid().ToString();
@@ -7362,6 +7398,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_TableRoomAgain, new Vector2(13, 15), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_TableRoomAgain, new Vector2(17, 15), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.GenerateBasicRoomLayout(Expand_TableRoomAgain);
+
+            Expand_Agony = RoomFactory.BuildFromResource("Expand_Agony.room");
+            Expand_ice1 = RoomFactory.BuildFromResource("Expand_ice1.room");
+            Expand_Ice2 = RoomFactory.BuildFromResource("Expand_Ice2.room");
+            Expand_Ice3 = RoomFactory.BuildFromResource("Expand_Ice3.room");
+            Expand_Ice4 = RoomFactory.BuildFromResource("Expand_Ice4.room");
+            Expand_LargeMany = RoomFactory.BuildFromResource("Expand_LargeMany.room");
+            Expand_Roundabout = RoomFactory.BuildFromResource("Expand_Roundabout.room");
+            Expand_Shells = RoomFactory.BuildFromResource("Expand_Shells.room");
+            Expand_Spooky = RoomFactory.BuildFromResource("Expand_Spooky.room");
+            Expand_Undead1 = RoomFactory.BuildFromResource("Expand_Undead1.room");
+            Expand_Undead2 = RoomFactory.BuildFromResource("Expand_Undead2.room");
+            Expand_Undead3 = RoomFactory.BuildFromResource("Expand_Undead3.room");
+            Expand_Undead4 = RoomFactory.BuildFromResource("Expand_Undead4.room");
+
 
 
 
@@ -8610,7 +8661,20 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_IceIsNice),
                 GenerateWeightedRoom(Expand_IceScotch),
                 GenerateWeightedRoom(Expand_MrPresident),
-                GenerateWeightedRoom(Expand_SawRoom)
+                GenerateWeightedRoom(Expand_SawRoom),
+                GenerateWeightedRoom(Expand_Agony),
+                GenerateWeightedRoom(Expand_ice1),
+                GenerateWeightedRoom(Expand_Ice2),
+                GenerateWeightedRoom(Expand_Ice3),
+                GenerateWeightedRoom(Expand_Ice4),
+                GenerateWeightedRoom(Expand_LargeMany),
+                GenerateWeightedRoom(Expand_Roundabout),
+                GenerateWeightedRoom(Expand_Shells),
+                GenerateWeightedRoom(Expand_Spooky),
+                GenerateWeightedRoom(Expand_Undead1),
+                GenerateWeightedRoom(Expand_Undead2),
+                GenerateWeightedRoom(Expand_Undead3),
+                GenerateWeightedRoom(Expand_Undead4)
             };
             
             WeightedRoom[] CustomForgeRooms = new WeightedRoom[] {
@@ -8620,7 +8684,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_FireRoom),
                 GenerateWeightedRoom(Expand_Pits),
                 GenerateWeightedRoom(Expand_SkullRoom),
-                GenerateWeightedRoom(Expand_TableRoomAgain),
+                GenerateWeightedRoom(Expand_TableRoomAgain)
             };
 
             foreach (WeightedRoom room in CustomCastleRooms) {
@@ -8680,6 +8744,17 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             foreach (WeightedRoom room in CustomSecretRooms) {
                 ExpandPrefabs.SecretRoomTable.includedRooms.elements.Add(room);
+            }
+
+
+            for(int i = 0; i < ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Count; i++) {
+                bool removeRoom = false;
+                if (ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements[i].room != null && ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements[i].room.FullCellData != null) {                    
+                    foreach (PrototypeDungeonRoomCellData cellData in ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements[i].room.FullCellData) {
+                        if (cellData.state == CellType.PIT) { removeRoom = true; break; }
+                    }
+                    if (removeRoom) { ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Remove(ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements[i]); }
+                }
             }
 
             objectDatabase = null;

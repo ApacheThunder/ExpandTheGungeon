@@ -119,7 +119,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 };
             }
 
-            if (GameManager.Instance) {
+            if (GameManager.Instance && GameManager.Instance.customFloors != null) {
                 foreach (GameLevelDefinition definition in GameManager.Instance.customFloors) {
                     if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
                     break;
@@ -127,7 +127,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 if (EntryNotExist) { GameManager.Instance.customFloors.Add(CanyonDefinition); }
             }
 
-            if (GameManagerObject && GameManagerObject.GetComponent<GameManager>()) {
+            if (GameManagerObject && GameManagerObject.GetComponent<GameManager>() && GameManagerObject.GetComponent<GameManager>().customFloors != null) {
                 foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
                     if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist2 = false; }
                     break;
@@ -136,7 +136,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             } else if (GameManagerObject == null) {
                 AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
                 GameManagerObject = braveResources.LoadAsset<GameObject>("_GameManager");
-                GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition);
+                if (GameManagerObject && GameManagerObject.GetComponent<GameManager>() && GameManagerObject.GetComponent<GameManager>().customFloors != null) {
+                    GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition);
+                }
                 braveResources = null;
             }
         }

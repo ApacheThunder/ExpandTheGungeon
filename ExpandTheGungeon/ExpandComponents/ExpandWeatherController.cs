@@ -35,10 +35,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                             m_StormInitialized = true;
                             InitStorm();
                         } else {
-                            StartCoroutine(ToggleRainFx(true));
+                            try { StartCoroutine(ToggleRainFx(true)); } catch (System.Exception) { }
                         }
                     } else if (CurrentPlayer.CurrentRoom != ParentRoom && m_StormIsActive) {
-                        StartCoroutine(ToggleRainFx(false));
+                        try { StartCoroutine(ToggleRainFx(false)); } catch (System.Exception) { }
                     }
                 }
             }                      
