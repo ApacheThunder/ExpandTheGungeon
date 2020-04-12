@@ -8384,8 +8384,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = ExpandPrefabs.CorruptedSecretRoomSpecialItem,
-                            contentsBasePosition = new Vector2(14, 14),
+                            // placeableContents = ExpandPrefabs.CorruptedSecretRoomSpecialItem,
+                            // nonenemyBehaviour = ExpandPrefabs.CorruptedRewardPedestal.GetComponent<RewardPedestal>(),
+                            placeableContents = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.CorruptedRewardPedestal, useExternalPrefab: true),
+                            contentsBasePosition = new Vector2(13, 13),
                             layer = 0,
                             xMPxOffset = 0,
                             yMPxOffset = 0,
@@ -8407,7 +8409,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                         new Vector2(2, 6),
                         new Vector2(9, 10),
                         new Vector2(6, 13),
-                        new Vector2(14, 14)
+                        new Vector2(13, 13)
                     },
                     layerIsReinforcementLayer = false,
                     shuffle = true,
@@ -8561,7 +8563,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             WeightedRoom[] CustomSecretRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_TinySecret, 8),
-                GenerateWeightedRoom(Expand_GlitchedSecret, 2)
+                GenerateWeightedRoom(Expand_GlitchedSecret, 1)
             };
 
             WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
 using UnityEngine;
 using Dungeonator;
-using Random = UnityEngine.Random;
+// using Random = UnityEngine.Random;
 using FloorType = Dungeonator.CellVisualData.CellFloorType;
 
 namespace ExpandTheGungeon.ExpandUtilities {
@@ -22,6 +21,22 @@ namespace ExpandTheGungeon.ExpandUtilities {
         // private static FieldInfo m_cellData = typeof(PrototypeDungeonRoom).GetField("m_cellData", BindingFlags.Instance | BindingFlags.NonPublic);
         private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
         private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
+
+        public struct RoomData {
+            public string category, normalSubCategory, specialSubCatergory, bossSubCategory;
+            public Vector2[] enemyPositions;
+            public string[] enemyGUIDs;
+            public Vector2[] placeablePositions;
+            public string[] placeableGUIDs;
+            public int[] enemyReinforcementLayers;
+            public Vector2[] exitPositions;
+            public string[] exitDirections;
+            public string[] floors;
+            public float weight;
+            public bool isSpecialRoom;
+            [NonSerialized]
+            public PrototypeDungeonRoom room;
+        }
 
         /*public static void LoadRoomsFromRoomDirectory() {
             Directory.CreateDirectory(roomDirectory);
@@ -61,7 +76,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData) {
-            Tools.Print("Building Exits...");
+            // Tools.Print("Building Exits...");
             if (roomData.exitPositions != null) {
                 for (int i = 0; i < roomData.exitPositions.Length; i++) {
                     DungeonData.Direction dir = (DungeonData.Direction)Enum.Parse(typeof(DungeonData.Direction), roomData.exitDirections[i].ToUpper());
@@ -74,12 +89,25 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 AddExit(room, new Vector2(0, room.Height / 2), DungeonData.Direction.WEST);
             }
 
-            Tools.Print("Adding Enemies...");
+            // Tools.Print("Adding Enemies...");
             if (roomData.enemyPositions != null) {
                 for (int i = 0; i < roomData.enemyPositions.Length; i++) {
                     AddEnemyToRoom(room, roomData.enemyPositions[i], roomData.enemyGUIDs[i], roomData.enemyReinforcementLayers[i]);
                 }
             }
+
+            // Tools.Print("Adding Objects...");
+            if (roomData.placeablePositions != null) {
+                for (int i = 0; i < roomData.placeablePositions.Length; i++) {
+                    AddPlaceableToRoom(room, roomData.placeablePositions[i], roomData.placeableGUIDs[i]);
+                }
+            }
+
+            //Set categories
+            /*if (!string.IsNullOrEmpty(roomData.category)) { room.category = Tools.GetEnumValue<PrototypeDungeonRoom.RoomCategory>(roomData.category); }
+            if (!string.IsNullOrEmpty(roomData.normalSubCategory)) { room.subCategoryNormal = Tools.GetEnumValue<PrototypeDungeonRoom.RoomNormalSubCategory>(roomData.normalSubCategory); }
+            if (!string.IsNullOrEmpty(roomData.bossSubCategory)) { room.subCategoryBoss = Tools.GetEnumValue<PrototypeDungeonRoom.RoomBossSubCategory>(roomData.bossSubCategory); }
+            if (!string.IsNullOrEmpty(roomData.specialSubCatergory)) { room.subCategorySpecial = Tools.GetEnumValue<PrototypeDungeonRoom.RoomSpecialSubCategory>(roomData.specialSubCatergory); }*/
         }
 
         public static RoomData ExtractRoomDataFromFile(string path) {
@@ -188,6 +216,21 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return -1;
         }*/
 
+        public static GameObject GetPlaceableFromBundles(string assetPath) {
+            GameObject asset = null;
+            AssetBundle[] assetBundles = new AssetBundle[] {
+                ResourceManager.LoadAssetBundle("shared_auto_001"),
+                ResourceManager.LoadAssetBundle("shared_auto_002")
+            };
+            foreach (AssetBundle bundle in assetBundles) {
+                asset = bundle.LoadAsset(assetPath) as GameObject;
+                if (asset) { break; }
+            }
+            assetBundles[0] = null;
+            assetBundles[1] = null;
+            return asset;
+        }
+
         public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer) {
             DungeonPrerequisite[] emptyReqs = new DungeonPrerequisite[0];
 
@@ -239,6 +282,40 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.additionalObjectLayers[layer].placedObjectBasePositions.Add(location);
         }
 
+        public static void AddPlaceableToRoom(PrototypeDungeonRoom room, Vector2 location, string assetPath) {
+            try {
+                GameObject asset = GetPlaceableFromBundles(assetPath);
+                if (asset) {
+                    DungeonPrerequisite[] emptyReqs = new DungeonPrerequisite[0];
+                    room.placedObjectPositions.Add(location);
+                    room.placedObjects.Add(new PrototypePlacedObjectData() {
+                        contentsBasePosition = location,
+                        fieldData = new List<PrototypePlacedObjectFieldData>(),
+                        instancePrerequisites = emptyReqs,
+                        linkedTriggerAreaIDs = new List<int>(),
+                        placeableContents = new DungeonPlaceable() {
+                            width = 2,
+                            height = 2,
+                            respectsEncounterableDifferentiator = true,
+                            variantTiers = new List<DungeonPlaceableVariant>() {
+                                new DungeonPlaceableVariant() {
+                                    percentChance = 1,
+                                    nonDatabasePlaceable = asset,
+                                    prerequisites = emptyReqs,
+                                    materialRequirements= new DungeonPlaceableRoomMaterialRequirement[0]
+                                }
+                            }
+                        }
+                    });
+                    //Tools.Print($"Added {asset.name} to room.");
+                } else {
+                    Tools.PrintError($"Unable to find asset in asset bundles: {assetPath}");
+                }
+            } catch (Exception e) {
+                Tools.PrintException(e);
+            }
+        }
+
         public static void AddExit(PrototypeDungeonRoom room, Vector2 location, DungeonData.Direction direction) {
             if (room.exitData == null)
                 room.exitData = new PrototypeRoomExitData();
@@ -275,7 +352,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return room;
         }
 
-        public static void LogExampleRoomData() {
+        /*public static void LogExampleRoomData() {
             Vector2[] vectorArray = new Vector2[] {
                 new Vector2(4, 4),
                 new Vector2(4, 14),
@@ -336,16 +413,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             } catch (Exception e) {
                 Tools.PrintException(e);
             }
-        }
-
-        public struct RoomData {
-            public Vector2[] enemyPositions;
-            public string[] enemyGUIDs;
-            public int[] enemyReinforcementLayers;
-            public Vector2[] exitPositions;
-            public string[] exitDirections;
-            public string[] floors;
-        }
+        }*/
     }
 }
 

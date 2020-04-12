@@ -51,18 +51,20 @@ namespace ExpandTheGungeon.ExpandObjects {
             // Combine foreground boss card generated from PlayerController onto the static background image loased in earlier. Resolutions must match!
             Texture2D BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
 
+
+            
             GenericIntroDoer miniBossIntroDoer = aiActorObject.AddComponent<GenericIntroDoer>();
-            CachedEnemyActor.gameObject.AddComponent<ExpandGungeoneerMimicIntroDoer>();
+            aiActorObject.AddComponent<ExpandGungeoneerMimicIntroDoer>();
             miniBossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
             miniBossIntroDoer.initialDelay = 0.15f;
-            miniBossIntroDoer.cameraMoveSpeed = 12;
+            miniBossIntroDoer.cameraMoveSpeed = 14;
             miniBossIntroDoer.specifyIntroAiAnimator = null;
             miniBossIntroDoer.BossMusicEvent = "Play_MUS_Boss_Theme_Beholster";
             miniBossIntroDoer.PreventBossMusic = false;
             miniBossIntroDoer.InvisibleBeforeIntroAnim = false;
             miniBossIntroDoer.preIntroAnim = string.Empty;
             miniBossIntroDoer.preIntroDirectionalAnim = string.Empty;
-            miniBossIntroDoer.introAnim = "hit";
+            miniBossIntroDoer.introAnim = "idle";
             miniBossIntroDoer.introDirectionalAnim = string.Empty;
             miniBossIntroDoer.continueAnimDuringOutro = false;
             miniBossIntroDoer.cameraFocus = null;
@@ -89,7 +91,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
             miniBossIntroDoer.HideGunAndHand = true;
             miniBossIntroDoer.SkipFinalizeAnimation = true;
-            
+            miniBossIntroDoer.RegenerateCache();
+
 
             CachedEnemyActor.BaseMovementSpeed = 8f;
             CachedEnemyActor.MovementSpeed = 8f;

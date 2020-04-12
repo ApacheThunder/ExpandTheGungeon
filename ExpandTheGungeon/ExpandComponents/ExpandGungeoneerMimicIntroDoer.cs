@@ -140,7 +140,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         private IEnumerator WalkThroughMirror() {
             float time = 1.5f;
             m_AIActor.IsGone = false;
-            m_AIActor.State = AIActor.ActorState.Normal;
+            m_AIActor.State = AIActor.ActorState.Awakening;
+            // m_AIActor.State = AIActor.ActorState.Normal;
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.ToggleRenderers(true);
             // m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
@@ -190,8 +191,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.ToggleRenderers(true);
             m_AIActor.aiShooter.ToggleGunAndHandRenderers(true, "GungeoneerMimicIntroDoer");
             m_AIActor.specRigidbody.CollideWithOthers = true;
-            m_AIActor.aiActor.IsGone = false;
-            m_AIActor.aiActor.State = AIActor.ActorState.Normal;
+            m_AIActor.IsGone = false;
+            // m_AIActor.State = AIActor.ActorState.Normal;
+            m_AIActor.State = AIActor.ActorState.Awakening;
             m_AIActor.aiShooter.AimAtPoint(m_AIActor.CenterPosition - new Vector2(0, -2));
             m_AIActor.aiShooter.gunAttachPoint.gameObject.SetActive(true);
             m_AIActor.aiShooter.handObject.gameObject.SetActive(true);

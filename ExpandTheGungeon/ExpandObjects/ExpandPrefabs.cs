@@ -210,6 +210,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static AIActor MetalCubeGuy;
         public static AIActor SerManuel;
 
+        // Test
+        // public static AIActor SpectreTest = EnemyDatabase.GetOrLoadByGuid("56f5a0f2c1fc4bc78875aea617ee31ac"); // spectre
+        
         public static DungeonPlaceableBehaviour RatJailDoorPlacable;
         public static DungeonPlaceableBehaviour CurrsedMirrorPlacable;
         
@@ -237,6 +240,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject EXFriendlyForgeHammerBullet;
         public static GameObject EXBootlegRoomObject;
         public static GameObject EXBootlegRoomDoorTriggers;
+        // RewardPedastal for Glitch Secret Room
+        public static GameObject CorruptedRewardPedestal;
+
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -265,9 +271,11 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             BulletManMonochromeTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_Monochrome.png");
             BulletManUpsideDownTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_UpsideDown.png");
-            
+
             // BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
             // BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, BulletManUpsideDownTexture, null, null, false);
+
+            
             
             RedBulletShotgunManTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\RedBulletShotgunMan.png");
             BlueBulletShotgunManTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BlueBulletShotgunMan.png");
@@ -1134,7 +1142,37 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             // A custom item mod now adds this functionality. To avoid possible issues I have disabled this.
             // Raccoon.behaviorSpeculator.OverrideBehaviors.Add(new ChaosRaccoonManager());
+
+
+            // Test 
+
+            /*AIActor m_HollowPoint = EnemyDatabase.GetOrLoadByGuid("4db03291a12144d69fe940d5a01de376"); // hollowpoint
             
+            BodyPartController[] m_BodyParts = SpectreTest.gameObject.GetComponentsInChildren<BodyPartController>(true);
+            
+            if (m_BodyParts != null && m_BodyParts.Length > 0) {
+                for (int i = 0; i < m_BodyParts.Length; i++) { Destroy(m_BodyParts[i].gameObject); }
+            }
+
+            if(SpectreTest.gameObject.transform.Find("eyes 1").gameObject) { Destroy(SpectreTest.gameObject.transform.Find("eyes 1").gameObject); }
+            
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().AttackBehaviors = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().AttackBehaviors;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().MovementBehaviors = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().MovementBehaviors;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().TargetBehaviors = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().TargetBehaviors;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().InstantFirstTick = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().InstantFirstTick;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().TickInterval = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().TickInterval;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().PostAwakenDelay = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().PostAwakenDelay;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().RemoveDelayOnReinforce = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().RemoveDelayOnReinforce;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().OverrideStartingFacingDirection = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().OverrideStartingFacingDirection;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().StartingFacingDirection = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().StartingFacingDirection;
+            SpectreTest.gameObject.GetComponent<BehaviorSpeculator>().SkipTimingDifferentiator = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>().SkipTimingDifferentiator;
+                        
+            FullInspector.ISerializedObject m_SourceBehaviorSpeculatorSeralized = m_HollowPoint.gameObject.GetComponent<BehaviorSpeculator>();
+            FullInspector.ISerializedObject m_TargetBehaviorSpeculatorSeralized = SpectreTest.gameObject.GetComponent<BehaviorSpeculator>();
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = m_SourceBehaviorSpeculatorSeralized.SerializedObjectReferences;
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = m_SourceBehaviorSpeculatorSeralized.SerializedStateKeys;
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = m_SourceBehaviorSpeculatorSeralized.SerializedStateValues;*/
+
             List<AGDEnemyReplacementTier> ReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
 
             if (ReplacementTiers != null && ReplacementTiers.Count > 0) {
@@ -1456,6 +1494,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             DontDestroyOnLoad(EXSawBladeTrap_4x4Zone);
 
             ExpandBootlegRoomPlaceable.BuildPrefab();
+
+
+            
+            CorruptedRewardPedestal = Instantiate(RewardPedestalPrefab);
+            CorruptedRewardPedestal.SetActive(false);
+            CorruptedRewardPedestal.name = "Corrupted Reward Pedestal";
+            RewardPedestal m_CorruptedPedestal = CorruptedRewardPedestal.GetComponent<RewardPedestal>();
+            m_CorruptedPedestal.SpecificItemId = Game.Items.Get("ex:corruption_bomb").PickupObjectId;
+            m_CorruptedPedestal.SpawnsTertiarySet = false;
+            m_CorruptedPedestal.UsesSpecificItem = true;
+            m_CorruptedPedestal.overrideMimicChance = 0f;
+            DontDestroyOnLoad(CorruptedRewardPedestal);
+            FakePrefab.MarkAsFakePrefab(CorruptedRewardPedestal);
 
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");

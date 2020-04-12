@@ -115,6 +115,8 @@ namespace ExpandTheGungeon {
 			File.WriteAllBytes(Path.Combine(ETGMod.ResourcesDirectory, texture.name + ".png"), ImageConversion.EncodeToPNG((Texture2D)texture));
 		}
 
+        // public static T GetEnumValue<T>(string val) where T : Enum { return (T)Enum.Parse(typeof(T), val.ToUpper()); }
+
         // This came from KyleTheScientest's SpriteWork mod.
         public static void DumpSpecificSpriteCollection(tk2dSpriteCollectionData sprites, bool debugMode = false, bool overrideFlag = false) {
             string collectionName = sprites.spriteCollectionName;
