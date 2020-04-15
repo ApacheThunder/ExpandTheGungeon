@@ -25,9 +25,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         private static ExpandUtility m_instance;
-
-        public static Dungeon RatDungeon = null;
-
+        
         public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }

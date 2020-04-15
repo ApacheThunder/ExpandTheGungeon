@@ -17,8 +17,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             "custom_glitchchestalt_flow",
             "apache_fucking_around_flow"
         };
-       
-        private static AssetBundle sharedAssets2;
 
         public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
@@ -182,13 +180,11 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             Dungeon ForgePrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             Dungeon BulletHellPrefab = DungeonDatabase.GetOrLoadByName("Base_BulletHell");
 
-            sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-
-            BaseSharedInjectionData = sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
+            BaseSharedInjectionData = ExpandPrefabs.sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             
-            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
+            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandPrefabs.sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
 
             // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
             KnownFlows = new List<DungeonFlow>();
@@ -348,8 +344,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             HollowsInjectionData.InjectionData.Add(SecretFloorEntranceInjector);
             HollowsInjectionData.InjectionData.Add(SecretMiniElevatorInjector);
-
-            sharedAssets2 = null;
+                        
             TutorialPrefab = null;
             CastlePrefab = null;
             SewerPrefab = null;

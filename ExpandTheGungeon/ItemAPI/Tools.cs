@@ -10,9 +10,8 @@ namespace ExpandTheGungeon {
 
         private static string defaultLog = Path.Combine(ETGMod.ResourcesDirectory, "customItemsLog.txt");
 
-        public static AssetBundle sharedAuto1 = ResourceManager.LoadAssetBundle("shared_auto_001");
-
-        public static AssetBundle sharedAuto2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+        // public static AssetBundle sharedAuto1 = ResourceManager.LoadAssetBundle("shared_auto_001");
+        // public static AssetBundle sharedAuto2 = ResourceManager.LoadAssetBundle("shared_auto_002");
 
         public static string modID = "EX";
 

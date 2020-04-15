@@ -12,10 +12,10 @@ namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandPrefabs : MonoBehaviour {
 
-        private static AssetBundle sharedAssets;
-        private static AssetBundle sharedAssets2;
-        private static AssetBundle braveResources;
-        private static AssetBundle enemiesBase;
+        public static AssetBundle sharedAssets;
+        public static AssetBundle sharedAssets2;
+        public static AssetBundle braveResources;
+        public static AssetBundle enemiesBase;
 
         private static Dungeon TutorialDungeonPrefab;
         private static Dungeon SewerDungeonPrefab;
@@ -156,7 +156,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
         // Items
-        public static PickupObject RatKeyItem;
+        // public static PickupObject RatKeyItem;
 
         // Object Prefabs
         private static GameObject MetalGearRatPrefab;
@@ -248,8 +248,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Challenge_ChaosMode;
         public static GameObject Challenge_TripleTrouble;
         public static GameObject Challenge_KingsMen;
+        
 
-        public static void InitPrefabResources() {
+        public static void InitCustomPrefabs() {
 
             sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
@@ -264,6 +265,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
+
+            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             StoneCubeWestTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\Stone_Cube_Collection_West.png");
 
@@ -385,7 +388,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             gatlinggull_noTileVisualOverrides = new PrototypeDungeonRoom[0];
             
 
-            RatKeyItem = PickupObjectDatabase.GetById(727);
+            // RatKeyItem = PickupObjectDatabase.GetById(727);
 
             MetalGearRatPrefab = enemiesBase.LoadAsset<GameObject>("MetalGearRat");
             ResourcefulRatBossPrefab = enemiesBase.LoadAsset<GameObject>("ResourcefulRat_Boss");
@@ -714,13 +717,9 @@ namespace ExpandTheGungeon.ExpandObjects {
                     }
                 }
             };
-        }
 
-        public static void InitCustomPrefabs() {
 
-            InitPrefabResources();
 
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             // Build Room table with Castle and Gungeon room tables merged
             CastleGungeonMergedTable.name = "CastleGungeonMergedTable";
@@ -1122,7 +1121,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[4]);
 
 
-            RatKeyItem.RespawnsIfPitfall = true;
+            // RatKeyItem.RespawnsIfPitfall = true;
             
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForNakatomi);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
@@ -1677,10 +1676,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
             ratDungeon = null;
-            sharedAssets = null;
-            sharedAssets2 = null;
-            braveResources = null;
-            enemiesBase = null;
         }
 
         public static void InitCanyonTileSet(Dungeon dungeon, GlobalDungeonData.ValidTilesets tilesetID) {

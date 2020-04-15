@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom SecretBossRoom;
         public static PrototypeDungeonRoom FakeBossRoom;
         public static PrototypeDungeonRoom SecretExitRoom;
+        public static PrototypeDungeonRoom PuzzleRoom1;
         public static PrototypeDungeonRoom PuzzleRoom3;
         public static PrototypeDungeonRoom ThwompCrossingVerticalNoRain;
 
@@ -187,8 +188,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             FakeBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ThwompCrossingVerticalNoRain = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            PuzzleRoom1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-
+            
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             CreepyGlitchRoom_Entrance = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             GungeoneerMimicBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -288,8 +290,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
 
             FakeBossRoom.name = "Fake Boss Room";
             FakeBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1107,6 +1107,53 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(16, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(21, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingHorizontal, "TrapRooms\\Expand_Thwomp_Crossing_Horizontal_Layout.png");
+
+                                    
+            PuzzleRoom1.name = "Zelda Puzzle Room 1";
+            PuzzleRoom1.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            PuzzleRoom1.GUID = Guid.NewGuid().ToString();
+            PuzzleRoom1.PreventMirroring = false;
+            PuzzleRoom1.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            PuzzleRoom1.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            PuzzleRoom1.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            PuzzleRoom1.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            PuzzleRoom1.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            PuzzleRoom1.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            PuzzleRoom1.pits = ExpandPrefabs.gungeon_gauntlet_001.pits;
+            PuzzleRoom1.placedObjects = ExpandPrefabs.gungeon_checkerboard.placedObjects;
+            PuzzleRoom1.placedObjectPositions = ExpandPrefabs.gungeon_checkerboard.placedObjectPositions;
+            PuzzleRoom1.additionalObjectLayers = ExpandPrefabs.gungeon_checkerboard.additionalObjectLayers;
+            PuzzleRoom1.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            PuzzleRoom1.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            PuzzleRoom1.overriddenTilesets = 0;
+            PuzzleRoom1.prerequisites = new List<DungeonPrerequisite>();
+            PuzzleRoom1.InvalidInCoop = false;
+            PuzzleRoom1.cullProceduralDecorationOnWeakPlatforms = false;
+            PuzzleRoom1.preventAddedDecoLayering = false;
+            PuzzleRoom1.precludeAllTilemapDrawing = false;
+            PuzzleRoom1.drawPrecludedCeilingTiles = false;
+            PuzzleRoom1.preventBorders = false;
+            PuzzleRoom1.preventFacewallAO = false;
+            PuzzleRoom1.usesCustomAmbientLight = false;
+            PuzzleRoom1.customAmbientLight = Color.white;
+            PuzzleRoom1.ForceAllowDuplicates = false;
+            PuzzleRoom1.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            PuzzleRoom1.IsLostWoodsRoom = false;
+            PuzzleRoom1.UseCustomMusic = false;
+            PuzzleRoom1.UseCustomMusicState = false;
+            PuzzleRoom1.CustomMusicEvent = string.Empty;
+            PuzzleRoom1.UseCustomMusicSwitch = false;
+            PuzzleRoom1.CustomMusicSwitch = string.Empty;
+            PuzzleRoom1.overrideRoomVisualTypeForSecretRooms = false;
+            PuzzleRoom1.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            PuzzleRoom1.Width = ExpandPrefabs.gungeon_checkerboard.Width;
+            PuzzleRoom1.Height = ExpandPrefabs.gungeon_checkerboard.Height;
+            foreach (PrototypeRoomExit exit in ExpandPrefabs.gungeon_checkerboard.exitData.exits) { PuzzleRoom1.exitData.exits.Add(exit); }
+            RoomBuilder.GenerateBasicRoomLayout(PuzzleRoom1);
+
 
             PuzzleRoom3.name = "Zelda Puzzle Room 3";
             PuzzleRoom3.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8263,7 +8310,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
                         new PrototypePlacedObjectData() {
-                            placeableContents = sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
+                            placeableContents = ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
                             contentsBasePosition = new Vector2(11, 3),
                             layer = 0,
                             xMPxOffset = 0,
@@ -8274,7 +8321,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
+                            placeableContents = ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
                             contentsBasePosition = new Vector2(10, 8),
                             layer = 0,
                             xMPxOffset = 0,
@@ -8285,7 +8332,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
+                            placeableContents = ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>("secret_room_chest_placeable"),
                             contentsBasePosition = new Vector2(2, 12),
                             layer = 0,
                             xMPxOffset = 0,
@@ -8433,7 +8480,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
             Expand_BootlegRoom.PreventMirroring = false;
-            Expand_BootlegRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
+            Expand_BootlegRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_BootlegRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
             Expand_BootlegRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_BootlegRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
@@ -8760,8 +8807,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             objectDatabase = null;
-            sharedAssets = null;
-            sharedAssets2 = null;
         }
     }
 }

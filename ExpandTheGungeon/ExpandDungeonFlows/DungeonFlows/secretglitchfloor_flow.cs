@@ -155,9 +155,10 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
 
             DungeonFlowNode m_SpecialMaintenanceSecretRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
-
-            DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_checkerboard));
-            m_PuzzleNode_01.overrideExactRoom.name = "Zelda Puzzle Room 1";
+            
+            // DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_checkerboard));
+            DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.PuzzleRoom1));
+            // m_PuzzleNode_01.overrideExactRoom.name = "Zelda Puzzle Room 1";
             DungeonFlowNode m_PuzzleNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_normal_fightinaroomwithtonsoftraps));
             m_PuzzleNode_02.overrideExactRoom.name = "Zelda Puzzle Room 2";
             // Zelda Puzzle Room 3
@@ -325,6 +326,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 RoomHandler TinyKeyRoom4 = null;
                 RoomHandler TinyBlankRoom1 = null;
                 RoomHandler TinyBlankRoom2 = null;
+                RoomHandler WinchesterRoom = null;
 
                 // GameObject PlacedSecretKeyPedestal1 = null;
                 GameObject PlacedSecretKeyPedestal2 = null;
@@ -376,6 +378,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         if (roomHandler.GetRoomName().StartsWith("Tiny Secret Room 2")) { TinyKeyRoom4 = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Blank Room 1")) { TinyBlankRoom1 = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Blank Room 2")) { TinyBlankRoom2 = roomHandler; }
+                        if (roomHandler.GetRoomName().StartsWith("WinchesterRoom")) { WinchesterRoom = roomHandler; }
                     }
                 }
 
@@ -397,6 +400,37 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         }
                     }
                 }
+
+                if (WinchesterRoom != null) {
+                    WinchesterRoom.ForcePitfallForFliers = true;
+                    WinchesterRoom.TargetPitfallRoom = WinchesterRoom;
+
+                    IntVector2 WinchesterNotePosition = new IntVector2(3, 3);
+
+                    TalkDoerLite[] m_NPCs = UnityEngine.Object.FindObjectsOfType<TalkDoerLite>();
+
+                    if (m_NPCs != null && m_NPCs.Length > 0) {
+                        foreach (TalkDoerLite npc in m_NPCs) {
+                            if (npc.gameObject.transform.parent == WinchesterRoom.hierarchyParent) {
+                                WinchesterNotePosition = (npc.transform.PositionVector2().ToIntVector2() - WinchesterRoom.area.basePosition - new IntVector2(1, 0));
+                                break;
+                            }
+                        }
+                    }
+
+                    GameObject PlacedWinchesterNote = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, false, true).InstantiateObject(WinchesterRoom, WinchesterNotePosition);
+                    PlacedWinchesterNote.transform.parent = WinchesterRoom.hierarchyParent;
+                    NoteDoer WinchesterNoteComponent = PlacedWinchesterNote.GetComponent<NoteDoer>();
+
+                    if (WinchesterNoteComponent != null) {
+                        WinchesterNoteComponent.stringKey = "Notice: Anti-Flight Pits have been installed.\n I know you've been using fancy wings or that jetpack to cheat at my game!\n I'd like to see you try that again! [Winchester].";
+                        WinchesterNoteComponent.useAdditionalStrings = false;
+                        WinchesterNoteComponent.alreadyLocalized = true;
+                        WinchesterNoteComponent.name = "Winchester's Note";
+                        WinchesterRoom.RegisterInteractable(WinchesterNoteComponent);
+                    }
+                }
+
 
                 if (SecretRewardRoom != null) {
 
@@ -689,7 +723,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         ExpandShaders.Instance.ApplyGlitchShader(selectedActor.GetComponentInChildren<tk2dBaseSprite>());
                         selectedActor.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
                         selectedActor.CanDropItems = true;
-                        selectedActor.AdditionalSimpleItemDrops = new List<PickupObject> { ExpandPrefabs.RatKeyItem };                    
+                        selectedActor.AdditionalSimpleItemDrops = new List<PickupObject> { PickupObjectDatabase.GetById(727) };                    
                     }
                 }
 
@@ -710,13 +744,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
                     if (randomBool) {
                         ExpandKickableObject GlitchedTable1Component = GlitchedVerticalTable1.GetComponent<ExpandKickableObject>();
-                        GlitchedTable1Component.SpawnedObject = ExpandPrefabs.RatKeyItem.gameObject;
+                        GlitchedTable1Component.SpawnedObject = PickupObjectDatabase.GetById(727).gameObject;
                         GlitchedTable1Component.willDefinitelyExplode = true;
                         GlitchedTable1Component.spawnObjectOnSelfDestruct = true;
                         ExpandShaders.Instance.ApplyGlitchShader(GlitchedTable1Component.GetComponentInChildren<tk2dBaseSprite>(), true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
                     } else {
                         ExpandKickableObject GlitchedTable1Component = GlitchedHorizontalTable1.GetComponent<ExpandKickableObject>();
-                        GlitchedTable1Component.SpawnedObject = ExpandPrefabs.RatKeyItem.gameObject;
+                        GlitchedTable1Component.SpawnedObject = PickupObjectDatabase.GetById(727).gameObject;
                         GlitchedTable1Component.willDefinitelyExplode = true;
                         GlitchedTable1Component.spawnObjectOnSelfDestruct = true;
                         ExpandShaders.Instance.ApplyGlitchShader(GlitchedTable1Component.GetComponentInChildren<tk2dBaseSprite>(), true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);

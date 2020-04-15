@@ -115,7 +115,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 		}
 
         private void SpawnRatKey() {
-            LootEngine.SpawnItem(ExpandPrefabs.RatKeyItem.gameObject, specRigidbody.GetUnitCenter(ColliderType.HitBox), Vector2.zero, 0f, true, false, false);
+            LootEngine.SpawnItem(PickupObjectDatabase.GetById(727).gameObject, specRigidbody.GetUnitCenter(ColliderType.HitBox), Vector2.zero, 0f, true, false, false);
             return;
         }
 

@@ -196,6 +196,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(GameManager)
             );
 
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PunchoutController.TeardownPunchout Hook...."); }
+            Hook teardownPunchoutHook = new Hook(
+                typeof(PunchoutController).GetMethod("TeardownPunchout", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("TeardownPunchout_Hook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PunchoutController)
+            );
+
             return;
         }
 
@@ -816,6 +824,92 @@ namespace ExpandTheGungeon.ExpandMain {
             } else {
                 Debug.LogError("failed placement");
             }
+        }
+
+        private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
+            if (!GameStatsManager.Instance.IsRainbowRun) { orig(self); return; }
+
+            if (ReflectionHelpers.ReflectGetField<bool>(typeof(PunchoutController), "m_isInitialized", self)) {
+                Minimap.Instance.TemporarilyPreventMinimap = false;
+                GameUIRoot.Instance.ShowCoreUI("punchout");
+                GameUIRoot.Instance.ShowCoreUI(string.Empty);
+                GameUIRoot.Instance.ToggleLowerPanels(true, false, string.Empty);
+                CameraController mainCameraController = GameManager.Instance.MainCameraController;
+                mainCameraController.SetManualControl(false, false);
+                mainCameraController.LockToRoom = false;
+                mainCameraController.SetZoomScaleImmediate(1f);
+                foreach (PlayerController playerController in GameManager.Instance.AllPlayers) {
+                    playerController.ClearInputOverride("punchout");
+                    playerController.healthHaver.IsVulnerable = true;
+                    playerController.SuppressEffectUpdates = false;
+                    playerController.IsOnFire = false;
+                    playerController.CurrentFireMeterValue = 0f;
+                    playerController.CurrentPoisonMeterValue = 0f;
+                }
+                GameManager.Instance.DungeonMusicController.EndBossMusic();
+                MetalGearRatRoomController metalGearRatRoomController = FindObjectOfType<MetalGearRatRoomController>();
+                if (metalGearRatRoomController) {
+                    GameObject gameObject = PickupObjectDatabase.GetById(GlobalItemIds.RatKey).gameObject;
+                    Vector3 position = metalGearRatRoomController.transform.position;
+                    if (self.Opponent.NumKeysDropped >= 1) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 17f), Vector2.zero, 0f, true, false, false);
+                    }
+                    if (self.Opponent.NumKeysDropped >= 2) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(13.25f, 14.5f), Vector2.zero, 0f, true, false, false);
+                    }
+                    if (self.Opponent.NumKeysDropped >= 3) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 12f), Vector2.zero, 0f, true, false, false);
+                    }
+                    if (self.Opponent.NumKeysDropped >= 4) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 17f), Vector2.zero, 0f, true, false, false);
+                    }
+                    if (self.Opponent.NumKeysDropped >= 5) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(31.25f, 14.5f), Vector2.zero, 0f, true, false, false);
+                    }
+                    if (self.Opponent.NumKeysDropped >= 6) {
+                        LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 12f), Vector2.zero, 0f, true, false, false);
+                    }
+                    Vector2 a = position + new Vector3(22.25f, 14.5f);
+
+                    List<int> m_AllowedItemsInRainbowMode = new List<int>() {
+                        GlobalItemIds.SmallHeart,
+                        GlobalItemIds.FullHeart,
+                        GlobalItemIds.AmmoPickup,
+                        GlobalItemIds.SpreadAmmoPickup,
+                        GlobalItemIds.Spice,
+                        GlobalItemIds.Junk,
+                        GlobalItemIds.GoldJunk,
+                        GlobalItemIds.Key,
+                        GlobalItemIds.GlassGuonStone,
+                        GlobalItemIds.Junk,
+                        GlobalItemIds.GoldJunk,
+                        GlobalItemIds.SackKnightBoon,
+                        GlobalItemIds.Blank,
+                        GlobalItemIds.RatKey,
+                        GlobalItemIds.Map,
+                        120, // armor
+                    };
+
+                    foreach (int id in self.Opponent.DroppedRewardIds) {
+                        float degrees = ((!BraveUtility.RandomBool()) ? 180 : 0) + UnityEngine.Random.Range(-30f, 30f);
+                        // RoomHandler m_room = self.gameObject.transform.position.GetAbsoluteRoom();
+                        RoomHandler m_room = GameManager.Instance.PrimaryPlayer.transform.position.GetAbsoluteRoom();                        
+                        if (m_AllowedItemsInRainbowMode.Contains(id)) {
+                            GameObject gameObject2 = PickupObjectDatabase.GetById(id).gameObject;
+                            LootEngine.SpawnItem(gameObject2, (a + new Vector2(11f, 0f).Rotate(degrees)), Vector2.zero, 0f, true, false, false);
+                        } else {
+                            if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
+                                LootEngine.SpawnBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, false);
+                            }
+                        }
+                    }
+                }
+                GameStatsManager.Instance.SetFlag(GungeonFlags.ITEMSPECIFIC_BOXING_GLOVE, true);
+                BraveTime.ClearMultiplier(self.Player.gameObject);
+                Destroy(self.gameObject);
+            } else {
+                self.Reset();                
+            }            
         }
 
     }

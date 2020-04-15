@@ -6,6 +6,7 @@ using Dungeonator;
 // using Random = UnityEngine.Random;
 using FloorType = Dungeonator.CellVisualData.CellFloorType;
 
+
 namespace ExpandTheGungeon.ExpandUtilities {
 
     public static class RoomFactory {
@@ -14,6 +15,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static string TextureBasePath = "Textures\\RoomLayoutData\\RoomFactoryRooms\\";
         private static string nameSpace = "ExpandTheGungeon";
+
+        public static AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+        public static AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
 
         // public static string roomDirectory = Path.Combine(ETGMod.GameFolder, "CustomRoomData");
 
@@ -217,18 +221,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }*/
 
         public static GameObject GetPlaceableFromBundles(string assetPath) {
-            GameObject asset = null;
-            AssetBundle[] assetBundles = new AssetBundle[] {
-                ResourceManager.LoadAssetBundle("shared_auto_001"),
-                ResourceManager.LoadAssetBundle("shared_auto_002")
-            };
-            foreach (AssetBundle bundle in assetBundles) {
-                asset = bundle.LoadAsset(assetPath) as GameObject;
-                if (asset) { break; }
+            if (sharedAssets.LoadAsset<GameObject>(assetPath)) {
+                return sharedAssets.LoadAsset<GameObject>(assetPath);
+            } else if (sharedAssets2.LoadAsset<GameObject>(assetPath)) {
+                return sharedAssets2.LoadAsset<GameObject>(assetPath);
+            } else {
+                // Asset Not found! Returning blank objet!
+                return new GameObject("OBJECT NOT FOUND");
             }
-            assetBundles[0] = null;
-            assetBundles[1] = null;
-            return asset;
         }
 
         public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer) {

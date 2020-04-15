@@ -8,27 +8,39 @@ using ExpandTheGungeon.ExpandUtilities;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class BossrushFlows : ExpandDungeonFlow {
-
-        private static AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-
-        private static Dungeon TutorialPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
-
-        public static DungeonFlow Bossrush_01_Castle = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01_Castle"));
-        public static DungeonFlow Bossrush_01a_Sewer = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01a_Sewer"));
-        public static DungeonFlow Bossrush_02_Gungeon = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02_Gungeon"));
-        public static DungeonFlow Bossrush_02a_Cathedral = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02a_Cathedral"));
-        public static DungeonFlow Bossrush_03_Mines = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_03_Mines"));
-        public static DungeonFlow Bossrush_04_Catacombs = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_04_Catacombs"));
-        public static DungeonFlow Bossrush_05_Forge = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_05_Forge"));
-        public static DungeonFlow Bossrush_06_BulletHell = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_06_BulletHell"));
+                
+        public static DungeonFlow Bossrush_01_Castle;
+        public static DungeonFlow Bossrush_01a_Sewer;
+        public static DungeonFlow Bossrush_02_Gungeon;
+        public static DungeonFlow Bossrush_02a_Cathedral;
+        public static DungeonFlow Bossrush_03_Mines;
+        public static DungeonFlow Bossrush_04_Catacombs;
+        public static DungeonFlow Bossrush_05_Forge;
+        public static DungeonFlow Bossrush_06_BulletHell;
 
 
-        public static DungeonFlow Bossrush_01_Castle_Modded = ScriptableObject.CreateInstance<DungeonFlow>();
-        public static DungeonFlow MiniBossrush_01 = ScriptableObject.CreateInstance<DungeonFlow>();
+        public static DungeonFlow Bossrush_01_Castle_Modded;
+        public static DungeonFlow MiniBossrush_01;
 
-        private static PrototypeDungeonRoom gungeon_entrance_modded = UnityEngine.Object.Instantiate(sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance"));
+        private static PrototypeDungeonRoom gungeon_entrance_modded;
         
         public static void InitBossrushFlows() {
+
+            Bossrush_01_Castle_Modded = ScriptableObject.CreateInstance<DungeonFlow>();
+            MiniBossrush_01 = ScriptableObject.CreateInstance<DungeonFlow>();
+
+            // Dungeon TutorialPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
+
+            Bossrush_01_Castle = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01_Castle"));
+            Bossrush_01a_Sewer = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01a_Sewer"));
+            Bossrush_02_Gungeon = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02_Gungeon"));
+            Bossrush_02a_Cathedral = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02a_Cathedral"));
+            Bossrush_03_Mines = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_03_Mines"));
+            Bossrush_04_Catacombs = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_04_Catacombs"));
+            Bossrush_05_Forge = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_05_Forge"));
+            Bossrush_06_BulletHell = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_06_BulletHell"));
+
+            gungeon_entrance_modded = UnityEngine.Object.Instantiate(ExpandPrefabs.sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance"));
 
             gungeon_entrance_modded.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             gungeon_entrance_modded.name = "Bossrush Curse Shrine";
@@ -81,8 +93,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             MiniBossrush_01.FirstNode = MiniBossRushNode_Entrance;
 
             // Null any Dungeon prefabs when done else game will hang when trying to load another level from then in the future.
-            TutorialPrefab = null;
-            sharedAssets2 = null;
+            // TutorialPrefab = null;
         }
 
         private static DungeonFlowNode BossRushCurseShrineNode = new DungeonFlowNode(Bossrush_01_Castle) {

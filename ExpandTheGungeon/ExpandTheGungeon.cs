@@ -82,6 +82,7 @@ namespace ExpandTheGungeon {
         public override void Start() {
             // Init ItemAPI
             SetupItemAPI();
+
             try {
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs();
@@ -96,12 +97,26 @@ namespace ExpandTheGungeon {
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
+                ExpandPrefabs.sharedAssets = null;
+                ExpandPrefabs.sharedAssets2 = null;
+                ExpandPrefabs.braveResources = null;
+                ExpandPrefabs.enemiesBase = null;
+                RoomFactory.sharedAssets = null;
+                RoomFactory.sharedAssets2 = null;
                 return;
             }
             // Modified version of Anywhere mod
             DungeonFlowModule.Install();
 
             InitConsoleCommands(ConsoleCommandName);
+
+            // Null bundles when done with them to avoid game crash issues.
+            ExpandPrefabs.sharedAssets = null;
+            ExpandPrefabs.sharedAssets2 = null;
+            ExpandPrefabs.braveResources = null;
+            ExpandPrefabs.enemiesBase = null;
+            RoomFactory.sharedAssets = null;
+            RoomFactory.sharedAssets2 = null;
         }
         public override void Exit() {
             if (GameManagerHook != null) {

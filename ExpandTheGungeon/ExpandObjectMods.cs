@@ -132,8 +132,6 @@ namespace ExpandTheGungeon {
 
                 MaybeSetupGlitchEnemyStun(dungeon);
             }
-
-            if (ExpandUtility.RatDungeon != null) { ExpandUtility.RatDungeon = null; }
         }
 
         private void MaybeSetupGlitchEnemyStun(Dungeon dungeon) {
