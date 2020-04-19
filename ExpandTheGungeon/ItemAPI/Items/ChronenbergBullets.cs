@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ItemAPI {
 

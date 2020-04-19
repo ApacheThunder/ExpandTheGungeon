@@ -150,12 +150,14 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Apache_TheCrushZone;
         public static PrototypeDungeonRoom Expand_Apache_SpikeAndPits;
         public static PrototypeDungeonRoom Expand_Apache_PitTraps;
+        public static PrototypeDungeonRoom Expand_Apache_RickRollChest;
 
 
         // Custom Secret Rooms
         public static PrototypeDungeonRoom Expand_TinySecret;
         public static PrototypeDungeonRoom Expand_GlitchedSecret;
         public static PrototypeDungeonRoom Expand_SecretElevatorEntranceRoom;
+        public static PrototypeDungeonRoom Expand_RickRollSecret;
 
         // Custom Rooms for handling entrance to custom secret floor on Hollows
         public static PrototypeDungeonRoom SecretExitRoom2;
@@ -277,6 +279,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_TheCrushZone = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_SpikeAndPits = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_PitTraps = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Apache_RickRollChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -286,6 +290,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_TinySecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_GlitchedSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_SecretElevatorEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_RickRollSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
@@ -8010,6 +8015,62 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
 
+            Expand_Apache_RickRollChest.name = "Apache Rick Roll Chest Room";
+            Expand_Apache_RickRollChest.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Apache_RickRollChest.GUID = Guid.NewGuid().ToString();
+            Expand_Apache_RickRollChest.PreventMirroring = false;
+            Expand_Apache_RickRollChest.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Apache_RickRollChest.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Apache_RickRollChest.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_RickRollChest.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Apache_RickRollChest.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Apache_RickRollChest.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Apache_RickRollChest.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Apache_RickRollChest.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Apache_RickRollChest.placedObjectPositions = new List<Vector2>();
+            Expand_Apache_RickRollChest.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Apache_RickRollChest.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_Apache_RickRollChest.overriddenTilesets = GlobalDungeonData.ValidTilesets.FORGEGEON;
+            Expand_Apache_RickRollChest.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Apache_RickRollChest.InvalidInCoop = false;
+            Expand_Apache_RickRollChest.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Apache_RickRollChest.preventAddedDecoLayering = false;
+            Expand_Apache_RickRollChest.precludeAllTilemapDrawing = false;
+            Expand_Apache_RickRollChest.drawPrecludedCeilingTiles = false;
+            Expand_Apache_RickRollChest.preventBorders = false;
+            Expand_Apache_RickRollChest.preventFacewallAO = false;
+            Expand_Apache_RickRollChest.usesCustomAmbientLight = false;
+            Expand_Apache_RickRollChest.customAmbientLight = Color.white;
+            Expand_Apache_RickRollChest.ForceAllowDuplicates = false;
+            Expand_Apache_RickRollChest.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Apache_RickRollChest.IsLostWoodsRoom = false;
+            Expand_Apache_RickRollChest.UseCustomMusic = false;
+            Expand_Apache_RickRollChest.UseCustomMusicState = false;
+            Expand_Apache_RickRollChest.CustomMusicEvent = string.Empty;
+            Expand_Apache_RickRollChest.UseCustomMusicSwitch = false;
+            Expand_Apache_RickRollChest.CustomMusicSwitch = string.Empty;
+            Expand_Apache_RickRollChest.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Apache_RickRollChest.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Apache_RickRollChest.Width = 18;
+            Expand_Apache_RickRollChest.Height = 13;
+            Expand_Apache_RickRollChest.additionalObjectLayers = new List<PrototypeRoomObjectLayer>();
+            foreach (PrototypeRoomExit exit in ExpandPrefabs.gungeon_rewardroom_1.exitData.exits) {
+                Expand_Apache_RickRollChest.exitData.exits.Add(exit);
+            }
+            foreach (PrototypeRoomObjectLayer objectLayer in ExpandPrefabs.gungeon_rewardroom_1.additionalObjectLayers) {
+                Expand_Apache_RickRollChest.additionalObjectLayers.Add(objectLayer);
+            }
+            foreach (PrototypePlacedObjectData objectData in ExpandPrefabs.gungeon_rewardroom_1.placedObjects) {
+                Expand_Apache_RickRollChest.placedObjects.Add(objectData);
+            }
+            foreach (Vector2 placedObjectPosition in ExpandPrefabs.gungeon_rewardroom_1.placedObjectPositions) {
+                Expand_Apache_RickRollChest.placedObjectPositions.Add(placedObjectPosition);
+            }
+            Expand_Apache_RickRollChest.additionalObjectLayers.Remove(Expand_Apache_RickRollChest.additionalObjectLayers[1]);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_RickRollChest, new Vector2(7, 9), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_RickRollChest, "TrapRooms\\Expand_Apache_RickRollChestRoom_Layout.png");
+             
+
             SecretExitRoom2.name = "Secret Elevator Exit";
             SecretExitRoom2.QAID = "AA" + UnityEngine.Random.Range(1000, 9999);
             SecretExitRoom2.GUID = Guid.NewGuid().ToString();
@@ -8476,6 +8537,59 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateBasicRoomLayout(Expand_GlitchedSecret);
 
 
+            Expand_RickRollSecret.name = "Expand Apache RickRoll Secret";
+            Expand_RickRollSecret.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_RickRollSecret.GUID = Guid.NewGuid().ToString();
+            Expand_RickRollSecret.PreventMirroring = false;
+            Expand_RickRollSecret.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+            Expand_RickRollSecret.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_RickRollSecret.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_RickRollSecret.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_RickRollSecret.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_RickRollSecret.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_RickRollSecret.pits = new List<PrototypeRoomPitEntry>();
+            Expand_RickRollSecret.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_RickRollSecret.placedObjectPositions = new List<Vector2>();
+            Expand_RickRollSecret.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_RickRollSecret.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_RickRollSecret.overriddenTilesets = 0;
+            Expand_RickRollSecret.prerequisites = new List<DungeonPrerequisite>();
+            Expand_RickRollSecret.InvalidInCoop = false;
+            Expand_RickRollSecret.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_RickRollSecret.preventAddedDecoLayering = false;
+            Expand_RickRollSecret.precludeAllTilemapDrawing = false;
+            Expand_RickRollSecret.drawPrecludedCeilingTiles = false;
+            Expand_RickRollSecret.preventBorders = false;
+            Expand_RickRollSecret.preventFacewallAO = false;
+            Expand_RickRollSecret.usesCustomAmbientLight = false;
+            Expand_RickRollSecret.customAmbientLight = Color.white;
+            Expand_RickRollSecret.ForceAllowDuplicates = false;
+            Expand_RickRollSecret.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_RickRollSecret.IsLostWoodsRoom = false;
+            Expand_RickRollSecret.UseCustomMusic = false;
+            Expand_RickRollSecret.UseCustomMusicState = false;
+            Expand_RickRollSecret.CustomMusicEvent = string.Empty;
+            Expand_RickRollSecret.UseCustomMusicSwitch = false;
+            Expand_RickRollSecret.CustomMusicSwitch = string.Empty;
+            Expand_RickRollSecret.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
+            Expand_RickRollSecret.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_RickRollSecret.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_RickRollSecret.overrideRoomVisualType = -1;
+            Expand_RickRollSecret.Width = 16;
+            Expand_RickRollSecret.Height = 16;
+            Expand_RickRollSecret.allowFloorDecoration = true;
+            Expand_RickRollSecret.allowWallDecoration = true;
+            Expand_RickRollSecret.usesProceduralLighting = false;
+            Expand_RickRollSecret.usesProceduralDecoration = true;
+            Expand_RickRollSecret.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_RickRollSecret, new Vector2(0, 8), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_RickRollSecret, new Vector2(8, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_RickRollSecret, new Vector2(8, 17), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(Expand_RickRollSecret, new Vector2(17, 8), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(Expand_RickRollSecret, new Vector2(6, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_RickRollSecret);
+
+
             Expand_BootlegRoom.name = "Expand Apache Bootleg";
             Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
@@ -8592,11 +8706,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Apache_FieldOfSaws),
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
-                GenerateWeightedRoom(Expand_Apache_PitTraps)
+                GenerateWeightedRoom(Expand_Apache_PitTraps),
+                GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.5f)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
-                ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
+                if (room.room != Expand_Apache_PitTraps) {
+                    ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
+                }
                 ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
@@ -8610,7 +8727,8 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             WeightedRoom[] CustomSecretRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_TinySecret, 8),
-                GenerateWeightedRoom(Expand_GlitchedSecret, 1)
+                GenerateWeightedRoom(Expand_GlitchedSecret, 1),
+                GenerateWeightedRoom(Expand_RickRollSecret, 1),
             };
 
             WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };

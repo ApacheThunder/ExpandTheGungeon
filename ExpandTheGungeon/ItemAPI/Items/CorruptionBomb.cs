@@ -67,7 +67,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             foreach (string spriteName in spritePaths) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), spriteComponent.Collection); }
             
-            ExpandUtility.GenerateSpriteAnimator(glitchBombSpawnObject, AlwaysIgnoreTimeScale: true);            
+            ExpandUtility.GenerateSpriteAnimator(glitchBombSpawnObject, AlwaysIgnoreTimeScale: true);
             ExpandUtility.AddAnimation(glitchBombSpawnObject.GetComponent<tk2dSpriteAnimator>(), spriteComponent.Collection, spritePaths, "CorruptionSpawn", frameRate: 7);
             DontDestroyOnLoad(glitchBombSpawnObject);
         }

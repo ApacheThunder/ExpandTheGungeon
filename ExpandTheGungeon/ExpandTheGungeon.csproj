@@ -109,6 +109,7 @@
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
+    <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
@@ -873,6 +874,53 @@
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead2.room" />
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead3.room" />
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Undead4.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_01.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_02.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_03.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_04.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_05.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_06.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_07.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_08.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_09.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_10.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_11.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_RiseUp_12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_01.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_02.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_03.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_04.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_05.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_06.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_07.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_08.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_09.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_10.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_11.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_12.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_13.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_14.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_15.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_16.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_17.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_18.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_19.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_20.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_21.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_22.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_23.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_24.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_25.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_26.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_27.png" />
+    <EmbeddedResource Include="Textures\RickRoll\RickRoll_28.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_RickRollChestRoom_Layout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

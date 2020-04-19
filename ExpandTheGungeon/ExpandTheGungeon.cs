@@ -277,6 +277,9 @@ namespace ExpandTheGungeon {
                 foreach (WeightedRoom wRoom in ExpandPrefabs.BulletHellRoomTable.includedRooms.elements) {
                     if (wRoom.room != null) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
                 }
+                
+                foreach (WeightedRoom wRoom in ExpandPrefabs.SecretRoomTable.includedRooms.elements) { RoomDebug.LogRoomToPNGFile(wRoom.room); }
+                 
                 ETGModConsole.Log("Room dump process complete!");
             } else if (consoleText[0].ToLower() == "currentdungeonlayout") {
                 RoomDebug.LogDungeonToPNGFile();
@@ -296,10 +299,10 @@ namespace ExpandTheGungeon {
             GameObject soundObject = new GameObject("SoundSource");
             // soundObject.transform.position = GameManager.Instance.BestActivePlayer.transform.position;
             // AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", soundObject);
-            AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
+            //AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
             // ETGModConsole.Log(TestObject.name);
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-            
+
             /*Dungeon dungeon = GameManager.Instance.Dungeon;
 
             if (dungeon && CurrentPlayer) {
@@ -330,8 +333,14 @@ namespace ExpandTheGungeon {
 
             // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
             // Rooms for floor 4.
-            isGlitchFloor = true;
-            GameManager.Instance.LoadCustomLevel("tt_canyon");
+            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(3, "SecretGlitchFloor_Flow", true));
+
+            GameObject RickRollChest = UnityEngine.Object.Instantiate(ExpandPrefabs.RickRollChestObject, CurrentPlayer.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+            RickRollChest.GetComponent<ExpandComponents.ExpandRickRollChest>().ConfigureOnPlacement(CurrentPlayer.GetAbsoluteParentRoom());
+            CurrentPlayer.GetAbsoluteParentRoom().RegisterInteractable(RickRollChest.GetComponent<ExpandComponents.ExpandRickRollChest>());
+
+
+
             return;
         }        
     }

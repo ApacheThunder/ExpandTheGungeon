@@ -242,6 +242,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject EXBootlegRoomDoorTriggers;
         // RewardPedastal for Glitch Secret Room
         public static GameObject CorruptedRewardPedestal;
+        public static GameObject RickRollChestObject;
+        public static GameObject RickRollAnimationObject;
 
 
         // Custom Challenge Modifiers
@@ -1507,6 +1509,150 @@ namespace ExpandTheGungeon.ExpandObjects {
             DontDestroyOnLoad(CorruptedRewardPedestal);
             FakePrefab.MarkAsFakePrefab(CorruptedRewardPedestal);
 
+
+            GameObject m_RedChestReference = sharedAssets2.LoadAsset<GameObject>("HighDragunfire_Chest_Red");
+
+            RickRollChestObject = new GameObject("Rick Roll Chest") { layer = 22 };
+            if (m_RedChestReference.transform.Find("Shadow").gameObject) {
+                GameObject RickRollChestShadow = Instantiate(m_RedChestReference.transform.Find("Shadow").gameObject);
+                RickRollChestShadow.name = "ChestShadow";
+                RickRollChestShadow.transform.parent = RickRollChestObject.transform;
+                
+            }
+
+            RickRollChestObject.SetActive(false);
+
+            
+            tk2dSprite RickRollChestSprite = RickRollChestObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(RickRollChestSprite, m_RedChestReference.GetComponent<tk2dSprite>());
+
+            tk2dSpriteAnimator RickRollChestAnimator = RickRollChestObject.AddComponent<tk2dSpriteAnimator>();
+            RickRollChestAnimator.Library = m_RedChestReference.GetComponent<tk2dSpriteAnimator>().Library;
+            RickRollChestAnimator.DefaultClipId = 8;
+            RickRollChestAnimator.AdditionalCameraVisibilityRadius = 0;
+            RickRollChestAnimator.AlwaysIgnoreTimeScale = false;
+            RickRollChestAnimator.ForceSetEveryFrame = false;
+            RickRollChestAnimator.playAutomatically = false;
+            RickRollChestAnimator.IsFrameBlendedAnimation = false;
+            RickRollChestAnimator.clipTime = 0;
+            RickRollChestAnimator.deferNextStartClip = false;
+
+            SpeculativeRigidbody RickRollChestRigidBody = RickRollChestObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(RickRollChestRigidBody, m_RedChestReference.GetComponent<SpeculativeRigidbody>());
+
+            MajorBreakable RickRollChestBreakable = RickRollChestObject.AddComponent<MajorBreakable>();
+            RickRollChestBreakable.HitPoints = 40;
+            RickRollChestBreakable.DamageReduction = 0;
+            RickRollChestBreakable.MinHits = 0;
+            RickRollChestBreakable.EnemyDamageOverride = -1;
+            RickRollChestBreakable.ImmuneToBeastMode = false;
+            RickRollChestBreakable.ScaleWithEnemyHealth = false;
+            RickRollChestBreakable.OnlyExplosions = false;
+            RickRollChestBreakable.IgnoreExplosions = false;
+            RickRollChestBreakable.GameActorMotionBreaks = false;
+            RickRollChestBreakable.PlayerRollingBreaks = false;
+            RickRollChestBreakable.spawnShards = true;
+            RickRollChestBreakable.distributeShards = false;
+            RickRollChestBreakable.shardClusters = new ShardCluster[0];
+            RickRollChestBreakable.minShardPercentSpeed = 0.05f;
+            RickRollChestBreakable.maxShardPercentSpeed = 0.3f;
+            RickRollChestBreakable.shardBreakStyle = MinorBreakable.BreakStyle.CONE;
+            RickRollChestBreakable.usesTemporaryZeroHitPointsState = true;
+            RickRollChestBreakable.overrideSpriteNameToUseAtZeroHP = "chest_redgold_break_001";
+            RickRollChestBreakable.destroyedOnBreak = false;
+            RickRollChestBreakable.childrenToDestroy = new List<GameObject>(0);
+            RickRollChestBreakable.playsAnimationOnNotBroken = false;
+            RickRollChestBreakable.notBreakAnimation = string.Empty;
+            RickRollChestBreakable.handlesOwnBreakAnimation = false;
+            RickRollChestBreakable.breakAnimation = string.Empty;
+            RickRollChestBreakable.handlesOwnPrebreakFrames = false;
+            RickRollChestBreakable.prebreakFrames = new BreakFrame[0];
+            RickRollChestBreakable.damageVfx = new VFXPool { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            RickRollChestBreakable.damageVfxMinTimeBetween = 0.2f;
+            RickRollChestBreakable.breakVfx = new VFXPool { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            RickRollChestBreakable.breakVfxParent = null;
+            RickRollChestBreakable.delayDamageVfx = false;
+            RickRollChestBreakable.SpawnItemOnBreak = true;
+            RickRollChestBreakable.ItemIdToSpawnOnBreak = GlobalItemIds.Junk;
+            RickRollChestBreakable.HandlePathBlocking = false;
+            
+            string m_RickRollBasePath = "ExpandTheGungeon/Textures/RickRoll/";
+
+            List<string> m_RickRollRiseFrames = new List<string>() {
+                "RickRoll_RiseUp_01",
+                "RickRoll_RiseUp_02",
+                "RickRoll_RiseUp_03",
+                "RickRoll_RiseUp_04",
+                "RickRoll_RiseUp_05",
+                "RickRoll_RiseUp_06",
+                "RickRoll_RiseUp_07",
+                "RickRoll_RiseUp_08",
+                "RickRoll_RiseUp_09",
+                "RickRoll_RiseUp_10",
+                "RickRoll_RiseUp_11",
+                "RickRoll_RiseUp_12"
+            };
+
+            List<string> m_RickRollFrames = new List<string>() {
+                "RickRoll_01",
+                "RickRoll_02",
+                "RickRoll_03",
+                "RickRoll_04",
+                "RickRoll_05",
+                "RickRoll_06",
+                "RickRoll_07",
+                "RickRoll_08",
+                "RickRoll_09",
+                "RickRoll_10",
+                "RickRoll_11",
+                "RickRoll_12",
+                "RickRoll_13",
+                "RickRoll_14",
+                "RickRoll_15",
+                "RickRoll_16",
+                "RickRoll_17",
+                "RickRoll_18",
+                "RickRoll_19",
+                "RickRoll_20",
+                "RickRoll_21",
+                "RickRoll_22",
+                "RickRoll_23",
+                "RickRoll_24",
+                "RickRoll_25",
+                "RickRoll_26",
+                "RickRoll_27",
+                "RickRoll_28"
+            };
+
+            RickRollAnimationObject = new GameObject("Rick Roll Animation") { layer = 22 };
+            RickRollAnimationObject.SetActive(false);
+            ItemBuilder.AddSpriteToObject(RickRollAnimationObject, (m_RickRollBasePath + "RickRoll_RiseUp_01"), false, true);
+
+            tk2dBaseSprite m_RickRollBaseSprite = RickRollAnimationObject.GetComponent<tk2dBaseSprite>();
+
+            foreach (string spriteName in m_RickRollRiseFrames) {
+                if (spriteName != "RickRoll_RiseUp_01") {
+                    SpriteBuilder.AddSpriteToCollection((m_RickRollBasePath + spriteName), m_RickRollBaseSprite.Collection);
+                }
+            }
+            foreach (string spriteName in m_RickRollFrames) {
+                SpriteBuilder.AddSpriteToCollection((m_RickRollBasePath + spriteName), m_RickRollBaseSprite.Collection);
+            }
+
+            ExpandUtility.GenerateSpriteAnimator(RickRollAnimationObject, DefaultClipId: 0);
+            ExpandUtility.AddAnimation(RickRollAnimationObject.GetComponent<tk2dSpriteAnimator>(), m_RickRollBaseSprite.Collection, m_RickRollRiseFrames, "RickRollAnimation_Rise", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
+            ExpandUtility.AddAnimation(RickRollAnimationObject.GetComponent<tk2dSpriteAnimator>(), m_RickRollBaseSprite.Collection, m_RickRollFrames, "RickRollAnimation", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 12);
+
+            ExpandRickRollChest RickRollChestComponent = RickRollChestObject.AddComponent<ExpandRickRollChest>();
+            RickRollChestComponent.RickRollAnimationObject = RickRollAnimationObject;
+            RickRollChestComponent.MinimapIconPrefab = m_RedChestReference.GetComponent<Chest>().MinimapIconPrefab;
+            RickRollChestComponent.breakAnimName = m_RedChestReference.GetComponent<Chest>().breakAnimName;
+            RickRollChestComponent.openAnimName = m_RedChestReference.GetComponent<Chest>().openAnimName;
+
+            DontDestroyOnLoad(RickRollChestObject);
+            DontDestroyOnLoad(RickRollAnimationObject);
+            FakePrefab.MarkAsFakePrefab(RickRollChestObject);
+            FakePrefab.MarkAsFakePrefab(RickRollAnimationObject);
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

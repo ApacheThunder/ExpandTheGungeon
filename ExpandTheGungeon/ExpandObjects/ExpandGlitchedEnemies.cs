@@ -5155,7 +5155,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public void SpawnGlitchedRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>() {
                 GhostPrefab,
-                CultistPrefab,
+                // CultistPrefab,
                 ArrowheadManPrefab,
                 BulletRifleManPrefab,
                 AshBulletManPrefab,
