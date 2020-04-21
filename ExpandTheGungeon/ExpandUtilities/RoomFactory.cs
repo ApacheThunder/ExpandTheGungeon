@@ -3,11 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Dungeonator;
-// using Random = UnityEngine.Random;
 using FloorType = Dungeonator.CellVisualData.CellFloorType;
 
-
 namespace ExpandTheGungeon.ExpandUtilities {
+
+    public static class StaticReferences {
+        
+        public static Dictionary<string, AssetBundle> AssetBundles;
+
+        private static string[] m_AssetBundleNames;
+
+        public static void Init() {
+            AssetBundles = new Dictionary<string, AssetBundle>();
+            m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
+            foreach (string assetName in m_AssetBundleNames) {
+                if (ResourceManager.LoadAssetBundle(assetName)) {
+                    AssetBundles.Add(assetName, ResourceManager.LoadAssetBundle(assetName));
+                } else {
+                    Tools.PrintError("Failed to load asset bundle: " + assetName, "FF0000");
+                }
+            }
+        }
+    }
 
     public static class RoomFactory {
 
@@ -16,18 +33,20 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static string TextureBasePath = "Textures\\RoomLayoutData\\RoomFactoryRooms\\";
         private static string nameSpace = "ExpandTheGungeon";
 
-        public static AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-        public static AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+        /*public static AssetBundle sharedAssets;
+        public static AssetBundle sharedAssets2;
+        public static AssetBundle braveResources;*/
 
-        // public static string roomDirectory = Path.Combine(ETGMod.GameFolder, "CustomRoomData");
-
-        public static Dictionary<string, PrototypeDungeonRoom> rooms = new Dictionary<string, PrototypeDungeonRoom>();
-        // private static FieldInfo m_cellData = typeof(PrototypeDungeonRoom).GetField("m_cellData", BindingFlags.Instance | BindingFlags.NonPublic);
         private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
         private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
 
+        private static string [] m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
+
         public struct RoomData {
-            public string category, normalSubCategory, specialSubCatergory, bossSubCategory;
+            public string category;
+            public string normalSubCategory;
+            public string specialSubCategory;
+            public string bossSubCategory;
             public Vector2[] enemyPositions;
             public string[] enemyGUIDs;
             public Vector2[] placeablePositions;
@@ -42,20 +61,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             public PrototypeDungeonRoom room;
         }
 
-        /*public static void LoadRoomsFromRoomDirectory() {
-            Directory.CreateDirectory(roomDirectory);
-            foreach (string f in Directory.GetFiles(roomDirectory)) {
-                if (!f.EndsWith(".room")) continue;
-                Tools.Log($"Found room: \"{f}\"");
-                rooms.Add(f, BuildFromFile(Path.Combine(roomDirectory, f)));
-            }
-        }
-
-        public static PrototypeDungeonRoom BuildFromFile(string roomPath) {
-            var texture = ResourceExtractor.GetTextureFromFile(roomPath, ".room");
-            RoomData roomData = ExtractRoomDataFromFile(roomPath);
-            return Build(texture, roomData);
-        }*/
 
         public static PrototypeDungeonRoom BuildFromResource(string roomPath) {
             string RoomPath = (TextureBasePath + roomPath);
@@ -102,17 +107,45 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             // Tools.Print("Adding Objects...");
             if (roomData.placeablePositions != null) {
-                for (int i = 0; i < roomData.placeablePositions.Length; i++) {
-                    AddPlaceableToRoom(room, roomData.placeablePositions[i], roomData.placeableGUIDs[i]);
+               for (int i = 0; i < roomData.placeablePositions.Length; i++) {
+					AddPlaceableToRoom(room, roomData.placeablePositions[i], roomData.placeableGUIDs[i]);
+				}
+            }
+
+
+            // Not currently using this field in this mod. (rooms are manually assigned to floor's room tables currently)
+            /*if (roomData.floors != null) {
+                foreach (string floor in roomData.floors) {
+                    room.prerequisites.Add(new DungeonPrerequisite {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        requiredTileset = GetTileSet(floor)
+                    });
                 }
             }
 
-            //Set categories
-            /*if (!string.IsNullOrEmpty(roomData.category)) { room.category = Tools.GetEnumValue<PrototypeDungeonRoom.RoomCategory>(roomData.category); }
-            if (!string.IsNullOrEmpty(roomData.normalSubCategory)) { room.subCategoryNormal = Tools.GetEnumValue<PrototypeDungeonRoom.RoomNormalSubCategory>(roomData.normalSubCategory); }
-            if (!string.IsNullOrEmpty(roomData.bossSubCategory)) { room.subCategoryBoss = Tools.GetEnumValue<PrototypeDungeonRoom.RoomBossSubCategory>(roomData.bossSubCategory); }
-            if (!string.IsNullOrEmpty(roomData.specialSubCatergory)) { room.subCategorySpecial = Tools.GetEnumValue<PrototypeDungeonRoom.RoomSpecialSubCategory>(roomData.specialSubCatergory); }*/
+
+            // Set categories // Currently not used for this mod.
+            if (!string.IsNullOrEmpty(roomData.category)) { room.category = GetRoomCategory(roomData.category); }
+            if (!string.IsNullOrEmpty(roomData.normalSubCategory)) { room.subCategoryNormal = GetRoomNormalSubCategory(roomData.normalSubCategory); }
+            if (!string.IsNullOrEmpty(roomData.bossSubCategory)) { room.subCategoryBoss = GetRoomBossSubCategory(roomData.bossSubCategory); }
+            if (!string.IsNullOrEmpty(roomData.specialSubCategory)) { room.subCategorySpecial = GetRoomSpecialSubCategory(roomData.specialSubCategory); }*/
         }
+
+         /*public static GlobalDungeonData.ValidTilesets GetTileSet(string val) {
+             return (GlobalDungeonData.ValidTilesets)Enum.Parse(typeof(GlobalDungeonData.ValidTilesets), val.ToUpper());
+         }
+         public static PrototypeDungeonRoom.RoomCategory GetRoomCategory(string val) {
+             return (PrototypeDungeonRoom.RoomCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomCategory), val.ToUpper());
+         }
+         public static PrototypeDungeonRoom.RoomNormalSubCategory GetRoomNormalSubCategory(string val) {
+             return (PrototypeDungeonRoom.RoomNormalSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomNormalSubCategory), val.ToUpper());
+         }
+         public static PrototypeDungeonRoom.RoomBossSubCategory GetRoomBossSubCategory(string val) {
+             return (PrototypeDungeonRoom.RoomBossSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomBossSubCategory), val.ToUpper());
+         }
+         public static PrototypeDungeonRoom.RoomSpecialSubCategory GetRoomSpecialSubCategory(string val) {
+             return (PrototypeDungeonRoom.RoomSpecialSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomSpecialSubCategory), val.ToUpper());
+         }*/
 
         public static RoomData ExtractRoomDataFromFile(string path) {
             string data = ResourceExtractor.BytesToString(File.ReadAllBytes(path));
@@ -127,11 +160,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static RoomData ExtractRoomData(string data) {
-           if (data.Contains(dataHeader)) {
-                string dataContent = data.Substring(data.IndexOf(dataHeader) + dataHeader.Length);
-                return JsonUtility.FromJson<RoomData>(dataContent);
+            int num = (data.Length - dataHeader.Length - 1);
+            for (int i = num; i > 0; i--) {
+                string text = data.Substring(i, dataHeader.Length);
+                if (text.Equals(dataHeader)) { return JsonUtility.FromJson<RoomData>(data.Substring(i + dataHeader.Length)); }
             }
-            return new RoomData();
+            Tools.Log("No room data found at " + data);
+            return default(RoomData);
         }
 
         public static PrototypeDungeonRoom CreateRoomFromTexture(Texture2D texture) {
@@ -210,30 +245,24 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 return null;
             }
         }
-
-        /*public static int GetStyleValue(string dungeonName, string shrineID) {
-            if (ShrineFactory.builtShrines != null && ShrineFactory.builtShrines.ContainsKey(shrineID)) {
-                CustomShrineData shrineData = ShrineFactory.builtShrines[shrineID]?.GetComponent<CustomShrineData>();
-                if (shrineData != null && shrineData.roomStyles != null && shrineData.roomStyles.ContainsKey(dungeonName))
-                    return shrineData.roomStyles[dungeonName];
+        
+        public static GameObject GetGameObjectFromBundles(string assetPath) {
+            foreach (AssetBundle assetBundle in StaticReferences.AssetBundles.Values) {
+                GameObject gameObject = assetBundle.LoadAsset<GameObject>(assetPath);
+                if (gameObject) { return gameObject; }
             }
-            return -1;
-        }*/
-
-        public static GameObject GetPlaceableFromBundles(string assetPath) {
-            if (sharedAssets.LoadAsset<GameObject>(assetPath)) {
-                return sharedAssets.LoadAsset<GameObject>(assetPath);
-            } else if (sharedAssets2.LoadAsset<GameObject>(assetPath)) {
-                return sharedAssets2.LoadAsset<GameObject>(assetPath);
-            } else {
-                // Asset Not found! Returning blank objet!
-                return new GameObject("OBJECT NOT FOUND");
-            }
+            return null;
         }
 
+        public static DungeonPlaceable GetPlaceableFromBundles(string assetPath) {            
+            foreach (AssetBundle assetBundle in StaticReferences.AssetBundles.Values) {
+                DungeonPlaceable dungeonPlaceable = assetBundle.LoadAsset<DungeonPlaceable>(assetPath);
+                if (dungeonPlaceable) { return dungeonPlaceable; }
+            }
+            return null;
+        }
+        
         public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer) {
-            DungeonPrerequisite[] emptyReqs = new DungeonPrerequisite[0];
-
             DungeonPlaceable placeableContents = ScriptableObject.CreateInstance<DungeonPlaceable>();
             placeableContents.width = 1;
             placeableContents.height = 1;
@@ -241,7 +270,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             placeableContents.variantTiers = new List<DungeonPlaceableVariant>() {
                 new DungeonPlaceableVariant() {
                     percentChance = 1,
-                    prerequisites = emptyReqs,
+                    prerequisites = new DungeonPrerequisite[0],
                     enemyPlaceableGuid = guid,
                     materialRequirements= new DungeonPlaceableRoomMaterialRequirement[0],
                 }
@@ -250,7 +279,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             PrototypePlacedObjectData objectData = new PrototypePlacedObjectData() {
                 contentsBasePosition = location,
                 fieldData = new List<PrototypePlacedObjectFieldData>(),
-                instancePrerequisites = emptyReqs,
+                instancePrerequisites = new DungeonPrerequisite[0],
                 linkedTriggerAreaIDs = new List<int>(),
                 placeableContents = placeableContents,
             };
@@ -269,13 +298,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static void AddObjectDataToReinforcementLayer(PrototypeDungeonRoom room, PrototypePlacedObjectData objectData, int layer, Vector2 location) {
             if (room.additionalObjectLayers.Count <= layer) {
                 for (int i = room.additionalObjectLayers.Count; i <= layer; i++) {
-                    PrototypeRoomObjectLayer newLayer = new PrototypeRoomObjectLayer() {
+                    PrototypeRoomObjectLayer newLayer = new PrototypeRoomObjectLayer {
                         layerIsReinforcementLayer = true,
                         placedObjects = new List<PrototypePlacedObjectData>(),
-                        placedObjectBasePositions = new List<Vector2>()
+                        placedObjectBasePositions = new List<Vector2>(),
+                        shuffle = false
                     };
                     room.additionalObjectLayers.Add(newLayer);
-
                 }
             }
             room.additionalObjectLayers[layer].placedObjects.Add(objectData);
@@ -284,32 +313,42 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static void AddPlaceableToRoom(PrototypeDungeonRoom room, Vector2 location, string assetPath) {
             try {
-                GameObject asset = GetPlaceableFromBundles(assetPath);
-                if (asset) {
-                    DungeonPrerequisite[] emptyReqs = new DungeonPrerequisite[0];
+               if (GetGameObjectFromBundles(assetPath) != null) {
+					DungeonPrerequisite[] array = new DungeonPrerequisite[0];
+					room.placedObjectPositions.Add(location);
+					DungeonPlaceable dungeonPlaceable = ScriptableObject.CreateInstance<DungeonPlaceable>();
+					dungeonPlaceable.width = 2;
+					dungeonPlaceable.height = 2;
+					dungeonPlaceable.respectsEncounterableDifferentiator = true;
+					dungeonPlaceable.variantTiers = new List<DungeonPlaceableVariant> {
+						new DungeonPlaceableVariant {
+							percentChance = 1f,
+							nonDatabasePlaceable = GetGameObjectFromBundles(assetPath),
+							prerequisites = array,
+							materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+						}
+					};
+					room.placedObjects.Add(new PrototypePlacedObjectData {
+						contentsBasePosition = location,
+						fieldData = new List<PrototypePlacedObjectFieldData>(),
+						instancePrerequisites = array,
+						linkedTriggerAreaIDs = new List<int>(),
+						placeableContents = dungeonPlaceable
+					});
+                    return;                
+                } else if (GetPlaceableFromBundles(assetPath) != null) {
+                    DungeonPrerequisite[] instancePrerequisites = new DungeonPrerequisite[0];
                     room.placedObjectPositions.Add(location);
-                    room.placedObjects.Add(new PrototypePlacedObjectData() {
-                        contentsBasePosition = location,
-                        fieldData = new List<PrototypePlacedObjectFieldData>(),
-                        instancePrerequisites = emptyReqs,
-                        linkedTriggerAreaIDs = new List<int>(),
-                        placeableContents = new DungeonPlaceable() {
-                            width = 2,
-                            height = 2,
-                            respectsEncounterableDifferentiator = true,
-                            variantTiers = new List<DungeonPlaceableVariant>() {
-                                new DungeonPlaceableVariant() {
-                                    percentChance = 1,
-                                    nonDatabasePlaceable = asset,
-                                    prerequisites = emptyReqs,
-                                    materialRequirements= new DungeonPlaceableRoomMaterialRequirement[0]
-                                }
-                            }
-                        }
+                    room.placedObjects.Add(new PrototypePlacedObjectData {
+                    	contentsBasePosition = location,
+                    	fieldData = new List<PrototypePlacedObjectFieldData>(),
+                    	instancePrerequisites = instancePrerequisites,
+                    	linkedTriggerAreaIDs = new List<int>(),
+                    	placeableContents = GetPlaceableFromBundles(assetPath)
                     });
-                    //Tools.Print($"Added {asset.name} to room.");
+                    return;
                 } else {
-                    Tools.PrintError($"Unable to find asset in asset bundles: {assetPath}");
+                    Tools.PrintError("Unable to find asset in asset bundles: " + assetPath, "FF0000");
                 }
             } catch (Exception e) {
                 Tools.PrintException(e);
@@ -317,10 +356,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static void AddExit(PrototypeDungeonRoom room, Vector2 location, DungeonData.Direction direction) {
-            if (room.exitData == null)
-                room.exitData = new PrototypeRoomExitData();
-            if (room.exitData.exits == null)
-                room.exitData.exits = new List<PrototypeRoomExit>();
+            if (room.exitData == null) { room.exitData = new PrototypeRoomExitData(); }
+            if (room.exitData.exits == null) { room.exitData.exits = new List<PrototypeRoomExit>(); }
 
             PrototypeRoomExit exit = new PrototypeRoomExit(direction, location);
             exit.exitType = PrototypeRoomExit.ExitType.NO_RESTRICTION;
@@ -339,81 +376,51 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.additionalObjectLayers = new List<PrototypeRoomObjectLayer>();
             room.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
             room.roomEvents = new List<RoomEventDefinition>();
+            room.overriddenTilesets = 0;
             room.paths = new List<SerializedPath>();
             room.prerequisites = new List<DungeonPrerequisite>();
             room.excludedOtherRooms = new List<PrototypeDungeonRoom>();
             room.rectangularFeatures = new List<PrototypeRectangularFeature>();
             room.exitData = new PrototypeRoomExitData();
             room.exitData.exits = new List<PrototypeRoomExit>();
-            room.allowWallDecoration = false;
-            room.allowFloorDecoration = false;
             room.Width = width;
             room.Height = height;
+
+            // Not originally defined as defaults in Kyle's code.
+            room.GUID = Guid.NewGuid().ToString();
+            room.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            room.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            room.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            room.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            room.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            room.usesProceduralDecoration = true;
+            room.usesProceduralLighting = true;
+            room.usesProceduralDecoration = true;
+            room.allowWallDecoration = true;
+            room.allowFloorDecoration = true;            
+            room.PreventMirroring = false;
+            room.InvalidInCoop = false;            
+            room.preventAddedDecoLayering = false;
+            room.precludeAllTilemapDrawing = false;
+            room.drawPrecludedCeilingTiles = false;
+            room.preventBorders = false;
+            room.preventFacewallAO = false;
+            room.usesCustomAmbientLight = false;
+            room.customAmbientLight = Color.white;
+            room.ForceAllowDuplicates = false;
+            room.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            room.IsLostWoodsRoom = false;
+            room.UseCustomMusic = false;
+            room.UseCustomMusicState = false;
+            room.CustomMusicEvent = string.Empty;
+            room.UseCustomMusicSwitch = false;
+            room.CustomMusicSwitch = string.Empty;
+            room.overrideRoomVisualTypeForSecretRooms = false;
+            room.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            room.overrideRoomVisualType = -1;
+
             return room;
         }
-
-        /*public static void LogExampleRoomData() {
-            Vector2[] vectorArray = new Vector2[] {
-                new Vector2(4, 4),
-                new Vector2(4, 14),
-                new Vector2(14, 4),
-                new Vector2(14, 14),
-            };
-            string[] guids = new string[] {
-                "01972dee89fc4404a5c408d50007dad5",
-                "7b0b1b6d9ce7405b86b75ce648025dd6",
-                "ffdc8680bdaa487f8f31995539f74265",
-                "01972dee89fc4404a5c408d50007dad5",
-            };
-
-            Vector2[] exits = new Vector2[] {
-                new Vector2(0, 9),
-                new Vector2(9, 0),
-                new Vector2(20, 9),
-                new Vector2(9, 20),
-            };
-
-            string[] dirs = new string[] { "EAST", "SOUTH", "WEST",  "NORTH" };
-
-            RoomData rd = new RoomData() {
-                enemyPositions = vectorArray,
-                enemyGUIDs = guids,
-                exitPositions = exits,
-                exitDirections = dirs,
-
-            };
-            Tools.Print("Data to JSON: " + JsonUtility.ToJson(rd));
-        }
-
-        public static void StraightLine() {
-            try {
-                Vector2[] enemyPositions = new Vector2[100];
-                string[] enemyGuids = new string[100];
-                int[] enemyLayers = new int[100];
-                for (int i = 0; i < enemyGuids.Length; i++) {
-                    List<EnemyDatabaseEntry> db = EnemyDatabase.Instance.Entries;
-                    int r = Random.Range(0, db.Count);
-                    enemyGuids[i] = db[r].encounterGuid;
-                    enemyPositions[i] = new Vector2(i * 2, 10);
-                    enemyLayers[i] = 0;
-                }
-
-                Vector2[] exits = new Vector2[] { new Vector2(0, 9), new Vector2(200, 9), };
-
-                string[] dirs = new string[] { "WEST", "EAST" };
-
-                RoomData data = new RoomData() {
-                    enemyPositions = enemyPositions,
-                    enemyGUIDs = enemyGuids,
-                    enemyReinforcementLayers = enemyLayers,
-                    exitPositions = exits,
-                    exitDirections = dirs,
-                };
-                Tools.Log("Data to JSON: " + JsonUtility.ToJson(data));
-            } catch (Exception e) {
-                Tools.PrintException(e);
-            }
-        }*/
     }
 }
 

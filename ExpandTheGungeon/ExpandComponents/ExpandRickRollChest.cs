@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandUtilities;
+
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -107,21 +110,22 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator DoRickRoll() {
             yield return new WaitForSeconds(0.1f);
-            GameObject m_RickRollInstance = Instantiate(RickRollAnimationObject, (base.transform.position + new Vector3(0.1f, 0.5f, 0)), Quaternion.identity);
+            if (!m_room.IsSealed) {
+                m_room.npcSealState = RoomHandler.NPCSealState.SealAll;
+                m_room.SealRoom();
+            }
+            GameObject m_RickRollInstance = Instantiate(RickRollAnimationObject, (transform.position + new Vector3(0.1f, 0.5f, 0)), Quaternion.identity);
             int cachedLayer = m_RickRollInstance.layer;
             int cachedOutlineLayer = cachedLayer;
             m_RickRollInstance.layer = LayerMask.NameToLayer("Unpixelated");
             m_RickRollInstance.transform.localScale = new Vector2(0.2f, 0.2f).ToVector3ZUp(1f);
             // cachedOutlineLayer = SpriteOutlineManager.ChangeOutlineLayer(m_RickRollInstance.GetComponent<tk2dSprite>(), LayerMask.NameToLayer("Unpixelated"));
-            // if (m_RickRollInstance.GetComponent<tk2dSprite>()) {
-            if (sprite) {
-                sprite.HeightOffGround = -1f;
-                sprite.UpdateZDepth();
-                // m_RickRollInstance.GetComponent<tk2dSprite>().HeightOffGround = 1.01f;
-                // m_RickRollInstance.GetComponent<tk2dSprite>().UpdateZDepth();
-            }
             MajorBreakable m_MajorBreakable = GetComponent<MajorBreakable>();
             if (m_MajorBreakable) { m_MajorBreakable.TemporarilyInvulnerable = true; }
+            if (sprite) { sprite.HeightOffGround = -2f; sprite.UpdateZDepth(); }
+
+            GameManager.Instance.StartCoroutine(SpwanEnemyAirDrop());
+
             tk2dSpriteAnimator m_RickRollAnimator = m_RickRollInstance.GetComponent<tk2dSpriteAnimator>();
             m_RickRollAnimator.Play("RickRollAnimation_Rise");
             while (m_RickRollAnimator.IsPlaying("RickRollAnimation_Rise")) { yield return null; }
@@ -142,10 +146,52 @@ namespace ExpandTheGungeon.ExpandComponents {
             pickedUp = true;
             if (m_registeredIconRoom != null) { Minimap.Instance.DeregisterRoomIcon(m_registeredIconRoom, minimapIconInstance); }
             m_room.DeregisterInteractable(this);
+            if (m_room.npcSealState != RoomHandler.NPCSealState.SealNone) { m_room.npcSealState = RoomHandler.NPCSealState.SealNone; }
             Exploder.DoDefaultExplosion(sprite.WorldCenter, Vector2.zero, null, false, CoreDamageTypes.None, false);
             yield break;
         }
 
+        private IEnumerator SpwanEnemyAirDrop(float delay = 0.4f) {
+            Vector3 RoomOffset = m_room.area.basePosition.ToVector3();
+            string EnemyGUID1 = "88b6b6a93d4b4234a67844ef4728382c"; // bandana_bullet_kin
+            string EnemyGUID2 = "4d37ce3d666b4ddda8039929225b7ede"; // grenade_kin
+            string EnemyGUID3 = "01972dee89fc4404a5c408d50007dad5"; // bullet_kin
+            string EnemyGUID4 = "128db2f0781141bcb505d8f00f9e4d47"; // red_shotgun_kin
+
+            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID1 = ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID; }
+            if (UnityEngine.Random.value <= 0.1f) { EnemyGUID2 = ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID; }
+            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID3 = ExpandCustomEnemyDatabase.BootlegBulletManGUID; }
+            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID4 = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID; }
+
+            yield return new WaitForSeconds(delay);
+
+            GameObject eCrateInstance1 = ExpandUtility.SpawnAirDrop(m_room, (RoomOffset + new Vector3(4, 3, 0)), null, ExpandUtility.GenerateDungeonPlacable(null, true, EnemyGUID: EnemyGUID1));
+            GameObject eCrateInstance2 = ExpandUtility.SpawnAirDrop(m_room, (RoomOffset + new Vector3(4, 9, 0)), null, ExpandUtility.GenerateDungeonPlacable(null, true, EnemyGUID: EnemyGUID2), 0.2f);
+            GameObject eCrateInstance3 = ExpandUtility.SpawnAirDrop(m_room, (RoomOffset + new Vector3(13, 3, 0)), null, ExpandUtility.GenerateDungeonPlacable(null, true, EnemyGUID: EnemyGUID3));
+            GameObject eCrateInstance4 = ExpandUtility.SpawnAirDrop(m_room, (RoomOffset + new Vector3(13, 9, 0)), null, ExpandUtility.GenerateDungeonPlacable(null, true, EnemyGUID: EnemyGUID4), 0.2f);
+
+            /*List<GameObject> eCrateList = new List<GameObject>();
+
+            if (eCrateInstance1) { eCrateList.Add(eCrateInstance1); }
+            if (eCrateInstance2) { eCrateList.Add(eCrateInstance1); }
+            if (eCrateInstance3) { eCrateList.Add(eCrateInstance1); }
+            if (eCrateInstance4) { eCrateList.Add(eCrateInstance1); }
+
+            GameObject SelectedCrate = null;
+
+            if (eCrateList.Count > 0) { SelectedCrate = BraveUtility.RandomElement(eCrateList); }
+
+            if (SelectedCrate && SelectedCrate.GetComponent<EmergencyCrateController>()) {
+                yield return new WaitForSeconds(2.25f);
+                while (ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", SelectedCrate.GetComponent<EmergencyCrateController>()).HasValue && ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", SelectedCrate.GetComponent<EmergencyCrateController>()).Value) {
+                    if (!SelectedCrate | !SelectedCrate.GetComponent<EmergencyCrateController>()) { break; }
+                    yield return null;
+                }
+                yield return new WaitForSeconds(1f);
+                m_room.npcSealState = RoomHandler.NPCSealState.SealNone;
+            }*/
+            yield break;
+        }
 
         private void OnBroken() {
             spriteAnimator.Play(breakAnimName);

@@ -24,7 +24,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode TestSecretRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_GlitchedSecret);
             DungeonFlowNode testConnectorNode01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_CorridorOfDoom);
 
-            DungeonFlowNode RickRollRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_RickRollSecret);
+            DungeonFlowNode RickRollRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_Secret_Falsechest);
 
             m_CachedFlow.name = "Test_CustomRoom_Flow";
             m_CachedFlow.fallbackRoomTable = null;

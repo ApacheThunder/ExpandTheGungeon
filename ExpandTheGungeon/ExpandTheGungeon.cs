@@ -84,10 +84,17 @@ namespace ExpandTheGungeon {
             SetupItemAPI();
 
             try {
+                // Define asset bundles to be used for RoomFactory
+                /*RoomFactory.sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+                RoomFactory.sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+                RoomFactory.braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");*/
+
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs();
                 // Init Custom Enemy Prefabs
                 ExpandCustomEnemyDatabase.InitPrefabs();
+                // Init AssetBundle references in RoomFactory
+                StaticReferences.Init();
                 // Init Custom Room Prefabs
                 ExpandRoomPrefabs.InitCustomRooms();
                 // Init Custom DungeonFlow(s)
@@ -101,8 +108,8 @@ namespace ExpandTheGungeon {
                 ExpandPrefabs.sharedAssets2 = null;
                 ExpandPrefabs.braveResources = null;
                 ExpandPrefabs.enemiesBase = null;
-                RoomFactory.sharedAssets = null;
-                RoomFactory.sharedAssets2 = null;
+                /*RoomFactory.sharedAssets = null;
+                RoomFactory.sharedAssets2 = null;*/
                 return;
             }
             // Modified version of Anywhere mod
@@ -115,8 +122,9 @@ namespace ExpandTheGungeon {
             ExpandPrefabs.sharedAssets2 = null;
             ExpandPrefabs.braveResources = null;
             ExpandPrefabs.enemiesBase = null;
-            RoomFactory.sharedAssets = null;
+            /*RoomFactory.sharedAssets = null;
             RoomFactory.sharedAssets2 = null;
+            RoomFactory.braveResources = null;*/
         }
         public override void Exit() {
             if (GameManagerHook != null) {
@@ -333,14 +341,7 @@ namespace ExpandTheGungeon {
 
             // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
             // Rooms for floor 4.
-            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(3, "SecretGlitchFloor_Flow", true));
-
-            GameObject RickRollChest = UnityEngine.Object.Instantiate(ExpandPrefabs.RickRollChestObject, CurrentPlayer.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-            RickRollChest.GetComponent<ExpandComponents.ExpandRickRollChest>().ConfigureOnPlacement(CurrentPlayer.GetAbsoluteParentRoom());
-            CurrentPlayer.GetAbsoluteParentRoom().RegisterInteractable(RickRollChest.GetComponent<ExpandComponents.ExpandRickRollChest>());
-
-
-
+            GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(1, "SecretGlitchFloor_Flow", true));
             return;
         }        
     }

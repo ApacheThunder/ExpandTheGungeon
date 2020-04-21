@@ -337,8 +337,13 @@ namespace ExpandTheGungeon.ExpandMain {
         
         private void PlaceAlarmMushRooms(Dungeon dungeon, int Clearence = 3) {
 
-            if (dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.MINEGEON) { return; }
-
+            if (dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.MINEGEON |
+                ChallengeManager.ChallengeModeType == ChallengeModeType.ChallengeMegaMode | 
+                ChallengeManager.ChallengeModeType == ChallengeModeType.ChallengeMode)
+            {
+                return;
+            }
+            
             int MushroomCount = BraveRandom.GenerationRandomRange(20, 35);
                         
             List<IntVector2> spawnList = new List<IntVector2>();

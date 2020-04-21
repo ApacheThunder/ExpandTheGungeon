@@ -164,7 +164,12 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             
             return m_CachedInjectionDataList;
         }
-        
+
+        public static ProceduralFlowModifierData RickRollSecretRoomInjector;
+
+        public static SharedInjectionData CustomSecretFloorSharedInjectionData;
+
+
         // Initialize KnownFlows array with custom + official flows.
         public static void InitDungeonFlows(bool refreshFlows = false) {
 
@@ -344,7 +349,41 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             HollowsInjectionData.InjectionData.Add(SecretFloorEntranceInjector);
             HollowsInjectionData.InjectionData.Add(SecretMiniElevatorInjector);
-                        
+
+
+            RickRollSecretRoomInjector = new ProceduralFlowModifierData() {
+                annotation = "RickRoll Secret Room",
+                DEBUG_FORCE_SPAWN = false,
+                OncePerRun = false,
+                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                    ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
+                },
+                roomTable = null,
+                exactRoom = ExpandRoomPrefabs.Expand_RickRollSecret,
+                IsWarpWing = false,
+                RequiresMasteryToken = false,
+                chanceToLock = 0,
+                selectionWeight = 1,
+                chanceToSpawn = 0.25f,
+                RequiredValidPlaceable = null,
+                prerequisites = new DungeonPrerequisite[0],
+                CanBeForcedSecret = true,
+                RandomNodeChildMinDistanceFromEntrance = 1,
+                exactSecondaryRoom = null,
+                framedCombatNodes = 0
+            };
+
+            CustomSecretFloorSharedInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+
+            CustomSecretFloorSharedInjectionData.name = "Rick Roll Secret Room Injection Data";
+            CustomSecretFloorSharedInjectionData.InjectionData = new List<ProceduralFlowModifierData>() { RickRollSecretRoomInjector };
+            CustomSecretFloorSharedInjectionData.UseInvalidWeightAsNoInjection = true;
+            CustomSecretFloorSharedInjectionData.IsNPCCell = false;
+            CustomSecretFloorSharedInjectionData.PreventInjectionOfFailedPrerequisites = false;
+            CustomSecretFloorSharedInjectionData.OnlyOne = false;
+            CustomSecretFloorSharedInjectionData.ChanceToSpawnOne = 1;
+            CustomSecretFloorSharedInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+
             TutorialPrefab = null;
             CastlePrefab = null;
             SewerPrefab = null;

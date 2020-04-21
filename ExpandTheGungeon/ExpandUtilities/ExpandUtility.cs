@@ -25,7 +25,39 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         private static ExpandUtility m_instance;
-        
+
+        public static GameObject SpawnAirDrop(RoomHandler currentRoom, Vector3 landingPosition, GenericLootTable LootTable = null, DungeonPlaceable EnemyPlacable = null, float chanceToExplode = 0, float chanceToSpawnEnemy = 1) {
+            if (!LootTable && !EnemyPlacable) { return null; }
+
+            GameObject eCrateOBJ = BraveResources.Load<GameObject>("EmergencyCrate");
+            if (!eCrateOBJ) { return null; }
+
+            GameObject eCrateInstance = Instantiate(eCrateOBJ);
+            EmergencyCrateController lootCrate = eCrateInstance.GetComponent<EmergencyCrateController>();
+            if (!lootCrate) { return null; }
+            
+            if (LootTable && EnemyPlacable) {
+                lootCrate.EnemyPlaceable = EnemyPlacable;
+                lootCrate.gunTable = LootTable;
+                lootCrate.ChanceToExplode = chanceToExplode;
+                lootCrate.ChanceToSpawnEnemy = chanceToSpawnEnemy;
+            } else if (LootTable) {
+                lootCrate.gunTable = LootTable;
+                lootCrate.ChanceToSpawnEnemy = 0;
+            } else if (EnemyPlacable) {
+                lootCrate.ChanceToSpawnEnemy = chanceToSpawnEnemy;
+                lootCrate.EnemyPlaceable = EnemyPlacable;
+            }
+
+            lootCrate.ChanceToExplode = chanceToExplode;
+
+            // Landing Position is not relative to room position! 
+            // Use a global world psoition value like transform.position or something derived from it!
+            lootCrate.Trigger(new Vector3(-5f, -5f, -5f), (landingPosition + new Vector3(15f, 15f, 15f)), currentRoom, true);
+            currentRoom.ExtantEmergencyCrate = eCrateInstance;
+            return eCrateInstance;
+        }
+
         public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }

@@ -47,34 +47,12 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 loopTargetIsOneWay = true,
                 guidAsString = Guid.NewGuid().ToString()
             };
-
-            ProceduralFlowModifierData RickRollSecretRoomInjector = new ProceduralFlowModifierData() {
-                annotation = "RickRoll Secret Room",
-                DEBUG_FORCE_SPAWN = false,
-                OncePerRun = false,
-                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
-                    ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
-                },
-                roomTable = null,
-                exactRoom = ExpandRoomPrefabs.Expand_RickRollSecret,
-                IsWarpWing = false,
-                RequiresMasteryToken = false,
-                chanceToLock = 0,
-                selectionWeight = 1,
-                chanceToSpawn = 0.25f,
-                RequiredValidPlaceable = null,
-                prerequisites = new DungeonPrerequisite[0],
-                CanBeForcedSecret = true,
-                RandomNodeChildMinDistanceFromEntrance = 0,
-                exactSecondaryRoom = null,
-                framedCombatNodes = 0,
-            };
-
+           
             m_CachedFlow.name = "SecretGlitchFloor_Flow";
             m_CachedFlow.fallbackRoomTable = ExpandPrefabs.CustomRoomTableSecretGlitchFloor;
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
-            m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>() { RickRollSecretRoomInjector };
-            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>(0);
+            m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>();
+            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { CustomSecretFloorSharedInjectionData };
             m_CachedFlow.Initialize();
 
 

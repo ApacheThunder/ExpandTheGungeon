@@ -138,7 +138,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Mutant;
         public static PrototypeDungeonRoom Expand_Oddshroom;
         public static PrototypeDungeonRoom Expand_Pitzag;
-        public static PrototypeDungeonRoom Expand_Secret_Falsechest;
         public static PrototypeDungeonRoom Expand_Shotgun;
         public static PrototypeDungeonRoom Expand_Smallcentral;
 
@@ -158,6 +157,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_GlitchedSecret;
         public static PrototypeDungeonRoom Expand_SecretElevatorEntranceRoom;
         public static PrototypeDungeonRoom Expand_RickRollSecret;
+        public static PrototypeDungeonRoom Expand_Secret_Falsechest;
 
         // Custom Rooms for handling entrance to custom secret floor on Hollows
         public static PrototypeDungeonRoom SecretExitRoom2;
@@ -7493,11 +7493,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Mutant = RoomFactory.BuildFromResource("Expand_Mutant.room");
             Expand_Oddshroom = RoomFactory.BuildFromResource("Expand_Oddshroom.room");
             Expand_Pitzag = RoomFactory.BuildFromResource("Expand_Pitzag.room");
-            Expand_Secret_Falsechest = RoomFactory.BuildFromResource("Expand_Secret_Falsechest.room");
             Expand_Shotgun = RoomFactory.BuildFromResource("Expand_Shotgun.room");
             Expand_Smallcentral = RoomFactory.BuildFromResource("Expand_Smallcentral.room");
 
-
+            Expand_Secret_Falsechest = RoomFactory.BuildFromResource("Expand_Secret_Falsechest.room");
+            Expand_Secret_Falsechest.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+            Expand_Secret_Falsechest.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
 
 
 
@@ -8029,7 +8030,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RickRollChest.placedObjects = new List<PrototypePlacedObjectData>();
             Expand_Apache_RickRollChest.placedObjectPositions = new List<Vector2>();
             Expand_Apache_RickRollChest.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            Expand_Apache_RickRollChest.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_Apache_RickRollChest.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
             Expand_Apache_RickRollChest.overriddenTilesets = GlobalDungeonData.ValidTilesets.FORGEGEON;
             Expand_Apache_RickRollChest.prerequisites = new List<DungeonPrerequisite>();
             Expand_Apache_RickRollChest.InvalidInCoop = false;
@@ -8726,9 +8730,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             WeightedRoom[] CustomSecretRooms = new WeightedRoom[] {
-                GenerateWeightedRoom(Expand_TinySecret, 8),
-                GenerateWeightedRoom(Expand_GlitchedSecret, 1),
-                GenerateWeightedRoom(Expand_RickRollSecret, 1),
+                GenerateWeightedRoom(Expand_TinySecret, 4),
+                GenerateWeightedRoom(Expand_GlitchedSecret, 0.45f),
+                GenerateWeightedRoom(Expand_RickRollSecret, 0.8f),
+                GenerateWeightedRoom(Expand_Secret_Falsechest, 1),
             };
 
             WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };

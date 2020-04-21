@@ -94,14 +94,14 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         public override bool CanBeUsed(PlayerController user) {
-            if (!user || user.InExitCell || user.CurrentRoom == null || NotCurrentlyUsable(user)) { return false; }
+            if (!user || user.InExitCell || user.CurrentRoom == null || CurrentlyInUse) { return false; }
             return base.CanBeUsed(user);
         }
         
-        public bool NotCurrentlyUsable(PlayerController user) {
+        /*public bool NotCurrentlyUsable(PlayerController user) {
             if (CurrentlyInUse) { return true; }
             return false;
-        }
+        }*/
 
         public bool CurrentlyInUse = false;
 
@@ -118,6 +118,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void DoEffect(PlayerController user) {
             AkSoundEngine.PostEvent("Play_EX_CorruptionBombFire_01", user.gameObject);
+            CurrentlyInUse = true;
             CleanUpRoom(user);
             GameManager.Instance.StartCoroutine(HandleSpawnAnimation(user));
         }
@@ -168,8 +169,6 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         private IEnumerator HandleSpawnAnimation(PlayerController user) {
-            CurrentlyInUse = true;
-
             GameObject targetObject = Instantiate(glitchBombSpawnObject, user.CenterPosition, Quaternion.identity);
             yield return null;
             tk2dSpriteAnimator bombAnimator = targetObject.GetComponent<tk2dSpriteAnimator>();
@@ -180,7 +179,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 BraveInput instanceForPlayer = BraveInput.GetInstanceForPlayer(user.PlayerIDX);
                 if (instanceForPlayer) {
-                    if (instanceForPlayer.IsKeyboardAndMouse(false)) {
+                    if (instanceForPlayer.IsKeyboardAndMouse()) {
                         movementDirection = Vector3Extensions.XY(user.unadjustedAimPoint) - targetObject.transform.PositionVector2();
                     } else if (instanceForPlayer.ActiveActions != null) {
                         movementDirection = instanceForPlayer.ActiveActions.Aim.Vector;
@@ -188,7 +187,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     movementDirection.Normalize();
                 }
                 
-                float speedDivider = 18;
+                float speedDivider = 20;
 
                 movementDirection = new Vector3((movementDirection.x / speedDivider), (movementDirection.y / speedDivider));
 
@@ -226,7 +225,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 RoomHandler m_targetRoom = lastPosition.GetAbsoluteRoom();
 
                 if (m_targetRoom == null) {
-                    CurrentlyInUse = false;
+                    GameManager.Instance.StartCoroutine(DelayedUsableTimer(1.5f));
                     yield break;
                 }
                 
@@ -265,7 +264,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 if (m_NewSoundObject) { ExpandStaticReferenceManager.AllCorruptionSoundObjects.Add(m_NewSoundObject); }
 
-                CurrentlyInUse = false;
+                GameManager.Instance.StartCoroutine(DelayedUsableTimer(1.5f));
 
                 float waveRemaining = distortionDuration - BraveTime.DeltaTime;
 
@@ -1069,6 +1068,12 @@ namespace ExpandTheGungeon.ItemAPI {
             
             silencerInstance.TriggerSilencer(center, 50f, overrideRadius, silencerVFX, (!silent) ? 0.15f : 0f, (!silent) ? 0.2f : 0f, (!silent) ? 50 : 0, (!silent) ? 10 : 0, (!silent) ? ((overrideForce < 0f) ? 140f : overrideForce) : 0f, (!breaksObjects) ? 0 : ((!silent) ? 15 : 5), overrideTimeAtMaxRadius, Owner, breaksWalls, false);
             if (Owner) { Owner.DoVibration(Vibration.Time.Quick, Vibration.Strength.Medium); }
+        }
+
+        private IEnumerator DelayedUsableTimer(float delay) {
+            yield return new WaitForSeconds(delay);
+            CurrentlyInUse = false;
+            yield break;
         }
 
         private IEnumerator DelayedEnemyDamage(AIActor targetEnemy, float delay, float DamageAmount, Vector2? DamageDirection = null, CoreDamageTypes DamageType = CoreDamageTypes.None, DamageCategory damageCategory = DamageCategory.Normal, bool ignoreInvulnerablity = false, bool ignoreDamageCap = false ) {
