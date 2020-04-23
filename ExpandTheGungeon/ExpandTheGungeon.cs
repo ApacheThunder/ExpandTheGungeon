@@ -93,8 +93,6 @@ namespace ExpandTheGungeon {
                 ExpandPrefabs.InitCustomPrefabs();
                 // Init Custom Enemy Prefabs
                 ExpandCustomEnemyDatabase.InitPrefabs();
-                // Init AssetBundle references in RoomFactory
-                StaticReferences.Init();
                 // Init Custom Room Prefabs
                 ExpandRoomPrefabs.InitCustomRooms();
                 // Init Custom DungeonFlow(s)
@@ -174,7 +172,8 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("dump_layout", ExpandDumpLayout);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("debug", ExpandDebug);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);            
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -303,8 +302,18 @@ namespace ExpandTheGungeon {
             foreach (string str in itemList) { ETGModConsole.Log("    " + str, false); }
         }
 
+        private void ExpandYouTubeSafeCommand(string[] consoleTest) {
+            if (ExpandStats.youtubeSafeMode) {
+                ETGModConsole.Log("No longer YouTube safe.", false);
+                ExpandStats.youtubeSafeMode = false;
+            } else {
+                ETGModConsole.Log("Now YouTube Safe.", false);
+                ExpandStats.youtubeSafeMode = true;
+            }
+        }
+
         private void ExpandTestCommand(string[] consoleText) {
-            GameObject soundObject = new GameObject("SoundSource");
+            // GameObject soundObject = new GameObject("SoundSource");
             // soundObject.transform.position = GameManager.Instance.BestActivePlayer.transform.position;
             // AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", soundObject);
             //AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);

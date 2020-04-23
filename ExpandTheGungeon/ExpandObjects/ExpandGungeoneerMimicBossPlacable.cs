@@ -317,12 +317,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         
-        public void ConfigureOnPlacement(RoomHandler room) {
-            gameObject.SetActive(true);
-            enabled = true;
-
-            BuildBossPrefab(room);
-        }
+        public void ConfigureOnPlacement(RoomHandler room) { BuildBossPrefab(room); }
 
         protected override void OnDestroy() { base.OnDestroy(); }
 

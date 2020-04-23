@@ -17,17 +17,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static DungeonFlow Bossrush_04_Catacombs;
         public static DungeonFlow Bossrush_05_Forge;
         public static DungeonFlow Bossrush_06_BulletHell;
-
-
+        
         public static DungeonFlow Bossrush_01_Castle_Modded;
         public static DungeonFlow MiniBossrush_01;
-
-        private static PrototypeDungeonRoom gungeon_entrance_modded;
         
         public static void InitBossrushFlows() {
 
             Bossrush_01_Castle_Modded = ScriptableObject.CreateInstance<DungeonFlow>();
             MiniBossrush_01 = ScriptableObject.CreateInstance<DungeonFlow>();
+
+            BossRushCurseShrineNode.overrideExactRoom = ExpandPrefabs.gungeon_entrance_bossrush;
 
             // Dungeon TutorialPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
 
@@ -40,11 +39,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             Bossrush_05_Forge = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_05_Forge"));
             Bossrush_06_BulletHell = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_06_BulletHell"));
 
-            gungeon_entrance_modded = UnityEngine.Object.Instantiate(ExpandPrefabs.sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance"));
-
-            gungeon_entrance_modded.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
-            gungeon_entrance_modded.name = "Bossrush Curse Shrine";
-            gungeon_entrance_modded.associatedMinimapIcon = null;
             
             Bossrush_01_Castle.AllNodes.Clear();
 
@@ -102,7 +96,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             roomCategory = PrototypeDungeonRoom.RoomCategory.CONNECTOR,
             percentChance = 1f,
             priority = DungeonFlowNode.NodePriority.MANDATORY,
-            overrideExactRoom = gungeon_entrance_modded,
+            overrideExactRoom = null,
             overrideRoomTable = null,
             capSubchain = false,
             subchainIdentifier = string.Empty,

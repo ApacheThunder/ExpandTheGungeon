@@ -140,7 +140,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             return lootCrate;
         }*/
 
-        public void ConfigureOnPlacement(RoomHandler room) { m_room = room; enabled = true; }
+        public void ConfigureOnPlacement(RoomHandler room) { m_room = room; /*enabled = true;*/ }
 
         protected override void OnDestroy() { base.OnDestroy(); }
     }

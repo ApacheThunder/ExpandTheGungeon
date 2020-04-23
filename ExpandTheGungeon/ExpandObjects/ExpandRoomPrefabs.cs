@@ -1253,7 +1253,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(0, 13), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(27, 13), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(13, 1), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
+            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             // RoomFromText.AddObjectToRoom(CreepyGlitchRoom, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RoomCorruptionAmbience, useExternalPrefab: true));
             // RoomBuilder.GenerateRoomLayoutFromPNG(CreepyGlitchRoom, "CreepyGlitchRoom_Layout.png");
             RoomBuilder.GenerateRoomLayoutFromPNG(CreepyGlitchRoom, "Creepy_Glitched_Room_Layout.png");
@@ -1345,7 +1345,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), NonEnemyBehaviour: ExpandPrefabs.EXPlayerMimicBoss.GetComponent<ExpandGungeoneerMimicBossPlacable>());
+            RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromPNG(GungeoneerMimicBossRoom, "Creepy_MirrorBoss_Room_Layout.png");
 
             // Castle Custom Rooms
@@ -8119,7 +8119,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretExitRoom2.usesProceduralLighting = true;
             SecretExitRoom2.allowFloorDecoration = false;
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromPNG(SecretExitRoom2, "Secret_Elevator_Exit_Layout.png");
 
@@ -8175,7 +8175,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(2, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor.GetComponent<ExpandSecretDoorPlacable>());
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoor, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromPNG(SecretRatEntranceRoom, "Secret_Rat_MiniElevator_Room_Layout.png");
 
 
@@ -8226,7 +8226,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoor_Normal.GetComponent<ExpandSecretDoorPlacable>());
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoor_Normal, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SecretElevatorEntranceRoom, "Secret_MiniElevator_Room_Layout.png");
 
             // This will share same layout as it's entrance version.
@@ -8555,7 +8555,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_RickRollSecret.placedObjects = new List<PrototypePlacedObjectData>();
             Expand_RickRollSecret.placedObjectPositions = new List<Vector2>();
             Expand_RickRollSecret.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            Expand_RickRollSecret.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_RickRollSecret.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
             Expand_RickRollSecret.overriddenTilesets = 0;
             Expand_RickRollSecret.prerequisites = new List<DungeonPrerequisite>();
             Expand_RickRollSecret.InvalidInCoop = false;
@@ -8695,8 +8698,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(21, 7), DungeonData.Direction.EAST, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 15), DungeonData.Direction.NORTH, ContainsDoor: false);
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomObject.GetComponent<ExpandBootlegRoomPlaceable>());
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), NonEnemyBehaviour: ExpandPrefabs.EXBootlegRoomDoorTriggers.GetComponent<ExpandBootlegRoomDoorsPlacables>());
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomDoorTriggers, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
@@ -8711,7 +8714,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
-                GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.5f)
+                GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.4f)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
@@ -8723,7 +8726,9 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(room);
-                ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room);
+                if (room.room != Expand_Apache_RickRollChest) {
+                    ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room);
+                }
                 ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);

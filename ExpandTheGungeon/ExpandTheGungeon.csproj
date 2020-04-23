@@ -112,6 +112,7 @@
     <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
+    <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandBootlegRoomDoorsPlacables.cs" />
     <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
@@ -134,7 +135,6 @@
     <Compile Include="ExpandComponents\ExpandUsableBasicWarp.cs" />
     <Compile Include="ExpandComponents\ExpandZoneControlChallengeComponent.cs" />
     <Compile Include="ExpandMain\ExpandPlaceCorruptTiles.cs" />
-    <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="ItemAPI\FakePrefab.cs" />
     <Compile Include="ItemAPI\FakePrefabHooks.cs" />
@@ -921,6 +921,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\TrapRooms\Expand_Apache_RickRollChestRoom_Layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_001.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_002.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_002_reverse.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_003.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_004.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_activate_005.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_idle_off_001.png" />
+    <EmbeddedResource Include="Textures\RickRoll\music_switch_idle_on_001.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

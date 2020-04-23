@@ -55,6 +55,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom shop02;
         public static PrototypeDungeonRoom fusebombroom01;
         public static PrototypeDungeonRoom elevator_entrance;
+        public static PrototypeDungeonRoom gungeon_entrance;
+        public static PrototypeDungeonRoom gungeon_entrance_bossrush;
         public static PrototypeDungeonRoom elevator_maintenance_room;
         public static PrototypeDungeonRoom test_entrance;
         public static PrototypeDungeonRoom exit_room_basic;
@@ -244,6 +246,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject CorruptedRewardPedestal;
         public static GameObject RickRollChestObject;
         public static GameObject RickRollAnimationObject;
+        public static GameObject RickRollMusicSwitchObject;
 
 
         // Custom Challenge Modifiers
@@ -292,6 +295,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             shop02 = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("shop02");
             fusebombroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("fusebombroom01");
             elevator_entrance = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("elevator entrance");
+            gungeon_entrance = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("Gungeon Entrance");
             elevator_maintenance_room = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("ElevatorMaintenanceRoom");
             test_entrance = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("test entrance");
             exit_room_basic = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("exit_room_basic");
@@ -362,7 +366,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             BulletHellRoomTable = BulletHellDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             boss_foyertable = sharedAssets2.LoadAsset<GenericRoomTable>("Boss Foyers");
 
-            
+            gungeon_entrance_bossrush = Instantiate(gungeon_entrance);
+            gungeon_entrance_bossrush.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
+            gungeon_entrance_bossrush.name = "Bossrush Curse Shrine";
+            gungeon_entrance_bossrush.associatedMinimapIcon = null;
+
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[2].overrideExactRoom),
@@ -1516,6 +1524,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (m_RedChestReference.transform.Find("Shadow").gameObject) {
                 GameObject RickRollChestShadow = Instantiate(m_RedChestReference.transform.Find("Shadow").gameObject);
                 RickRollChestShadow.name = "ChestShadow";
+                RickRollChestShadow.transform.position += new Vector3(0, 0.1f, 0);
                 RickRollChestShadow.transform.parent = RickRollChestObject.transform;
                 
             }
@@ -1624,6 +1633,34 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "RickRoll_28"
             };
 
+            List<string> m_RickRollMusicSwitchFrames = new List<string>() {
+                "music_switch_idle_off_001",
+                "music_switch_activate_001",
+                "music_switch_activate_002",
+                "music_switch_activate_002_reverse",
+                "music_switch_activate_003",
+                "music_switch_activate_004",
+                "music_switch_activate_005"
+            };
+
+            List<string> m_RickRollMusicSwitchTurnOffFrames = new List<string>() {                
+                "music_switch_activate_001",
+                "music_switch_activate_002",
+                "music_switch_activate_003",
+                "music_switch_activate_004",
+                "music_switch_activate_005",
+                "music_switch_idle_off_001"
+            };
+
+            List<string> m_RickRollMusicSwitchTurnOnFrames = new List<string>() {                
+                "music_switch_activate_005",
+                "music_switch_activate_004",
+                "music_switch_activate_003",
+                "music_switch_activate_002_reverse",
+                "music_switch_activate_001",
+                "music_switch_idle_on_001"
+            };
+
             RickRollAnimationObject = new GameObject("Rick Roll Animation") { layer = 22 };
             RickRollAnimationObject.SetActive(false);
             ItemBuilder.AddSpriteToObject(RickRollAnimationObject, (m_RickRollBasePath + "RickRoll_RiseUp_01"), false, true);
@@ -1649,10 +1686,36 @@ namespace ExpandTheGungeon.ExpandObjects {
             RickRollChestComponent.breakAnimName = m_RedChestReference.GetComponent<Chest>().breakAnimName;
             RickRollChestComponent.openAnimName = m_RedChestReference.GetComponent<Chest>().openAnimName;
 
+            RickRollMusicSwitchObject = new GameObject("RickRoll Music Switch") { layer = LayerMask.NameToLayer("FG_Critical") };
+            RickRollMusicSwitchObject.SetActive(false);
+            ItemBuilder.AddSpriteToObject(RickRollMusicSwitchObject, (m_RickRollBasePath + "music_switch_idle_on_001"), false, true);
+            tk2dSprite RickRollSwitchSprite = RickRollMusicSwitchObject.GetComponent<tk2dSprite>();
+            SpriteBuilder.AddSpriteToCollection((m_RickRollBasePath + "music_switch_idle_off_001"), RickRollSwitchSprite.Collection);
+
+            foreach (string spriteName in m_RickRollMusicSwitchFrames) {
+                SpriteBuilder.AddSpriteToCollection((m_RickRollBasePath + spriteName), RickRollSwitchSprite.Collection);
+            }
+
+            ExpandUtility.GenerateSpriteAnimator(RickRollMusicSwitchObject, DefaultClipId: 0);
+            ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), RickRollSwitchSprite.Collection, m_RickRollMusicSwitchTurnOnFrames, "RickRollSwitch_TurnOn", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
+            ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), RickRollSwitchSprite.Collection, m_RickRollMusicSwitchTurnOffFrames, "RickRollSwitch_TurnOff", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
+
+            ExpandRickRollChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandRickRollChest>();
+            RickRollChest_SwitchComponent.isMusicSwitch = true;
+            RickRollChest_SwitchComponent.switchOnAnimName = "RickRollSwitch_TurnOn";
+            RickRollChest_SwitchComponent.switchOffAnimName = "RickRollSwitch_TurnOff";
+            
             DontDestroyOnLoad(RickRollChestObject);
             DontDestroyOnLoad(RickRollAnimationObject);
+            DontDestroyOnLoad(RickRollMusicSwitchObject);
             FakePrefab.MarkAsFakePrefab(RickRollChestObject);
             FakePrefab.MarkAsFakePrefab(RickRollAnimationObject);
+            FakePrefab.MarkAsFakePrefab(RickRollMusicSwitchObject);
+
+            RoomBuilder.AddObjectToRoom(gungeon_entrance, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
+            RoomBuilder.AddObjectToRoom(gungeon_entrance_bossrush, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
+
+
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

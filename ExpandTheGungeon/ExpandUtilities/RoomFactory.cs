@@ -4,28 +4,11 @@ using System.IO;
 using UnityEngine;
 using Dungeonator;
 using FloorType = Dungeonator.CellVisualData.CellFloorType;
+using ExpandTheGungeon.ExpandObjects;
+
 
 namespace ExpandTheGungeon.ExpandUtilities {
-
-    public static class StaticReferences {
-        
-        public static Dictionary<string, AssetBundle> AssetBundles;
-
-        private static string[] m_AssetBundleNames;
-
-        public static void Init() {
-            AssetBundles = new Dictionary<string, AssetBundle>();
-            m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
-            foreach (string assetName in m_AssetBundleNames) {
-                if (ResourceManager.LoadAssetBundle(assetName)) {
-                    AssetBundles.Add(assetName, ResourceManager.LoadAssetBundle(assetName));
-                } else {
-                    Tools.PrintError("Failed to load asset bundle: " + assetName, "FF0000");
-                }
-            }
-        }
-    }
-
+    
     public static class RoomFactory {
 
         public static readonly string dataHeader = "***DATA***";
@@ -40,7 +23,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
         private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
 
-        private static string [] m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
+        // private static string [] m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
 
         public struct RoomData {
             public string category;
@@ -247,19 +230,27 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static GameObject GetGameObjectFromBundles(string assetPath) {
-            foreach (AssetBundle assetBundle in StaticReferences.AssetBundles.Values) {
-                GameObject gameObject = assetBundle.LoadAsset<GameObject>(assetPath);
-                if (gameObject) { return gameObject; }
+            if (ExpandPrefabs.sharedAssets.LoadAsset<GameObject>(assetPath)) {
+                return ExpandPrefabs.sharedAssets.LoadAsset<GameObject>(assetPath);
+            } else if (ExpandPrefabs.sharedAssets2.LoadAsset<GameObject>(assetPath)) {
+                return ExpandPrefabs.sharedAssets2.LoadAsset<GameObject>(assetPath);
+            } else if (ExpandPrefabs.braveResources.LoadAsset<GameObject>(assetPath)) {
+                return ExpandPrefabs.braveResources.LoadAsset<GameObject>(assetPath);
+            } else {
+                return null;
             }
-            return null;
         }
 
-        public static DungeonPlaceable GetPlaceableFromBundles(string assetPath) {            
-            foreach (AssetBundle assetBundle in StaticReferences.AssetBundles.Values) {
-                DungeonPlaceable dungeonPlaceable = assetBundle.LoadAsset<DungeonPlaceable>(assetPath);
-                if (dungeonPlaceable) { return dungeonPlaceable; }
+        public static DungeonPlaceable GetPlaceableFromBundles(string assetPath) {
+            if (ExpandPrefabs.sharedAssets.LoadAsset<DungeonPlaceable>(assetPath)) {
+                return ExpandPrefabs.sharedAssets.LoadAsset<DungeonPlaceable>(assetPath);
+            } else if (ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>(assetPath)) {
+                return ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>(assetPath);
+            } else if (ExpandPrefabs.braveResources.LoadAsset<DungeonPlaceable>(assetPath)) {
+                return ExpandPrefabs.braveResources.LoadAsset<DungeonPlaceable>(assetPath);
+            } else {
+                return null;
             }
-            return null;
         }
         
         public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer) {

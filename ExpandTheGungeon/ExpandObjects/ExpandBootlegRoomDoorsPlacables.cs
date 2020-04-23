@@ -133,9 +133,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         private void LateUpdate() { }
         
         public void ConfigureOnPlacement(RoomHandler room) {
-            gameObject.SetActive(true);
-            enabled = true;
-
             specRigidbody.enabled = true;
             specRigidbody.CollideWithOthers = true;
             specRigidbody.Reinitialize();
@@ -231,8 +228,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public void ConfigureOnPlacement(RoomHandler room) {
-            gameObject.SetActive(true);
-            enabled = true;
             m_ParentRoom = room;
 
             Doors.transform.parent = room.hierarchyParent;
