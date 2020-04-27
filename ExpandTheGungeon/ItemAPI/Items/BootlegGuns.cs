@@ -1,5 +1,7 @@
-﻿using Gungeon;
-using System;
+﻿using System;
+using Gungeon;
+using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -9,12 +11,16 @@ namespace ExpandTheGungeon.ItemAPI {
         public static int BootlegMachinePistolID;
         public static int BootlegShotgunID;
 
+        public static Gun BootlegPistol;
+        public static Gun BootlegMachinePistol;
+        public static Gun BootlegShotgun;
+
         public static void Init() {
            
             Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "BootlegGun");
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
-            pistol.SetLongDescription("It's a counterfeit gun. Luckily it somehow works...");
+            pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             pistol.AddProjectileModuleFrom("Magnum", true, false);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
@@ -27,11 +33,15 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.ammo = 140;
             pistol.SetBaseMaxAmmo(140);
             pistol.quality = ItemQuality.D;
+            pistol.UsesCustomCost = true;
+            pistol.CustomCost = 10;
             pistol.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
 
             pistol.SetupSprite(defaultSprite: "bootleg_pistol_idle_001", fps: 8);
             pistol.SetAnimationFPS(pistol.shootAnimation, 8);
-                       
+            pistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
+            pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
+
             ETGMod.Databases.Items.Add(pistol);
 
             BootlegPistolID = pistol.PickupObjectId;
@@ -40,7 +50,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "BootlegMachinePistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_machine_pistol", "ex:bootleg_machine_pistol");
             machinepistol.SetShortDescription("Of questionable quality...");
-            machinepistol.SetLongDescription("It's a counterfeit machine gun. Luckily it somehow works...");
+            machinepistol.SetLongDescription("It's a counterfeit machine gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             machinepistol.SetupSprite(defaultSprite: "bootleg_machinepistol_idle_001", fps: 8);
             machinepistol.SetAnimationFPS(machinepistol.shootAnimation, 8);
             machinepistol.AddProjectileModuleFrom("Magnum", true, false);
@@ -55,7 +65,12 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.SetBaseMaxAmmo(600);
             machinepistol.quality = ItemQuality.D;
             machinepistol.gunSwitchGroup = "Uzi";
+            machinepistol.UsesCustomCost = true;
+            machinepistol.CustomCost = 15;
             machinepistol.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
+
+            machinepistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
+            machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
 
             ETGMod.Databases.Items.Add(machinepistol);
 
@@ -65,7 +80,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Gun shotgun = ETGMod.Databases.Items.NewGun("Bootleg Shotgun", "BootlegShotgun");
             Game.Items.Rename("outdated_gun_mods:bootleg_shotgun", "ex:bootleg_shotgun");
             shotgun.SetShortDescription("Of questionable quality...");
-            shotgun.SetLongDescription("It's a counterfeit shotgun. Oddly, it looks like a pistol...");
+            shotgun.SetLongDescription("It's a counterfeit shotgun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             shotgun.SetupSprite(defaultSprite: "bootleg_shotgun_idle_001", fps: 8);
             shotgun.SetAnimationFPS(machinepistol.shootAnimation, 8);
             shotgun.AddProjectileModuleFrom("AK-47", true, false);
@@ -80,11 +95,34 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.SetBaseMaxAmmo(150);
             shotgun.quality = ItemQuality.D;
             shotgun.gunSwitchGroup = "Shotgun";
+            shotgun.UsesCustomCost = true;
+            shotgun.CustomCost = 18;
             shotgun.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
+
+            shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
+            shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
 
             ETGMod.Databases.Items.Add(shotgun);
 
             BootlegShotgunID = shotgun.PickupObjectId;
+
+
+            BootlegPistol = pistol;
+            BootlegMachinePistol = machinepistol;
+            BootlegShotgun = shotgun;
+        }
+
+        public static void PostInit() {
+            if (BootlegPistol && BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
+                BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new string[] {
+                    ExpandCustomEnemyDatabase.BootlegBulletManGUID
+                };
+            }
+            if (BootlegMachinePistol && BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
+                BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new string[] {
+                    ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID
+                };
+            }
         }
     }
 }

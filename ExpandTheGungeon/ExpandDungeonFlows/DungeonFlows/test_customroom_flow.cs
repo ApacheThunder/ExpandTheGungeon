@@ -24,7 +24,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode TestSecretRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_GlitchedSecret);
             DungeonFlowNode testConnectorNode01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_CorridorOfDoom);
 
-            DungeonFlowNode RickRollRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_Secret_Falsechest);
+            DungeonFlowNode TestRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.KPMHFAO_Expand_Achievement_Woodsie_Lord);
+            // DungeonFlowNode SecondSecretRoom = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Secret_Expand_logo);
 
             m_CachedFlow.name = "Test_CustomRoom_Flow";
             m_CachedFlow.fallbackRoomTable = null;
@@ -38,10 +39,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(TestRoomNode_01, entranceNode);
             
             m_CachedFlow.AddNodeToFlow(TestRewardNode, TestRoomNode_01);
-            m_CachedFlow.AddNodeToFlow(TestShopNode, TestRoomNode_01);
-            m_CachedFlow.AddNodeToFlow(RickRollRewardNode, TestShopNode);
-
             m_CachedFlow.AddNodeToFlow(TestSecretRoomNode, TestRewardNode);
+
+            m_CachedFlow.AddNodeToFlow(TestShopNode, TestRoomNode_01);
+            // m_CachedFlow.AddNodeToFlow(SecondSecretRoom, TestShopNode);
+            
+            m_CachedFlow.AddNodeToFlow(TestRoomNode_02, TestShopNode);
+            
 
             m_CachedFlow.AddNodeToFlow(testConnectorNode01, TestRoomNode_01);
 

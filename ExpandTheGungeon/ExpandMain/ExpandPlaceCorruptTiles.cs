@@ -11,7 +11,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
     public class ExpandPlaceCorruptTiles : MonoBehaviour {
 
-        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null) {
+        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false) {
 
             bool m_CorruptedSecretRoomsPresent = false;
 
@@ -171,7 +171,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
                         bool isCorruptedSecretRoom = false;
 
-                        if (currentRoom.GetRoomName().ToLower().StartsWith("expand apache corrupted secret")) {
+                        if (currentRoom.GetRoomName().ToLower().StartsWith("expand apache corrupted secret") && !isLeadKeyRoom) {
                             GameObject m_CorruptionMarkerObject = new GameObject("CorruptionAmbienceMarkerObject"){ layer = 0 };
                             m_CorruptionMarkerObject.transform.position = currentRoom.area.Center;
                             m_CorruptionMarkerObject.transform.parent = currentRoom.hierarchyParent;
@@ -179,7 +179,7 @@ namespace ExpandTheGungeon.ExpandMain {
                             isCorruptedSecretRoom = true;
                         }
 
-                        if (m_CorruptedSecretRoomsPresent) {
+                        if (m_CorruptedSecretRoomsPresent | isLeadKeyRoom) {
                             foreach (TalkDoerLite npc in StaticReferenceManager.AllNpcs) {
                                 if (npc.GetAbsoluteParentRoom() != null && npc.GetAbsoluteParentRoom() == currentRoom) {
                                     npc.SpeaksGleepGlorpenese = true;
@@ -249,7 +249,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                         m_GlitchTile.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
                                     }
 
-                                    if (roomHandler != null && !isCorruptedSecretRoom) {
+                                    if (roomHandler != null && !isCorruptedSecretRoom && !isLeadKeyRoom) {
                                         m_GlitchTile.AddComponent<DebrisObject>();
                                         DebrisObject m_GlitchDebris = m_GlitchTile.GetComponent<DebrisObject>();
                                         m_GlitchDebris.angularVelocity = 0;
@@ -299,9 +299,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         }
 
                         int OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(5, 10));
-                        if (roomHandler == null && !isCorruptedSecretRoom && UnityEngine.Random.value <= 0.15f) {
-                            OpenAreaCorruptionIntensity = 0;
-                        }
+
                         if (UnityEngine.Random.value <= 0.2f | isCorruptedSecretRoom) {
                             if (isCorruptedSecretRoom) {
                                 OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(2, 5));
@@ -309,6 +307,10 @@ namespace ExpandTheGungeon.ExpandMain {
                                 OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(3, 6));
                             }
                             
+                        }
+
+                        if ((roomHandler == null && !isCorruptedSecretRoom && UnityEngine.Random.value <= 0.15f) | corruptWallsOnly) {
+                            OpenAreaCorruptionIntensity = 0;
                         }
 
                         if (OpenAreaCorruptionIntensity > 0 && !currentRoom.IsShop && currentRoom.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS) {

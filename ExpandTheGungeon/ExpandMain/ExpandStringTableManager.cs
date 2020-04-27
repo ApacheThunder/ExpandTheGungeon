@@ -2,6 +2,7 @@
 using System.IO;
 using MonoMod;
 using UnityEngine;
+using System;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -40,6 +41,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 return StringTableManager.PostprocessString(m_backupEnemiesTable[key].GetExactString(index));
             }
+        }
+
+        // Allow for custom synergy text
+        public static string GetSynergyString(Func<string, int, string> action, string key, int index = -1) {
+            string text = action(key, index);
+            if (string.IsNullOrEmpty(text)) { text = key; }
+            return text;
         }
 
         private static Dictionary<string, StringTableManager.StringCollection> LoadEnemiesTable(string subDirectory) {

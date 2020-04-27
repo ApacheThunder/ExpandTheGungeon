@@ -16,14 +16,14 @@ namespace ExpandTheGungeon.ExpandMain {
             if (dungeon.IsGlitchDungeon | ExpandTheGungeon.isGlitchFloor | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
 
-            if (Random.value <= 0.8f) { return; }
+            if (Random.value <= 0.85f) { return; }
             
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
             int MaxEnemies = 1;
             int iterations = 0;
 
-            if (Random.value <= 0.3f) { MaxEnemies = 2; }
+            if (Random.value <= 0.1f) { MaxEnemies = 2; }
             
             if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
 
@@ -82,10 +82,10 @@ namespace ExpandTheGungeon.ExpandMain {
                         if (!string.IsNullOrEmpty(actor.ActorName)) {
                             if (actor.ActorName == "Junk Raccoon") {
                                 actor.AdditionalSafeItemDrops.Add(PickupObjectDatabase.GetById(127));
-                                if (Random.value <= 0.7f) {
+                                if (Random.value <= 0.2f) {
                                     actor.AdditionalSafeItemDrops.Add(PickupObjectDatabase.GetById(127));
                                 } else {
-                                    if (Random.value <= 0.25f) {
+                                    if (Random.value <= 0.1f) {
                                         actor.AdditionalSafeItemDrops.Add(PickupObjectDatabase.GetById(74));
                                     } else {
                                         actor.AdditionalSafeItemDrops.Add(PickupObjectDatabase.GetById(85));

@@ -83,6 +83,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private static GameObject hammerSpawnFX;
 
         public static string CompanionGuid;
+        public static int HammerPickupID;
 
         public static void Init() {
             
@@ -110,6 +111,9 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths, "HammerSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
             ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths_reversed, "HammerReturnSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
             DontDestroyOnLoad(hammerSpawnFX);
+
+            HammerPickupID = babyGoodHammer.PickupObjectId;
+
         }
         
 

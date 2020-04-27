@@ -45,17 +45,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
 
-        public static PrototypeDungeonRoom BuildFromResource(string roomPath) {
+        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false) {
             string RoomPath = (TextureBasePath + roomPath);
             Texture2D texture = ResourceExtractor.GetTextureFromResource(RoomPath);
             RoomData roomData = ExtractRoomDataFromResource(RoomPath);
-            return Build(texture, roomData);
+            return Build(texture, roomData, setRoomCategory, autoAssignToFloor, roomData.weight);
         }
 
-        public static PrototypeDungeonRoom Build(Texture2D texture, RoomData roomData) {
+        public static PrototypeDungeonRoom Build(Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, float? Weight) {
             try {
                 PrototypeDungeonRoom room = CreateRoomFromTexture(texture);
-                ApplyRoomData(room, roomData);                
+                ApplyRoomData(room, roomData, SetRoomCategory, AutoAssignToFloor, Weight);
                 room.OnBeforeSerialize();
                 room.OnAfterDeserialize();
                 room.UpdatePrecalculatedData();
@@ -67,7 +67,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return CreateEmptyRoom(12, 12);
         }
 
-        public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData) {
+        public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, float? Weight) {
             // Tools.Print("Building Exits...");
             if (roomData.exitPositions != null) {
                 for (int i = 0; i < roomData.exitPositions.Length; i++) {
@@ -95,40 +95,75 @@ namespace ExpandTheGungeon.ExpandUtilities {
 				}
             }
 
-
-            // Not currently using this field in this mod. (rooms are manually assigned to floor's room tables currently)
-            /*if (roomData.floors != null) {
-                foreach (string floor in roomData.floors) {
-                    room.prerequisites.Add(new DungeonPrerequisite {
-                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
-                        requiredTileset = GetTileSet(floor)
-                    });
+            if (setRoomCategory | autoAssignToFloor) {
+                // Set categories
+                if (!string.IsNullOrEmpty(roomData.category)) { room.category = GetRoomCategory(roomData.category); }
+                if (!string.IsNullOrEmpty(roomData.normalSubCategory)) { room.subCategoryNormal = GetRoomNormalSubCategory(roomData.normalSubCategory); }
+                if (!string.IsNullOrEmpty(roomData.bossSubCategory)) { room.subCategoryBoss = GetRoomBossSubCategory(roomData.bossSubCategory); }
+                if (!string.IsNullOrEmpty(roomData.specialSubCategory)) { room.subCategorySpecial = GetRoomSpecialSubCategory(roomData.specialSubCategory); }
+            }
+            if (autoAssignToFloor && roomData.floors != null) {
+                if (!Weight.HasValue) {
+                    if (room.category == PrototypeDungeonRoom.RoomCategory.SECRET) {
+                        Weight = 15; // Normal secret rooms have weight of 15.
+                    } else {
+                        Weight = 1;
+                    }
+                }
+                if (room.category == PrototypeDungeonRoom.RoomCategory.SECRET) {
+                    // Secret rooms are generally shared across all floors via a specific room table.
+                    // Room Editor doesn't currently set this for secret rooms
+                    room.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
+                    ExpandPrefabs.SecretRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));
+                } else {
+                    foreach (string floor in roomData.floors) { AssignRoomToFloorRoomTable(room, GetTileSet(floor), Weight); }
+                    ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));
+                    ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));
+                    ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));
                 }
             }
-
-
-            // Set categories // Currently not used for this mod.
-            if (!string.IsNullOrEmpty(roomData.category)) { room.category = GetRoomCategory(roomData.category); }
-            if (!string.IsNullOrEmpty(roomData.normalSubCategory)) { room.subCategoryNormal = GetRoomNormalSubCategory(roomData.normalSubCategory); }
-            if (!string.IsNullOrEmpty(roomData.bossSubCategory)) { room.subCategoryBoss = GetRoomBossSubCategory(roomData.bossSubCategory); }
-            if (!string.IsNullOrEmpty(roomData.specialSubCategory)) { room.subCategorySpecial = GetRoomSpecialSubCategory(roomData.specialSubCategory); }*/
         }
 
-         /*public static GlobalDungeonData.ValidTilesets GetTileSet(string val) {
-             return (GlobalDungeonData.ValidTilesets)Enum.Parse(typeof(GlobalDungeonData.ValidTilesets), val.ToUpper());
-         }
-         public static PrototypeDungeonRoom.RoomCategory GetRoomCategory(string val) {
-             return (PrototypeDungeonRoom.RoomCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomCategory), val.ToUpper());
-         }
-         public static PrototypeDungeonRoom.RoomNormalSubCategory GetRoomNormalSubCategory(string val) {
-             return (PrototypeDungeonRoom.RoomNormalSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomNormalSubCategory), val.ToUpper());
-         }
-         public static PrototypeDungeonRoom.RoomBossSubCategory GetRoomBossSubCategory(string val) {
-             return (PrototypeDungeonRoom.RoomBossSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomBossSubCategory), val.ToUpper());
-         }
-         public static PrototypeDungeonRoom.RoomSpecialSubCategory GetRoomSpecialSubCategory(string val) {
-             return (PrototypeDungeonRoom.RoomSpecialSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomSpecialSubCategory), val.ToUpper());
-         }*/
+        public static void AssignRoomToFloorRoomTable(PrototypeDungeonRoom Room, GlobalDungeonData.ValidTilesets targetTileSet, float? Weight) {
+            if (targetTileSet == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
+                ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.SEWERGEON) {
+                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.GUNGEON) {
+                ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
+                ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.MINEGEON) {
+                ExpandPrefabs.MinesRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
+                ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
+                // R&G floor doesn't use room tables yet. If a room has this set, I'll assign to all floors instead.
+                return;
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.FORGEGEON) {
+                ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            } else if (targetTileSet == GlobalDungeonData.ValidTilesets.HELLGEON) {
+                ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(Room, Weight.Value));
+            }
+            return;
+        }
+
+
+        public static GlobalDungeonData.ValidTilesets GetTileSet(string val) {
+            return (GlobalDungeonData.ValidTilesets)Enum.Parse(typeof(GlobalDungeonData.ValidTilesets), val.ToUpper());
+        }
+        public static PrototypeDungeonRoom.RoomCategory GetRoomCategory(string val) {
+            return (PrototypeDungeonRoom.RoomCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomCategory), val.ToUpper());
+        }
+        public static PrototypeDungeonRoom.RoomNormalSubCategory GetRoomNormalSubCategory(string val) {
+            return (PrototypeDungeonRoom.RoomNormalSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomNormalSubCategory), val.ToUpper());
+        }
+        public static PrototypeDungeonRoom.RoomBossSubCategory GetRoomBossSubCategory(string val) {
+            return (PrototypeDungeonRoom.RoomBossSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomBossSubCategory), val.ToUpper());
+        }
+        public static PrototypeDungeonRoom.RoomSpecialSubCategory GetRoomSpecialSubCategory(string val) {
+            return (PrototypeDungeonRoom.RoomSpecialSubCategory)Enum.Parse(typeof(PrototypeDungeonRoom.RoomSpecialSubCategory), val.ToUpper());
+        }
 
         public static RoomData ExtractRoomDataFromFile(string path) {
             string data = ResourceExtractor.BytesToString(File.ReadAllBytes(path));

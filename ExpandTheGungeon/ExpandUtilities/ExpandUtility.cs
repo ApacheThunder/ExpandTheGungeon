@@ -26,6 +26,30 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         private static ExpandUtility m_instance;
 
+        public static GameObject SpawnCustomBowlerNote(GameObject note, Vector2 position, RoomHandler parentRoom, string customText, bool doPoof = false) {
+            GameObject noteObject = Instantiate(note, position.ToVector3ZisY(0f), Quaternion.identity);
+            if (noteObject) {
+                NoteDoer BowlerNote = noteObject.GetComponentInChildren<NoteDoer>();
+                if (BowlerNote) {
+                    if (BowlerNote) {
+                        BowlerNote.alreadyLocalized = true;
+                        BowlerNote.stringKey = customText;
+                        BowlerNote.RegenerateCache();
+                    }
+                }
+                IPlayerInteractable[] interfacesInChildren = noteObject.GetInterfacesInChildren<IPlayerInteractable>();
+                for (int i = 0; i < interfacesInChildren.Length; i++) { parentRoom.RegisterInteractable(interfacesInChildren[i]); }
+            }
+            if (doPoof) {
+                GameObject vfxObject = (GameObject)Instantiate(ResourceCache.Acquire("Global VFX/VFX_Item_Spawn_Poof"));
+                tk2dBaseSprite component = vfxObject.GetComponent<tk2dBaseSprite>();
+                component.PlaceAtPositionByAnchor(position.ToVector3ZUp(0f) + new Vector3(0.5f, 0.75f, 0f), tk2dBaseSprite.Anchor.MiddleCenter);
+                component.HeightOffGround = 5f;
+                component.UpdateZDepth();
+            }
+            return noteObject;
+        }
+
         public static GameObject SpawnAirDrop(RoomHandler currentRoom, Vector3 landingPosition, GenericLootTable LootTable = null, DungeonPlaceable EnemyPlacable = null, float chanceToExplode = 0, float chanceToSpawnEnemy = 1) {
             if (!LootTable && !EnemyPlacable) { return null; }
 

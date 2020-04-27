@@ -90,7 +90,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (m_MajorBreakable) { m_MajorBreakable.TemporarilyInvulnerable = true; }
             if (sprite) { sprite.HeightOffGround = -2f; sprite.UpdateZDepth(); }
 
-            GameManager.Instance.StartCoroutine(SpwanEnemyAirDrop());
+            if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) { GameManager.Instance.StartCoroutine(SpwanEnemyAirDrop()); }
 
             tk2dSpriteAnimator m_RickRollAnimator = m_RickRollInstance.GetComponent<tk2dSpriteAnimator>();
             m_RickRollAnimator.Play("RickRollAnimation_Rise");
@@ -217,14 +217,20 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void ConfigureOnPlacement(RoomHandler room) {
             m_room = room;
+            
             if (!isMusicSwitch) { 
                 if (UnityEngine.Random.value <= 0.01f) {
                     Vector3 SpawnPosition = (transform.position + new Vector3(0.5f, 0, 0));
                     GameObject RealRainbowChestObject = Instantiate(GameManager.Instance.RewardManager.Rainbow_Chest.gameObject, SpawnPosition, Quaternion.identity);
                     if (RealRainbowChestObject && RealRainbowChestObject.GetComponent<Chest>()) {
-                        Chest RealRainbowChest = RealRainbowChestObject.GetComponent<Chest>();
+                        Chest RealRainbowChest = RealRainbowChestObject.GetComponent<Chest>();                        
                         RealRainbowChest.ConfigureOnPlacement(m_room);
                         m_room.RegisterInteractable(RealRainbowChest);
+                        ExpandRickRollSpawnNote NoteSpawner = RealRainbowChest.gameObject.AddComponent<ExpandRickRollSpawnNote>();
+                        NoteSpawner.ParentRoom = m_room;
+                        NoteSpawner.CachedSpawnLocation = (transform.position - new Vector3(0, 1.5f, 0));
+                        NoteSpawner.CachedSpawnLocation += new Vector3(1, 0, 0);
+                        NoteSpawner.Configured = true;
                         Destroy(gameObject);
                         return;
                     }
@@ -343,6 +349,33 @@ namespace ExpandTheGungeon.ExpandComponents {
                 AkSoundEngine.PostEvent("Stop_EX_RickRollMusic_01", gameObject);
             }
         }
+    }
+
+    public class ExpandRickRollSpawnNote : BraveBehaviour {
+
+        public ExpandRickRollSpawnNote() { Configured = false; }
+        
+        public bool Configured;
+        public RoomHandler ParentRoom;
+        public Vector3 CachedSpawnLocation;
+
+        private void Start() { }
+        private void Update() {
+            if (Configured) {
+                MajorBreakable m_Breakable = majorBreakable;
+                if (m_Breakable) { m_Breakable.OnBreak += OnBrokenInSadness; }
+                Configured = false;
+            }
+        }
+
+        private void OnBrokenInSadness() {
+            string CustomText = "{wb}Never gonna give you up!{w}\r\nYou did give up a real rainbow chest this time though.\r\n{wb}-Apache Thunder{w}";
+            ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, CachedSpawnLocation, ParentRoom, CustomText, true);
+            return;
+        }
+        
+        protected override void OnDestroy() { base.OnDestroy(); }
+
     }
 }
 

@@ -204,6 +204,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(PunchoutController)
             );
 
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing StringTableManager.GetSynergyString Hook...."); }
+            Hook GetSynergyStringHook = new Hook(
+                typeof(StringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public), 
+                typeof(ExpandStringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public)
+            );
+
             return;
         }
 
@@ -828,7 +834,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
             if (!GameStatsManager.Instance.IsRainbowRun) { orig(self); return; }
-
+            
             if (ReflectionHelpers.ReflectGetField<bool>(typeof(PunchoutController), "m_isInitialized", self)) {
                 Minimap.Instance.TemporarilyPreventMinimap = false;
                 GameUIRoot.Instance.ShowCoreUI("punchout");
@@ -899,7 +905,11 @@ namespace ExpandTheGungeon.ExpandMain {
                             LootEngine.SpawnItem(gameObject2, (a + new Vector2(11f, 0f).Rotate(degrees)), Vector2.zero, 0f, true, false, false);
                         } else {
                             if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
-                                LootEngine.SpawnBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, false);
+                                string[] CustomText = new string[] {
+                                    "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}",
+                                    "Rats are GROOOOOOSS!\n\n{wb}-Bowler{w}"
+                                };
+                                ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, BraveUtility.RandomElement(CustomText), false);
                             }
                         }
                     }
@@ -911,7 +921,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 self.Reset();                
             }            
         }
-
+        
     }
 }
 

@@ -1,8 +1,8 @@
-﻿using ExpandTheGungeon.ExpandUtilities;
-using Dungeonator;
+﻿using Dungeonator;
 using System;
 using System.Collections;
 using UnityEngine;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 

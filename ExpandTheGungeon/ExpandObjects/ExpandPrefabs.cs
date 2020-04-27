@@ -107,6 +107,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom[] winchesterrooms;
         public static PrototypeDungeonRoom[] minibossrooms;
 
+        // Array of Bonus chest rooms
+        public static PrototypeDungeonRoom[] BonusChestRooms;
+
 
         // Room tables
         public static GenericRoomTable castle_challengeshrine_roomtable;
@@ -154,8 +157,17 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericRoomTable MegaMiniBossRoomTable;
         public static GenericRoomTable basic_special_rooms_noBlackMarket;
         public static GenericRoomTable bosstable_01_gatlinggull_custom;
+        public static GenericRoomTable AbbeyAblernRoomTable;
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
+
+
+        // Modified Loot tables
+        public static GenericLootTable Shop_Key_Items_01;
+        public static GenericLootTable BlackSmith_Items_01;
+
+        // Modified Flow Injection Data
+        public static ProceduralFlowModifierData AbbeyFlowModifierData;
 
         // Items
         // public static PickupObject RatKeyItem;
@@ -320,7 +332,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             gungeon_checkerboard = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("gungeon_checkerboard");
             gungeon_normal_fightinaroomwithtonsoftraps = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("gungeon_normal_fightinaroomwithtonsoftraps");
             gungeon_gauntlet_001 = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("gungeon_gauntlet_001");
+
+            BonusChestRooms = new PrototypeDungeonRoom[] {
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_01"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_02"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_03"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_04"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_05"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_06"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_07"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_08"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_09"),
+                sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_10")
+            };
             
+
 
             ResourcefulRat_LongMinecartRoom_01 = RRMinesHiddenTrapDoorController.TargetMinecartRoom;
             ResourcefulRat_FirstSecretRoom_01 = RRMinesHiddenTrapDoorController.FirstSecretRoom;
@@ -371,6 +397,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             gungeon_entrance_bossrush.name = "Bossrush Curse Shrine";
             gungeon_entrance_bossrush.associatedMinimapIcon = null;
 
+            AbbeyFlowModifierData = CathedralDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0];
+            AbbeyAblernRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+
+            AbbeyAblernRoomTable.name = "Alburn Secret Rooms";
+            AbbeyAblernRoomTable.includedRooms = new WeightedRoomCollection();
+            AbbeyAblernRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            AbbeyAblernRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            AbbeyAblernRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(CathedralDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom));
+            AbbeyFlowModifierData.exactRoom = null;
+            AbbeyFlowModifierData.roomTable = AbbeyAblernRoomTable;
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[2].overrideExactRoom),
@@ -384,6 +421,32 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04),
                 ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04_copy)                
             };
+
+            Shop_Key_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Key_Items_01");
+            BlackSmith_Items_01 = (BlacksmithShop.placedObjects[8].nonenemyBehaviour as BaseShopController).shopItemsGroup2;
+
+
+
+            BlackSmith_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = BabyGoodHammer.HammerPickupID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+
+            Shop_Key_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = TheLeadKey.TheLeadKeyPickupID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+            
 
             CastleGungeonMergedTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             CustomRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();

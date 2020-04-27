@@ -56,7 +56,8 @@ namespace ExpandTheGungeon {
                 "Table Tech Assassin",
                 "ex:bloodied_scarf",
                 "Cronenberg Bullets",
-                "Mimiclay"
+                "Mimiclay",
+                "The Lead Key"
             };
             
             AudioResourceLoader.InitAudio();
@@ -98,7 +99,10 @@ namespace ExpandTheGungeon {
                 // Init Custom DungeonFlow(s)
                 ExpandDungeonFlow.InitDungeonFlows();
                 // Init Custom Dungeons Prefabs
-                ExpandCustomDungeonPrefabs.InitCustomDungeons();             
+                ExpandCustomDungeonPrefabs.InitCustomDungeons();
+                // Post Init
+                // Things thta need existing stuff created first have code run here
+                BootlegGuns.PostInit();
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
@@ -146,6 +150,10 @@ namespace ExpandTheGungeon {
                     BootlegGuns.Init();
                     CronenbergBullets.Init();
                     Mimiclay.Init();
+                    TheLeadKey.Init();
+
+                    // Setup Custom Synergies. Do this after all custom items have been Init!;
+                    ExpandSynergies.Init();
                     ItemAPISetup = true;
                 } catch (Exception e2) {
                     Tools.PrintException(e2, "FF0000");
