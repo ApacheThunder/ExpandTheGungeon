@@ -57,7 +57,8 @@ namespace ExpandTheGungeon {
                 "ex:bloodied_scarf",
                 "Cronenberg Bullets",
                 "Mimiclay",
-                "The Lead Key"
+                "The Lead Key",
+                "Table Tech Expand"
             };
             
             AudioResourceLoader.InitAudio();
@@ -151,6 +152,7 @@ namespace ExpandTheGungeon {
                     CronenbergBullets.Init();
                     Mimiclay.Init();
                     TheLeadKey.Init();
+                    TableTechExpand.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();

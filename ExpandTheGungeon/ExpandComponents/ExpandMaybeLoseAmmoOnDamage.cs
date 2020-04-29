@@ -11,7 +11,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public ExpandMaybeLoseAmmoOnDamage() {
             DepleteAmmoOnDamage = true;
-            DepleteAmmoOnDamageOdds = 0.35f;
+            DepleteAmmoOnDamageOdds = 0.25f;
             HasBootlegTransmorgify = true;
             TransfmorgifyTargetGUIDs = new string[0];
         }

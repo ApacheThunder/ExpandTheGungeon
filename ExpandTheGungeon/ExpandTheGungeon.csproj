@@ -144,6 +144,7 @@
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
     <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
+    <Compile Include="ItemAPI\Items\TableTechExpand.cs" />
     <Compile Include="ItemAPI\Items\TheLeadKey.cs" />
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />

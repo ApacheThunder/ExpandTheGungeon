@@ -1200,6 +1200,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
 
             MetalCubeGuy.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
+            MetalCubeGuy.IsHarmlessEnemy = true;
             ExpandExplodeOnDeath metalcubeguyExploder = MetalCubeGuy.healthHaver.gameObject.GetComponent<ExpandExplodeOnDeath>();
             metalcubeguyExploder.deathType = OnDeathBehavior.DeathType.Death;
             ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.behaviorSpeculator.AttackBehaviors[0] as ZeldaChargeBehavior;

@@ -80,12 +80,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_room.SealRoom();
             }
             GameObject m_RickRollInstance = Instantiate(RickRollAnimationObject, (transform.position + new Vector3(0.1f, 0.5f, 0)), Quaternion.identity);
-            int cachedLayer = m_RickRollInstance.layer;
-            // int cachedOutlineLayer = cachedLayer;
-            // cachedOutlineLayer = SpriteOutlineManager.ChangeOutlineLayer(m_RickRollInstance.GetComponent<tk2dSprite>(), LayerMask.NameToLayer("Unpixelated"));
+            Vector3 RickScale = new Vector2(0.2f, 0.2f).ToVector3ZUp(1f);
             m_RickRollInstance.layer = LayerMask.NameToLayer("Unpixelated");
-            m_RickRollInstance.transform.localScale = new Vector2(0.2f, 0.2f).ToVector3ZUp(1f);
-            
+            m_RickRollInstance.transform.localScale = RickScale;
             MajorBreakable m_MajorBreakable = GetComponent<MajorBreakable>();
             if (m_MajorBreakable) { m_MajorBreakable.TemporarilyInvulnerable = true; }
             if (sprite) { sprite.HeightOffGround = -2f; sprite.UpdateZDepth(); }
