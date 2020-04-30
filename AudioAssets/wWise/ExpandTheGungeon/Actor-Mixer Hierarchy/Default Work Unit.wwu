@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}" SchemaVersion="85">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="CorruptionAmbience_01" ID="{160FBE6E-16C7-4024-9314-54A93EA1071C}" ShortID="1003713006">
+					<PropertyList>
+						<Property Name="EnablePanner" Type="bool" Value="True"/>
+						<Property Name="FollowListenerOrientation" Type="bool" Value="False"/>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>10</Value>
+							</ValueList>
+						</Property>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{3ECB1A3F-BB8C-4BF4-B72F-F277DA515F23}" ShortID="862716276">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{3DC7EDD3-D76B-46F4-88E3-769789A4287B}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="CorruptionAmbience" ID="{66339168-E98F-4CA7-B810-794A4AF9C485}" ShortID="440225368">
+							<Language>SFX</Language>
+							<AudioFile>CorruptionAmbience.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{E78079BA-6777-498B-984B-B0A102C32AA9}">
+							<PropertyList>
+								<Property Name="PanX" Type="Real64" Value="4.10782519111308E-15"/>
+								<Property Name="PanY" Type="Real64" Value="2.1094237467878E-15"/>
+							</PropertyList>
+						</Panner>
+						<Position Name="" ID="{D8E268AF-FD68-4E5A-9238-5D2485789626}"/>
+					</PositioningInfo>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{CCF19B8F-5414-466B-863C-D4EBB6C52A57}" ShortID="681712812"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{C83267B5-9C7A-4F86-BB59-355B722CE3B0}" ShortID="610175068"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="CorruptionAmbience" ID="{66339168-E98F-4CA7-B810-794A4AF9C485}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="CorruptionAmbience_02" ID="{1CF253E2-2DDE-4CF1-9A43-2ECEF467533F}" ShortID="734763896">
+					<PropertyList>
+						<Property Name="EnablePanner" Type="bool" Value="True"/>
+						<Property Name="FollowListenerOrientation" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="RenderEffect0" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Spatialization" Type="int16" Value="1"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{4BE0E400-9247-46EC-B00A-CD118649922A}" ShortID="974195274">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{0C28303E-19CF-4A13-9ED8-E753FA33D417}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="ShortRange_Attenuation" ID="{5EAEEAB8-1295-49BE-83D3-D9A92F285779}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="Effect0">
+							<Custom>
+								<Effect Name="Wwise Pitch Shifter (Custom)" ID="{4DC0A363-91CA-425A-85C2-67809AD701A4}" ShortID="380816201" PluginName="Wwise Pitch Shifter" CompanyID="0" PluginID="136" PluginType="3">
+									<PropertyList>
+										<Property Name="Pitch" Type="Real32" Value="-200"/>
+									</PropertyList>
+								</Effect>
+							</Custom>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="CorruptionAmbience" ID="{877FB0DB-12FC-4C8D-A85D-2AC8F78ABB16}" ShortID="719081646">
+							<Language>SFX</Language>
+							<AudioFile>CorruptionAmbience.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{B3F4A765-D4B9-4691-8E52-020CEA96B1EA}">
+							<PropertyList>
+								<Property Name="PanX" Type="Real64" Value="4.10782519111308E-15"/>
+								<Property Name="PanY" Type="Real64" Value="2.1094237467878E-15"/>
+							</PropertyList>
+						</Panner>
+						<Position Name="" ID="{A06176DE-E5F3-4F78-9257-8C5E892F61A6}"/>
+					</PositioningInfo>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{3D4BA889-1B02-400D-BB95-5EA4D62132B7}" ShortID="804137935"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{86B1F55D-FE13-49C3-855D-D1372B04703B}" ShortID="749145719"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="CorruptionAmbience" ID="{877FB0DB-12FC-4C8D-A85D-2AC8F78ABB16}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchBombExplode" ID="{A50D1E38-6825-4F50-AD21-E4D0649F3526}" ShortID="901816561">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{06C65F37-53FE-4C63-930F-F1F14D822EF6}" ShortID="1072234300">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{BAC3ED1A-1DF8-4A58-ADCC-7BD19E00A073}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="NormalRange_Attenuation" ID="{E34E4A3F-97D5-42F6-9EEC-C3E375196CFA}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchBombExplode" ID="{94EDAA40-8B32-464E-A3C9-EFFD76648936}" ShortID="900807623">
+							<Language>SFX</Language>
+							<AudioFile>GlitchBombExplode.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{8F09A084-1E22-4D16-8CD7-273564B42F7D}" ShortID="197669911"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{79652895-C06C-480F-A0D4-62149C264CA8}" ShortID="961099512"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchBombExplode" ID="{94EDAA40-8B32-464E-A3C9-EFFD76648936}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchBombFire" ID="{1CCC5A2A-ACA8-4C31-ADCF-8EB8AC61A3B5}" ShortID="388733364">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{951A3C6A-F6A7-4B79-B7B7-09302F2D8491}" ShortID="41695974">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{C986FFAC-DA51-4CC9-86E4-CC6EDE0F2A18}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchBombFire" ID="{0BD8866F-3166-4AEB-B9C8-EE72695ACBC3}" ShortID="632808090">
+							<Language>SFX</Language>
+							<AudioFile>GlitchBombFire.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{E9102BB3-FFA8-4EA8-8395-B8F4DE9CC382}"/>
+					</PositioningInfo>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{E65E4CA8-5C07-4602-8A6F-C7E021EFB471}" ShortID="1035246838"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{7EB92EC3-DCB0-4AF5-A6F0-8825C099FFD3}" ShortID="209652704"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchBombFire" ID="{0BD8866F-3166-4AEB-B9C8-EE72695ACBC3}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchDestruct" ID="{FA1FCDFF-857F-4DA3-B8F7-95181B45FDBD}" ShortID="872085135">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{5CFE7DCC-FC4D-4470-B58E-D93FEE6D678A}" ShortID="652136639">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{9B2676C7-E702-496D-8283-092F7706D30D}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>-2</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="NormalRange_Attenuation" ID="{E34E4A3F-97D5-42F6-9EEC-C3E375196CFA}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchDestruct" ID="{189099F2-8CD2-4D98-A5DD-B9CA72ECA502}" ShortID="186141995">
+							<Language>SFX</Language>
+							<AudioFile>GlitchDestruct.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{A28BD6A5-9A4D-4BF6-9619-AD48E378A686}" ShortID="439288462"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{B97932FD-3626-4B45-9554-9DFD705AB7CD}" ShortID="1045490985"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchDestruct" ID="{189099F2-8CD2-4D98-A5DD-B9CA72ECA502}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchBombDrop" ID="{A9BD1A7E-7C3F-43AF-A6C6-324C39BD455A}" ShortID="18115301">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{E40361E4-EFFE-451B-B55D-7D61F76D749D}" ShortID="1037686745">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{6675C870-B9E4-44DE-81A1-0F4077531D65}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchBombDrop" ID="{AF6EF5F0-9887-49A2-AFC0-18249B0D8AED}" ShortID="587730353">
+							<Language>SFX</Language>
+							<AudioFile>GlitchBombDrop.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{9745B544-02E6-419F-BBB0-E7FA09B9C842}" ShortID="461439145"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{2D4707C2-322B-4F17-929A-076D575D7AA7}" ShortID="713108760"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchBombDrop" ID="{AF6EF5F0-9887-49A2-AFC0-18249B0D8AED}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchDamage" ID="{30D358B1-014B-4DA8-8A76-59E6AACB33D7}" ShortID="873122740">
+					<PropertyList>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>3</Value>
+							</ValueList>
+						</Property>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{2FE0F14E-41E6-471C-924B-84E58F0D99E4}" ShortID="11229035">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{8F4D0DB9-D61D-48E0-8CE3-4761A9C76309}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>-4</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchDamage" ID="{16DE270E-AA86-4941-91C4-85900F28FFB6}" ShortID="1053740231">
+							<Language>SFX</Language>
+							<AudioFile>GlitchDamage.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{91D0E730-E419-48E5-96B0-EA54D400C02E}" ShortID="977288026"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{B7E27435-BC46-400A-B764-81C55F05C027}" ShortID="760167315"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchDamage" ID="{16DE270E-AA86-4941-91C4-85900F28FFB6}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="GlitchObjectDestroy" ID="{025AA6D1-A5B4-4607-B9AC-153FB6CBDB77}" ShortID="606332437">
+					<PropertyList>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>3</Value>
+							</ValueList>
+						</Property>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{45A7D69D-218E-4CC0-A5EE-3817D715FEB2}" ShortID="943134229">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{07C129DB-2C17-4551-911D-EE333B9DB994}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GlitchObjectDestroy" ID="{CCB24C7A-42F5-4B35-B33D-467DB1CAB817}" ShortID="118216860">
+							<Language>SFX</Language>
+							<AudioFile>GlitchObjectDestroy.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{E62EEE6C-B1AD-4FD1-B650-AF3CF6FC5DA0}" ShortID="223806928"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{C7EBD0B7-67CC-4E30-92C9-001B78A88737}" ShortID="899661701"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="GlitchObjectDestroy" ID="{CCB24C7A-42F5-4B35-B33D-467DB1CAB817}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="TableAssassin" ID="{FBB33E73-D3B9-4D49-BE38-01DF32FCAEC7}" ShortID="964906011">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{10797D28-4FBB-4264-AE66-2FC345B6D776}" ShortID="862896505">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{8918B065-7382-4437-89DC-AD8B8A08B340}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>200</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="TableAssassin" ID="{E1C2A3F1-9966-45FF-9296-5B41E5B4E514}" ShortID="210760446">
+							<Language>SFX</Language>
+							<AudioFile>TableAssassin.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{8B8AA5B6-E33F-4B2C-80C4-98616500754A}" ShortID="728836481"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{99EBC226-51C7-411F-B49C-A4AF1D5B85B0}" ShortID="739083376"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="TableAssassin" ID="{E1C2A3F1-9966-45FF-9296-5B41E5B4E514}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="MushroomAlarm" ID="{93995266-ED06-4E45-AE8E-917A560DB628}" ShortID="992606538">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{4B8431CC-197C-4A75-B3AF-8D189B2AE744}" ShortID="97172303">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{01CB5AB8-2259-4A0A-8EB9-A2430E688093}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="MushroomAlarm" ID="{F2F46EDB-ABBB-4055-AFC7-7C8AA9CDD24E}" ShortID="15010807">
+							<Language>SFX</Language>
+							<AudioFile>MushroomAlarm.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{32198A08-5BDD-42B1-9E49-9DAB9506F8E8}" ShortID="3512339"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{FF377551-74AA-4854-B79D-D4B6F65ECDED}" ShortID="159123707"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="MushroomAlarm" ID="{F2F46EDB-ABBB-4055-AFC7-7C8AA9CDD24E}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="ElevatorDing" ID="{3B5CF12D-6140-49B3-B448-D37D6F17A435}" ShortID="808459512">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{604A8D9B-1CDA-4C7E-92C2-F7105C4C7804}" ShortID="534260026">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{3F490B9D-7781-4C77-ADD3-8CBD58E17EA5}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="ElevatorDing" ID="{3595FA78-662B-4FB1-89A2-F5E4922DE54E}" ShortID="1035017998">
+							<Language>SFX</Language>
+							<AudioFile>ElevatorDing.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{33490E18-2652-4A51-AACB-9B69DCCDFA5B}" ShortID="223213411"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{559E7958-7B9A-4867-BE40-723768D30228}" ShortID="427881841"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="ElevatorDing" ID="{3595FA78-662B-4FB1-89A2-F5E4922DE54E}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="BootlegGungeonMusic" ID="{B7174CAB-5495-4CEB-9654-91DD5CE2BD23}" ShortID="433948779">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{CB9D83D3-4533-4D88-8349-68FCD0975B07}" ShortID="494320981">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{BE11BB86-F4C1-47CB-A36A-BCC1898E1331}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>8</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="BootlegGungeonMusic" ID="{20884E18-86E0-443D-894C-633271882D92}" ShortID="282880781">
+							<Language>SFX</Language>
+							<AudioFile>BootlegGungeonMusic.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{4CAB2493-ABEF-4C00-80CF-08DAD351F487}" ShortID="24561791"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{FDB72184-97A2-4141-BD7A-F4D4B396E9F0}" ShortID="166451342"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="BootlegGungeonMusic" ID="{20884E18-86E0-443D-894C-633271882D92}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Abomination_Damage" ID="{A0012AFA-2BA1-4A3F-9329-CC003E19CC02}" ShortID="314243544">
+					<PropertyList>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="MaxReachedBehavior" Type="int16" Value="1"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{285B9B1B-7546-42E1-B64C-5FFD7531C38B}" ShortID="279819121">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{268D73DE-C16D-476B-BBC9-D7E3382F3D85}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>6</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Abomination_damage" ID="{966F7299-2CEF-4C40-8753-21DBBD01A5B2}" ShortID="270161796">
+							<Language>SFX</Language>
+							<AudioFile>Abomination_damage.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{BB110494-E6EF-4D3B-9787-E69E2A7F2296}"/>
+					</PositioningInfo>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{36B652D1-BB85-4854-A641-E789F4CDBAE6}" ShortID="1023921693"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{DADA8F93-5D4D-480F-A8A2-B21B7A98E253}" ShortID="112480032"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Abomination_damage" ID="{966F7299-2CEF-4C40-8753-21DBBD01A5B2}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Abomination_Die" ID="{4D3921EE-340B-4D57-8C63-09FDA2C26058}" ShortID="814648231">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{BA306339-B4FC-465C-80D9-78FCD31A2F5B}" ShortID="75954614">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{3AC9C5B7-03D5-4A31-A25C-D506A8F80C38}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>6</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Abomination_Die" ID="{B4F78945-4B9F-440E-A6F3-2A4B42932287}" ShortID="958802487">
+							<Language>SFX</Language>
+							<AudioFile>Abomination_Die.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{FEE7590A-C8D0-4DEA-A72F-783B55E7BC34}" ShortID="294208473"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{87986666-4B2D-4079-AEC3-31A02050CE81}" ShortID="650294839"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Abomination_Die" ID="{B4F78945-4B9F-440E-A6F3-2A4B42932287}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Abomination_Spawn" ID="{70AF5F0F-EA61-48EC-B1AB-CEA78551E13C}" ShortID="971127976">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{B51D9005-F66B-474E-BC10-AC6182913CB4}" ShortID="883198164">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{BE538E43-F5F2-4B39-BA60-43E960945DF7}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>6</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Abomination_Spawn" ID="{69BF7C67-E3F7-433A-B621-BB425909645F}" ShortID="603781093">
+							<Language>SFX</Language>
+							<AudioFile>Abomination_Spawn.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{6BA1A098-5086-4C86-AA4A-B8E8C2C5D540}" ShortID="580483930"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{E8783DD8-3851-4FF8-9A87-03DFE337399F}" ShortID="1020000824"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Abomination_Spawn" ID="{69BF7C67-E3F7-433A-B621-BB425909645F}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="RickRollMusic_01" ID="{A074C885-88A4-4CFD-BB0C-5170FCC11950}" ShortID="1018511151">
+					<PropertyList>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{B9F4D968-E9D1-4B09-8EB6-2F13945374F7}" ShortID="38116018">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{75A40884-B1CA-4859-85B6-AC828328D9BC}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>5</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="RickRolled" ID="{3834B387-2B2B-4EE6-AD30-D79394CC245B}" ShortID="908035244">
+							<Language>SFX</Language>
+							<AudioFile>RickRolled.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{053DD6D2-8D5B-45B8-A2D4-6A669740813C}" ShortID="1058334238"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{5F1BD792-D8D1-4564-956C-96D8C18847EC}" ShortID="497818084"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="RickRolled" ID="{3834B387-2B2B-4EE6-AD30-D79394CC245B}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

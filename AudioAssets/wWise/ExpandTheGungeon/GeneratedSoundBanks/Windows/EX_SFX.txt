@@ -1,0 +1,58 @@
+Event	ID	Name			Wwise Object Path	Notes
+	26753908	Play_EX_CorruptionAmbience_02			\Weapons\Play_EX_CorruptionAmbience_02	
+	26753911	Play_EX_CorruptionAmbience_01			\Weapons\Play_EX_CorruptionAmbience_01	
+	184349599	Play_EX_CorruptionBombFire_01			\Weapons\Play_EX_CorruptionBombFire_01	
+	301805658	Stop_EXAlarmMushroom_01			\Weapons\Stop_EXAlarmMushroom_01	
+	352490979	Play_EX_CorruptionBombPickup_01			\Weapons\Play_EX_CorruptionBombPickup_01	
+	587415615	Play_EX_TableAssassin_01			\Weapons\Play_EX_TableAssassin_01	
+	633823961	Stop_EX_TableAssassin_01			\Weapons\Stop_EX_TableAssassin_01	
+	797577896	Play_EX_CorruptedObjectDamage_01			\Weapons\Play_EX_CorruptedObjectDamage_01	
+	1290858200	Play_EX_CorruptionBombExplode_01			\Weapons\Play_EX_CorruptionBombExplode_01	
+	1687291301	Play_EX_ElevatorBell_01			\Weapons\Play_EX_ElevatorBell_01	
+	2039091240	Play_EX_CorruptedObjectDestroyed_01			\Weapons\Play_EX_CorruptedObjectDestroyed_01	
+	2063256460	Play_EXAlarmMushroom_01			\Weapons\Play_EXAlarmMushroom_01	
+	2148880510	Stop_EX_CorruptedObjectDamage_01			\Weapons\Stop_EX_CorruptedObjectDamage_01	
+	2184586371	Play_EX_Cronenberg_Spawn_01			\Weapons\Play_EX_Cronenberg_Spawn_01	
+	2223469189	Play_EX_RickRollMusic_01			\Weapons\Play_EX_RickRollMusic_01	
+	2228256165	Play_EX_MUS_BootlegMusic_01			\Weapons\Play_EX_MUS_BootlegMusic_01	
+	2264533643	Stop_EX_MUS_BootlegMusic_01			\Weapons\Stop_EX_MUS_BootlegMusic_01	
+	2420965190	Play_EX_Cronenberg_Die_01			\Weapons\Play_EX_Cronenberg_Die_01	
+	2623135779	Stop_EX_SFX_All			\Weapons\Stop_EX_SFX_All	
+	3112632927	Play_EX_CorruptedObjectTransform_01			\Weapons\Play_EX_CorruptedObjectTransform_01	
+	3333407891	Stop_EX_RickRollMusic_01			\Weapons\Stop_EX_RickRollMusic_01	
+	3492306034	Stop_EX_CorruptedObjectDestroyed_01			\Weapons\Stop_EX_CorruptedObjectDestroyed_01	
+	3570814999	Stop_EX_MUS_All			\Weapons\Stop_EX_MUS_All	
+	3586982857	Stop_EX_CorruptionAmbience_01			\Weapons\Stop_EX_CorruptionAmbience_01	
+	3586982858	Stop_EX_CorruptionAmbience_02			\Weapons\Stop_EX_CorruptionAmbience_02	
+	3971937637	Play_EX_Cronenberg_Damage_01			\Weapons\Play_EX_Cronenberg_Damage_01	
+
+State Group	ID	Name			Wwise Object Path	Notes
+	3092587493	Pause			\Default Work Unit\Pause	
+
+State	ID	Name	State Group			Notes
+	0	None	Pause			
+	319258907	Paused	Pause			
+	1365518790	Unpaused	Pause			
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	2714767868	VOL_MUS			\Default Work Unit\VOL_MUS	
+	3273357900	VOL_SFX			\Default Work Unit\VOL_SFX	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	15010807	MushroomAlarm	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\MushroomAlarm_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\MushroomAlarm		345064
+	118216860	GlitchObjectDestroy	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchObjectDestroy_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchObjectDestroy		135204
+	186141995	GlitchDestruct	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchDestruct_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchDestruct		119684
+	210760446	TableAssassin	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\TableAssassin_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\TableAssassin		242060
+	270161796	Abomination_Damage	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\Abomination_damage_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Damage		63204
+	282880781	BootlegGungeonMusic	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\BootlegGungeonMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\BootlegGungeonMusic		1462202
+	440225368	CorruptionAmbience_01	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_01		243240
+	587730353	GlitchBombDrop	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombDrop_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombDrop		82862
+	603781093	Abomination_Spawn	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\Abomination_Spawn_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Spawn		112316
+	632808090	GlitchBombFire	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombFire_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombFire		228896
+	719081646	CorruptionAmbience_02	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_02		254016
+	900807623	GlitchBombExplode	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombExplode_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombExplode		417356
+	908035244	RickRollMusic_01	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\RickRolled_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\RickRollMusic_01		111817
+	958802487	Abomination_Die	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\Abomination_Die_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Die		131652
+	1035017998	ElevatorDing	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\ElevatorDing_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\ElevatorDing		197188
+	1053740231	GlitchDamage	C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\SFX\GlitchDamage_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchDamage		53992
+

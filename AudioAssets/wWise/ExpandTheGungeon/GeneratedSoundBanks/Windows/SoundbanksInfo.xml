@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="128">
+	<RootPaths>
+		<ProjectRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3825169110" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\EX_SFX</ObjectPath>
+			<ShortName>EX_SFX</ShortName>
+			<Path>EX_SFX.bnk</Path>
+			<IncludedEvents>
+				<Event Id="797577896" Name="Play_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDamage_01"/>
+				<Event Id="2039091240" Name="Play_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDestroyed_01"/>
+				<Event Id="3112632927" Name="Play_EX_CorruptedObjectTransform_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectTransform_01"/>
+				<Event Id="26753911" Name="Play_EX_CorruptionAmbience_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionAmbience_01"/>
+				<Event Id="26753908" Name="Play_EX_CorruptionAmbience_02" ObjectPath="\Events\Weapons\Play_EX_CorruptionAmbience_02"/>
+				<Event Id="1290858200" Name="Play_EX_CorruptionBombExplode_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombExplode_01"/>
+				<Event Id="184349599" Name="Play_EX_CorruptionBombFire_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombFire_01"/>
+				<Event Id="352490979" Name="Play_EX_CorruptionBombPickup_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombPickup_01"/>
+				<Event Id="3971937637" Name="Play_EX_Cronenberg_Damage_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Damage_01"/>
+				<Event Id="2420965190" Name="Play_EX_Cronenberg_Die_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Die_01"/>
+				<Event Id="2184586371" Name="Play_EX_Cronenberg_Spawn_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Spawn_01"/>
+				<Event Id="1687291301" Name="Play_EX_ElevatorBell_01" ObjectPath="\Events\Weapons\Play_EX_ElevatorBell_01"/>
+				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
+				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
+				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
+				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
+				<Event Id="2148880510" Name="Stop_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDamage_01"/>
+				<Event Id="3492306034" Name="Stop_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDestroyed_01"/>
+				<Event Id="3586982857" Name="Stop_EX_CorruptionAmbience_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_01"/>
+				<Event Id="3586982858" Name="Stop_EX_CorruptionAmbience_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_02"/>
+				<Event Id="3570814999" Name="Stop_EX_MUS_All" ObjectPath="\Events\Weapons\Stop_EX_MUS_All"/>
+				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
+				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
+				<Event Id="2623135779" Name="Stop_EX_SFX_All" ObjectPath="\Events\Weapons\Stop_EX_SFX_All"/>
+				<Event Id="633823961" Name="Stop_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Stop_EX_TableAssassin_01"/>
+				<Event Id="301805658" Name="Stop_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Stop_EXAlarmMushroom_01"/>
+			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="15010807" Language="SFX">
+					<ShortName>MushroomAlarm.wav</ShortName>
+					<Path>SFX\MushroomAlarm_255C9D35.wem</Path>
+				</File>
+				<File Id="118216860" Language="SFX">
+					<ShortName>GlitchObjectDestroy.wav</ShortName>
+					<Path>SFX\GlitchObjectDestroy_255C9D35.wem</Path>
+				</File>
+				<File Id="186141995" Language="SFX">
+					<ShortName>GlitchDestruct.wav</ShortName>
+					<Path>SFX\GlitchDestruct_255C9D35.wem</Path>
+				</File>
+				<File Id="210760446" Language="SFX">
+					<ShortName>TableAssassin.wav</ShortName>
+					<Path>SFX\TableAssassin_255C9D35.wem</Path>
+				</File>
+				<File Id="270161796" Language="SFX">
+					<ShortName>Abomination_damage.wav</ShortName>
+					<Path>SFX\Abomination_damage_255C9D35.wem</Path>
+				</File>
+				<File Id="282880781" Language="SFX">
+					<ShortName>BootlegGungeonMusic.wav</ShortName>
+					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
+				</File>
+				<File Id="440225368" Language="SFX">
+					<ShortName>CorruptionAmbience.wav</ShortName>
+					<Path>SFX\CorruptionAmbience_22BDB8A3.wem</Path>
+				</File>
+				<File Id="587730353" Language="SFX">
+					<ShortName>GlitchBombDrop.wav</ShortName>
+					<Path>SFX\GlitchBombDrop_255C9D35.wem</Path>
+				</File>
+				<File Id="603781093" Language="SFX">
+					<ShortName>Abomination_Spawn.wav</ShortName>
+					<Path>SFX\Abomination_Spawn_255C9D35.wem</Path>
+				</File>
+				<File Id="632808090" Language="SFX">
+					<ShortName>GlitchBombFire.wav</ShortName>
+					<Path>SFX\GlitchBombFire_255C9D35.wem</Path>
+				</File>
+				<File Id="719081646" Language="SFX">
+					<ShortName>CorruptionAmbience.wav</ShortName>
+					<Path>SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem</Path>
+				</File>
+				<File Id="900807623" Language="SFX">
+					<ShortName>GlitchBombExplode.wav</ShortName>
+					<Path>SFX\GlitchBombExplode_255C9D35.wem</Path>
+				</File>
+				<File Id="908035244" Language="SFX">
+					<ShortName>RickRolled.wav</ShortName>
+					<Path>SFX\RickRolled_AD29F36A.wem</Path>
+				</File>
+				<File Id="958802487" Language="SFX">
+					<ShortName>Abomination_Die.wav</ShortName>
+					<Path>SFX\Abomination_Die_255C9D35.wem</Path>
+				</File>
+				<File Id="1035017998" Language="SFX">
+					<ShortName>ElevatorDing.wav</ShortName>
+					<Path>SFX\ElevatorDing_255C9D35.wem</Path>
+				</File>
+				<File Id="1053740231" Language="SFX">
+					<ShortName>GlitchDamage.wav</ShortName>
+					<Path>SFX\GlitchDamage_255C9D35.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

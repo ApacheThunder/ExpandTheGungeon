@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{D709CCA2-485B-40D8-8E78-EC8894D4D368}" SchemaVersion="85">
+	<Events>
+		<WorkUnit Name="Weapons" ID="{D709CCA2-485B-40D8-8E78-EC8894D4D368}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_EX_CorruptionAmbience_01" ID="{6D020CDE-77E2-42D5-A6F9-229DD37D0D99}">
+					<ChildrenList>
+						<Action Name="" ID="{891589BB-AA40-4C94-A7F7-09A78ED0AD7D}" ShortID="447902715">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CorruptionAmbience_01" ID="{160FBE6E-16C7-4024-9314-54A93EA1071C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptionAmbience_01" ID="{33EFBCE8-5DB2-496D-A225-633D028CF197}">
+					<ChildrenList>
+						<Action Name="" ID="{71BC672C-6385-4939-B724-FA6B7EC6E05F}" ShortID="583418908">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CorruptionAmbience_01" ID="{160FBE6E-16C7-4024-9314-54A93EA1071C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptionAmbience_02" ID="{3675849C-6287-47E5-A08A-957B746A7761}">
+					<ChildrenList>
+						<Action Name="" ID="{8E2204FC-1428-47E8-B34C-D5B7BB410AA5}" ShortID="278933593">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CorruptionAmbience_02" ID="{1CF253E2-2DDE-4CF1-9A43-2ECEF467533F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptionAmbience_02" ID="{5A80E43A-AA02-4C3D-99A5-998DEFAD1C54}">
+					<ChildrenList>
+						<Action Name="" ID="{7445DF11-2204-41B6-8217-D2B313946F48}" ShortID="428764935">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CorruptionAmbience_02" ID="{1CF253E2-2DDE-4CF1-9A43-2ECEF467533F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptionBombFire_01" ID="{6DA3E6A8-DB62-4395-914B-69EA54314ABD}">
+					<ChildrenList>
+						<Action Name="" ID="{611A9BBA-BF2D-46F0-9F17-CF5A131520D2}" ShortID="118028049">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchBombFire" ID="{1CCC5A2A-ACA8-4C31-ADCF-8EB8AC61A3B5}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptionBombExplode_01" ID="{0C0E91DA-9FC3-4B9D-803D-5BCDFC34086C}">
+					<ChildrenList>
+						<Action Name="" ID="{4DAA66BB-9FB6-4BB0-9CB6-F6395EAD9657}" ShortID="873132274">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchBombExplode" ID="{A50D1E38-6825-4F50-AD21-E4D0649F3526}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptedObjectTransform_01" ID="{60642D50-0047-4375-993E-340A001A6860}">
+					<ChildrenList>
+						<Action Name="" ID="{8402530E-BE7F-42CA-89C2-B6CE84AD1198}" ShortID="594798080">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchDestruct" ID="{FA1FCDFF-857F-4DA3-B8F7-95181B45FDBD}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptionBombPickup_01" ID="{24072B63-7A13-4D90-98C6-3AA7C8613B29}">
+					<ChildrenList>
+						<Action Name="" ID="{2CDE49C6-5F6C-45BA-A149-CE39CC330D8F}" ShortID="956240800">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchBombDrop" ID="{A9BD1A7E-7C3F-43AF-A6C6-324C39BD455A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptedObjectDamage_01" ID="{392105D1-CB11-4087-926F-F9AF60AE72C9}">
+					<ChildrenList>
+						<Action Name="" ID="{07CAED6C-723A-4A75-B870-50F563D54BDE}" ShortID="774659952">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchDamage" ID="{30D358B1-014B-4DA8-8A76-59E6AACB33D7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SFX_All" ID="{536D205B-7278-464C-8905-FBEEA148C074}">
+					<ChildrenList>
+						<Action Name="" ID="{071453A5-5ACD-403E-8143-7FD3724238D6}" ShortID="143691484">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="3"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList/>
+							<ChildrenList>
+								<EventActionException Name="" ID="{79BF915F-2299-44DF-8B1B-499C1DA0FEA9}">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BootlegGungeonMusic" ID="{B7174CAB-5495-4CEB-9654-91DD5CE2BD23}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+										</Reference>
+									</ReferenceList>
+								</EventActionException>
+							</ChildrenList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptedObjectDamage_01" ID="{F17FCF76-F1BD-4F24-B3C8-5DE7B3C9A227}">
+					<ChildrenList>
+						<Action Name="" ID="{EDE03941-095E-45B6-AADF-4279360F08DA}" ShortID="970227536">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchDamage" ID="{30D358B1-014B-4DA8-8A76-59E6AACB33D7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptedObjectDestroyed_01" ID="{5346DFD0-FAAC-4CE2-A2A6-88F17214D24F}">
+					<ChildrenList>
+						<Action Name="" ID="{0F07811C-D21E-41A3-B1BB-CB50A822FC97}" ShortID="966668860">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchObjectDestroy" ID="{025AA6D1-A5B4-4607-B9AC-153FB6CBDB77}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptedObjectDestroyed_01" ID="{580ABBC2-3CA9-44A8-B36B-C4FF380A6910}">
+					<ChildrenList>
+						<Action Name="" ID="{17203B01-9794-45E5-8FC9-81588DE26DC5}" ShortID="917296427">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="GlitchObjectDestroy" ID="{025AA6D1-A5B4-4607-B9AC-153FB6CBDB77}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_TableAssassin_01" ID="{6DC59465-00D5-4746-BFDF-0CFA359D8571}">
+					<ChildrenList>
+						<Action Name="" ID="{B41D5F8B-14CC-47CA-8264-28558A177158}" ShortID="743150833">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TableAssassin" ID="{FBB33E73-D3B9-4D49-BE38-01DF32FCAEC7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_TableAssassin_01" ID="{E154A8CD-D74C-4097-83C3-49280EF34012}">
+					<ChildrenList>
+						<Action Name="" ID="{0A1EDE5C-A3B7-49CD-85FA-89BA1CF8B71B}" ShortID="1066250348">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="TableAssassin" ID="{FBB33E73-D3B9-4D49-BE38-01DF32FCAEC7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EXAlarmMushroom_01" ID="{2287D698-6B60-403F-9CB6-2A458B859E5D}">
+					<ChildrenList>
+						<Action Name="" ID="{4DFC323C-E78B-440A-864F-C059F9D69069}" ShortID="611814526">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MushroomAlarm" ID="{93995266-ED06-4E45-AE8E-917A560DB628}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EXAlarmMushroom_01" ID="{89E7D945-C2B4-4897-96F0-17018038F4CF}">
+					<ChildrenList>
+						<Action Name="" ID="{40B8AE4F-F196-4131-BD5F-4303EAE4C64A}" ShortID="298485239">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MushroomAlarm" ID="{93995266-ED06-4E45-AE8E-917A560DB628}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_ElevatorBell_01" ID="{871238FD-CE6A-431D-87D0-86C21BC4ED3D}">
+					<ChildrenList>
+						<Action Name="" ID="{573D29FE-23DF-40F8-B475-D81F7A29C1B6}" ShortID="194662037">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ElevatorDing" ID="{3B5CF12D-6140-49B3-B448-D37D6F17A435}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_BootlegMusic_01" ID="{AAD493D2-D49F-433B-9BCF-FC0CABACA1EC}">
+					<ChildrenList>
+						<Action Name="" ID="{357442A9-6BF7-4009-90DC-5055508E30BA}" ShortID="23703235">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BootlegGungeonMusic" ID="{B7174CAB-5495-4CEB-9654-91DD5CE2BD23}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_BootlegMusic_01" ID="{20ED2B50-ED73-4633-94D2-2142E5D4B245}">
+					<ChildrenList>
+						<Action Name="" ID="{93207545-D0DB-4A46-9AA4-0B530C894047}" ShortID="649236829">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BootlegGungeonMusic" ID="{B7174CAB-5495-4CEB-9654-91DD5CE2BD23}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_All" ID="{B4C45C56-6968-479D-8677-EF6A022C43FF}">
+					<ChildrenList>
+						<Action Name="" ID="{93EF982D-9571-4738-9480-E666ABBA066E}" ShortID="927763525">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BootlegGungeonMusic" ID="{B7174CAB-5495-4CEB-9654-91DD5CE2BD23}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
+					<ChildrenList>
+						<Action Name="" ID="{0E050919-E532-4639-876E-443B748F2C96}" ShortID="767040750">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Abomination_Spawn" ID="{70AF5F0F-EA61-48EC-B1AB-CEA78551E13C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_Cronenberg_Damage_01" ID="{2752F5CE-7715-4AEA-9CC4-B9E2F8927059}">
+					<ChildrenList>
+						<Action Name="" ID="{A37988C3-F9C7-4401-98AA-8822787DC2E1}" ShortID="597020165">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Abomination_Damage" ID="{A0012AFA-2BA1-4A3F-9329-CC003E19CC02}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_Cronenberg_Die_01" ID="{92DA8C59-8DE4-4B6B-A83C-3B51284041B2}">
+					<ChildrenList>
+						<Action Name="" ID="{0E74C9CC-D742-46DC-8AE9-21F4DB6C4FED}" ShortID="232534583">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Abomination_Die" ID="{4D3921EE-340B-4D57-8C63-09FDA2C26058}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_RickRollMusic_01" ID="{D14F4C54-0CCF-40FE-935D-4555D137DCD0}">
+					<ChildrenList>
+						<Action Name="" ID="{32023064-045F-470E-B99C-69A224A31CAF}" ShortID="794239596">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="RickRollMusic_01" ID="{A074C885-88A4-4CFD-BB0C-5170FCC11950}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_RickRollMusic_01" ID="{645C06D3-0891-45BF-8CC3-C6BEFA2F45B7}">
+					<ChildrenList>
+						<Action Name="" ID="{3EC909C4-7302-40AF-A118-2ADF13FD2F4F}" ShortID="755436481">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="RickRollMusic_01" ID="{A074C885-88A4-4CFD-BB0C-5170FCC11950}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

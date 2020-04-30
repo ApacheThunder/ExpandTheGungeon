@@ -217,7 +217,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom B_Expand_demon_onehand;
         public static PrototypeDungeonRoom B_Expand_Achievement_Rage_Mode;
         public static PrototypeDungeonRoom B_Expand_Achievement_Jammed;
-        public static PrototypeDungeonRoom Trap_Expand_Turtlemelon;
+        // public static PrototypeDungeonRoom Trap_Expand_Turtlemelon;
         public static PrototypeDungeonRoom PMO_Expand_Achievement_Demolition_Man;
         public static PrototypeDungeonRoom PMO_Expand_Achievement_Beep;
         public static PrototypeDungeonRoom PMHFOA_Expand_Achievement_Gun_Game;
@@ -7741,7 +7741,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromResource("F_Expand_Achievement_I_Knew_Someone_Would_Do_It.room", true, true);
             F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromResource("F_Expand_Achievement_Advanced_Slayer.room", true, true);
 
-            Trap_Expand_Turtlemelon = RoomFactory.BuildFromResource("Trap_Expand_Turtlemelon.room", true);
+            // Trap_Expand_Turtlemelon = RoomFactory.BuildFromResource("Trap_Expand_Turtlemelon.room", true);
 
             Expand_Apache_FieldOfSaws.name = "Apache Field of Saws";
             Expand_Apache_FieldOfSaws.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8955,7 +8955,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
                 GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.4f),
-                GenerateWeightedRoom(Trap_Expand_Turtlemelon)
+                // GenerateWeightedRoom(Trap_Expand_Turtlemelon)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
