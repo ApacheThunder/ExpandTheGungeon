@@ -6,14 +6,15 @@ using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using System;
 using ExpandTheGungeon.ExpandMain;
-using System.Collections.ObjectModel;
+using Pathfinding;
+using tk2dRuntime.TileMap;
 
 namespace ExpandTheGungeon.ItemAPI {
 
     public class TheLeadKey : PlayerItem {
 
         public static int TheLeadKeyPickupID;
-        
+
         public static void Init() {
             string name = "The Lead Key";
             string resourcePath = "ExpandTheGungeon/Textures/Items/theleadkey";
@@ -50,6 +51,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private bool m_InUse;
         private bool m_IsTeleporting;
+        
 
         private List<PrototypeDungeonRoom> MainRoomlist;
         private List<PrototypeDungeonRoom> RewardRoomList;
@@ -65,14 +67,13 @@ namespace ExpandTheGungeon.ItemAPI {
             }
             if (m_InUse | user.IsInCombat | user.IsInMinecart) { return false; }
             if (user.CurrentRoom != null && user.CurrentRoom.IsSealed) { return false; }
-            // if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
+            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
             return true;
         }
 
         public override bool CanBeUsed(PlayerController user) { return (IsUsableRightNow(user) && base.CanBeUsed(user)); }
 
         protected override void DoEffect(PlayerController user) {
-            // AkSoundEngine.PostEvent("Play_BOSS_bulletbros_anger_01", gameObject);
             m_InUse = true;
             GameManager.Instance.StartCoroutine(TentacleTime(user));
         }
@@ -177,82 +178,98 @@ namespace ExpandTheGungeon.ItemAPI {
                         
             Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            // MainRoomlist
-            // RewardRoomList
-            // NPCRoomList
-            // SecretRoomList
-            // ShrineRoomList
-
-            PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
-
             float RoomSelectionSeed = UnityEngine.Random.value;
+            bool GoingToSecretBoss = false;
 
-            if (RoomSelectionSeed <= 0.1f) {
-                SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
-            } else if (RoomSelectionSeed <= 0.2f) {
-                SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
-            } else if (RoomSelectionSeed <= 0.45f) {
-                List<PrototypeDungeonRoom> m_SpecialRooms = new List<PrototypeDungeonRoom>();
+            if (RoomSelectionSeed <= 0.1f) { GoingToSecretBoss = true; }
 
-                m_SpecialRooms.Add(BraveUtility.RandomElement(NPCRoomList));
-                m_SpecialRooms.Add(BraveUtility.RandomElement(SecretRoomList));
-                m_SpecialRooms.Add(BraveUtility.RandomElement(ShrineRoomList));
+            if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
+                PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
-                SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(m_SpecialRooms);
-            } else {
-                SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(MainRoomlist);
-            }
-                        
-            if (SelectedPrototypeDungeonRoom == null) {
-                /*yield return new WaitForSeconds(0.4f);
-                DoTentacleVFX(user);
-                yield return new WaitForSeconds(0.45f);
-                user.IsVisible = true;
-                user.healthHaver.IsVulnerable = true;
-                user.ClearAllInputOverrides();*/
-                AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                user.healthHaver.IsVulnerable = true;
-                yield break;
-            }
-            
-
-            /*if (SelectedPrototypeDungeonRoom.category == PrototypeDungeonRoom.RoomCategory.SECRET) {
-                SelectedPrototypeDungeonRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
-            }*/
-
-            RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom);
-
-            GlitchRoom.area.PrototypeRoomName = ("Corrupted " + GlitchRoom.GetRoomName());
-
-            ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
-            corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true);
-
-            // Spawn Rainbow chest. This room doesn't spawn NPC it seems.(unless player hasn't unlocked it yet? Not likely. Most would have unlocked this one by now)
-            /*if (GlitchRoom.GetRoomName().ToLower().EndsWith("earlymetashopcell")) {
-                IntVector2 SpecialChestLocation = new IntVector2(10, 14);
-                WeightedGameObject wChestObject = new WeightedGameObject();
-                Chest RainbowChest = GameManager.Instance.RewardManager.Rainbow_Chest;
-                wChestObject.rawGameObject = RainbowChest.gameObject;
-                WeightedGameObjectCollection wChestObjectCollection = new WeightedGameObjectCollection();
-                wChestObjectCollection.Add(wChestObject);
-                Chest PlacableChest = GlitchRoom.SpawnRoomRewardChest(wChestObjectCollection, (SpecialChestLocation + GlitchRoom.area.basePosition));
-            }*/
-
-            
-            // user.EscapeRoom(PlayerController.EscapeSealedRoomStyle.TELEPORTER, true, GlitchRoom);
-            TeleportToRoom(user, GlitchRoom);
-            yield return null;
-            while (m_IsTeleporting) { yield return null; }
-            if (user.transform.position.GetAbsoluteRoom() != null) {
-                if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-                    user.CurrentRoom.CompletelyPreventLeaving = true;
+                if (RoomSelectionSeed <= 0.15f) {
+                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
+                } else if (RoomSelectionSeed <= 0.25f) {
+                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
+                } else if (RoomSelectionSeed <= 0.5f) {
+                    List<PrototypeDungeonRoom> m_SpecialRooms = new List<PrototypeDungeonRoom>();
+                
+                    m_SpecialRooms.Add(BraveUtility.RandomElement(NPCRoomList));
+                    m_SpecialRooms.Add(BraveUtility.RandomElement(SecretRoomList));
+                    m_SpecialRooms.Add(BraveUtility.RandomElement(ShrineRoomList));
+                
+                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(m_SpecialRooms);
+                } else {
+                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(MainRoomlist);
                 }
-            }
-            if (GameManager.Instance.CurrentFloor == 1) {
-                if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
+                            
+                if (SelectedPrototypeDungeonRoom == null) {
+                    AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                    user.healthHaver.IsVulnerable = true;
+                    ClearCooldowns();
+                    yield break;
+                }
+
+                RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom);
+
+                GlitchRoom.area.PrototypeRoomName = ("Corrupted " + GlitchRoom.GetRoomName());
+                
+                if (GlitchRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET && GlitchRoom.IsSecretRoom) {
+                    GlitchRoom.secretRoomManager.OpenDoor();
+                }
+
+                ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
+                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true);
+
+                // Spawn Rainbow chest. This room doesn't spawn NPC it seems.(unless player hasn't unlocked it yet? Not likely. Most would have unlocked this one by now)
+                /*if (GlitchRoom.GetRoomName().ToLower().EndsWith("earlymetashopcell")) {
+                    IntVector2 SpecialChestLocation = new IntVector2(10, 14);
+                    WeightedGameObject wChestObject = new WeightedGameObject();
+                    Chest RainbowChest = GameManager.Instance.RewardManager.Rainbow_Chest;
+                    wChestObject.rawGameObject = RainbowChest.gameObject;
+                    WeightedGameObjectCollection wChestObjectCollection = new WeightedGameObjectCollection();
+                    wChestObjectCollection.Add(wChestObject);
+                    Chest PlacableChest = GlitchRoom.SpawnRoomRewardChest(wChestObjectCollection, (SpecialChestLocation + GlitchRoom.area.basePosition));
+                }*/
+
+                
+                // user.EscapeRoom(PlayerController.EscapeSealedRoomStyle.TELEPORTER, true, GlitchRoom);
+                TeleportToRoom(user, GlitchRoom);
+                yield return null;
+                while (m_IsTeleporting) { yield return null; }
+                if (user.transform.position.GetAbsoluteRoom() != null) {
+                    if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
+                        user.CurrentRoom.CompletelyPreventLeaving = true;
+                    }
+                }
+                if (GameManager.Instance.CurrentFloor == 1) {
+                    if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
+                }
+                corruptedTilePlacer = null;
+            } else {
+                ExpandStats.HasSpawnedSecretBoss = true;
+
+                RoomHandler[] SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
+                yield return null;
+                if (SecretBossRoomCluster == null) {
+                    AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                    user.healthHaver.IsVulnerable = true;
+                    ClearCooldowns();
+                    yield break;
+                }
+
+                ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
+                corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
+                corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
+
+                TeleportToRoom(user, SecretBossRoomCluster[0]);
+                yield return null;
+                while (m_IsTeleporting) { yield return null; }
+                if (GameManager.Instance.CurrentFloor == 1) {
+                    if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
+                }
+                corruptedTilePlacer = null;
             }
             m_InUse = false;
-            corruptedTilePlacer = null;
             yield break;
         }
 
@@ -337,6 +354,188 @@ namespace ExpandTheGungeon.ItemAPI {
             targetPlayer.healthHaver.IsVulnerable = true;
             m_IsTeleporting = false;
             yield break;
+        }
+        
+        private RoomHandler[] GenerateCorruptedBossRoomCluster(Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD) {
+            Dungeon dungeon = GameManager.Instance.Dungeon;
+
+            PrototypeDungeonRoom[] RoomArray = new PrototypeDungeonRoom[] {
+                ExpandRoomPrefabs.CreepyGlitchRoom_Entrance,
+                ExpandRoomPrefabs.CreepyGlitchRoom
+            };
+
+            IntVector2[] basePositions = new IntVector2[] { IntVector2.Zero, new IntVector2(14, 0) };
+            
+                        
+            GameObject tileMapObject = GameObject.Find("TileMap");
+            tk2dTileMap m_tilemap = tileMapObject.GetComponent<tk2dTileMap>();
+
+            if (m_tilemap == null) {
+                if (ExpandStats.debugMode) { ETGModConsole.Log("ERROR: TileMap object is null! Something seriously went wrong!"); }
+                return null;
+            }
+
+            TK2DDungeonAssembler assembler = new TK2DDungeonAssembler();
+            assembler.Initialize(dungeon.tileIndices);
+
+            if (RoomArray.Length != basePositions.Length) {
+                Debug.LogError("Attempting to add a malformed room cluster at runtime!");
+                return null;
+            }
+
+            RoomHandler[] RoomClusterArray = new RoomHandler[RoomArray.Length];
+            int num = 6;
+            int num2 = 3;
+            IntVector2 intVector = new IntVector2(int.MaxValue, int.MaxValue);
+            IntVector2 intVector2 = new IntVector2(int.MinValue, int.MinValue);
+            for (int i = 0; i < RoomArray.Length; i++) {
+                intVector = IntVector2.Min(intVector, basePositions[i]);
+                intVector2 = IntVector2.Max(intVector2, basePositions[i] + new IntVector2(RoomArray[i].Width, RoomArray[i].Height));
+            }
+            IntVector2 a = intVector2 - intVector;
+            IntVector2 b = IntVector2.Min(IntVector2.Zero, -1 * intVector);
+            a += b;
+            IntVector2 intVector3 = new IntVector2(dungeon.data.Width + num, num);
+            int newWidth = dungeon.data.Width + num * 2 + a.x;
+            int newHeight = Mathf.Max(dungeon.data.Height, a.y + num * 2);
+            CellData[][] array = BraveUtility.MultidimensionalArrayResize(dungeon.data.cellData, dungeon.data.Width, dungeon.data.Height, newWidth, newHeight);
+            dungeon.data.cellData = array;
+            dungeon.data.ClearCachedCellData();
+            for (int j = 0; j < RoomArray.Length; j++) {
+                IntVector2 d = new IntVector2(RoomArray[j].Width, RoomArray[j].Height);
+                IntVector2 b2 = basePositions[j] + b;
+                IntVector2 intVector4 = intVector3 + b2;
+                CellArea cellArea = new CellArea(intVector4, d, 0);
+                cellArea.prototypeRoom = RoomArray[j];
+                RoomHandler SelectedRoomInArray = new RoomHandler(cellArea);
+                for (int k = -num; k < d.x + num; k++) {
+                    for (int l = -num; l < d.y + num; l++) {
+                        IntVector2 p = new IntVector2(k, l) + intVector4;
+                        if ((k >= 0 && l >= 0 && k < d.x && l < d.y) || array[p.x][p.y] == null) {
+                            CellData cellData = new CellData(p, CellType.WALL);
+                            cellData.positionInTilemap = cellData.positionInTilemap - intVector3 + new IntVector2(num2, num2);
+                            cellData.parentArea = cellArea;
+                            cellData.parentRoom = SelectedRoomInArray;
+                            cellData.nearestRoom = SelectedRoomInArray;
+                            cellData.distanceFromNearestRoom = 0f;
+                            array[p.x][p.y] = cellData;
+                        }
+                    }
+                }
+                dungeon.data.rooms.Add(SelectedRoomInArray);
+                RoomClusterArray[j] = SelectedRoomInArray;
+            }
+
+            ConnectClusteredRooms(RoomClusterArray[1], RoomClusterArray[0], RoomArray[1], RoomArray[0], 0, 0, 3, 3);
+            try { 
+                for (int n = 0; n < RoomClusterArray.Length; n++) {
+                    try {
+                        RoomClusterArray[n].WriteRoomData(dungeon.data);
+                    } catch (Exception) {
+                        if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + RoomClusterArray[n].GetRoomName()); }
+                    } try {
+                        dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, RoomClusterArray[n], GameObject.Find("_Lights").transform, lightStyle);
+                    } catch (Exception) {
+                        if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + RoomClusterArray[n].GetRoomName()); }
+                    }
+                    postProcessCellData?.Invoke(RoomClusterArray[n]);
+                    if (RoomClusterArray[n].area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) {
+                        RoomClusterArray[n].BuildSecretRoomCover();
+                    }
+                }
+                GameObject gameObject = (GameObject)Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
+                tk2dTileMap component = gameObject.GetComponent<tk2dTileMap>();
+                string str = UnityEngine.Random.Range(10000, 99999).ToString();
+                gameObject.name = "Corrupted_" + "RuntimeTilemap_" + str;
+                component.renderData.name = "Corrupted_" + "RuntimeTilemap_" + str + " Render Data";
+                component.Editor__SpriteCollection = dungeon.tileIndices.dungeonCollection;
+                
+                TK2DDungeonAssembler.RuntimeResizeTileMap(component, a.x + num2 * 2, a.y + num2 * 2, m_tilemap.partitionSizeX, m_tilemap.partitionSizeY);
+                for (int num3 = 0; num3 < RoomArray.Length; num3++) {
+                    IntVector2 intVector5 = new IntVector2(RoomArray[num3].Width, RoomArray[num3].Height);
+                    IntVector2 b3 = basePositions[num3] + b;
+                    IntVector2 intVector6 = intVector3 + b3;
+                    for (int num4 = -num2; num4 < intVector5.x + num2; num4++) {
+                        for (int num5 = -num2; num5 < intVector5.y + num2 + 2; num5++) {
+                            try {
+                                assembler.BuildTileIndicesForCell(dungeon, component, intVector6.x + num4, intVector6.y + num5);
+                            } catch (Exception ex) {
+                                if (ExpandStats.debugMode) {
+                                    ETGModConsole.Log("WARNING: Exception caused during BuildTileIndicesForCell step on room: " + RoomArray[num3].name);
+                                    Debug.Log("WARNING: Exception caused during BuildTileIndicesForCell step on room: " + RoomArray[num3].name);
+                                    Debug.LogException(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+                RenderMeshBuilder.CurrentCellXOffset = intVector3.x - num2;
+                RenderMeshBuilder.CurrentCellYOffset = intVector3.y - num2;
+                component.ForceBuild();
+                RenderMeshBuilder.CurrentCellXOffset = 0;
+                RenderMeshBuilder.CurrentCellYOffset = 0;
+                component.renderData.transform.position = new Vector3(intVector3.x - num2, intVector3.y - num2, intVector3.y - num2);
+                for (int num6 = 0; num6 < RoomClusterArray.Length; num6++) {
+                    RoomClusterArray[num6].OverrideTilemap = component;
+                    for (int num7 = 0; num7 < RoomClusterArray[num6].area.dimensions.x; num7++) {
+                        for (int num8 = 0; num8 < RoomClusterArray[num6].area.dimensions.y + 2; num8++) {
+                            IntVector2 intVector7 = RoomClusterArray[num6].area.basePosition + new IntVector2(num7, num8);
+                            if (dungeon.data.CheckInBoundsAndValid(intVector7)) {
+                                CellData currentCell = dungeon.data[intVector7];
+                                TK2DInteriorDecorator.PlaceLightDecorationForCell(dungeon, component, currentCell, intVector7);
+                            }
+                        }
+                    }
+                    Pathfinder.Instance.InitializeRegion(dungeon.data, RoomClusterArray[num6].area.basePosition + new IntVector2(-3, -3), RoomClusterArray[num6].area.dimensions + new IntVector2(3, 3));
+                    if (!RoomClusterArray[num6].IsSecretRoom) {
+                        RoomClusterArray[num6].RevealedOnMap = true;
+                        RoomClusterArray[num6].visibility = RoomHandler.VisibilityStatus.VISITED;
+                        StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(RoomClusterArray[num6], true, true, false));
+                    }
+                    
+                    RoomClusterArray[num6].PostGenerationCleanup();
+                }
+
+                if (RoomArray.Length == RoomClusterArray.Length) {
+                    for (int i = 0; i < RoomArray.Length; i++) {
+                        if (RoomArray[i].usesProceduralDecoration && RoomArray[i].allowFloorDecoration) {
+                            TK2DInteriorDecorator decorator = new TK2DInteriorDecorator(assembler);
+                            decorator.HandleRoomDecoration(RoomClusterArray[i], dungeon, m_tilemap);
+                        }
+                    }
+                }
+            } catch (Exception) { }
+
+            DeadlyDeadlyGoopManager.ReinitializeData();
+            Minimap.Instance.InitializeMinimap(dungeon.data);
+            return RoomClusterArray;
+        }
+
+        private void ConnectClusteredRooms(RoomHandler first, RoomHandler second, PrototypeDungeonRoom firstPrototype, PrototypeDungeonRoom secondPrototype, int firstRoomExitIndex, int secondRoomExitIndex, int room1ExitLengthPadding = 3, int room2ExitLengthPadding = 3) {
+            if (first.area.instanceUsedExits == null | second.area.exitToLocalDataMap == null |
+                second.area.instanceUsedExits == null | first.area.exitToLocalDataMap == null)
+            { return; }
+            try {
+                first.area.instanceUsedExits.Add(firstPrototype.exitData.exits[firstRoomExitIndex]);
+                RuntimeRoomExitData runtimeRoomExitData = new RuntimeRoomExitData(firstPrototype.exitData.exits[firstRoomExitIndex]);
+                first.area.exitToLocalDataMap.Add(firstPrototype.exitData.exits[firstRoomExitIndex], runtimeRoomExitData);
+                second.area.instanceUsedExits.Add(secondPrototype.exitData.exits[secondRoomExitIndex]);
+                RuntimeRoomExitData runtimeRoomExitData2 = new RuntimeRoomExitData(secondPrototype.exitData.exits[secondRoomExitIndex]);
+                second.area.exitToLocalDataMap.Add(secondPrototype.exitData.exits[secondRoomExitIndex], runtimeRoomExitData2);
+                first.connectedRooms.Add(second);
+                first.connectedRoomsByExit.Add(firstPrototype.exitData.exits[firstRoomExitIndex], second);
+                first.childRooms.Add(second);
+                second.connectedRooms.Add(first);
+                second.connectedRoomsByExit.Add(secondPrototype.exitData.exits[secondRoomExitIndex], first);
+                second.parentRoom = first;
+                runtimeRoomExitData.linkedExit = runtimeRoomExitData2;
+                runtimeRoomExitData2.linkedExit = runtimeRoomExitData;
+                runtimeRoomExitData.additionalExitLength = room1ExitLengthPadding;
+                runtimeRoomExitData2.additionalExitLength = room2ExitLengthPadding;
+            } catch (Exception) {
+                ETGModConsole.Log("WARNING: Exception caused during CoonectClusteredRunTimeRooms method!");
+                return;
+            }
         }
         
         /*private IEnumerator DelayedRoomReset(PlayerController targetPlayer, RoomHandler targetRoom) {

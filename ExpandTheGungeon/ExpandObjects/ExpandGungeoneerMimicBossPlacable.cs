@@ -267,6 +267,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             SpawnedBossObject.transform.parent = room.hierarchyParent;
             Destroy(m_CachedNewObject);
 
+            if (GameManager.Instance.Dungeon && GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                isSecretRatFloorBoss = false;
+            }
 
             if (isSecretRatFloorBoss) {
                 PickupObject rat_key = PickupObjectDatabase.GetById(727);

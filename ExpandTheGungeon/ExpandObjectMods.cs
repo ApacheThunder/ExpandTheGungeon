@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-
+using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon {
 
@@ -58,6 +58,8 @@ namespace ExpandTheGungeon {
         }
 
         private void InitObjectMods(Dungeon dungeon) {
+            if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
+
 
             // Disable victory music for Ser Manuel if not on tutorial floor. (it can cause double music bug if you kill him on other floors)
             if (dungeon.LevelOverrideType != GameManager.LevelOverrideState.TUTORIAL) {

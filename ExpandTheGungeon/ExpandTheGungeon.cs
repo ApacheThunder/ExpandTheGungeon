@@ -81,16 +81,12 @@ namespace ExpandTheGungeon {
                 return;
             }
         }
+
         public override void Start() {
             // Init ItemAPI
             SetupItemAPI();
 
             try {
-                // Define asset bundles to be used for RoomFactory
-                /*RoomFactory.sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-                RoomFactory.sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-                RoomFactory.braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");*/
-
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs();
                 // Init Custom Enemy Prefabs
