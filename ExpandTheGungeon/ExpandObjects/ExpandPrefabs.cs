@@ -165,6 +165,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Modified Loot tables
         public static GenericLootTable Shop_Key_Items_01;
         public static GenericLootTable BlackSmith_Items_01;
+        public static GenericLootTable Shop_Truck_Items_01;
 
         // Modified Flow Injection Data
         public static ProceduralFlowModifierData AbbeyFlowModifierData;
@@ -423,10 +424,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
 
             Shop_Key_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Key_Items_01");
+            Shop_Truck_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Truck_Items_01");
             BlackSmith_Items_01 = (BlacksmithShop.placedObjects[8].nonenemyBehaviour as BaseShopController).shopItemsGroup2;
 
-
-
+            
             BlackSmith_Items_01.defaultItemDrops.Add(
                 new WeightedGameObject() {
                     rawGameObject = null,
@@ -446,7 +447,16 @@ namespace ExpandTheGungeon.ExpandObjects {
                     additionalPrerequisites = new DungeonPrerequisite[0],
                 }
             );
-            
+
+            Shop_Truck_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = RockSlide.RockSlidePickupID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
 
             CastleGungeonMergedTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             CustomRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
@@ -1749,7 +1759,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RickRollChestComponent.MinimapIconPrefab = m_RedChestReference.GetComponent<Chest>().MinimapIconPrefab;
             RickRollChestComponent.breakAnimName = m_RedChestReference.GetComponent<Chest>().breakAnimName;
             RickRollChestComponent.openAnimName = m_RedChestReference.GetComponent<Chest>().openAnimName;
-
+            
             RickRollMusicSwitchObject = new GameObject("RickRoll Music Switch") { layer = LayerMask.NameToLayer("FG_Critical") };
             RickRollMusicSwitchObject.SetActive(false);
             ItemBuilder.AddSpriteToObject(RickRollMusicSwitchObject, (m_RickRollBasePath + "music_switch_idle_on_001"), false, true);
@@ -1778,8 +1788,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             RoomBuilder.AddObjectToRoom(gungeon_entrance, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
             RoomBuilder.AddObjectToRoom(gungeon_entrance_bossrush, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
-
-
+            
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

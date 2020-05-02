@@ -86,6 +86,17 @@ namespace ExpandTheGungeon.ExpandMain {
                     if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
                     continue;
                 }
+                AIActor[] allAIActors = FindObjectsOfType<AIActor>();
+                if (allAIActors != null && allAIActors.Length > 0) {
+                    foreach (AIActor enemy in allAIActors) {
+                        if (enemy.name.ToLower().StartsWith("corrupted")) {
+                            RoomHandler ParentRoom = enemy.transform.position.GetAbsoluteRoom();
+                            if (ParentRoom != null) {
+                                if (!enemy.gameObject.transform.parent) { enemy.transform.parent = ParentRoom.hierarchyParent; }
+                            }
+                        }
+                    }
+                }
             }            
             if (ExpandStats.debugMode) {
                 ETGModConsole.Log("[DEBUG] Max Number of Glitched Enemies assigned to floor: " + MaxEnemies, false);
@@ -97,33 +108,48 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int gridSnap = 1) {
+        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
-                for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
-                    for (int height = -1; height <= currentRoom.area.dimensions.y; height++) {
-                        int X = currentRoom.area.basePosition.x + Width;
-                        int Y = currentRoom.area.basePosition.y + height;
-                        if (X % gridSnap == 0 && Y % gridSnap == 0) {
-                            if (!dungeon.data.isWall(X - 2, Y + 2) && !dungeon.data.isWall(X - 1, Y + 2) && !dungeon.data.isWall(X, Y + 2) && !dungeon.data.isWall(X + 1, Y + 2) && !dungeon.data.isWall(X + 2, Y + 2) &&
-                                !dungeon.data.isWall(X - 2, Y + 1) && !dungeon.data.isWall(X - 1, Y + 1) && !dungeon.data.isWall(X, Y + 1) && !dungeon.data.isWall(X + 1, Y + 1) && !dungeon.data.isWall(X + 2, Y + 1) &&
-                                !dungeon.data.isWall(X - 2, Y) && !dungeon.data.isWall(X - 1, Y) && !dungeon.data.isWall(X, Y) && !dungeon.data.isWall(X + 1, Y) && !dungeon.data.isWall(X + 2, Y) &&
-                                !dungeon.data.isWall(X - 2, Y - 1) && !dungeon.data.isWall(X - 1, Y - 1) && !dungeon.data.isWall(X, Y - 1) && !dungeon.data.isWall(X + 1, Y - 1) && !dungeon.data.isWall(X + 2, Y - 1) &&
-                                !dungeon.data.isWall(X - 2, Y - 2) && !dungeon.data.isWall(X - 1, Y - 2) && !dungeon.data.isWall(X, Y - 2) && !dungeon.data.isWall(X + 1, Y - 2) && !dungeon.data.isWall(X + 2, Y - 2) &&
-                                !dungeon.data[X - 2, Y + 2].isOccupied && !dungeon.data[X - 1, Y + 2].isOccupied && !dungeon.data[X, Y + 2].isOccupied && !dungeon.data[X + 1, Y + 2].isOccupied && !dungeon.data[X + 2, Y + 2].isOccupied &&
-                                !dungeon.data[X - 2, Y + 1].isOccupied && !dungeon.data[X - 1, Y + 1].isOccupied && !dungeon.data[X, Y + 1].isOccupied && !dungeon.data[X + 1, Y + 1].isOccupied && !dungeon.data[X + 2, Y + 1].isOccupied &&
-                                !dungeon.data[X - 2, Y].isOccupied && !dungeon.data[X - 1, Y].isOccupied && !dungeon.data[X, Y].isOccupied && !dungeon.data[X + 1, Y].isOccupied && !dungeon.data[X + 2, Y].isOccupied &&
-                                !dungeon.data[X - 2, Y - 1].isOccupied && !dungeon.data[X - 1, Y - 1].isOccupied && !dungeon.data[X, Y - 1].isOccupied && !dungeon.data[X + 1, Y - 1].isOccupied && !dungeon.data[X + 2, Y - 1].isOccupied &&
-                                !dungeon.data[X - 2, Y - 2].isOccupied && !dungeon.data[X - 1, Y - 2].isOccupied && !dungeon.data[X, Y - 2].isOccupied && !dungeon.data[X + 1, Y - 2].isOccupied && !dungeon.data[X + 2, Y - 2].isOccupied &&
-                                !dungeon.data.isPit(X - 2, Y + 2) && !dungeon.data.isPit(X - 1, Y + 2) && !dungeon.data.isPit(X, Y + 2) && !dungeon.data.isPit(X + 1, Y + 2) && !dungeon.data.isPit(X + 2, Y + 2) &&
-                                !dungeon.data.isPit(X - 2, Y + 1) && !dungeon.data.isPit(X - 1, Y + 1) && !dungeon.data.isPit(X, Y + 1) && !dungeon.data.isPit(X + 1, Y + 1) && !dungeon.data.isPit(X + 2, Y + 1) &&
-                                !dungeon.data.isPit(X - 2, Y) && !dungeon.data.isPit(X - 1, Y) && !dungeon.data.isPit(X, Y) && !dungeon.data.isPit(X + 1, Y) && !dungeon.data.isPit(X + 2, Y) &&
-                                !dungeon.data.isPit(X - 2, Y - 1) && !dungeon.data.isPit(X - 1, Y - 1) && !dungeon.data.isPit(X, Y - 1) && !dungeon.data.isPit(X + 1, Y - 1) && !dungeon.data.isPit(X + 2, Y - 1) &&
-                                !dungeon.data.isPit(X - 2, Y - 2) && !dungeon.data.isPit(X - 1, Y - 2) && !dungeon.data.isPit(X, Y - 2) && !dungeon.data.isPit(X + 1, Y - 2) && !dungeon.data.isPit(X + 2, Y - 2))
-                            {
-                                validCellsCached.Add(new IntVector2(X, Y));
+                int CheckRadious1 = 8;
+                int CheckRadious2 = 2;
+                for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
+                    for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
+                        bool isInvalid = false;
+                        IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
+
+                        for(int x = (0 - CheckRadious1); x <= CheckRadious1; x++) {
+                            for(int y = (0 - CheckRadious1); y <= CheckRadious1; y++) {
+                                IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
+                                if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(targetArea1)) {
+                                    CellData cellData = GameManager.Instance.Dungeon.data[targetArea1];
+                                    if (cellData.isExitCell | cellData.isDoorFrameCell) {
+                                        isInvalid = true;
+                                        break;
+                                    }
+                                }
                             }
+                            if (isInvalid) { break; }
                         }
+                        for(int x = (0 - CheckRadious2); x <= CheckRadious2; x++) {
+                            for(int y = (0 - CheckRadious2); y <= CheckRadious2; y++) {
+                                IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
+                                if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
+                                    CellData cellData = dungeon.data[targetArea1];
+                                    if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
+                                        cellData.isDoorFrameCell | cellData.IsTopWall() | 
+                                        cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | cellData.isWallMimicHideout |
+                                        dungeon.data.isWall(targetArea1.x, targetArea1.y) | dungeon.data.isPit(targetArea1.x, targetArea1.y) |
+                                        dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
+                                    {
+                                        isInvalid = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isInvalid) { break; }
+                        }
+                        if (!isInvalid && dungeon.data.CheckInBoundsAndValid(TargetPosition)) { validCellsCached.Add(TargetPosition); }
                     }
                 }
             }

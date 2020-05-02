@@ -485,8 +485,17 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public void SpawnRandomGlitchEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            
-            int GlitchEnemyNumber = UnityEngine.Random.Range(0, 51);
+
+            // int GlitchEnemyNumber = UnityEngine.Random.Range(0, 52);
+            int GlitchEnemyCount = 52;
+            List<int> GlitchEnemyNumberList = new List<int>();
+
+            for (int i = 0; i < GlitchEnemyCount; i++) { GlitchEnemyNumberList.Add(i); }
+
+            GlitchEnemyNumberList = GlitchEnemyNumberList.Shuffle();
+
+            int GlitchEnemyNumber = BraveUtility.RandomElement(GlitchEnemyNumberList);
+
             try {
                 if (UnityEngine.Random.value <= 0.85f) {
                     if (GlitchEnemyNumber == 0) { SpawnGlitchedBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
@@ -540,7 +549,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                     if (GlitchEnemyNumber == 48) { SpawnGlitchedBlizzbulon(CurrentRoom, position, autoEngage, awakenAnimType); return; }
                     if (GlitchEnemyNumber == 49) { SpawnGlitchedRandomBlob(CurrentRoom, position, autoEngage, awakenAnimType); return; }
                     if (GlitchEnemyNumber == 50) { SpawnGlitchedBlanky(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 51) { SpawnGlitchedBabyShelleton(CurrentRoom, position, autoEngage, awakenAnimType); return; }                    
+                    if (GlitchEnemyNumber == 51) { SpawnGlitchedBabyShelleton(CurrentRoom, position, autoEngage, awakenAnimType); return; }
+                    if (GlitchEnemyNumber == 52) { SpawnGlitchedPlayerAsEnemy(CurrentRoom, position, autoEngage, awakenAnimType); return; }
                 } else {
                     try {
                         SpawnGlitchedBigEnemy(CurrentRoom, position, autoEngage, awakenAnimType);
@@ -575,7 +585,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public void AddOrReplaceAIActorConfig(AIActor target, AIActor source, bool isResourcefulRat = false) {
             if (target == null | source == null) { return; }
             if (target.EnemyGuid == source.EnemyGuid) { return; }
-
+            
             try { 
                 if (target.behaviorSpeculator != null && source.behaviorSpeculator != null) {
                     target.behaviorSpeculator.OtherBehaviors = source.behaviorSpeculator.OtherBehaviors;
@@ -869,7 +879,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
             
-            
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -1002,6 +1016,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -1133,6 +1152,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -1266,6 +1289,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -1391,6 +1419,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -1523,6 +1555,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -1654,6 +1690,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -1786,6 +1826,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -1917,6 +1961,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2048,6 +2096,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2308,6 +2360,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2567,6 +2623,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2698,6 +2758,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2828,6 +2892,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -2941,6 +3009,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -3059,6 +3132,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -3166,6 +3244,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -3283,6 +3366,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -3399,6 +3487,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -3512,6 +3605,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -3627,6 +3725,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -3740,6 +3843,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -3856,6 +3964,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -3976,6 +4089,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -4109,6 +4227,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
             CachedGlitchEnemyActor.StealthDeath = true;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -4379,6 +4501,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -4498,6 +4625,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -4626,6 +4758,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -4777,6 +4914,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
@@ -4894,6 +5036,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
@@ -5009,6 +5156,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -5282,6 +5434,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomDispIntensityFloat = UnityEngine.Random.Range(0.1f, 0.4f);
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
@@ -5575,6 +5732,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -5727,6 +5889,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -5889,6 +6056,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomDispIntensityFloat = UnityEngine.Random.Range(0.1f, 0.4f);
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
@@ -6053,8 +6225,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
 
-            tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
-            ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
+            // tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
+            // ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
@@ -6205,6 +6382,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -6363,6 +6545,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             float RandomDispIntensityFloat = UnityEngine.Random.Range(0.1f, 0.4f);
             float RandomColorProbFloat = UnityEngine.Random.Range(0.05f, 0.2f);
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
@@ -6651,6 +6838,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
             float RandomDispFloat = UnityEngine.Random.Range(0.1f, 0.16f);
             float RandomDispIntensityFloat = UnityEngine.Random.Range(0.1f, 0.4f);
@@ -6797,6 +6989,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
             float RandomDispFloat = UnityEngine.Random.Range(0.1f, 0.16f);
@@ -6946,7 +7143,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
-
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
 
@@ -7384,6 +7584,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
             float RandomDispFloat = UnityEngine.Random.Range(0.1f, 0.16f);
@@ -7987,6 +8192,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
             float RandomDispFloat = UnityEngine.Random.Range(0.1f, 0.16f);
             float RandomDispIntensityFloat = UnityEngine.Random.Range(0.1f, 0.4f);
@@ -8136,6 +8346,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -8273,6 +8488,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
+
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
@@ -8404,6 +8624,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.PreventFallingInPitsEver = CachedEnemyActor.PreventFallingInPitsEver;
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
+
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);

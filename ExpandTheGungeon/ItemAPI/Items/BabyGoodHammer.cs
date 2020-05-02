@@ -153,6 +153,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void DoEffect(PlayerController user) {
+            
             // AkSoundEngine.PostEvent("Play_BOSS_bulletbros_anger_01", gameObject);
             if (BraveUtility.RandomBool()) {
                 AkSoundEngine.PostEvent("Play_ENM_smiley_whistle_01", gameObject);
@@ -170,7 +171,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     StartCoroutine(SpawnHammer(user));
                 } else {
                     m_HammersHidden = true;
-                    foreach (AIActor enemy in m_BabyGoodHammers) {                        
+                    foreach (AIActor enemy in m_BabyGoodHammers) {
                         enemy.gameObject.GetComponent<CompanionController>().enabled = false;
                         enemy.ToggleRenderers(false);
                         enemy.IsGone = true;
@@ -185,6 +186,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 StartCoroutine(SpawnHammer(user));
             }
 		}
+        
 
         private IEnumerator HandleSpawnAnimation(PlayerController user, Vector3? overridePosition = null) {
 

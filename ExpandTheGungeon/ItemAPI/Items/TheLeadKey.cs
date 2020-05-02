@@ -181,12 +181,12 @@ namespace ExpandTheGungeon.ItemAPI {
             float RoomSelectionSeed = UnityEngine.Random.value;
             bool GoingToSecretBoss = false;
 
-            if (RoomSelectionSeed <= 0.1f) { GoingToSecretBoss = true; }
+            if (RoomSelectionSeed <= 0.01f) { GoingToSecretBoss = true; }
 
             if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
                 PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
-                if (RoomSelectionSeed <= 0.15f) {
+                if (RoomSelectionSeed <= 0.05f) {
                     SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
                 } else if (RoomSelectionSeed <= 0.25f) {
                     SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);

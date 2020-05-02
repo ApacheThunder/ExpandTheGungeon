@@ -128,7 +128,7 @@
     <Compile Include="ItemAPI\Items\ChronenbergBullets.cs" />
     <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
     <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
-    <Compile Include="ExpandObjects\ExpandBootlegRoomPlaceable.cs" />
+    <Compile Include="ExpandObjects\ExpandCorruptedRoomAmbiencePlacable.cs" />
     <Compile Include="ExpandComponents\ExpandElevatorDepartureManager.cs" />
     <Compile Include="ExpandComponents\ExpandForgeHammerComponent.cs" />
     <Compile Include="ExpandComponents\ExpandSellCellManager.cs" />
@@ -144,6 +144,7 @@
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
     <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
+    <Compile Include="ItemAPI\Items\RockSlide.cs" />
     <Compile Include="ItemAPI\Items\TableTechExpand.cs" />
     <Compile Include="ItemAPI\Items\TheLeadKey.cs" />
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
@@ -1057,6 +1058,121 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Items\theleadkey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\rockslide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular1.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular10.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular11.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular12.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular13.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular14.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular15.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular16.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular17.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular18.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular19.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular2.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular20.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular21.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular22.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular23.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular24.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular25.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular26.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular27.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular28.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular29.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular3.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular31.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular32.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular33.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular34.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular35.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular36.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular37.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular38.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular39.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular4.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular40.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular41.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular42.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular43.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular44.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular45.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular46.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular47.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular48.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular49.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular5.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular50.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular6.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular7.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular8.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Regular9.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Proper_Speshul_Regular30.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_001.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_002.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_003.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_004.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_005.png" />
+    <EmbeddedResource Include="Textures\Items\Animations\rockslide\plunger_fire_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular1.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular10.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular11.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular12.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular13.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular14.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular15.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular16.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular17.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular18.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular19.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular2.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular20.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular21.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular22.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular23.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular24.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular25.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular26.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular27.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular28.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular29.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular3.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular30.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular31.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular32.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular33.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular34.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular35.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular36.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular37.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular38.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular39.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular4.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular40.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular41.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular42.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular43.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular44.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular45.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular46.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular47.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular48.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular49.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular5.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular50.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular6.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular7.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular8.room" />
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular9.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -94,6 +94,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject WinchesterMinimapIcon;
         public GameObject CrushDoor_Horizontal;
         public GameObject CrushDoor_Vertical;
+        public GameObject Mines_Cave_In;
+        public GameObject Plunger;
 
         // DungeonPlacables
         public DungeonPlaceable ExplodyBarrel;
@@ -241,7 +243,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ConvictPastCrowdNPC_15,
                 ConvictPastCrowdNPC_16
             };
-            
+
+            Mines_Cave_In = sharedAssets2.LoadAsset<GameObject>("Mines_Cave_In");
+            Plunger = Mines_Cave_In.GetComponent<HangingObjectController>().triggerObjectPrefab;
+
+
             FoldingTable = PickupObjectDatabase.GetById(644).GetComponent<FoldingTableItem>().TableToSpawn.gameObject;
 
             sharedAssets = null;

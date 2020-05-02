@@ -89,7 +89,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             ThunderstormController stormController = m_ThunderStorm.GetComponent<ThunderstormController>();
             ParticleSystem m_CachedParticleSystem = stormController.RainSystemTransform.GetComponent<ParticleSystem>();
             if (useCustomIntensity) { BraveUtility.SetEmissionRate(m_CachedParticleSystem, RainIntensity); }
-            m_cachedEmissionRate = m_CachedParticleSystem.emission.rate.constant;
+            // m_cachedEmissionRate = m_CachedParticleSystem.emission.rate.constant;
+            m_cachedEmissionRate = m_CachedParticleSystem.emission.rateOverTime.constant;
             stormController.DecayVertical = false;
             stormController.DoLighting = false;
             m_ChaosLightning = new GameObject("ChaosLightning");
@@ -161,12 +162,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             simpleVibrationTime = Vibration.Time.Normal,
             simpleVibrationStrength = Vibration.Strength.Medium
         };
-
-        public bool isActive;
+        
+        public bool isActive = false;
         public float MinTimeBetweenLightningStrikes = 5f;
         public float MaxTimeBetweenLightningStrikes = 10f;
-        public float AmbientBoost = 1.5f;
-        
+        // public float AmbientBoost = 1.5f;
+        public float AmbientBoost = 0.45f;
+
         public Renderer[] LightningRenderers;
 
         // private Vector3 m_lastCameraPosition;
@@ -174,23 +176,26 @@ namespace ExpandTheGungeon.ExpandComponents {
         private float m_lightningTimer;        
 
         private void Start() {
-            isActive = true;
-            m_lightningTimer = UnityEngine.Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
+            isActive = false;
+            m_lightningTimer = Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
         }
 
         private void Update() {
-    	    if (GameManager.Instance.IsLoadingLevel) { return; }
+
+            if (GameManager.Instance.IsLoadingLevel | !isActive) { return; }
+
             m_lightningTimer -= ((!GameManager.IsBossIntro) ? BraveTime.DeltaTime : GameManager.INVARIANT_DELTA_TIME);
-            if (m_lightningTimer <= 0f && isActive) {
+
+            if (m_lightningTimer <= 0 && isActive) {
                 StartCoroutine(DoLightningStrike());
                 if (LightningRenderers != null) {
                     for (int i = 0; i < LightningRenderers.Length; i++) { StartCoroutine(ProcessLightningRenderer(LightningRenderers[i])); }
                 }
                 StartCoroutine(HandleLightningAmbientBoost());
-                m_lightningTimer = UnityEngine.Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
+                m_lightningTimer = Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
             }
         }
-    
+        
     	protected IEnumerator HandleLightningAmbientBoost() {
             Color cachedAmbient = RenderSettings.ambientLight;
             Color modAmbient = new Color(cachedAmbient.r + AmbientBoost, cachedAmbient.g + AmbientBoost, cachedAmbient.b + AmbientBoost);
@@ -205,6 +210,7 @@ namespace ExpandTheGungeon.ExpandComponents {
     				yield return null;
     			}
     		}
+            yield return null;
     		GameManager.Instance.Dungeon.OverrideAmbientLight = false;
     		yield break;
     	}
