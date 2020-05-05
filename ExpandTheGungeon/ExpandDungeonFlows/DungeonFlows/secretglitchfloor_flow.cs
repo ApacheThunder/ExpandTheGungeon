@@ -103,8 +103,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_FirstChainNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode m_FirstChainNode_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode m_FirstChainShrineNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.letsgetsomeshrines_001);
-            // DungeonFlowNode m_FirstChainKeyRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, Instantiate(ExpandRoomPrefabs.Utiliroom));
-            // m_FirstChainKeyRoomNode.overrideExactRoom.name = "Special Key Room 1";
 
             DungeonFlowNode m_FirstSecretChainNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode m_FirstSecretChainBlankRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.Utiliroom));
@@ -156,9 +154,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             DungeonFlowNode m_SpecialMaintenanceSecretRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
             
-            // DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_checkerboard));
             DungeonFlowNode m_PuzzleNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandRoomPrefabs.PuzzleRoom1));
-            // m_PuzzleNode_01.overrideExactRoom.name = "Zelda Puzzle Room 1";
             DungeonFlowNode m_PuzzleNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, UnityEngine.Object.Instantiate(ExpandPrefabs.gungeon_normal_fightinaroomwithtonsoftraps));
             m_PuzzleNode_02.overrideExactRoom.name = "Zelda Puzzle Room 2";
             // Zelda Puzzle Room 3
@@ -271,8 +267,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
             PlayerController PrimaryPlayer = GameManager.Instance.PrimaryPlayer;
             try { Pixelator.Instance.RegisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (System.Exception) { }
-            // GameManager.Instance.Dungeon.musicEventName = "Play_Mus_Dungeon_Rat_Theme_01";
-            // GameManager.Instance.DungeonMusicController.ResetForNewFloor(GameManager.Instance.Dungeon);
             
 
             if (PrimaryPlayer.HasPickupID(316)) {
@@ -319,16 +313,14 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 RoomHandler PuzzleRoom3 = null;
                 RoomHandler SpecialWallMimicRoom = null;
                 RoomHandler ShopBackRoom = null;
-                RoomHandler TinyPitFallRoom = null;                
-                // RoomHandler TinyKeyRoom1 = null;
+                RoomHandler TinyPitFallRoom = null;
                 RoomHandler TinyKeyRoom2 = null;
                 RoomHandler TinyKeyRoom3 = null;
                 RoomHandler TinyKeyRoom4 = null;
                 RoomHandler TinyBlankRoom1 = null;
                 RoomHandler TinyBlankRoom2 = null;
                 RoomHandler WinchesterRoom = null;
-
-                // GameObject PlacedSecretKeyPedestal1 = null;
+                
                 GameObject PlacedSecretKeyPedestal2 = null;
                 GameObject PlacedSecretKeyPedestal3 = null;
                 GameObject PlacedSecretKeyPedestal4 = null;
@@ -372,7 +364,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         if (roomHandler.GetRoomName().StartsWith("Special WallMimic Room")) { SpecialWallMimicRoom = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Shop Back Room")) { ShopBackRoom = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Utiliroom (Pitfall)")) { TinyPitFallRoom = roomHandler; }
-                        // if (roomHandler.GetRoomName().StartsWith("Special Key Room 1")) { TinyKeyRoom1 = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Special Key Room 2")) { TinyKeyRoom2 = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Tiny Secret Room 1")) { TinyKeyRoom3 = roomHandler; }
                         if (roomHandler.GetRoomName().StartsWith("Tiny Secret Room 2")) { TinyKeyRoom4 = roomHandler; }
@@ -383,9 +374,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 }
 
                 if (SpecialMaintenanceRoom != null && GiantElevatorEntranceRoom != null) {
-                    // ChaosWeatherController.AddRainStormToRoom(GiantElevatorEntranceRoom, new IntVector2(50, 50), 480f, true);                
-                    ExpandWeatherController.AddRainStormToFloor("Base_ResourcefulRat", 480f, true);                    
-
+                    
                     GiantElevatorEntranceRoom.TargetPitfallRoom = SpecialMaintenanceRoom;
                     GiantElevatorEntranceRoom.ForcePitfallForFliers = true;
                     ExpandUtility.FloorStamper(SpecialMaintenanceRoom, new IntVector2(8, 8), 14, 13, CellType.FLOOR);
@@ -596,17 +585,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         }
                     }
                 }
-
-                /*if (TinyKeyRoom1 != null) {
-                    PlacedSecretKeyPedestal1 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RewardPedestalPrefab, false, true).InstantiateObject(TinyKeyRoom1, IntVector2.One, false, true);
-                    PlacedSecretKeyPedestal1.transform.parent = TinyKeyRoom1.hierarchyParent;
-                    RewardPedestal PlacedSecretKeyPedestalComponent1 = PlacedSecretKeyPedestal1.GetComponent<RewardPedestal>();
-                    PlacedSecretKeyPedestalComponent1.SpecificItemId = 727;
-                    PlacedSecretKeyPedestalComponent1.SpawnsTertiarySet = false;
-                    PlacedSecretKeyPedestalComponent1.UsesSpecificItem = true;
-                    PlacedSecretKeyPedestalComponent1.overrideMimicChance = 0f;
-                    PlacedSecretKeyPedestalComponent1.ConfigureOnPlacement(TinyKeyRoom1);
-                }*/
+                
                 if (TinyKeyRoom2 != null) {
                     PlacedSecretKeyPedestal2 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RewardPedestalPrefab, false, true).InstantiateObject(TinyKeyRoom2, IntVector2.One, false, true);
                     PlacedSecretKeyPedestal2.transform.parent = TinyKeyRoom2.hierarchyParent;
@@ -838,8 +817,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             assetBundle = null;
             assetBundle2 = null;
             yield return new WaitForSeconds(1.2f);
-            ETGModMainBehaviour.Instance.gameObject.AddComponent<ExpandRatFloorRainController>();
             try { Pixelator.Instance.DeregisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (Exception) { }
+
             yield break;
         }
     }

@@ -45,10 +45,6 @@ namespace ExpandTheGungeon {
 
             if (ExpandTheGungeon.isGlitchFloor && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 GameManager.Instance.StartCoroutine(secretglitchfloor_flow.InitCustomObjects(Random.value, BraveUtility.RandomBool(), BraveUtility.RandomBool()));                
-            } else {
-                if (ETGModMainBehaviour.Instance.gameObject.GetComponent<ExpandRatFloorRainController>() != null) {
-                    Destroy(ETGModMainBehaviour.Instance.gameObject.GetComponent<ExpandRatFloorRainController>()); 
-                }
             }
 
             InitObjectMods(GameManager.Instance.Dungeon);

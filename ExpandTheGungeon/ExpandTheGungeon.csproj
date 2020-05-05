@@ -434,7 +434,6 @@
     <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_R_Blocks_Layout.png" />
     <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Singer_Gap_Layout.png" />
     <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Small_Passage_1_Layout.png" />
-    <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Spiral_Layout.png" />
     <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Steps_Layout.png" />
     <EmbeddedResource Include="Textures\RoomLayoutData\Castle\Expand_TurtleMelon_Wall_Pit_Layout.png" />
   </ItemGroup>
@@ -1173,6 +1172,9 @@
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular7.room" />
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular8.room" />
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Mines_Regular9.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Keep_Spiral.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

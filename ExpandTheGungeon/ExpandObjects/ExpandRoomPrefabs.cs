@@ -57,7 +57,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Small_Passage;
         public static PrototypeDungeonRoom Expand_Box;
         public static PrototypeDungeonRoom Expand_Steps;
-        public static PrototypeDungeonRoom Expand_Spiral;
         public static PrototypeDungeonRoom Expand_Apache_Hub;
         public static PrototypeDungeonRoom Expand_Box_Hub;
         public static PrototypeDungeonRoom Expand_Enclose_Hub;
@@ -143,7 +142,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
         // Custom Trap Rooms        
-        public static PrototypeDungeonRoom ThwompCrossingVertical;        
+        public static PrototypeDungeonRoom ThwompCrossingVertical;
         public static PrototypeDungeonRoom ThwompCrossingHorizontal;
         public static PrototypeDungeonRoom Expand_Apache_FieldOfSaws;
         public static PrototypeDungeonRoom Expand_Apache_TheCrushZone;
@@ -386,6 +385,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Mines_Regular48;
         public static PrototypeDungeonRoom Expand_Mines_Regular49;
         public static PrototypeDungeonRoom Expand_Mines_Regular50;
+        public static PrototypeDungeonRoom Expand_Keep_Spiral;
 
 
         public static WeightedRoom GenerateWeightedRoom(PrototypeDungeonRoom Room, float Weight = 1, bool LimitedCopies = true, int MaxCopies = 1, DungeonPrerequisite[] AdditionalPrerequisites = null) {
@@ -440,7 +440,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Small_Passage = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Box = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Steps = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            Expand_Spiral = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Box_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Enclose_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -686,6 +685,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // Add Object Spawns
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(47, 49), ExpandPrefabs.ElevatorArrival);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48, 41), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(50, 50), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.ExpandThunderstormPlaceable, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(29, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
@@ -3809,187 +3809,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 7), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 15), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Steps, "Castle\\Expand_TurtleMelon_Steps_Layout.png");
-
-
-            Expand_Spiral.name = "Expand TurtleMelon Spiral";
-            Expand_Spiral.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
-            Expand_Spiral.GUID = Guid.NewGuid().ToString();
-            Expand_Spiral.PreventMirroring = false;
-            Expand_Spiral.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
-            Expand_Spiral.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Spiral.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
-            Expand_Spiral.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            Expand_Spiral.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            Expand_Spiral.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            Expand_Spiral.pits = new List<PrototypeRoomPitEntry>();
-            Expand_Spiral.placedObjects = new List<PrototypePlacedObjectData>();
-            Expand_Spiral.placedObjectPositions = new List<Vector2>();
-            Expand_Spiral.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            Expand_Spiral.roomEvents = new List<RoomEventDefinition>() {
-                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
-                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
-            };
-            Expand_Spiral.overriddenTilesets = 0;
-            Expand_Spiral.prerequisites = new List<DungeonPrerequisite>();
-            Expand_Spiral.InvalidInCoop = false;
-            Expand_Spiral.cullProceduralDecorationOnWeakPlatforms = false;
-            Expand_Spiral.preventAddedDecoLayering = false;
-            Expand_Spiral.precludeAllTilemapDrawing = false;
-            Expand_Spiral.drawPrecludedCeilingTiles = false;
-            Expand_Spiral.preventBorders = false;
-            Expand_Spiral.preventFacewallAO = false;
-            Expand_Spiral.usesCustomAmbientLight = false;
-            Expand_Spiral.customAmbientLight = Color.white;
-            Expand_Spiral.ForceAllowDuplicates = false;
-            Expand_Spiral.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            Expand_Spiral.IsLostWoodsRoom = false;
-            Expand_Spiral.UseCustomMusic = false;
-            Expand_Spiral.UseCustomMusicState = false;
-            Expand_Spiral.CustomMusicEvent = string.Empty;
-            Expand_Spiral.UseCustomMusicSwitch = false;
-            Expand_Spiral.CustomMusicSwitch = string.Empty;
-            Expand_Spiral.overrideRoomVisualTypeForSecretRooms = false;
-            Expand_Spiral.rewardChestSpawnPosition = new IntVector2(15, 2);
-            Expand_Spiral.overrideRoomVisualType = -1;
-            Expand_Spiral.allowFloorDecoration = false;
-            Expand_Spiral.Width = 38;
-            Expand_Spiral.Height = 40;
-            Expand_Spiral.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
-                new PrototypeRoomObjectLayer() {
-                    placedObjects = new List<PrototypePlacedObjectData>() {
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(7, 8),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(36, 9),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(4, 14),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(27, 23),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(34, 29),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                            contentsBasePosition = new Vector2(7, 31),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
-                            contentsBasePosition = new Vector2(9, 31),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        },
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "4db03291a12144d69fe940d5a01de376", // hollowpoint
-                            contentsBasePosition = new Vector2(13, 13),
-                            spawnChance = 0.5f,
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0,
-                        }
-                    },
-                    placedObjectBasePositions = new List<Vector2>() {
-                        new Vector2(7, 8),
-                        new Vector2(36, 9),
-                        new Vector2(4, 14),
-                        new Vector2(27, 23),
-                        new Vector2(34, 29),
-                        new Vector2(7, 31),
-                        new Vector2(9, 31),
-                        new Vector2(13, 13),
-                    },
-                    layerIsReinforcementLayer = true,
-                    shuffle = true,
-                    randomize = 0,
-                    suppressPlayerChecks = true,
-                    delayTime = 1,
-                    reinforcementTriggerCondition = RoomEventTriggerCondition.ON_ENEMIES_CLEARED,
-                    probability = 1,
-                    numberTimesEncounteredRequired = 0
-                }
-            };
-            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(4, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(4, 41), DungeonData.Direction.NORTH);
-            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(34, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(Expand_Spiral, new Vector2(34, 41), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(5, 8), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(27, 8), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(33, 10), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(26, 13), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(3, 15), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(36, 16), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(19, 18), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(9, 21), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(16, 23), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(34, 25), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(27, 26), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(4, 28), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(21, 31), objectDatabase.ExplodyBarrel);
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(0, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(13, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(36, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Spiral, new Vector2(18, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Spiral, "Castle\\Expand_TurtleMelon_Spiral_Layout.png");
-
+            
 
             Expand_Apache_Hub.name = "Expand MelonTurtle Apache Hub";
             Expand_Apache_Hub.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7939,7 +7759,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Mines_Regular48 = RoomFactory.BuildFromResource("Expand_Mines_Regular48.room", true, true);
             Expand_Mines_Regular49 = RoomFactory.BuildFromResource("Expand_Mines_Regular49.room", true, true);
             Expand_Mines_Regular50 = RoomFactory.BuildFromResource("Expand_Mines_Regular50.room", true, true);
-
+            Expand_Keep_Spiral = RoomFactory.BuildFromResource("Expand_Keep_Spiral.room", true, true);
 
             // Trap_Expand_Turtlemelon = RoomFactory.BuildFromResource("Trap_Expand_Turtlemelon.room", true);
 
@@ -8462,7 +8282,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RickRollChest.PreventMirroring = false;
             Expand_Apache_RickRollChest.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             Expand_Apache_RickRollChest.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            Expand_Apache_RickRollChest.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
+            Expand_Apache_RickRollChest.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
             Expand_Apache_RickRollChest.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             Expand_Apache_RickRollChest.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             Expand_Apache_RickRollChest.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
@@ -9154,7 +8974,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
-                GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.4f),
+                GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.25f),
                 // GenerateWeightedRoom(Trap_Expand_Turtlemelon)
             };
 
@@ -9232,7 +9052,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Small_Passage),
                 GenerateWeightedRoom(Expand_Box),
                 GenerateWeightedRoom(Expand_Steps),
-                GenerateWeightedRoom(Expand_Spiral, 0.6f),
                 GenerateWeightedRoom(Expand_Apache_Hub),
                 GenerateWeightedRoom(Expand_Box_Hub),
                 GenerateWeightedRoom(Expand_Enclose_Hub)

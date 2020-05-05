@@ -181,9 +181,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void TransitionToDepart(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
-            if (!m_depatureIsPlayerless) {
+            /*if (!m_depatureIsPlayerless) {
                 if (OverrideTargetFloor == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { Pixelator.Instance.RegisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); }
-            }
+            }*/
 
             GameManager.Instance.MainCameraController.DoDelayedScreenShake(departureShake, 0.25f, null);
             if (!m_depatureIsPlayerless) {                

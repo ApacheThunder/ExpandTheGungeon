@@ -260,6 +260,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject RickRollChestObject;
         public static GameObject RickRollAnimationObject;
         public static GameObject RickRollMusicSwitchObject;
+        public static GameObject ExpandThunderstormPlaceable;
 
 
         // Custom Challenge Modifiers
@@ -1788,7 +1789,12 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             RoomBuilder.AddObjectToRoom(gungeon_entrance, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
             RoomBuilder.AddObjectToRoom(gungeon_entrance_bossrush, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
-            
+
+            ExpandThunderstormPlaceable = new GameObject("ExpandThunderStorm", new Type[] { typeof(ExpandThunderStormPlacable) } ) { layer = 0 };
+            ExpandThunderstormPlaceable.SetActive(false);
+            DontDestroyOnLoad(ExpandThunderstormPlaceable);
+            FakePrefab.MarkAsFakePrefab(ExpandThunderstormPlaceable);
+
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

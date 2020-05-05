@@ -5,6 +5,7 @@ using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -149,7 +150,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             Dungeon RatDungeonPrefab = GetOrLoadByName_Orig("Base_ResourcefulRat");
             Dungeon FinalScenarioPilotPrefab = GetOrLoadByName_Orig("FinalScenario_Pilot");
             Dungeon FinalScenarioBulletPrefab = GetOrLoadByName_Orig("FinalScenario_Bullet");
-
+            DungeonMaterial FinalScenario_MainMaterial = UnityEngine.Object.Instantiate(FinalScenarioPilotPrefab.roomMaterialDefinitions[0]);
+            FinalScenario_MainMaterial.supportsPits = true;
+            FinalScenario_MainMaterial.doPitAO = false;
+            // FinalScenario_MainMaterial.pitsAreOneDeep = true;
+            FinalScenario_MainMaterial.useLighting = true;
+            // FinalScenario_MainMaterial.supportsLavaOrLavalikeSquares = true;
+            FinalScenario_MainMaterial.lightPrefabs.elements[0].rawGameObject = MinesDungeonPrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject;
+            FinalScenario_MainMaterial.roomFloorBorderGrid = MinesDungeonPrefab.roomMaterialDefinitions[0].roomFloorBorderGrid;
+            FinalScenario_MainMaterial.pitLayoutGrid = MinesDungeonPrefab.roomMaterialDefinitions[0].pitLayoutGrid;
+            FinalScenario_MainMaterial.pitBorderFlatGrid = MinesDungeonPrefab.roomMaterialDefinitions[0].pitBorderFlatGrid;
 
             DungeonTileStampData m_CanyonStampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
             m_CanyonStampData.name = "ENV_CANYON_STAMP_DATA";
@@ -161,8 +171,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_CanyonStampData.objectStamps = RatDungeonPrefab.stampData.objectStamps;
             m_CanyonStampData.SymmetricFrameChance = 0.25f;
             m_CanyonStampData.SymmetricCompleteChance = 0.6f;
-            
-                        
+
+            dungeon.gameObject.name = "Base_Canyon";            
             dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
             dungeon.DungeonSeed = 0;
             dungeon.DungeonFloorName = "A Corrupted Place.";
@@ -194,11 +204,48 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.decoSettings = new TilemapDecoSettings {
                 standardRoomVisualSubtypes = new WeightedIntCollection {
                     elements = new WeightedInt[] {
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[2], // shop visual type. Do not remove
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
+                        new WeightedInt() {
+                            annotation = "pilot final",
+                            value = 0,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "pilot final2",
+                            value = 1,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "shop",
+                            value = 2,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "pilot final2",
+                            value = 3,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "pilot final3",
+                            value = 4,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "pilot final4",
+                            value = 5,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "pilot final5",
+                            value = 6,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        }
                     }
                 },
                 decalLayerStyle = MinesDungeonPrefab.decoSettings.decalLayerStyle,
@@ -248,14 +295,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             dungeon.tileIndices.dungeonCollection.name = "ENV_Canyon_Collection";
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
-                MinesDungeonPrefab.roomMaterialDefinitions[0],
-                MinesDungeonPrefab.roomMaterialDefinitions[1],
-                MinesDungeonPrefab.roomMaterialDefinitions[2],
-                MinesDungeonPrefab.roomMaterialDefinitions[3],
-                MinesDungeonPrefab.roomMaterialDefinitions[4],
-                MinesDungeonPrefab.roomMaterialDefinitions[5],
-                MinesDungeonPrefab.roomMaterialDefinitions[6],
-                MinesDungeonPrefab.roomMaterialDefinitions[7]
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial,
+                FinalScenario_MainMaterial
             };
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
             dungeon.pathGridDefinitions = new List<TileIndexGrid>() { MinesDungeonPrefab.pathGridDefinitions[0] };

@@ -301,7 +301,8 @@ namespace ExpandTheGungeon.ItemAPI {
                             foreach (AIActor enemy in StaticReferenceManager.AllEnemies) {
                                 if (enemy.EnemyGuid == CompanionGuid && enemy.IsGone) {
                                     RoomHandler CurrentRoom = LastOwner.GetAbsoluteParentRoom();                                    
-                                    Vector3 ReturnPosition = (LastOwner.gameObject.transform.position + new Vector3(UnityEngine.Random.Range(0, 0.25f), 4.5f));
+                                    // Vector3 ReturnPosition = (LastOwner.gameObject.transform.position + new Vector3(UnityEngine.Random.Range(0, 0.25f), 4.5f));
+                                    Vector3 ReturnPosition = (new Vector3(0, 5.5f) + LastOwner.CurrentRoom.GetBestRewardLocation(new IntVector2(2, 2), RoomHandler.RewardLocationStyle.PlayerCenter, false).ToVector3());
                                     StartCoroutine(HandleHammerReturn(enemy, ReturnPosition));
                                 }
                             }

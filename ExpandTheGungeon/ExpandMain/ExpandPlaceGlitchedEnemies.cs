@@ -52,7 +52,7 @@ namespace ExpandTheGungeon.ExpandMain {
                             IntVector2? RandomGlitchEnemyVector4 = null;
 
                             if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector2 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions); }
-                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector3 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions); }
+                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector3 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions, ExitClearence: 13); }
                             if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector4 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions); }
                             
 
@@ -108,18 +108,16 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached) {
+        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
-                int CheckRadious1 = 8;
-                int CheckRadious2 = 2;
                 for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
                     for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
                         bool isInvalid = false;
                         IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
 
-                        for(int x = (0 - CheckRadious1); x <= CheckRadious1; x++) {
-                            for(int y = (0 - CheckRadious1); y <= CheckRadious1; y++) {
+                        for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
+                            for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
                                 IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
                                 if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(targetArea1)) {
                                     CellData cellData = GameManager.Instance.Dungeon.data[targetArea1];
@@ -131,8 +129,8 @@ namespace ExpandTheGungeon.ExpandMain {
                             }
                             if (isInvalid) { break; }
                         }
-                        for(int x = (0 - CheckRadious2); x <= CheckRadious2; x++) {
-                            for(int y = (0 - CheckRadious2); y <= CheckRadious2; y++) {
+                        for(int x = (0 - Clearence); x <= Clearence; x++) {
+                            for(int y = (0 - Clearence); y <= Clearence; y++) {
                                 IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
                                 if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
                                     CellData cellData = dungeon.data[targetArea1];

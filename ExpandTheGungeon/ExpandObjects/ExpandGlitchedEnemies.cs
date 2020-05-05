@@ -2493,6 +2493,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.UseMovementAudio = CachedEnemyActor.UseMovementAudio;
             CachedGlitchEnemyActor.EnemySwitchState = CachedEnemyActor.EnemySwitchState;
 
+            if (CachedEnemyActor.EnemyGuid == "f155fd2759764f4a9217db29dd21b7eb") {
+                CachedGlitchEnemyActor.gameObject.AddComponent<KillOnRoomClear>();
+                CachedGlitchEnemyActor.IgnoreForRoomClear = true;
+            }
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
@@ -9170,7 +9174,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
         
         public void SpawnGlitchedPlayerAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            PlayerController m_SelectedPlayer = GameManager.Instance.BestActivePlayer;
+            PlayerController m_SelectedPlayer = GameManager.Instance.PrimaryPlayer;
 
             AIActor CachedEnemyActor = CultistPrefab.GetComponent<AIActor>();
             GameObject m_DummyCorpseObject = null;
@@ -9178,7 +9182,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject CachedTargetEnemyObject = new GameObject("Corrupted Player Mimic") { layer = 28 };
             tk2dSprite newSprite = CachedTargetEnemyObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(newSprite, (m_SelectedPlayer.sprite as tk2dSprite));
-
+            
             // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
             // Always set false to ensure this doesn't happen.
             newSprite.FlipX = false;
@@ -9204,10 +9208,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedGlitchEnemyActor.DustUpInterval = 0.4f;
             CachedGlitchEnemyActor.MovementSpeed = 3.5f;
             CachedGlitchEnemyActor.EnemySwitchState = "Gun Cultist";
+            
 
             List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
             foreach (tk2dSpriteAnimationClip clip in m_SelectedPlayer.spriteAnimator.Library.clips) {
-                if (!string.IsNullOrEmpty(clip.name)) {
+                if (clip != null && !string.IsNullOrEmpty(clip.name)) {
                     if (clip.name.ToLower() == "idle") {
                         m_AnimationClips.Add(clip);
                     } else if (clip.name.ToLower() == "idle_backward") {
@@ -9231,11 +9236,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                     }  
                 }
             }
-            
+            if (!CachedGlitchEnemyActor.spriteAnimator.Library) { CachedGlitchEnemyActor.spriteAnimator.Library = CachedTargetEnemyObject.AddComponent<tk2dSpriteAnimation>(); }
             if (m_AnimationClips.Count > 0) { CachedGlitchEnemyActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray(); }
             CachedGlitchEnemyActor.spriteAnimator.DefaultClipId = 0;
             CachedGlitchEnemyActor.spriteAnimator.playAutomatically = true;
-
+            
             if (CachedGlitchEnemyActor.aiAnimator) {
                 CachedGlitchEnemyActor.aiAnimator.facingType = AIAnimator.FacingType.Target;
                 CachedGlitchEnemyActor.aiAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
@@ -9296,7 +9301,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             behaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>();
             behaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
             behaviorSpeculator.OtherBehaviors = new List<BehaviorBase>();
-
+            
             if (CachedEnemyActor.behaviorSpeculator.OverrideBehaviors.Count > 0) {
                 foreach (OverrideBehaviorBase overrideBehavior in CachedEnemyActor.gameObject.GetComponent<BehaviorSpeculator>().OverrideBehaviors) {
                     behaviorSpeculator.OverrideBehaviors.Add(overrideBehavior);
