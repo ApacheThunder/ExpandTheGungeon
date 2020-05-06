@@ -735,7 +735,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 CurrentFloorWallIDs = ExpandLists.AbbeyWallIDs;
                 CurrentFloorFloorIDs = ExpandLists.AbbeyFloorIDs;
                 CurrentFloorMiscIDs = ExpandLists.AbbeyMiscIDs;
-            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
+            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 CurrentFloorWallIDs = ExpandLists.RatDenWallIDs;
                 CurrentFloorFloorIDs = ExpandLists.RatDenFloorIDs;
                 CurrentFloorMiscIDs = ExpandLists.RatDenMiscIDs;

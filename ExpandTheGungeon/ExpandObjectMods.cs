@@ -54,6 +54,16 @@ namespace ExpandTheGungeon {
         }
 
         private void InitObjectMods(Dungeon dungeon) {
+            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
+                GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
+                JungleRainPlacable.transform.parent = dungeon.gameObject.transform;
+                ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
+                ThunderstormPlacable.useCustomIntensity = false;
+                ThunderstormPlacable.enableLightning = true;
+                ThunderstormPlacable.ConfigureOnPlacement(null);
+            }
+
+
             if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
 
 

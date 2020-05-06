@@ -8,12 +8,14 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandThunderStormPlacable : DungeonPlaceableBehaviour, IPlaceConfigurable {
         
         ExpandThunderStormPlacable() { 
-            RainIntensity = 480;
-            useCustomIntensity = true;            
+            RainIntensity = 250;
+            useCustomIntensity = true;
+            enableLightning = false;
         }
 
         public bool useCustomIntensity;
         public float RainIntensity;
+        public bool enableLightning;
 
         public void Start() { }
 
@@ -24,6 +26,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             ExpandWeatherController weatherController = dungeon.gameObject.AddComponent<ExpandWeatherController>();
             weatherController.RainIntensity = RainIntensity;
             weatherController.useCustomIntensity = useCustomIntensity;
+            weatherController.enableLightning = enableLightning;
         }
 
         protected override void OnDestroy() { base.OnDestroy(); }
@@ -38,6 +41,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public float AmbientBoost;
         public float RainIntensity;
         public bool useCustomIntensity;
+        public bool enableLightning;
 
         public ScreenShakeSettings ThunderShake;
 
@@ -52,9 +56,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             isSecretFloor = true;
             MinTimeBetweenLightningStrikes = 5;
             MaxTimeBetweenLightningStrikes = 10;
-            AmbientBoost = 0.45f;
-            RainIntensity = 450;
+            AmbientBoost = 1;
+            RainIntensity = 250;
             useCustomIntensity = true;
+            enableLightning = false;
 
             ThunderShake = new ScreenShakeSettings() {
                 magnitude = 0.2f,
@@ -104,16 +109,19 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (!isActive) { return; }
 
-            m_lightningTimer -= ((!GameManager.IsBossIntro) ? BraveTime.DeltaTime : GameManager.INVARIANT_DELTA_TIME);
+            if (enableLightning) {
+                m_lightningTimer -= ((!GameManager.IsBossIntro) ? BraveTime.DeltaTime : GameManager.INVARIANT_DELTA_TIME);
 
-            if (m_lightningTimer <= 0 && isActive) {
-                StartCoroutine(DoLightningStrike());
-                if (LightningRenderers != null) {
-                    for (int i = 0; i < LightningRenderers.Length; i++) { StartCoroutine(ProcessLightningRenderer(LightningRenderers[i])); }
+                if (m_lightningTimer <= 0 && isActive) {
+                    StartCoroutine(DoLightningStrike());
+                    if (LightningRenderers != null) {
+                        for (int i = 0; i < LightningRenderers.Length; i++) { StartCoroutine(ProcessLightningRenderer(LightningRenderers[i])); }
+                    }
+                    StartCoroutine(HandleLightningAmbientBoost());
+                    m_lightningTimer = Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
                 }
-                StartCoroutine(HandleLightningAmbientBoost());
-                m_lightningTimer = Random.Range(MinTimeBetweenLightningStrikes, MaxTimeBetweenLightningStrikes);
             }
+            
         }
         
         private void CheckForWeatherFX(PlayerController player, float RainIntensity) {

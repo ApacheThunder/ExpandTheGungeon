@@ -210,6 +210,18 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandStringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public)
             );
 
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildBorderLayerCenterJungle Hook...."); }
+            Hook buildorderLayerCenterJungleHook = new Hook(
+                typeof(TK2DDungeonAssembler).GetMethod("BuildBorderLayerCenterJungle", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("BuildBorderLayerCenterJungleHook", BindingFlags.Static | BindingFlags.NonPublic)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildOcclusionLayerCenterJungle Hook...."); }
+            Hook buildOcclusionLayerCenterJungle = new Hook(
+                typeof(TK2DDungeonAssembler).GetMethod("BuildOcclusionLayerCenterJungle", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("BuildBorderLayerCenterJungleHook", BindingFlags.Static | BindingFlags.NonPublic)
+            );
+
             return;
         }
 
@@ -921,7 +933,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 self.Reset();                
             }            
         }
-        
+
+        private static void BuildBorderLayerCenterJungleHook(TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
+            // Do nothing.
+            // The code this function calls is not functional so I will not let it run.
+            return;
+        }
+
     }
 }
 

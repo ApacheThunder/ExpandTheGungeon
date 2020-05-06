@@ -25,6 +25,8 @@ namespace ExpandTheGungeon {
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
 
+        private static string ExceptionText;
+
 
         // public static GameObject TestObject;
 
@@ -48,6 +50,8 @@ namespace ExpandTheGungeon {
         }
 
         public override void Init() {
+            ExceptionText = string.Empty;
+
             ConsoleCommandName = "expand";
 
             itemList = new List<string>() {
@@ -77,13 +81,17 @@ namespace ExpandTheGungeon {
                 ExpandSharedHooks.InstallRequiredHooks();
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
             } catch (Exception ex) {
-                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!", true);
+                ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
+                // ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!", true);
                 Debug.LogException(ex);
                 return;
             }
         }
 
         public override void Start() {
+
+            if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
+
             // Init ItemAPI
             SetupItemAPI();
 

@@ -35,7 +35,7 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.quality = ItemQuality.D;
             pistol.UsesCustomCost = true;
             pistol.CustomCost = 10;
-            pistol.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
+            pistol.encounterTrackable.EncounterGuid = "baad9dd6-d005-458d-af02-933f6a1ba926";
 
             pistol.SetupSprite(defaultSprite: "bootleg_pistol_idle_001", fps: 8);
             pistol.SetAnimationFPS(pistol.shootAnimation, 8);
@@ -67,7 +67,7 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.gunSwitchGroup = "Uzi";
             machinepistol.UsesCustomCost = true;
             machinepistol.CustomCost = 15;
-            machinepistol.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
+            machinepistol.encounterTrackable.EncounterGuid = "e56adda5-0813-47e5-b9e0-cf2556689b0e";
 
             machinepistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
@@ -97,7 +97,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.gunSwitchGroup = "Shotgun";
             shotgun.UsesCustomCost = true;
             shotgun.CustomCost = 18;
-            shotgun.encounterTrackable.EncounterGuid = Guid.NewGuid().ToString();
+            shotgun.encounterTrackable.EncounterGuid = "fa0575b4-cf01-40dd-b6b0-ed6d962bff47";
 
             shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
