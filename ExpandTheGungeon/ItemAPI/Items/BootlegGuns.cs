@@ -17,7 +17,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init() {
            
-            Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "BootlegGun");
+            Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "bootleg_pistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
@@ -47,7 +47,7 @@ namespace ExpandTheGungeon.ItemAPI {
             BootlegPistolID = pistol.PickupObjectId;
 
 
-            Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "BootlegMachinePistol");
+            Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "bootleg_machine_pistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_machine_pistol", "ex:bootleg_machine_pistol");
             machinepistol.SetShortDescription("Of questionable quality...");
             machinepistol.SetLongDescription("It's a counterfeit machine gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
@@ -77,7 +77,7 @@ namespace ExpandTheGungeon.ItemAPI {
             BootlegMachinePistolID = machinepistol.PickupObjectId;
 
 
-            Gun shotgun = ETGMod.Databases.Items.NewGun("Bootleg Shotgun", "BootlegShotgun");
+            Gun shotgun = ETGMod.Databases.Items.NewGun("Bootleg Shotgun", "bootleg_shotgun");
             Game.Items.Rename("outdated_gun_mods:bootleg_shotgun", "ex:bootleg_shotgun");
             shotgun.SetShortDescription("Of questionable quality...");
             shotgun.SetLongDescription("It's a counterfeit shotgun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");

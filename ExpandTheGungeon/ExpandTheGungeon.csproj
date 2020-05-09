@@ -113,6 +113,7 @@
     <Compile Include="ExpandComponents\ExpandRemoveGunOnAmmoDepletion.cs" />
     <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
+    <Compile Include="ExpandComponents\JungleTreeController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ExpandMain\ExpandSynergies.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
     <Compile Include="ItemAPI\Items\ChronenbergBullets.cs" />
     <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
+    <Compile Include="ItemAPI\Items\CustomMasterRounds.cs" />
     <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
     <Compile Include="ExpandObjects\ExpandCorruptedRoomAmbiencePlacable.cs" />
     <Compile Include="ExpandComponents\ExpandElevatorDepartureManager.cs" />
@@ -1175,6 +1177,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Keep_Spiral.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\JungleAssets\Jungle_Tree_Large.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\JungleAssets\Jungle_Tree_Large_Shadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Keep_TreeRoom.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\JungleAssets\Jungle_Tree_Large_Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\JungleAssets\Jungle_Tree_Large_Frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\glitchround.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

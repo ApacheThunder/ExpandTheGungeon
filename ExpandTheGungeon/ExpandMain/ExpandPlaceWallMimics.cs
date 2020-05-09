@@ -349,7 +349,9 @@ namespace ExpandTheGungeon.ExpandMain {
             List<IntVector2> spawnList = new List<IntVector2>();
             for (int i = 0; i < dungeon.data.rooms.Count; i++) {
                 RoomHandler roomHandler = dungeon.data.rooms[i];
-                if (roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
+                if (roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && 
+                    roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.REWARD)
+                {
                     for (int X = roomHandler.area.basePosition.x; X < roomHandler.area.basePosition.x + roomHandler.area.dimensions.x; X++) {
                         for (int Y = roomHandler.area.basePosition.y; Y < roomHandler.area.basePosition.y + roomHandler.area.dimensions.y; Y++) {
                             if (ClearForAlarmMushroom(dungeon, Clearence, Clearence, X, Y)) { spawnList.Add(new IntVector2(X, Y)); }
@@ -398,7 +400,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
-            if (dungeon.IsGlitchDungeon | ExpandTheGungeon.isGlitchFloor | ExpandStats.elevatorHasBeenUsed) { return; }
+            if (dungeon.IsGlitchDungeon | /*ExpandTheGungeon.isGlitchFloor |*/ ExpandStats.elevatorHasBeenUsed | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
 
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {

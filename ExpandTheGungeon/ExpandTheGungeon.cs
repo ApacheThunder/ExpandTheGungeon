@@ -21,7 +21,7 @@ namespace ExpandTheGungeon {
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
         
-        public static bool isGlitchFloor = false;
+        // public static bool isGlitchFloor = false;
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
 
@@ -62,7 +62,8 @@ namespace ExpandTheGungeon {
                 "Cronenberg Bullets",
                 "Mimiclay",
                 "The Lead Key",
-                "RockSlide"
+                "RockSlide",
+                "Corrupted Master Round"
                 // "Table Tech Expand"
             };
             
@@ -159,6 +160,7 @@ namespace ExpandTheGungeon {
                     TheLeadKey.Init();
                     // TableTechExpand.Init();
                     RockSlide.Init();
+                    CustomMasterRounds.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();

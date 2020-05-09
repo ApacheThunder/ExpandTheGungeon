@@ -47,7 +47,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");
             item.quality = ItemQuality.S;
             item.CanBeDropped = false;
-            
+
             foreach (string spritePath in m_SpriteNames) { SpriteBuilder.AddSpriteToCollection((basePath + spritePath), item.sprite.Collection); }
 
             ExpandUtility.GenerateSpriteAnimator(item.gameObject, playAutomatically: true);

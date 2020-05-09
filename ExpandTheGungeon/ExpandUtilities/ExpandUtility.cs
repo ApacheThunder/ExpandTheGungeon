@@ -26,6 +26,116 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         private static ExpandUtility m_instance;
 
+        public static tk2dSpriteCollectionData ReplaceDungeonCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<string> spriteList = null) {
+            if (sourceCollection == null) { return null; }
+            tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
+            tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
+            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinietions[i] = collectionData.spriteDefinitions[i].Copy(); }
+            collectionData.spriteDefinitions = spriteDefinietions;
+            if (spriteSheet != null) {
+                Material[] materials = sourceCollection.materials;
+                Material[] newMaterials = new Material[materials.Length];
+                if (materials != null) {
+                    for (int i = 0; i < materials.Length; i++) {
+                        newMaterials[i] = materials[i].Copy(spriteSheet);
+                    }
+                    collectionData.materials = newMaterials;
+                    foreach (Material material2 in collectionData.materials) {
+                        foreach (tk2dSpriteDefinition spriteDefinition in collectionData.spriteDefinitions) {
+                            bool flag3 = material2 != null && spriteDefinition.material.name.Equals(material2.name);
+                            if (flag3) {
+                                spriteDefinition.material = material2;
+                                spriteDefinition.materialInst = new Material(material2);
+                            }
+                        }
+                    }
+                }                
+            } else if (spriteList != null) {
+                RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
+                for (int i = 0; i < spriteList.Count; i++) {
+                    Texture2D texture2D = ResourceExtractor.GetTextureFromResource(spriteList[i]);
+                    if (!texture2D) {
+                        Debug.Log("[BuildDungeonCollection] Null Texture found at index: " + i);
+                        goto IL_EXIT;
+                    }
+                    float X = (texture2D.width / 16f);
+                    float Y = (texture2D.height / 16f);
+                    // tk2dSpriteDefinition spriteData = collectionData.GetSpriteDefinition(i.ToString());
+                    tk2dSpriteDefinition spriteData = collectionData.spriteDefinitions[i];
+                    if (spriteData != null) {
+                        if (spriteData.boundsDataCenter != Vector3.zero) {
+                            try {
+                                // Debug.Log("[BuildDungeonCollection] Pack Existing Atlas Element at index: " + i);
+                                RuntimeAtlasSegment runtimeAtlasSegment = runtimeAtlasPage.Pack(texture2D, false);
+                                spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
+                                spriteData.uvs = runtimeAtlasSegment.uvs;
+                                spriteData.extractRegion = true;
+                                spriteData.position0 = Vector3.zero;
+                                spriteData.position1 = new Vector3(X, 0, 0);
+                                spriteData.position2 = new Vector3(0, Y, 0);
+                                spriteData.position3 = new Vector3(X, Y, 0);
+                                spriteData.boundsDataCenter = new Vector2((X/2), (Y/2));
+                                spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
+                                spriteData.boundsDataExtents = new Vector2(X, Y);
+                                spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
+                            } catch (Exception) {
+                                Debug.Log("[BuildDungeonCollection] Exception caught at index: " + i);
+                            }
+                        } else {
+                            // Debug.Log("Test 3. Replace Existing Atlas Element at index: " + i);
+                            try {
+                                ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                            } catch (Exception) {
+                                Debug.Log("[BuildDungeonCollection] Exception caught at index: " + i);
+                            }
+                        }
+                    } else {
+                        Debug.Log("[BuildDungeonCollection] SpriteData is null at index: " + i);
+                    }
+                    IL_EXIT:;
+                }
+                runtimeAtlasPage.Apply();
+            } else {
+                Debug.Log("[BuildDungeonCollection] SpriteList is null!");
+            }
+            return collectionData;
+        }
+
+        public static TileIndexGrid BuildNewTileIndexGrid(string name) {
+            TileIndexGrid m_NewTileIndexGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
+
+            m_NewTileIndexGrid.name = name;
+            m_NewTileIndexGrid.roomTypeRestriction = -1;
+            m_NewTileIndexGrid.extendedSet = false;
+            m_NewTileIndexGrid.CenterCheckerboard = false;
+            m_NewTileIndexGrid.CheckerboardDimension = 1;
+            m_NewTileIndexGrid.CenterIndicesAreStrata = false;
+            m_NewTileIndexGrid.PitInternalSquareGrids = new List<TileIndexGrid>(0);
+            m_NewTileIndexGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
+                PitSquareChance = 0.1f,
+                CanBeFlushLeft = false,
+                CanBeFlushRight = false,
+                CanBeFlushBottom = false
+            };
+            m_NewTileIndexGrid.PitBorderIsInternal = false;
+            m_NewTileIndexGrid.PitBorderOverridesFloorTile = false;
+            m_NewTileIndexGrid.CeilingBorderUsesDistancedCenters = false;
+            m_NewTileIndexGrid.PathFacewallStamp = null;
+            m_NewTileIndexGrid.PathSidewallStamp = null;
+            m_NewTileIndexGrid.PathStubNorth = null;
+            m_NewTileIndexGrid.PathStubEast = null;
+            m_NewTileIndexGrid.PathStubSouth = null;
+            m_NewTileIndexGrid.PathStubWest = null;
+
+            FieldInfo[] TileIndexGridInfo = typeof(TileIndexGrid).GetFields();
+            TileIndexList defaultValue = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
+            foreach (var fieldInfo in TileIndexGridInfo) {
+                if ( fieldInfo.FieldType == typeof(TileIndexList)) { fieldInfo.SetValue(m_NewTileIndexGrid, defaultValue); }
+            }
+
+            return m_NewTileIndexGrid;
+        }
+
         public static GameObject SpawnCustomBowlerNote(GameObject note, Vector2 position, RoomHandler parentRoom, string customText, bool doPoof = false) {
             GameObject noteObject = Instantiate(note, position.ToVector3ZisY(0f), Quaternion.identity);
             if (noteObject) {
@@ -2365,7 +2475,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (string.IsNullOrEmpty(flowPath)) { yield break; }            
             if (IsSecretRatFloor) {
                 yield return new WaitForSeconds(delay);
-                ExpandTheGungeon.isGlitchFloor = true;
+                // ExpandTheGungeon.isGlitchFloor = true;
                 GameManager.Instance.LoadCustomLevel("tt_canyon");
             } else {
                 string flow = flowPath;

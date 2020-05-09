@@ -5,7 +5,6 @@ using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
-using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon.ExpandObjects {
@@ -16,9 +15,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 
         public static List<string> customDungeons;
 
-        public static GameObject Base_Canyon;
+        // public static GameObject Base_Canyon;
 
         public static GameLevelDefinition CanyonDefinition;
+        public static GameLevelDefinition JungleDefinition;
 
         public static Dungeon GetOrLoadByNameHook(string name) {
             Dungeon dungeon = null;
@@ -98,7 +98,34 @@ namespace ExpandTheGungeon.ExpandObjects {
                 flowEntries = new List<DungeonFlowLevelEntry>(0),
                 predefinedSeeds = new List<int>(0)
             };
+
+            foreach (GameLevelDefinition levelDefinition in GameManager.Instance.customFloors) {
+                if (levelDefinition.dungeonSceneName == "tt_jungle") {
+                    JungleDefinition = levelDefinition;
+                    break;
+                }
+            }
             
+            if (JungleDefinition != null) {
+                JungleDefinition.priceMultiplier = 1.20000005f;
+                JungleDefinition.secretDoorHealthMultiplier = 1;
+                JungleDefinition.enemyHealthMultiplier = 1.33329999f;
+                JungleDefinition.damageCap = 300;
+                JungleDefinition.bossDpsCap = 42;
+            }
+
+            for(int i = 0; i < GameManagerObject.GetComponent<GameManager>().customFloors.Count; i++) {
+                if (GameManagerObject.GetComponent<GameManager>().customFloors[i].dungeonSceneName == "tt_jungle") {
+                    GameLevelDefinition levelDefinition = GameManagerObject.GetComponent<GameManager>().customFloors[i];
+                    levelDefinition.priceMultiplier = 1.20000005f;
+                    levelDefinition.secretDoorHealthMultiplier = 1;
+                    levelDefinition.enemyHealthMultiplier = 1.33329999f;
+                    levelDefinition.damageCap = 300;
+                    levelDefinition.bossDpsCap = 42;
+                    break;
+                }
+            }
+
             GameManager.Instance.customFloors.Add(CanyonDefinition);
             GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition);
 
@@ -124,11 +151,42 @@ namespace ExpandTheGungeon.ExpandObjects {
                 };
             }
 
+            if (JungleDefinition == null) {
+                foreach (GameLevelDefinition levelDefinition in GameManager.Instance.customFloors) {
+                    if (levelDefinition.dungeonSceneName == "tt_jungle") {
+                        JungleDefinition = levelDefinition;
+                        break;
+                    }
+                }
+
+                if (JungleDefinition != null) {
+                    JungleDefinition.priceMultiplier = 1.20000005f;
+                    JungleDefinition.secretDoorHealthMultiplier = 1;
+                    JungleDefinition.enemyHealthMultiplier = 1.33329999f;
+                    JungleDefinition.damageCap = 300;
+                    JungleDefinition.bossDpsCap = 42;
+                }
+            }
+
+
             if (GameManager.Instance && GameManager.Instance.customFloors != null) {
                 foreach (GameLevelDefinition definition in GameManager.Instance.customFloors) {
                     if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
                     break;
                 }
+
+                for(int i = 0; i < GameManagerObject.GetComponent<GameManager>().customFloors.Count; i++) {
+                    if (GameManagerObject.GetComponent<GameManager>().customFloors[i].dungeonSceneName == "tt_jungle") {
+                        GameLevelDefinition levelDefinition = GameManagerObject.GetComponent<GameManager>().customFloors[i];
+                        levelDefinition.priceMultiplier = 1.20000005f;
+                        levelDefinition.secretDoorHealthMultiplier = 1;
+                        levelDefinition.enemyHealthMultiplier = 1.33329999f;
+                        levelDefinition.damageCap = 300;
+                        levelDefinition.bossDpsCap = 42;
+                        break;
+                    }
+                }
+
                 if (EntryNotExist) { GameManager.Instance.customFloors.Add(CanyonDefinition); }
             }
 
@@ -279,7 +337,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
-                dungeonCollection = ExpandUtility.BuildSpriteCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, ExpandPrefabs.ENV_Tileset_Canyon_Texture),
+                dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, ExpandPrefabs.ENV_Tileset_Canyon_Texture),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = FinalScenarioBulletPrefab.tileIndices.aoTileIndices,
                 placeBorders = true,
@@ -357,7 +415,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.SecretRoomVerticalPoofVFX = MinesDungeonPrefab.SecretRoomVerticalPoofVFX;
             dungeon.sharedSettingsPrefab = MinesDungeonPrefab.sharedSettingsPrefab;
             dungeon.NormalRatGUID = string.Empty;
-            dungeon.BossMasteryTokenItemId = 468;
+            dungeon.BossMasteryTokenItemId = CustomMasterRounds.CanyonMasterRoundID;
             dungeon.UsesOverrideTertiaryBossSets = false;
             dungeon.OverrideTertiaryRewardSets = new List<TertiaryBossRewardSet>(0);
             dungeon.defaultPlayerPrefab = MinesDungeonPrefab.defaultPlayerPrefab;
@@ -404,10 +462,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Woods.supportsDiagonalWalls = false;
             Jungle_Woods.supportsUpholstery = false;
             Jungle_Woods.carpetIsMainFloor = false;
-            TileIndexGrid jungle_carpetGrid1 = ScriptableObject.CreateInstance<TileIndexGrid>();
-            TileIndexGrid jungle_carpetGrid2 = ScriptableObject.CreateInstance<TileIndexGrid>();
-            jungle_carpetGrid1.name = "Nakatomi_Carpet_Dark_01";
-            jungle_carpetGrid1.roomTypeRestriction = -1;
+
+            TileIndexGrid jungle_carpetGrid1 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_Dark_01");            
             jungle_carpetGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 164 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 165 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 166 }, indexWeights = new List<float>() { 1 } };
@@ -417,82 +473,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_carpetGrid1.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.bottomIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.horizontalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.verticalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.rightCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.leftCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.allSidesIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 212 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 211 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 190 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.doubleNubsTop = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.doubleNubsRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.quadNubs = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.extendedSet = false;
-            jungle_carpetGrid1.CenterCheckerboard = false;
-            jungle_carpetGrid1.CheckerboardDimension = 1;
-            jungle_carpetGrid1.CenterIndicesAreStrata = false;
-            jungle_carpetGrid1.PitInternalSquareGrids = new List<TileIndexGrid>(0);
-            jungle_carpetGrid1.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = false,
-                CanBeFlushRight = false,
-                CanBeFlushBottom = false
-            };
-            jungle_carpetGrid1.PitBorderIsInternal = false;
-            jungle_carpetGrid1.PitBorderOverridesFloorTile = false;
-            jungle_carpetGrid1.CeilingBorderUsesDistancedCenters = false;
-            jungle_carpetGrid1.PathFacewallStamp = null;
-            jungle_carpetGrid1.PathSidewallStamp = null;
-            jungle_carpetGrid1.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid1.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid1.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid1.PathStubNorth = null;
-            jungle_carpetGrid1.PathStubEast = null;
-            jungle_carpetGrid1.PathStubSouth = null;
-            jungle_carpetGrid1.PathStubWest = null;
 
-            jungle_carpetGrid2.name = "Nakatomi_Carpet_Red_01";
+            /*TileIndexGrid jungle_carpetGrid2 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_Red_01");
             jungle_carpetGrid2.roomTypeRestriction = -1;
             jungle_carpetGrid2.topLeftIndices = new TileIndexList() { indices = new List<int>() { 230 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.topIndices = new TileIndexList() { indices = new List<int>() { 231 }, indexWeights = new List<float>() { 1 } };
@@ -503,90 +489,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_carpetGrid2.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 274 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.bottomIndices = new TileIndexList() { indices = new List<int>() { 275 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 276 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.horizontalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.verticalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.rightCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.leftCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.allSidesIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 278 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 277 }, indexWeights = new List<float>() { 1 } };
             jungle_carpetGrid2.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 256 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 255 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.doubleNubsTop = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.doubleNubsRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.quadNubs = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.extendedSet = false;
-            jungle_carpetGrid2.CenterCheckerboard = false;
-            jungle_carpetGrid2.CheckerboardDimension = 1;
-            jungle_carpetGrid2.CenterIndicesAreStrata = false;
-            jungle_carpetGrid2.PitInternalSquareGrids = new List<TileIndexGrid>(0);
-            jungle_carpetGrid2.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = false,
-                CanBeFlushRight = false,
-                CanBeFlushBottom = false
-            };
-            jungle_carpetGrid2.PitBorderIsInternal = false;
-            jungle_carpetGrid2.PitBorderOverridesFloorTile = false;
-            jungle_carpetGrid2.CeilingBorderUsesDistancedCenters = false;
-            jungle_carpetGrid2.PathFacewallStamp = null;
-            jungle_carpetGrid2.PathSidewallStamp = null;
-            jungle_carpetGrid2.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid2.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid2.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_carpetGrid2.PathStubNorth = null;
-            jungle_carpetGrid2.PathStubEast = null;
-            jungle_carpetGrid2.PathStubSouth = null;
-            jungle_carpetGrid2.PathStubWest = null;
-            Jungle_Woods.carpetGrids = new TileIndexGrid[] { jungle_carpetGrid1/*, jungle_carpetGrid2*/ };
+            jungle_carpetGrid2.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 255 }, indexWeights = new List<float>() { 1 } };*/
+
             Jungle_Woods.supportsChannels = false;
             Jungle_Woods.minChannelPools = 0;
             Jungle_Woods.maxChannelPools = 3;
             Jungle_Woods.channelTenacity = 0.75f;
             Jungle_Woods.supportsLavaOrLavalikeSquares = false;
 
-            TileIndexGrid jungle_lavaGrid1 = ScriptableObject.CreateInstance<TileIndexGrid>();
-            jungle_lavaGrid1.name = "Nakatomi_Carpet_dark_01";
-            jungle_lavaGrid1.roomTypeRestriction = -1;
+            TileIndexGrid jungle_lavaGrid1 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_dark_01");
             jungle_lavaGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 318 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 406 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 340 }, indexWeights = new List<float>() { 1 } };
@@ -607,15 +521,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_lavaGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 519 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 498 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 497 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { 408 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { 407 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { 409 }, indexWeights = new List<float>() { 1 } };
@@ -647,37 +552,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_lavaGrid1.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { 366 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { 367 }, indexWeights = new List<float>() { 1 } };
             jungle_lavaGrid1.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { 389 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.extendedSet = false;
-            jungle_lavaGrid1.CenterCheckerboard = false;
-            jungle_lavaGrid1.CheckerboardDimension = 1;
-            jungle_lavaGrid1.CenterIndicesAreStrata = false;
-            jungle_lavaGrid1.PitInternalSquareGrids = new List<TileIndexGrid>(0);
-            jungle_lavaGrid1.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = false,
-                CanBeFlushRight = false,
-                CanBeFlushBottom = false
-            };
-            jungle_lavaGrid1.PitBorderIsInternal = false;
-            jungle_lavaGrid1.PitBorderOverridesFloorTile = false;
-            jungle_lavaGrid1.CeilingBorderUsesDistancedCenters = false;
-            jungle_lavaGrid1.PathFacewallStamp = null;
-            jungle_lavaGrid1.PathSidewallStamp = null;
-            jungle_lavaGrid1.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_lavaGrid1.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_lavaGrid1.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_lavaGrid1.PathStubNorth = null;
-            jungle_lavaGrid1.PathStubEast = null;
-            jungle_lavaGrid1.PathStubSouth = null;
-            jungle_lavaGrid1.PathStubWest = null;
+
+            Jungle_Woods.carpetGrids = new TileIndexGrid[] { jungle_carpetGrid1/*, jungle_carpetGrid2*/ };
+
             Jungle_Woods.lavaGrids = new TileIndexGrid[] { jungle_lavaGrid1 };
             Jungle_Woods.supportsIceSquares = false;
             Jungle_Woods.iceGrids = new TileIndexGrid[0];
             Jungle_Woods.roomFloorBorderGrid = null;
 
-            TileIndexGrid jungle_wood_roomCeilingBorderGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
-            jungle_wood_roomCeilingBorderGrid.name = "Jungle_CeilingBorder_Inner_01";
-            jungle_wood_roomCeilingBorderGrid.roomTypeRestriction = -1;
+            TileIndexGrid jungle_wood_roomCeilingBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_CeilingBorder_Inner_01");
             jungle_wood_roomCeilingBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 334 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_roomCeilingBorderGrid.topIndices = new TileIndexList() { indices = new List<int>() { 335 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_roomCeilingBorderGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 336 }, indexWeights = new List<float>() { 1 } };
@@ -698,167 +581,35 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_wood_roomCeilingBorderGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_roomCeilingBorderGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_roomCeilingBorderGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.doubleNubsTop = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.doubleNubsRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.quadNubs = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.extendedSet = false;
-            jungle_wood_roomCeilingBorderGrid.CenterCheckerboard = false;
-            jungle_wood_roomCeilingBorderGrid.CheckerboardDimension = 1;
-            jungle_wood_roomCeilingBorderGrid.CenterIndicesAreStrata = false;
-            jungle_wood_roomCeilingBorderGrid.PitInternalSquareGrids = new List<TileIndexGrid>(0);
-            jungle_wood_roomCeilingBorderGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = false,
-                CanBeFlushRight = false,
-                CanBeFlushBottom = false
-            };
-            jungle_wood_roomCeilingBorderGrid.PitBorderIsInternal = false;
-            jungle_wood_roomCeilingBorderGrid.PitBorderOverridesFloorTile = false;
-            jungle_wood_roomCeilingBorderGrid.CeilingBorderUsesDistancedCenters = false;
-            jungle_wood_roomCeilingBorderGrid.PathFacewallStamp = null;
-            jungle_wood_roomCeilingBorderGrid.PathSidewallStamp = null;
-            jungle_wood_roomCeilingBorderGrid.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_roomCeilingBorderGrid.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_roomCeilingBorderGrid.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_roomCeilingBorderGrid.PathStubNorth = null;
-            jungle_wood_roomCeilingBorderGrid.PathStubEast = null;
-            jungle_wood_roomCeilingBorderGrid.PathStubSouth = null;
-            jungle_wood_roomCeilingBorderGrid.PathStubWest = null;
+            
             Jungle_Woods.roomCeilingBorderGrid = jungle_wood_roomCeilingBorderGrid;
 
-            TileIndexGrid jungle_wood_pitLayoutGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
-            jungle_wood_pitLayoutGrid.name = "Belly_PitLayout_01";
-            jungle_wood_pitLayoutGrid.roomTypeRestriction = -1;
+            TileIndexGrid jungle_wood_pitLayoutGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_PitLayout_01");
             jungle_wood_pitLayoutGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.topIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.leftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.centerIndices = new TileIndexList() {
                 indices = new List<int>() { 748, 770, 792, 814 },
                 indexWeights = new List<float>() { 1, 1, 1, 1 }
             };
-            jungle_wood_pitLayoutGrid.rightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.doubleNubsTop = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.doubleNubsRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.quadNubs = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_pitLayoutGrid.extendedSet = true;
-            jungle_wood_pitLayoutGrid.CenterCheckerboard = false;
-            jungle_wood_pitLayoutGrid.CheckerboardDimension = 1;
-            jungle_wood_pitLayoutGrid.CenterIndicesAreStrata = false;
-            jungle_wood_pitLayoutGrid.PitInternalSquareGrids = new List<TileIndexGrid>(0);
             jungle_wood_pitLayoutGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
                 PitSquareChance = 0.1f,
                 CanBeFlushLeft = true,
                 CanBeFlushRight = true,
                 CanBeFlushBottom = true
             };
-            jungle_wood_pitLayoutGrid.PitBorderIsInternal = false;
-            jungle_wood_pitLayoutGrid.PitBorderOverridesFloorTile = false;
-            jungle_wood_pitLayoutGrid.CeilingBorderUsesDistancedCenters = false;
-            jungle_wood_pitLayoutGrid.PathFacewallStamp = null;
-            jungle_wood_pitLayoutGrid.PathSidewallStamp = null;
-            jungle_wood_pitLayoutGrid.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_pitLayoutGrid.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_pitLayoutGrid.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_pitLayoutGrid.PathStubNorth = null;
-            jungle_wood_pitLayoutGrid.PathStubEast = null;
-            jungle_wood_pitLayoutGrid.PathStubSouth = null;
-            jungle_wood_pitLayoutGrid.PathStubWest = null;
+
             Jungle_Woods.pitLayoutGrid = jungle_wood_pitLayoutGrid;
             Jungle_Woods.pitBorderRaisedGrid = null;
             Jungle_Woods.additionalPitBorderFlatGrid = null;
 
-            TileIndexGrid jungle_wood_outerCeilingBorderGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
-            jungle_wood_outerCeilingBorderGrid.name = "Jungle_CeilingBorder_Outer_01";
-            jungle_wood_outerCeilingBorderGrid.roomTypeRestriction = -1;
+            TileIndexGrid jungle_wood_outerCeilingBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_CeilingBorder_Outer_01");
             jungle_wood_outerCeilingBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 268 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_outerCeilingBorderGrid.topIndices = new TileIndexList() {
                 indices = new List<int>() { 400, 401, 402 },
@@ -884,80 +635,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             jungle_wood_outerCeilingBorderGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 318 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_outerCeilingBorderGrid.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 316 }, indexWeights = new List<float>() { 1 } };
             jungle_wood_outerCeilingBorderGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 317 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topCenterLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topCenterRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.thirdTopRowLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.thirdTopRowCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.thirdTopRowRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.internalBottomLeftCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.internalBottomCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.internalBottomRightCenterIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.doubleNubsTop = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.doubleNubsRight = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.quadNubs = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.extendedSet = false;
-            jungle_wood_outerCeilingBorderGrid.CenterCheckerboard = false;
-            jungle_wood_outerCeilingBorderGrid.CheckerboardDimension = 1;
-            jungle_wood_outerCeilingBorderGrid.CenterIndicesAreStrata = false;
-            jungle_wood_outerCeilingBorderGrid.PitInternalSquareGrids = new List<TileIndexGrid>(0);
-            jungle_wood_outerCeilingBorderGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = false,
-                CanBeFlushRight = false,
-                CanBeFlushBottom = false
-            };
-            jungle_wood_outerCeilingBorderGrid.PitBorderIsInternal = false;
-            jungle_wood_outerCeilingBorderGrid.PitBorderOverridesFloorTile = false;
-            jungle_wood_outerCeilingBorderGrid.CeilingBorderUsesDistancedCenters = false;
-            jungle_wood_outerCeilingBorderGrid.PathFacewallStamp = null;
-            jungle_wood_outerCeilingBorderGrid.PathSidewallStamp = null;
-            jungle_wood_outerCeilingBorderGrid.PathPitPosts = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_outerCeilingBorderGrid.PathPitPostsBL = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_outerCeilingBorderGrid.PathPitPostsBR = new TileIndexList() { indices = new List<int>(0), indexWeights = new List<float>(0) };
-            jungle_wood_outerCeilingBorderGrid.PathStubNorth = null;
-            jungle_wood_outerCeilingBorderGrid.PathStubEast = null;
-            jungle_wood_outerCeilingBorderGrid.PathStubSouth = null;
-            jungle_wood_outerCeilingBorderGrid.PathStubWest = null;
+            
+
             Jungle_Woods.pitBorderFlatGrid = jungle_wood_outerCeilingBorderGrid;
             Jungle_Woods.outerCeilingBorderGrid = jungle_wood_outerCeilingBorderGrid;
             Jungle_Woods.floorSquareDensity = 0.05f;
             Jungle_Woods.floorSquares = new TileIndexGrid[0];
             Jungle_Woods.usesFacewallGrids = false;
-
             Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[0];
             Jungle_Woods.usesInternalMaterialTransitions = false;
             Jungle_Woods.usesProceduralMaterialTransitions = false;
@@ -1015,16 +699,35 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Bamboo.minChannelPools = 0;
             Jungle_Bamboo.maxChannelPools = 3;
             Jungle_Bamboo.channelTenacity = 0.75f;
-            Jungle_Bamboo.supportsLavaOrLavalikeSquares = false;
+            Jungle_Bamboo.supportsLavaOrLavalikeSquares = true;
             Jungle_Bamboo.lavaGrids = new TileIndexGrid[] { jungle_lavaGrid1 };
             Jungle_Bamboo.supportsIceSquares = false;
             Jungle_Bamboo.iceGrids = new TileIndexGrid[0];
             Jungle_Bamboo.roomFloorBorderGrid = null;
             Jungle_Bamboo.roomCeilingBorderGrid = jungle_wood_roomCeilingBorderGrid;                        
             Jungle_Bamboo.pitLayoutGrid = jungle_wood_pitLayoutGrid;
+
+            TileIndexGrid jungle_bamboo_pitBorderFlatGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_Custom_PitBorder_01");
+            jungle_bamboo_pitBorderFlatGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.topIndices = new TileIndexList() { indices = new List<int>() { 187 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 186 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 190 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
+            jungle_bamboo_pitBorderFlatGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
+            
             Jungle_Bamboo.pitBorderFlatGrid = jungle_wood_outerCeilingBorderGrid;
             Jungle_Bamboo.pitBorderRaisedGrid = null;
-            Jungle_Bamboo.additionalPitBorderFlatGrid = null;            
+            Jungle_Bamboo.additionalPitBorderFlatGrid = null;
             Jungle_Bamboo.outerCeilingBorderGrid = jungle_wood_outerCeilingBorderGrid;
             Jungle_Bamboo.floorSquareDensity = 0.05f;
             Jungle_Bamboo.floorSquares = new TileIndexGrid[0];
@@ -1100,13 +803,16 @@ namespace ExpandTheGungeon.ExpandObjects {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { ExpandDungeonFlows.demo_stage_flow.DEMO_STAGE_FLOW() },
+                // flows = new List<DungeonFlow>() { ExpandDungeonFlows.demo_stage_flow.DEMO_STAGE_FLOW() },
+                flows = SewersPrefab.PatternSettings.flows,
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
                 DEBUG_RENDER_CANVASES_SEPARATELY = false
             };
+
             
+
             dungeon.ForceRegenerationOfCharacters = false;
             dungeon.ActuallyGenerateTilemap = true;
             dungeon.decoSettings = new TilemapDecoSettings {
@@ -1171,8 +877,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 patternSpacing = 3,
                 patternExpansion = 0,
                 decoPatchFrequency = 0.01f,
-                ambientLightColor = new Color(0.927336f, 0.966108f, 0.985294f, 1),
-                ambientLightColorTwo = new Color(0.92549f, 0.964706f, 0.984314f, 1),
+                ambientLightColor = new Color(0.727336f, 0.766108f, 0.785294f, 1),
+                ambientLightColorTwo = new Color(0.62549f, 0.664706f, 0.684314f, 1),
                 lowQualityAmbientLightColor = new Color(1, 1, 1, 1),
                 lowQualityAmbientLightColorTwo = new Color(1, 1, 1, 1),
                 lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
@@ -1187,9 +893,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                 lightCookies = new Texture2D[0],
                 debug_view = false
             };
+            
+            /*List<string> JungleTextureCollection = new List<string>();
+
+            for (int i = 0; i < 704; i++) { JungleTextureCollection.Add("Textures/Tilesets/Jungle/" + i + ".png"); }*/
+            
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
                 dungeonCollection = braveResources.LoadAsset<GameObject>("TallGrassStrip").GetComponent<tk2dTiledSprite>().Collection,
+                // dungeonCollection = ExpandUtility.ReplaceDungeonCollection(GungeonPrefab.tileIndices.dungeonCollection, spriteList: JungleTextureCollection),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
                     AOFloorTileIndex = 0,
@@ -1235,9 +947,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 globalSecondBorderTiles = new List<int>(0),
                 edgeDecorationTiles = null
             };
+
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
                 Jungle_Woods,
                 Jungle_Bamboo,
+                Jungle_Woods,
                 Jungle_Woods,
                 Jungle_Woods,
                 Jungle_Woods,
@@ -1280,7 +994,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 CanIncludePits = true
             };
             dungeon.PlaceDoors = true;
-            dungeon.doorObjects = MinesDungeonPrefab.doorObjects;
+            dungeon.doorObjects = ExpandPrefabs.Jungle_Doors;
             dungeon.oneWayDoorObjects = GungeonPrefab.oneWayDoorObjects;
             dungeon.oneWayDoorPressurePlate = GungeonPrefab.oneWayDoorPressurePlate;
             dungeon.phantomBlockerDoorObjects = GungeonPrefab.phantomBlockerDoorObjects;

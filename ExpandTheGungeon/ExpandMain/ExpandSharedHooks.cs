@@ -642,7 +642,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!"); }
                 Debug.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!");
                 Debug.LogException(ex);
-                if (ExpandTheGungeon.isGlitchFloor) { key = "TEST"; } else { key = "???"; }
+                if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON /*ExpandTheGungeon.isGlitchFloor*/) { key = "TEST"; } else { key = "???"; }
             }
             if (self.ModLootPerFloor.TryGetValue(key, out collection)) {
                 GameManager.Instance.Dungeon.baseChestContents.defaultItemDrops.elements.AddRange(collection);

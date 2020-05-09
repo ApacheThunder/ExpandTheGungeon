@@ -7,7 +7,6 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon {
 
@@ -43,14 +42,14 @@ namespace ExpandTheGungeon {
                 ExpandDungeonFlows.Custom_GlitchChestAlt_Flow.sharedInjectionData.Clear();
             }*/
 
-            if (ExpandTheGungeon.isGlitchFloor && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+            if (/*ExpandTheGungeon.isGlitchFloor && */GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 GameManager.Instance.StartCoroutine(secretglitchfloor_flow.InitCustomObjects(Random.value, BraveUtility.RandomBool(), BraveUtility.RandomBool()));                
             }
 
             InitObjectMods(GameManager.Instance.Dungeon);
 
             ExpandDungeonFlow.isGlitchFlow = false;
-            ExpandTheGungeon.isGlitchFloor = false;
+            //ExpandTheGungeon.isGlitchFloor = false;
         }
 
         private void InitObjectMods(Dungeon dungeon) {
@@ -60,6 +59,7 @@ namespace ExpandTheGungeon {
                 ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
                 ThunderstormPlacable.useCustomIntensity = false;
                 ThunderstormPlacable.enableLightning = true;
+                ThunderstormPlacable.isSecretFloor = false;
                 ThunderstormPlacable.ConfigureOnPlacement(null);
             }
 

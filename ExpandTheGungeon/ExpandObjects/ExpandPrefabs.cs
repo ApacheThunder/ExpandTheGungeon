@@ -26,10 +26,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         private static Dungeon ForgeDungeonPrefab;
         private static Dungeon CatacombsDungeonPrefab;
         private static Dungeon NakatomiDungeonPrefab;
-
-        private static Dungeon FinalScenarioBulletPrefab;
-        private static Dungeon FinalScenarioPilotPrefab;
-
+        
         // Custom Textures
         public static Texture2D StoneCubeWestTexture;
         public static Texture2D ENV_Tileset_Canyon_Texture;
@@ -187,6 +184,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
 
+
         public static GameObject MimicNPC;
         public static GameObject RatCorpseNPC;
         public static GameObject PlayerLostRatNote;
@@ -220,6 +218,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static DungeonPlaceable TinySecretRoomJunkReward;
         public static DungeonPlaceable RatTrapPlacable;
         public static DungeonPlaceable CorruptedSecretRoomSpecialItem;
+        public static DungeonPlaceable Jungle_Doors;
 
         // Modified/Reference AIActors
         public static AIActor MetalCubeGuy;
@@ -261,7 +260,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject RickRollAnimationObject;
         public static GameObject RickRollMusicSwitchObject;
         public static GameObject ExpandThunderstormPlaceable;
-
+        public static GameObject Door_Horizontal_Jungle;
+        public static GameObject Door_Vertical_Jungle;
+        public static GameObject Jungle_LargeTree;
+        
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -410,6 +412,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             AbbeyAblernRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(CathedralDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom));
             AbbeyFlowModifierData.exactRoom = null;
             AbbeyFlowModifierData.roomTable = AbbeyAblernRoomTable;
+
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[2].overrideExactRoom),
@@ -1794,6 +1797,75 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandThunderstormPlaceable.SetActive(false);
             DontDestroyOnLoad(ExpandThunderstormPlaceable);
             FakePrefab.MarkAsFakePrefab(ExpandThunderstormPlaceable);
+            
+                                    
+            Door_Horizontal_Jungle = Instantiate(ForgeDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
+            Door_Horizontal_Jungle.SetActive(false);
+            Door_Vertical_Jungle = Instantiate(ForgeDungeonPrefab.doorObjects.variantTiers[1].nonDatabasePlaceable);
+            Door_Vertical_Jungle.SetActive(false);
+
+            DungeonDoorController Door_Horizontal_Jungle_Controller = Door_Horizontal_Jungle.GetComponent<DungeonDoorController>();            
+            Door_Horizontal_Jungle_Controller.sealAnimationName = "jungle_blocker_horizontal_down";
+            Door_Horizontal_Jungle_Controller.unsealAnimationName = "jungle_blocker_horizontal_up";
+            Door_Horizontal_Jungle_Controller.doorModules[0].openAnimationName = "jungle_door_east_top_open";
+            Door_Horizontal_Jungle_Controller.doorModules[0].closeAnimationName = "jungle_door_east_top_close";
+            Door_Horizontal_Jungle_Controller.doorModules[1].openAnimationName = "jungle_door_east_bottom_open";
+            Door_Horizontal_Jungle_Controller.doorModules[1].closeAnimationName = "jungle_door_east_bottom_close";
+            Door_Horizontal_Jungle_Controller.gameObject.transform.Find("DoorTop").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("jungle_door_horizontal_top_001");
+            Door_Horizontal_Jungle_Controller.gameObject.transform.Find("DoorBottom").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("jungle_door_horizontal_bottom_001");
+
+
+            DungeonDoorController Door_Vertical_Jungle_Controller = Door_Vertical_Jungle.GetComponent<DungeonDoorController>();
+            Door_Vertical_Jungle_Controller.sealAnimationName = "jungle_blocker_vertical_down";
+            Door_Vertical_Jungle_Controller.unsealAnimationName = "jungle_blocker_vertical_up";
+            Door_Vertical_Jungle_Controller.doorModules[0].openAnimationName = "jungle_door_north_left_open";
+            Door_Vertical_Jungle_Controller.doorModules[0].closeAnimationName = "jungle_door_north_left_close";
+            Door_Vertical_Jungle_Controller.doorModules[1].openAnimationName = "jungle_door_north_right_open";
+            Door_Vertical_Jungle_Controller.doorModules[1].closeAnimationName = "jungle_door_north_right_close";
+            Door_Vertical_Jungle_Controller.gameObject.transform.Find("DoorLeft").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("jungle_door_north_left_001");
+            Door_Vertical_Jungle_Controller.gameObject.transform.Find("DoorRight").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("jungle_door_north_right_001");
+
+
+            Jungle_Doors = Instantiate(ForgeDungeonPrefab.doorObjects);
+            Jungle_Doors.variantTiers[0].nonDatabasePlaceable = Door_Vertical_Jungle;
+            Jungle_Doors.variantTiers[1].nonDatabasePlaceable = Door_Horizontal_Jungle;
+            FakePrefab.MarkAsFakePrefab(Door_Horizontal_Jungle);
+            FakePrefab.MarkAsFakePrefab(Door_Vertical_Jungle);
+            DontDestroyOnLoad(Door_Horizontal_Jungle);
+            DontDestroyOnLoad(Door_Vertical_Jungle);
+
+
+            Jungle_LargeTree = new GameObject("Jungle Tree") { layer = 0 };
+            GameObject Jungle_Large_Tree_Shadow = new GameObject("Jungle Tree Shadow") { layer = 0 };
+            ItemBuilder.AddSpriteToObject(Jungle_Large_Tree_Shadow, "ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large_Shadow", false, false);
+            tk2dSprite TreeShadowSprite = Jungle_Large_Tree_Shadow.GetComponent<tk2dSprite>();
+            TreeShadowSprite.usesOverrideMaterial = true;
+            TreeShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+            TreeShadowSprite.HeightOffGround = -18;
+            TreeShadowSprite.UpdateZDepth();
+            Jungle_Large_Tree_Shadow.transform.parent = Jungle_LargeTree.transform;
+
+            ItemBuilder.AddSpriteToObject(Jungle_LargeTree, "ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large", false, false);
+
+            SpriteBuilder.AddSpriteToCollection("ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large_Open", Jungle_LargeTree.GetComponent<tk2dSprite>().Collection);
+
+            tk2dSprite JungleTreeSprite = Jungle_LargeTree.GetComponent<tk2dSprite>();
+            JungleTreeSprite.HeightOffGround = -8;
+            JungleTreeSprite.UpdateZDepth();
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 20), offset: new IntVector2(84, 39)); // EntranceBlocker
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(10, 20), offset: new IntVector2(74, 39)); // SideCollisions
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 20), offset: new IntVector2(107, 39)); // SideCollisions
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 64), offset: new IntVector2(74, 59)); // Top Collision
+
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 64), offset: new IntVector2(74, 59)); // High Obstacle (For projectiles mostly)
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 75), offset: new IntVector2(74, 48)); // Enemy Blocker. (Prevents enemies from being siide collision area)
+
+            
+
+            Jungle_LargeTree.AddComponent<JungleTreeController>();
+
+            FakePrefab.MarkAsFakePrefab(Jungle_LargeTree);
+            DontDestroyOnLoad(Jungle_LargeTree);
 
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
@@ -1964,129 +2036,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
             ratDungeon = null;
-        }
-
-        public static void InitCanyonTileSet(Dungeon dungeon, GlobalDungeonData.ValidTilesets tilesetID) {
-            /*braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");            
-            tk2dTiledSprite grassStripTileSprite = braveResources.LoadAsset<GameObject>("TallGrassStrip").GetComponent<tk2dTiledSprite>();
-            tk2dSpriteCollectionData jungleTileSet = grassStripTileSprite.Collection;*/
-            MinesDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Mines");
-            FinalScenarioPilotPrefab = DungeonDatabase.GetOrLoadByName("FinalScenario_Pilot");
-            FinalScenarioBulletPrefab = DungeonDatabase.GetOrLoadByName("FinalScenario_Bullet");
-
-            if (ENV_Tileset_Canyon == null) {
-                ENV_Tileset_Canyon = ExpandUtility.BuildSpriteCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, ENV_Tileset_Canyon_Texture, null, null, true);
-            }
-
-            // SewerDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
-            // dungeon.decoSettings = FinalScenarioBulletPrefab.decoSettings;
-            dungeon.decoSettings = new TilemapDecoSettings {
-                standardRoomVisualSubtypes = new WeightedIntCollection {
-                    elements = new WeightedInt[] {
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        // MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[0],
-                        // MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[1],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[2], // shop visual type. Do not remove
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                        // MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[4],
-                        MinesDungeonPrefab.decoSettings.standardRoomVisualSubtypes.elements[3],
-                    }
-                },
-                decalLayerStyle = MinesDungeonPrefab.decoSettings.decalLayerStyle,
-                decalSize = MinesDungeonPrefab.decoSettings.decalSize,
-                decalSpacing = MinesDungeonPrefab.decoSettings.decalSpacing,
-                decalExpansion = MinesDungeonPrefab.decoSettings.decalExpansion,
-                patternLayerStyle = MinesDungeonPrefab.decoSettings.patternLayerStyle,
-                patternSize = MinesDungeonPrefab.decoSettings.patternSize,
-                patternSpacing = MinesDungeonPrefab.decoSettings.patternSpacing,
-                patternExpansion = MinesDungeonPrefab.decoSettings.patternExpansion,
-                decoPatchFrequency = MinesDungeonPrefab.decoSettings.decoPatchFrequency,
-                ambientLightColor = MinesDungeonPrefab.decoSettings.ambientLightColor,
-                ambientLightColorTwo = MinesDungeonPrefab.decoSettings.ambientLightColorTwo,
-                lowQualityAmbientLightColor = MinesDungeonPrefab.decoSettings.lowQualityAmbientLightColor,
-                lowQualityAmbientLightColorTwo = MinesDungeonPrefab.decoSettings.lowQualityAmbientLightColorTwo,
-                lowQualityCheapLightVector = MinesDungeonPrefab.decoSettings.lowQualityCheapLightVector,
-                UsesAlienFXFloorColor = MinesDungeonPrefab.decoSettings.UsesAlienFXFloorColor,
-                AlienFXFloorColor = MinesDungeonPrefab.decoSettings.AlienFXFloorColor,
-                generateLights = MinesDungeonPrefab.decoSettings.generateLights,
-                lightCullingPercentage = MinesDungeonPrefab.decoSettings.lightCullingPercentage,
-                lightOverlapRadius = MinesDungeonPrefab.decoSettings.lightOverlapRadius,
-                nearestAllowedLight = MinesDungeonPrefab.decoSettings.nearestAllowedLight,
-                minLightExpanseWidth = MinesDungeonPrefab.decoSettings.minLightExpanseWidth,
-                lightHeight = MinesDungeonPrefab.decoSettings.lightHeight,
-                lightCookies = MinesDungeonPrefab.decoSettings.lightCookies,
-                debug_view = false
-            };
-            dungeon.tileIndices = FinalScenarioBulletPrefab.tileIndices;
-            dungeon.tileIndices.dungeonCollection = ENV_Tileset_Canyon;
-            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
-                MinesDungeonPrefab.roomMaterialDefinitions[0],
-                MinesDungeonPrefab.roomMaterialDefinitions[1],
-                MinesDungeonPrefab.roomMaterialDefinitions[2],
-                MinesDungeonPrefab.roomMaterialDefinitions[3],
-                MinesDungeonPrefab.roomMaterialDefinitions[4],
-                MinesDungeonPrefab.roomMaterialDefinitions[5],
-                MinesDungeonPrefab.roomMaterialDefinitions[6],
-                MinesDungeonPrefab.roomMaterialDefinitions[7]
-            };
-            dungeon.pathGridDefinitions = MinesDungeonPrefab.pathGridDefinitions;            
-            dungeon.doorObjects = MinesDungeonPrefab.doorObjects;
-            dungeon.oneWayDoorObjects = MinesDungeonPrefab.oneWayDoorObjects;
-            dungeon.oneWayDoorPressurePlate = MinesDungeonPrefab.oneWayDoorPressurePlate;
-            dungeon.lockedDoorObjects = MinesDungeonPrefab.lockedDoorObjects;
-            dungeon.PlayerLightColor = MinesDungeonPrefab.PlayerLightColor;
-            dungeon.PlayerLightIntensity = MinesDungeonPrefab.PlayerLightIntensity;
-            dungeon.PlayerLightRadius = MinesDungeonPrefab.PlayerLightRadius;
-            dungeon.tileIndices.tilesetId = tilesetID;
-            dungeon.stampData.stamps = new TileStampData[] {
-                MinesDungeonPrefab.stampData.stamps[0],
-                MinesDungeonPrefab.stampData.stamps[1],
-                MinesDungeonPrefab.stampData.stamps[2],
-                MinesDungeonPrefab.stampData.stamps[3],
-                MinesDungeonPrefab.stampData.stamps[4],
-                MinesDungeonPrefab.stampData.stamps[5],
-                MinesDungeonPrefab.stampData.stamps[6],
-                MinesDungeonPrefab.stampData.stamps[7],
-                MinesDungeonPrefab.stampData.stamps[8],
-                MinesDungeonPrefab.stampData.stamps[9],
-                MinesDungeonPrefab.stampData.stamps[10],
-                MinesDungeonPrefab.stampData.stamps[11]
-            };
-            /*dungeon.decoSettings.ambientLightColor = MinesDungeonPrefab.decoSettings.ambientLightColor;
-            dungeon.decoSettings.ambientLightColorTwo = MinesDungeonPrefab.decoSettings.ambientLightColorTwo;
-            dungeon.decoSettings.lowQualityAmbientLightColor = MinesDungeonPrefab.decoSettings.lowQualityAmbientLightColor;
-            dungeon.decoSettings.lowQualityAmbientLightColorTwo = MinesDungeonPrefab.decoSettings.lowQualityAmbientLightColorTwo;
-            dungeon.decoSettings.lowQualityCheapLightVector = MinesDungeonPrefab.decoSettings.lowQualityCheapLightVector;
-            dungeon.decoSettings.lightCullingPercentage = MinesDungeonPrefab.decoSettings.lightCullingPercentage;
-            dungeon.decoSettings.lightOverlapRadius = MinesDungeonPrefab.decoSettings.lightOverlapRadius;
-            dungeon.decoSettings.nearestAllowedLight = MinesDungeonPrefab.decoSettings.nearestAllowedLight;
-            dungeon.decoSettings.minLightExpanseWidth = MinesDungeonPrefab.decoSettings.minLightExpanseWidth;
-            dungeon.decoSettings.lightHeight = MinesDungeonPrefab.decoSettings.lightHeight;
-            dungeon.decoSettings.lightCookies = MinesDungeonPrefab.decoSettings.lightCookies;*/
-            
-
-            dungeon.PlayerLightColor = FinalScenarioBulletPrefab.PlayerLightColor;
-            dungeon.PlayerLightIntensity = FinalScenarioBulletPrefab.PlayerLightIntensity;
-            dungeon.PlayerLightRadius = FinalScenarioBulletPrefab.PlayerLightRadius;
-            // FinalScenarioBulletPrefab = null;
-
-            /*jungleIndices.dungeonCollection = jungleTileSet;
-            
-            dungeon.tileIndices = jungleIndices;
-            dungeon.stampData = JungleStampData;
-            dungeon.roomMaterialDefinitions = MinesDungeonPrefab.roomMaterialDefinitions;
-            //dungeon.decoSettings = jungleDeco;
-            dungeon.stampData = JungleStampData;
-            dungeon.pathGridDefinitions = MinesDungeonPrefab.pathGridDefinitions;
-            dungeon.PlayerLightColor = new Color { r = 1, g = 1, b = 1, a = 1 };
-            dungeon.PlayerLightIntensity = 3;
-            dungeon.PlayerLightRadius = 5;
-            braveResources = null;*/
-            FinalScenarioBulletPrefab = null;
-            FinalScenarioPilotPrefab = null;
-            MinesDungeonPrefab = null;
-            // SewerDungeonPrefab = null;
         }
     }
 }

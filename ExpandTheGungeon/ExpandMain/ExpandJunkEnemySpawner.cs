@@ -13,7 +13,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public ExpandGlitchedEnemies m_GlitchEnemyDatabase;
 
         public void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler) {
-            if (dungeon.IsGlitchDungeon | ExpandTheGungeon.isGlitchFloor | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
+            if (dungeon.IsGlitchDungeon | /*ExpandTheGungeon.isGlitchFloor |*/ dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
 
             if (Random.value <= 0.85f) { return; }

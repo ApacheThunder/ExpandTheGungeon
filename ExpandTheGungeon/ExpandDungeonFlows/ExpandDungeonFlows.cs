@@ -74,10 +74,12 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static SharedInjectionData BaseSharedInjectionData;
         public static SharedInjectionData SewersInjectionData;
         public static SharedInjectionData HollowsInjectionData;
+        public static SharedInjectionData CastleInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
         public static ProceduralFlowModifierData SecretMiniElevatorInjector;
+        public static ProceduralFlowModifierData SecretJungleEntranceInjector;
 
         public static DungeonFlowSubtypeRestriction BaseSubTypeRestrictions = new DungeonFlowSubtypeRestriction() {
             baseCategoryRestriction = PrototypeDungeonRoom.RoomCategory.NORMAL,
@@ -188,7 +190,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             BaseSharedInjectionData = ExpandPrefabs.sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
-            
+            CastleInjectionData = CastlePrefab.PatternSettings.flows[0].sharedInjectionData[0];
+
             Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandPrefabs.sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
 
             // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
@@ -347,8 +350,50 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 framedCombatNodes = 0,
             };
 
+            SecretJungleEntranceInjector = new ProceduralFlowModifierData() {
+                annotation = "Secret Jungle Entrance Room",
+                DEBUG_FORCE_SPAWN = false,
+                OncePerRun = false,
+                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                    ProceduralFlowModifierData.FlowModifierPlacementType.RANDOM_NODE_CHILD
+                },
+                roomTable = null,
+                exactRoom = ExpandRoomPrefabs.Expand_Keep_TreeRoom,
+                IsWarpWing = false,
+                RequiresMasteryToken = false,
+                chanceToLock = 1,
+                selectionWeight = 1,
+                chanceToSpawn = 1,
+                RequiredValidPlaceable = null,
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,                        
+                        requiredTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON,
+                        requireTileset = true,
+                        comparisonValue = 1,
+                        encounteredObjectGuid = string.Empty,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        requireDemoMode = false,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requireFlag = false,
+                        useSessionStatValue = false,
+                        encounteredRoom = null,
+                        requiredNumberOfEncounters = -1,
+                        saveFlagToCheck = GungeonFlags.TUTORIAL_COMPLETED,
+                        statToCheck = TrackedStats.GUNBERS_MUNCHED
+                    }
+                },
+                CanBeForcedSecret = true,
+                RandomNodeChildMinDistanceFromEntrance = 0,
+                exactSecondaryRoom = null,
+                framedCombatNodes = 0,
+            };
+
             HollowsInjectionData.InjectionData.Add(SecretFloorEntranceInjector);
             HollowsInjectionData.InjectionData.Add(SecretMiniElevatorInjector);
+            CastleInjectionData.InjectionData.Add(SecretJungleEntranceInjector);
 
 
             RickRollSecretRoomInjector = new ProceduralFlowModifierData() {

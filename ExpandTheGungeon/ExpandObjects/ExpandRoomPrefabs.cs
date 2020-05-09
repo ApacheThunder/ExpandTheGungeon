@@ -61,6 +61,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Box_Hub;
         public static PrototypeDungeonRoom Expand_Enclose_Hub;
 
+        // Special Jungle Entrance rooms for Floor 1
+        public static PrototypeDungeonRoom Expand_Keep_TreeRoom;
+
+
         // Rooms for floor 2.
         public static PrototypeDungeonRoom Expand_Crosshairs;
         public static PrototypeDungeonRoom Expand_Basic;
@@ -516,6 +520,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
 
+            Expand_Keep_TreeRoom = RoomFactory.BuildFromResource("Keep_TreeRoom.room", true, false);
+            Expand_Keep_TreeRoom.overrideRoomVisualType = 6;
+            Expand_Keep_TreeRoom.allowFloorDecoration = false;
+            Expand_Keep_TreeRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(5, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
+            
 
             FakeBossRoom.name = "Fake Boss Room";
             FakeBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7587,6 +7598,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };*/
+            
             Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromResource("Secret_Expand_Achievement_The_Password.room", true, true);
             B_Expand_demon_onehand = RoomFactory.BuildFromResource("B_Expand_demon_onehand.room", true, true);
             B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromResource("B_Expand_Achievement_Rage_Mode.room", true, true);

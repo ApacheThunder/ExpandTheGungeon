@@ -8,14 +8,16 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandThunderStormPlacable : DungeonPlaceableBehaviour, IPlaceConfigurable {
         
         ExpandThunderStormPlacable() { 
-            RainIntensity = 250;
+            RainIntensity = 100;
             useCustomIntensity = true;
             enableLightning = false;
+            isSecretFloor = true;
         }
 
         public bool useCustomIntensity;
         public float RainIntensity;
         public bool enableLightning;
+        public bool isSecretFloor;
 
         public void Start() { }
 
@@ -27,6 +29,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             weatherController.RainIntensity = RainIntensity;
             weatherController.useCustomIntensity = useCustomIntensity;
             weatherController.enableLightning = enableLightning;
+            weatherController.isSecretFloor = isSecretFloor;
         }
 
         protected override void OnDestroy() { base.OnDestroy(); }

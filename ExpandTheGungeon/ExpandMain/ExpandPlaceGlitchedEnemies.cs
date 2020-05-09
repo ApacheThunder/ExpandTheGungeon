@@ -12,7 +12,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public ExpandGlitchedEnemies m_GlitchEnemyDatabase;        
 
         public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor) {
-            if (!dungeon.IsGlitchDungeon && !ExpandTheGungeon.isGlitchFloor && dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
+            if (!dungeon.IsGlitchDungeon && /*!ExpandTheGungeon.isGlitchFloor &&*/ dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
 
             List<string> BannedRooms = new List<string>();
 
