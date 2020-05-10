@@ -57,7 +57,8 @@ namespace ExpandTheGungeon {
                 GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
                 JungleRainPlacable.transform.parent = dungeon.gameObject.transform;
                 ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
-                ThunderstormPlacable.useCustomIntensity = false;
+                ThunderstormPlacable.useCustomIntensity = true;
+                ThunderstormPlacable.RainIntensity = 425f;
                 ThunderstormPlacable.enableLightning = true;
                 ThunderstormPlacable.isSecretFloor = false;
                 ThunderstormPlacable.ConfigureOnPlacement(null);

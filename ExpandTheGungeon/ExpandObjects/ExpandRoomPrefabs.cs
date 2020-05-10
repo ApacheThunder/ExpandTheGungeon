@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-
+using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -391,6 +391,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Mines_Regular50;
         public static PrototypeDungeonRoom Expand_Keep_Spiral;
 
+        public static PrototypeDungeonRoom Expand_Jungle_Entrance;
+        public static PrototypeDungeonRoom Expand_Jungle_OldCrest;
+        public static PrototypeDungeonRoom Expand_Jungle_Exit;
+        // All jungle rooms except special ones will be stored here
+        public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
+        public static List<string> Expand_Jungle_RoomList;
 
         public static WeightedRoom GenerateWeightedRoom(PrototypeDungeonRoom Room, float Weight = 1, bool LimitedCopies = true, int MaxCopies = 1, DungeonPrerequisite[] AdditionalPrerequisites = null) {
             if (Room == null) { return null; }
@@ -403,6 +409,169 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
+            Expand_Jungle_RoomList = new List<string>() {
+                "Expand_Forest_ZookieShroom.room",
+                "Expand_Forest_AnimalEnclosed.room",
+                "Expand_Forest_AnimalHunter1.room",
+                "Expand_Forest_Animals1.room",
+                "Expand_Forest_Animals2.room",
+                "Expand_Forest_AnimalsArrows.room",
+                "Expand_Forest_AnimalsFairy.room",
+                "Expand_Forest_AnimalsHunters1.room",
+                "Expand_Forest_AnimalSpider.room",
+                "Expand_Forest_AnimalsTribal.room",
+                "Expand_Forest_ArrowCat.room",
+                "Expand_Forest_ArrowSpent.room",
+                "Expand_Forest_BandanaSnake.room",
+                "Expand_Forest_BIRDS.room",
+                "Expand_Forest_BullatFairy.room",
+                "Expand_Forest_Bush.room",
+                "Expand_Forest_ConfirmedSnakes.room",
+                "Expand_Forest_Extra1.room",
+                "Expand_Forest_FishBats.room",
+                "Expand_Forest_FungunTribal.room",
+                "Expand_Forest_GummyBullatPit.room",
+                "Expand_Forest_GunFairy.room",
+                "Expand_Forest_Hunter1.room",
+                "Expand_Forest_Hunter2.room",
+                "Expand_Forest_HunterSporge.room",
+                "Expand_Forest_HunterVets.room",
+                "Expand_Forest_MushFairy.room",
+                "Expand_Forest_Mushroom.room",
+                "Expand_Forest_MushZookie.room",
+                "Expand_Forest_ParrotShroom.room",
+                "Expand_Forest_Professionals.room",
+                "Expand_Forest_RegularBuffTotem.room",
+                "Expand_Forest_RegularSnakeParrot.room",
+                "Expand_Forest_ShamblingArrows.room",
+                "Expand_Forest_SniperTotemBuff.room",
+                "Expand_Forest_SpendRush.room",
+                "Expand_Forest_SpiderSnakesArrow.room",
+                "Expand_Forest_TotemBuff.room",
+                "Expand_Forest_Tree.room",
+                "Expand_Forest_Tribal1.room",
+                "Expand_Forest_Tribal2.room",
+                "Expand_Forest_Tribal3.room",
+                "Expand_Forest_Tribal4.room",
+                "Expand_Forest_Tribal5.room",
+                "Expand_Forest_Tribal6.room",
+                "Expand_Forest_TribalBirds.room",
+                "Expand_Forest_TribalC.room",
+                "Expand_Forest_TribalNugget.room",
+                "Expand_Forest_TribalSummon.room",
+                "Expand_Forest_Trunk.room",
+                "Expand_Forest_Trunk2.room",
+                "Expand_Forest_Tribal31.room",
+                "Expand_Forest_Tribal32.room",
+                "Expand_Forest_Animals3.room",
+                "Expand_Forest_Animals4.room",
+                "Expand_Forest_Animals5.room",
+                "Expand_Forest_Animals6.room",
+                "Expand_Forest_Animals7.room",
+                "Expand_Forest_Animals8.room",
+                "Expand_Forest_Animals9.room",
+                "Expand_Forest_Animals10.room",
+                "Expand_Forest_Animals11.room",
+                "Expand_Forest_Animals12.room",
+                "Expand_Forest_Animals13.room",
+                "Expand_Forest_Animals14.room",
+                "Expand_Forest_Animals15.room",
+                "Expand_Forest_Animals16.room",
+                "Expand_Forest_Animals17.room",
+                "Expand_Forest_Animals18.room",
+                "Expand_Forest_Animals19.room",
+                "Expand_Forest_Animals20.room",
+                "Expand_Forest_Animals21.room",
+                "Expand_Forest_Animals22.room",
+                "Expand_Forest_Animals23.room",
+                "Expand_Forest_Animals24.room",
+                "Expand_Forest_Animals25.room",
+                "Expand_Forest_Animals26.room",
+                "Expand_Forest_Animals27.room",
+                "Expand_Forest_Hunter3.room",
+                "Expand_Forest_Hunter4.room",
+                "Expand_Forest_Hunter5.room",
+                "Expand_Forest_Hunter6.room",
+                "Expand_Forest_Hunter7.room",
+                "Expand_Forest_Hunter8.room",
+                "Expand_Forest_Hunter9.room",
+                "Expand_Forest_Hunter10.room",
+                "Expand_Forest_Hunter11.room",
+                "Expand_Forest_Hunter12.room",
+                "Expand_Forest_Hunter13.room",
+                "Expand_Forest_Hunter14.room",
+                "Expand_Forest_Hunter15.room",
+                "Expand_Forest_Hunter16.room",
+                "Expand_Forest_Hunter17.room",
+                "Expand_Forest_Hunter18.room",
+                "Expand_Forest_Hunter19.room",
+                "Expand_Forest_Hunter20.room",
+                "Expand_Forest_Hunter21.room",
+                "Expand_Forest_Hunter22.room",
+                "Expand_Forest_Hunter23.room",
+                "Expand_Forest_Hunter24.room",
+                "Expand_Forest_Hunter25.room",
+                "Expand_Forest_Hunter26.room",
+                "Expand_Forest_Hunter27.room",
+                "Expand_Forest_Mixed1.room",
+                "Expand_Forest_Mixed2.room",
+                "Expand_Forest_Mixed3.room",
+                "Expand_Forest_Mixed4.room",
+                "Expand_Forest_Mixed5.room",
+                "Expand_Forest_Mixed6.room",
+                "Expand_Forest_Mixed7.room",
+                "Expand_Forest_Mixed8.room",
+                "Expand_Forest_Mixed9.room",
+                "Expand_Forest_Mixed10.room",
+                "Expand_Forest_Mixed11.room",
+                "Expand_Forest_Mixed12.room",
+                "Expand_Forest_Mixed13.room",
+                "Expand_Forest_Mixed14.room",
+                "Expand_Forest_Mixed15.room",
+                "Expand_Forest_Mixed16.room",
+                "Expand_Forest_Mixed17.room",
+                "Expand_Forest_Mixed18.room",
+                "Expand_Forest_Mixed19.room",
+                "Expand_Forest_Mixed20.room",
+                "Expand_Forest_Mixed21.room",
+                "Expand_Forest_Mixed22.room",
+                "Expand_Forest_Mixed23.room",
+                "Expand_Forest_Mixed24.room",
+                "Expand_Forest_Mixed25.room",
+                "Expand_Forest_Tribal7.room",
+                "Expand_Forest_Tribal8.room",
+                "Expand_Forest_Tribal9.room",
+                "Expand_Forest_Tribal10.room",
+                "Expand_Forest_Tribal11.room",
+                "Expand_Forest_Tribal12.room",
+                "Expand_Forest_Tribal13.room",
+                "Expand_Forest_Tribal14.room",
+                "Expand_Forest_Tribal15.room",
+                "Expand_Forest_Tribal16.room",
+                "Expand_Forest_Tribal17.room",
+                "Expand_Forest_Tribal18.room",
+                "Expand_Forest_Tribal19.room",
+                "Expand_Forest_Tribal20.room",
+                "Expand_Forest_Tribal21.room",
+                "Expand_Forest_Tribal22.room",
+                "Expand_Forest_Tribal23.room",
+                "Expand_Forest_Tribal24.room",
+                "Expand_Forest_Tribal25.room",
+                "Expand_Forest_Tribal27.room",
+                "Expand_Forest_Tribal28.room",
+                "Expand_Forest_Tribal29.room",
+                "Expand_Forest_Tribal30.room"
+            };
+            Expand_Jungle_Entrance = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Entrance.room", true);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(1, 2), objectDatabase.GodRays);
+            Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
+            Expand_Jungle_OldCrest = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_OldCrest.room", true);
+            // Old Crest setup in ExpandDuneonFlow
+
+            Expand_Jungle_Exit = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Exit.room", true);
+            Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(4, 7), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ExitLadder, useExternalPrefab: true), xOffset: 8, yOffset: 13);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(3, 5), objectDatabase.GodRays);
 
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -8977,6 +9146,22 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
             RoomBuilder.GenerateBasicRoomLayout(Expand_BootlegRoom);
+
+
+            List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();
+
+            foreach (string name in Expand_Jungle_RoomList) { m_JungleRooms.Add(RoomFactory.BuildFromResource("Jungle\\" + name, true)); }
+
+            // Expand_Jungle_Rooms = ExpandUtility.BuildRoomArrayFromTextFile("Textures/RoomLayoutData/RoomFactoryRooms/Jungle/Jungle_RoomEntries.txt");
+            Expand_Jungle_Rooms = m_JungleRooms.ToArray();
+
+            List<WeightedRoom> m_JungleWRooms = new List<WeightedRoom>();
+
+            if (Expand_Jungle_Rooms != null && Expand_Jungle_Rooms.Length > 0) {
+                foreach (PrototypeDungeonRoom room in Expand_Jungle_Rooms) {
+                    ExpandPrefabs.JungleRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 1));
+                }
+            }
 
 
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {

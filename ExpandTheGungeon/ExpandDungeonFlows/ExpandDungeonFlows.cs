@@ -75,6 +75,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static SharedInjectionData SewersInjectionData;
         public static SharedInjectionData HollowsInjectionData;
         public static SharedInjectionData CastleInjectionData;
+        public static SharedInjectionData JungleInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
@@ -91,13 +92,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         };
 
         // Generate a DungeonFlowNode with a default configuration
-        public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null) {
+        public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null, DungeonFlowNode.NodePriority priority = DungeonFlowNode.NodePriority.MANDATORY, float percentChance = 1) {
             DungeonFlowNode m_CachedNode = new DungeonFlowNode(targetflow);
             m_CachedNode.isSubchainStandin = false;
             m_CachedNode.nodeType = DungeonFlowNode.ControlNodeType.ROOM;
             m_CachedNode.roomCategory = roomType;
-            m_CachedNode.percentChance = 1f;
-            m_CachedNode.priority = DungeonFlowNode.NodePriority.MANDATORY;
+            m_CachedNode.percentChance = percentChance;
+            m_CachedNode.priority = priority;
             m_CachedNode.overrideExactRoom = overrideRoom;
             m_CachedNode.overrideRoomTable = overrideTable;
             m_CachedNode.capSubchain = false;
@@ -212,6 +213,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow());
             KnownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow());
             KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
+            KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
+            KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
             Foyer_Flow.name = "Foyer_Flow";
@@ -429,6 +432,14 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             CustomSecretFloorSharedInjectionData.ChanceToSpawnOne = 1;
             CustomSecretFloorSharedInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
 
+            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
+
+            // Due to load order, I need to set this up here instead.
+            ExpandRoomPrefabs.Expand_Jungle_OldCrest.associatedMinimapIcon = SewersInjectionData.InjectionData[1].exactRoom.associatedMinimapIcon;
+            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(5, 5), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 7), NonEnemyBehaviour: SewersInjectionData.InjectionData[1].exactRoom.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 4, yOffset: 8);
+
+            objectDatabase = null;
             TutorialPrefab = null;
             CastlePrefab = null;
             SewerPrefab = null;

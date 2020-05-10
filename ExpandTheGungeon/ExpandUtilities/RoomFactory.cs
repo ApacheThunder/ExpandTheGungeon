@@ -45,8 +45,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
 
-        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false) {
+        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false) {
             string RoomPath = (TextureBasePath + roomPath);
+            if (defineFullPath) { RoomPath = roomPath; }
             Texture2D texture = ResourceExtractor.GetTextureFromResource(RoomPath);
             RoomData roomData = ExtractRoomDataFromResource(RoomPath);
             return Build(texture, roomData, setRoomCategory, autoAssignToFloor, roomData.weight);

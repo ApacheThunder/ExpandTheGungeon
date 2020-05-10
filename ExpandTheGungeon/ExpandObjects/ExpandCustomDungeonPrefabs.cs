@@ -6,6 +6,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
 using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -803,8 +804,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                // flows = new List<DungeonFlow>() { ExpandDungeonFlows.demo_stage_flow.DEMO_STAGE_FLOW() },
-                flows = SewersPrefab.PatternSettings.flows,
+                flows = new List<DungeonFlow>() { f1b_jungle_flow_01.F1b_Jungle_Flow_01(), f1b_jungle_flow_02.F1b_Jungle_Flow_02() },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,

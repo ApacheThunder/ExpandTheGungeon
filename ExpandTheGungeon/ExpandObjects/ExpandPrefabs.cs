@@ -155,6 +155,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericRoomTable basic_special_rooms_noBlackMarket;
         public static GenericRoomTable bosstable_01_gatlinggull_custom;
         public static GenericRoomTable AbbeyAblernRoomTable;
+        public static GenericRoomTable JungleRoomTable;
+
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
@@ -263,7 +265,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Door_Horizontal_Jungle;
         public static GameObject Door_Vertical_Jungle;
         public static GameObject Jungle_LargeTree;
-        
+        public static GameObject Jungle_ExitLadder;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -412,6 +414,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             AbbeyAblernRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(CathedralDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom));
             AbbeyFlowModifierData.exactRoom = null;
             AbbeyFlowModifierData.roomTable = AbbeyAblernRoomTable;
+            JungleRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            JungleRoomTable.includedRooms = new WeightedRoomCollection();
+            JungleRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            JungleRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
 
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
@@ -1866,6 +1872,13 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             FakePrefab.MarkAsFakePrefab(Jungle_LargeTree);
             DontDestroyOnLoad(Jungle_LargeTree);
+
+            Jungle_ExitLadder = new GameObject("Jungle Exit Ladder") { layer = 0 };
+            ItemBuilder.AddSpriteToObject(Jungle_ExitLadder, "ExpandTheGungeon/Textures/JungleAssets/Jungle_ExitLadder", false, false);
+            Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
+            FakePrefab.MarkAsFakePrefab(Jungle_ExitLadder);
+            DontDestroyOnLoad(Jungle_ExitLadder);
+            
 
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");

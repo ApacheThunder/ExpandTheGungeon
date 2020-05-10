@@ -26,6 +26,23 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         private static ExpandUtility m_instance;
 
+        public static PrototypeDungeonRoom[] BuildRoomArrayFromTextFile(string textFilePath, bool AllowSetRoomCategory = true, bool AllowSetFloorTarget = false) {
+            List<PrototypeDungeonRoom> m_CachedRoomList = new List<PrototypeDungeonRoom>();
+            List<string> m_CachedStringList = ResourceExtractor.BuildStringListFromEmbeddedResource(textFilePath);
+
+            if (m_CachedStringList == null | m_CachedStringList.Count <= 0) { return null; }
+            
+            foreach (string roomEntry in m_CachedStringList) {
+                m_CachedRoomList.Add(RoomFactory.BuildFromResource(roomEntry, AllowSetRoomCategory, AllowSetFloorTarget));
+            }
+
+            PrototypeDungeonRoom[] m_CachedRoomArray = new PrototypeDungeonRoom[0];
+
+            m_CachedRoomArray = m_CachedRoomList.ToArray();
+
+            return m_CachedRoomArray;
+        }
+
         public static tk2dSpriteCollectionData ReplaceDungeonCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<string> spriteList = null) {
             if (sourceCollection == null) { return null; }
             tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);

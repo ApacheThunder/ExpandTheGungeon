@@ -1,10 +1,10 @@
-ExpandTheGungeon - v1.4 by Apache Thunder.
+ExpandTheGungeon - v1.6 by Apache Thunder.
 
 Features:
 
 1. Updated version of old Anywhere mod. Use load_flow to load a DungeonFlow. Command syntax is mostly the same as old anywhere mod. Use "load_flow help" in console to get help on how to use this command.
 
-2. A custom secret floor accessible from floor 4. Is only accessible under certain circumstances. ;)
+2. Two new secret floors! Both with brand new tilesets pulled from unused tilesets from old versions of the game.
 
 3. Glitch Chests now take player to a full floor with glitched enmies instead of just a simple 3 room floor that goes direct to the boss.
 
