@@ -27,6 +27,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode TestRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Keep_TreeRoom);
             // DungeonFlowNode SecondSecretRoom = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Secret_Expand_logo);
 
+            foreach (PrototypeDungeonRoom room in ExpandRoomPrefabs.Expand_Jungle_Rooms) {
+                if (room.name == "Expand_Forest_Mixed22") {
+                    TestRoomNode_02.overrideExactRoom = room;
+                    break;
+                }
+            }
+
             m_CachedFlow.name = "Test_CustomRoom_Flow";
             m_CachedFlow.fallbackRoomTable = null;
             m_CachedFlow.phantomRoomTable = null;

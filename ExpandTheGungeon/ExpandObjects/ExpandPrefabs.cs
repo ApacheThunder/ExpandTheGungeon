@@ -266,6 +266,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Door_Vertical_Jungle;
         public static GameObject Jungle_LargeTree;
         public static GameObject Jungle_ExitLadder;
+        public static GameObject Jungle_BlobLostSign;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -1868,7 +1869,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             
 
-            Jungle_LargeTree.AddComponent<JungleTreeController>();
+            Jungle_LargeTree.AddComponent<ExpandJungleTreeController>();
 
             FakePrefab.MarkAsFakePrefab(Jungle_LargeTree);
             DontDestroyOnLoad(Jungle_LargeTree);
@@ -1878,6 +1879,22 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
             FakePrefab.MarkAsFakePrefab(Jungle_ExitLadder);
             DontDestroyOnLoad(Jungle_ExitLadder);
+
+
+
+            Jungle_BlobLostSign = Instantiate(Teleporter_Info_Sign);
+            Jungle_BlobLostSign.SetActive(false);
+            if (Jungle_BlobLostSign.GetComponent<NoteDoer>()) {
+                Transform m_CachedSignTransform = Jungle_BlobLostSign.transform.Find("nooto pointo");
+                Destroy(Jungle_BlobLostSign.GetComponent<NoteDoer>());
+                ExpandNoteDoer Jungle_BlobLostSignComponent = Jungle_BlobLostSign.AddComponent<ExpandNoteDoer>();
+                if (m_CachedSignTransform) { Jungle_BlobLostSignComponent.textboxSpawnPoint = m_CachedSignTransform; }
+                Jungle_BlobLostSignComponent.name = "Lost Blob Note";
+                Jungle_BlobLostSignComponent.stringKey = "This poor fella got lost on his way home.";
+            }
+
+            FakePrefab.MarkAsFakePrefab(Jungle_BlobLostSign);
+            DontDestroyOnLoad(Jungle_BlobLostSign);
             
 
 

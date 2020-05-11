@@ -60,11 +60,49 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                                 requireDemoMode = false
                             }
                         }
+                    },
+                    new ProceduralFlowModifierData() {
+                        annotation = "Lost Baby Dragun",
+                        DEBUG_FORCE_SPAWN = false,
+                        OncePerRun = false,
+                        placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                            ProceduralFlowModifierData.FlowModifierPlacementType.RANDOM_NODE_CHILD
+                        },
+                        roomTable = null,
+                        exactRoom = ExpandRoomPrefabs.Expand_Jungle_SecretDragun,
+                        IsWarpWing = false,
+                        RequiresMasteryToken = false,
+                        chanceToLock = 1,
+                        selectionWeight = 1,
+                        chanceToSpawn = 1,
+                        RequiredValidPlaceable = null,
+                        CanBeForcedSecret = true,
+                        RandomNodeChildMinDistanceFromEntrance = 0,
+                        exactSecondaryRoom = null,
+                        framedCombatNodes = 0,
+                        prerequisites = new DungeonPrerequisite[] {
+                            new DungeonPrerequisite() {
+                                prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                                prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                                statToCheck = TrackedStats.TIMES_REACHED_GUNGEON,
+                                maxToCheck = 0,
+                                comparisonValue = 0,
+                                encounteredObjectGuid = string.Empty,
+                                encounteredRoom = null,
+                                requiredNumberOfEncounters = 0,
+                                requiredCharacter = PlayableCharacters.Pilot,
+                                requireCharacter = false,
+                                requiredTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
+                                requireTileset = true,
+                                saveFlagToCheck = 0,
+                                requireFlag = false,
+                                requireDemoMode = false
+                            }
+                        }
                     }
                 };
             }
-
-
+            
             DungeonFlowNode entranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_Jungle_Entrance);
             DungeonFlowNode exitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.Expand_Jungle_Exit);
             DungeonFlowNode bossfoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);

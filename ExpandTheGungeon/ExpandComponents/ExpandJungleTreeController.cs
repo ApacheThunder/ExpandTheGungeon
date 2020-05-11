@@ -7,24 +7,26 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
-    public class JungleTreeController : BraveBehaviour, IPlaceConfigurable {
+    public class ExpandJungleTreeController : BraveBehaviour, IPlaceConfigurable {
 
-        public JungleTreeController() {
+        public ExpandJungleTreeController() {
             targetLevelName = "tt_jungle";
             PitOffset = new IntVector2(5, 3);
             m_Triggered = false;
+            m_Destroyed = false;
         }
 
         public string targetLevelName;
         public IntVector2 PitOffset;
 
         private bool m_Triggered;
+        private bool m_Destroyed;
 
         private RoomHandler m_ParentRoom;
 
         private IEnumerator Start() {
             yield return null;
-            while (Dungeon.IsGenerating) { yield return null; }
+            while (GameManager.Instance.IsLoadingLevel && Dungeon.IsGenerating) { yield return null; }
             yield return null;
             
             IntVector2 baseCellPosition = (transform.position.IntXY(VectorConversions.Floor) + new IntVector2(4, 2));
@@ -33,27 +35,29 @@ namespace ExpandTheGungeon.ExpandComponents {
                 for (int Y = -1; Y < 2; Y++) {
                     IntVector2 PositionOffset = baseCellPosition + new IntVector2(X, Y);
                     CellData cellData = GameManager.Instance.Dungeon.data[PositionOffset];
-                    cellData.OnCellGooped = (Action<CellData>)Delegate.Combine(cellData.OnCellGooped, new Action<CellData>(HandleGooped));
+                    if (cellData != null) {
+                        cellData.OnCellGooped = (Action<CellData>)Delegate.Combine(cellData.OnCellGooped, new Action<CellData>(HandleGooped));
+                    }
                 }
             }
                         
             specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(HandleCollision));
-            // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Combine(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));
+            // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Combine(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));*/
             yield break;
         }
 
-        private void HandleGooped(CellData obj) {
-            if (obj != null) { StartCoroutine(HandleGoopWait(obj)); }
-        }
+        private void HandleGooped(CellData obj) { if (obj != null) { StartCoroutine(HandleGoopWait(obj)); } }
 
         private IEnumerator HandleGoopWait(CellData obj) {
             IntVector2 goopPosition = (obj.position.ToCenterVector2() / DeadlyDeadlyGoopManager.GOOP_GRID_SIZE).ToIntVector2(VectorConversions.Floor);
             if (DeadlyDeadlyGoopManager.allGoopPositionMap.ContainsKey(goopPosition)) {
                 DeadlyDeadlyGoopManager deadlyDeadlyGoopManager = DeadlyDeadlyGoopManager.allGoopPositionMap[goopPosition];
                 if (deadlyDeadlyGoopManager) {
-                    while (obj != null && deadlyDeadlyGoopManager != null && !deadlyDeadlyGoopManager.IsPositionOnFire(obj.position.ToCenterVector2()) && !m_Triggered) {
+                    while (!m_Destroyed && obj != null && deadlyDeadlyGoopManager != null && !deadlyDeadlyGoopManager.IsPositionOnFire(obj.position.ToCenterVector2()) && !m_Triggered) {
+                        if (m_Destroyed) { yield break; }
                         yield return null;
                     }
+                    if (m_Destroyed) { yield break; }
                     if (deadlyDeadlyGoopManager.IsPositionOnFire(obj.position.ToCenterVector2()) && !m_Triggered) {
                         m_Triggered = true;
                         OnFireStarted();
@@ -82,7 +86,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 for (int Y = -1; Y < 2; Y++) {
                     IntVector2 PositionOffset = baseCellPosition + new IntVector2(X, Y);
                     CellData cellData = GameManager.Instance.Dungeon.data[PositionOffset];
-                    cellData.OnCellGooped = (Action<CellData>)Delegate.Remove(cellData.OnCellGooped, new Action<CellData>(HandleGooped));
+                    if (cellData != null) {
+                        cellData.OnCellGooped = (Action<CellData>)Delegate.Remove(cellData.OnCellGooped, new Action<CellData>(HandleGooped));
+                    }
                 }
             }
 
@@ -166,7 +172,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void Update() { }
         private void LateUpdate() { }
         
-        protected override void OnDestroy() { base.OnDestroy(); }
+        protected override void OnDestroy() {
+            m_Destroyed = true;
+            base.OnDestroy();
+        }
     }
     
     public class JungleTreePitController : DungeonPlaceableBehaviour, IPlaceConfigurable {
@@ -196,37 +205,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void Update() { }
         
-        /*public void OnEnteredRange(PlayerController interactor) {
-            if (!this) { return; }
-            // SpriteOutlineManager.AddOutlineToSprite(base.sprite, Color.white, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
-            // base.sprite.UpdateZDepth();
-        }
-
-        public void OnExitRange(PlayerController interactor) {
-            if (!this) { return; }
-            // SpriteOutlineManager.RemoveOutlineFromSprite(base.sprite, false);
-            // sprite.UpdateZDepth();
-        }
-
-        public float GetDistanceToPoint(Vector2 point) {
-            Bounds bounds = sprite.GetBounds();
-            bounds.SetMinMax(bounds.min + transform.position, bounds.max + transform.position);
-            float num = Mathf.Max(Mathf.Min(point.x, bounds.max.x), bounds.min.x);
-            float num2 = Mathf.Max(Mathf.Min(point.y, bounds.max.y), bounds.min.y);
-            return Mathf.Sqrt((point.x - num) * (point.x - num) + (point.y - num2) * (point.y - num2));
-        }
-
-        public float GetOverrideMaxDistance() { return -1f; }
-
-        public void Interact(PlayerController player) {
-            GameManager.Instance.LoadCustomLevel(targetLevelName);
-        }
-
-        public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
-            shouldBeFlipped = false;
-            return string.Empty;
-        }*/
-
         protected override void OnDestroy() { base.OnDestroy(); }
 
     }

@@ -350,7 +350,8 @@ namespace ExpandTheGungeon.ExpandMain {
             for (int i = 0; i < dungeon.data.rooms.Count; i++) {
                 RoomHandler roomHandler = dungeon.data.rooms[i];
                 if (roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && 
-                    roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.REWARD)
+                    roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.REWARD &&
+                    roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SPECIAL && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET)
                 {
                     for (int X = roomHandler.area.basePosition.x; X < roomHandler.area.basePosition.x + roomHandler.area.dimensions.x; X++) {
                         for (int Y = roomHandler.area.basePosition.y; Y < roomHandler.area.basePosition.y + roomHandler.area.dimensions.y; Y++) {

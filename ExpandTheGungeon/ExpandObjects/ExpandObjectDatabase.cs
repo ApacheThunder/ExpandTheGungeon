@@ -96,6 +96,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject CrushDoor_Vertical;
         public GameObject Mines_Cave_In;
         public GameObject Plunger;
+        public GameObject GatlingGullNest;
+        public GameObject BabyDragunNPC;
 
         // DungeonPlacables
         public DungeonPlaceable ExplodyBarrel;
@@ -175,6 +177,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             ChestRat = sharedAssets.LoadAsset<GameObject>("Chest_Rat");
             ChestMirror = sharedAssets.LoadAsset<GameObject>("Shrine_Mirror");
             WinchesterMinimapIcon = sharedAssets.LoadAsset<GameObject>("minimap_winchester_icon");
+            GatlingGullNest = sharedAssets.LoadAsset<GameObject>("gatlinggullnest");
+            BabyDragunNPC = sharedAssets2.LoadAsset<GameObject>("BabyDragunJail");
+
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {

@@ -111,10 +111,11 @@
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
     <Compile Include="ExpandComponents\ExpandJungleExitLadderComponent.cs" />
     <Compile Include="ExpandComponents\ExpandMaybeLoseAmmoOnDamage.cs" />
+    <Compile Include="ExpandComponents\ExpandNoteDoer.cs" />
     <Compile Include="ExpandComponents\ExpandRemoveGunOnAmmoDepletion.cs" />
     <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
-    <Compile Include="ExpandComponents\JungleTreeController.cs" />
+    <Compile Include="ExpandComponents\ExpandJungleTreeController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_01.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_02.cs" />
@@ -1365,6 +1366,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Jungle\Expand_Jungle_Exit.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Jungle\Expand_Jungle_SecretDragun.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

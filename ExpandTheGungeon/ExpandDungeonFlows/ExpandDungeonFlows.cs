@@ -364,7 +364,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 exactRoom = ExpandRoomPrefabs.Expand_Keep_TreeRoom,
                 IsWarpWing = false,
                 RequiresMasteryToken = false,
-                chanceToLock = 1,
+                chanceToLock = 0,
                 selectionWeight = 1,
                 chanceToSpawn = 1,
                 RequiredValidPlaceable = null,

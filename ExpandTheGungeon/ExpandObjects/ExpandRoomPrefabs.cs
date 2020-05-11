@@ -394,6 +394,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Jungle_Entrance;
         public static PrototypeDungeonRoom Expand_Jungle_OldCrest;
         public static PrototypeDungeonRoom Expand_Jungle_Exit;
+        public static PrototypeDungeonRoom Expand_Jungle_SecretDragun;
         // All jungle rooms except special ones will be stored here
         public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
         public static List<string> Expand_Jungle_RoomList;
@@ -573,6 +574,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(4, 7), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ExitLadder, useExternalPrefab: true), xOffset: 8, yOffset: 13);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(3, 5), objectDatabase.GodRays);
 
+            Expand_Jungle_SecretDragun = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_SecretDragun.room", true);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(4, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GatlingGullNest, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.BabyDragunNPC, useExternalPrefab: true));
+
+
+
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_SpecialPit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -692,8 +699,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Keep_TreeRoom = RoomFactory.BuildFromResource("Keep_TreeRoom.room", true, false);
             Expand_Keep_TreeRoom.overrideRoomVisualType = 6;
             Expand_Keep_TreeRoom.allowFloorDecoration = false;
-            Expand_Keep_TreeRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
+            // Expand_Keep_TreeRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(5, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
             
 
@@ -9150,7 +9158,13 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();
 
-            foreach (string name in Expand_Jungle_RoomList) { m_JungleRooms.Add(RoomFactory.BuildFromResource("Jungle\\" + name, true)); }
+            foreach (string name in Expand_Jungle_RoomList) {
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromResource("Jungle\\" + name, true);
+                if (name == "Expand_Forest_Mixed22.room" && m_room != null) {
+                    RoomBuilder.AddObjectToRoom(m_room, new Vector2(15, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_BlobLostSign, useExternalPrefab: true));
+                }
+                m_JungleRooms.Add(m_room);
+            }
 
             // Expand_Jungle_Rooms = ExpandUtility.BuildRoomArrayFromTextFile("Textures/RoomLayoutData/RoomFactoryRooms/Jungle/Jungle_RoomEntries.txt");
             Expand_Jungle_Rooms = m_JungleRooms.ToArray();
