@@ -27,6 +27,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         private static Dungeon CatacombsDungeonPrefab;
         private static Dungeon NakatomiDungeonPrefab;
         
+
         // Custom Textures
         public static Texture2D StoneCubeWestTexture;
         public static Texture2D ENV_Tileset_Canyon_Texture;
@@ -267,6 +268,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Jungle_LargeTree;
         public static GameObject Jungle_ExitLadder;
         public static GameObject Jungle_BlobLostSign;
+        public static GameObject Jungle_ItemStump;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -1867,8 +1869,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 64), offset: new IntVector2(74, 59)); // High Obstacle (For projectiles mostly)
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 75), offset: new IntVector2(74, 48)); // Enemy Blocker. (Prevents enemies from being siide collision area)
 
-            
-
+            Jungle_LargeTree.SetActive(false);
             Jungle_LargeTree.AddComponent<ExpandJungleTreeController>();
 
             FakePrefab.MarkAsFakePrefab(Jungle_LargeTree);
@@ -1876,6 +1877,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Jungle_ExitLadder = new GameObject("Jungle Exit Ladder") { layer = 0 };
             ItemBuilder.AddSpriteToObject(Jungle_ExitLadder, "ExpandTheGungeon/Textures/JungleAssets/Jungle_ExitLadder", false, false);
+            Jungle_ExitLadder.SetActive(false);
             Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
             FakePrefab.MarkAsFakePrefab(Jungle_ExitLadder);
             DontDestroyOnLoad(Jungle_ExitLadder);
@@ -1895,8 +1897,15 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             FakePrefab.MarkAsFakePrefab(Jungle_BlobLostSign);
             DontDestroyOnLoad(Jungle_BlobLostSign);
-            
 
+            Jungle_ItemStump = new GameObject("Jungle Item Stump") { layer = 0 };
+            Jungle_ItemStump.SetActive(false);
+            ItemBuilder.AddSpriteToObject(Jungle_ItemStump, "ExpandTheGungeon/Textures/JungleAssets/Jungle_TreeStump", false, false);
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
+            Jungle_ItemStump.AddComponent<ExpandJungleTreeStumpItemPedestal>();
+            DontDestroyOnLoad(Jungle_ItemStump);
+            FakePrefab.MarkAsFakePrefab(Jungle_ItemStump);
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

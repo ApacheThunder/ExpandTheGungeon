@@ -567,7 +567,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(1, 2), objectDatabase.GodRays);
             Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
             Expand_Jungle_OldCrest = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_OldCrest.room", true);
-            // Old Crest setup in ExpandDuneonFlow
+            // Old Crest setup in ExpandDungeonFlow
 
             Expand_Jungle_Exit = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Exit.room", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;

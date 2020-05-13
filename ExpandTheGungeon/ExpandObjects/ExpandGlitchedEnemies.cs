@@ -8858,6 +8858,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Destroy(CachedTargetEnemyObject);
             return;
         }
+
         public void SpawnGlitchedKillPillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(CultistPrefab);
@@ -9202,7 +9203,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
             }
             
-            try { if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandExplodeOnDeath>(); } } catch (Exception) { }
+            // try { if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandExplodeOnDeath>(); } } catch (Exception) { }
             
             CachedGlitchEnemyActor.DoDustUps = true;
             CachedGlitchEnemyActor.DustUpInterval = 0.4f;
@@ -9266,15 +9267,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                             Type = DirectionalAnimation.DirectionType.TwoWayVertical,
                             Prefix = "dodge",
                             AnimNames = new string[] { "dodge_bw", "dodge" },
-                            Flipped = new DirectionalAnimation.FlipType[2]
-                        }
-                    },
-                    new AIAnimator.NamedDirectionalAnimation() {
-                        name = "death",
-                        anim = new DirectionalAnimation() {
-                            Type = DirectionalAnimation.DirectionType.TwoWayVertical,
-                            Prefix = "death",
-                            AnimNames = new string[] { "death_bw", "death" },
                             Flipped = new DirectionalAnimation.FlipType[2]
                         }
                     },

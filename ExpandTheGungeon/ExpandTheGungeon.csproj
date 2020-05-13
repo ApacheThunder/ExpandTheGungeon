@@ -110,6 +110,7 @@
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
     <Compile Include="ExpandComponents\ExpandJungleExitLadderComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandJungleTreeStumpItemPedestal.cs" />
     <Compile Include="ExpandComponents\ExpandMaybeLoseAmmoOnDamage.cs" />
     <Compile Include="ExpandComponents\ExpandNoteDoer.cs" />
     <Compile Include="ExpandComponents\ExpandRemoveGunOnAmmoDepletion.cs" />
@@ -1369,6 +1370,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Jungle\Expand_Jungle_SecretDragun.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\MiscEnemies\KillStumps\KillStumpsBossCard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\JungleAssets\Jungle_TreeStump.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

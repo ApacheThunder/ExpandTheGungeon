@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameLevelDefinition CanyonDefinition;
         public static GameLevelDefinition JungleDefinition;
 
-        public static Dungeon GetOrLoadByNameHook(string name) {
+        /*public static Dungeon GetOrLoadByNameHook(string name) {
             Dungeon dungeon = null;
             foreach (string dungeonName in customDungeons) {
                 if (dungeonName.ToLower() == name.ToLower()) {
@@ -40,6 +40,28 @@ namespace ExpandTheGungeon.ExpandObjects {
                 return dungeon;
             } else {
                 return GetOrLoadByName_Orig(name);
+            }
+        }*/
+
+        public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
+            Dungeon dungeon = null;
+            foreach (string dungeonName in customDungeons) {
+                if (dungeonName.ToLower() == name.ToLower()) {
+                    if (name.ToLower() == "base_canyon") {
+                        dungeon = CanyonDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                        break;
+                    } else if (name.ToLower() == "base_jungle") {
+                        dungeon = JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                        break;
+                    }
+                }
+            }
+            if (dungeon) {
+                DebugTime.RecordStartTime();
+                DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                return dungeon;
+            } else {
+                return orig(name);
             }
         }
                 

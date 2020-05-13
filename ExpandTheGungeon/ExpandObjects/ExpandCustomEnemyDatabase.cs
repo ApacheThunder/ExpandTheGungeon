@@ -27,6 +27,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BootlegShotgunManBluePrefab;
         public static GameObject CronenbergPrefab;
 
+        // Custom/Modified bosses
+        public static GameObject KillStumpsDummy;
+
         // Corpse Objects
         public static GameObject BootlegBulletManCorpse;
         public static GameObject BootlegBulletManBandanaCorpse;
@@ -50,6 +53,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static string BootlegShotgunManRedGUID;
         public static string BootlegShotgunManBlueGUID;
         public static string CronenbergGUID;
+        // public static string KillStumpsGUID;
 
         public static void InitPrefabs() {
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
@@ -67,6 +71,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildBootlegShotgunManRedPrefab(out BootlegShotgunManRedPrefab);
             BuildBootlegShotgunManBluePrefab(out BootlegShotgunManBluePrefab);
             BuildCronenbergPrefab(out CronenbergPrefab);
+            // BuildKillStumpsPrefab(out KillStumpsDummy);
         }
 
         public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false) {
@@ -2416,6 +2421,197 @@ namespace ExpandTheGungeon.ExpandObjects {
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
             DontDestroyOnLoad(m_CachedTargetObject);
             return;
+        }
+
+        public static void BuildKillStumpsPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+
+
+            AIActorDummy KillPillarsTemplate = (GetOrLoadByGuid_Orig("3f11bbbc439c4086a180eb0fb9990cb4") as AIActorDummy);
+            
+            m_CachedTargetObject = new GameObject("BossStumpsDummy", new Type[] { typeof(SpeculativeRigidbody), typeof(HitEffectHandler), typeof(AIActorDummy) }) { layer = 0 };
+            
+            SpeculativeRigidbody rigidBody = m_CachedTargetObject.GetComponent<SpeculativeRigidbody>();
+            rigidBody.CollideWithTileMap = true;
+            rigidBody.CollideWithOthers = true;
+            rigidBody.Velocity = Vector2.zero;
+            rigidBody.CapVelocity = false;
+            rigidBody.MaxVelocity = Vector2.zero;
+            rigidBody.ForceAlwaysUpdate = false;
+            rigidBody.CanPush = false;
+            rigidBody.CanBePushed = false;
+            rigidBody.PushSpeedModifier = 1;
+            rigidBody.CanCarry = false;
+            rigidBody.CanBeCarried = true;
+            rigidBody.PreventPiercing = false;
+            rigidBody.SkipEmptyColliders = false;
+            rigidBody.RecheckTriggers = false;
+            rigidBody.UpdateCollidersOnRotation = false;
+            rigidBody.UpdateCollidersOnScale = false;
+            rigidBody.AxialScale = Vector2.one;
+            rigidBody.DebugParams = new SpeculativeRigidbody.DebugSettings() {
+                ShowPosition = false,
+                PositionHistory = 0,
+                ShowVelocity = false,
+                ShowSlope = false
+            };
+            rigidBody.IgnorePixelGrid = false;
+            rigidBody.m_position = new Position() { m_position = IntVector2.Zero, m_remainder = Vector2.zero };
+            rigidBody.PixelColliders = new List<PixelCollider>() {
+                new PixelCollider() {
+                    Enabled = false,
+                    CollisionLayer = CollisionLayer.LowObstacle,
+                    IsTrigger = false,
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 0,
+                    ManualOffsetY = 0,
+                    ManualWidth = 0,
+                    ManualHeight = 0,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            };
+
+            HitEffectHandler hitEffectHandler = m_CachedTargetObject.GetComponent<HitEffectHandler>();
+            hitEffectHandler.overrideHitEffect = new VFXComplex() { effects = new VFXObject[0] };
+            hitEffectHandler.overrideHitEffectPool = new VFXPool() { effects = new VFXComplex[0], type = VFXPoolType.None };
+            hitEffectHandler.additionalHitEffects = new HitEffectHandler.AdditionalHitEffect[0];
+            hitEffectHandler.SuppressAllHitEffects = false;
+
+
+            AIActorDummy KillStumpsAIActorDummy = m_CachedTargetObject.GetComponent<AIActorDummy>();
+            KillStumpsAIActorDummy.placeableWidth = 12;
+            KillStumpsAIActorDummy.placeableHeight = 12;
+            KillStumpsAIActorDummy.difficulty = 0;
+            KillStumpsAIActorDummy.isPassable = true;
+            KillStumpsAIActorDummy.ActorName = "Kill Stumps";
+            KillStumpsAIActorDummy.OverrideDisplayName = "Kill Stumps";
+            KillStumpsAIActorDummy.actorTypes = 0;
+            KillStumpsAIActorDummy.HasShadow = true;
+            KillStumpsAIActorDummy.ShadowHeightOffGround = 0;
+            KillStumpsAIActorDummy.ActorShadowOffset = Vector3.zero;
+            KillStumpsAIActorDummy.DoDustUps = false;
+            KillStumpsAIActorDummy.DustUpInterval = 0;
+            KillStumpsAIActorDummy.FreezeDispelFactor = 20;
+            KillStumpsAIActorDummy.ImmuneToAllEffects = false;
+            KillStumpsAIActorDummy.EffectResistances = new ActorEffectResistance[0];
+            KillStumpsAIActorDummy.OverrideColorOverridden = false;
+            KillStumpsAIActorDummy.EnemyId = -1;
+            KillStumpsAIActorDummy.EnemyGuid = Guid.NewGuid().ToString();
+            KillStumpsAIActorDummy.ForcedPositionInAmmonomicon = -1;
+            KillStumpsAIActorDummy.SetsFlagOnActivation = false;
+            KillStumpsAIActorDummy.SetsFlagOnDeath = false;
+            KillStumpsAIActorDummy.FlagToSetOnDeath = 0;
+            KillStumpsAIActorDummy.FlagToSetOnActivation = 0;
+            KillStumpsAIActorDummy.SetsCharacterSpecificFlagOnDeath = false;
+            KillStumpsAIActorDummy.CharacterSpecificFlagToSetOnDeath = 0;
+            KillStumpsAIActorDummy.IsNormalEnemy = true;
+            KillStumpsAIActorDummy.IsSignatureEnemy = false;
+            KillStumpsAIActorDummy.IsHarmlessEnemy = false;
+            KillStumpsAIActorDummy.CompanionSettings = new ActorCompanionSettings() { WarpsToRandomPoint = false };
+            KillStumpsAIActorDummy.MovementSpeed = 2;
+            KillStumpsAIActorDummy.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            KillStumpsAIActorDummy.DiesOnCollison = false;
+            KillStumpsAIActorDummy.CollisionDamage = 1;
+            KillStumpsAIActorDummy.CollisionKnockbackStrength = 5;
+            KillStumpsAIActorDummy.CollisionDamageTypes = CoreDamageTypes.None;
+            KillStumpsAIActorDummy.EnemyCollisionKnockbackStrengthOverride = -1;
+            KillStumpsAIActorDummy.CollisionVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            KillStumpsAIActorDummy.NonActorCollisionVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            KillStumpsAIActorDummy.CollisionSetsPlayerOnFire = false;
+            KillStumpsAIActorDummy.TryDodgeBullets = true;
+            KillStumpsAIActorDummy.AvoidRadius = 4;
+            KillStumpsAIActorDummy.ReflectsProjectilesWhileInvulnerable = false;
+            KillStumpsAIActorDummy.HitByEnemyBullets = false;
+            KillStumpsAIActorDummy.HasOverrideDodgeRollDeath = false;
+            KillStumpsAIActorDummy.OverrideDodgeRollDeath = string.Empty;
+            KillStumpsAIActorDummy.CanDropCurrency = true;
+            KillStumpsAIActorDummy.AdditionalSingleCoinDropChance = 0;
+            KillStumpsAIActorDummy.CanDropItems = true;
+            KillStumpsAIActorDummy.CanDropDuplicateItems = false;
+            KillStumpsAIActorDummy.CustomLootTableMinDrops = 1;
+            KillStumpsAIActorDummy.CustomLootTableMaxDrops = 1;
+            KillStumpsAIActorDummy.ChanceToDropCustomChest = 0;
+            KillStumpsAIActorDummy.IgnoreForRoomClear = false;
+            KillStumpsAIActorDummy.SpawnLootAtRewardChestPos = false;
+            KillStumpsAIActorDummy.CorpseShadow = true;
+            KillStumpsAIActorDummy.TransferShadowToCorpse = false;
+            KillStumpsAIActorDummy.shadowDeathType = AIActor.ShadowDeathType.Fade;
+            KillStumpsAIActorDummy.PreventDeathKnockback = false;
+            KillStumpsAIActorDummy.OnCorpseVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            KillStumpsAIActorDummy.OnEngagedVFXAnchor  = tk2dBaseSprite.Anchor.LowerLeft;
+            KillStumpsAIActorDummy.shadowHeightOffset = 0;
+            KillStumpsAIActorDummy.invisibleUntilAwaken = false;
+            KillStumpsAIActorDummy.procedurallyOutlined = true;
+            KillStumpsAIActorDummy.forceUsesTrimmedBounds = true;
+            KillStumpsAIActorDummy.reinforceType = AIActor.ReinforceType.FullVfx;
+            KillStumpsAIActorDummy.UsesVaryingEmissiveShaderPropertyBlock = false;
+            KillStumpsAIActorDummy.EnemySwitchState = string.Empty;
+            KillStumpsAIActorDummy.OverrideSpawnReticleAudio = string.Empty;
+            KillStumpsAIActorDummy.OverrideSpawnAppearAudio = string.Empty;
+            KillStumpsAIActorDummy.UseMovementAudio = false;
+            KillStumpsAIActorDummy.StartMovingEvent = string.Empty;
+            KillStumpsAIActorDummy.StopMovingEvent = string.Empty;
+            KillStumpsAIActorDummy.animationAudioEvents = new List<ActorAudioEvent>(0);
+            KillStumpsAIActorDummy.HealthOverrides = new List<AIActor.HealthOverride>(0);
+            KillStumpsAIActorDummy.IdentifierForEffects = AIActor.EnemyTypeIdentifier.UNIDENTIFIED;
+            KillStumpsAIActorDummy.BehaviorOverridesVelocity = false;
+            KillStumpsAIActorDummy.BehaviorVelocity = Vector2.zero;
+            KillStumpsAIActorDummy.AlwaysShowOffscreenArrow = false;
+            KillStumpsAIActorDummy.BlackPhantomProperties = new BlackPhantomProperties() {
+                BonusHealthPercentIncrease = 0,
+                BonusHealthFlatIncrease = 0,
+                MaxTotalHealth = 175,
+                CooldownMultiplier = 0.66f,
+                MovementSpeedMultiplier = 1.5f,
+                LocalTimeScaleMultiplier = 1,
+                BulletSpeedMultiplier = 1,
+                GradientScale = 0.75f,
+                ContrastPower = 1.3f
+            };
+            KillStumpsAIActorDummy.ForceBlackPhantomParticles = false;
+            KillStumpsAIActorDummy.OverrideBlackPhantomParticlesCollider = false;
+            KillStumpsAIActorDummy.BlackPhantomParticlesCollider = 0;
+            KillStumpsAIActorDummy.PreventFallingInPitsEver = false;
+            KillStumpsAIActorDummy.isInBossTab = true;
+
+            GameObject m_RealPrefab = Instantiate(KillPillarsTemplate.realPrefab);
+            m_RealPrefab.transform.parent = m_CachedTargetObject.transform;
+
+            KillStumpsAIActorDummy.realPrefab = m_RealPrefab;
+
+            m_RealPrefab.name = "BossStumps";
+
+            GenericIntroDoer genericIntroDoer = m_RealPrefab.GetComponent<GenericIntroDoer>();
+
+            genericIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
+                bossNameString = "Kill Stumps",
+                bossSubtitleString = "Test Subtitle String",
+                bossQuoteString = "Test Quate String",
+                bossArtSprite = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\MiscEnemies\\KillStumps\\KillStumpsBossCard.png"),
+                bossSpritePxOffset = IntVector2.Zero,
+                topLeftTextPxOffset = IntVector2.Zero,
+                bottomRightTextPxOffset = IntVector2.Zero,
+                bgColor = new Color(0, 0, 1, 1)                
+            };
+
+            GameObject Statue1 = m_RealPrefab.transform.Find("AK47").gameObject;
+            GameObject Statue2 = m_RealPrefab.transform.Find("Shotgun").gameObject;
+            GameObject Statue3 = m_RealPrefab.transform.Find("Uzi").gameObject;
+            GameObject Statue4 = m_RealPrefab.transform.Find("DesertEagle").gameObject;
+            
+            m_CachedTargetObject.SetActive(false);
+            if (isFakePrefab) {
+                // KillStumpsGUID = KillStumpsAIActorDummy.EnemyGuid;
+                AddEnemyToDatabase(m_CachedTargetObject, KillStumpsAIActorDummy.EnemyGuid, true);
+                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+                DontDestroyOnLoad(m_CachedTargetObject);
+            }
         }
 
         private static void m_GenerateCronenbergDebris(GameObject targetObject, GoopDefinition goopSource) {

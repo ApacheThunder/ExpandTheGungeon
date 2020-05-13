@@ -436,8 +436,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             // Due to load order, I need to set this up here instead.
             ExpandRoomPrefabs.Expand_Jungle_OldCrest.associatedMinimapIcon = SewersInjectionData.InjectionData[1].exactRoom.associatedMinimapIcon;
-            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(5, 5), objectDatabase.GodRays);
-            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 7), NonEnemyBehaviour: SewersInjectionData.InjectionData[1].exactRoom.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 4, yOffset: 8);
+            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(5, 7), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
+            // RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 7), NonEnemyBehaviour: SewersInjectionData.InjectionData[1].exactRoom.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 4, yOffset: 8);
 
             objectDatabase = null;
             TutorialPrefab = null;
