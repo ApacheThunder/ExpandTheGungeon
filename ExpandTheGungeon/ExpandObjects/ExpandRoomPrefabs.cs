@@ -63,6 +63,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Special Jungle Entrance rooms for Floor 1
         public static PrototypeDungeonRoom Expand_Keep_TreeRoom;
+        public static PrototypeDungeonRoom Expand_Keep_TreeRoom2;
 
 
         // Rooms for floor 2.
@@ -564,7 +565,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "Expand_Forest_Tribal30.room"
             };
             Expand_Jungle_Entrance = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Entrance.room", true);
-            RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(1, 2), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(4, 5), objectDatabase.GodRays);
             Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
             Expand_Jungle_OldCrest = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_OldCrest.room", true);
             // Old Crest setup in ExpandDungeonFlow
@@ -703,7 +704,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(5, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
-            
+
+            Expand_Keep_TreeRoom2 = RoomFactory.BuildFromResource("Keep_TreeRoom2.room", true, false);
+            Expand_Keep_TreeRoom2.overrideRoomVisualType = 6;
+            Expand_Keep_TreeRoom2.allowFloorDecoration = false;
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(9, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(9, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
+
+
+
 
             FakeBossRoom.name = "Fake Boss Room";
             FakeBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);

@@ -91,6 +91,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             maximumRoomsOfSubtype = 1
         };
 
+        // Custom Room Table for Keep Shared Injection Data (for Jungle Entrance room injection data)
+        public static GenericRoomTable m_KeepJungleEntranceRooms;
+
         // Generate a DungeonFlowNode with a default configuration
         public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null, DungeonFlowNode.NodePriority priority = DungeonFlowNode.NodePriority.MANDATORY, float percentChance = 1) {
             DungeonFlowNode m_CachedNode = new DungeonFlowNode(targetflow);
@@ -353,6 +356,17 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 framedCombatNodes = 0,
             };
 
+
+            m_KeepJungleEntranceRooms = ScriptableObject.CreateInstance<GenericRoomTable>();
+            m_KeepJungleEntranceRooms.includedRoomTables = new List<GenericRoomTable>(0);
+            m_KeepJungleEntranceRooms.includedRooms = new WeightedRoomCollection() {
+                elements = new List<WeightedRoom>() {
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom, Weight: 0.5f),
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom2)
+                }
+            };
+
+
             SecretJungleEntranceInjector = new ProceduralFlowModifierData() {
                 annotation = "Secret Jungle Entrance Room",
                 DEBUG_FORCE_SPAWN = false,
@@ -360,8 +374,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
                     ProceduralFlowModifierData.FlowModifierPlacementType.RANDOM_NODE_CHILD
                 },
-                roomTable = null,
-                exactRoom = ExpandRoomPrefabs.Expand_Keep_TreeRoom,
+                roomTable = m_KeepJungleEntranceRooms,
+                exactRoom = null,
                 IsWarpWing = false,
                 RequiresMasteryToken = false,
                 chanceToLock = 0,

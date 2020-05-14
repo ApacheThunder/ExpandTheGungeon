@@ -94,14 +94,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Remove(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(HandleCollision));
             // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Remove(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));
-
-            GameObject JungleTreeFrame = new GameObject("Jungle Tree Frame") { layer = 0 };
-            JungleTreeFrame.transform.position = transform.position;
-            ItemBuilder.AddSpriteToObject(JungleTreeFrame, "ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large_Frame", false, false);
-            tk2dSprite JungleTreeFrameSprite = JungleTreeFrame.GetComponent<tk2dSprite>();
-            JungleTreeFrameSprite.HeightOffGround = 3;
-            JungleTreeFrameSprite.UpdateZDepth();
-
+            
             GameObject PitManager = new GameObject("Jungle Pit Manager") { layer = 0 };
             PitManager.transform.position = (transform.position + new Vector3(5, 2));
             ItemBuilder.AddSpriteToObject(PitManager, "ExpandTheGungeon/Textures/Items/babygoodhammer", false, false);
@@ -149,6 +142,14 @@ namespace ExpandTheGungeon.ExpandComponents {
             CellData cellData2 = GameManager.Instance.Dungeon.data[cellPos2];
             cellData.fallingPrevented = false;
             cellData2.fallingPrevented = false;
+            yield return null;
+            GameObject JungleTreeFrame = new GameObject("Jungle Tree Frame") { layer = 0 };
+            JungleTreeFrame.transform.position = transform.position;
+            if (m_ParentRoom != null) { JungleTreeFrame.transform.parent = m_ParentRoom.hierarchyParent; }
+            ItemBuilder.AddSpriteToObject(JungleTreeFrame, "ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large_Frame", false, false);
+            tk2dSprite JungleTreeFrameSprite = JungleTreeFrame.GetComponent<tk2dSprite>();
+            JungleTreeFrameSprite.HeightOffGround = 3;
+            JungleTreeFrameSprite.UpdateZDepth();
             yield break;
         }        
 

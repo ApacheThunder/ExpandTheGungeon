@@ -23,7 +23,8 @@ namespace ExpandTheGungeon.ItemAPI {
             string shortDesc = "Corrupted Chamber";
             string longDesc = "This weird artefact indicates mastery of... somewhere";
             ItemBuilder.SetupItem(canyonMasterRound, shortDesc, longDesc, "ex");
-            canyonMasterRound.quality = PickupObject.ItemQuality.SPECIAL;
+            // canyonMasterRound.quality = PickupObject.ItemQuality.SPECIAL;
+            canyonMasterRound.quality = PickupObject.ItemQuality.EXCLUDED;
             canyonMasterRound.ItemSpansBaseQualityTiers = false;
             canyonMasterRound.additionalMagnificenceModifier = 0;
             canyonMasterRound.ItemRespectsHeartMagnificence = true;

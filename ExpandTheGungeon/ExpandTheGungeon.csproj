@@ -101,6 +101,7 @@
     <Compile Include="ExpandComponents\ExpandBlobulinRancherChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBooChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBulletKingChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandChamberGunProcessor.cs" />
     <Compile Include="ExpandComponents\ExpandChaosModeChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandCorruptedObjectAmbienceComponent.cs" />
     <Compile Include="ExpandComponents\ExpandEnableCorpseOnDeath.cs" />
@@ -1376,6 +1377,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\JungleAssets\Jungle_TreeStump.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Keep_TreeRoom2.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

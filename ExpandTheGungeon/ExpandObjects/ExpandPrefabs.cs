@@ -274,6 +274,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Challenge_ChaosMode;
         public static GameObject Challenge_TripleTrouble;
         public static GameObject Challenge_KingsMen;
+
+        // Modified Items
+        public static Gun ChamberGun;
         
 
         public static void InitCustomPrefabs() {
@@ -2051,9 +2054,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             });
 
             winchesterrooms = m_WinchesterRooms.ToArray();
-
-
+            
             ExpandSecretDoorPrefabs.InitPrefabs();
+
+            ChamberGun = PickupObjectDatabase.GetById(647) as Gun;
+
+            if (ChamberGun.gameObject.GetComponent<ChamberGunProcessor>()) {
+                Destroy(ChamberGun.gameObject.GetComponent<ChamberGunProcessor>());
+                ChamberGun.gameObject.AddComponent<ExpandChamberGunProcessor>();
+            }
 
             MetalGearRatPrefab = null;
             MetalGearRatActorPrefab = null;
