@@ -665,7 +665,94 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Woods.floorSquareDensity = 0.05f;
             Jungle_Woods.floorSquares = new TileIndexGrid[0];
             Jungle_Woods.usesFacewallGrids = false;
-            Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[0];
+
+
+            TileIndexGrid Jungle_FaceWallIndexGrid_01 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_01_DoubleWindows");
+            TileIndexGrid Jungle_FaceWallIndexGrid_02 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_02_SingleWindow");
+            TileIndexGrid Jungle_FaceWallIndexGrid_03 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_03_BigSingleWindow");
+
+            Jungle_FaceWallIndexGrid_01.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_01.topIndices = new TileIndexList() { indices = new List<int>() { 33 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_01.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_01.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_01.bottomIndices = new TileIndexList() { indices = new List<int>() { 55 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_01.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.topIndices = new TileIndexList() { indices = new List<int>() { 34 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.bottomIndices = new TileIndexList() { indices = new List<int>() { 56 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_02.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.topIndices = new TileIndexList() { indices = new List<int>() { 37 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.bottomIndices = new TileIndexList() { indices = new List<int>() { 59 }, indexWeights = new List<float>() { 1 } };
+            Jungle_FaceWallIndexGrid_03.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
+            
+
+            Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[] {
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_01,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_02,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_03,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+            };
             Jungle_Woods.usesInternalMaterialTransitions = false;
             Jungle_Woods.usesProceduralMaterialTransitions = false;
             Jungle_Woods.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
@@ -755,9 +842,68 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Bamboo.floorSquareDensity = 0.05f;
             Jungle_Bamboo.floorSquares = new TileIndexGrid[0];
             Jungle_Bamboo.usesFacewallGrids = false;
-            // The original tileset did define these, But the "usesFaceWallGrids" was set to false so it's unused. I won't waste time coding these back in.
-            // Especially since there was 3 TileIndexGrids originnaly setup in this. Each to a FacewallIndexGridDefinition entry. 
-            Jungle_Bamboo.facewallGrids = new FacewallIndexGridDefinition[0];
+            Jungle_Bamboo.facewallGrids = new FacewallIndexGridDefinition[] {
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_01,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_02,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+                new FacewallIndexGridDefinition() {
+                    grid = Jungle_FaceWallIndexGrid_03,
+                    minWidth = 3,
+                    maxWidth = 8,
+                    hasIntermediaries = false,
+                    minIntermediaryBuffer = 4,
+                    maxIntermediaryBuffer = 6,
+                    minIntermediaryLength = 1,
+                    maxIntermediaryLength = 3,
+                    topsMatchBottoms = true,
+                    middleSectionSequential = false,
+                    canExistInCorners = true,
+                    forceEdgesInCorners = true,
+                    canAcceptWallDecoration = false,
+                    canAcceptFloorDecoration = false,
+                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    canBePlacedInExits = false,
+                    chanceToPlaceIfPossible = 0.15f,
+                    perTileFailureRate = 0.05f
+                },
+            };
             Jungle_Bamboo.usesInternalMaterialTransitions = false;
             Jungle_Bamboo.usesProceduralMaterialTransitions = false;
             Jungle_Bamboo.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
@@ -916,14 +1062,9 @@ namespace ExpandTheGungeon.ExpandObjects {
                 debug_view = false
             };
             
-            /*List<string> JungleTextureCollection = new List<string>();
-
-            for (int i = 0; i < 704; i++) { JungleTextureCollection.Add("Textures/Tilesets/Jungle/" + i + ".png"); }*/
-            
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
                 dungeonCollection = braveResources.LoadAsset<GameObject>("TallGrassStrip").GetComponent<tk2dTiledSprite>().Collection,
-                // dungeonCollection = ExpandUtility.ReplaceDungeonCollection(GungeonPrefab.tileIndices.dungeonCollection, spriteList: JungleTextureCollection),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
                     AOFloorTileIndex = 0,
@@ -943,7 +1084,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     AOFloorPizzaSliceLeftWallRight = 11,
                     AOFloorPizzaSliceRightWallLeft = 12,
                     AOFloorWallUpAndLeft = 13,
-                    AOFloorWallUpAndRight = 13,
+                    AOFloorWallUpAndRight = 14,
                     AOFloorWallUpAndBoth = 15,
                     AOFloorDiagonalWallNortheast = -1,
                     AOFloorDiagonalWallNortheastLower = -1,
@@ -1043,7 +1184,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = string.Empty;
-            
             
             braveResources = null;
             MinesDungeonPrefab = null;

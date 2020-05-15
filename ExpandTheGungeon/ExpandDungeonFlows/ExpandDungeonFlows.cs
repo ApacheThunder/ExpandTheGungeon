@@ -96,46 +96,43 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
         // Generate a DungeonFlowNode with a default configuration
         public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null, DungeonFlowNode.NodePriority priority = DungeonFlowNode.NodePriority.MANDATORY, float percentChance = 1) {
-            DungeonFlowNode m_CachedNode = new DungeonFlowNode(targetflow);
-            m_CachedNode.isSubchainStandin = false;
-            m_CachedNode.nodeType = DungeonFlowNode.ControlNodeType.ROOM;
-            m_CachedNode.roomCategory = roomType;
-            m_CachedNode.percentChance = percentChance;
-            m_CachedNode.priority = priority;
-            m_CachedNode.overrideExactRoom = overrideRoom;
-            m_CachedNode.overrideRoomTable = overrideTable;
-            m_CachedNode.capSubchain = false;
-            m_CachedNode.subchainIdentifier = string.Empty;
-            m_CachedNode.limitedCopiesOfSubchain = false;
-            m_CachedNode.maxCopiesOfSubchain = 1;
-            m_CachedNode.subchainIdentifiers = new List<string>(0);
-            m_CachedNode.receivesCaps = false;
-            m_CachedNode.isWarpWingEntrance = isWarpWingNode;
-            if (isWarpWingNode) {
-                m_CachedNode.handlesOwnWarping = true;
-            } else {
-                m_CachedNode.handlesOwnWarping = false;
-            }            
-            m_CachedNode.forcedDoorType = DungeonFlowNode.ForcedDoorType.NONE;
-            m_CachedNode.loopForcedDoorType = DungeonFlowNode.ForcedDoorType.NONE;
-            m_CachedNode.nodeExpands = false;
-            m_CachedNode.initialChainPrototype = "n";
-            m_CachedNode.chainRules = new List<ChainRule>(0);
-            m_CachedNode.minChainLength = 3;
-            m_CachedNode.maxChainLength = 8;
-            m_CachedNode.minChildrenToBuild = 1;
-            m_CachedNode.maxChildrenToBuild = 1;
-            m_CachedNode.canBuildDuplicateChildren = false;
-            m_CachedNode.parentNodeGuid = string.Empty;
-            m_CachedNode.childNodeGuids = new List<string>(0);
-            m_CachedNode.loopTargetNodeGuid = string.Empty;
-            m_CachedNode.loopTargetIsOneWay = oneWayLoopTarget;
-            if (nodeGUID == null) {
-                m_CachedNode.guidAsString = Guid.NewGuid().ToString();
-            } else {
-                m_CachedNode.guidAsString = nodeGUID;
-            }            
-            m_CachedNode.flow = targetflow;
+
+            if (string.IsNullOrEmpty(nodeGUID)) { nodeGUID = Guid.NewGuid().ToString(); }
+
+            DungeonFlowNode m_CachedNode = new DungeonFlowNode(targetflow) {
+                isSubchainStandin = false,
+                nodeType = DungeonFlowNode.ControlNodeType.ROOM,
+                roomCategory = roomType,
+                percentChance = percentChance,
+                priority = priority,
+                overrideExactRoom = overrideRoom,
+                overrideRoomTable = overrideTable,
+                capSubchain = false,
+                subchainIdentifier = string.Empty,
+                limitedCopiesOfSubchain = false,
+                maxCopiesOfSubchain = 1,
+                subchainIdentifiers = new List<string>(0),
+                receivesCaps = false,
+                isWarpWingEntrance = isWarpWingNode,
+                handlesOwnWarping = isWarpWingNode,
+                forcedDoorType = DungeonFlowNode.ForcedDoorType.NONE,
+                loopForcedDoorType = DungeonFlowNode.ForcedDoorType.NONE,
+                nodeExpands = false,
+                initialChainPrototype = "n",
+                chainRules = new List<ChainRule>(0),
+                minChainLength = 3,
+                maxChainLength = 8,
+                minChildrenToBuild = 1,
+                maxChildrenToBuild = 1,
+                canBuildDuplicateChildren = false,
+                guidAsString = nodeGUID,
+                parentNodeGuid = string.Empty,
+                childNodeGuids = new List<string>(0),
+                loopTargetNodeGuid = string.Empty,
+                loopTargetIsOneWay = oneWayLoopTarget,
+                flow = targetflow
+            };
+
             return m_CachedNode;
         }        
         
