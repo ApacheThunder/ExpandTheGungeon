@@ -98,6 +98,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject Plunger;
         public GameObject GatlingGullNest;
         public GameObject BabyDragunNPC;
+        public GameObject GungeonLightStone;
+        public GameObject GungeonLightPurple;
+        public GameObject Sconce_Light;
+        public GameObject Sconce_Light_Side;
 
         // DungeonPlacables
         public DungeonPlaceable ExplodyBarrel;
@@ -179,6 +183,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             WinchesterMinimapIcon = sharedAssets.LoadAsset<GameObject>("minimap_winchester_icon");
             GatlingGullNest = sharedAssets.LoadAsset<GameObject>("gatlinggullnest");
             BabyDragunNPC = sharedAssets2.LoadAsset<GameObject>("BabyDragunJail");
+            GungeonLightStone = sharedAssets.LoadAsset<GameObject>("Gungeon Light (Stone)");
+            GungeonLightPurple = sharedAssets.LoadAsset<GameObject>("Gungeon Light (Purple)");
+            Sconce_Light = sharedAssets.LoadAsset<GameObject>("Sconce_Light");
+            Sconce_Light_Side = sharedAssets.LoadAsset<GameObject>("Sconce_Light_Side");
 
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {

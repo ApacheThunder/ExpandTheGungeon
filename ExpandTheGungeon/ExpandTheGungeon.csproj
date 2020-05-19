@@ -98,6 +98,9 @@
     <Compile Include="ExpandAudio\AudioResourceLoader.cs" />
     <Compile Include="ExpandAudio\ResourceLoaderSoundbanks.cs" />
     <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandBellyMonsterController.cs" />
+    <Compile Include="ExpandComponents\ExpandBellyWarpWingDoor.cs" />
+    <Compile Include="ExpandComponents\ExpandBellyWoodCrestEntranceController.cs" />
     <Compile Include="ExpandComponents\ExpandBlobulinRancherChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBooChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBulletKingChallengeComponent.cs" />
@@ -121,12 +124,15 @@
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_01.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_02.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\f2b_belly_flow_01.cs" />
     <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ExpandMain\ExpandSynergies.cs" />
     <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandBootlegRoomDoorsPlacables.cs" />
     <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
     <Compile Include="ExpandObjects\ExpandCustomDungeonPrefabs.cs" />
+    <Compile Include="ExpandObjects\ExpandCustomSpriteCollections.cs" />
+    <Compile Include="ExpandObjects\ExpandDungeonCollections\env_tileset_belly.cs" />
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
@@ -157,6 +163,7 @@
     <Compile Include="ItemAPI\Items\TheLeadKey.cs" />
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
+    <Compile Include="ItemAPI\Items\WoodenCrest.cs" />
     <Compile Include="ItemAPI\ResourceExtractor.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
     <Compile Include="ExpandMain\ExpandAssemblerHook.cs" />
@@ -207,7 +214,7 @@
     <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Textures\ENV_Tileset_Canyon.png" />
+    <EmbeddedResource Include="Textures\Tilesets\ENV_Tileset_Canyon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\Stone_Cube_Collection_West.png" />
@@ -1381,7 +1388,50 @@
   <ItemGroup>
     <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Keep_TreeRoom2.room" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Playable_Shotgun_Man_Swap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Tilesets\ENV_Tileset_Belly.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Gungeon_BellyEntranceRoom.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Belly\Expand_Belly_Entrance.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Items\junglecrest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Gungeon_HiddenMonsterRoom.room" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BellyAssets\Belly_GungeonMonsterRoomFloor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BellyAssets\PedestalRuins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\RoomLayoutData\RoomFactoryRooms\Expand_Gungeon_BellyEntranceRoom_ext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_BackEnd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_001.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_002.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_003.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_004.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_005.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_006.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_007.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_008.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_009.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_010.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_011.png" />
+    <EmbeddedResource Include="Textures\BellyAssets\BellyMonster\Belly_Monster_Move_012.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

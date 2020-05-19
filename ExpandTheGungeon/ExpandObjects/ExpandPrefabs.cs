@@ -31,6 +31,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Custom Textures
         public static Texture2D StoneCubeWestTexture;
         public static Texture2D ENV_Tileset_Canyon_Texture;
+        public static Texture2D ENV_Tileset_Belly_Texture;
         public static Texture2D BulletManMonochromeTexture;
         public static Texture2D BulletManUpsideDownTexture;
         public static Texture2D RedBulletShotgunManTexture;
@@ -222,6 +223,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static DungeonPlaceable RatTrapPlacable;
         public static DungeonPlaceable CorruptedSecretRoomSpecialItem;
         public static DungeonPlaceable Jungle_Doors;
+        public static DungeonPlaceable Belly_Doors;
 
         // Modified/Reference AIActors
         public static AIActor MetalCubeGuy;
@@ -269,6 +271,21 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Jungle_ExitLadder;
         public static GameObject Jungle_BlobLostSign;
         public static GameObject Jungle_ItemStump;
+        public static GameObject Door_Horizontal_Belly;
+        public static GameObject Door_Vertical_Belly;
+
+        // Sarcophagus Objects with Kaliber sprites set.
+        public static GameObject Sarcophagus_ShotgunBook_Kaliber;
+        public static GameObject Sarcophagus_ShotgunMace_Kaliber;
+        public static GameObject Sarcophagus_BulletSword_Kaliber;
+        public static GameObject Sarcophagus_BulletShield_Kaliber;
+
+        // Belly Entrance Room stuff
+        public static GameObject Sarco_WoodShieldPedestal;
+        public static GameObject Sarco_Door;
+        public static GameObject Sarco_Floor;
+        
+        public static GameObject Sarco_MonsterObject;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -294,12 +311,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
-
+            
+            
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             StoneCubeWestTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\Stone_Cube_Collection_West.png");
 
-            ENV_Tileset_Canyon_Texture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\ENV_Tileset_Canyon.png");
+            ENV_Tileset_Canyon_Texture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\Tilesets\\ENV_Tileset_Canyon.png");
+            ENV_Tileset_Belly_Texture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\Tilesets\\ENV_Tileset_Belly.png");
 
             BulletManMonochromeTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_Monochrome.png");
             BulletManUpsideDownTexture = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\BulletMan_UpsideDown.png");
@@ -1830,6 +1849,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             DungeonDoorController Door_Vertical_Jungle_Controller = Door_Vertical_Jungle.GetComponent<DungeonDoorController>();
             Door_Vertical_Jungle_Controller.sealAnimationName = "jungle_blocker_vertical_down";
             Door_Vertical_Jungle_Controller.unsealAnimationName = "jungle_blocker_vertical_up";
+            Door_Vertical_Jungle_Controller.playerNearSealedAnimationName = "jungle_blocker_headshake";
             Door_Vertical_Jungle_Controller.doorModules[0].openAnimationName = "jungle_door_north_left_open";
             Door_Vertical_Jungle_Controller.doorModules[0].closeAnimationName = "jungle_door_north_left_close";
             Door_Vertical_Jungle_Controller.doorModules[1].openAnimationName = "jungle_door_north_right_open";
@@ -1906,9 +1926,241 @@ namespace ExpandTheGungeon.ExpandObjects {
             ItemBuilder.AddSpriteToObject(Jungle_ItemStump, "ExpandTheGungeon/Textures/JungleAssets/Jungle_TreeStump", false, false);
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
-            Jungle_ItemStump.AddComponent<ExpandJungleTreeStumpItemPedestal>();
+            ExpandJungleTreeStumpItemPedestal StumpPedestal = Jungle_ItemStump.AddComponent<ExpandJungleTreeStumpItemPedestal>();
+            StumpPedestal.ItemID = WoodenCrest.WoodCrestID;
+
             DontDestroyOnLoad(Jungle_ItemStump);
             FakePrefab.MarkAsFakePrefab(Jungle_ItemStump);
+
+
+            Door_Horizontal_Belly = Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
+            Door_Vertical_Belly = Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[1].nonDatabasePlaceable);
+
+            DungeonDoorController Door_Horizontal_Belly_Controller = Door_Horizontal_Belly.GetComponent<DungeonDoorController>();
+            Door_Horizontal_Belly_Controller.sealAnimationName = "monstro_blocker_horizontal_down";
+            Door_Horizontal_Belly_Controller.unsealAnimationName = "monstro_blocker_horizontal_up";
+            Door_Horizontal_Belly_Controller.playerNearSealedAnimationName = string.Empty;
+            Door_Horizontal_Belly_Controller.doorModules[0].openAnimationName = "monstro_door_horizontall_top_open";
+            Door_Horizontal_Belly_Controller.doorModules[0].closeAnimationName = "monstro_door_horizontal_top_close";
+            Door_Horizontal_Belly_Controller.doorModules[0].horizontalFlips = false;
+            Door_Horizontal_Belly_Controller.doorModules[1].openAnimationName = "monstro_door_horizontall_bottom_open";
+            Door_Horizontal_Belly_Controller.doorModules[1].closeAnimationName = "monstro_door_horizontal_bottom_close";
+            Door_Horizontal_Belly_Controller.doorModules[1].horizontalFlips = false;
+            Door_Horizontal_Belly_Controller.doorModules[1].openDepth = 1;
+            Door_Horizontal_Belly_Controller.doorModules[1].closedDepth = 1;
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("BarsLeft").localPosition = new Vector3(0.375f, 0.75f, 1.5f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("BarsRight").localPosition = new Vector3(1.0625f, 0.75f, 1.5f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("DoorTop").localPosition = new Vector3(0.375f, -0.4375f, 4.8125f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("DoorBottom").localPosition = new Vector3(0.375f, -0.4375f, 1.8125f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("AO_Wall_Left").localPosition = new Vector3(1.0625f, 2.0625f, 3.0625f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("AO_Wall_Right").localPosition = new Vector3(-0.5625f, 2.0625f, 3.0625f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("AO_Floor_Left").localPosition = new Vector3(-0.5625f, 1.0625f, 2.0625f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("AO_Floor_Right").localPosition = new Vector3(1.0625f, 1.0625f, 2.0625f);
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("DoorTop").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("monstro_door_horizontal_top_001");
+            Door_Horizontal_Belly_Controller.gameObject.transform.Find("DoorBottom").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("monstro_door_horizontal_bottom_001");
+            Destroy(Door_Horizontal_Belly.gameObject.transform.Find("BarsLeft").gameObject.GetComponent<tk2dSpriteAnimator>());
+            Destroy(Door_Horizontal_Belly.gameObject.transform.Find("BarsRight").gameObject.GetComponent<tk2dSpriteAnimator>());
+            
+            DungeonDoorController Door_Vertical_Belly_Controller = Door_Vertical_Belly.GetComponent<DungeonDoorController>();
+            Door_Vertical_Belly_Controller.sealAnimationName = "monstro_blocker_vertical_down";
+            Door_Vertical_Belly_Controller.unsealAnimationName = "monstro_blocker_vertical_up";
+            Door_Vertical_Belly_Controller.playerNearSealedAnimationName = "monstro_blocker_headshake";
+            Door_Vertical_Belly_Controller.doorModules[0].openAnimationName = "monstro_door_vertical_left_open";
+            Door_Vertical_Belly_Controller.doorModules[0].closeAnimationName = "monstro_door_vertical_left_close";
+            Door_Vertical_Belly_Controller.doorModules[0].openDepth = -1.25f;
+            Door_Vertical_Belly_Controller.doorModules[0].closedDepth = -2.25f;
+            Door_Vertical_Belly_Controller.doorModules[1].openAnimationName = "monstro_door_vertical_right_open";
+            Door_Vertical_Belly_Controller.doorModules[1].closeAnimationName = "monstro_door_vertical_right_close";
+            Door_Vertical_Belly_Controller.doorModules[1].openDepth = -1.25f;
+            Door_Vertical_Belly_Controller.doorModules[1].closedDepth = -2.25f;
+            Door_Vertical_Belly_Controller.gameObject.transform.Find("DoorLeft").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("monstro_door_vertical_open_left_001");
+            Door_Vertical_Belly_Controller.gameObject.transform.Find("DoorRight").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("monstro_door_vertical_open_right_001");
+
+            tk2dSpriteAnimation Door_Horizontal_Belly_Animation_Left = Door_Horizontal_Belly.gameObject.transform.Find("BarsLeft").gameObject.AddComponent<tk2dSpriteAnimation>();
+            tk2dSpriteAnimation Door_Horizontal_Belly_Animation_Right = Door_Horizontal_Belly.gameObject.transform.Find("BarsRight").gameObject.AddComponent<tk2dSpriteAnimation>();
+            Door_Horizontal_Belly_Animation_Left.clips = Door_Vertical_Belly_Controller.sealAnimators[0].Library.clips;
+            Door_Horizontal_Belly_Animation_Right.clips = Door_Vertical_Belly_Controller.sealAnimators[0].Library.clips;
+
+            tk2dSpriteAnimator Door_Horizontal_Belly_Animator_Left = Door_Horizontal_Belly.gameObject.transform.Find("BarsLeft").gameObject.AddComponent<tk2dSpriteAnimator>();
+            Door_Horizontal_Belly_Animator_Left.Library = Door_Horizontal_Belly_Animation_Left;
+            Door_Horizontal_Belly_Animator_Left.DefaultClipId = 1;
+            Door_Horizontal_Belly_Animator_Left.AdditionalCameraVisibilityRadius = 0;
+            Door_Horizontal_Belly_Animator_Left.AnimateDuringBossIntros = false;
+            Door_Horizontal_Belly_Animator_Left.ForceSetEveryFrame = false;
+            Door_Horizontal_Belly_Animator_Left.playAutomatically = false;
+            Door_Horizontal_Belly_Animator_Left.IsFrameBlendedAnimation = false;
+            Door_Horizontal_Belly_Animator_Left.clipTime = 0;
+            Door_Horizontal_Belly_Animator_Left.deferNextStartClip = false;
+
+            tk2dSpriteAnimator Door_Horizontal_Belly_Animator_Right = Door_Horizontal_Belly.gameObject.transform.Find("BarsRight").gameObject.AddComponent<tk2dSpriteAnimator>();
+            Door_Horizontal_Belly_Animator_Right.Library = Door_Horizontal_Belly_Animation_Right;
+            Door_Horizontal_Belly_Animator_Right.DefaultClipId = 1;
+            Door_Horizontal_Belly_Animator_Right.AdditionalCameraVisibilityRadius = 0;
+            Door_Horizontal_Belly_Animator_Right.AnimateDuringBossIntros = false;
+            Door_Horizontal_Belly_Animator_Right.ForceSetEveryFrame = false;
+            Door_Horizontal_Belly_Animator_Right.playAutomatically = false;
+            Door_Horizontal_Belly_Animator_Right.IsFrameBlendedAnimation = false;
+            Door_Horizontal_Belly_Animator_Right.clipTime = 0;
+            Door_Horizontal_Belly_Animator_Right.deferNextStartClip = false;
+
+            Door_Horizontal_Belly_Controller.sealAnimators = new tk2dSpriteAnimator[] { Door_Horizontal_Belly_Animator_Left, Door_Horizontal_Belly_Animator_Right };
+
+            Door_Horizontal_Belly.SetActive(false);
+            Door_Vertical_Belly.SetActive(false);
+
+            Belly_Doors = Instantiate(NakatomiDungeonPrefab.doorObjects);
+            Belly_Doors.variantTiers[0].nonDatabasePlaceable = Door_Vertical_Belly;
+            Belly_Doors.variantTiers[1].nonDatabasePlaceable = Door_Horizontal_Belly;
+            FakePrefab.MarkAsFakePrefab(Door_Vertical_Belly);
+            FakePrefab.MarkAsFakePrefab(Door_Horizontal_Belly);
+            DontDestroyOnLoad(Door_Vertical_Belly);
+            DontDestroyOnLoad(Door_Horizontal_Belly);
+
+
+            // Sarcophagus Objects have unused sprites still in the game. I'll set them up to use them for my Belly entrance room for Gungeon Proper.
+            Sarcophagus_ShotgunBook_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_ShotgunBook")); 
+            Sarcophagus_ShotgunMace_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_ShotgunMace"));
+            Sarcophagus_BulletSword_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_BulletSword"));
+            Sarcophagus_BulletShield_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_BulletShield"));
+            Sarcophagus_ShotgunBook_Kaliber.SetActive(false);
+            Sarcophagus_ShotgunMace_Kaliber.SetActive(false);
+            Sarcophagus_BulletSword_Kaliber.SetActive(false);
+            Sarcophagus_BulletShield_Kaliber.SetActive(false);
+
+            Sarcophagus_ShotgunBook_Kaliber.name = "Sarcophagus_ShotgunBook_Kaliber";
+            Sarcophagus_ShotgunMace_Kaliber.name = "Sarcophagus_ShotgunMace_Kaliber";
+            Sarcophagus_BulletSword_Kaliber.name = "Sarcophagus_BulletSword_Kaliber";
+            Sarcophagus_BulletShield_Kaliber.name = "Sarcophagus_BulletShield_Kaliber";
+
+            Destroy(Sarcophagus_BulletShield_Kaliber.transform.Find("sarcophashadow (1)").gameObject);
+            Destroy(Sarcophagus_BulletSword_Kaliber.transform.Find("sarcophashadow (2)").gameObject);
+            Destroy(Sarcophagus_ShotgunBook_Kaliber.transform.Find("sarcophashadow (3)").gameObject);
+            Destroy(Sarcophagus_ShotgunMace_Kaliber.transform.Find("sarcophashadow (4)").gameObject);
+
+            Sarcophagus_ShotgunBook_Kaliber.GetComponent<tk2dSprite>().SetSprite("sarco_shotbook_kaliber_001");
+            Sarcophagus_ShotgunMace_Kaliber.GetComponent<tk2dSprite>().SetSprite("sarco_shotmace_kaliber_001");
+            Sarcophagus_BulletSword_Kaliber.GetComponent<tk2dSprite>().SetSprite("sarco_bullsword_kaliber_001");
+            Sarcophagus_BulletShield_Kaliber.GetComponent<tk2dSprite>().SetSprite("sarco_bullshield_kaliber_001");
+            
+            FakePrefab.MarkAsFakePrefab(Sarcophagus_ShotgunBook_Kaliber);
+            FakePrefab.MarkAsFakePrefab(Sarcophagus_ShotgunMace_Kaliber);
+            FakePrefab.MarkAsFakePrefab(Sarcophagus_BulletSword_Kaliber);
+            FakePrefab.MarkAsFakePrefab(Sarcophagus_BulletShield_Kaliber);
+            DontDestroyOnLoad(Sarcophagus_ShotgunBook_Kaliber);
+            DontDestroyOnLoad(Sarcophagus_ShotgunMace_Kaliber);
+            DontDestroyOnLoad(Sarcophagus_BulletSword_Kaliber);
+            DontDestroyOnLoad(Sarcophagus_BulletShield_Kaliber);
+
+
+            Sarco_WoodShieldPedestal = new GameObject("Sarco Pedestal") { layer = 0 };
+            tk2dSprite SarcoPedestalSprite = Sarco_WoodShieldPedestal.GetComponent<tk2dSprite>();
+            ItemBuilder.AddSpriteToObject(Sarco_WoodShieldPedestal, "ExpandTheGungeon/Textures/BellyAssets/PedestalRuins", false, false);
+
+            SpeculativeRigidbody Sarco_WoodShieldPedestalRigidBody = ExpandUtility.GenerateOrAddToRigidBody(Sarco_WoodShieldPedestal, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(26, 23));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_WoodShieldPedestal,  CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(26, 23));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_WoodShieldPedestal, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, 5), dimensions: new IntVector2(24, 21));
+
+            ExpandBellyWoodCrestEntranceController WoodCrestController = Sarco_WoodShieldPedestal.AddComponent<ExpandBellyWoodCrestEntranceController>();
+            WoodCrestController.ItemID = WoodenCrest.WoodCrestID;
+
+            Sarco_Door = new GameObject("Sarco_Door", new Type[] { typeof(tk2dSprite) }) { layer = LayerMask.NameToLayer("FG_Critical") };
+            tk2dSprite Sarco_DoorSprite = Sarco_Door.GetComponent<tk2dSprite>();
+            Sarco_DoorSprite.Collection = sharedAssets.LoadAsset<GameObject>("Environment_Gungeon_Collection").GetComponent<tk2dSpriteCollectionData>();
+            Sarco_DoorSprite.SetSprite("sarco_door_001");
+            Sarco_DoorSprite.HeightOffGround = -1f;
+
+            tk2dSpriteAnimation Sarco_DoorAnimation = Sarco_Door.AddComponent<tk2dSpriteAnimation>();
+            Sarco_DoorAnimation.clips = new tk2dSpriteAnimationClip[0];
+
+            List<string> SarcoDoor_OpenFrames = new List<string>() {
+                "sarco_door_open_001",
+                "sarco_door_open_002",
+                "sarco_door_open_003",
+                "sarco_door_open_004",
+                "sarco_door_open_005",
+                "sarco_door_open_006"
+            };
+
+            ExpandUtility.AddAnimation(Sarco_DoorAnimation, Sarco_DoorSprite.Collection, SarcoDoor_OpenFrames, "Sarco_Door_Open", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.GenerateSpriteAnimator(Sarco_Door, Sarco_DoorAnimation);
+
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(10, 3), dimensions: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(10, 12), dimensions: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(10, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(42, 3), dimensions: new IntVector2(10, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 31), dimensions: new IntVector2(52, 12));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(10, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 12), dimensions: new IntVector2(10, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(42, 12), dimensions: new IntVector2(10, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 40), dimensions: new IntVector2(52, 5));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_Door, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(52, 42));
+
+
+            Sarco_Floor = new GameObject("Sarco Monster Room Floor") { layer = 19 };
+            ItemBuilder.AddSpriteToObject(Sarco_Floor, "ExpandTheGungeon/Textures/BellyAssets/Belly_GungeonMonsterRoomFloor", false, false);
+            Sarco_Floor.GetComponent<tk2dSprite>().HeightOffGround = -1.5f;
+            Sarco_Floor.GetComponent<tk2dSprite>().UpdateZDepth();
+
+            Sarco_WoodShieldPedestal.SetActive(false);
+            Sarco_Door.SetActive(false);
+            Sarco_Floor.SetActive(false);
+            FakePrefab.MarkAsFakePrefab(Sarco_WoodShieldPedestal);
+            FakePrefab.MarkAsFakePrefab(Sarco_Door);
+            FakePrefab.MarkAsFakePrefab(Sarco_Floor);
+            DontDestroyOnLoad(Sarco_WoodShieldPedestal);
+            DontDestroyOnLoad(Sarco_Door);
+            DontDestroyOnLoad(Sarco_Floor);
+
+
+            string BellyMonsterBasePath = "ExpandTheGungeon/Textures/BellyAssets/BellyMonster/";
+            List<string> BellyMonsterSprites = new List<string>() {
+                "Belly_Monster_Move_001",
+                "Belly_Monster_Move_002",
+                "Belly_Monster_Move_003",
+                "Belly_Monster_Move_004",
+                "Belly_Monster_Move_005",
+                "Belly_Monster_Move_006",
+                "Belly_Monster_Move_007",
+                "Belly_Monster_Move_008",
+                "Belly_Monster_Move_009",
+                "Belly_Monster_Move_010",
+                "Belly_Monster_Move_011",
+                "Belly_Monster_Move_012",
+            };
+
+            Sarco_MonsterObject = new GameObject("Belly Monster Chaser") { layer = 0 };
+
+
+            ItemBuilder.AddSpriteToObject(Sarco_MonsterObject, (BellyMonsterBasePath + "Belly_Monster_Move_001"), false, false);
+
+            tk2dSprite Sarco_MonsterSprite = Sarco_MonsterObject.GetComponent<tk2dSprite>();
+
+            foreach (string sprite in BellyMonsterSprites) {
+                if (sprite != "Belly_Monster_Move_001") { SpriteBuilder.AddSpriteToCollection((BellyMonsterBasePath + sprite), Sarco_MonsterSprite.Collection); }
+            }            
+
+            ExpandUtility.GenerateSpriteAnimator(Sarco_MonsterObject);
+            ExpandUtility.AddAnimation(Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>(), Sarco_MonsterSprite.Collection, BellyMonsterSprites, "MonsterChase", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024));
+            ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024));
+
+            Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].eventInfo = "slam";
+            Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].triggerEvent = true;
+
+            Sarco_MonsterObject.SetActive(false);
+
+            ExpandBellyMonsterController BellyMonster = Sarco_MonsterObject.AddComponent<ExpandBellyMonsterController>();
+            BellyMonster.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
+
+            FakePrefab.MarkAsFakePrefab(Sarco_MonsterObject);
+            DontDestroyOnLoad(Sarco_MonsterObject);
+
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

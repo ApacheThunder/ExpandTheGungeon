@@ -399,6 +399,13 @@ namespace ExpandTheGungeon.ExpandObjects {
         // All jungle rooms except special ones will be stored here
         public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
         public static List<string> Expand_Jungle_RoomList;
+        // public static List<string> Expand_Belly_RoomList;
+
+        public static PrototypeDungeonRoom Expand_Belly_Entrance;
+        // All Belly rooms except special ones will be stored here
+        // public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
+        public static PrototypeDungeonRoom Expand_Gungeon_BellyEntranceRoom;
+        public static PrototypeDungeonRoom Expand_Gungeon_HiddenMonsterRoom;
 
         public static WeightedRoom GenerateWeightedRoom(PrototypeDungeonRoom Room, float Weight = 1, bool LimitedCopies = true, int MaxCopies = 1, DungeonPrerequisite[] AdditionalPrerequisites = null) {
             if (Room == null) { return null; }
@@ -578,6 +585,53 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Jungle_SecretDragun = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_SecretDragun.room", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(4, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GatlingGullNest, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.BabyDragunNPC, useExternalPrefab: true));
+
+            
+            Expand_Belly_Entrance = RoomFactory.BuildFromResource("Belly/Expand_Belly_Entrance.room", true);
+
+
+            Expand_Gungeon_BellyEntranceRoom = RoomFactory.BuildFromResource("Expand_Gungeon_BellyEntranceRoom.room", true);
+            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Gungeon_BellyEntranceRoom, "RoomFactoryRooms\\Expand_Gungeon_BellyEntranceRoom_ext.png"); // use old system to force carpet floor cells
+            Expand_Gungeon_BellyEntranceRoom.usesProceduralDecoration = false;
+            Expand_Gungeon_BellyEntranceRoom.usesProceduralLighting = false;
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(6, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Door, useExternalPrefab: true), xOffset: 7, yOffset: -3);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(10, 24), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_WoodShieldPedestal, useExternalPrefab: true), xOffset: 6, yOffset: -6);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 6), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunBook_Kaliber, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunMace_Kaliber, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunBook_Kaliber, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 6), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletShield_Kaliber, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));            
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(14, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(14, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(15, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(15, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light, useExternalPrefab: true));
+            
+
+
+            Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromResource("Expand_Gungeon_HiddenMonsterRoom.room", true);
+            Expand_Gungeon_HiddenMonsterRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.NPC_TRIGGER_A, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.NPC_TRIGGER_C, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, Vector2.zero, ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Floor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(36, 7), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(24, 2), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(18, 4), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(64, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_MonsterObject, useExternalPrefab: true));
+            Expand_Gungeon_HiddenMonsterRoom.usesProceduralLighting = false;
+            Expand_Gungeon_HiddenMonsterRoom.allowFloorDecoration = false;
+            Expand_Gungeon_HiddenMonsterRoom.allowWallDecoration = false;
+            Expand_Gungeon_HiddenMonsterRoom.usesProceduralDecoration = false;
+            Expand_Gungeon_HiddenMonsterRoom.precludeAllTilemapDrawing = true;
 
 
 

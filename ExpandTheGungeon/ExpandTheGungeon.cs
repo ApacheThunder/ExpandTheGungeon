@@ -63,7 +63,8 @@ namespace ExpandTheGungeon {
                 "Mimiclay",
                 "The Lead Key",
                 "RockSlide",
-                "Corrupted Master Round"
+                "Corrupted Master Round",
+                "Wooden Crest"
                 // "Table Tech Expand"
             };
             
@@ -161,6 +162,7 @@ namespace ExpandTheGungeon {
                     // TableTechExpand.Init();
                     RockSlide.Init();
                     CustomMasterRounds.Init();
+                    WoodenCrest.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
@@ -331,44 +333,34 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandTestCommand(string[] consoleText) {
-            // GameObject soundObject = new GameObject("SoundSource");
-            // soundObject.transform.position = GameManager.Instance.BestActivePlayer.transform.position;
-            // AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", soundObject);
-            //AkSoundEngine.PostEvent("Play_VO_bombshee_death_01", soundObject);
-            // ETGModConsole.Log(TestObject.name);
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            /*Dungeon dungeon = GameManager.Instance.Dungeon;
+            // Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            if (dungeon && CurrentPlayer) {
-                RoomHandler DestinationRoom = null;
-                foreach (RoomHandler room in dungeon.data.rooms) {
-                    if (!string.IsNullOrEmpty(room.GetRoomName())) {
-                        if (room.GetRoomName().StartsWith(ExpandRoomPrefabs.SecretRatEntranceRoom.name)) {
-                            DestinationRoom = room;
-                            break;
-                        }
-                    }
+            /*if (!ExpandCustomSpriteCollections.ShotgunReskinObject) { ExpandCustomSpriteCollections.InitShotgunKinCollection(); }
+            CurrentPlayer.OverrideAnimationLibrary = ExpandCustomSpriteCollections.ShotgunReskinObject.GetComponent<tk2dSpriteAnimation>();
+            CurrentPlayer.SetOverrideShader(ShaderCache.Acquire(CurrentPlayer.LocalShaderName));*/
+            
+            RoomHandler SelectedRoom = null;
+            foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
+                if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Gungeon_BellyEntranceRoom.name)) {
+                    SelectedRoom = room;
+                    break;
                 }
-                if (DestinationRoom != null) {
-                    CurrentPlayer.WarpToPoint((new Vector2(8, 8) + DestinationRoom.area.basePosition.ToVector2()), doFollowers: true);
-                }
-            }*/
-            /*GameObject m_CachedAIActorObject = new GameObject("TestEnemy") { layer = 28 };                
-            m_CachedAIActorObject.transform.position = (CurrentPlayer.transform.position + new Vector3(0, 2));
-            m_CachedAIActorObject.transform.parent = CurrentPlayer.GetAbsoluteParentRoom().hierarchyParent;
-            tk2dSprite newSprite = m_CachedAIActorObject.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(newSprite, EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").gameObject.GetComponent<tk2dSprite>());*/
+            }
 
-            // AIActor newEnemy = ExpandUtility.GenerateAIActorTemplate(m_CachedAIActorObject, "Test Enemy", Guid.NewGuid().ToString());
+            if (SelectedRoom != null) {
+                IntVector2 targetPoint = SelectedRoom.area.basePosition + new IntVector2(8, 6);
+                CurrentPlayer.WarpToPoint(targetPoint.ToVector2(), false, false);
+            } else {
+                GameManager.Instance.LoadNextLevel();
+            }
 
-            /*ExpandGlitchedEnemies glitchedEnemyDatabase = new ExpandGlitchedEnemies();
-            glitchedEnemyDatabase.SpawnGlitchedPlayerAsEnemy(CurrentPlayer.GetAbsoluteParentRoom(), new IntVector2(3, 3), true);
-            glitchedEnemyDatabase = null;*/
+            ETGModConsole.Instance.GUI.Visible = false;
 
             // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
             // Rooms for floor 4.
-            GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(1, "SecretGlitchFloor_Flow", true));
+            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(1, "SecretGlitchFloor_Flow", true));
             return;
         }        
     }

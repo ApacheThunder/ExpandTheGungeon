@@ -72,15 +72,19 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
         // Default stuff to use with custom Flows
         public static SharedInjectionData BaseSharedInjectionData;
+        public static SharedInjectionData GungeonInjectionData;
         public static SharedInjectionData SewersInjectionData;
         public static SharedInjectionData HollowsInjectionData;
         public static SharedInjectionData CastleInjectionData;
         public static SharedInjectionData JungleInjectionData;
+        public static SharedInjectionData BellyInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
         public static ProceduralFlowModifierData SecretMiniElevatorInjector;
         public static ProceduralFlowModifierData SecretJungleEntranceInjector;
+        public static ProceduralFlowModifierData BellySpecialEntranceRoomInjector;
+        public static ProceduralFlowModifierData BellySpecialMonsterRoomInjector;
 
         public static DungeonFlowSubtypeRestriction BaseSubTypeRestrictions = new DungeonFlowSubtypeRestriction() {
             baseCategoryRestriction = PrototypeDungeonRoom.RoomCategory.NORMAL,
@@ -189,6 +193,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             Dungeon BulletHellPrefab = DungeonDatabase.GetOrLoadByName("Base_BulletHell");
 
             BaseSharedInjectionData = ExpandPrefabs.sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
+            GungeonInjectionData = GungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             CastleInjectionData = CastlePrefab.PatternSettings.flows[0].sharedInjectionData[0];
@@ -215,6 +220,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
             KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
             KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
+            KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
             Foyer_Flow.name = "Foyer_Flow";
@@ -304,7 +310,92 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 exactSecondaryRoom = null,
                 framedCombatNodes = 0,
             };
+
+            BellySpecialEntranceRoomInjector = new ProceduralFlowModifierData() {
+                annotation = "Secret Belly Entrance Room",
+                DEBUG_FORCE_SPAWN = false,
+                OncePerRun = false,
+                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                    ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
+                },
+                roomTable = null,
+                exactRoom = ExpandRoomPrefabs.Expand_Gungeon_BellyEntranceRoom,
+                IsWarpWing = false,
+                RequiresMasteryToken = false,
+                chanceToLock = 0,
+                selectionWeight = 1,
+                chanceToSpawn = 1,
+                RequiredValidPlaceable = null,
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.GUNGEON,
+                        requireTileset = true,
+                        comparisonValue = 1,
+                        encounteredObjectGuid = string.Empty,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        requireDemoMode = false,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requireFlag = false,
+                        useSessionStatValue = false,
+                        encounteredRoom = null,
+                        requiredNumberOfEncounters = -1,
+                        saveFlagToCheck = GungeonFlags.TUTORIAL_COMPLETED,
+                        statToCheck = TrackedStats.GUNBERS_MUNCHED
+                    }
+                },
+                CanBeForcedSecret = true,
+                RandomNodeChildMinDistanceFromEntrance = 0,
+                exactSecondaryRoom = null,
+                framedCombatNodes = 0,
+            };
+
+            BellySpecialMonsterRoomInjector = new ProceduralFlowModifierData() {
+                annotation = "Secret Belly Monster Room",
+                DEBUG_FORCE_SPAWN = false,
+                OncePerRun = false,
+                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                    ProceduralFlowModifierData.FlowModifierPlacementType.NO_LINKS
+                },
+                roomTable = null,
+                exactRoom = ExpandRoomPrefabs.Expand_Gungeon_HiddenMonsterRoom,
+                IsWarpWing = true,
+                RequiresMasteryToken = false,
+                chanceToLock = 0,
+                selectionWeight = 1,
+                chanceToSpawn = 1,
+                RequiredValidPlaceable = null,
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.GUNGEON,
+                        requireTileset = true,
+                        comparisonValue = 1,
+                        encounteredObjectGuid = string.Empty,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        requireDemoMode = false,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requireFlag = false,
+                        useSessionStatValue = false,
+                        encounteredRoom = null,
+                        requiredNumberOfEncounters = -1,
+                        saveFlagToCheck = GungeonFlags.TUTORIAL_COMPLETED,
+                        statToCheck = TrackedStats.GUNBERS_MUNCHED
+                    }
+                },
+                CanBeForcedSecret = true,
+                RandomNodeChildMinDistanceFromEntrance = 0,
+                exactSecondaryRoom = null,
+                framedCombatNodes = 0,
+            };
             
+            GungeonInjectionData.InjectionData.Add(BellySpecialEntranceRoomInjector);
+            GungeonInjectionData.InjectionData.Add(BellySpecialMonsterRoomInjector);
+
             SewersInjectionData.InjectionData.Add(JunkSecretRoomInjector);
 
 
@@ -442,7 +533,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             CustomSecretFloorSharedInjectionData.OnlyOne = false;
             CustomSecretFloorSharedInjectionData.ChanceToSpawnOne = 1;
             CustomSecretFloorSharedInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-
+            
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             // Due to load order, I need to set this up here instead.
