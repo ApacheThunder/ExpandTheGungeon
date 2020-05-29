@@ -46,14 +46,14 @@ namespace ExpandTheGungeon.ExpandMain {
                             roomCategory != PrototypeDungeonRoom.RoomCategory.REWARD && roomCategory != PrototypeDungeonRoom.RoomCategory.EXIT)
                         {
                             List<IntVector2> m_CachedPositions = new List<IntVector2>();
-                            IntVector2? RandomGlitchEnemyVector = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions);
+                            IntVector2? RandomGlitchEnemyVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions);
                             IntVector2? RandomGlitchEnemyVector2 = null;
                             IntVector2? RandomGlitchEnemyVector3 = null;
                             IntVector2? RandomGlitchEnemyVector4 = null;
 
-                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector2 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions); }
-                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector3 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions, ExitClearence: 13); }
-                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector4 = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions); }
+                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector2 = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions); }
+                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector3 = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 13); }
+                            if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector4 = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions); }
                             
 
                             if (RandomGlitchEnemyVector.HasValue) {
@@ -108,36 +108,40 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10) {
+        private IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = true) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
                 for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
                     for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
                         bool isInvalid = false;
                         IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
-
-                        for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
-                            for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
-                                IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
-                                if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(targetArea1)) {
-                                    CellData cellData = GameManager.Instance.Dungeon.data[targetArea1];
-                                    if (cellData.isExitCell | cellData.isDoorFrameCell) {
-                                        isInvalid = true;
-                                        break;
+                        if (avoidExits) {
+                            for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
+                                for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
+                                    IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
+                                    if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(targetArea1)) {
+                                        CellData cellData = GameManager.Instance.Dungeon.data[targetArea1];
+                                        if (cellData.isExitCell | cellData.isDoorFrameCell) {
+                                            isInvalid = true;
+                                            break;
+                                        }
                                     }
                                 }
+                                if (isInvalid) { break; }
                             }
-                            if (isInvalid) { break; }
                         }
                         for(int x = (0 - Clearence); x <= Clearence; x++) {
                             for(int y = (0 - Clearence); y <= Clearence; y++) {
                                 IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
                                 if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
                                     CellData cellData = dungeon.data[targetArea1];
+                                    if (avoidPits && dungeon.data.isPit(targetArea1.x, targetArea1.y)) {
+                                        isInvalid = true;
+                                        break;
+                                    }
                                     if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
-                                        cellData.isDoorFrameCell | cellData.IsTopWall() | 
-                                        cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | cellData.isWallMimicHideout |
-                                        dungeon.data.isWall(targetArea1.x, targetArea1.y) | dungeon.data.isPit(targetArea1.x, targetArea1.y) |
+                                        cellData.IsTopWall() | cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | 
+                                        cellData.isWallMimicHideout | dungeon.data.isWall(targetArea1.x, targetArea1.y) | 
                                         dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
                                     {
                                         isInvalid = true;
@@ -147,7 +151,9 @@ namespace ExpandTheGungeon.ExpandMain {
                             }
                             if (isInvalid) { break; }
                         }
-                        if (!isInvalid && dungeon.data.CheckInBoundsAndValid(TargetPosition)) { validCellsCached.Add(TargetPosition); }
+                        if (!isInvalid && dungeon.data.CheckInBoundsAndValid(TargetPosition) && !validCellsCached.Contains(TargetPosition)) {
+                            validCellsCached.Add(TargetPosition);
+                        }
                     }
                 }
             }
@@ -156,7 +162,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 IntVector2 RegisteredCell = (SelectedCell);
                 dungeon.data[RegisteredCell].isOccupied = true;
                 validCellsCached.Remove(SelectedCell);
-                return (SelectedCell - currentRoom.area.basePosition);
+                if (PositionRelativeToRoom) { SelectedCell -= currentRoom.area.basePosition; }
+                return SelectedCell;
             } else {
                 return null;
             }

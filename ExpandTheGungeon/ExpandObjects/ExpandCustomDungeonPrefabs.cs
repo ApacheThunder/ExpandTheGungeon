@@ -12,22 +12,27 @@ namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandCustomDungeonPrefabs : DungeonDatabase {
 
-        public static GameObject GameManagerObject;
+        // public static GameObject GameManagerObject;
         
         public static GameLevelDefinition CanyonDefinition;
         public static GameLevelDefinition JungleDefinition;
         public static GameLevelDefinition BellyDefinition;
-        
+        public static GameLevelDefinition WestDefinition;
+
+        public static GameObject GameManagerObject;
+
+
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             Dungeon dungeon = null;
-            string dungeonPrefabTemplate = "Base_ResourcefulRat";
             if (name.ToLower() == "base_canyon") {
-                dungeon = CanyonDungeon(GetOrLoadByName_Orig(dungeonPrefabTemplate));
+                dungeon = CanyonDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
             } else if (name.ToLower() == "base_jungle") {
-                dungeon = JungleDungeon(GetOrLoadByName_Orig(dungeonPrefabTemplate));
+                dungeon = JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
             } else if (name.ToLower() == "base_belly") {
-                dungeon = BellyDungeon(GetOrLoadByName_Orig(dungeonPrefabTemplate));
-            }            
+                dungeon = BellyDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+            } else if (name.ToLower() == "base_west") {
+                dungeon = WestDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
+            }
             if (dungeon) {
                 DebugTime.RecordStartTime();
                 DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
@@ -76,10 +81,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(ExpandCustomDungeonPrefabs).GetMethod("DungeonStart_Hook", BindingFlags.Instance | BindingFlags.Public),
                 typeof(ItemDB)
             );
-            
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            GameManagerObject = braveResources.LoadAsset<GameObject>("_GameManager");
-
+                        
             CanyonDefinition = new GameLevelDefinition() {
                 dungeonSceneName = "tt_canyon",
                 dungeonPrefabPath = "Base_Canyon",
@@ -92,119 +94,48 @@ namespace ExpandTheGungeon.ExpandObjects {
                 predefinedSeeds = new List<int>(0)
             };
 
-            foreach (GameLevelDefinition levelDefinition in GameManager.Instance.customFloors) {
-                if (levelDefinition.dungeonSceneName == "tt_jungle") { JungleDefinition = levelDefinition; }
-                if (levelDefinition.dungeonSceneName == "tt_belly") { BellyDefinition = levelDefinition; }
-            }
-            
-            if (JungleDefinition != null) {
-                JungleDefinition.priceMultiplier = 1.20000005f;
-                JungleDefinition.secretDoorHealthMultiplier = 1;
-                JungleDefinition.enemyHealthMultiplier = 1.33329999f;
-                JungleDefinition.damageCap = 300;
-                JungleDefinition.bossDpsCap = 42;
-            }
-
-            if (BellyDefinition != null) {
-                BellyDefinition.priceMultiplier = 1.39999998f;
-                BellyDefinition.secretDoorHealthMultiplier = 1;
-                BellyDefinition.enemyHealthMultiplier = 1.66659999f;
-                BellyDefinition.damageCap = 300;
-                BellyDefinition.bossDpsCap = 60;
-                BellyDefinition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-            }
-
-            for(int i = 0; i < GameManagerObject.GetComponent<GameManager>().customFloors.Count; i++) {
-                if (GameManagerObject.GetComponent<GameManager>().customFloors[i].dungeonSceneName == "tt_jungle") {
-                    GameLevelDefinition levelDefinition = GameManagerObject.GetComponent<GameManager>().customFloors[i];
-                    levelDefinition.priceMultiplier = 1.39999998f;
-                    levelDefinition.secretDoorHealthMultiplier = 1;
-                    levelDefinition.enemyHealthMultiplier = 1.66659999f;
-                    levelDefinition.damageCap = 300;
-                    levelDefinition.bossDpsCap = 60;
-                    levelDefinition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                    break;
-                }
-            }
-
-            GameManager.Instance.customFloors.Add(CanyonDefinition);
-            GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition);
-
-            braveResources = null;
+            ReInitFloorDefinitions();
         }
 
         public static void ReInitFloorDefinitions() {
-
+            
             bool EntryNotExist = true;
-            bool EntryNotExist2 = true;
-
-            if (CanyonDefinition == null) {
-                CanyonDefinition = new GameLevelDefinition() {
-                    dungeonSceneName = "tt_canyon",
-                    dungeonPrefabPath = "Base_Canyon",
-                    priceMultiplier = 2,
-                    secretDoorHealthMultiplier = 1,
-                    enemyHealthMultiplier = 2.1f,
-                    damageCap = 300,
-                    bossDpsCap = 78,
-                    flowEntries = new List<DungeonFlowLevelEntry>(0),
-                    predefinedSeeds = new List<int>(0)
-                };
-            }
-
-            if (JungleDefinition == null) {
-                foreach (GameLevelDefinition levelDefinition in GameManager.Instance.customFloors) {
-                    if (levelDefinition.dungeonSceneName == "tt_jungle") {
-                        JungleDefinition = levelDefinition;
-                        break;
-                    }
-                }
-
-                if (JungleDefinition != null) {
-                    JungleDefinition.priceMultiplier = 1.20000005f;
-                    JungleDefinition.secretDoorHealthMultiplier = 1;
-                    JungleDefinition.enemyHealthMultiplier = 1.33329999f;
-                    JungleDefinition.damageCap = 300;
-                    JungleDefinition.bossDpsCap = 42;
-                }
-            }
-
-
+           
             if (GameManager.Instance && GameManager.Instance.customFloors != null) {
-                foreach (GameLevelDefinition definition in GameManager.Instance.customFloors) {
-                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
-                    break;
-                }
+                if (!GameManagerObject) { GameManagerObject = GameManager.Instance.gameObject; }
 
-                for(int i = 0; i < GameManagerObject.GetComponent<GameManager>().customFloors.Count; i++) {
-                    if (GameManagerObject.GetComponent<GameManager>().customFloors[i].dungeonSceneName == "tt_jungle") {
-                        GameLevelDefinition levelDefinition = GameManagerObject.GetComponent<GameManager>().customFloors[i];
-                        levelDefinition.priceMultiplier = 1.20000005f;
-                        levelDefinition.secretDoorHealthMultiplier = 1;
-                        levelDefinition.enemyHealthMultiplier = 1.33329999f;
-                        levelDefinition.damageCap = 300;
-                        levelDefinition.bossDpsCap = 42;
-                        break;
+                foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
+                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
+                    if (definition.dungeonSceneName == "tt_jungle") {
+                        definition.priceMultiplier = 1.20000005f;
+                        definition.secretDoorHealthMultiplier = 1;
+                        definition.enemyHealthMultiplier = 1.33329999f;
+                        definition.damageCap = 300;
+                        definition.bossDpsCap = 42;
+                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                        JungleDefinition = definition;
+                    } else if (definition.dungeonSceneName == "tt_belly") {
+                        definition.priceMultiplier = 1.39999998f;
+                        definition.secretDoorHealthMultiplier = 1;
+                        definition.enemyHealthMultiplier = 1.66659999f;
+                        definition.damageCap = 300;
+                        definition.bossDpsCap = 60;
+                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                        BellyDefinition = definition;
+                    } else if (definition.dungeonSceneName == "tt_west") {
+                        definition.priceMultiplier = 2;
+                        definition.secretDoorHealthMultiplier = 1;
+                        definition.enemyHealthMultiplier = 2.1f;
+                        definition.damageCap = 300;
+                        definition.bossDpsCap = 78;
+                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                        WestDefinition = definition;
                     }
                 }
 
-                if (EntryNotExist) { GameManager.Instance.customFloors.Add(CanyonDefinition); }
+                if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition); }
             }
 
-            if (GameManagerObject && GameManagerObject.GetComponent<GameManager>() && GameManagerObject.GetComponent<GameManager>().customFloors != null) {
-                foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
-                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist2 = false; }
-                    break;
-                }
-                if (EntryNotExist2) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition); }
-            } else if (GameManagerObject == null) {
-                AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-                GameManagerObject = braveResources.LoadAsset<GameObject>("_GameManager");
-                if (GameManagerObject && GameManagerObject.GetComponent<GameManager>() && GameManagerObject.GetComponent<GameManager>().customFloors != null) {
-                    GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition);
-                }
-                braveResources = null;
-            }
         }
 
 
@@ -213,6 +144,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Dungeon RatDungeonPrefab = GetOrLoadByName_Orig("Base_ResourcefulRat");
             Dungeon FinalScenarioPilotPrefab = GetOrLoadByName_Orig("FinalScenario_Pilot");
             Dungeon FinalScenarioBulletPrefab = GetOrLoadByName_Orig("FinalScenario_Bullet");
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+
             DungeonMaterial FinalScenario_MainMaterial = UnityEngine.Object.Instantiate(FinalScenarioPilotPrefab.roomMaterialDefinitions[0]);
             FinalScenario_MainMaterial.supportsPits = true;
             FinalScenario_MainMaterial.doPitAO = false;
@@ -256,7 +189,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { ExpandDungeonFlows.secretglitchfloor_flow.SecretGlitchFloor_Flow() },
+                flows = new List<DungeonFlow>() { secretglitchfloor_flow.SecretGlitchFloor_Flow() },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -338,7 +271,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
-                dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, ExpandPrefabs.ENV_Tileset_Canyon_Texture),
+                dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Canyon")),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = FinalScenarioBulletPrefab.tileIndices.aoTileIndices,
                 placeBorders = true,
@@ -429,7 +362,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 4;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];            
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
-            
+
+            expandSharedAssets1 = null;
             FinalScenarioPilotPrefab = null;
             RatDungeonPrefab = null;
             MinesDungeonPrefab = null;
@@ -442,7 +376,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
             Dungeon GungeonPrefab = GetOrLoadByName_Orig("Base_Gungeon");
             Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
-            
+            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+
             DungeonMaterial Jungle_Woods = ScriptableObject.CreateInstance<DungeonMaterial>();
             Jungle_Woods.wallShards = GungeonPrefab.roomMaterialDefinitions[0].wallShards;
             Jungle_Woods.bigWallShards = GungeonPrefab.roomMaterialDefinitions[0].bigWallShards;
@@ -463,215 +398,29 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Woods.supportsDiagonalWalls = false;
             Jungle_Woods.supportsUpholstery = false;
             Jungle_Woods.carpetIsMainFloor = false;
-
-            TileIndexGrid jungle_carpetGrid1 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_Dark_01");            
-            jungle_carpetGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 164 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 165 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 166 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.leftIndices = new TileIndexList() { indices = new List<int>() { 186 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.centerIndices = new TileIndexList() { indices = new List<int>() { 187 }, indexWeights = new List<float>() { 0.1f } };
-            jungle_carpetGrid1.rightIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 212 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 211 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 190 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1 } };
-
-            /*TileIndexGrid jungle_carpetGrid2 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_Red_01");
-            jungle_carpetGrid2.roomTypeRestriction = -1;
-            jungle_carpetGrid2.topLeftIndices = new TileIndexList() { indices = new List<int>() { 230 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topIndices = new TileIndexList() { indices = new List<int>() { 231 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topRightIndices = new TileIndexList() { indices = new List<int>() { 232 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.leftIndices = new TileIndexList() { indices = new List<int>() { 252 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.centerIndices = new TileIndexList() { indices = new List<int>() { 253 }, indexWeights = new List<float>() { 0.1f } };
-            jungle_carpetGrid2.rightIndices = new TileIndexList() { indices = new List<int>() { 254 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 274 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomIndices = new TileIndexList() { indices = new List<int>() { 275 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 276 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 278 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 277 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 256 }, indexWeights = new List<float>() { 1 } };
-            jungle_carpetGrid2.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 255 }, indexWeights = new List<float>() { 1 } };*/
-
+            Jungle_Woods.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("JungleAssets/carpetGrid1.txt") };
             Jungle_Woods.supportsChannels = false;
             Jungle_Woods.minChannelPools = 0;
             Jungle_Woods.maxChannelPools = 3;
             Jungle_Woods.channelTenacity = 0.75f;
+            Jungle_Woods.channelGrids = new TileIndexGrid[0];
             Jungle_Woods.supportsLavaOrLavalikeSquares = false;
-
-            TileIndexGrid jungle_lavaGrid1 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Carpet_dark_01");
-            jungle_lavaGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 318 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 406 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 340 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.leftIndices = new TileIndexList() { indices = new List<int>() { 428 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.centerIndices = new TileIndexList() { indices = new List<int>() { 296 }, indexWeights = new List<float>() { 0.1f } };
-            jungle_lavaGrid1.rightIndices = new TileIndexList() { indices = new List<int>() { 450 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 362 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomIndices = new TileIndexList() { indices = new List<int>() { 472 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 384 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.horizontalIndices = new TileIndexList() { indices = new List<int>() { 604 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.verticalIndices = new TileIndexList() { indices = new List<int>() { 582 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topCapIndices = new TileIndexList() { indices = new List<int>() { 494 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.rightCapIndices = new TileIndexList() { indices = new List<int>() { 538 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 560 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.leftCapIndices = new TileIndexList() { indices = new List<int>() { 516 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.allSidesIndices = new TileIndexList() { indices = new List<int>() { 626 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 520 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 519 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 498 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 497 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { 408 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { 407 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { 409 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { 452 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { 451 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { 453 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { 473 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { 474 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { 475 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { 429 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { 430 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { 431 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { 517 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { 495 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.doubleNubsTop = new TileIndexList() { indices = new List<int>() { 540 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.doubleNubsRight = new TileIndexList() { indices = new List<int>() { 541 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { 539 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { 542 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.quadNubs = new TileIndexList() { indices = new List<int>() { 518 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topRightWithNub = new TileIndexList() { indices = new List<int>() { 341 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.topLeftWithNub = new TileIndexList() { indices = new List<int>() { 319 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { 385 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { 363 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { 342 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { 320 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { 342 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { 320 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { 388 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { 366 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { 367 }, indexWeights = new List<float>() { 1 } };
-            jungle_lavaGrid1.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { 389 }, indexWeights = new List<float>() { 1 } };
-
-            Jungle_Woods.carpetGrids = new TileIndexGrid[] { jungle_carpetGrid1/*, jungle_carpetGrid2*/ };
-
-            Jungle_Woods.lavaGrids = new TileIndexGrid[] { jungle_lavaGrid1 };
+            Jungle_Woods.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("JungleAssets/lavaGrid.txt") };
             Jungle_Woods.supportsIceSquares = false;
             Jungle_Woods.iceGrids = new TileIndexGrid[0];
             Jungle_Woods.roomFloorBorderGrid = null;
-
-            TileIndexGrid jungle_wood_roomCeilingBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_CeilingBorder_Inner_01");
-            jungle_wood_roomCeilingBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 334 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topIndices = new TileIndexList() { indices = new List<int>() { 335 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 336 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 356 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.centerIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 358 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 378 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 379 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 380 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 423 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { 424 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_roomCeilingBorderGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 357 }, indexWeights = new List<float>() { 1 } };
-            
-            Jungle_Woods.roomCeilingBorderGrid = jungle_wood_roomCeilingBorderGrid;
-
-            TileIndexGrid jungle_wood_pitLayoutGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_PitLayout_01");
-            jungle_wood_pitLayoutGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.centerIndices = new TileIndexList() {
-                indices = new List<int>() { 748, 770, 792, 814 },
-                indexWeights = new List<float>() { 1, 1, 1, 1 }
-            };
-            jungle_wood_pitLayoutGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_pitLayoutGrid.extendedSet = true;
-            jungle_wood_pitLayoutGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.1f,
-                CanBeFlushLeft = true,
-                CanBeFlushRight = true,
-                CanBeFlushBottom = true
-            };
-
-            Jungle_Woods.pitLayoutGrid = jungle_wood_pitLayoutGrid;
+            Jungle_Woods.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/roomCeilingBorderGrid.txt");
+            Jungle_Woods.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/pitLayoutGrid.txt");
             Jungle_Woods.pitBorderRaisedGrid = null;
             Jungle_Woods.additionalPitBorderFlatGrid = null;
-
-            TileIndexGrid jungle_wood_outerCeilingBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_CeilingBorder_Outer_01");
-            jungle_wood_outerCeilingBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 268 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topIndices = new TileIndexList() {
-                indices = new List<int>() { 400, 401, 402 },
-                indexWeights = new List<float>() { 1, 1, 1 } };
-            jungle_wood_outerCeilingBorderGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 269 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.leftIndices = new TileIndexList() {
-                indices = new List<int>() { 337, 359, 381 },
-                indexWeights = new List<float>() { 1, 1, 1 } };
-            jungle_wood_outerCeilingBorderGrid.centerIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.rightIndices = new TileIndexList() {
-                indices = new List<int>() { 333, 355, 377 },
-                indexWeights = new List<float>() { 1, 1, 1 }
-            };
-            jungle_wood_outerCeilingBorderGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 290 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomIndices = new TileIndexList() {
-                indices = new List<int>() { 312, 313, 314 },
-                indexWeights = new List<float>() { 1, 1, 1 }
-            };
-            jungle_wood_outerCeilingBorderGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 291 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 296 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { 295 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 294 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 318 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 316 }, indexWeights = new List<float>() { 1 } };
-            jungle_wood_outerCeilingBorderGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 317 }, indexWeights = new List<float>() { 1 } };
-            
-
-            Jungle_Woods.pitBorderFlatGrid = jungle_wood_outerCeilingBorderGrid;
-            Jungle_Woods.outerCeilingBorderGrid = jungle_wood_outerCeilingBorderGrid;
+            Jungle_Woods.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/outerCeilingBorderGrid.txt");
+            Jungle_Woods.outerCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/outerCeilingBorderGrid.txt");
             Jungle_Woods.floorSquareDensity = 0.05f;
             Jungle_Woods.floorSquares = new TileIndexGrid[0];
             Jungle_Woods.usesFacewallGrids = false;
-
-
-            TileIndexGrid Jungle_FaceWallIndexGrid_01 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_01_DoubleWindows");
-            TileIndexGrid Jungle_FaceWallIndexGrid_02 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_02_SingleWindow");
-            TileIndexGrid Jungle_FaceWallIndexGrid_03 = ExpandUtility.BuildNewTileIndexGrid("Nakatomi_Blue_WallLayout_03_BigSingleWindow");
-
-            Jungle_FaceWallIndexGrid_01.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_01.topIndices = new TileIndexList() { indices = new List<int>() { 33 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_01.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_01.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_01.bottomIndices = new TileIndexList() { indices = new List<int>() { 55 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_01.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.topIndices = new TileIndexList() { indices = new List<int>() { 34 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.bottomIndices = new TileIndexList() { indices = new List<int>() { 56 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_02.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.topLeftIndices = new TileIndexList() { indices = new List<int>() { 32 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.topIndices = new TileIndexList() { indices = new List<int>() { 37 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.topRightIndices = new TileIndexList() { indices = new List<int>() { 31 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 54 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.bottomIndices = new TileIndexList() { indices = new List<int>() { 59 }, indexWeights = new List<float>() { 1 } };
-            Jungle_FaceWallIndexGrid_03.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 53 }, indexWeights = new List<float>() { 1 } };
-            
-
             Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[] {
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_01,
+                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid1.txt"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -691,7 +440,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_02,
+                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid2.txt"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -711,7 +460,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_03,
+                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid3.txt"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -741,7 +490,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Woods.lightPrefabs = new WeightedGameObjectCollection() {
                elements = new List<WeightedGameObject>() {
                    new WeightedGameObject() {
-                       rawGameObject = GungeonPrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       rawGameObject = ExpandPrefabs.JungleLight,
                        weight = 1,                       
                        forceDuplicatesPossible = false,
                        pickupId = -1,
@@ -749,13 +498,17 @@ namespace ExpandTheGungeon.ExpandObjects {
                    }
                }
             };
-            Jungle_Woods.facewallLightStamps = GungeonPrefab.roomMaterialDefinitions[0].facewallLightStamps;
-            Jungle_Woods.sidewallLightStamps = GungeonPrefab.roomMaterialDefinitions[0].sidewallLightStamps;
+            Jungle_Woods.facewallLightStamps = CastlePrefab.roomMaterialDefinitions[0].facewallLightStamps;
+            Jungle_Woods.sidewallLightStamps = CastlePrefab.roomMaterialDefinitions[0].sidewallLightStamps;
             Jungle_Woods.usesDecalLayer = false;
             Jungle_Woods.decalIndexGrid = null;
             Jungle_Woods.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
             Jungle_Woods.decalSize = 1;
             Jungle_Woods.decalSpacing = 1;
+            Jungle_Woods.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            Jungle_Woods.patternSpacing = 1;
+            Jungle_Woods.patternSize = 1;
+            Jungle_Woods.patternIndexGrid = null;
             Jungle_Woods.forceEdgesDiagonal = false;
             Jungle_Woods.exteriorFacadeBorderGrid = null;
             Jungle_Woods.facadeTopGrid = null;
@@ -782,47 +535,29 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Bamboo.supportsDiagonalWalls = false;
             Jungle_Bamboo.supportsUpholstery = false;
             Jungle_Bamboo.carpetIsMainFloor = false;
-            Jungle_Bamboo.carpetGrids = new TileIndexGrid[] { jungle_carpetGrid1/*, jungle_carpetGrid2*/ };
+            Jungle_Bamboo.carpetGrids = Jungle_Woods.carpetGrids;
             Jungle_Bamboo.supportsChannels = false;
             Jungle_Bamboo.minChannelPools = 0;
             Jungle_Bamboo.maxChannelPools = 3;
             Jungle_Bamboo.channelTenacity = 0.75f;
+            Jungle_Bamboo.channelGrids = new TileIndexGrid[0];
             Jungle_Bamboo.supportsLavaOrLavalikeSquares = true;
-            Jungle_Bamboo.lavaGrids = new TileIndexGrid[] { jungle_lavaGrid1 };
+            Jungle_Bamboo.lavaGrids = Jungle_Woods.lavaGrids;
             Jungle_Bamboo.supportsIceSquares = false;
             Jungle_Bamboo.iceGrids = new TileIndexGrid[0];
             Jungle_Bamboo.roomFloorBorderGrid = null;
-            Jungle_Bamboo.roomCeilingBorderGrid = jungle_wood_roomCeilingBorderGrid;                        
-            Jungle_Bamboo.pitLayoutGrid = jungle_wood_pitLayoutGrid;
-
-            TileIndexGrid jungle_bamboo_pitBorderFlatGrid = ExpandUtility.BuildNewTileIndexGrid("Jungle_Custom_PitBorder_01");
-            jungle_bamboo_pitBorderFlatGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.topIndices = new TileIndexList() { indices = new List<int>() { 187 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 186 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 190 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { 210 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { 208 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            jungle_bamboo_pitBorderFlatGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1 } };
-            
-            Jungle_Bamboo.pitBorderFlatGrid = jungle_wood_outerCeilingBorderGrid;
+            Jungle_Bamboo.roomCeilingBorderGrid = Jungle_Woods.roomCeilingBorderGrid;                        
+            Jungle_Bamboo.pitLayoutGrid = Jungle_Woods.pitLayoutGrid;
+            Jungle_Bamboo.pitBorderFlatGrid = Jungle_Woods.outerCeilingBorderGrid;
             Jungle_Bamboo.pitBorderRaisedGrid = null;
             Jungle_Bamboo.additionalPitBorderFlatGrid = null;
-            Jungle_Bamboo.outerCeilingBorderGrid = jungle_wood_outerCeilingBorderGrid;
+            Jungle_Bamboo.outerCeilingBorderGrid = Jungle_Woods.outerCeilingBorderGrid;
             Jungle_Bamboo.floorSquareDensity = 0.05f;
             Jungle_Bamboo.floorSquares = new TileIndexGrid[0];
             Jungle_Bamboo.usesFacewallGrids = false;
             Jungle_Bamboo.facewallGrids = new FacewallIndexGridDefinition[] {
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_01,
+                    grid = Jungle_Woods.facewallGrids[0].grid,
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -842,7 +577,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_02,
+                    grid = Jungle_Woods.facewallGrids[1].grid,
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -862,7 +597,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = Jungle_FaceWallIndexGrid_03,
+                    grid = Jungle_Woods.facewallGrids[2].grid,
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -892,7 +627,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Bamboo.lightPrefabs = new WeightedGameObjectCollection() {
                elements = new List<WeightedGameObject>() {
                    new WeightedGameObject() {
-                       rawGameObject = GungeonPrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       rawGameObject = ExpandPrefabs.JungleLight,
                        weight = 1,                       
                        forceDuplicatesPossible = false,
                        pickupId = -1,
@@ -900,13 +635,17 @@ namespace ExpandTheGungeon.ExpandObjects {
                    }
                }
             };
-            Jungle_Bamboo.facewallLightStamps = GungeonPrefab.roomMaterialDefinitions[0].facewallLightStamps;
-            Jungle_Bamboo.sidewallLightStamps = GungeonPrefab.roomMaterialDefinitions[0].sidewallLightStamps;
+            Jungle_Bamboo.facewallLightStamps = CastlePrefab.roomMaterialDefinitions[0].facewallLightStamps;
+            Jungle_Bamboo.sidewallLightStamps = CastlePrefab.roomMaterialDefinitions[0].sidewallLightStamps;
             Jungle_Bamboo.usesDecalLayer = false;
             Jungle_Bamboo.decalIndexGrid = null;
             Jungle_Bamboo.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
             Jungle_Bamboo.decalSize = 1;
             Jungle_Bamboo.decalSpacing = 1;
+            Jungle_Bamboo.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            Jungle_Bamboo.patternSpacing = 1;
+            Jungle_Bamboo.patternSize = 1;
+            Jungle_Bamboo.patternIndexGrid = null;
             Jungle_Bamboo.forceEdgesDiagonal = false;
             Jungle_Bamboo.exteriorFacadeBorderGrid = null;
             Jungle_Bamboo.facadeTopGrid = null;
@@ -918,14 +657,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_JungleStampData.tileStampWeight = 1;
             m_JungleStampData.spriteStampWeight = 0;
             m_JungleStampData.objectStampWeight = 1.5f;
-            // m_JungleStampData.objectStampWeight = 1;
             m_JungleStampData.stamps = new TileStampData[0];
             m_JungleStampData.spriteStamps = new SpriteStampData[0];
             m_JungleStampData.objectStamps = GungeonPrefab.stampData.objectStamps;
             m_JungleStampData.SymmetricFrameChance = 0.5f;
             m_JungleStampData.SymmetricCompleteChance = 0.25f;
-            // m_JungleStampData.SymmetricFrameChance = 0.1f;
-            // m_JungleStampData.SymmetricCompleteChance = 0.1f;
 
             dungeon.gameObject.name = "Base_Jungle";
             dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
@@ -991,24 +727,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                             value = 4,
                             weight = 0,
                             additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 5,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 6,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 7,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
                         }
                     }
                 },
@@ -1021,8 +739,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 patternSpacing = 3,
                 patternExpansion = 0,
                 decoPatchFrequency = 0.01f,
-                ambientLightColor = new Color(0.727336f, 0.766108f, 0.785294f, 1),
-                ambientLightColorTwo = new Color(0.62549f, 0.664706f, 0.684314f, 1),
+                ambientLightColor = new Color(0.827336f, 0.866108f, 0.885294f, 1),
+                ambientLightColorTwo = new Color(0.72549f, 0.764706f, 0.784314f, 1),
                 lowQualityAmbientLightColor = new Color(1, 1, 1, 1),
                 lowQualityAmbientLightColorTwo = new Color(1, 1, 1, 1),
                 lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
@@ -1087,16 +805,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 edgeDecorationTiles = null
             };
 
-            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
-                Jungle_Woods,
-                Jungle_Bamboo,
-                Jungle_Woods,
-                Jungle_Woods,
-                Jungle_Woods,
-                Jungle_Woods,
-                Jungle_Woods,
-                Jungle_Woods
-            };
+            dungeon.roomMaterialDefinitions = new DungeonMaterial[] { Jungle_Woods, Jungle_Bamboo, Jungle_Woods, Jungle_Woods, Jungle_Woods };
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
             dungeon.pathGridDefinitions = new List<TileIndexGrid>() { MinesDungeonPrefab.pathGridDefinitions[0] };
             dungeon.dungeonDustups = new DustUpVFX() {
@@ -1169,201 +878,13 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public static Dungeon BellyDungeon(Dungeon dungeon) {
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
             Dungeon GungeonPrefab = GetOrLoadByName_Orig("Base_Gungeon");
             Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
             Dungeon AbbeyPrefab = GetOrLoadByName_Orig("Base_Cathedral");
-
-
-            TileIndexGrid belly_carpetGrid1 = ExpandUtility.BuildNewTileIndexGrid("Forge_Residential_Carpet_01");
-            belly_carpetGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 200 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 201 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 202 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.leftIndices = new TileIndexList() { indices = new List<int>() { 222 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.centerIndices = new TileIndexList() { indices = new List<int>() { 223 }, indexWeights = new List<float>() { 0.100000001f } };
-            belly_carpetGrid1.rightIndices = new TileIndexList() { indices = new List<int>() { 224 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 244 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomIndices = new TileIndexList() { indices = new List<int>() { 245 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 246 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.horizontalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.verticalIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.topCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.rightCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.leftCapIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.allSidesIndices = new TileIndexList() { indices = new List<int>() { -1 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 248 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 247 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 226 }, indexWeights = new List<float>() { 1f } };
-            belly_carpetGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 225 }, indexWeights = new List<float>() { 1 } };
-            belly_carpetGrid1.PitInternalSquareOptions.PitSquareChance = 0.100000001f;
-            
-            TileIndexGrid belly_lavaGrid1 = ExpandUtility.BuildNewTileIndexGrid("Forge_Channels_Lava_01");
-            belly_lavaGrid1.topLeftIndices = new TileIndexList() { indices = new List<int>() { 318 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topIndices = new TileIndexList() { indices = new List<int>() { 406 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topRightIndices = new TileIndexList() { indices = new List<int>() { 340 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.leftIndices = new TileIndexList() { indices = new List<int>() { 428 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.centerIndices = new TileIndexList() { indices = new List<int>() { 296 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.rightIndices = new TileIndexList() { indices = new List<int>() { 450 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 362 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomIndices = new TileIndexList() { indices = new List<int>() { 472 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 384 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.horizontalIndices = new TileIndexList() { indices = new List<int>() { 604 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.verticalIndices = new TileIndexList() { indices = new List<int>() { 582 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topCapIndices = new TileIndexList() { indices = new List<int>() { 494 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.rightCapIndices = new TileIndexList() { indices = new List<int>() { 538 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 560 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.leftCapIndices = new TileIndexList() { indices = new List<int>() { 516 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.allSidesIndices = new TileIndexList() { indices = new List<int>() { 626 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 520 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 519 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 498 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 497 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { 408 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { 407 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { 409 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { 452 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { 451 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { 453 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { 473 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { 474 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { 475 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { 429 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { 430 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { 431 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { 517 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { 495 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.doubleNubsTop = new TileIndexList() { indices = new List<int>() { 540 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.doubleNubsRight = new TileIndexList() { indices = new List<int>() { 541 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { 539 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { 542 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.quadNubs = new TileIndexList() { indices = new List<int>() { 518 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topRightWithNub = new TileIndexList() { indices = new List<int>() { 341 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.topLeftWithNub = new TileIndexList() { indices = new List<int>() { 319 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomRightWithNub = new TileIndexList() { indices = new List<int>() { 385 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.bottomLeftWithNub = new TileIndexList() { indices = new List<int>() { 363 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { 342 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { 320 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { 342 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { 320 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { 388 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { 366 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { 367 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { 389 }, indexWeights = new List<float>() { 1f } };
-            belly_lavaGrid1.PitInternalSquareOptions.PitSquareChance = 0.100000001f;
-
-            TileIndexGrid belly_roomFloorBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_PitBorder_01");
-            belly_roomFloorBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 187 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.topIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 211 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 231 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 232 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 233 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 236 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 235 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 214 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 213 }, indexWeights = new List<float>() { 1f } };
-            belly_roomFloorBorderGrid.PitInternalSquareOptions.PitSquareChance = 0.100000001f;
-
-            TileIndexGrid belly_roomCeilingBorderGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_CeilingBorder_01");
-            belly_roomCeilingBorderGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 264 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.topIndices = new TileIndexList() { indices = new List<int>() { 352 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 286 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 374 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.centerIndices = new TileIndexList() { indices = new List<int>() { 242 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 396 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 308 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 418 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 330 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 528 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.verticalIndices = new TileIndexList() { indices = new List<int>() { 550 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 440 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 484 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomCapIndices = new TileIndexList() { indices = new List<int>() { 506 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 462 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { 572 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 466 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 465 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 444 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 443 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderTopNubLeftIndices = new TileIndexList() { indices = new List<int>() { 353 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderTopNubRightIndices = new TileIndexList() { indices = new List<int>() { 354 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderTopNubBothIndices = new TileIndexList() { indices = new List<int>() { 355 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderRightNubTopIndices = new TileIndexList() { indices = new List<int>() { 398 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderRightNubBottomIndices = new TileIndexList() { indices = new List<int>() { 397 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderRightNubBothIndices = new TileIndexList() { indices = new List<int>() { 399 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderBottomNubLeftIndices = new TileIndexList() { indices = new List<int>() { 420 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderBottomNubRightIndices = new TileIndexList() { indices = new List<int>() { 419 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderBottomNubBothIndices = new TileIndexList() { indices = new List<int>() { 421 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderLeftNubTopIndices = new TileIndexList() { indices = new List<int>() { 375 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderLeftNubBottomIndices = new TileIndexList() { indices = new List<int>() { 376 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.borderLeftNubBothIndices = new TileIndexList() { indices = new List<int>() { 377 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalNubsTopLeftBottomRight = new TileIndexList() { indices = new List<int>() { 463 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalNubsTopRightBottomLeft = new TileIndexList() { indices = new List<int>() { 441 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.doubleNubsTop = new TileIndexList() { indices = new List<int>() { 486 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.doubleNubsRight = new TileIndexList() { indices = new List<int>() { 487 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.doubleNubsBottom = new TileIndexList() { indices = new List<int>() { 485 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.doubleNubsLeft = new TileIndexList() { indices = new List<int>() { 488 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.quadNubs = new TileIndexList() { indices = new List<int>() { 464 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalBorderNE = new TileIndexList() { indices = new List<int>() { 288 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalBorderSE = new TileIndexList() { indices = new List<int>() { 266 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalBorderSW = new TileIndexList() { indices = new List<int>() { 288 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalBorderNW = new TileIndexList() { indices = new List<int>() { 266 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalCeilingNE = new TileIndexList() { indices = new List<int>() { 334 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalCeilingSE = new TileIndexList() { indices = new List<int>() { 312 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalCeilingSW = new TileIndexList() { indices = new List<int>() { 313 }, indexWeights = new List<float>() { 1f } };
-            belly_roomCeilingBorderGrid.diagonalCeilingNW = new TileIndexList() { indices = new List<int>() { 335 }, indexWeights = new List<float>() { 1f } };
-
-            TileIndexGrid belly_pitLayoutGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_PitLayout_01");
-            belly_pitLayoutGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.topIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.centerIndices = new TileIndexList() {
-                indices = new List<int>() { 748, 770, 792, 814 },
-                indexWeights = new List<float>() { 1, 1, 1, 1 }
-            };
-            belly_pitLayoutGrid.horizontalIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.topCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.rightCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.leftCapIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.allSidesIndices = new TileIndexList() { indices = new List<int>() { 858 }, indexWeights = new List<float>() { 1f } };
-            belly_pitLayoutGrid.extendedSet = true;
-            belly_pitLayoutGrid.PitInternalSquareOptions = new PitSquarePlacementOptions() {
-                PitSquareChance = 0.100000001f,
-                CanBeFlushLeft = true,
-                CanBeFlushRight = true,
-                CanBeFlushBottom = true,
-            };
-
-            TileIndexGrid belly_pitBorderFlatGrid = ExpandUtility.BuildNewTileIndexGrid("Belly_PitBorderFlat_01");
-            belly_pitBorderFlatGrid.topLeftIndices = new TileIndexList() { indices = new List<int>() { 187 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.topIndices = new TileIndexList() { indices = new List<int>() { 188 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.topRightIndices = new TileIndexList() { indices = new List<int>() { 189 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.leftIndices = new TileIndexList() { indices = new List<int>() { 209 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.rightIndices = new TileIndexList() { indices = new List<int>() { 211 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 231 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.bottomIndices = new TileIndexList() { indices = new List<int>() { 232 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 233 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.topLeftNubIndices = new TileIndexList() { indices = new List<int>() { 236 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.topRightNubIndices = new TileIndexList() { indices = new List<int>() { 235 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.bottomLeftNubIndices = new TileIndexList() { indices = new List<int>() { 214 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.bottomRightNubIndices = new TileIndexList() { indices = new List<int>() { 213 }, indexWeights = new List<float>() { 1f } };
-            belly_pitBorderFlatGrid.PitInternalSquareOptions.PitSquareChance = 0.100000001f;
-
-            TileIndexGrid Belly_FaceWallIndexGrid_01 = ExpandUtility.BuildNewTileIndexGrid("Forge_Stone_WallLayout_01");
-            Belly_FaceWallIndexGrid_01.topLeftIndices = new TileIndexList() { indices = new List<int>() { 24 }, indexWeights = new List<float>() { 1f } };
-            Belly_FaceWallIndexGrid_01.topIndices = new TileIndexList() { indices = new List<int>() { 27, 30 }, indexWeights = new List<float>() { 1, 1f } };
-            Belly_FaceWallIndexGrid_01.topRightIndices = new TileIndexList() { indices = new List<int>() { 23 }, indexWeights = new List<float>() { 1f } };
-            Belly_FaceWallIndexGrid_01.bottomLeftIndices = new TileIndexList() { indices = new List<int>() { 46 }, indexWeights = new List<float>() { 1f } };
-            Belly_FaceWallIndexGrid_01.bottomIndices = new TileIndexList() { indices = new List<int>() { 49, 52 }, indexWeights = new List<float>() { 1, 1f } };
-            Belly_FaceWallIndexGrid_01.bottomRightIndices = new TileIndexList() { indices = new List<int>() { 45 }, indexWeights = new List<float>() { 1f } };
-            Belly_FaceWallIndexGrid_01.PitInternalSquareOptions.PitSquareChance = 0.100000001f;
-
-
+                        
             DungeonMaterial BellyMaterial = ScriptableObject.CreateInstance<DungeonMaterial>();
             BellyMaterial.name = "Belly";
             BellyMaterial.wallShards = GungeonPrefab.roomMaterialDefinitions[0].wallShards;
@@ -1380,7 +901,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.stampFailChance = 0.2f;
             BellyMaterial.overrideTableTable = null;
             BellyMaterial.supportsPits = true;
-            BellyMaterial.doPitAO = true;
+            BellyMaterial.doPitAO = false; // was True
             BellyMaterial.pitsAreOneDeep = false;
             BellyMaterial.supportsDiagonalWalls = false;
             BellyMaterial.supportsUpholstery = false;
@@ -1389,15 +910,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.minChannelPools = 0;
             BellyMaterial.maxChannelPools = 3;
             BellyMaterial.channelTenacity = 0.75f;
+            BellyMaterial.channelGrids = new TileIndexGrid[0];
             BellyMaterial.supportsLavaOrLavalikeSquares = false;
-            BellyMaterial.carpetGrids = new TileIndexGrid[] { belly_carpetGrid1 };
-            BellyMaterial.lavaGrids = new TileIndexGrid[] { belly_lavaGrid1 };
+            BellyMaterial.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("BellyAssets/carpetGrid1.txt") };
+            BellyMaterial.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("BellyAssets/lavaGrid.txt") };
             BellyMaterial.supportsIceSquares = false;
             BellyMaterial.iceGrids = new TileIndexGrid[0];
-            BellyMaterial.roomFloorBorderGrid = belly_roomFloorBorderGrid;
-            BellyMaterial.roomCeilingBorderGrid = belly_roomCeilingBorderGrid;
-            BellyMaterial.pitLayoutGrid = belly_pitLayoutGrid;
-            BellyMaterial.pitBorderFlatGrid = belly_pitBorderFlatGrid;
+            BellyMaterial.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/roomFloorBorderGrid.txt");
+            BellyMaterial.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/roomCeilingBorderGrid.txt");
+            BellyMaterial.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/pitLayoutGrid.txt");
+            BellyMaterial.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/pitBorderFlatGrid.txt");
             BellyMaterial.pitBorderRaisedGrid = null;
             BellyMaterial.additionalPitBorderFlatGrid = null;
             BellyMaterial.outerCeilingBorderGrid = null;
@@ -1406,7 +928,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.usesFacewallGrids = false;
             BellyMaterial.facewallGrids = new FacewallIndexGridDefinition[] {
                 new FacewallIndexGridDefinition() {
-                    grid = Belly_FaceWallIndexGrid_01,
+                    grid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/faceWallGrid1.txt"),
                     minWidth = 3,
                     maxWidth = 20,
                     hasIntermediaries = true,
@@ -1436,7 +958,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.lightPrefabs = new WeightedGameObjectCollection() {
                 elements = new List<WeightedGameObject>() {
                    new WeightedGameObject() {
-                       rawGameObject = GungeonPrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       rawGameObject = ExpandPrefabs.BellyLight,
                        weight = 1,
                        forceDuplicatesPossible = false,
                        pickupId = -1,
@@ -1451,6 +973,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
             BellyMaterial.decalSize = 1;
             BellyMaterial.decalSpacing = 1;
+            BellyMaterial.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            BellyMaterial.patternSpacing = 1;
+            BellyMaterial.patternSize = 1;
+            BellyMaterial.patternIndexGrid = null;
             BellyMaterial.forceEdgesDiagonal = false;
             BellyMaterial.exteriorFacadeBorderGrid = null;
             BellyMaterial.facadeTopGrid = null;
@@ -1461,15 +987,111 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_BellyStampData.name = "ENV_BELLY_STAMP_DATA";
             m_BellyStampData.tileStampWeight = 1;
             m_BellyStampData.spriteStampWeight = 0;
-            m_BellyStampData.objectStampWeight = 1.5f;
-            // m_BellyStampData.objectStampWeight = 1;
+            m_BellyStampData.objectStampWeight = 1;
             m_BellyStampData.stamps = new TileStampData[0];
             m_BellyStampData.spriteStamps = new SpriteStampData[0];
-            m_BellyStampData.objectStamps = GungeonPrefab.stampData.objectStamps;
-            m_BellyStampData.SymmetricFrameChance = 0.5f;
-            m_BellyStampData.SymmetricCompleteChance = 0.25f;
-            // m_JungleStampData.SymmetricFrameChance = 0.1f;
-            // m_JungleStampData.SymmetricCompleteChance = 0.1f;
+            m_BellyStampData.objectStamps = new ObjectStampData[] {
+                new ObjectStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 2,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets.LoadAsset<GameObject>("Big_Skull_001")
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 2,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets2.LoadAsset<GameObject>("Big_Skull_002")
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 2,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets2.LoadAsset<GameObject>("Big_Skull_003")
+                },
+                new ObjectStampData() {
+                    width = 2,
+                    height = 1,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 2,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets.LoadAsset<GameObject>("Skull_Pile_001")
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 4,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets.LoadAsset<GameObject>("Skeleton_Left_Sit_Corner")
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 4,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.SKELETON,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = sharedAssets2.LoadAsset<GameObject>("Skeleton_Right_Sit_Corner")
+                },
+            };
+
+            // 
+            m_BellyStampData.SymmetricFrameChance = 0.1f;
+            m_BellyStampData.SymmetricCompleteChance = 0.1f;
 
             dungeon.gameObject.name = "Base_Belly";
             dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
@@ -1491,6 +1113,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 DISABLE_OUTLINES = false,
                 WALLS_ARE_PITS = false
             };
+
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
                 flows = new List<DungeonFlow>() { f2b_belly_flow_01.F2b_Belly_Flow_01() },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
@@ -1506,7 +1129,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                         new WeightedInt() {
                             annotation = "belly",
                             value = 0,
-                            weight = 1,
+                            weight = 1f,
                             additionalPrerequisites = new DungeonPrerequisite[0]
                         },
                         new WeightedInt() {
@@ -1532,24 +1155,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                             value = 4,
                             weight = 0,
                             additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 5,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 6,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
-                        },
-                        new WeightedInt() {
-                            annotation = "unused",
-                            value = 7,
-                            weight = 0,
-                            additionalPrerequisites = new DungeonPrerequisite[0]
                         }
                     }
                 },
@@ -1562,8 +1167,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 patternSpacing = 3,
                 patternExpansion = 0,
                 decoPatchFrequency = 0.01f,
-                ambientLightColor = new Color(0.925355f, 1, 0.661765f, 1),
-                ambientLightColorTwo = new Color(0.92549f, 1, 0.662745f, 1),
+                ambientLightColor = new Color(0.925355f, 1f, 0.661765f, 1),
+                ambientLightColorTwo = new Color(0.92549f, 1f, 0.662745f, 1),
                 lowQualityAmbientLightColor = new Color(1, 1, 1, 1),
                 lowQualityAmbientLightColorTwo = new Color(1, 1, 1, 1),
                 lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
@@ -1581,7 +1186,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.BELLYGEON,
-                dungeonCollection = env_tileset_belly.ENV_Tileset_Belly(dungeon.gameObject, sharedAssets),
+                // dungeonCollection = ExpandDungeonCollections.ENV_Tileset_Belly(dungeon.gameObject),
+                dungeonCollection = ExpandPrefabs.ENV_Tileset_Belly.GetComponent<tk2dSpriteCollectionData>(),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
                     AOFloorTileIndex = 0,
@@ -1627,16 +1233,13 @@ namespace ExpandTheGungeon.ExpandObjects {
                 globalSecondBorderTiles = new List<int>(0),
                 edgeDecorationTiles = null
             };
-
+            
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
                 BellyMaterial,
                 BellyMaterial,
                 BellyMaterial,
                 BellyMaterial,
-                BellyMaterial,
-                BellyMaterial,
-                BellyMaterial,
-                BellyMaterial
+                sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights")
             };
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
             dungeon.pathGridDefinitions = new List<TileIndexGrid>() { MinesDungeonPrefab.pathGridDefinitions[0] };
@@ -1701,12 +1304,456 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = AbbeyPrefab.musicEventName;
-
-            braveResources = null;
+            
             sharedAssets = null;
+            sharedAssets2 = null;
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
             AbbeyPrefab = null;
+
+            Debug.Log("End Belly Construction...");
+
+            return dungeon;
+        }
+
+        public static Dungeon WestDungeon(Dungeon dungeon) {
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+
+            DungeonMaterial West_Canyon = ScriptableObject.CreateInstance<DungeonMaterial>();
+            West_Canyon.name = "West_Canyon";
+            West_Canyon.wallShards = dungeon.roomMaterialDefinitions[0].wallShards;
+            West_Canyon.bigWallShards = dungeon.roomMaterialDefinitions[0].bigWallShards;
+            West_Canyon.bigWallShardDamageThreshold = 10;
+            West_Canyon.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            West_Canyon.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            West_Canyon.pitfallVFXPrefab = null;
+            West_Canyon.UsePitAmbientVFX = false;
+            West_Canyon.AmbientPitVFX = new List<GameObject>(0);
+            West_Canyon.PitVFXMinCooldown = 5;
+            West_Canyon.PitVFXMaxCooldown = 30;
+            West_Canyon.ChanceToSpawnPitVFXOnCooldown = 1;
+            West_Canyon.stampFailChance = 0.2f;
+            West_Canyon.overrideTableTable = null;
+            West_Canyon.supportsPits = true;
+            West_Canyon.doPitAO = true;
+            West_Canyon.pitsAreOneDeep = false;
+            West_Canyon.supportsDiagonalWalls = false;
+            West_Canyon.supportsUpholstery = false;
+            West_Canyon.carpetIsMainFloor = false;
+            // West_Canyon.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/carpetGrid1.txt") };
+            West_Canyon.carpetGrids = new TileIndexGrid[0];
+            West_Canyon.supportsChannels = false;
+            West_Canyon.minChannelPools = 0;
+            West_Canyon.maxChannelPools = 3;            
+            West_Canyon.channelTenacity = 0.75f;
+            West_Canyon.channelGrids = new TileIndexGrid[0];
+            West_Canyon.supportsLavaOrLavalikeSquares = false;
+            West_Canyon.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/lavaGrid.txt") };
+            West_Canyon.supportsIceSquares = false;
+            West_Canyon.iceGrids = new TileIndexGrid[0];
+            West_Canyon.roomFloorBorderGrid = null;
+            West_Canyon.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/roomCeilingBorderGrid.txt");
+            West_Canyon.pitLayoutGrid = null;
+            West_Canyon.pitBorderRaisedGrid = null;
+            West_Canyon.additionalPitBorderFlatGrid = null;
+            West_Canyon.pitBorderFlatGrid = null;
+            West_Canyon.outerCeilingBorderGrid = null;
+            West_Canyon.floorSquareDensity = 0f;
+            West_Canyon.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/floorGrid1.txt") };
+            West_Canyon.usesFacewallGrids = false;
+            West_Canyon.facewallGrids = new FacewallIndexGridDefinition[0];
+            West_Canyon.usesInternalMaterialTransitions = false;
+            West_Canyon.usesProceduralMaterialTransitions = false;
+            West_Canyon.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            West_Canyon.secretRoomWallShardCollections = new List<GameObject>(0);
+            West_Canyon.overrideStoneFloorType = false;
+            West_Canyon.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            West_Canyon.useLighting = true;
+            West_Canyon.lightPrefabs = new WeightedGameObjectCollection() {
+               elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = ExpandPrefabs.WestLight,
+                       weight = 1,                       
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]                       
+                   }
+               }
+            };
+            West_Canyon.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            West_Canyon.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            West_Canyon.usesDecalLayer = false;
+            West_Canyon.decalIndexGrid = null;
+            West_Canyon.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            West_Canyon.decalSize = 1;
+            West_Canyon.decalSpacing = 1;
+            West_Canyon.usesPatternLayer = false;
+            West_Canyon.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            West_Canyon.patternSpacing = 1;
+            West_Canyon.patternSize = 1;
+            West_Canyon.patternIndexGrid = null;
+            West_Canyon.forceEdgesDiagonal = true;
+            West_Canyon.exteriorFacadeBorderGrid = null;
+            West_Canyon.facadeTopGrid = null;
+            West_Canyon.bridgeGrid = null;
+
+            DungeonMaterial West_Wood_Interior = ScriptableObject.CreateInstance<DungeonMaterial>();
+            West_Wood_Interior.name = "West_Wood_Interior";
+            West_Wood_Interior.wallShards = dungeon.roomMaterialDefinitions[0].wallShards;
+            West_Wood_Interior.bigWallShards = dungeon.roomMaterialDefinitions[0].bigWallShards;
+            West_Wood_Interior.bigWallShardDamageThreshold = 10;
+            West_Wood_Interior.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            West_Wood_Interior.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            West_Wood_Interior.pitfallVFXPrefab = null;
+            West_Wood_Interior.UsePitAmbientVFX = false;
+            West_Wood_Interior.AmbientPitVFX = new List<GameObject>(0);
+            West_Wood_Interior.PitVFXMinCooldown = 5;
+            West_Wood_Interior.PitVFXMaxCooldown = 30;
+            West_Wood_Interior.ChanceToSpawnPitVFXOnCooldown = 1;
+            West_Wood_Interior.stampFailChance = 0.2f;
+            West_Wood_Interior.overrideTableTable = null;
+            West_Wood_Interior.supportsPits = false;
+            West_Wood_Interior.doPitAO = true;
+            West_Wood_Interior.pitsAreOneDeep = false;
+            West_Wood_Interior.supportsDiagonalWalls = false;
+            West_Wood_Interior.supportsUpholstery = true;
+            West_Wood_Interior.carpetIsMainFloor = false;
+            West_Wood_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/carpetGrid1.txt") };
+            West_Wood_Interior.supportsChannels = false;
+            West_Wood_Interior.minChannelPools = 0;
+            West_Wood_Interior.maxChannelPools = 3;            
+            West_Wood_Interior.channelTenacity = 0.75f;
+            West_Wood_Interior.channelGrids = new TileIndexGrid[0];
+            West_Wood_Interior.supportsLavaOrLavalikeSquares = false;
+            West_Wood_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/lavaGrid.txt") };
+            West_Wood_Interior.supportsIceSquares = false;
+            West_Wood_Interior.iceGrids = new TileIndexGrid[0];
+            West_Wood_Interior.roomFloorBorderGrid = null;
+            West_Wood_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/roomCeilingBorderGrid.txt");
+            West_Wood_Interior.roomCeilingBorderGrid.topCapIndices.indices[0] = 575;
+            West_Wood_Interior.pitLayoutGrid = null;
+            West_Wood_Interior.pitBorderRaisedGrid = null;
+            West_Wood_Interior.additionalPitBorderFlatGrid = null;
+            West_Wood_Interior.pitBorderFlatGrid = null;
+            West_Wood_Interior.outerCeilingBorderGrid = null;
+            West_Wood_Interior.floorSquareDensity = 0f;
+            West_Wood_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/floorGrid1.txt") };
+            West_Wood_Interior.usesFacewallGrids = false;
+            West_Wood_Interior.facewallGrids = new FacewallIndexGridDefinition[0];
+            West_Wood_Interior.usesInternalMaterialTransitions = false;
+            West_Wood_Interior.usesProceduralMaterialTransitions = false;
+            West_Wood_Interior.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            West_Wood_Interior.secretRoomWallShardCollections = new List<GameObject>(0);
+            West_Wood_Interior.overrideStoneFloorType = false;
+            West_Wood_Interior.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            West_Wood_Interior.useLighting = true;
+            West_Wood_Interior.lightPrefabs = new WeightedGameObjectCollection() {
+               elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = CastlePrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       weight = 1,                       
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]                       
+                   }
+               }
+            };
+            West_Wood_Interior.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            West_Wood_Interior.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            West_Wood_Interior.usesDecalLayer = false;
+            West_Wood_Interior.decalIndexGrid = null;
+            West_Wood_Interior.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            West_Wood_Interior.decalSize = 1;
+            West_Wood_Interior.decalSpacing = 1;
+            West_Wood_Interior.usesPatternLayer = false;
+            West_Wood_Interior.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            West_Wood_Interior.patternSpacing = 1;
+            West_Wood_Interior.patternSize = 1;
+            West_Wood_Interior.patternIndexGrid = null;
+            West_Wood_Interior.forceEdgesDiagonal = false;
+            West_Wood_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/exteriorFacadeBorderGrid.txt");
+            West_Wood_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/facadeTopGrid.txt");
+            West_Wood_Interior.bridgeGrid = null;
+            
+
+            DungeonMaterial West_Red_Interior = ScriptableObject.CreateInstance<DungeonMaterial>();
+            West_Red_Interior.name = "West_Red_Interior";
+            West_Red_Interior.wallShards = dungeon.roomMaterialDefinitions[0].wallShards;
+            West_Red_Interior.bigWallShards = dungeon.roomMaterialDefinitions[0].bigWallShards;
+            West_Red_Interior.bigWallShardDamageThreshold = 10;
+            West_Red_Interior.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            West_Red_Interior.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            West_Red_Interior.pitfallVFXPrefab = null;
+            West_Red_Interior.UsePitAmbientVFX = false;
+            West_Red_Interior.AmbientPitVFX = new List<GameObject>(0);
+            West_Red_Interior.PitVFXMinCooldown = 5;
+            West_Red_Interior.PitVFXMaxCooldown = 30;
+            West_Red_Interior.ChanceToSpawnPitVFXOnCooldown = 1;
+            West_Red_Interior.stampFailChance = 0.2f;
+            West_Red_Interior.overrideTableTable = null;
+            West_Red_Interior.supportsPits = false;
+            West_Red_Interior.doPitAO = true;
+            West_Red_Interior.pitsAreOneDeep = false;
+            West_Red_Interior.supportsDiagonalWalls = false;
+            West_Red_Interior.supportsUpholstery = true;
+            West_Red_Interior.carpetIsMainFloor = false;
+            West_Red_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/carpetGrid1.txt") };
+            West_Red_Interior.supportsChannels = false;
+            West_Red_Interior.minChannelPools = 0;
+            West_Red_Interior.maxChannelPools = 3;            
+            West_Red_Interior.channelTenacity = 0.75f;
+            West_Red_Interior.channelGrids = new TileIndexGrid[0];
+            West_Red_Interior.supportsLavaOrLavalikeSquares = false;
+            West_Red_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/lavaGrid.txt") };
+            West_Red_Interior.supportsIceSquares = false;
+            West_Red_Interior.iceGrids = new TileIndexGrid[0];
+            West_Red_Interior.roomFloorBorderGrid = null;
+            West_Red_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/roomCeilingBorderGrid.txt");
+            West_Red_Interior.roomCeilingBorderGrid.topCapIndices.indices[0] = 580;
+            West_Red_Interior.pitLayoutGrid = null;
+            West_Red_Interior.pitBorderRaisedGrid = null;
+            West_Red_Interior.additionalPitBorderFlatGrid = null;
+            West_Red_Interior.pitBorderFlatGrid = null;
+            West_Red_Interior.outerCeilingBorderGrid = null;
+            West_Red_Interior.floorSquareDensity = 0f;
+            West_Red_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/floorGrid1.txt") };
+            West_Red_Interior.usesFacewallGrids = false;
+            West_Red_Interior.facewallGrids = new FacewallIndexGridDefinition[0];
+            West_Red_Interior.usesInternalMaterialTransitions = false;
+            West_Red_Interior.usesProceduralMaterialTransitions = false;
+            West_Red_Interior.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            West_Red_Interior.secretRoomWallShardCollections = new List<GameObject>(0);
+            West_Red_Interior.overrideStoneFloorType = false;
+            West_Red_Interior.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            West_Red_Interior.useLighting = true;
+            West_Red_Interior.lightPrefabs = new WeightedGameObjectCollection() {
+               elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = CastlePrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       weight = 1,                       
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]                       
+                   }
+               }
+            };
+            West_Red_Interior.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            West_Red_Interior.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            West_Red_Interior.usesDecalLayer = false;
+            West_Red_Interior.decalIndexGrid = null;
+            West_Red_Interior.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            West_Red_Interior.decalSize = 1;
+            West_Red_Interior.decalSpacing = 1;
+            West_Red_Interior.usesPatternLayer = false;
+            West_Red_Interior.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            West_Red_Interior.patternSpacing = 1;
+            West_Red_Interior.patternSize = 1;
+            West_Red_Interior.patternIndexGrid = null;
+            West_Red_Interior.forceEdgesDiagonal = false;
+            West_Red_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/exteriorFacadeBorderGrid.txt");
+            West_Red_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/facadeTopGrid.txt");
+            West_Red_Interior.bridgeGrid = null;
+            
+
+
+
+            dungeon.gameObject.name = "Base_West";
+            dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
+            dungeon.DungeonSeed = 0;
+            dungeon.DungeonFloorName = "Old West";
+            dungeon.DungeonShortName = "Old West";
+            dungeon.DungeonFloorLevelTextOverride = "Old Western";
+            dungeon.LevelOverrideType = GameManager.LevelOverrideState.NONE;
+            dungeon.debugSettings = new DebugDungeonSettings() {
+                RAPID_DEBUG_DUNGEON_ITERATION_SEEKER = false,
+                RAPID_DEBUG_DUNGEON_ITERATION = false,
+                RAPID_DEBUG_DUNGEON_COUNT = 50,
+                GENERATION_VIEWER_MODE = false,
+                FULL_MINIMAP_VISIBILITY = false,
+                COOP_TEST = false,
+                DISABLE_ENEMIES = false,
+                DISABLE_LOOPS = false,
+                DISABLE_SECRET_ROOM_COVERS = false,
+                DISABLE_OUTLINES = false,
+                WALLS_ARE_PITS = false
+            };
+
+            dungeon.PatternSettings.flows = new List<DungeonFlow>() { demo_stage_flow.DEMO_STAGE_FLOW() };
+            dungeon.ForceRegenerationOfCharacters = false;
+            dungeon.ActuallyGenerateTilemap = true;
+            dungeon.decoSettings = new TilemapDecoSettings {
+                standardRoomVisualSubtypes = new WeightedIntCollection {
+                    elements = new WeightedInt[] {
+                        new WeightedInt() {
+                            annotation = "canyon",
+                            value = 0,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "interior wood",
+                            value = 1,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "interior red",
+                            value = 2,
+                            weight = 1,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 3,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 4,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 5,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        }
+                    }
+                },
+                decalLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                decalSize = 3,
+                decalSpacing = 1,
+                decalExpansion = 0,
+                patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                patternSize = 3,
+                patternSpacing = 3,
+                patternExpansion = 0,
+                decoPatchFrequency = 0.01f,
+                ambientLightColor = new Color(0.81532f, 0.786505f, 0.905882f, 1),
+                ambientLightColorTwo = new Color(0.76826f, 0.724221f, 0.905882f, 1),
+                lowQualityAmbientLightColor = new Color(0.946203f, 0.941987f, 0.977941f, 1),
+                lowQualityAmbientLightColorTwo = new Color(0.985294f, 0.943724f, 0.891112f, 1),
+                lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
+                UsesAlienFXFloorColor = false,
+                AlienFXFloorColor = new Color(0, 0, 0, 1),
+                generateLights = true,
+                lightCullingPercentage = 0.2f,
+                lightOverlapRadius = 8,
+                nearestAllowedLight = 12,
+                minLightExpanseWidth = 2,
+                lightHeight = -2,
+                lightCookies = new Texture2D[0],
+                debug_view = false
+            };
+
+            dungeon.tileIndices = new TileIndices() {
+                tilesetId = GlobalDungeonData.ValidTilesets.WESTGEON,
+                // dungeonCollection = ExpandDungeonCollections.ENV_Tileset_West(dungeon.gameObject),
+                dungeonCollection = ExpandPrefabs.ENV_Tileset_West.GetComponent<tk2dSpriteCollectionData>(),
+                dungeonCollectionSupportsDiagonalWalls = false,
+                aoTileIndices = new AOTileIndices() {
+                    AOFloorTileIndex = 0,
+                    AOBottomWallBaseTileIndex = 1,
+                    AOBottomWallTileRightIndex = 2,
+                    AOBottomWallTileLeftIndex = 3,
+                    AOBottomWallTileBothIndex = 4,
+                    AOTopFacewallRightIndex = 6,
+                    AOTopFacewallLeftIndex = 5,
+                    AOTopFacewallBothIndex = 7,
+                    AOFloorWallLeft = 5,
+                    AOFloorWallRight = 6,
+                    AOFloorWallBoth = 7,
+                    AOFloorPizzaSliceLeft = 8,
+                    AOFloorPizzaSliceRight = 9,
+                    AOFloorPizzaSliceBoth = 10,
+                    AOFloorPizzaSliceLeftWallRight = 11,
+                    AOFloorPizzaSliceRightWallLeft = 12,
+                    AOFloorWallUpAndLeft = 13,
+                    AOFloorWallUpAndRight = 14,
+                    AOFloorWallUpAndBoth = 15,
+                    AOFloorDiagonalWallNortheast = 42,
+                    AOFloorDiagonalWallNortheastLower = 64,
+                    AOFloorDiagonalWallNortheastLowerJoint = 86,
+                    AOFloorDiagonalWallNorthwest = 43,
+                    AOFloorDiagonalWallNorthwestLower = 65,
+                    AOFloorDiagonalWallNorthwestLowerJoint = 87,
+                    AOBottomWallDiagonalNortheast = -1,
+                    AOBottomWallDiagonalNorthwest = -1
+                },
+                placeBorders = true,
+                placePits = false,
+                chestHighWallIndices = new List<TileIndexVariant>() {
+                    new TileIndexVariant() {
+                        index = 41,
+                        likelihood = 0.5f,
+                        overrideLayerIndex = 0,
+                        overrideIndex = 0
+                    }
+                },
+                decalIndexGrid = null,
+                patternIndexGrid = null,
+                globalSecondBorderTiles = new List<int>(0),
+                edgeDecorationTiles = null
+            };
+            
+            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
+                West_Canyon,
+                West_Wood_Interior,
+                West_Red_Interior,
+                West_Canyon,
+                West_Canyon,
+                West_Canyon,
+                sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights")
+            };
+
+            dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
+            // dungeon.pathGridDefinitions
+            // dungeon.dungeonDustups
+            // dungeon.damageTypeEffectMatrix
+            ObjectStampData[] m_GungeonObjectStampData = dungeon.stampData.objectStamps;
+            dungeon.stampData = new DungeonTileStampData() {
+                name = "ENV_WEST_STAMP_DATA",
+                tileStampWeight = 1,
+                spriteStampWeight = 0,
+                objectStampWeight = 1,
+                stamps = new TileStampData[0],
+                spriteStamps = new SpriteStampData[0],
+                objectStamps = m_GungeonObjectStampData,
+                SymmetricFrameChance = 0.1f,
+                SymmetricCompleteChance = 0.1f
+            };
+            dungeon.UsesCustomFloorIdea = false;
+            // dungeon.FloorIdea
+            dungeon.PlaceDoors = true;
+            dungeon.doorObjects = ExpandPrefabs.West_Doors;
+            // dungeon.lockedDoorObjects = ???
+            // dungeon.oneWayDoorObjects = Gungeon One Ways
+            // dungeon.oneWayDoorPressurePlate = Gungeon Pressure Plate
+            // dungeon.UsesWallWarpWingDoors = false; // Will allow this for now
+            // dungeon.WarpWingDoorPrefab = Gungeon Warp Wing Door Prefab
+            // dungeon.baseChestContents = Gungeon Base Contents
+            // dungeon.SecretRoomDoorSparkVFX = Gungeon door sparks
+            // dungeon.SecretRoomHorizontalPoofVFX = Gungeon poof vfx
+            // dungeon.SecretRoomVerticalPoofVFX = Gungoen vertical poof vfx
+            // dungeon.sharedSettingsPrefab = Common shared settings. Doesn't need to be redefined.
+            dungeon.BossMasteryTokenItemId = -1;
+            dungeon.UsesOverrideTertiaryBossSets = false;
+            dungeon.OverrideTertiaryRewardSets = new List<TertiaryBossRewardSet>(0);
+            // dungeon.defaultPlayerPrefab = Convict
+            dungeon.StripPlayerOnArrival = false;
+            dungeon.SuppressEmergencyCrates = false;
+            dungeon.SetTutorialFlag = false;
+            dungeon.PlayerIsLight = false;
+            dungeon.PlayerLightColor = Color.white;
+            dungeon.PlayerLightIntensity = 3;
+            dungeon.PlayerLightRadius = 5;
+            // dungeon.musicEventName = string.Empty;
+
+            CastlePrefab = null;
+            sharedAssets2 = null;
 
             return dungeon;
         }

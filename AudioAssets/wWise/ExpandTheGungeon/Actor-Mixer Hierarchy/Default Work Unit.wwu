@@ -1231,6 +1231,275 @@
 						<ActiveSource Name="RickRolled" ID="{3834B387-2B2B-4EE6-AD30-D79394CC245B}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="Belly_Door_Close" ID="{30C38650-E400-43F6-AE78-FABD69993CCA}" ShortID="12786384">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{EFAC90AB-9EC8-4717-9541-082A84B3C377}" ShortID="95829028">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{0B2723F9-2965-4337-BDB3-0F5B12031203}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>-0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Belly_Door_Close" ID="{512F6DCD-D4D7-4CEB-9977-83F0D9E83023}" ShortID="984890443">
+							<Language>SFX</Language>
+							<AudioFile>Belly_Door_Close.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{1EB0F385-0FD3-4BBA-9F4F-C586FA0B185F}" ShortID="374417729"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{7F347036-4486-460E-A984-A66D39D3ABF6}" ShortID="480279086"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Belly_Door_Close" ID="{512F6DCD-D4D7-4CEB-9977-83F0D9E83023}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Belly_Door_Lock" ID="{83B82889-DA09-4F68-86E5-149A1387024D}" ShortID="775376543">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{4688D5BD-96F3-49B4-8E55-2D5A0B24823C}" ShortID="181381052">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{76CF35E8-19B1-45D0-825C-B097CDD1420E}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Belly_Door_Lock" ID="{2D52D42A-8ADA-4F49-863B-7F5A8775220C}" ShortID="1005918670">
+							<Language>SFX</Language>
+							<AudioFile>Belly_Door_Lock.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{6D0EA835-FE10-4F05-A427-BDCF6BC18B3F}" ShortID="102074736"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{57B5CA3A-0C01-44F6-99F4-B8AA55FE8F71}" ShortID="415647042"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Belly_Door_Lock" ID="{2D52D42A-8ADA-4F49-863B-7F5A8775220C}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Belly_Door_Open" ID="{6EEA973B-86CD-4739-B200-5B712454682A}" ShortID="385869225">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{CED7E5AC-507D-45F2-9DD4-93F31890C7F3}" ShortID="732434178">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{CDBCAC80-B1A9-4F19-9FBD-28143D810F58}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Belly_Door_Open" ID="{110CAED8-F4DD-4FE5-8AD7-DD95137E22C1}" ShortID="395418058">
+							<Language>SFX</Language>
+							<AudioFile>Belly_Door_Open.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{02FF19A7-404B-4F10-9962-BC9C2DC60476}" ShortID="41863928"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{90607586-19C9-40AA-9E00-F435AE1FA612}" ShortID="283876517"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Belly_Door_Open" ID="{110CAED8-F4DD-4FE5-8AD7-DD95137E22C1}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Belly_Door_Unlock" ID="{0092148E-C855-4438-B6F1-33EDC12FEBD9}" ShortID="210832983">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{6E5AB79B-6966-40E9-8E17-3609AF5CE423}" ShortID="187587854">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{722A61C1-4587-4036-AB7F-8748DF2A6E18}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Belly_Door_Unlock" ID="{66609A34-F0C7-40E6-8BF2-20A2915D05EF}" ShortID="737519471">
+							<Language>SFX</Language>
+							<AudioFile>Belly_Door_Unlock.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{C7CB345A-C42C-47C7-9857-B966F7584FD9}" ShortID="741026384"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{CE0DB883-C4E9-4787-997A-46BA95B308BB}" ShortID="90347422"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Belly_Door_Unlock" ID="{66609A34-F0C7-40E6-8BF2-20A2915D05EF}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

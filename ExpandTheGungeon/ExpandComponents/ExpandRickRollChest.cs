@@ -108,7 +108,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             spriteAnimator.Play(breakAnimName);
             specRigidbody.enabled = false;
             IsBroken = true;
-            Transform shadowTransform = transform.Find("ChestShadow");
+            Transform shadowTransform = transform.Find("Expand_RickRollChestShadow");
             if (shadowTransform != null) { Destroy(shadowTransform.gameObject); }
             m_Opened = true;
             if (m_registeredIconRoom != null) { Minimap.Instance.DeregisterRoomIcon(m_registeredIconRoom, minimapIconInstance); }

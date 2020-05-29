@@ -9,9 +9,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
 	public static class ResourceExtractor {
 
+        private static string nameSpace = "ExpandTheGungeon";
+
         private static string debugDirectory = Path.Combine(ETGMod.ResourcesDirectory, "debug");
         private static string spritesDirectory = Path.Combine(ETGMod.ResourcesDirectory, "sprites");
-        private static string nameSpace = "ExpandTheGungeon";
+        private static string modDirectory = Path.Combine(ETGMod.ModsDirectory, nameSpace);
+
 
         public static List<Texture2D> GetTexturesFromDebugFolder(string folder) {
 			string path = Path.Combine(debugDirectory, folder);
@@ -47,13 +50,24 @@ namespace ExpandTheGungeon.ExpandUtilities {
 			return result;
 		}
 
+        public static Texture2D GetTextureFromFile(string filePath, string fileName) {
+            Texture2D result = null;
+            string TextureFile = (filePath + "/" + fileName);
+            if (File.Exists(TextureFile)) {
+                result = BytesToTexture(File.ReadAllBytes(TextureFile), Path.GetFileName(TextureFile).Replace(".png", string.Empty));
+            }
+            return result;
+		}
+
         public static Texture2D BytesToTexture(byte[] bytes, string resourceName) {
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             ImageConversion.LoadImage(texture2D, bytes);
             texture2D.filterMode = FilterMode.Point;
             texture2D.name = resourceName;
+            texture2D.Apply();
             return texture2D;
         }
+
         /*public static Texture2D GetTextureFromFile(string fileName) {
 			fileName = fileName.Replace(".png", "");
 			string text = Path.Combine(spritesDirectory, fileName + ".png");
@@ -89,6 +103,18 @@ namespace ExpandTheGungeon.ExpandUtilities {
 			}
 			return list;
 		}*/
+
+        public static AssetBundle GetAssetBundleFromResource(string AssetBundleName) {
+            string name = AssetBundleName;
+            name = name.Replace("/", ".");
+            name = name.Replace("\\", ".");
+            byte[] assetBundleBytes = ExtractEmbeddedResource($"{nameSpace}." + name);
+            if (assetBundleBytes == null) {
+                ETGModConsole.Log("No bytes found in " + name, false);
+                return null;
+            }
+            return AssetBundle.LoadFromMemory(assetBundleBytes);
+        }
 
         public static void DumpTexture2DToFile(Texture2D target, bool useRandomFilenames = false) {
             if (target == null) { return; }
@@ -227,6 +253,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return text.Split(new char[] { '\n' });
         }
 
+        public static string BuildStringFromEmbeddedResource(string filePath) {
+            filePath = filePath.Replace("/", ".");
+            filePath = filePath.Replace("\\", ".");
+            return BytesToString(ExtractEmbeddedResource(string.Format("{0}.", nameSpace) + filePath));
+        }
+
         public static List<string> BuildStringListFromEmbeddedResource(string filePath) {
             List<string> m_CachedList = new List<string>();
 
@@ -248,7 +280,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static string BytesToString(byte[] bytes) { return Encoding.UTF8.GetString(bytes, 0, bytes.Length); }
-
+        
         public static byte[] ExtractEmbeddedResource(string filename) {
 			Assembly callingAssembly = Assembly.GetCallingAssembly();
 			byte[] result;

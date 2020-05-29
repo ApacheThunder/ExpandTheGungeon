@@ -5,20 +5,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
     public static class ExpandLists {
 
-        public static List<string> InvalidRatFloorRainRooms = new List<string>() {
-            ExpandRoomPrefabs.SecretBossRoom.name,
-            ExpandRoomPrefabs.SpecialMaintenanceRoom.name,
-            ExpandRoomPrefabs.ThwompCrossingVerticalNoRain.name,
-            ExpandRoomPrefabs.SecretRewardRoom.name,
-            ExpandPrefabs.DragunBossFoyerRoom.name,
-            ExpandPrefabs.DraGunExitRoom.name,
-            ExpandPrefabs.DraGunEndTimesRoom.name,
-            ExpandPrefabs.BlacksmithShop.name,
-            "Zelda Puzzle Room 1",
-            "Zelda Puzzle Room 2",
-            "Zelda Puzzle Room 3",
-            "Special Entrance"
-        };
+        public static List<string> InvalidRatFloorRainRooms = new List<string>();
 
         public static List<int> RatChestItems = new List<int>() {
             626, // elimentaler

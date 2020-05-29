@@ -39,7 +39,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) &&
                         currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !currentRoom.IsMaintenanceRoom() &&
                        !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && !currentRoom.IsGunslingKingChallengeRoom &&
-                       !currentRoom.GetRoomName().StartsWith("Boss Foyer"))
+                       !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom.name) &&
+                       !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom2.name))
                     {
                         if (roomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && roomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
                             roomCategory != PrototypeDungeonRoom.RoomCategory.REWARD && roomCategory != PrototypeDungeonRoom.RoomCategory.EXIT)

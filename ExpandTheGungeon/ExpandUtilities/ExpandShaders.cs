@@ -1,6 +1,7 @@
 ﻿using ExpandTheGungeon.ExpandObjects;
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         private static ExpandShaders m_instance;
-
+        
         public static Material GlitchScreenShader = new Material(Shader.Find("Brave/Internal/GlitchUnlit"));
 
         public static void ApplyParadoxPlayerShader(tk2dBaseSprite targetSprite) {
@@ -426,13 +427,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public void ApplyGlitchShader(tk2dBaseSprite sprite, bool usesOverrideMaterial = true, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
             try { 
                 if (sprite == null) { return; }
-                Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+                // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+                Material m_cachedMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader);                
                 m_cachedMaterial.name = "GlitchMaterial";
                 m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
                 m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
                 m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
                 m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
                 m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
+
+                m_cachedMaterial.SetFloat("_WrapDispCoords", 0);
+
                 MeshRenderer spriteComponent = sprite.GetComponent<MeshRenderer>();
                 if (spriteComponent == null) { return; }
 
@@ -465,18 +470,21 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 return;
             }
         }
-
+        
         public void ApplyGlitchShader(tk2dSprite sprite, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
+            
             try { 
                 if (sprite == null) { return; }
-                Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+                // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+                Material m_cachedMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader);
                 m_cachedMaterial.name = "GlitchMaterial";
                 m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
                 m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
                 m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
                 m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
-                m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
-
+                m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);                
+                m_cachedMaterial.SetFloat("_WrapDispCoords", 0);
+                
                 MeshRenderer spriteComponent = sprite.GetComponent<MeshRenderer>();
                 Material[] sharedMaterials = spriteComponent.sharedMaterials;
                 Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
@@ -522,13 +530,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         // Alternate version for handling things like Blue/Red Shotgunners and Veteran bullet kins.
         public void ApplyGlitchShader(Texture2D sourceTexture, tk2dBaseSprite targetSprite, bool usesOverrideMaterial = true, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            Material m_cachedMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader);
             m_cachedMaterial.name = "GlitchMaterial";
             m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
             m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
             m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
             m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
             m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
+
+            m_cachedMaterial.SetFloat("_WrapDispCoords", 0);
+
             MeshRenderer spriteComponent = targetSprite.GetComponent<MeshRenderer>();
             Material[] sharedMaterials = spriteComponent.sharedMaterials;
             Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
@@ -539,7 +551,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public void ApplySuperGlitchShader(tk2dBaseSprite sprite, AIActor glitchactor, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            Shader OverrideShader = ShaderCache.Acquire("Brave/Internal/Glitch"); // Glitch Shader
+            // Shader OverrideShader = ShaderCache.Acquire("Brave/Internal/Glitch"); // Glitch Shader
+            Shader OverrideShader = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader; // Glitch Shader
+
+            //  new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader);
 
             MeshRenderer aiActorSpriteComponent = sprite.GetComponent<MeshRenderer>();
             MeshRenderer aiActorGlitchSpriteComponent = glitchactor.sprite.GetComponent<MeshRenderer>();
@@ -555,11 +570,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
             AiActorMaterial.SetFloat("_ColorProbability", ColorProbability);
             AiActorMaterial.SetFloat("_ColorIntensity", ColorIntensity);
 
+            AiActorMaterial.SetFloat("_WrapDispCoords", 0); //
+
             AiActorMaterialSingle.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorMaterialSingle.SetFloat("_DispProbability", DispProbability);
             AiActorMaterialSingle.SetFloat("_DispIntensity", DispIntensity);
             AiActorMaterialSingle.SetFloat("_ColorProbability", ColorProbability);
             AiActorMaterialSingle.SetFloat("_ColorIntensity", ColorIntensity);
+
+            AiActorMaterialSingle.SetFloat("_WrapDispCoords", 0); //
 
             AiActorSharedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorSharedMaterial.SetFloat("_DispProbability", DispProbability);
@@ -567,11 +586,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
             AiActorSharedMaterial.SetFloat("_ColorProbability", ColorProbability);
             AiActorSharedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
 
+            AiActorSharedMaterial.SetFloat("_WrapDispCoords", 0); //
+
             AiActorSharedMaterialSingle.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorSharedMaterialSingle.SetFloat("_DispProbability", DispProbability);
             AiActorSharedMaterialSingle.SetFloat("_DispIntensity", DispIntensity);
             AiActorSharedMaterialSingle.SetFloat("_ColorProbability", ColorProbability);
             AiActorSharedMaterialSingle.SetFloat("_ColorIntensity", ColorIntensity);
+
+            AiActorSharedMaterialSingle.SetFloat("_WrapDispCoords", 0); //
 
             Material[] AiActorMaterials = aiActorGlitchSpriteComponent.materials;
             Material[] AiActorSharedMaterials = aiActorGlitchSpriteComponent.sharedMaterials;
@@ -610,12 +633,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.03f, 0.05f);
 
             // Second Pass to add Glitch back to primary texture
-            Material m_cachedGlitchMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            // Material m_cachedGlitchMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            Material m_cachedGlitchMaterial = new Material(OverrideShader);
             m_cachedGlitchMaterial.SetFloat("_GlitchInterval", RandomIntervalFloat);
             m_cachedGlitchMaterial.SetFloat("_DispProbability", RandomDispFloat);
             m_cachedGlitchMaterial.SetFloat("_DispIntensity", RandomDispIntensityFloat);
             m_cachedGlitchMaterial.SetFloat("_ColorProbability", RandomColorProbFloat);
             m_cachedGlitchMaterial.SetFloat("_ColorIntensity", RnadomColorIntensityFloat);
+            m_cachedGlitchMaterial.SetFloat("_WrapDispCoords", 0); //
             MeshRenderer spriteComponent = sprite.GetComponent<MeshRenderer>();
             Material[] sharedMaterials = spriteComponent.sharedMaterials;
             Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
@@ -637,7 +662,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public void ApplySuperGlitchShader(tk2dBaseSprite firstSprite, tk2dBaseSprite secondSprite, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            Shader OverrideShader = ShaderCache.Acquire("Brave/Internal/Glitch"); // Glitch Shader
+            // Shader OverrideShader = ShaderCache.Acquire("Brave/Internal/Glitch"); // Glitch Shader
+            Shader OverrideShader = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader;
 
             MeshRenderer targetSpriteComponent = firstSprite.GetComponent<MeshRenderer>();
             MeshRenderer sourceSpriteComponent = secondSprite.GetComponent<MeshRenderer>();
@@ -652,24 +678,30 @@ namespace ExpandTheGungeon.ExpandUtilities {
             AiActorMaterial.SetFloat("_DispIntensity", DispIntensity);
             AiActorMaterial.SetFloat("_ColorProbability", ColorProbability);
             AiActorMaterial.SetFloat("_ColorIntensity", ColorIntensity);
+            AiActorMaterial.SetFloat("_WrapDispCoords", 0); //
+
 
             AiActorMaterialSingle.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorMaterialSingle.SetFloat("_DispProbability", DispProbability);
             AiActorMaterialSingle.SetFloat("_DispIntensity", DispIntensity);
             AiActorMaterialSingle.SetFloat("_ColorProbability", ColorProbability);
             AiActorMaterialSingle.SetFloat("_ColorIntensity", ColorIntensity);
+            AiActorMaterialSingle.SetFloat("_WrapDispCoords", 0); //
+
 
             AiActorSharedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorSharedMaterial.SetFloat("_DispProbability", DispProbability);
             AiActorSharedMaterial.SetFloat("_DispIntensity", DispIntensity);
             AiActorSharedMaterial.SetFloat("_ColorProbability", ColorProbability);
             AiActorSharedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
+            AiActorSharedMaterial.SetFloat("_WrapDispCoords", 0); //
 
             AiActorSharedMaterialSingle.SetFloat("_GlitchInterval", GlitchInterval);
             AiActorSharedMaterialSingle.SetFloat("_DispProbability", DispProbability);
             AiActorSharedMaterialSingle.SetFloat("_DispIntensity", DispIntensity);
             AiActorSharedMaterialSingle.SetFloat("_ColorProbability", ColorProbability);
             AiActorSharedMaterialSingle.SetFloat("_ColorIntensity", ColorIntensity);
+            AiActorSharedMaterialSingle.SetFloat("_WrapDispCoords", 0); //
 
             Material[] AiActorMaterials = sourceSpriteComponent.materials;
             Material[] AiActorSharedMaterials = sourceSpriteComponent.sharedMaterials;
@@ -708,12 +740,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.03f, 0.05f);
 
             // Second Pass to add Glitch back to primary texture
-            Material m_cachedGlitchMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            // Material m_cachedGlitchMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            Material m_cachedGlitchMaterial = new Material(OverrideShader);
             m_cachedGlitchMaterial.SetFloat("_GlitchInterval", RandomIntervalFloat);
             m_cachedGlitchMaterial.SetFloat("_DispProbability", RandomDispFloat);
             m_cachedGlitchMaterial.SetFloat("_DispIntensity", RandomDispIntensityFloat);
             m_cachedGlitchMaterial.SetFloat("_ColorProbability", RandomColorProbFloat);
             m_cachedGlitchMaterial.SetFloat("_ColorIntensity", RnadomColorIntensityFloat);
+            m_cachedGlitchMaterial.SetFloat("_WrapDispCoords", 0); //
             MeshRenderer spriteComponent = firstSprite.GetComponent<MeshRenderer>();
             Material[] sharedMaterials = spriteComponent.sharedMaterials;
             Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
@@ -746,26 +780,30 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
 
         public static Material ApplyGlitchMaterial(Material originalMaterial, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            Material m_cachedMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader); 
             m_cachedMaterial.name = "TileGlitchMaterial";
             m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
             m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
             m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
             m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
             m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
+            m_cachedMaterial.SetFloat("_WrapDispCoords", 0); //
             m_cachedMaterial.SetTexture("_MainTex", originalMaterial.GetTexture("_MainTex"));
             return m_cachedMaterial;
         }
 
         public static void ApplyGlitchShader(tk2dSpriteDefinition spriteDefinition, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
+            Material m_cachedMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Material>("ExpandGlitchBasicMaterial").shader);
             m_cachedMaterial.name = "GlitchMaterial";
             m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
             m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
             m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
             m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
             m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
-            
+            m_cachedMaterial.SetFloat("_WrapDispCoords", 0); //
+
             m_cachedMaterial.SetTexture("_MainTex", spriteDefinition.material.GetTexture("_MainTex"));
             spriteDefinition.material = m_cachedMaterial;
         }

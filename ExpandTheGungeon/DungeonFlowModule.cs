@@ -82,7 +82,13 @@ namespace ExpandTheGungeon {
                     ETGModConsole.Log("Not a valid tileset!");
                 } else {
 					try {
-						ETGModConsole.Log("Attempting to load Dungeon Flow \"" + args[0] + (tilesetSpecified ? ("\" with tileset \"" + args[1]) : string.Empty) + "\"" + (sceneSpecified ? ("\" and scene " + args[2]) : string.Empty) + "\".");
+                        string LogMessage = ("Attempting to load Dungeon Flow \"" + args[0] + "\"");
+
+                        if (tilesetSpecified) { LogMessage += (" with tileset \"" + args[1] + "\""); }
+                        if (sceneSpecified) { LogMessage += (" and scene \"" + args[2] + "\""); }
+                        LogMessage += ".";
+                        // ETGModConsole.Log("Attempting to load Dungeon Flow \"" + args[0] + (tilesetSpecified ? ("\" with tileset \"" + args[1]) : string.Empty) + "\"" + (sceneSpecified ? ("\" and scene " + args[2]) : string.Empty) + ".");
+                        ETGModConsole.Log(LogMessage);
                         if (args.Length == 1) {
                             GameManager.Instance.LoadCustomFlowForDebug(flowName);
                         } else if (args.Length == 2) {

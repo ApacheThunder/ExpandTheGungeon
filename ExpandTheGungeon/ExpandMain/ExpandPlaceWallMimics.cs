@@ -79,7 +79,8 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 ExpandJunkEnemySpawneer m_ExpandJunkEnemySpawneer = new ExpandJunkEnemySpawneer();
                 m_ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
-                Destroy(m_ExpandJunkEnemySpawneer);
+                m_ExpandJunkEnemySpawneer = null;
+                // Destroy(m_ExpandJunkEnemySpawneer);
 
                 if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON | dungeon.IsGlitchDungeon) {
                     ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
@@ -89,10 +90,14 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 ExpandPlaceCorruptTiles m_CorruptTilePlayer = new ExpandPlaceCorruptTiles();
                 m_CorruptTilePlayer.PlaceCorruptTiles(dungeon);
-                Destroy(m_CorruptTilePlayer);
+                m_CorruptTilePlayer = null;
+                // Destroy(m_CorruptTilePlayer);
 
                 PlaceAlarmMushRooms(dungeon);
-                
+
+                ExpandFloorDecorator FloorDecorator = new ExpandFloorDecorator();
+                FloorDecorator.PlaceFloorDecoration(dungeon);
+                FloorDecorator = null;
 
                 if (numWallMimicsForFloor <= 0) {
             		if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] There will be no Wall Mimics assigned to this floor.", false); }
@@ -274,7 +279,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
              
-        private void PlaceSecretRatGrate(Dungeon dungeon) {
+        /*private void PlaceSecretRatGrate(Dungeon dungeon) {
             if (dungeon.IsGlitchDungeon | GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) {
                 return;
             }
@@ -333,7 +338,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
             return true;
-        }
+        }*/
         
         private void PlaceAlarmMushRooms(Dungeon dungeon, int Clearence = 3) {
 

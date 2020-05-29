@@ -14,7 +14,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode entranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandPrefabs.elevator_entrance);
             DungeonFlowNode exitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.SecretExitRoom);
             DungeonFlowNode bossfoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode bossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
+            DungeonFlowNode bossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_Jungle_Boss);
             
             DungeonFlowNode TestRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Apache_RickRollChest);
 
@@ -22,17 +22,17 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode TestRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
             
             DungeonFlowNode TestSecretRoomNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_GlitchedSecret);
-            DungeonFlowNode testConnectorNode01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_CorridorOfDoom);
+            DungeonFlowNode testConnectorNode01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_BootlegRoom);
 
             DungeonFlowNode TestRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Jungle_OldCrest);
             // DungeonFlowNode SecondSecretRoom = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Secret_Expand_logo);
 
-            /*foreach (PrototypeDungeonRoom room in ExpandRoomPrefabs.Expand_Jungle_Rooms) {
+            foreach (PrototypeDungeonRoom room in ExpandRoomPrefabs.Expand_Jungle_Rooms) {
                 if (room.name == "Expand_Forest_Mixed22") {
                     TestRoomNode_02.overrideExactRoom = room;
                     break;
                 }
-            }*/
+            }
 
             m_CachedFlow.name = "Test_CustomRoom_Flow";
             m_CachedFlow.fallbackRoomTable = null;

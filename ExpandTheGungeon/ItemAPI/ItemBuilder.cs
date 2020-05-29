@@ -30,16 +30,26 @@ namespace ExpandTheGungeon.ItemAPI {
 			}
 		}
 
-		public static GameObject AddSpriteToObject(string name, string resourcePath, GameObject obj = null, bool copyFromExisting = true) {
+		public static GameObject AddSpriteToObject(string name, string resourcePath, GameObject obj = null, bool copyFromExisting = true, bool isFakePrefab = true) {
 			GameObject gameObject = SpriteBuilder.SpriteFromResource(resourcePath, obj, copyFromExisting);
-			FakePrefab.MarkAsFakePrefab(gameObject);
-			obj.SetActive(false);
+            if (isFakePrefab) {
+                FakePrefab.MarkAsFakePrefab(gameObject);
+                obj.SetActive(false);
+            }
 			gameObject.name = name;
 			return gameObject;
 		}
         
         public static void AddSpriteToObject(GameObject targetObject, string resourcePath, bool copyFromExisting = true, bool isFakePrefab = true) {
             SpriteBuilder.SpriteFromResource(resourcePath, targetObject, copyFromExisting);
+            if (isFakePrefab) {
+                FakePrefab.MarkAsFakePrefab(targetObject);
+                targetObject.SetActive(false);
+            }
+		}
+
+        public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture, bool copyFromExisting = true, bool isFakePrefab = true) {
+            SpriteBuilder.SpriteFromTexture(sourceTexture, targetObject, copyFromExisting);
             if (isFakePrefab) {
                 FakePrefab.MarkAsFakePrefab(targetObject);
                 targetObject.SetActive(false);

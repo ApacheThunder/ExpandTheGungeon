@@ -2,6 +2,7 @@
 using Gungeon;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -21,6 +22,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
+            GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);
             pistol.AddProjectileModuleFrom("Magnum", true, false);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
@@ -35,10 +37,7 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.quality = ItemQuality.D;
             pistol.UsesCustomCost = true;
             pistol.CustomCost = 10;
-            pistol.encounterTrackable.EncounterGuid = "baad9dd6-d005-458d-af02-933f6a1ba926";
-
-            pistol.SetupSprite(defaultSprite: "bootleg_pistol_idle_001", fps: 8);
-            pistol.SetAnimationFPS(pistol.shootAnimation, 8);
+            pistol.encounterTrackable.EncounterGuid = "baad9dd6-d005-458d-af02-933f6a1ba926";            
             pistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
 
@@ -47,12 +46,11 @@ namespace ExpandTheGungeon.ItemAPI {
             BootlegPistolID = pistol.PickupObjectId;
 
 
-            Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "bootleg_machine_pistol");
+            Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "bootleg_machinepistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_machine_pistol", "ex:bootleg_machine_pistol");
             machinepistol.SetShortDescription("Of questionable quality...");
             machinepistol.SetLongDescription("It's a counterfeit machine gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
-            machinepistol.SetupSprite(defaultSprite: "bootleg_machinepistol_idle_001", fps: 8);
-            machinepistol.SetAnimationFPS(machinepistol.shootAnimation, 8);
+            GunExt.SetupSprite(machinepistol, null, "bootleg_machinepistol_idle_001", 30);
             machinepistol.AddProjectileModuleFrom("Magnum", true, false);
             machinepistol.Volley = (PickupObjectDatabase.GetById(43) as Gun).Volley;
             machinepistol.singleModule = (PickupObjectDatabase.GetById(43) as Gun).singleModule;
@@ -81,8 +79,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Game.Items.Rename("outdated_gun_mods:bootleg_shotgun", "ex:bootleg_shotgun");
             shotgun.SetShortDescription("Of questionable quality...");
             shotgun.SetLongDescription("It's a counterfeit shotgun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
-            shotgun.SetupSprite(defaultSprite: "bootleg_shotgun_idle_001", fps: 8);
-            shotgun.SetAnimationFPS(machinepistol.shootAnimation, 8);
+            GunExt.SetupSprite(shotgun, null, "bootleg_shotgun_idle_001", 18);
             shotgun.AddProjectileModuleFrom("AK-47", true, false);
             shotgun.Volley = (PickupObjectDatabase.GetById(51) as Gun).Volley;
             shotgun.singleModule = (PickupObjectDatabase.GetById(51) as Gun).singleModule;
@@ -114,15 +111,20 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void PostInit() {
             if (BootlegPistol && BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
-                BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new string[] {
+                BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
                     ExpandCustomEnemyDatabase.BootlegBulletManGUID
                 };
             }
             if (BootlegMachinePistol && BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
-                BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new string[] {
+                BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
                     ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID
                 };
             }
+            /*if (BootlegShotgun && BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
+                BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
+                    ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                };
+            }*/
         }
     }
 }

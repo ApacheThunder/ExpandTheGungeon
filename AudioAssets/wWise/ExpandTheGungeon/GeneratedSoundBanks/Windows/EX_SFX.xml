@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="128">
 	<RootPaths>
-		<ProjectRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\</ProjectRoot>
-		<SourceFilesRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\.cache\Windows\</SourceFilesRoot>
-		<SoundBanksRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ProjectRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\GeneratedSoundBanks\Windows\</SoundBanksRoot>
 		<ExternalSourcesInputFile></ExternalSourcesInputFile>
-		<ExternalSourcesOutputRoot>C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+		<ExternalSourcesOutputRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
 		<SoundBank Id="3825169110" Language="SFX">
@@ -13,6 +13,10 @@
 			<ShortName>EX_SFX</ShortName>
 			<Path>EX_SFX.bnk</Path>
 			<IncludedEvents>
+				<Event Id="987254125" Name="Play_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Close"/>
+				<Event Id="330989735" Name="Play_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Open"/>
+				<Event Id="3501969484" Name="Play_EX_BellyDoor_Seal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Seal"/>
+				<Event Id="3121071097" Name="Play_EX_BellyDoor_Unseal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Unseal"/>
 				<Event Id="797577896" Name="Play_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDamage_01"/>
 				<Event Id="2039091240" Name="Play_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3112632927" Name="Play_EX_CorruptedObjectTransform_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectTransform_01"/>
@@ -29,6 +33,8 @@
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
+				<Event Id="582460727" Name="Stop_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Close"/>
+				<Event Id="1648051329" Name="Stop_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Open"/>
 				<Event Id="2148880510" Name="Stop_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDamage_01"/>
 				<Event Id="3492306034" Name="Stop_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3586982857" Name="Stop_EX_CorruptionAmbience_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_01"/>
@@ -65,6 +71,10 @@
 					<ShortName>BootlegGungeonMusic.wav</ShortName>
 					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
 				</File>
+				<File Id="395418058" Language="SFX">
+					<ShortName>Belly_Door_Open.wav</ShortName>
+					<Path>SFX\Belly_Door_Open_255C9D35.wem</Path>
+				</File>
 				<File Id="440225368" Language="SFX">
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_22BDB8A3.wem</Path>
@@ -85,6 +95,10 @@
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem</Path>
 				</File>
+				<File Id="737519471" Language="SFX">
+					<ShortName>Belly_Door_Unlock.wav</ShortName>
+					<Path>SFX\Belly_Door_Unlock_255C9D35.wem</Path>
+				</File>
 				<File Id="900807623" Language="SFX">
 					<ShortName>GlitchBombExplode.wav</ShortName>
 					<Path>SFX\GlitchBombExplode_255C9D35.wem</Path>
@@ -96,6 +110,14 @@
 				<File Id="958802487" Language="SFX">
 					<ShortName>Abomination_Die.wav</ShortName>
 					<Path>SFX\Abomination_Die_255C9D35.wem</Path>
+				</File>
+				<File Id="984890443" Language="SFX">
+					<ShortName>Belly_Door_Close.wav</ShortName>
+					<Path>SFX\Belly_Door_Close_255C9D35.wem</Path>
+				</File>
+				<File Id="1005918670" Language="SFX">
+					<ShortName>Belly_Door_Lock.wav</ShortName>
+					<Path>SFX\Belly_Door_Lock_255C9D35.wem</Path>
 				</File>
 				<File Id="1035017998" Language="SFX">
 					<ShortName>ElevatorDing.wav</ShortName>

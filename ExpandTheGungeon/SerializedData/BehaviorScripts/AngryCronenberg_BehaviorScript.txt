@@ -1,0 +1,12 @@
+[]
+[{"Radius":35.0,"LineOfSight":false,"ObjectPermanence":true,"SearchInterval":0.25,"PauseOnTargetSwitch":false,"PauseTime":0.25,"$type":"TargetPlayerBehavior"}]
+[{"StopWhenInRange":false,"CustomRange":6.0,"LineOfSight":true,"ReturnToSpawn":true,"SpawnTetherDistance":0.0,"PathInterval":0.5,"SpecifyRange":false,"MinActiveRange":0.0,"MaxActiveRange":0.0,"$type":"SeekTargetBehavior"}]
+[]
+[]
+ 1 UInt8 InstantFirstTick = 0
+ 0 float TickInterval = 0.100000001
+ 0 float PostAwakenDelay = 0.200000003
+ 1 UInt8 RemoveDelayOnReinforce = 0
+ 1 UInt8 OverrideStartingFacingDirection = 0
+ 0 float StartingFacingDirection = -90
+ 1 UInt8 SkipTimingDifferentiator = 0

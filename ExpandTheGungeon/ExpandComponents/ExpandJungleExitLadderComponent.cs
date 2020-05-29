@@ -26,16 +26,20 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_Interacted;
 
         public void Interact(PlayerController player) {
-            if (!m_Interacted && player) { ExitFloor(); }
+            if (!m_Interacted && player) {
+                m_Interacted = true;
+                StartCoroutine(HandleExitFloor());
+            }
             return;
         }        
 
-        private void ExitFloor() {
-            m_Interacted = true;
+        private IEnumerator HandleExitFloor() {
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].PrepareForSceneTransition(); }
             Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            yield return new WaitForSeconds(1f);
             GameUIRoot.Instance.HideCoreUI(string.Empty);
             GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
+            yield return null;
             float delay = 0.5f;
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) {
                 GameManager.Instance.DelayedLoadBossrushFloor(delay);
@@ -53,6 +57,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
             }
+            yield break;
         }
 
         private void Awake() {

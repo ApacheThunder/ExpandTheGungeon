@@ -5,18 +5,7 @@ using Dungeonator;
 namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandObjectDatabase : MonoBehaviour {
-
-        private AssetBundle sharedAssets;
-        private AssetBundle sharedAssets2;
-        private AssetBundle braveResources;
         
-        private Dungeon convictPastDungeon;
-        private Dungeon catacombsDungeon;
-        private Dungeon sewersDungeon;
-        private Dungeon forgeDungeon;
-        private ConvictPastController pastController;
-        private NightclubCrowdController crowdController;
-
         public GameObject YellowDrum;
         public GameObject RedDrum;
         public GameObject WaterDrum;
@@ -102,6 +91,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject GungeonLightPurple;
         public GameObject Sconce_Light;
         public GameObject Sconce_Light_Side;
+        public GameObject DefaultTorch;
+        public GameObject DefaultTorchSide;
+
+        // public GameObject DimensionFog;
 
         // DungeonPlacables
         public DungeonPlaceable ExplodyBarrel;
@@ -116,15 +109,20 @@ namespace ExpandTheGungeon.ExpandObjects {
         public DungeonPlaceable Bush;
         public DungeonPlaceable BushFlowers;
         public DungeonPlaceable WoodenBarrel;
+        public DungeonPlaceable WrithingBulletman;
 
         public ExpandObjectDatabase() {
-            sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            convictPastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_convict");
-            catacombsDungeon = DungeonDatabase.GetOrLoadByName("base_catacombs");
-            sewersDungeon = DungeonDatabase.GetOrLoadByName("base_sewer");
-            forgeDungeon = DungeonDatabase.GetOrLoadByName("base_forge");
+
+            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001"); ;
+
+            // Dungeon marinePastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_soldier");
+            Dungeon convictPastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_convict");
+            Dungeon catacombsDungeon = DungeonDatabase.GetOrLoadByName("base_catacombs");
+            Dungeon sewersDungeon = DungeonDatabase.GetOrLoadByName("base_sewer");
+            Dungeon forgeDungeon = DungeonDatabase.GetOrLoadByName("base_forge");
+           
 
             YellowDrum = sharedAssets2.LoadAsset<GameObject>("Yellow Drum");
             RedDrum = sharedAssets.LoadAsset<GameObject>("Red Drum");
@@ -187,7 +185,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             GungeonLightPurple = sharedAssets.LoadAsset<GameObject>("Gungeon Light (Purple)");
             Sconce_Light = sharedAssets.LoadAsset<GameObject>("Sconce_Light");
             Sconce_Light_Side = sharedAssets.LoadAsset<GameObject>("Sconce_Light_Side");
-
+            DefaultTorch = sharedAssets.LoadAsset<GameObject>("DefaultTorch");
+            DefaultTorchSide = sharedAssets.LoadAsset<GameObject>("DefaultTorchSide");
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
@@ -218,8 +217,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Bush = sharedAssets2.LoadAsset<DungeonPlaceable>("Bush");
             BushFlowers = sharedAssets2.LoadAsset<DungeonPlaceable>("Bush Flowers");
             WoodenBarrel = sharedAssets.LoadAsset<DungeonPlaceable>("Barrel_collection");
-            pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
-            crowdController = pastController.crowdController;
+            WrithingBulletman = sharedAssets2.LoadAsset<DungeonPlaceable>("Writhing Bulletman");
+
+            // DimensionFog = marinePastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("DimensionFog").gameObject;
+
+            ConvictPastController pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
+            NightclubCrowdController crowdController = pastController.crowdController;
 
             ConvictPastCrowdNPC_01 = crowdController.Dancers[0].gameObject;
             ConvictPastCrowdNPC_02 = crowdController.Dancers[1].gameObject;
@@ -256,6 +259,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ConvictPastCrowdNPC_15,
                 ConvictPastCrowdNPC_16
             };
+
+
 
             Mines_Cave_In = sharedAssets2.LoadAsset<GameObject>("Mines_Cave_In");
             Plunger = Mines_Cave_In.GetComponent<HangingObjectController>().triggerObjectPrefab;

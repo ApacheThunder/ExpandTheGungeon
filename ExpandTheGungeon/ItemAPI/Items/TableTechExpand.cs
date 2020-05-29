@@ -48,83 +48,38 @@ namespace ExpandTheGungeon.ItemAPI {
         private IEnumerator HandleExpand(FlippableCover target) {
             string TableName = target.gameObject.name;
             yield return new WaitForSeconds(0.15f);
-            if (target.sprite) {
+            if (target && target.specRigidbody) {
                 AkSoundEngine.PostEvent("Play_WPN_woodbeam_extend_01", gameObject);
-                GameObject dummyTable = new GameObject(("Big " + target.gameObject.name)) { layer = LayerMask.NameToLayer("Unpixelated") };
-                GameObject dummyTableShadow = null;
-                tk2dSprite dummyTableShadowSprite = null;
-                SpeculativeRigidbody TableRigidBody = null;
-                if (target.shadowSprite) {
-                    dummyTableShadow = new GameObject("ExpandedTableShadow") { layer = LayerMask.NameToLayer("Unpixelated") };
-                    dummyTableShadowSprite = dummyTableShadow.AddComponent<tk2dSprite>();
-                    ExpandUtility.DuplicateSprite(dummyTableShadowSprite, (target.shadowSprite as tk2dSprite));
-                    dummyTableShadow.transform.parent = dummyTable.transform;
-                }
-                if (dummyTableShadow) { TableRigidBody = ExpandUtility.GenerateOrAddToRigidBody(dummyTableShadow, CollisionLayer.HighObstacle); }
-                tk2dSprite dummyTableSprite = dummyTable.AddComponent<tk2dSprite>();
-                ExpandUtility.DuplicateSprite(dummyTableSprite, (target.sprite as tk2dSprite));
-                Vector3 SpriteOffset = target.transform.position;
+                target.specRigidbody.CanBePushed = false;
+                // Vector3 SpriteOffset = target.transform.position;
                 DungeonData.Direction DirectionFlipped = target.DirectionFlipped;                
-                SpriteOffset -= new Vector3(1.4f, 1.6f, 0);
-                /*switch (DirectionFlipped) {
-                    case DungeonData.Direction.NORTH:
-                        SpriteOffset -= new Vector3(1.5f, 1.5f, 0);
-                        break;
-                    case DungeonData.Direction.EAST:
-                        SpriteOffset -= new Vector3(1.5f, 1.5f, 0);
-                        break;
-                    case DungeonData.Direction.SOUTH:
-                        SpriteOffset -= new Vector3(1.5f, 1.5f, 0);
-                        break;
-                    case DungeonData.Direction.WEST:
-                        SpriteOffset -= new Vector3(1.5f, 1.5f, 0);
-                        break;
-                }*/
-                dummyTable.transform.position = SpriteOffset;
+                // SpriteOffset -= new Vector3(1.4f, 1.6f, 0);
+                // target.transform.position = SpriteOffset;
                 yield return null;
-                Destroy(target.gameObject);
                 // if (target.specRigidbody) { target.specRigidbody.CanBePushed = false; }
                 float elapsed = 0f;
                 Vector2 scaleAmount = new Vector2(TableScaleAmount, TableScaleAmount);
                 if (!target) { yield break; }
-                Vector2 startScale = dummyTable.transform.localScale;
+                Vector2 startScale = target.transform.localScale;
                 while (elapsed < TableExpandSpeed) {
-                    if (!dummyTable) { yield break; }
+                    if (!target) { yield break; }
                     elapsed += BraveTime.DeltaTime;
-                    dummyTable.transform.localScale = Vector2.Lerp(startScale, scaleAmount, (elapsed * TableExpandSpeed));
-                    if (DirectionFlipped == DungeonData.Direction.EAST && TableName.ToLower().Contains("horizontal")) {
-                        dummyTable.transform.position -= new Vector3(0.04f, 0.02f, 0);
+                    target.transform.localScale = Vector2.Lerp(startScale, scaleAmount, (elapsed * TableExpandSpeed));
+                    /*if (DirectionFlipped == DungeonData.Direction.EAST && TableName.ToLower().Contains("horizontal")) {
+                        target.transform.position -= new Vector3(0.04f, 0.02f, 0);
                     } else {
-                        dummyTable.transform.position -= new Vector3(0.02f, 0.02f, 0);
-                    }
-                    if (dummyTableSprite) { dummyTableSprite.UpdateZDepth(); }
-                    // if (dummyTableShadow) { dummyTableShadow.transform.localScale = Vector2.Lerp(startScale, scaleAmount, (elapsed * TableExpandSpeed)); }
-                    /*dummyTable.transform.localScale = Vector2.Lerp(startScale, scaleAmount, (elapsed * TableExpandSpeed));
-                    // if (dummyTableShadow) { dummyTableShadow.transform.localScale = Vector2.Lerp(startScale, scaleAmount, (elapsed * TableExpandSpeed)); }
-                    if (dummyTableSprite) { dummyTableSprite.UpdateZDepth(); }                    
-                    switch (DirectionFlipped) {
-                        case DungeonData.Direction.NORTH:
-                            dummyTable.transform.position -= new Vector3(0.005f, 0.01f, 0);
-                            break;
-                        case DungeonData.Direction.EAST:
-                            dummyTable.transform.position -= new Vector3(0.01f, 0.005f, 0);
-                            break;
-                        case DungeonData.Direction.SOUTH:
-                            dummyTable.transform.position -= new Vector3(0.008f, 0.01f, 0);
-                            break;
-                        case DungeonData.Direction.WEST:
-                            dummyTable.transform.position -= new Vector3(0.01f, 0, 0);
-                            dummyTable.transform.position -= new Vector3(0, 0.005f, 0);
-                            break;
+                        target.transform.position -= new Vector3(0.02f, 0.02f, 0);
                     }*/
-                    if (TableRigidBody) {
-                        TableRigidBody.UpdateCollidersOnScale = true;
-                        TableRigidBody.RegenerateColliders = true;
+                    if (target.sprite) { target.sprite.UpdateZDepth(); }
+                    if (target.specRigidbody) {
+                        target.specRigidbody.UpdateCollidersOnRotation = true;
+                        target.specRigidbody.UpdateCollidersOnScale = true;
+                        target.specRigidbody.RegenerateColliders = true;
+                        // target.specRigidbody.UpdateColliderPositions();
+                        target.specRigidbody.Reinitialize();
                     }
                     yield return null;
                 }
-                yield return null;                
-                // if (target.gameObject.GetComponent<MajorBreakable>()) { target.gameObject.GetComponent<MajorBreakable>().HitPoints += 40; }
             }
             yield break;
         }

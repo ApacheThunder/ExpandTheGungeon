@@ -85,6 +85,10 @@ namespace ExpandTheGungeon {
 			}
 		}
 
+        public static void LogStringToFile(string text, string fileName) {			
+			using (StreamWriter streamWriter = new StreamWriter(Path.Combine(ETGMod.ResourcesDirectory, fileName), true)) { streamWriter.WriteLine(text); }
+		}
+
 		public static void Dissect(this GameObject obj) {
 			Print(obj.name + " Components:", "FFFFFF", false);
 			foreach (Component component in obj.GetComponents<Component>()) {

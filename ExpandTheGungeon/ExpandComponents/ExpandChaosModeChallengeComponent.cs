@@ -167,6 +167,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         private IEnumerator Start() {
             
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER | GameManager.Instance.IsLoadingLevel | Dungeon.IsGenerating) { yield break; }
+            if (ChallengeManager.Instance.ChallengeMode == ChallengeModeType.None) { yield break; }
+
 
             AlreadyIgnoredForRoomClearList.Add(ExpandCustomEnemyDatabase.RatGrenadeGUID); // rat_granade
             

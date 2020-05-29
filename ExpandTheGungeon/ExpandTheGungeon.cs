@@ -10,6 +10,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandAudio;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.ExpandResources;
 
 namespace ExpandTheGungeon {
 
@@ -20,16 +21,13 @@ namespace ExpandTheGungeon {
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
-        
+
         // public static bool isGlitchFloor = false;
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
 
         private static string ExceptionText;
-
-
-        // public static GameObject TestObject;
-
+        
         private static List<string> itemList;
 
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
@@ -50,6 +48,7 @@ namespace ExpandTheGungeon {
         }
 
         public override void Init() {
+
             ExceptionText = string.Empty;
 
             ConsoleCommandName = "expand";
@@ -72,7 +71,6 @@ namespace ExpandTheGungeon {
 
             ModLogo = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\logo.png");
             ModLogo.filterMode = FilterMode.Point;
-            
 
             try {
                 MainMenuFoyerUpdateHook = new Hook(
@@ -80,9 +78,9 @@ namespace ExpandTheGungeon {
                     typeof(ExpandTheGungeon).GetMethod("MainMenuUpdateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                     typeof(MainMenuFoyerController)
                 );
-                ExpandSharedHooks.InstallRequiredHooks();
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
             } catch (Exception ex) {
+                // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
                 ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
                 // ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!", true);
                 Debug.LogException(ex);
@@ -94,9 +92,12 @@ namespace ExpandTheGungeon {
 
             if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
 
+            ExpandResourceManager.InitCustomAssetBundles();
+
+            ExpandSharedHooks.InstallRequiredHooks();
+            
             // Init ItemAPI
             SetupItemAPI();
-
             try {
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs();
@@ -111,6 +112,21 @@ namespace ExpandTheGungeon {
                 // Post Init
                 // Things thta need existing stuff created first have code run here
                 BootlegGuns.PostInit();
+
+                ExpandLists.InvalidRatFloorRainRooms = new List<string>() {
+                    ExpandRoomPrefabs.SecretBossRoom.name,
+                    ExpandRoomPrefabs.SpecialMaintenanceRoom.name,
+                    ExpandRoomPrefabs.ThwompCrossingVerticalNoRain.name,
+                    ExpandRoomPrefabs.SecretRewardRoom.name,
+                    ExpandPrefabs.DragunBossFoyerRoom.name,
+                    ExpandPrefabs.DraGunExitRoom.name,
+                    ExpandPrefabs.DraGunEndTimesRoom.name,
+                    ExpandPrefabs.BlacksmithShop.name,
+                    "Zelda Puzzle Room 1",
+                    "Zelda Puzzle Room 2",
+                    "Zelda Puzzle Room 3",
+                    "Special Entrance"
+                };
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
@@ -126,7 +142,7 @@ namespace ExpandTheGungeon {
             DungeonFlowModule.Install();
 
             InitConsoleCommands(ConsoleCommandName);
-
+            
             // Null bundles when done with them to avoid game crash issues.
             ExpandPrefabs.sharedAssets = null;
             ExpandPrefabs.sharedAssets2 = null;
@@ -159,10 +175,11 @@ namespace ExpandTheGungeon {
                     CronenbergBullets.Init();
                     Mimiclay.Init();
                     TheLeadKey.Init();
-                    // TableTechExpand.Init();
+                    TableTechExpand.Init();
                     RockSlide.Init();
                     CustomMasterRounds.Init();
                     WoodenCrest.Init();
+                    BulletKinGun.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
@@ -262,7 +279,23 @@ namespace ExpandTheGungeon {
                 if (currentRoom != null) {
                     if (currentRoom.IsSealed) { currentRoom.UnsealRoom(); }
                 }
-            } else {
+            } else if (consoleText[0] == "shotgun") {
+                PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+
+                if (CurrentPlayer.characterIdentity != PlayableCharacters.Bullet) {
+                    ETGModConsole.Log("[ERROR] This isn't compatible with the currently active player!");
+                    return;
+                }
+
+                if (!ExpandCustomSpriteCollections.ShotgunReskinObject) { ExpandCustomSpriteCollections.InitShotgunKinCollection(); }
+
+                if (!ExpandCustomSpriteCollections.ShotgunReskinObject) {
+                    ETGModConsole.Log("Shotgun Man Data not found! Not available for public use!");
+                    return;
+                }
+                CurrentPlayer.OverrideAnimationLibrary = ExpandCustomSpriteCollections.ShotgunReskinObject.GetComponent<tk2dSpriteAnimation>();
+                CurrentPlayer.SetOverrideShader(ShaderCache.Acquire(CurrentPlayer.LocalShaderName));
+            }  else {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);
                 return;
             }
@@ -331,17 +364,15 @@ namespace ExpandTheGungeon {
                 ExpandStats.youtubeSafeMode = true;
             }
         }
-
+        
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            // Dungeon dungeon = GameManager.Instance.Dungeon;
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
 
-            /*if (!ExpandCustomSpriteCollections.ShotgunReskinObject) { ExpandCustomSpriteCollections.InitShotgunKinCollection(); }
-            CurrentPlayer.OverrideAnimationLibrary = ExpandCustomSpriteCollections.ShotgunReskinObject.GetComponent<tk2dSpriteAnimation>();
-            CurrentPlayer.SetOverrideShader(ShaderCache.Acquire(CurrentPlayer.LocalShaderName));*/
-            
-            RoomHandler SelectedRoom = null;
+            Pixelator.Instance.RegisterAdditionalRenderPass(expandSharedAssets1.LoadAsset<Material>("ExpandScanlinesMaterial"));
+            /*RoomHandler SelectedRoom = null;
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Gungeon_BellyEntranceRoom.name)) {
                     SelectedRoom = room;
@@ -354,13 +385,13 @@ namespace ExpandTheGungeon {
                 CurrentPlayer.WarpToPoint(targetPoint.ToVector2(), false, false);
             } else {
                 GameManager.Instance.LoadNextLevel();
-            }
-
-            ETGModConsole.Instance.GUI.Visible = false;
+            }*/
 
             // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
             // Rooms for floor 4.
             // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(1, "SecretGlitchFloor_Flow", true));
+
+            // 
             return;
         }        
     }

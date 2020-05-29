@@ -266,7 +266,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             AssetBundle assetBundle2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
             PlayerController PrimaryPlayer = GameManager.Instance.PrimaryPlayer;
-            try { Pixelator.Instance.RegisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (System.Exception) { }
+            // try { Pixelator.Instance.RegisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (System.Exception) { }
             
 
             if (PrimaryPlayer.HasPickupID(316)) {
@@ -817,7 +817,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             assetBundle = null;
             assetBundle2 = null;
             yield return new WaitForSeconds(1.2f);
-            try { Pixelator.Instance.DeregisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (Exception) { }
+            // try { Pixelator.Instance.DeregisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); } catch (Exception) { }
 
             yield break;
         }

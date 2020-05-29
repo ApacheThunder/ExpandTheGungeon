@@ -46,6 +46,111 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             );
 
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "Master Chambers",
+                    MandatoryItemIDs = new List<int>() { 647, CustomMasterRounds.CanyonMasterRoundID }, // Synergy Notification for Chamber Gun and custom master round for Base_Canyon
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "It fires Grenade Kin now...",
+                    MandatoryItemIDs = new List<int>() { 39, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + RPG
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+
+             m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = string.Empty,
+                    MandatoryItemIDs = new List<int>() { 815, BulletKinGun.BulletKinGunID }, // Lich Eyes Synergy for this gun.
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+            
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "It fires Shotgun Kin now...",
+                    MandatoryItemIDs = new List<int>() { 51, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + Regular Shotgun
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "It fires jammed things now...",
+                    MandatoryItemIDs = new List<int>() { 407, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + Sixth Chamber
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "It fires chickens now...",
+                    MandatoryItemIDs = new List<int>() { 572, BulletKinGun.BulletKinGunID }, // Synergy for Chicken Flute + The Bullet Kin Gun
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+
             GameManager.Instance.SynergyManager.synergies = m_TempSynergyList.ToArray();
             return;
         }

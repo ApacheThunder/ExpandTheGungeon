@@ -14,5 +14,5 @@ UnityEngine.JSONSerializeModule.dll
 UnityEngine.ParticleSystemModule.dll
 UnityEngine.Physics2DModule.dll
 UnityEngine.PhysicsModule.dll
-
+Ionic.Zip.dll
 

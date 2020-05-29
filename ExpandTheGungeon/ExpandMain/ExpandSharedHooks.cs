@@ -10,7 +10,7 @@ using HutongGames.PlayMaker;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using Pathfinding;
+// using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -84,28 +84,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("GetRandomFlowHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(SemioticDungeonGenSettings)
             );
-
-            /*if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AIActor.OnPlayerEntered Hook...."); }
-            Hook onPlayerEnteredHook = new Hook(
-               typeof(AIActor).GetMethod("OnPlayerEntered", BindingFlags.NonPublic | BindingFlags.Instance),
-               typeof(ChaosSharedHooks).GetMethod("OnPlayerEnteredHook", BindingFlags.Public | BindingFlags.Instance),
-               typeof(AIActor)
-            );*/
-
+            
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetKicked.HandlePitfall Hook...."); }
             Hook handlePitfallHook = new Hook(
                 typeof(GetKicked).GetMethod("HandlePitfall", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("HandlePitfallHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(GetKicked)
             );
-
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.CheckForPlayerCollision Hook...."); }
-            Hook checkforPlayerCollisionHook = new Hook(
-                typeof(DungeonDoorController).GetMethod("CheckForPlayerCollision", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("CheckForPlayerCollisionHook", BindingFlags.Public | BindingFlags.Instance),
-                typeof(DungeonDoorController)
-            );
-
+            
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ElevatorArrivalController.Update Hook...."); }
             Hook arrivalElevatorUpdateHook = new Hook(
                 typeof(ElevatorArrivalController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -180,15 +166,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("SwitchToStateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonFloorMusicController)
             );
-
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleCombatWaves Hook...."); }
-            Hook paydayDrillCombatWaveHook = new Hook(
-                typeof(PaydayDrillItem).GetMethod("HandleCombatWaves", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("HandleCombatWavesHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(PaydayDrillItem)
-            );
-
-
+            
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
             Hook flushAudioHook = new Hook(
                 typeof(GameManager).GetMethod("FlushAudio", BindingFlags.Public | BindingFlags.Instance),
@@ -224,9 +202,58 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(TK2DDungeonAssembler)
             );
 
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.GetTypeBorderGridForBorderIndex Hook...."); }
+            Hook getTypeBorderGridForBorderIndexHook = new Hook(
+                typeof(TK2DDungeonAssembler).GetMethod("GetTypeBorderGridForBorderIndex", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("GetTypeBorderGridForBorderIndexHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(TK2DDungeonAssembler)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AkSoundEngine.PostEvent Hook...."); }
+            Hook postEventHook = new Hook(
+                typeof(AkSoundEngine).GetMethod("PostEvent", new Type[] { typeof(string), typeof(GameObject) }),
+                typeof(ExpandSharedHooks).GetMethod("PostEventHook", BindingFlags.Public | BindingFlags.Static)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleCombatWaves Hook...."); }
+            Hook paydayDrillCombatWaveHook = new Hook(
+                typeof(PaydayDrillItem).GetMethod("HandleCombatWaves", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandPaydayDrillItemFixes).GetMethod("HandleCombatWavesHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PaydayDrillItem)
+            );
+
+            /*if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleSeamlessTransitionToCombatRoom Hook...."); }
+            Hook handleSeamlessTransitionToCombatRoomHook = new Hook(
+                typeof(PaydayDrillItem).GetMethod("HandleSeamlessTransitionToCombatRoom", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandPaydayDrillItemFixes).GetMethod("ExpandHandleSeamlessTransitionToCombatRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PaydayDrillItem)
+            );*/
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.PostGenerationCleanup Hook...."); }
+            Hook postGenerationCleanupHook = new Hook(
+                typeof(DungeonData).GetMethod("PostGenerationCleanup", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("PostGenerationCleanupHook", BindingFlags.Public | BindingFlags.Instance),
+                typeof(DungeonData)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.CheckForPlayerCollision Hook...."); }
+            Hook checkforPlayerCollisionHook = new Hook(
+                typeof(DungeonDoorController).GetMethod("CheckForPlayerCollision", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandDungeonDoorManager).GetMethod("CheckForPlayerCollisionHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(DungeonDoorController)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.Open Hook...."); }
+            Hook doorOpenHook = new Hook(
+                typeof(DungeonDoorController).GetMethod("Open", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandDungeonDoorManager).GetMethod("Expand_Open", BindingFlags.Public | BindingFlags.Instance),
+                typeof(DungeonDoorController)
+            );
+
             return;
         }
 
+        
         private void FlagCellsHook(Action<OccupiedCells> orig, OccupiedCells self) {
             try { orig(self); } catch (Exception ex) {
                 if (ExpandStats.debugMode) {
@@ -346,24 +373,53 @@ namespace ExpandTheGungeon.ExpandMain {
         }        
         
         public static RoomHandler PlaceRoomHook(BuilderFlowNode current, SemioticLayoutManager layout, IntVector2 newRoomPosition) {
-            try { 
+            try {
+                // Verify that visual subtype override actually exists in the current dungoen prefab's DungeonMaterials. (Dungeon.roomMaterialDefinitions)
+                // If not, override the override to avoid array index out of range exception!
+                Dungeon dungeon;
+                if (GameManager.Instance.CurrentlyGeneratingDungeonPrefab) {
+                    dungeon = GameManager.Instance.BestGenerationDungeonPrefab;
+                } else {
+                    dungeon = GameManager.Instance.Dungeon;
+                }
+                if (current.assignedPrototypeRoom.overrideRoomVisualType >= dungeon.roomMaterialDefinitions.Length) {
+                    if (ExpandStats.debugMode) {
+                        string Message1 = "[ExpandTheGungeon] WARNING: Exception prevented during LoopBuilderComposite.PlaceRoom!";
+                        string Message2 = "Room visual subtype isn't supported by current tileset! Default visual style will be used to prevent exceptions/softlock!";
+                        ETGModConsole.Log(Message1);
+                        ETGModConsole.Log(Message2);
+                        Debug.Log(Message1);
+                        Debug.Log(Message2);
+                        if (!string.IsNullOrEmpty(current.assignedPrototypeRoom.name)) {
+                            ETGModConsole.Log("Name of assigned room: " + current.assignedPrototypeRoom.name);
+                            Debug.Log("Name of assigned room: " + current.assignedPrototypeRoom.name);
+                        }
+                    }
+                    // As far as I can tell it does not instantiate this during floor generation so best to instantiate before modifying it!
+                    PrototypeDungeonRoom m_FixedRoom = Instantiate(current.assignedPrototypeRoom);
+                    m_FixedRoom.overrideRoomVisualType = -1; // Setting this to -1 allows it to assign a random available subtype to the room during RoomHandler creation.
+                    // Assign "fixed" room over the old one. 
+                    // This must occur before the RoomHandler object is created as that is where the exception would have occured!
+                    current.assignedPrototypeRoom = m_FixedRoom;
+                }
+
                 IntVector2 d = new IntVector2(current.assignedPrototypeRoom.Width, current.assignedPrototypeRoom.Height);
 			    CellArea cellArea = new CellArea(newRoomPosition, d, 0);
-			    cellArea.prototypeRoom = current.assignedPrototypeRoom;
+                cellArea.prototypeRoom = current.assignedPrototypeRoom;
 			    cellArea.instanceUsedExits = new List<PrototypeRoomExit>();
 			    if (current.usesOverrideCategory) { cellArea.PrototypeRoomCategory = current.overrideCategory; }
-			    RoomHandler roomHandler = new RoomHandler(cellArea);
+                RoomHandler roomHandler = new RoomHandler(cellArea);
 			    roomHandler.distanceFromEntrance = 0;
 			    roomHandler.CalculateOpulence();
 			    roomHandler.CanReceiveCaps = current.node.receivesCaps;
 			    current.instanceRoom = roomHandler;
 			    if (roomHandler.area.prototypeRoom != null && current.Category == PrototypeDungeonRoom.RoomCategory.SECRET && current.parentBuilderNode != null && current.parentBuilderNode.instanceRoom != null) {
-			    	roomHandler.AssignRoomVisualType(current.parentBuilderNode.instanceRoom.RoomVisualSubtype, false);
+                    roomHandler.AssignRoomVisualType(current.parentBuilderNode.instanceRoom.RoomVisualSubtype, false);
 			    }
 			    layout.StampCellAreaToLayout(roomHandler, false);
 			    return roomHandler;
             } catch (Exception ex) {
-                ETGModConsole.Log("[DEBUG] ERROR: Exception during LoopBuilderComposite.PlaceRoom!");
+                ETGModConsole.Log("[ExpandTheGungeon] [DEBUG] ERROR: Exception during LoopBuilderComposite.PlaceRoom!");
                 ETGModConsole.Log("[DEBUG] Name of assigned room: " + current.assignedPrototypeRoom.name);
                 if (current.instanceRoom != null) {
                     ETGModConsole.Log("[DEBUG] Name of instanced room: " + current.instanceRoom.GetRoomName());
@@ -579,25 +635,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
         }
-
-        // Allow AIActors to open doors. AIActors with IgnoreForRoomClear set will not be able to open doors in COOP. (to prevent companions from opening doors in COOP mode)
-        public void CheckForPlayerCollisionHook(Action<DungeonDoorController, SpeculativeRigidbody, Vector2>orig, DungeonDoorController self, SpeculativeRigidbody otherRigidbody, Vector2 normal) {
-            orig(self, otherRigidbody, normal);
-            bool isSealed = ReflectionHelpers.ReflectGetField<bool>(typeof(DungeonDoorController), "isSealed", self);
-            bool m_open = ReflectionHelpers.ReflectGetField<bool>(typeof(DungeonDoorController), "m_open", self);
-            if (isSealed || self.isLocked) { return; }
-            AIActor component = otherRigidbody.GetComponent<AIActor>();
-            if (component != null && !m_open) {
-                bool flipped = false;
-                if (normal.y < 0f && self.northSouth) { flipped = true; }
-                if (normal.x < 0f && !self.northSouth) { flipped = true; }                
-                if (GameManager.Instance.CurrentGameType == GameManager.GameType.SINGLE_PLAYER) {
-                    self.Open(flipped);
-                } else if (!component.IgnoreForRoomClear) {
-                    self.Open(flipped);
-                }
-            }
-        }
         
         // Prevent Arrival Elevator from departing while room still has active enemies. (currently only relevent to custom Giant Elevator Room)
         // Used to prevent player from going down elevator shaft while there are still enemies to clear.
@@ -754,98 +791,7 @@ namespace ExpandTheGungeon.ExpandMain {
             orig(self);
             AkSoundEngine.PostEvent("Stop_EX_SFX_All", self.gameObject);
         }
-
-        // Add Null checks and use fall back GUIDs if it fails. Incase Drill tries to spawn custom enemies. (the GenerateEnemyData list returns null for some reason if it tries to pull a GUID tied to a custom enemy).
-        private IEnumerator HandleCombatWavesHook(Action<PaydayDrillItem, Dungeon, RoomHandler, Chest>orig, PaydayDrillItem self, Dungeon d, RoomHandler newRoom, Chest sourceChest) {
-            DrillWaveDefinition[] wavesToUse = self.D_Quality_Waves;
-            switch (GameManager.Instance.RewardManager.GetQualityFromChest(sourceChest)) {
-                case PickupObject.ItemQuality.C:
-                    wavesToUse = self.C_Quality_Waves;
-                    break;
-                case PickupObject.ItemQuality.B:
-                    wavesToUse = self.B_Quality_Waves;
-                    break;
-                case PickupObject.ItemQuality.A:
-                    wavesToUse = self.A_Quality_Waves;
-                    break;
-                case PickupObject.ItemQuality.S:
-                    wavesToUse = self.S_Quality_Waves;
-                    break;
-            }
-            foreach (DrillWaveDefinition currentWave in wavesToUse) {
-                int numEnemiesToSpawn = UnityEngine.Random.Range(currentWave.MinEnemies, currentWave.MaxEnemies + 1);
-                for (int i = 0; i < numEnemiesToSpawn; i++) {
-                    string EnemyGUID = d.GetWeightedProceduralEnemy().enemyGuid;
-                    if (string.IsNullOrEmpty(EnemyGUID)) {
-                        List<string> FallbackGUIDs = new List<string>() {
-                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
-                        };
-                        FallbackGUIDs = FallbackGUIDs.Shuffle();
-                        EnemyGUID = BraveUtility.RandomElement(FallbackGUIDs);
-                    }
-                    AddSpecificEnemyToRoomProcedurallyFixed(newRoom, EnemyGUID, true);
-                }
-                yield return new WaitForSeconds(3f);
-                while (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.RoomClear) > 0) {
-                    yield return new WaitForSeconds(1f);
-                }
-                if (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.All) > 0) {
-                    List<AIActor> activeEnemies = newRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);
-                    for (int j = 0; j < activeEnemies.Count; j++) {
-                        if (activeEnemies[j].IsNormalEnemy) { activeEnemies[j].EraseFromExistence(false); }
-                    }
-                }
-            }
-            yield break;
-        }
-
-        // This function doesn't null check orLoadByGuid. If non fake prefab custom enemies are spawned (like the special rats on Hollow), then this would cause exception.
-        // Added fall back GUIDs and use one of those for AIActor instead if this happens.
-        public void AddSpecificEnemyToRoomProcedurallyFixed(RoomHandler room, string enemyGuid, bool reinforcementSpawn = false, Vector2? goalPosition = null) {
-            AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(enemyGuid);
-            if (!orLoadByGuid) {
-                List<string> FallbackGUIDs = new List<string>() {
-                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
-                };
-                FallbackGUIDs = FallbackGUIDs.Shuffle();
-                orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(FallbackGUIDs));
-            }
-            IntVector2 clearance = orLoadByGuid.specRigidbody.UnitDimensions.ToIntVector2(VectorConversions.Ceil);
-            CellValidator cellValidator = delegate (IntVector2 c) {
-                for (int i = 0; i < clearance.x; i++) {
-                    int x = c.x + i;
-                    for (int j = 0; j < clearance.y; j++) {
-                        int y = c.y + j;
-                        if (GameManager.Instance.Dungeon.data.isTopWall(x, y)) { return false; }
-                    }
-                }
-                return true;
-            };
-            IntVector2? intVector;
-            if (goalPosition != null) {
-                intVector = room.GetNearestAvailableCell(goalPosition.Value, new IntVector2?(clearance), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
-            } else {
-                intVector = room.GetRandomAvailableCell(new IntVector2?(clearance), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
-            }
-            if (intVector != null) {
-                AIActor aiactor = AIActor.Spawn(orLoadByGuid, intVector.Value, room, true, AIActor.AwakenAnimationType.Spawn, false);
-                if (aiactor && reinforcementSpawn) {
-                    if (aiactor.specRigidbody) { aiactor.specRigidbody.CollideWithOthers = false; }
-                    aiactor.HandleReinforcementFallIntoRoom(0f);
-                }
-            } else {
-                Debug.LogError("failed placement");
-            }
-        }
-
+                
         private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
             if (!GameStatsManager.Instance.IsRainbowRun) { orig(self); return; }
             
@@ -935,8 +881,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 self.Reset();                
             }            
         }
-
-
+        
         private void BuildOcclusionLayerCenterJungleHook(TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
             if (current == null | !d | !map) { return; }
 
@@ -1090,7 +1035,72 @@ namespace ExpandTheGungeon.ExpandMain {
             flag4 = (flag4 && !d.data[ix - 1, iy].cellVisualData.shouldIgnoreBorders);
             return flag || flag2 || flag3 || flag4;
         }
+        
+        private TileIndexGrid GetTypeBorderGridForBorderIndexHook(TK2DDungeonAssembler self, CellData current, Dungeon d, out int usedVisualType) {
+            TileIndexGrid roomCeilingBorderGrid;
 
+            try {
+                roomCeilingBorderGrid = d.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+            } catch (Exception ex) {
+                if (ExpandStats.debugMode) {
+                    Debug.Log("[ExpandTheGungeon] [WARNING] Exception caught in TK2DDungeonAssembler.GetTypeBorderGridForBorderIndex !");
+                    Debug.LogException(ex);
+                }
+                roomCeilingBorderGrid = null;
+                usedVisualType = 0;
+                return null;
+            }
+            usedVisualType = current.cellVisualData.roomVisualTypeIndex;
+            
+            if (d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                if (current.nearestRoom != null && current.distanceFromNearestRoom < 4f) {
+                    if (current.cellVisualData.IsFacewallForInteriorTransition) {
+                        roomCeilingBorderGrid = d.roomMaterialDefinitions[current.cellVisualData.InteriorTransitionIndex].roomCeilingBorderGrid;
+                        usedVisualType = current.cellVisualData.InteriorTransitionIndex;
+                    } else if (!current.cellVisualData.IsFeatureCell) {
+                        int? VisualSubType = current.nearestRoom.RoomVisualSubtype;
+                        if (VisualSubType.HasValue) {
+                            roomCeilingBorderGrid = d.roomMaterialDefinitions[VisualSubType.Value].roomCeilingBorderGrid;
+                            usedVisualType = current.nearestRoom.RoomVisualSubtype;
+                        }
+                    }
+                }
+            } else if (d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
+                roomCeilingBorderGrid = d.roomMaterialDefinitions[current.nearestRoom.RoomVisualSubtype].roomCeilingBorderGrid;
+                usedVisualType = current.nearestRoom.RoomVisualSubtype;
+            }
+            if (roomCeilingBorderGrid == null) {
+                roomCeilingBorderGrid = d.roomMaterialDefinitions[0].roomCeilingBorderGrid;
+                usedVisualType = 0;
+            }
+            return roomCeilingBorderGrid;
+        }
+
+        public static uint PostEventHook(Func<string, GameObject, uint> orig, string in_pszEventName, GameObject in_gameObjectID) {
+            if (in_pszEventName == "play_OBJ_door_open_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Open", in_gameObjectID);
+            } else if (in_pszEventName == "play_OBJ_door_close_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Close", in_gameObjectID);
+            } else if (in_pszEventName == "Play_OBJ_gate_slam_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Seal", in_gameObjectID);
+            } else if (in_pszEventName == "Play_OBJ_gate_open_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Seal", in_gameObjectID);
+            }
+            return orig(in_pszEventName, in_gameObjectID);
+        }
+        
+        public void PostGenerationCleanupHook(Action<DungeonData>orig, DungeonData self) {
+            try {
+                orig(self);
+            } catch (Exception ex) {
+                if (ExpandStats.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] [Warning] Exception caught at DungeonData.PostGenerationCleanup!");
+                    Debug.Log("[ExpandTheGungeon] [Warning] Exception caught at DungeonData.PostGenerationCleanup!");
+                    Debug.LogException(ex);
+                    return;
+                }
+            }
+        }
     }
 }
 

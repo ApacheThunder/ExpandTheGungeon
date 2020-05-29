@@ -3,7 +3,8 @@ State Group	ID	Name			Wwise Object Path	Notes
 
 State	ID	Name	State Group			Notes
 	0	None	Pause			
-	3092587493	Pause	Pause			
+	319258907	Paused	Pause			
+	1365518790	Unpaused	Pause			
 
 Audio Bus	ID	Name			Wwise Object Path	Notes
 	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	

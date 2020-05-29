@@ -197,98 +197,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             CastleInjectionData = CastlePrefab.PatternSettings.flows[0].sharedInjectionData[0];
-
-            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandPrefabs.sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
-
-            // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
-            KnownFlows = new List<DungeonFlow>();
-
-            // Build and add custom flows to list.
-            BossrushFlows.InitBossrushFlows();
-
-            KnownFlows.Add(custom_glitchchest_flow.Custom_GlitchChest_Flow());
-            KnownFlows.Add(test_west_floor_03a_flow.TEST_West_Floor_03a_Flow());
-            KnownFlows.Add(demo_stage_flow.DEMO_STAGE_FLOW());
-            KnownFlows.Add(complex_flow_test.Complex_Flow_Test());
-            KnownFlows.Add(custom_glitch_flow.Custom_Glitch_Flow());
-            KnownFlows.Add(really_big_flow.Really_Big_Flow());
-            KnownFlows.Add(fruit_loops.Fruit_Loops());
-            KnownFlows.Add(custom_glitchchestalt_flow.Custom_GlitchChestAlt_Flow());
-            KnownFlows.Add(secretglitchfloor_flow.SecretGlitchFloor_Flow());
-            KnownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow());
-            KnownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow());
-            KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
-            KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
-            KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
-            KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
-
-            // Fix issues with nodes so that things other then MainMenu can load Foyer flow
-            Foyer_Flow.name = "Foyer_Flow";
-            Foyer_Flow.AllNodes[1].handlesOwnWarping = true;
-            Foyer_Flow.AllNodes[2].handlesOwnWarping = true;
-            Foyer_Flow.AllNodes[3].handlesOwnWarping = true;
-
-            KnownFlows.Add(Foyer_Flow);
-            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("npcparadise")));
-            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("secret_doublebeholster_flow")));
-            KnownFlows.Add(BossrushFlows.Bossrush_01_Castle);
-            KnownFlows.Add(BossrushFlows.Bossrush_01a_Sewer);
-            KnownFlows.Add(BossrushFlows.Bossrush_02_Gungeon);
-            KnownFlows.Add(BossrushFlows.Bossrush_02a_Cathedral);
-            KnownFlows.Add(BossrushFlows.Bossrush_03_Mines);
-            KnownFlows.Add(BossrushFlows.Bossrush_04_Catacombs);
-            KnownFlows.Add(BossrushFlows.Bossrush_05_Forge);
-            KnownFlows.Add(BossrushFlows.Bossrush_06_BulletHell);
-            KnownFlows.Add(BossrushFlows.MiniBossrush_01);
-
-            // Add official flows to list (flows found in Dungeon asset bundles after AG&D)
-            for (int i = 0; i < TutorialPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(TutorialPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CastlePrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CastlePrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < SewerPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < GungeonPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(GungeonPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CathedralPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < MinesPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(MinesPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < ResourcefulRatPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ResourcefulRatPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CatacombsPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CatacombsPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < NakatomiPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(NakatomiPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < ForgePrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ForgePrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < BulletHellPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(BulletHellPrefab.PatternSettings.flows[i]));
-            }
-
-            // Let's make things look cool and give all boss rush flows my new tiny exit room. :D            
-            BossrushFlows.Bossrush_01a_Sewer.AllNodes[2].overrideExactRoom = ExpandPrefabs.tiny_exit;
-            BossrushFlows.Bossrush_02_Gungeon.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
-            BossrushFlows.Bossrush_02a_Cathedral.AllNodes[2].overrideExactRoom = ExpandPrefabs.oldbulletking_room_01;
-            BossrushFlows.Bossrush_02a_Cathedral.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
-            BossrushFlows.Bossrush_03_Mines.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
-            BossrushFlows.Bossrush_04_Catacombs.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
-            // Fix Forge Bossrush so it uses the correct boss foyer room for Dragun.
-            // Using the same foyer room for previous floors looks odd so I fixed it. :P
-            BossrushFlows.Bossrush_05_Forge.AllNodes[1].overrideExactRoom = ExpandPrefabs.DragunBossFoyerRoom;
-            BossrushFlows.Bossrush_05_Forge.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
             
-
             JunkSecretRoomInjector = new ProceduralFlowModifierData() {
                 annotation = "Tiny Secret Room",
                 DEBUG_FORCE_SPAWN = false,
@@ -533,7 +442,99 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             CustomSecretFloorSharedInjectionData.OnlyOne = false;
             CustomSecretFloorSharedInjectionData.ChanceToSpawnOne = 1;
             CustomSecretFloorSharedInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-            
+
+
+            // Don't build/add flows until injection data is created!
+            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandPrefabs.sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
+
+            // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
+            KnownFlows = new List<DungeonFlow>();
+
+            // Build and add custom flows to list.
+            BossrushFlows.InitBossrushFlows();
+
+            KnownFlows.Add(custom_glitchchest_flow.Custom_GlitchChest_Flow());
+            KnownFlows.Add(test_west_floor_03a_flow.TEST_West_Floor_03a_Flow());
+            KnownFlows.Add(demo_stage_flow.DEMO_STAGE_FLOW());
+            KnownFlows.Add(complex_flow_test.Complex_Flow_Test());
+            KnownFlows.Add(custom_glitch_flow.Custom_Glitch_Flow());
+            KnownFlows.Add(really_big_flow.Really_Big_Flow());
+            KnownFlows.Add(fruit_loops.Fruit_Loops());
+            KnownFlows.Add(custom_glitchchestalt_flow.Custom_GlitchChestAlt_Flow());
+            KnownFlows.Add(secretglitchfloor_flow.SecretGlitchFloor_Flow());
+            KnownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow());
+            KnownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow());
+            KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
+            KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
+            KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
+            KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
+
+            // Fix issues with nodes so that things other then MainMenu can load Foyer flow
+            Foyer_Flow.name = "Foyer_Flow";
+            Foyer_Flow.AllNodes[1].handlesOwnWarping = true;
+            Foyer_Flow.AllNodes[2].handlesOwnWarping = true;
+            Foyer_Flow.AllNodes[3].handlesOwnWarping = true;
+
+            KnownFlows.Add(Foyer_Flow);
+            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("npcparadise")));
+            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("secret_doublebeholster_flow")));
+            KnownFlows.Add(BossrushFlows.Bossrush_01_Castle);
+            KnownFlows.Add(BossrushFlows.Bossrush_01a_Sewer);
+            KnownFlows.Add(BossrushFlows.Bossrush_02_Gungeon);
+            KnownFlows.Add(BossrushFlows.Bossrush_02a_Cathedral);
+            KnownFlows.Add(BossrushFlows.Bossrush_03_Mines);
+            KnownFlows.Add(BossrushFlows.Bossrush_04_Catacombs);
+            KnownFlows.Add(BossrushFlows.Bossrush_05_Forge);
+            KnownFlows.Add(BossrushFlows.Bossrush_06_BulletHell);
+            KnownFlows.Add(BossrushFlows.MiniBossrush_01);
+
+            // Add official flows to list (flows found in Dungeon asset bundles after AG&D)
+            for (int i = 0; i < TutorialPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(TutorialPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < CastlePrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CastlePrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < SewerPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < GungeonPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(GungeonPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < CathedralPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < MinesPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(MinesPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < ResourcefulRatPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ResourcefulRatPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < CatacombsPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CatacombsPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < NakatomiPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(NakatomiPrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < ForgePrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ForgePrefab.PatternSettings.flows[i]));
+            }
+            for (int i = 0; i < BulletHellPrefab.PatternSettings.flows.Count; i++) {
+                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(BulletHellPrefab.PatternSettings.flows[i]));
+            }
+
+            // Let's make things look cool and give all boss rush flows my new tiny exit room. :D            
+            BossrushFlows.Bossrush_01a_Sewer.AllNodes[2].overrideExactRoom = ExpandPrefabs.tiny_exit;
+            BossrushFlows.Bossrush_02_Gungeon.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
+            BossrushFlows.Bossrush_02a_Cathedral.AllNodes[2].overrideExactRoom = ExpandPrefabs.oldbulletking_room_01;
+            BossrushFlows.Bossrush_02a_Cathedral.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
+            BossrushFlows.Bossrush_03_Mines.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
+            BossrushFlows.Bossrush_04_Catacombs.AllNodes[6].overrideExactRoom = ExpandPrefabs.tiny_exit;
+            // Fix Forge Bossrush so it uses the correct boss foyer room for Dragun.
+            // Using the same foyer room for previous floors looks odd so I fixed it. :P
+            BossrushFlows.Bossrush_05_Forge.AllNodes[1].overrideExactRoom = ExpandPrefabs.DragunBossFoyerRoom;
+            BossrushFlows.Bossrush_05_Forge.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
+
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             // Due to load order, I need to set this up here instead.

@@ -45,6 +45,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public float RainIntensity;
         public bool useCustomIntensity;
         public bool enableLightning;
+        public bool isLocalToRoom;
 
         public ScreenShakeSettings ThunderShake;
 
@@ -55,6 +56,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private float m_lightningTimer;
 
         public ExpandWeatherController() {
+
             isActive = false;
             isSecretFloor = true;
             MinTimeBetweenLightningStrikes = 5;
@@ -63,6 +65,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             RainIntensity = 250;
             useCustomIntensity = true;
             enableLightning = false;
+            isLocalToRoom = false;
 
             ThunderShake = new ScreenShakeSettings() {
                 magnitude = 0.2f,
@@ -90,7 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_StormController = m_ThunderStorm.GetComponent<ThunderstormController>();
             ParticleSystem m_CachedParticleSystem = m_StormController.RainSystemTransform.GetComponent<ParticleSystem>();
             if (useCustomIntensity) { BraveUtility.SetEmissionRate(m_CachedParticleSystem, RainIntensity); }
-            m_StormController.DecayVertical = false;
+            m_StormController.DecayVertical = isLocalToRoom;
             m_StormController.DoLighting = false;
             LightningRenderers = m_StormController.LightningRenderers;
             m_ThunderStorm.transform.parent = gameObject.transform;
@@ -107,7 +110,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (isSecretFloor) {
                 PlayerController player = GameManager.Instance.PrimaryPlayer;
-                if (player) { CheckForWeatherFX(player, 500); }
+                if (player) { CheckForWeatherFX(player, RainIntensity); }
             }
 
             if (!isActive) { return; }

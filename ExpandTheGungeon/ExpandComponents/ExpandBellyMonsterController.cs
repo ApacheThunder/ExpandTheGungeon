@@ -7,6 +7,7 @@ using Dungeonator;
 using System.Collections;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -17,7 +18,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             PlayerEaten = false;
 
             SlamScreenShakeSettings = new ScreenShakeSettings() {
-                magnitude = 0.25f,
+                magnitude = 0.6f,
                 speed = 10f,
                 time = 0.15f,
                 falloff = 0.5f,
@@ -44,9 +45,99 @@ namespace ExpandTheGungeon.ExpandComponents {
         private GameObject m_EntranceTriggerObject;
 
         private void Start() {
-            
+
             sprite.HeightOffGround = -7;
             sprite.UpdateZDepth();
+
+            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
+
+            Vector3 NoteSpawnPoint = (new Vector3(7, 3) + m_ParentRoom.area.basePosition.ToVector3());
+
+            GameObject DeadGuyNote = Instantiate(ExpandPrefabs.PlayerLostRatNote, NoteSpawnPoint, Quaternion.identity);
+
+            NoteDoer DeadGuyNoteComponent = DeadGuyNote.GetComponent<NoteDoer>();
+
+            if (DeadGuyNoteComponent != null) {
+                DeadGuyNoteComponent.stringKey = "We shipwrecked chasing a terrible monster.\n\nManaged to lure and trap it in this wierd dungeon full of living bullets...\n\nAlas, I could not slay the beast but managed to trap it in this chamber. I used a teleporter prototype to teleport the key to this chamber far away.\n\nI don't know where it ended up, but I hope no one finds it.";
+                DeadGuyNoteComponent.useAdditionalStrings = false;
+                DeadGuyNoteComponent.alreadyLocalized = true;
+                DeadGuyNoteComponent.name = "Dead Man's Note";
+                m_ParentRoom.RegisterInteractable(DeadGuyNoteComponent);
+            }
+
+            Gun m_CachedMutantArmGun = (PickupObjectDatabase.GetById(333) as Gun);
+
+
+            GameObject m_GoopInstance1 = new GameObject("Bloodstain 1", typeof(tk2dSprite)) { layer = 0 };
+            GameObject m_GoopInstance2 = new GameObject("Bloodstain 2", typeof(tk2dSprite)) { layer = 0 };
+            GameObject m_GoopInstance3 = new GameObject("Bloodstain 3", typeof(tk2dSprite)) { layer = 0 };
+            GameObject m_GoopInstance4 = new GameObject("Bloodstain 4", typeof(tk2dSprite)) { layer = 0 };
+            GameObject m_GoopInstance5 = new GameObject("Bloodstain 5", typeof(tk2dSprite)) { layer = 0 };
+            GameObject m_GoopInstance6 = new GameObject("Bloodstain 6", typeof(tk2dSprite)) { layer = 0 };
+            m_GoopInstance1.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(13, 2));
+            m_GoopInstance2.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(33, 5));
+            m_GoopInstance3.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(40, 2));
+            m_GoopInstance4.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(48, 3));
+            m_GoopInstance5.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(57, 5));
+            m_GoopInstance6.transform.position = (m_ParentRoom.area.basePosition.ToVector3() + new Vector3(58, 2));
+            m_GoopInstance1.transform.parent = m_ParentRoom.hierarchyParent;
+            m_GoopInstance2.transform.parent = m_ParentRoom.hierarchyParent;
+            m_GoopInstance3.transform.parent = m_ParentRoom.hierarchyParent;
+            m_GoopInstance4.transform.parent = m_ParentRoom.hierarchyParent;
+            m_GoopInstance5.transform.parent = m_ParentRoom.hierarchyParent;
+            m_GoopInstance6.transform.parent = m_ParentRoom.hierarchyParent;
+            
+
+            GoopDoer[] m_BloodGoopDoers = new GoopDoer[] {
+                m_GoopInstance1.AddComponent<GoopDoer>(),
+                m_GoopInstance2.AddComponent<GoopDoer>(),
+                m_GoopInstance3.AddComponent<GoopDoer>(),
+                m_GoopInstance4.AddComponent<GoopDoer>(),
+                m_GoopInstance5.AddComponent<GoopDoer>(),
+                m_GoopInstance6.AddComponent<GoopDoer>()
+            };
+
+            tk2dSprite[] m_DummySprites = new tk2dSprite[] {
+                m_GoopInstance1.GetComponent<tk2dSprite>(),
+                m_GoopInstance2.GetComponent<tk2dSprite>(),
+                m_GoopInstance3.GetComponent<tk2dSprite>(),
+                m_GoopInstance4.GetComponent<tk2dSprite>(),
+                m_GoopInstance5.GetComponent<tk2dSprite>(),
+                m_GoopInstance6.GetComponent<tk2dSprite>(),
+            };
+
+            foreach (tk2dSprite sprite in m_DummySprites) {
+                sprite.Collection = m_CachedMutantArmGun.sprite.Collection;
+                sprite.SetSprite(0);
+                sprite.renderer.enabled = false;
+            }
+
+
+            foreach (GoopDoer goop in m_BloodGoopDoers){
+                goop.goopDefinition = m_CachedMutantArmGun.singleModule.projectiles[0].gameObject.GetComponent<GoopModifier>().goopDefinition;
+                goop.positionSource = GoopDoer.PositionSource.SpriteCenter;
+                goop.updateTiming = GoopDoer.UpdateTiming.Always;
+                goop.updateFrequency = 0.05f;
+                goop.isTimed = false;
+                goop.goopTime = 1;
+                goop.updateOnPreDeath = true;
+                goop.updateOnDeath = false;
+                goop.updateOnAnimFrames = true;
+                goop.updateOnCollision = false;
+                goop.updateOnGrounded = false;
+                goop.updateOnDestroy = false;
+                goop.defaultGoopRadius = 1;
+                goop.suppressSplashes = false;
+                goop.goopSizeVaries = true;
+                goop.varyCycleTime = 0.9f;
+                goop.radiusMin = UnityEngine.Random.Range(0.8f, 1);
+                goop.radiusMax = UnityEngine.Random.Range(1.25f, 1.6f);
+                goop.goopSizeRandom = true;
+                goop.UsesDispersalParticles = false;
+                goop.DispersalDensity = 3;
+                goop.DispersalMinCoherency = 0.2f;
+                goop.DispersalMaxCoherency = 1;
+            }
         }
 
         private void Update() {
@@ -57,7 +148,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ParentRoom.npcSealState = RoomHandler.NPCSealState.SealAll;
                 m_ParentRoom.SealRoom();
                 // Minimap.Instance.PreventAllTeleports = true;
-                GameObject m_BackSpriteObject = new GameObject("Worm BackSprite");
+                GameObject m_BackSpriteObject = new GameObject("Worm BackSprite") { layer = LayerMask.NameToLayer("FG_Critical") };
                 ItemBuilder.AddSpriteToObject(m_BackSpriteObject, "ExpandTheGungeon/Textures/BellyAssets/BellyMonster/Belly_Monster_BackEnd", false, false);
                 m_BackSpriteObject.transform.position = transform.position;
                 m_BackSpriteObject.transform.parent = transform;
@@ -72,7 +163,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (!specRigidbody.CanPush) { specRigidbody.CanPush = true; }
 
-            if (m_Triggered) { GameManager.Instance.MainCameraController.OverridePosition = transform.position - new Vector3(-4, 0) + new Vector3(0, 8); }
+            if (m_Triggered) { GameManager.Instance.MainCameraController.OverridePosition = (transform.position - new Vector3(3, 0) + new Vector3(0, 6)); }
         }
 
 
@@ -108,7 +199,15 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void OnPreRigidBodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
             if (otherRigidbody.GetComponent<AIActor>() && otherRigidbody.GetComponent<AIActor>().healthHaver.IsAlive) {
                 AIActor TargetAIActor = otherRigidbody.GetComponent<AIActor>();
-                TargetAIActor.healthHaver.ApplyDamage(500, new Vector2(1, 0), "Big Ass Worm", CoreDamageTypes.None, DamageCategory.Unstoppable, true, null, true);
+                if (TargetAIActor.gameObject.GetComponent<CompanionController>() && TargetAIActor.IgnoreForRoomClear) {
+                    if (TargetAIActor.knockbackDoer) {
+                        TargetAIActor.knockbackDoer.ApplyKnockback(new Vector2(-1f, 0), 2, true);
+                    } else {
+                        PhysicsEngine.SkipCollision = true;
+                    }
+                } else {
+                    TargetAIActor.healthHaver.ApplyDamage(500, new Vector2(1, 0), "Big Ass Worm", CoreDamageTypes.None, DamageCategory.Unstoppable, true, null, true);
+                }
                 return;
             } else if (!PlayerEaten && otherRigidbody.GetComponent<PlayerController>()) {
                 PlayerEaten = true;
@@ -118,9 +217,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 StartCoroutine(HandleTransitionToBellyFloor(otherRigidbody.GetComponent<PlayerController>()));
                 return;
             } else if (otherRigidbody.GetComponent<MajorBreakable>()) {
-                Vector3 ObjectPosition = otherRigidbody.GetUnitCenter(ColliderType.Ground);
+                // Vector3 ObjectPosition = otherRigidbody.GetUnitCenter(ColliderType.Ground);
                 otherRigidbody.GetComponent<MajorBreakable>().Break(new Vector2(1, 0));
-                Exploder.DoDefaultExplosion(ObjectPosition, new Vector2(1, 0), null, true, CoreDamageTypes.None, true);
+                // Exploder.DoDefaultExplosion(ObjectPosition, new Vector2(1, 0), null, true, CoreDamageTypes.None, true);
             } else if (otherRigidbody.GetComponent<MinorBreakable>()) {
                 otherRigidbody.GetComponent<MinorBreakable>().Break(new Vector2(1, 0));
             }
@@ -134,7 +233,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             float elapsed = 0f;
             float duration = 0.5f;
             Vector3 startPos = player.specRigidbody.GetUnitCenter(ColliderType.Ground);
-            Vector3 finalOffset = (transform.position + new Vector3(3, 6));
+            Vector3 finalOffset = (transform.position + new Vector3(4, 6));
             GameObject dummySpriteObject = new GameObject("PlayerSpriteDupe", new Type[] { typeof(tk2dSprite) }) { layer = 22 };
             dummySpriteObject.transform.position = startPos;
             tk2dSprite targetSprite = dummySpriteObject.GetComponent<tk2dSprite>();

@@ -375,6 +375,90 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_BellyDoor_Open" ID="{2D9EEC4F-40BF-416C-89C8-631FEC9F3D90}">
+					<ChildrenList>
+						<Action Name="" ID="{54030767-8104-4F63-A48F-A69DE94AFE41}" ShortID="201002329">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Open" ID="{6EEA973B-86CD-4739-B200-5B712454682A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_BellyDoor_Close" ID="{69D1BD37-0D8E-420A-8A50-4EB040EF402A}">
+					<ChildrenList>
+						<Action Name="" ID="{2878AA16-8FDF-4DFE-9823-195C72A8C7EC}" ShortID="685277829">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Close" ID="{30C38650-E400-43F6-AE78-FABD69993CCA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_BellyDoor_Close" ID="{9EC2D32D-B030-41D9-94C2-818CC3592D5B}">
+					<ChildrenList>
+						<Action Name="" ID="{B96BCEF6-9648-44B1-84E0-FB72D96607DA}" ShortID="32587604">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Close" ID="{30C38650-E400-43F6-AE78-FABD69993CCA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_BellyDoor_Open" ID="{3592BFED-1475-4B41-8E71-C6918E0ABBA3}">
+					<ChildrenList>
+						<Action Name="" ID="{8913A025-8DC2-4BF6-B8BB-ADF981597EB4}" ShortID="610218028">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Close" ID="{30C38650-E400-43F6-AE78-FABD69993CCA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_BellyDoor_Seal" ID="{1A4967C0-FB44-4F69-97A1-67170B956399}">
+					<ChildrenList>
+						<Action Name="" ID="{3FE47258-A5C8-4395-AA89-50BBA2CEE919}" ShortID="637061145">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Lock" ID="{83B82889-DA09-4F68-86E5-149A1387024D}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_BellyDoor_Unseal" ID="{EAF7F76A-2E15-4237-A746-ED2EE490E1D0}">
+					<ChildrenList>
+						<Action Name="" ID="{79AFF53C-73FF-48BC-9206-4012844864CF}" ShortID="66941759">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Belly_Door_Unlock" ID="{0092148E-C855-4438-B6F1-33EDC12FEBD9}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

@@ -18,10 +18,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             HellGunID = 763;
             OublietteGunID = 657;
             JungleGunID = 368; // el_tigre
+            BellyGunID = 734; // mimic_gun
             AbbeyGunID = 806;
             RatgeonGunID = 808;
             OfficeGunID = 823;
             CanyonGunID = 734; // mimic_gun
+            OldWestGunID = 734; // mimic_gun
             RefillsOnFloorChange = true;
         }
         
@@ -50,6 +52,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         public int JungleGunID;
 
         [PickupIdentifier]
+        public int BellyGunID;
+
+        [PickupIdentifier]
         public int AbbeyGunID;
 
         [PickupIdentifier]
@@ -60,6 +65,9 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         [PickupIdentifier]
         public int CanyonGunID; // Using Phobos tileset ID
+
+        [PickupIdentifier]
+        public int OldWestGunID;
 
         public bool RefillsOnFloorChange;
 
@@ -111,6 +119,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (t == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
                 ChangeForme(AbbeyGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
+            } else if (t == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                ChangeForme(BellyGunID);
+                m_currentTileset = GlobalDungeonData.ValidTilesets.BELLYGEON;
             } else if (t == GlobalDungeonData.ValidTilesets.MINEGEON) {
                 ChangeForme(MinesGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.MINEGEON;
@@ -126,9 +137,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 ChangeForme(CanyonGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                ChangeForme(ForgeGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.FORGEGEON;
+            } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                ChangeForme(CanyonGunID);
+                m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+            } else if (t == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                ChangeForme(OldWestGunID);
+                m_currentTileset = GlobalDungeonData.ValidTilesets.WESTGEON;
             } else if (t == GlobalDungeonData.ValidTilesets.HELLGEON) {
                 ChangeForme(HellGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.HELLGEON;
@@ -161,6 +175,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (inTileset == GlobalDungeonData.ValidTilesets.GUNGEON) {
                 return GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
+                return GlobalDungeonData.ValidTilesets.BELLYGEON;
+            } if (inTileset == GlobalDungeonData.ValidTilesets.BELLYGEON) {
                 return GlobalDungeonData.ValidTilesets.MINEGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.MINEGEON) {
                 return GlobalDungeonData.ValidTilesets.RATGEON;
@@ -171,6 +187,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (inTileset == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 return GlobalDungeonData.ValidTilesets.OFFICEGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
+                return GlobalDungeonData.ValidTilesets.WESTGEON;
+            } else if (inTileset == GlobalDungeonData.ValidTilesets.WESTGEON) {
                 return GlobalDungeonData.ValidTilesets.FORGEGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.FORGEGEON) {
                 return GlobalDungeonData.ValidTilesets.HELLGEON;

@@ -26,6 +26,99 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         private static ExpandUtility m_instance;
 
+        public static ExpandNoteDoer BuildNewCustomSign(GameObject TargetPrefab, GameObject PrefabToClone, string AssetSource, string SignName, string SignText) {
+            
+            if (!TargetPrefab | !TargetPrefab.transform.Find("nooto pointo")) { return null; }
+            
+            Transform m_CachedNewSignTransform = TargetPrefab.transform.Find("nooto pointo");
+            Transform m_CachedNewShadow = TargetPrefab.transform.Find("Sign_Shadow");
+            Transform m_SignShadowToClone = PrefabToClone.transform.Find("Sign_Shadow");
+
+            if (m_CachedNewShadow && m_SignShadowToClone) {
+                tk2dSprite signShadow = m_CachedNewShadow.gameObject.AddComponent<tk2dSprite>();
+                DuplicateSprite(signShadow, m_SignShadowToClone.GetComponent<tk2dSprite>());
+            }
+
+            tk2dSprite m_NewSignSprite = TargetPrefab.AddComponent<tk2dSprite>();
+            DuplicateSprite(m_NewSignSprite, PrefabToClone.GetComponent<tk2dSprite>());
+            SpeculativeRigidbody m_NewSignRigidBody = TargetPrefab.AddComponent<SpeculativeRigidbody>();
+            DuplicateRigidBody(m_NewSignRigidBody, PrefabToClone.GetComponent<SpeculativeRigidbody>());
+
+            tk2dSpriteAnimator m_SignAnimatorToClone = PrefabToClone.GetComponent<tk2dSpriteAnimator>();
+            tk2dSpriteAnimator m_NewSignAnimator = TargetPrefab.AddComponent<tk2dSpriteAnimator>();
+            m_NewSignAnimator.Library = m_SignAnimatorToClone.Library;
+            m_NewSignAnimator.DefaultClipId = m_SignAnimatorToClone.DefaultClipId;
+            m_NewSignAnimator.AdditionalCameraVisibilityRadius = m_SignAnimatorToClone.AdditionalCameraVisibilityRadius;
+            m_NewSignAnimator.AnimateDuringBossIntros = m_SignAnimatorToClone.AnimateDuringBossIntros;
+            m_NewSignAnimator.AlwaysIgnoreTimeScale = m_SignAnimatorToClone.AlwaysIgnoreTimeScale;
+            m_NewSignAnimator.ForceSetEveryFrame = m_SignAnimatorToClone.ForceSetEveryFrame;
+            m_NewSignAnimator.playAutomatically = m_SignAnimatorToClone.playAutomatically;
+            m_NewSignAnimator.IsFrameBlendedAnimation = m_SignAnimatorToClone.IsFrameBlendedAnimation;
+            m_NewSignAnimator.clipTime = m_SignAnimatorToClone.clipTime;
+            m_NewSignAnimator.deferNextStartClip = m_SignAnimatorToClone.deferNextStartClip;
+
+            MajorBreakable m_NewSignBreakable = DuplicateMajorBreakable(TargetPrefab, PrefabToClone.GetComponent<MajorBreakable>(), new List<GameObject>() { m_CachedNewShadow.gameObject });
+
+            ExpandNoteDoer SignComponent = TargetPrefab.AddComponent<ExpandNoteDoer>();
+            SignComponent.textboxSpawnPoint = m_CachedNewSignTransform;
+            SignComponent.name = SignName;
+            SignComponent.stringKey = SignText;
+
+            return SignComponent;
+        }
+
+        public static MajorBreakable DuplicateMajorBreakable(GameObject TargetObject, MajorBreakable sourceBreakable, List<GameObject> childrenToDestroy = null, int ItemIDToSpawnOnBreak = -1) {
+            if (TargetObject.GetComponent<MajorBreakable>()) { return null; };
+
+            MajorBreakable m_NewBreakable = TargetObject.AddComponent<MajorBreakable>();
+            m_NewBreakable.HitPoints = sourceBreakable.HitPoints;
+            m_NewBreakable.DamageReduction = sourceBreakable.DamageReduction;
+            m_NewBreakable.MinHits = sourceBreakable.MinHits;
+            m_NewBreakable.EnemyDamageOverride = sourceBreakable.EnemyDamageOverride;
+            m_NewBreakable.ImmuneToBeastMode = sourceBreakable.ImmuneToBeastMode;
+            m_NewBreakable.ScaleWithEnemyHealth = sourceBreakable.ScaleWithEnemyHealth;
+            m_NewBreakable.OnlyExplosions = sourceBreakable.OnlyExplosions;
+            m_NewBreakable.IgnoreExplosions = sourceBreakable.IgnoreExplosions;
+            m_NewBreakable.GameActorMotionBreaks = sourceBreakable.GameActorMotionBreaks;
+            m_NewBreakable.PlayerRollingBreaks = sourceBreakable.PlayerRollingBreaks;
+            m_NewBreakable.spawnShards = sourceBreakable.spawnShards;
+            m_NewBreakable.distributeShards = sourceBreakable.distributeShards;
+            m_NewBreakable.shardClusters = sourceBreakable.shardClusters;
+            m_NewBreakable.minShardPercentSpeed = sourceBreakable.minShardPercentSpeed;
+            m_NewBreakable.maxShardPercentSpeed = sourceBreakable.maxShardPercentSpeed;
+            m_NewBreakable.shardBreakStyle = sourceBreakable.shardBreakStyle;
+            m_NewBreakable.usesTemporaryZeroHitPointsState = sourceBreakable.usesTemporaryZeroHitPointsState;
+            m_NewBreakable.spriteNameToUseAtZeroHP = sourceBreakable.spriteNameToUseAtZeroHP;
+            m_NewBreakable.destroyedOnBreak = sourceBreakable.destroyedOnBreak;
+            if (childrenToDestroy != null) {
+                m_NewBreakable.childrenToDestroy = childrenToDestroy;
+            } else {
+                m_NewBreakable.childrenToDestroy = new List<GameObject>(0);
+            }
+            m_NewBreakable.playsAnimationOnNotBroken = sourceBreakable.playsAnimationOnNotBroken;
+            m_NewBreakable.notBreakAnimation = sourceBreakable.notBreakAnimation;
+            m_NewBreakable.handlesOwnBreakAnimation = sourceBreakable.handlesOwnBreakAnimation;
+            m_NewBreakable.breakAnimation = sourceBreakable.breakAnimation;
+            m_NewBreakable.handlesOwnPrebreakFrames = sourceBreakable.handlesOwnPrebreakFrames;
+            m_NewBreakable.prebreakFrames = sourceBreakable.prebreakFrames;
+            m_NewBreakable.damageVfx = sourceBreakable.damageVfx;
+            m_NewBreakable.damageVfxMinTimeBetween = sourceBreakable.damageVfxMinTimeBetween;
+            m_NewBreakable.breakVfxParent = sourceBreakable.breakVfxParent;
+            m_NewBreakable.delayDamageVfx = sourceBreakable.delayDamageVfx;
+            
+            if (ItemIDToSpawnOnBreak != -1) {
+                m_NewBreakable.SpawnItemOnBreak = true;
+                m_NewBreakable.ItemIdToSpawnOnBreak = ItemIDToSpawnOnBreak;
+            } else {
+                m_NewBreakable.SpawnItemOnBreak = sourceBreakable.SpawnItemOnBreak;
+                m_NewBreakable.ItemIdToSpawnOnBreak = sourceBreakable.ItemIdToSpawnOnBreak;
+            }
+
+            m_NewBreakable.HandlePathBlocking = sourceBreakable.HandlePathBlocking;
+
+            return m_NewBreakable;
+        }
+
         public static PrototypeDungeonRoom[] BuildRoomArrayFromTextFile(string textFilePath, bool AllowSetRoomCategory = true, bool AllowSetFloorTarget = false) {
             List<PrototypeDungeonRoom> m_CachedRoomList = new List<PrototypeDungeonRoom>();
             List<string> m_CachedStringList = ResourceExtractor.BuildStringListFromEmbeddedResource(textFilePath);
@@ -118,6 +211,115 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return collectionData;
         }
 
+        public static tk2dSpriteCollectionData DuplicateDungeonCollection(GameObject TargetObject, tk2dSpriteCollectionData sourceCollection, string Name) {
+
+            tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
+            m_NewDungeonCollection.version = 3;
+            m_NewDungeonCollection.name = string.Empty;
+            m_NewDungeonCollection.materialIdsValid = sourceCollection;
+            m_NewDungeonCollection.needMaterialInstance = sourceCollection;
+            m_NewDungeonCollection.SpriteIDsWithBagelColliders = sourceCollection.SpriteIDsWithBagelColliders;
+            m_NewDungeonCollection.SpriteDefinedBagelColliders = sourceCollection.SpriteDefinedBagelColliders;
+            m_NewDungeonCollection.SpriteIDsWithAttachPoints = sourceCollection.SpriteIDsWithAttachPoints;
+            m_NewDungeonCollection.SpriteDefinedAttachPoints = sourceCollection.SpriteDefinedAttachPoints;
+            m_NewDungeonCollection.SpriteIDsWithNeighborDependencies = sourceCollection.SpriteIDsWithNeighborDependencies;
+            m_NewDungeonCollection.SpriteDefinedIndexNeighborDependencies = sourceCollection.SpriteDefinedIndexNeighborDependencies;
+            m_NewDungeonCollection.SpriteIDsWithAnimationSequences = sourceCollection.SpriteIDsWithAnimationSequences;
+            m_NewDungeonCollection.SpriteDefinedAnimationSequences = sourceCollection.SpriteDefinedAnimationSequences;
+            m_NewDungeonCollection.premultipliedAlpha = sourceCollection.premultipliedAlpha;
+            m_NewDungeonCollection.shouldGenerateTilemapReflectionData = sourceCollection.shouldGenerateTilemapReflectionData;
+            m_NewDungeonCollection.materials = sourceCollection.materials;
+            m_NewDungeonCollection.textures = sourceCollection.textures;
+            m_NewDungeonCollection.pngTextures = sourceCollection.pngTextures;
+            m_NewDungeonCollection.materialPngTextureId = sourceCollection.materialPngTextureId;
+            m_NewDungeonCollection.textureFilterMode = sourceCollection.textureFilterMode;
+            m_NewDungeonCollection.textureMipMaps = sourceCollection.textureMipMaps;
+            m_NewDungeonCollection.allowMultipleAtlases = sourceCollection.allowMultipleAtlases;
+            m_NewDungeonCollection.spriteCollectionGUID = Guid.NewGuid().ToString();
+            m_NewDungeonCollection.spriteCollectionName = Name;
+            m_NewDungeonCollection.assetName = string.Empty;
+            m_NewDungeonCollection.loadable = sourceCollection.loadable;
+            m_NewDungeonCollection.invOrthoSize = sourceCollection.invOrthoSize;
+            m_NewDungeonCollection.halfTargetHeight = sourceCollection.halfTargetHeight;
+            m_NewDungeonCollection.buildKey = sourceCollection.buildKey;
+            m_NewDungeonCollection.dataGuid = Guid.NewGuid().ToString();
+            m_NewDungeonCollection.managedSpriteCollection = sourceCollection.managedSpriteCollection;
+            m_NewDungeonCollection.hasPlatformData = sourceCollection.hasPlatformData;
+            m_NewDungeonCollection.spriteCollectionPlatforms = sourceCollection.spriteCollectionPlatforms;
+            m_NewDungeonCollection.spriteCollectionPlatformGUIDs = sourceCollection.spriteCollectionPlatformGUIDs;
+
+            if (sourceCollection.spriteDefinitions != null && sourceCollection.spriteDefinitions.Length < 0) {
+                List<tk2dSpriteDefinition> m_SpriteDefinitions = new List<tk2dSpriteDefinition>();
+                foreach (tk2dSpriteDefinition spriteDefinition in sourceCollection.spriteDefinitions) {
+                    m_SpriteDefinitions.Add(DuplicateSpriteDefinition(spriteDefinition));
+                }
+                m_NewDungeonCollection.InitDictionary();
+            } else {
+                m_NewDungeonCollection.spriteDefinitions = new tk2dSpriteDefinition[0];
+            }
+
+            return m_NewDungeonCollection;
+        }
+
+        public static tk2dSpriteDefinition DuplicateSpriteDefinition(tk2dSpriteDefinition sourceSpriteDefinition) {
+            tk2dSpriteDefinition m_NewSpriteDefinition = new tk2dSpriteDefinition() {
+                name = sourceSpriteDefinition.name,
+                boundsDataCenter = sourceSpriteDefinition.boundsDataCenter,
+                boundsDataExtents = sourceSpriteDefinition.boundsDataExtents,
+                untrimmedBoundsDataCenter = sourceSpriteDefinition.untrimmedBoundsDataCenter,
+                untrimmedBoundsDataExtents = sourceSpriteDefinition.untrimmedBoundsDataExtents,
+                texelSize = sourceSpriteDefinition.texelSize,
+                position0 = sourceSpriteDefinition.position0,
+                position1 = sourceSpriteDefinition.position1,
+                position2 = sourceSpriteDefinition.position2,
+                position3 = sourceSpriteDefinition.position3,
+                uvs = sourceSpriteDefinition.uvs,
+                material = sourceSpriteDefinition.material,
+                materialId = sourceSpriteDefinition.materialId,
+                extractRegion = sourceSpriteDefinition.extractRegion,
+                regionX = sourceSpriteDefinition.regionX,
+                regionY = sourceSpriteDefinition.regionY,
+                regionW = sourceSpriteDefinition.regionW,
+                regionH = sourceSpriteDefinition.regionH,
+                flipped = sourceSpriteDefinition.flipped,
+                complexGeometry = sourceSpriteDefinition.complexGeometry,
+                physicsEngine = sourceSpriteDefinition.physicsEngine,
+                colliderType = sourceSpriteDefinition.colliderType,
+                collisionLayer = sourceSpriteDefinition.collisionLayer,
+                colliderVertices = sourceSpriteDefinition.colliderVertices,
+                colliderConvex = sourceSpriteDefinition.colliderConvex,
+                colliderSmoothSphereCollisions = sourceSpriteDefinition.colliderSmoothSphereCollisions,
+            };
+            if (sourceSpriteDefinition.metadata != null) {
+                m_NewSpriteDefinition.metadata = new TilesetIndexMetadata() {
+                    type = sourceSpriteDefinition.metadata.type,
+                    weight = sourceSpriteDefinition.metadata.weight,
+                    dungeonRoomSubType = sourceSpriteDefinition.metadata.dungeonRoomSubType,
+                    secondRoomSubType = sourceSpriteDefinition.metadata.secondRoomSubType,
+                    thirdRoomSubType = sourceSpriteDefinition.metadata.thirdRoomSubType,
+                    preventWallStamping = sourceSpriteDefinition.metadata.preventWallStamping,
+                    usesAnimSequence = sourceSpriteDefinition.metadata.usesAnimSequence,
+                    usesNeighborDependencies = sourceSpriteDefinition.metadata.usesNeighborDependencies,
+                    usesPerTileVFX = sourceSpriteDefinition.metadata.usesPerTileVFX,
+                    tileVFXPlaystyle = sourceSpriteDefinition.metadata.tileVFXPlaystyle,
+                    tileVFXChance = sourceSpriteDefinition.metadata.tileVFXChance,
+                    tileVFXPrefab = sourceSpriteDefinition.metadata.tileVFXPrefab,
+                    tileVFXOffset = sourceSpriteDefinition.metadata.tileVFXOffset,
+                    tileVFXDelayTime = sourceSpriteDefinition.metadata.tileVFXDelayTime,
+                    tileVFXDelayVariance = sourceSpriteDefinition.metadata.tileVFXDelayVariance,
+                    tileVFXAnimFrame = sourceSpriteDefinition.metadata.tileVFXAnimFrame,
+                };
+            }
+            return m_NewSpriteDefinition;
+        }
+        
+        public static TileIndexGrid DeserializeTileIndexGrid(string assetPath) {
+            TileIndexGrid m_TileIndexGridData = ScriptableObject.CreateInstance<TileIndexGrid>();
+            string serializedData = ResourceExtractor.BuildStringFromEmbeddedResource("SerializedData/" + assetPath);
+            JsonUtility.FromJsonOverwrite(serializedData, m_TileIndexGridData);
+            return m_TileIndexGridData;
+        }
+        
         public static TileIndexGrid BuildNewTileIndexGrid(string name) {
             TileIndexGrid m_NewTileIndexGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
 
@@ -945,7 +1147,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             m_GlitchSprite.HeightOffGround = -1.5f;
                             m_GlitchSprite.SortingOrder = 2;
                             m_GlitchSprite.UpdateZDepth();
-                            FloorTypeOverrideDoer floorOverride = m_GlitchTile.AddComponent<FloorTypeOverrideDoer>();
+                            /*FloorTypeOverrideDoer floorOverride = m_GlitchTile.AddComponent<FloorTypeOverrideDoer>();
                             floorOverride.overrideMode = FloorTypeOverrideDoer.OverrideMode.Placeable;
                             floorOverride.xStartOffset = 0;
                             floorOverride.yStartOffset = 0;
@@ -957,7 +1159,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             floorOverride.TilesetsToOverrideFloorTile = new GlobalDungeonData.ValidTilesets[0];
                             floorOverride.OverrideFloorTiles = new int[0];
                             floorOverride.preventsOtherFloorDecoration = false;
-                            floorOverride.allowWallDecorationTho = true;
+                            floorOverride.allowWallDecorationTho = true;*/
                         }
                         
 
@@ -1086,13 +1288,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static void CorrectForWalls(AIActor targetActor) {
             bool flag = PhysicsEngine.Instance.OverlapCast(targetActor.specRigidbody, null, true, false, null, null, false, null, null, new SpeculativeRigidbody[0]);
             if (flag) {
-                Vector2 a = targetActor.transform.position.XY();
+                Vector2 a = targetActor.gameObject.transform.position.XY();
                 IntVector2[] cardinalsAndOrdinals = IntVector2.CardinalsAndOrdinals;
                 int num = 0;
                 int num2 = 1;
                 for (;;) {
                     for (int i = 0; i < cardinalsAndOrdinals.Length; i++) {
-                        targetActor.transform.position = a + PhysicsEngine.PixelToUnit(cardinalsAndOrdinals[i] * num2);
+                        targetActor.gameObject.transform.position = a + PhysicsEngine.PixelToUnit(cardinalsAndOrdinals[i] * num2);
                         targetActor.specRigidbody.Reinitialize();
                         if (!PhysicsEngine.Instance.OverlapCast(targetActor.specRigidbody, null, true, false, null, null, false, null, null, new SpeculativeRigidbody[0])) { return; }
                     }
@@ -2884,27 +3086,34 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             if (sourceRigidBody.PixelColliders != null && sourceRigidBody.PixelColliders.Count > 0) {
                 foreach (PixelCollider collider in sourceRigidBody.PixelColliders) {
-                    targetRigidBody.PixelColliders.Add(new PixelCollider(){
-                        Enabled = collider.Enabled,
-                        CollisionLayer = collider.CollisionLayer,
-                        IsTrigger = collider.IsTrigger,
-                        ColliderGenerationMode = collider.ColliderGenerationMode,
-                        BagleUseFirstFrameOnly = collider.BagleUseFirstFrameOnly,
-                        SpecifyBagelFrame = collider.SpecifyBagelFrame,
-                        BagelColliderNumber = collider.BagelColliderNumber,
-                        ManualOffsetX = collider.ManualOffsetX,
-                        ManualOffsetY = collider.ManualOffsetY,
-                        ManualWidth = collider.ManualWidth,
-                        ManualHeight = collider.ManualHeight,
-                        ManualDiameter = collider.ManualDiameter,
-                        ManualLeftX = collider.ManualLeftX,
-                        ManualLeftY = collider.ManualLeftY,
-                        ManualRightX = collider.ManualRightX,
-                        ManualRightY = collider.ManualRightY
-                    });
+                    targetRigidBody.PixelColliders.Add(DuplicatePixelCollider(collider));
                 }
             }
         }
+
+        public static PixelCollider DuplicatePixelCollider(PixelCollider source) {
+            if (source == null) { return null; }
+            PixelCollider m_NewCollider = new PixelCollider() {
+                Enabled = source.Enabled,
+                CollisionLayer = source.CollisionLayer,
+                IsTrigger = source.IsTrigger,
+                ColliderGenerationMode = source.ColliderGenerationMode,
+                BagleUseFirstFrameOnly = source.BagleUseFirstFrameOnly,
+                SpecifyBagelFrame = source.SpecifyBagelFrame,
+                BagelColliderNumber = source.BagelColliderNumber,
+                ManualOffsetX = source.ManualOffsetX,
+                ManualOffsetY = source.ManualOffsetY,
+                ManualWidth = source.ManualWidth,
+                ManualHeight = source.ManualHeight,
+                ManualDiameter = source.ManualDiameter,
+                ManualLeftX = source.ManualLeftX,
+                ManualLeftY = source.ManualLeftY,
+                ManualRightX = source.ManualRightX,
+                ManualRightY = source.ManualRightY
+            };
+            return m_NewCollider;
+        }
+
         
         public static SpeculativeRigidbody GenerateNewEnemyRigidBody(AIActor targetEnemy, IntVector2 offset, IntVector2 dimensions) {
             SpeculativeRigidbody orAddComponent = GameObjectExtensions.GetOrAddComponent<SpeculativeRigidbody>(targetEnemy.gameObject);

@@ -1,5 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandObjects;
-using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandUtilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,21 +11,23 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public ExpandMaybeLoseAmmoOnDamage() {
             DepleteAmmoOnDamage = true;
-            DepleteAmmoOnDamageOdds = 0.25f;
+            DepleteAmmoOnDamageOdds = 0.2f;
             HasBootlegTransmorgify = true;
-            TransfmorgifyTargetGUIDs = new string[0];
+            IsBootlegShotgun = true;
+            TransfmorgifyTargetGUIDs = new List<string>();
         }
         
         public bool DepleteAmmoOnDamage;
         public bool HasBootlegTransmorgify;
+        public bool IsBootlegShotgun;        
         public float DepleteAmmoOnDamageOdds;
 
-        public string[] TransfmorgifyTargetGUIDs;
+        public List<string> TransfmorgifyTargetGUIDs;
 
         private bool m_hasAwoken;
         private bool m_gunBroken;
         private Gun m_gun;
-        private PlayerController m_playerOwner;        
+        private PlayerController m_playerOwner;
 
         public bool Broken {
             get { return m_gunBroken; }
@@ -39,10 +41,20 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_gun.OnInitializedWithOwner = (Action<GameActor>)Delegate.Combine(m_gun.OnInitializedWithOwner, new Action<GameActor>(OnGunInitialized));
                 m_gun.OnDropped = (Action)Delegate.Combine(m_gun.OnDropped, new Action(OnGunDroppedOrDestroyed));
                 if (m_gun.CurrentOwner != null) { OnGunInitialized(m_gun.CurrentOwner); }
+
+                if (TransfmorgifyTargetGUIDs != null && IsBootlegShotgun) {
+                    List<string> m_GUIDlist = new List<string>() {
+                        ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
+                        ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                    };
+                    m_GUIDlist = m_GUIDlist.Shuffle();
+                    TransfmorgifyTargetGUIDs = new List<string>() { BraveUtility.RandomElement(m_GUIDlist) };
+                }
             }
         }
 
         private void Start() { }
+
         private void Update() { }
         
         private void OnGunInitialized(GameActor actor) {
@@ -59,15 +71,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void TransmorgifyPostProcess(Projectile projectile) {
             projectile.CanTransmogrify = true;
             projectile.ChanceToTransmogrify = 0.15f;
-            if (m_gun && m_gun.PickupObjectId == BootlegGuns.BootlegShotgunID) {
-                string[] m_BootlegShotgunMans = new string[] {
-                    ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID,
-                    ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID
-                };
-                projectile.TransmogrifyTargetGuids = new string[] { BraveUtility.RandomElement(m_BootlegShotgunMans) };
-            } else {
-                projectile.TransmogrifyTargetGuids = TransfmorgifyTargetGUIDs;
-            }
+            projectile.TransmogrifyTargetGuids = TransfmorgifyTargetGUIDs.ToArray();
         }
 
         private void OnReceivedDamage(PlayerController player) {

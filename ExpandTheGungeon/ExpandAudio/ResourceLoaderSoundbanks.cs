@@ -1,8 +1,10 @@
-﻿using System;
+﻿// using Ionic.Zip;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandAudio {
 	
@@ -41,21 +43,39 @@ namespace ExpandTheGungeon.ExpandAudio {
 				}
 			}
 		}
+
+
+        /*public void AutoloadFromModZIPOrModFolder(string path) {
+            int FilesLoaded = 0;
+            if (File.Exists(path + ".zip")) {
+                Debug.Log("Zip Found");
+                ZipFile ModZIP = ZipFile.Read(path + ".zip");
+                if (ModZIP != null && ModZIP.Entries.Count > 0) {
+                    foreach (ZipEntry entry in ModZIP.Entries) {
+                        if (entry.FileName.EndsWith(".bnk")) {
+                            using (MemoryStream ms = new MemoryStream()) {
+                                entry.Extract(ms);
+                                ms.Seek(0, SeekOrigin.Begin);
+                                LoadSoundbankFromStream(ms, entry.FileName.ToLower().Replace(".bnk", string.Empty));
+                                FilesLoaded++;
+                            }
+                        }
+                    }
+                    if (FilesLoaded > 0) { return; }
+                }                
+            }
+            // Zip file wasn't found. Try to load from Mod folder instead.
+            AutoloadFromPath(AudioResourceLoader.FullPathAutoprocess, "ExpandTheGungeon");
+        }*/
         
 		public void AutoloadFromPath(string path, string prefix) {
-			bool flag = path == null;
-			if (flag) {
-				throw new ArgumentNullException("path", "Path cannot be null.");
-			}
-			bool flag2 = prefix == null;
-			if (flag2) { throw new ArgumentNullException("prefix", "Prefix name cannot be null."); }
+			if (string.IsNullOrEmpty(path)) { throw new ArgumentNullException("path", "Path cannot be null."); }			
+			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentNullException("prefix", "Prefix name cannot be null."); }
 			prefix = prefix.Trim();
-			bool flag3 = prefix == "";
-			if (flag3) { throw new ArgumentException("Prefix name cannot be an empty (or whitespace only) string.", "prefix"); }
+			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentException("Prefix name cannot be an empty (or whitespace only) string.", "prefix"); }
 			path = path.Replace('/', Path.DirectorySeparatorChar);
 			path = path.Replace('\\', Path.DirectorySeparatorChar);
-			bool flag4 = !Directory.Exists(path);
-			if (flag4) {
+			if (!Directory.Exists(path)) {
                 if (ExpandStats.debugMode) {
                     Console.WriteLine(string.Format("{0}: No autoload directory in path, not autoloading anything. Path='{1}'.", typeof(ResourceLoaderSoundbanks), path));
                 }
@@ -93,6 +113,5 @@ namespace ExpandTheGungeon.ExpandAudio {
                 Marshal.FreeHGlobal(intPtr);
             }
 		}
-
 	}
 }

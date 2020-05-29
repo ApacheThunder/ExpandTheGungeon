@@ -7,6 +7,7 @@ using MonoMod.RuntimeDetour;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandComponents;
+using Gungeon;
 
 namespace ExpandTheGungeon.ExpandObjects {
     
@@ -26,9 +27,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BootlegShotgunManRedPrefab;
         public static GameObject BootlegShotgunManBluePrefab;
         public static GameObject CronenbergPrefab;
+        public static GameObject AggressiveCronenbergPrefab;
 
         // Custom/Modified bosses
         public static GameObject KillStumpsDummy;
+        public static GameObject MonsterParasitePrefab;
+        public static GameObject com4nd0BossPrefab;
 
         // Corpse Objects
         public static GameObject BootlegBulletManCorpse;
@@ -41,6 +45,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject CronenbergCorpseDebrisObject2;
         public static GameObject CronenbergCorpseDebrisObject3;
         public static GameObject CronenbergCorpseDebrisObject4;
+        public static GameObject AggressiveCronenbergCorpseDebrisObject1;
+        public static GameObject AggressiveCronenbergCorpseDebrisObject2;
+        public static GameObject AggressiveCronenbergCorpseDebrisObject3;
+        public static GameObject AggressiveCronenbergCorpseDebrisObject4;
 
         public static Texture2D[] RatGrenadeTextures;
 
@@ -53,15 +61,23 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static string BootlegShotgunManRedGUID;
         public static string BootlegShotgunManBlueGUID;
         public static string CronenbergGUID;
+        public static string AggressiveCronenbergGUID;
         // public static string KillStumpsGUID;
+        public static string ParasiteBossGUID;
+        public static string com4nd0GUID;
 
         public static void InitPrefabs() {
+            // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
+            HashSet<string> _LockedNamespaces = ReflectionHelpers.ReflectGetField<HashSet<string>>(typeof(IDPool<AIActor>), "_LockedNamespaces", Game.Enemies);
+            _LockedNamespaces.Remove("gungeon");
+
+
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
             loadEnemyGUIDHook = new Hook(
                 typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
             );
-
+            
             BuildBabyGoodHammerPrefab(out HammerCompanionPrefab);
 
             BuildRatGrenadePrefab(out RatGrenadePrefab);
@@ -72,9 +88,61 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildBootlegShotgunManBluePrefab(out BootlegShotgunManBluePrefab);
             BuildCronenbergPrefab(out CronenbergPrefab);
             // BuildKillStumpsPrefab(out KillStumpsDummy);
+            BuildParasiteBossPrefab(out MonsterParasitePrefab);
+            BuildAggressiveCronenbergPrefab(out AggressiveCronenbergPrefab);
+            BuildJungleBossPrefab(out com4nd0BossPrefab);
+
+            // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
+            UpdateMTGSpawnPool();
+            
+            Game.Enemies.LockNamespace("gungeon");
         }
 
-        public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false) {
+        public static void UpdateMTGSpawnPool() {
+            // This entry doesn't work. Forge hammers do not have AIActor components.
+            if (Game.Enemies.ContainsID("hammer")) { Game.Enemies.Remove("hammer"); }
+
+            List<Tuple<string, string>> FTAEnemyPool = new List<Tuple<string, string>>() {
+                new Tuple<string, string>("226fd90be3a64958a5b13cb0a4f43e97", "musket_kin"),
+                new Tuple<string, string>("df4e9fedb8764b5a876517431ca67b86", "bullet_kin_gal_titan_boss"),
+                new Tuple<string, string>("1f290ea06a4c416cabc52d6b3cf47266", "bullet_kin_titan_boss"),
+                new Tuple<string, string>("c4cf0620f71c4678bb8d77929fd4feff", "bullet_kin_titan"),
+                new Tuple<string, string>("6f818f482a5c47fd8f38cce101f6566c", "bullet_kin_pirate"),
+                new Tuple<string, string>("143be8c9bbb84e3fb3ab98bcd4cf5e5b", "bullet_kin_fish"),
+                new Tuple<string, string>("06f5623a351c4f28bc8c6cda56004b80", "bullet_kin_fish_blue"),
+                new Tuple<string, string>("ff4f54ce606e4604bf8d467c1279be3e", "bullet_kin_broccoli"),
+                new Tuple<string, string>("39e6f47a16ab4c86bec4b12984aece4c", "bullet_kin_knight"),
+                new Tuple<string, string>("f020570a42164e2699dcf57cac8a495c", "bullet_kin_kaliber"),
+                new Tuple<string, string>("37de0df92697431baa47894a075ba7e9", "bullet_kin_candle"),
+                new Tuple<string, string>("5861e5a077244905a8c25c2b7b4d6ebb", "bullet_kin_cowboy"),
+                new Tuple<string, string>("906d71ccc1934c02a6f4ff2e9c07c9ec", "bullet_kin_officetie"),
+                new Tuple<string, string>("9eba44a0ea6c4ea386ff02286dd0e6bd", "bullet_kin_officesuit"),
+                new Tuple<string, string>("2b6854c0849b4b8fb98eb15519d7db1c", "bullet_kin_mech"),
+                new Tuple<string, string>("05cb719e0178478685dc610f8b3e8bfc", "bullet_kin_vest"),
+                new Tuple<string, string>("5f15093e6f684f4fb09d3e7e697216b4", "dynamite_kin_office"),
+                new Tuple<string, string>("d4f4405e0ff34ab483966fd177f2ece3", "cylinder"),
+                new Tuple<string, string>("534f1159e7cf4f6aa00aeea92459065e", "cylinder_red"),
+                new Tuple<string, string>("80ab6cd15bfc46668a8844b2975c6c26", "gunzookie_office"),
+                new Tuple<string, string>("981d358ffc69419bac918ca1bdf0c7f7", "bullat_gargoyle"),
+                new Tuple<string, string>("e861e59012954ab2b9b6977da85cb83c", "snake_office"),
+                new Tuple<string, string>("41ee1c8538e8474a82a74c4aff99c712", "agunim_helicopter"),
+                new Tuple<string, string>("3b0bd258b4c9432db3339665cc61c356", "cactus_kin"),
+                new Tuple<string, string>("4b21a913e8c54056bc05cafecf9da880", "gigi_parrot"),
+                new Tuple<string, string>("78e0951b097b46d89356f004dda27c42", "tablet_bookllet"),
+                new Tuple<string, string>("216fd3dfb9da439d9bd7ba53e1c76462", "necronomicon_bookllet"),
+                new Tuple<string, string>("ddf12a4881eb43cfba04f36dd6377abb", "cowboy_shotgun_kin"),
+                new Tuple<string, string>("86dfc13486ee4f559189de53cfb84107", "pirate_shotgun_kin"),
+                new Tuple<string, string>("9215d1a221904c7386b481a171e52859", "lead_maiden_fridge"),
+                new Tuple<string, string>("3f40178e10dc4094a1565cd4fdc4af56", "baby_shelleton")
+            };
+
+            foreach (Tuple<string, string> tuple in FTAEnemyPool) {
+                if (!Game.Enemies.ContainsID(tuple.Second)) { Game.Enemies.Add(tuple.Second, GetOrLoadByGuid_Orig(tuple.First)); }
+            }
+        }
+
+
+        public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false, bool AddToMTGSpawnPool = true) {
             EnemyDatabaseEntry item = new EnemyDatabaseEntry {
                 myGuid = EnemyGUID,
                 placeableWidth = 2,
@@ -83,6 +151,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             Instance.Entries.Add(item);
             enemyPrefabDictionary.Add(EnemyGUID, EnemyPrefab);
+            if (AddToMTGSpawnPool && !string.IsNullOrEmpty(EnemyPrefab.GetComponent<AIActor>().ActorName)) {
+                string EnemyName = EnemyPrefab.GetComponent<AIActor>().ActorName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower();
+                if (!Game.Enemies.ContainsID(EnemyName)) { Game.Enemies.Add(EnemyName, EnemyPrefab.GetComponent<AIActor>()); }
+            }
         }
         
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
@@ -105,7 +177,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             AIActor m_CachedAIActor = RatGrenadePrefab.GetComponent<AIActor>();
             m_CachedAIActor.OverrideDisplayName = "Grenade Rat";
-            m_CachedAIActor.EnemyGuid = Guid.NewGuid().ToString();
+            m_CachedAIActor.EnemyGuid = "1a1dc5ed-92a6-4bd1-bbee-098991e7d2d4";
             m_CachedAIActor.EnemyId = UnityEngine.Random.Range(10000, 100000);
             m_CachedAIActor.CorpseObject = null;
             Destroy(m_CachedAIActor.gameObject.GetComponent<EncounterTrackable>());
@@ -129,7 +201,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
                 m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
                 // Loading a custom script from text file in place of one from an existing prefab..
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\GrenadeRat_BehaviorScript.txt");
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\GrenadeRat_BehaviorScript.txt");
             }
             
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
@@ -137,7 +209,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (isFakePrefab) { FakePrefab.MarkAsFakePrefab(m_CachedTargetObject); }
             DontDestroyOnLoad(m_CachedTargetObject);
 
-            RatGrenadeGUID = m_CachedAIActor.EnemyGuid;;
+            RatGrenadeGUID = m_CachedAIActor.EnemyGuid;
         }
 
         public static void BuildBabyGoodHammerPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
@@ -189,7 +261,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // ExpandUtility.DuplicateSprite(newSprite, (m_SelectedPlayer.sprite as tk2dSprite));
 
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "05145e1a-1a10-4797-b37e-a15bb26d7641", null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -321,7 +393,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BabyGoodHammer_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BabyGoodHammer_BehaviorScript.txt");
 
             ExpandUtility.MakeCompanion(m_CachedAIActor, null, null, true, false, true, true);
 
@@ -382,7 +454,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);                                    
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DieSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, EnemyHasNoShooter: true, EnemyHasNoCorpse: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "7ef020b9-11fb-4a24-a818-60581e6d3105", null, instantiateCorpseObject: false, EnemyHasNoShooter: true, EnemyHasNoCorpse: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
             
@@ -508,7 +580,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BootlegBullat_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBullat_BehaviorScript.txt");
 
             BootlegBullatGUID = m_CachedAIActor.EnemyGuid;
 
@@ -728,7 +800,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegPistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "a52cfba8-f141-4a98-9022-48816201f834", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManCorpse, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -960,7 +1032,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BootlegBulletMan_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBulletMan_BehaviorScript.txt");
 
             BootlegBulletManGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1178,7 +1250,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegMachinePistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManBandanaCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "7093253e-a118-4813-8feb-703a1ad31665", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManBandanaCorpse, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1392,7 +1464,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BootlegBulletManBandana_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBulletManBandana_BehaviorScript.txt");
 
             BootlegBulletManBandanaGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1559,7 +1631,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManRedCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "01e4e238-89bb-4b30-b93a-ae17dc19e748", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManRedCorpse, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1760,7 +1832,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BootlegShotgunManRed_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegShotgunManRed_BehaviorScript.txt");
 
             BootlegShotgunManRedGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1927,7 +1999,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManBlueCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "f7c0b0ab-3d80-4855-9fd6-38861af1147a", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManBlueCorpse, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2128,7 +2200,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\BootlegShotgunManBlue_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegShotgunManBlue_BehaviorScript.txt");
 
             BootlegShotgunManBlueGUID = m_CachedAIActor.EnemyGuid;
 
@@ -2298,7 +2370,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_CachedMutantArmGun = null;
             }
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, Guid.NewGuid().ToString(), null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "0a2433d6-e078-4eef-b287-62c5c127d0b3", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
                         
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2413,7 +2485,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("BehaviorScripts\\Cronenberg_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Cronenberg_BehaviorScript.txt");
             
             CronenbergGUID = m_CachedAIActor.EnemyGuid;
             CronenbergBullets.m_CachedCronenbergBulletsItem.TransmogTargetGuid = m_CachedAIActor.EnemyGuid;
@@ -2502,7 +2574,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             KillStumpsAIActorDummy.EffectResistances = new ActorEffectResistance[0];
             KillStumpsAIActorDummy.OverrideColorOverridden = false;
             KillStumpsAIActorDummy.EnemyId = -1;
-            KillStumpsAIActorDummy.EnemyGuid = Guid.NewGuid().ToString();
+            KillStumpsAIActorDummy.EnemyGuid = "12e65e5a-8996-4803-b906-d8b4e5c5d261";
             KillStumpsAIActorDummy.ForcedPositionInAmmonomicon = -1;
             KillStumpsAIActorDummy.SetsFlagOnActivation = false;
             KillStumpsAIActorDummy.SetsFlagOnDeath = false;
@@ -2609,6 +2681,481 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (isFakePrefab) {
                 // KillStumpsGUID = KillStumpsAIActorDummy.EnemyGuid;
                 AddEnemyToDatabase(m_CachedTargetObject, KillStumpsAIActorDummy.EnemyGuid, true);
+                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+                DontDestroyOnLoad(m_CachedTargetObject);
+            }
+        }
+
+        public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+            
+            m_CachedTargetObject = Instantiate(GetOrLoadByGuid("dc3cd41623d447aeba77c77c99598426").gameObject);
+            m_CachedTargetObject.SetActive(false);
+
+            m_CachedTargetObject.name = "BossParasite";
+
+            AIActor m_TargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+            m_TargetAIActor.EnemyGuid = "acd8d483-f24e-4c43-b964-fa4e54068cf1";
+            m_TargetAIActor.EnemyId = UnityEngine.Random.Range(100000, 999999);
+
+            m_TargetAIActor.ActorName = "Otherwordly Parasite";
+
+            EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
+            ParasiteEncounterable.EncounterGuid = "afa1216f-8471-4d73-af66-d613627397cc";
+            ParasiteEncounterable.journalData.PrimaryDisplayName = "Parasatic Abomination";
+            ParasiteEncounterable.journalData.NotificationPanelDescription = "Parasatic horror inside the beast.";
+            ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This abomination may have been responsible for the rampage of the giant worm monster.";
+
+            m_TargetAIActor.SetsFlagOnDeath = false;
+            
+            ExpandParasiteBossDeathController parasiteDeathController = m_CachedTargetObject.AddComponent<ExpandParasiteBossDeathController>();
+            parasiteDeathController.explosionVfx = new List<GameObject>();
+            foreach (GameObject vfxObject in m_CachedTargetObject.GetComponent<BossFinalMarineDeathController>().explosionVfx) {
+                parasiteDeathController.explosionVfx.Add(vfxObject);
+            }
+            parasiteDeathController.explosionCount = 9;
+            parasiteDeathController.explosionMidDelay = 0.15f;
+            parasiteDeathController.bigExplosionVfx = new List<GameObject>();
+            foreach (GameObject vfxObject in m_CachedTargetObject.GetComponent<BossFinalMarineDeathController>().bigExplosionVfx) {
+                parasiteDeathController.bigExplosionVfx.Add(vfxObject);
+            }
+            parasiteDeathController.bigExplosionCount = 1;
+            parasiteDeathController.bigExplosionMidDelay = 0.3f;
+
+            Destroy(m_CachedTargetObject.GetComponent<BossFinalMarineDeathController>());
+            
+            GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
+            bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
+            bossIntroDoer.portraitSlideSettings.bossNameString = "Parasetic Abomination";
+            bossIntroDoer.portraitSlideSettings.bossSubtitleString= "Parasite Horror";
+            bossIntroDoer.portraitSlideSettings.bossQuoteString = string.Empty;
+
+            ObjectVisibilityManager visiblityManager = m_CachedTargetObject.GetComponent<ObjectVisibilityManager>();
+            visiblityManager.SuppressPlayerEnteredRoom = false;
+            
+            BehaviorSpeculator bossBehaviorSpeculator = m_CachedTargetObject.GetComponent<BehaviorSpeculator>();
+            
+            m_TargetAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            
+            AttackBehaviorBase m_PortalBehavior = null;
+            AttackBehaviorGroup.AttackGroupItem m_PortalBehaviorGroupItem = null;
+
+            foreach (AttackBehaviorBase attackBehavior in bossBehaviorSpeculator.AttackBehaviors) {
+                if (attackBehavior is BossFinalMarinePortalBehavior) {
+                    m_PortalBehavior = attackBehavior;
+                } else if (attackBehavior is TeleportBehavior) {
+                    (attackBehavior as TeleportBehavior).ManuallyDefineRoom = false;
+                    (attackBehavior as TeleportBehavior).roomMin = new Vector2(4, 4);
+                    (attackBehavior as TeleportBehavior).roomMax = new Vector2(15, 15);
+                }
+            }
+            
+            foreach (AttackBehaviorGroup.AttackGroupItem behaviorGroupItem in bossBehaviorSpeculator.AttackBehaviorGroup.AttackBehaviors) {
+                if (behaviorGroupItem.Behavior is BossFinalMarinePortalBehavior) {
+                    m_PortalBehaviorGroupItem = behaviorGroupItem;
+                } else if (behaviorGroupItem.NickName == "Frequent Teleport") {
+                    (behaviorGroupItem.Behavior as TeleportBehavior).ManuallyDefineRoom = false;
+                    (behaviorGroupItem.Behavior as TeleportBehavior).roomMin = new Vector2(4, 4);
+                    (behaviorGroupItem.Behavior as TeleportBehavior).roomMax = new Vector2(15, 15);
+                }
+            }
+
+            bossBehaviorSpeculator.AttackBehaviorGroup.AttackBehaviors.Remove(m_PortalBehaviorGroupItem);
+            bossBehaviorSpeculator.AttackBehaviors.Remove(m_PortalBehavior);
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Parasite_BehaviorScript.txt");
+            bossBehaviorSpeculator.RegenerateCache();
+
+            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(700);
+            m_TargetAIActor.healthHaver.SetHealthMaximum(1800);
+
+            m_TargetAIActor.RegenerateCache();
+
+            if (isFakePrefab) {
+                ParasiteBossGUID = m_TargetAIActor.EnemyGuid;
+                AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
+                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+                DontDestroyOnLoad(m_CachedTargetObject);
+            }
+        }
+
+        public static void BuildAggressiveCronenbergPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = new GameObject("Angry Cronenberg Abomination") { layer = 28 };
+
+            string basePath = "ExpandTheGungeon/Textures/MiscEnemies/Cronenberg/";
+
+            List<string> SpriteList = new List<string>() {
+                "Cronenberg_Idle_001",
+                "Cronenberg_Idle_002",
+                "Cronenberg_Idle_003",
+                "Cronenberg_Idle_004",
+                "Cronenberg_Move_001",
+                "Cronenberg_Move_002",
+                "Cronenberg_Move_003",
+                "Cronenberg_Move_004",
+                "Cronenberg_Move_005",
+                "Cronenberg_Spawn_001",
+                "Cronenberg_Spawn_002",
+                "Cronenberg_Spawn_003",
+                "Cronenberg_Spawn_004",
+                "Cronenberg_Spawn_005",
+                "Cronenberg_Spawn_006",
+                "Cronenberg_Die_001",
+                "Cronenberg_Die_002",
+                "Cronenberg_Die_003"
+            };
+
+            List<string> IdleSpriteList = new List<string>() {
+                "Cronenberg_Idle_001",
+                "Cronenberg_Idle_002",
+                "Cronenberg_Idle_003",
+                "Cronenberg_Idle_004"
+            };
+
+            List<string> MoveSpriteList = new List<string>() {
+                "Cronenberg_Move_001",
+                "Cronenberg_Move_002",
+                "Cronenberg_Move_003",
+                "Cronenberg_Move_004",
+                "Cronenberg_Move_005"
+            };
+                        
+            List<string> SpawnSpriteList = new List<string>() {
+                "Cronenberg_Spawn_001",
+                "Cronenberg_Spawn_002",
+                "Cronenberg_Spawn_003",
+                "Cronenberg_Spawn_004",
+                "Cronenberg_Spawn_005",
+                "Cronenberg_Spawn_006",
+            };
+            
+            List<string> DeathSpriteList = new List<string>() { "Cronenberg_Die_001", "Cronenberg_Die_002", "Cronenberg_Die_003" };
+            
+
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + SpriteList[0]), false, isFakeprefab);
+
+            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
+
+            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
+                        
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
+
+            tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveSpriteList, "move", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            
+            if (m_SpawnAnimation != null && m_DeathAnimation != null && m_HitAnimation != null) {
+                // m_SpawnAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Spawn_01";
+                // m_SpawnAnimation.frames[0].triggerEvent = true;
+                m_DeathAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Die_01";
+                m_DeathAnimation.frames[0].triggerEvent = true;
+                m_HitAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Damage_01";
+                m_HitAnimation.frames[0].triggerEvent = true;
+            }
+
+            
+            Gun m_CachedMutantArmGun = (PickupObjectDatabase.GetById(333) as Gun);
+
+            if (m_CachedMutantArmGun) {
+                GoopDoer m_BloodGoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
+                m_BloodGoopDoer.goopDefinition = m_CachedMutantArmGun.singleModule.projectiles[0].gameObject.GetComponent<GoopModifier>().goopDefinition;
+                m_BloodGoopDoer.positionSource = GoopDoer.PositionSource.HitBoxCenter;
+                m_BloodGoopDoer.updateTiming = GoopDoer.UpdateTiming.Always;
+                m_BloodGoopDoer.updateFrequency = 0.05f;
+                m_BloodGoopDoer.isTimed = false;
+                m_BloodGoopDoer.goopTime = 1;
+                m_BloodGoopDoer.updateOnPreDeath = true;
+                m_BloodGoopDoer.updateOnDeath = false;
+                m_BloodGoopDoer.updateOnAnimFrames = true;
+                m_BloodGoopDoer.updateOnCollision = false;
+                m_BloodGoopDoer.updateOnGrounded = false;
+                m_BloodGoopDoer.updateOnDestroy = false;
+                m_BloodGoopDoer.defaultGoopRadius = 1.8f;
+                m_BloodGoopDoer.suppressSplashes = false;
+                m_BloodGoopDoer.goopSizeVaries = true;
+                m_BloodGoopDoer.varyCycleTime = 0.9f;
+                m_BloodGoopDoer.radiusMin = 1.8f;
+                m_BloodGoopDoer.radiusMax = 2;
+                m_BloodGoopDoer.goopSizeRandom = true;
+                m_BloodGoopDoer.UsesDispersalParticles = false;
+                m_BloodGoopDoer.DispersalDensity = 3;
+                m_BloodGoopDoer.DispersalMinCoherency = 0.2f;
+                m_BloodGoopDoer.DispersalMaxCoherency = 1;
+
+                AggressiveCronenbergCorpseDebrisObject1 = new GameObject("AngryCronenbergCorpseFragment_01") { layer = 22 };
+                AggressiveCronenbergCorpseDebrisObject2 = new GameObject("AngryCronenbergCorpseFragment_02") { layer = 22 };
+                AggressiveCronenbergCorpseDebrisObject3 = new GameObject("AngryCronenbergCorpseFragment_03") { layer = 22 };
+                AggressiveCronenbergCorpseDebrisObject4 = new GameObject("AngryCronenbergCorpseFragment_04") { layer = 22 };
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject1, (basePath + "Cronenberg_Fragment_01"), false);
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject2, (basePath + "Cronenberg_Fragment_02"), false);
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject3, (basePath + "Cronenberg_Fragment_03"), false);
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject4, (basePath + "Cronenberg_Fragment_04"), false);
+
+                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject1);
+                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject2);
+                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject3);
+                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject4);
+                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject1.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject1.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
+                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject2.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject2.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_02" }, "default");
+                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject3.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject3.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_03" }, "default");
+                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject4.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject4.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_04" }, "default");
+
+                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject1, m_BloodGoopDoer.goopDefinition);
+                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject2, m_BloodGoopDoer.goopDefinition);
+                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject3, m_BloodGoopDoer.goopDefinition);
+                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject4, m_BloodGoopDoer.goopDefinition);
+                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject1);
+                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject2);
+                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject3);
+                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject4);
+
+                ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
+                m_Exploder.shardClusters = new ShardCluster[] {
+                    new ShardCluster() {
+                        minFromCluster = 6,
+                        maxFromCluster = 10,
+                        forceMultiplier = 4,
+                        forceAxialMultiplier = new Vector3(1.25f, 1.25f, 1.25f),
+                        rotationMultiplier = 1.65f,
+                        clusterObjects = new DebrisObject[] {
+                            AggressiveCronenbergCorpseDebrisObject1.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject2.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject3.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject4.GetComponent<DebrisObject>()
+                        }
+                    }
+                };
+                m_Exploder.spawnShardsOnDeath = true;
+                m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
+                m_CachedMutantArmGun = null;
+            }
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "6d2d7a84-5e46-4d3c-a453-fe1fff5fed84", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+                        
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            m_CachedAIActor.HasShadow = false;
+            m_CachedAIActor.MovementSpeed = 3.25f;
+            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            m_CachedAIActor.procedurallyOutlined = true;
+            m_CachedAIActor.EnemySwitchState = string.Empty;
+            m_CachedAIActor.PreventFallingInPitsEver = true;
+            m_CachedAIActor.IgnoreForRoomClear = false;
+            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.CanTargetEnemies = true;
+            m_CachedAIActor.CanTargetPlayers = false;
+            m_CachedAIActor.CollisionKnockbackStrength = 5;
+            m_CachedAIActor.CollisionDamage = 1;
+            m_CachedAIActor.DiesOnCollison = true;
+            m_CachedAIActor.healthHaver.SetHealthMaximum(25);
+            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(15);
+
+            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyCollider,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 9,
+                    ManualOffsetY = 0,
+                    ManualWidth = 67,
+                    ManualHeight = 16,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyHitBox,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 9,
+                    ManualOffsetY = 0,
+                    ManualWidth = 67,
+                    ManualHeight = 28,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+                        
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "idle",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "move",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "hit",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "die",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.Single,
+                            Prefix = "die",
+                            AnimNames = new string[1],
+                            Flipped = new DirectionalAnimation.FlipType[1]
+                        }
+                    }
+                };
+            }
+            
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = false,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new SeekTargetBehavior() {
+                    StopWhenInRange = false,
+                    CustomRange = 6,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.5f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+            
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 1f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\AngryCronenberg_BehaviorScript.txt");
+
+            AggressiveCronenbergGUID = m_CachedAIActor.EnemyGuid;
+
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+            DontDestroyOnLoad(m_CachedTargetObject);
+            return;
+        }
+
+        public static void BuildJungleBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+            
+            m_CachedTargetObject = Instantiate(GetOrLoadByGuid("880bbe4ce1014740ba6b4e2ea521e49d").gameObject);
+            m_CachedTargetObject.SetActive(false);
+            m_CachedTargetObject.name = "Com4nd0 Boss";
+
+            AIActor m_TargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+            m_TargetAIActor.EnemyGuid = "0a406e36-80eb-43b8-8ad0-c56232f9496e";
+            m_TargetAIActor.EnemyId = UnityEngine.Random.Range(100000, 999999);
+
+            m_TargetAIActor.ActorName = "Com4nd0";
+
+            EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
+            ParasiteEncounterable.EncounterGuid = "7330c080-88cf-4f8b-af6a-640d4f8f5c45";
+            ParasiteEncounterable.journalData.PrimaryDisplayName = "Com4nd0 Boss";
+            ParasiteEncounterable.journalData.NotificationPanelDescription = "The Lost Human";
+            ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This human was lost in the Jungle for many years and found refuge at an ancient temple ruins";
+
+            m_TargetAIActor.SetsFlagOnDeath = false;
+                      
+            // Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotIntroDoer>());
+            Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotDeathController>());
+
+            GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
+            bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
+            bossIntroDoer.portraitSlideSettings.bossNameString = "Com4nd0";
+            bossIntroDoer.portraitSlideSettings.bossSubtitleString= "Temple Defence";
+            bossIntroDoer.portraitSlideSettings.bossQuoteString = string.Empty;
+
+
+
+            ObjectVisibilityManager visiblityManager = m_CachedTargetObject.GetComponent<ObjectVisibilityManager>();
+            visiblityManager.SuppressPlayerEnteredRoom = false;
+            
+            BehaviorSpeculator bossBehaviorSpeculator = m_CachedTargetObject.GetComponent<BehaviorSpeculator>();
+            
+            m_TargetAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            
+            foreach (AttackBehaviorBase attackBehavior in bossBehaviorSpeculator.AttackBehaviors) {
+                if (attackBehavior is SummonEnemyBehavior) {
+                    (attackBehavior as SummonEnemyBehavior).ManuallyDefineRoom = false;
+                    (attackBehavior as SummonEnemyBehavior).roomMin = Vector2.zero;
+                    (attackBehavior as SummonEnemyBehavior).roomMax = Vector2.zero;
+                    (attackBehavior as SummonEnemyBehavior).EnemeyGuids = new List<string>() { "e861e59012954ab2b9b6977da85cb83c", "4b21a913e8c54056bc05cafecf9da880", "a9cc6a4e9b3d46ea871e70a03c9f77d4", "80ab6cd15bfc46668a8844b2975c6c26" };
+                } 
+            }
+            
+            foreach (AttackBehaviorGroup.AttackGroupItem behaviorGroupItem in bossBehaviorSpeculator.AttackBehaviorGroup.AttackBehaviors) {
+                if (behaviorGroupItem.NickName == "Teleport") {
+                    (behaviorGroupItem.Behavior as TeleportBehavior).ManuallyDefineRoom = false;
+                    (behaviorGroupItem.Behavior as TeleportBehavior).roomMin = Vector2.zero;
+                    (behaviorGroupItem.Behavior as TeleportBehavior).roomMax = Vector2.zero;
+                }
+            }
+            
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Com4nd0_BehaviorScript.txt");
+            bossBehaviorSpeculator.RegenerateCache();
+
+
+            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(1000);
+            m_TargetAIActor.healthHaver.SetHealthMaximum(1000);
+
+            m_TargetAIActor.RegenerateCache();
+
+            if (isFakePrefab) {
+                com4nd0GUID = m_TargetAIActor.EnemyGuid;
+                AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
             }

@@ -8,7 +8,8 @@ namespace ExpandTheGungeon.ExpandAudio {
 
 
         public static readonly string ResourcesDirectoryName = "ExpandTheGungeon";
-        public static readonly string AutoprocessDirectoryName = "Mods/ExpandTheGungeon/EXAudio";
+        public static readonly string AutoprocessDirectoryName = "Mods/ExpandTheGungeon";
+        public static readonly string AutoprocessModPathName = "Mods/ExpandTheGungeon";
         public static readonly string ResourcesAutoprocessDirectoryName = AutoprocessDirectoryName;
 
         public static readonly string FullPathGame = Path.Combine(Application.dataPath, "..");
@@ -18,7 +19,9 @@ namespace ExpandTheGungeon.ExpandAudio {
         
 
         public static void InitAudio() {
+            // LoadAllAutoloadResourcesFromModPath(AutoprocessModPathName);
             LoadAllAutoloadResourcesFromAssembly(Assembly.GetExecutingAssembly(), "ExpandTheGungeon");
+
             // LoadAllAutoloadResourcesFromPath(FullPathAutoprocess, "ExpandTheGungeon");
         }
 
@@ -29,12 +32,17 @@ namespace ExpandTheGungeon.ExpandAudio {
             LoaderSoundbanks.AutoloadFromAssembly(assembly, prefix);
 		}
         
-		public static void LoadAllAutoloadResourcesFromPath(string path, string prefix) {
+		/*public static void LoadAllAutoloadResourcesFromPath(string path, string prefix) {
             // this.LoaderText.AutoloadFromPath(path, prefix);
             // this.LoaderSprites.AutoloadFromPath(path, prefix, textureSize);
             ResourceLoaderSoundbanks LoaderSoundbanks = new ResourceLoaderSoundbanks();
             LoaderSoundbanks.AutoloadFromPath(path, prefix);
 		}
+
+        public static void LoadAllAutoloadResourcesFromModPath(string path) {
+            ResourceLoaderSoundbanks LoaderSoundbanks = new ResourceLoaderSoundbanks();
+            LoaderSoundbanks.AutoloadFromModZIPOrModFolder(path);
+        }*/
 
 	}
 }

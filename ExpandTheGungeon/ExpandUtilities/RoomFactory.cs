@@ -13,7 +13,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static readonly string dataHeader = "***DATA***";
 
-        public static string TextureBasePath = "Textures\\RoomLayoutData\\RoomFactoryRooms\\";
+        public static string TextureBasePath = "SerializedData\\RoomFactoryRooms\\";
         private static string nameSpace = "ExpandTheGungeon";
 
         /*public static AssetBundle sharedAssets;
@@ -203,22 +203,28 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static PrototypeDungeonRoomCellData CellDataFromColor(Color32 color) {
-            if (color.Equals(Color.magenta)) return null;
+            // if (color.Equals(Color.magenta)) return null;
 
             PrototypeDungeonRoomCellData data = new PrototypeDungeonRoomCellData();
             data.state = TypeFromColor(color);
             data.diagonalWallType = DiagonalWallTypeFromColor(color);
             data.appearance = new PrototypeDungeonRoomCellAppearance() { OverrideFloorType = FloorType.Stone };
+
+            if (color == Color.red) {
+                data.appearance.OverrideFloorType = FloorType.Carpet;
+                data.appearance.IsPhantomCarpet = true;
+            }
+
             return data;
         }
 
         public static CellType TypeFromColor(Color color) {
-            if (color == Color.black)
+            if (color == Color.black) {
                 return CellType.PIT;
-            else if (color == Color.white)
+            } else if (color == Color.white | color == Color.red) {
                 return CellType.FLOOR;
-            else
-                return CellType.WALL;
+            }
+            return CellType.WALL;
         }
 
         public static DiagonalWallType DiagonalWallTypeFromColor(Color color) {

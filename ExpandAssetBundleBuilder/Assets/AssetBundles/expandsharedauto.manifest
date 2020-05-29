@@ -1,0 +1,76 @@
+ManifestFileVersion: 0
+CRC: 3970986752
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 900f9ac23a96ee38e11319a3b1d80a14
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8d78c789b460eaa1196c7eb1000217e0
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/ExpandPrefabs/ExpandJungle_ItemStump.prefab
+- Assets/ExpandPrefabs/ExpandSarco_Floor.prefab
+- Assets/ExpandPrefabs/ExpandThunderStorm.prefab
+- Assets/ExpandPrefabs/Expand_RickRollChest.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorFramesTop.prefab
+- Assets/ExpandPrefabs/Shaders/ExpandScanlines.shader
+- Assets/ExpandPrefabs/BootlegRoomDoorBlocker_West.prefab
+- Assets/ExpandPrefabs/ExpandSarco_Monster.prefab
+- Assets/ExpandPrefabs/Breakables/ExpandCactus_A.prefab
+- Assets/ExpandPrefabs/ExpandChallenge_ChaosMode.prefab
+- Assets/ExpandPrefabs/ExpandJungle_ExitLadder.prefab
+- Assets/ExpandPrefabs/Expand_RickRollChestShadow.prefab
+- Assets/ExpandPrefabs/EX Alarm Mushroom.prefab
+- Assets/ExpandPrefabs/ExpandSarco_Pedestal.prefab
+- Assets/ExpandPrefabs/ExpandChallenge_KingsMen.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorTriggers.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorBlocker_North.prefab
+- Assets/ExpandPrefabs/Breakables/ExpandCactus_Shard_001.prefab
+- Assets/ExpandPrefabs/BootlegRoomBorder_South.prefab
+- Assets/ExpandPrefabs/Shaders/ExpandGlitchShaderAlternate.shader
+- Assets/ExpandPrefabs/Breakables/ExpandCactus_Shard_002.prefab
+- Assets/ExpandPrefabs/ExpandSarco_Door.prefab
+- Assets/ExpandPrefabs/Expand Gungeoneer Mimic Boss Placable.prefab
+- Assets/ExpandTextures/Collections/ENV_Tileset_Belly.png
+- Assets/ExpandPrefabs/Breakables/ExpandCactus_B.prefab
+- Assets/ExpandPrefabs/RoomCorruptionAmbience_Placable.prefab
+- Assets/ExpandPrefabs/BootlegRoomBorder_East.prefab
+- Assets/ExpandPrefabs/ExpandBelly_ExitWarp.prefab
+- Assets/ExpandPrefabs/Expand_JungleSign.prefab
+- Assets/ExpandPrefabs/ENV_Tileset_Belly.prefab
+- Assets/ExpandPrefabs/ExpandDeadSkeleton.prefab
+- Assets/ExpandPrefabs/ExpandRickRoll_MusicSwitch.prefab
+- Assets/ExpandPrefabs/Expand_RickRollAnimation.prefab
+- Assets/ExpandTextures/Collections/ENV_Tileset_Canyon.png
+- Assets/ExpandPrefabs/BootlegRoomBorder_North.prefab
+- Assets/ExpandPrefabs/Shaders/ExpandDistortion.shader
+- Assets/ExpandPrefabs/Chaos Baby Dragun.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorBlocker_East.prefab
+- Assets/ExpandPrefabs/ExpandPlayableShotgunMan.prefab
+- Assets/ExpandPrefabs/ExpandJungle_TreeShadow.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorBlocker_South.prefab
+- Assets/ExpandPrefabs/ExpandChallenge_TripleTrouble.prefab
+- Assets/ExpandPrefabs/ExpandScanlinesMaterial.mat
+- Assets/ExpandPrefabs/Shaders/ExpandGlitchBasic.shader
+- Assets/ExpandPrefabs/Arrival.prefab
+- Assets/ExpandTextures/Collections/ENV_Tileset_West.png
+- Assets/ExpandPrefabs/ENV_Tileset_West.prefab
+- Assets/ExpandPrefabs/BootlegRoomBorder_West.prefab
+- Assets/ExpandPrefabs/EX SawBlade PlacableObject.prefab
+- Assets/ExpandPrefabs/BootlegRoomPrefab.prefab
+- Assets/ExpandPrefabs/ExpandJungle_Tree.prefab
+- Assets/ExpandPrefabs/BootlegRoomDoorFrames.prefab
+- Assets/ExpandPrefabs/ExpandGlitchBasicMaterial.mat
+Dependencies: []

@@ -396,12 +396,28 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Jungle_OldCrest;
         public static PrototypeDungeonRoom Expand_Jungle_Exit;
         public static PrototypeDungeonRoom Expand_Jungle_SecretDragun;
+        public static PrototypeDungeonRoom Expand_Jungle_Boss;
         // All jungle rooms except special ones will be stored here
         public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
+        public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
+        public static PrototypeDungeonRoom[] Expand_BulletHell_Rooms;
         public static List<string> Expand_Jungle_RoomList;
-        // public static List<string> Expand_Belly_RoomList;
+        public static List<string> Expand_Belly_RoomList;
+        public static List<string> Expand_BulletHell_RoomList;
 
         public static PrototypeDungeonRoom Expand_Belly_Entrance;
+        public static PrototypeDungeonRoom Expand_Belly_BossRoom;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_01;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_02;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_03;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_04;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_05;
+        public static PrototypeDungeonRoom Expand_Belly_Connector_06;
+        public static PrototypeDungeonRoom Expand_Belly_Shrine;
+        public static PrototypeDungeonRoom Expand_Belly_ExitHub;
+        public static PrototypeDungeonRoom Expand_Belly_RealExit;
+        public static PrototypeDungeonRoom Expand_Belly_Reward;
+        
         // All Belly rooms except special ones will be stored here
         // public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
         public static PrototypeDungeonRoom Expand_Gungeon_BellyEntranceRoom;
@@ -571,6 +587,140 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "Expand_Forest_Tribal29.room",
                 "Expand_Forest_Tribal30.room"
             };
+
+            Expand_Belly_RoomList = new List<string>() {
+                "Expand_Belly_Mixed3.room",
+                "Expand_Belly_Mixed4.room",
+                "Expand_Belly_Mixed5.room",
+                "Expand_Belly_Mixed6.room",
+                "Expand_Belly_Mixed7.room",
+                "Expand_Belly_Mixed8.room",
+                "Expand_Belly_Mixed9.room",
+                "Expand_Belly_Mixed10.room",
+                "Expand_Belly_Mixed11.room",
+                "Expand_Belly_Mixed12.room",
+                "Expand_Belly_Mixed13.room",
+                "Expand_Belly_Mixed14.room",
+                "Expand_Belly_Mixed15.room",
+                "Expand_Belly_Mixed16.room",
+                "Expand_Belly_Mixed17.room",
+                "Expand_Belly_Mixed18.room",
+                "Expand_Belly_Mixed19.room",
+                "Expand_Belly_Mixed20.room",
+                "Expand_Belly_Pirate1.room",
+                "Expand_Belly_Pirate2.room",
+                "Expand_Belly_Pirate3.room",
+                "Expand_Belly_Pirate4.room",
+                "Expand_Belly_Pirate5.room",
+                "Expand_Belly_Pirate6.room",
+                "Expand_Belly_Pirate7.room",
+                "Expand_Belly_Pirate8.room",
+                "Expand_Belly_Pirate9.room",
+                "Expand_Belly_Pirate10.room",
+                "Expand_Belly_Skeletal1.room",
+                "Expand_Belly_Skeletal2.room",
+                "Expand_Belly_Skeletal3.room",
+                "Expand_Belly_Skeletal4.room",
+                "Expand_Belly_Skeletal5.room",
+                "Expand_Belly_Skeletal6.room",
+                "Expand_Belly_Skeletal7.room",
+                "Expand_Belly_Skeletal8.room",
+                "Expand_Belly_Skeletal9.room",
+                "Expand_Belly_Skeletal10.room",
+                "Expand_Belly_Viscera1.room",
+                "Expand_Belly_Viscera2.room",
+                "Expand_Belly_Viscera3.room",
+                "Expand_Belly_Viscera4.room",
+                "Expand_Belly_Viscera5.room",
+                "Expand_Belly_Viscera6.room",
+                "Expand_Belly_Viscera7.room",
+                "Expand_Belly_Viscera8.room",
+                "Expand_Belly_Viscera9.room",
+                "Expand_Belly_Viscera10.room",
+                "Expand_Belly_Mixed1.room",
+                "Expand_Belly_Mixed2.room",
+                "Expand_Belly_Pirate17.room",
+                "Expand_Belly_Pirate18.room",
+                "Expand_Belly_Pirate19.room",
+                "Expand_Belly_Pirate20.room",
+                "Expand_Belly_Pirate21.room",
+                "Expand_Belly_Pirate22.room",
+                "Expand_Belly_Pirate23.room",
+                "Expand_Belly_Pirate24.room",
+                "Expand_Belly_Pirate25.room",
+                "Expand_Belly_Pirate26.room",
+                "Expand_Belly_Pirate27.room",
+                "Expand_Belly_Pirate28.room",
+                "Expand_Belly_Pirate29.room",
+                "Expand_Belly_Pirate30.room",
+                "Expand_Belly_Skeletal_RupturousClot.room",
+                "Expand_Belly_Skeletal11.room",
+                "Expand_Belly_Skeletal12.room",
+                "Expand_Belly_Skeletal13.room",
+                "Expand_Belly_Skeletal14.room",
+                "Expand_Belly_Skeletal15.room",
+                "Expand_Belly_Skeletal16.room",
+                "Expand_Belly_Skeletal17.room",
+                "Expand_Belly_Skeletal18.room",
+                "Expand_Belly_Skeletal19.room",
+                "Expand_Belly_Skeletal20.room",
+                "Expand_Belly_Skeletal21.room",
+                "Expand_Belly_Skeletal22.room",
+                "Expand_Belly_Skeletal23.room",
+                "Expand_Belly_Skeletal24.room",
+                "Expand_Belly_Skeletal25.room",
+                "Expand_Belly_Skeletal26.room",
+                "Expand_Belly_Skeletal27.room",
+                "Expand_Belly_Skeletal28.room",
+                "Expand_Belly_Skeletal29.room",
+                "Expand_Belly_Skeletal30.room",
+                "Expand_Belly_Viscera_EyeDiagram.room",
+                "Expand_Belly_Viscera_FloppyKnobs.room",
+                "Expand_Belly_Viscera_Globulate.room",
+                "Expand_Belly_Viscera_GutsyBulges.room",
+                "Expand_Belly_Viscera_HeartAttack.room",
+                "Expand_Belly_Viscera_NubblyBubbly.room",
+                "Expand_Belly_Viscera_Shitfactory.room",
+                "Expand_Belly_Viscera11.room",
+                "Expand_Belly_Pirate_CellStronghold.room",
+                "Expand_Belly_Pirate_DanglyBits.room",
+                "Expand_Belly_Pirate_FishInTheEar.room",
+                "Expand_Belly_Pirate11.room",
+                "Expand_Belly_Pirate12.room",
+                "Expand_Belly_Pirate13.room",
+                "Expand_Belly_Pirate14.room",
+                "Expand_Belly_Pirate15.room",
+                "Expand_Belly_Pirate16.room",
+                "Expand_Belly_Viscera30.room",
+                "Expand_Belly_Viscera12.room",
+                "Expand_Belly_Viscera13.room",
+                "Expand_Belly_Viscera14.room",
+                "Expand_Belly_Viscera15.room",
+                "Expand_Belly_Viscera16.room",
+                "Expand_Belly_Viscera17.room",
+                "Expand_Belly_Viscera18.room",
+                "Expand_Belly_Viscera19.room",
+                "Expand_Belly_Viscera20.room",
+                "Expand_Belly_Viscera21.room",
+                "Expand_Belly_Viscera22.room",
+                "Expand_Belly_Viscera23.room",
+                "Expand_Belly_Viscera24.room",
+                "Expand_Belly_Viscera25.room",
+                "Expand_Belly_Viscera26.room",
+                "Expand_Belly_Viscera27.room",
+                "Expand_Belly_Viscera28.room",
+                "Expand_Belly_Viscera29.room"
+            };
+
+            Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion.room" };
+
+            List<PrototypeDungeonRoom> m_BulletHellRoomList = new List<PrototypeDungeonRoom>() { };
+
+            foreach (string roomName in Expand_BulletHell_RoomList) {
+                m_BulletHellRoomList.Add(RoomFactory.BuildFromResource("BulletHell/" + roomName, true, true));
+            }
+
+
             Expand_Jungle_Entrance = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Entrance.room", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(4, 5), objectDatabase.GodRays);
             Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
@@ -580,22 +730,58 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Jungle_Exit = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Exit.room", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(4, 7), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ExitLadder, useExternalPrefab: true), xOffset: 8, yOffset: 13);
-            RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(3, 5), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(2, 5), objectDatabase.GodRays);
 
             Expand_Jungle_SecretDragun = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_SecretDragun.room", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(4, 5), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GatlingGullNest, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.BabyDragunNPC, useExternalPrefab: true));
 
+            Expand_Jungle_Boss = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Boss.room");
+            Expand_Jungle_Boss.category = PrototypeDungeonRoom.RoomCategory.BOSS;
+            Expand_Jungle_Boss.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Jungle_Boss.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Jungle_Boss.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Jungle_Boss.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Jungle_Boss.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Jungle_Boss.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            Expand_Jungle_Boss.usesProceduralLighting = false;
+            Expand_Jungle_Boss.usesProceduralDecoration = false;
+            Expand_Jungle_Boss.rewardChestSpawnPosition = new IntVector2(25, 20);
+            Expand_Jungle_Boss.overriddenTilesets = GlobalDungeonData.ValidTilesets.JUNGLEGEON;
+            foreach (PrototypeRoomExit exit in Expand_Jungle_Boss.exitData.exits) { exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY; }
+            RoomBuilder.AddExitToRoom(Expand_Jungle_Boss, new Vector2(26, 37), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY, PrototypeRoomExit.ExitGroup.B);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(7, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.bosstable_01_bulletking.includedRooms.elements[0].room.placedObjects[1].nonenemyBehaviour.gameObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(7, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.bosstable_01_bulletking.includedRooms.elements[0].room.additionalObjectLayers[0].placedObjects[0].nonenemyBehaviour.gameObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(7, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.bosstable_01_bulletking.includedRooms.elements[0].room.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour.gameObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(7, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.bosstable_01_bulletking.includedRooms.elements[0].room.additionalObjectLayers[2].placedObjects[0].nonenemyBehaviour.gameObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(8, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(20, 30), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(30, 30), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(8, 2), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(25, 2), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 2), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(3, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(47, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.JungleLight, useExternalPrefab: true), xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(8, 25), objectDatabase.DefaultTorch, xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(20, 30), objectDatabase.DefaultTorch, xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(30, 30), objectDatabase.DefaultTorch, xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 25), objectDatabase.DefaultTorch, xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(22, 14), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.com4nd0GUID);
             
+
             Expand_Belly_Entrance = RoomFactory.BuildFromResource("Belly/Expand_Belly_Entrance.room", true);
 
 
             Expand_Gungeon_BellyEntranceRoom = RoomFactory.BuildFromResource("Expand_Gungeon_BellyEntranceRoom.room", true);
-            RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Gungeon_BellyEntranceRoom, "RoomFactoryRooms\\Expand_Gungeon_BellyEntranceRoom_ext.png"); // use old system to force carpet floor cells
-            Expand_Gungeon_BellyEntranceRoom.usesProceduralDecoration = false;
             Expand_Gungeon_BellyEntranceRoom.usesProceduralLighting = false;
+            Expand_Gungeon_BellyEntranceRoom.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(6, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Door, useExternalPrefab: true), xOffset: 7, yOffset: -3);
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(10, 24), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_WoodShieldPedestal, useExternalPrefab: true), xOffset: 6, yOffset: -6);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(10, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_WoodShieldPedestal, useExternalPrefab: true), xOffset: 11, yOffset: -6);
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 6), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunBook_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunMace_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunBook_Kaliber, useExternalPrefab: true));
@@ -603,18 +789,114 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletShield_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));            
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(14, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(14, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(15, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(15, 19), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light_Side, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light, useExternalPrefab: true));
-            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 25), ExpandUtility.GenerateDungeonPlacable(objectDatabase.Sconce_Light, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
+            // RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Gungeon_BellyEntranceRoom, "RoomFactoryRooms\\Expand_Gungeon_BellyEntranceRoom_ext.png", DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
+
             
+            Expand_Belly_BossRoom = RoomFactory.BuildFromResource("Belly/Expand_Belly_BossRoom.room");
+            Expand_Belly_BossRoom.category = PrototypeDungeonRoom.RoomCategory.BOSS;
+            Expand_Belly_BossRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Belly_BossRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Belly_BossRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Belly_BossRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Belly_BossRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Belly_BossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            Expand_Belly_BossRoom.usesProceduralDecoration = false;
+            Expand_Belly_BossRoom.rewardChestSpawnPosition = new IntVector2(18, 23);
+            Expand_Belly_BossRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
+                new PrototypeRoomObjectLayer() {
+                    placedObjects = new List<PrototypePlacedObjectData>() {
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(17, 12),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(15, 18),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(11, 12),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(19, 27),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(27, 15),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            contentsBasePosition = new Vector2(29, 19),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                    },
+                    placedObjectBasePositions = new List<Vector2>() {
+                        new Vector2(17, 12),
+                        new Vector2(15, 18),
+                        new Vector2(11, 12),
+                        new Vector2(19, 27),
+                        new Vector2(27, 15),
+                        new Vector2(29, 19),
+                    },
+                    layerIsReinforcementLayer = true,
+                    shuffle = false,
+                    randomize = 0,
+                    suppressPlayerChecks = true,
+                    delayTime = 15,
+                    reinforcementTriggerCondition = RoomEventTriggerCondition.ENEMY_BEHAVIOR,
+                    probability = 1,
+                    numberTimesEncounteredRequired = 0
+                }
+            };
+            RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(20, 19), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.ParasiteBossGUID);
+
 
 
             Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromResource("Expand_Gungeon_HiddenMonsterRoom.room", true);
@@ -623,16 +905,43 @@ namespace ExpandTheGungeon.ExpandObjects {
                 new RoomEventDefinition(RoomEventTriggerCondition.NPC_TRIGGER_C, RoomEventTriggerAction.UNSEAL_ROOM),
             };
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, Vector2.zero, ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Floor, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(36, 7), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(24, 2), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(18, 4), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(36, 7), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(24, 2), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
+            // RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(18, 4), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.CronenbergGUID);
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(64, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_MonsterObject, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(13, 2), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(33, 5), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(40, 2), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(48, 3), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(57, 5), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(58, 2), objectDatabase.WrithingBulletman);
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_HiddenMonsterRoom, new Vector2(10, 3), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Skeleton, useExternalPrefab: true));
             Expand_Gungeon_HiddenMonsterRoom.usesProceduralLighting = false;
             Expand_Gungeon_HiddenMonsterRoom.allowFloorDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.allowWallDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.usesProceduralDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.precludeAllTilemapDrawing = true;
+            
 
+            Expand_Belly_Connector_01 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_01.room", true);
+            Expand_Belly_Connector_02 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_02.room", true);
+            Expand_Belly_Connector_03 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_03.room", true);
+            Expand_Belly_Connector_04 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_04.room", true);
+            Expand_Belly_Connector_05 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_05.room", true);
+            Expand_Belly_Connector_06 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_06.room", true);
+
+            Expand_Belly_Reward = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Reward.room", true);
+            Expand_Belly_Shrine = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Shrine.room", true);
+            Expand_Belly_ExitHub = RoomFactory.BuildFromResource("Belly\\Expand_Belly_ExitHub.room", true);
+
+            Expand_Belly_RealExit = RoomFactory.BuildFromResource("Belly\\Expand_Belly_RealExit.room", true);
+            Expand_Belly_RealExit.usesProceduralDecoration = false;
+            Expand_Belly_RealExit.usesProceduralLighting = false;
+
+            RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(11, 38), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Door_Vertical_Belly, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(11, 39), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Belly_ExitWarp, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(9, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
 
 
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -887,7 +1196,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Giant_Elevator_Room.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;
             Giant_Elevator_Room.Width = 100;
             Giant_Elevator_Room.Height = 100;
-            Giant_Elevator_Room.overrideRoomVisualType = 3;
+            Giant_Elevator_Room.overrideRoomVisualType = 0;
             // Left/Right Exits
             RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(0, 5), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(Giant_Elevator_Room, new Vector2(101, 5), DungeonData.Direction.EAST);
@@ -937,31 +1246,30 @@ namespace ExpandTheGungeon.ExpandObjects {
             // Add Object Spawns
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(47, 49), ExpandPrefabs.ElevatorArrival);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48, 41), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(50, 50), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.ExpandThunderstormPlaceable, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 33), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(29, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(70, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 4), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 96), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 16), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 32), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 49), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 66), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 82), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 33), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 66), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(29, 49), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(70, 49), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 4), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 4), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 4), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 4), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 4), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(17, 96), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(28, 96), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(49, 96), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(69, 96), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(80, 96), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 16), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 32), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 49), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 66), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(3, 82), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 16), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 32), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 49), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 66), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(96, 82), ExpandPrefabs.Door_Horizontal_West);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(7, 24), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(87, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // Bullet Kin
@@ -982,12 +1290,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(15, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(85, 86), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(59, 67), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall Mimic
-            /*RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48.55f, 27), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableHorizontalStone, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(48.55f, 72), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableHorizontalStone, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(23, 48.59f), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableVertical, useExternalPrefab: true));
-            RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(76, 48.59f), ChaosUtility.GenerateDungeonPlacable(ChaosPrefabs.TableVertical, useExternalPrefab: true));*/
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 89), ExpandUtility.GenerateDungeonPlacable(objectDatabase.YellowDrum, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(13, 89), objectDatabase.YellowDrum);
+            RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 89), objectDatabase.YellowDrum);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(14, 10), objectDatabase.ExplodyBarrel);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(84, 10), objectDatabase.ExplodyBarrel);
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(45, 10), objectDatabase.Brazier);
@@ -9233,13 +9537,27 @@ namespace ExpandTheGungeon.ExpandObjects {
             // Expand_Jungle_Rooms = ExpandUtility.BuildRoomArrayFromTextFile("Textures/RoomLayoutData/RoomFactoryRooms/Jungle/Jungle_RoomEntries.txt");
             Expand_Jungle_Rooms = m_JungleRooms.ToArray();
 
-            List<WeightedRoom> m_JungleWRooms = new List<WeightedRoom>();
-
-            if (Expand_Jungle_Rooms != null && Expand_Jungle_Rooms.Length > 0) {
-                foreach (PrototypeDungeonRoom room in Expand_Jungle_Rooms) {
-                    ExpandPrefabs.JungleRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 1));
-                }
+            foreach (PrototypeDungeonRoom room in Expand_Jungle_Rooms) {
+                ExpandPrefabs.JungleRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 1));
             }
+
+
+            List<PrototypeDungeonRoom> m_BellyRooms = new List<PrototypeDungeonRoom>();
+
+            foreach (string name in Expand_Belly_RoomList) {
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromResource("Belly\\" + name, true);
+                m_BellyRooms.Add(m_room);
+            }
+
+            Expand_Belly_Rooms = m_BellyRooms.ToArray();
+            
+            foreach (PrototypeDungeonRoom room in Expand_Belly_Rooms) { ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 1)); }
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_01, 1));
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_02, 1));
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_03, 1));
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_04, 1));
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_05, 1));
+            ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_06, 1));
 
 
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {

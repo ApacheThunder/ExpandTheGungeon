@@ -11,6 +11,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             DebugTime.RecordStartTime();
             GameObject component = assetBundle.LoadAsset<GameObject>(name);
             DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+            assetBundle = null;
             return component;
         }
 

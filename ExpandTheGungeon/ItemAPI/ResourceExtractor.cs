@@ -88,7 +88,7 @@ namespace ExpandTheGungeon.ItemAPI {
 			}
 			return result;
 		}
-
+        
 		public static Texture2D GetTextureFromResource(string resourceName) {
 			string text = resourceName.Replace("/", ".");
 			text = text.Replace("\\", ".");

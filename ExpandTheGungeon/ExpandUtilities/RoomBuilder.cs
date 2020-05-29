@@ -266,7 +266,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.exitData.exits.Add(m_NewExit);
         }
 
-        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpawnChance = 1f, int xOffset = 0, int yOffset = 0) {
+        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpawnChance = 1f, int xOffset = 0, int yOffset = 0, int layer = 0) {
             if (room == null) { return; }
             if (room.placedObjects == null) { room.placedObjects = new List<PrototypePlacedObjectData>(); }
             if (room.placedObjectPositions == null) { room.placedObjectPositions = new List<Vector2>(); }
@@ -275,10 +275,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 placeableContents = null,
                 nonenemyBehaviour = null,
                 spawnChance = SpawnChance,
-                // unspecifiedContents = null,
+                unspecifiedContents = null,
                 enemyBehaviourGuid = string.Empty,
                 contentsBasePosition = position,
-                layer = 0,
+                layer = layer,
                 xMPxOffset = xOffset,
                 yMPxOffset = yOffset,
                 fieldData = new List<PrototypePlacedObjectFieldData>(0),
@@ -298,6 +298,33 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 // All possible object fields were left null? Do nothing and return if this is the case.
                 return;
             }
+
+            room.placedObjects.Add(m_NewObjectData);
+            room.placedObjectPositions.Add(position);
+            return;
+        }
+
+        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, GameObject PlacableObject, int xOffset = 0, int yOffset = 0, int layer = 0, float SpawnChance = 1f) {
+            if (room == null) { return; }
+            if (room.placedObjects == null) { room.placedObjects = new List<PrototypePlacedObjectData>(); }
+            if (room.placedObjectPositions == null) { room.placedObjectPositions = new List<Vector2>(); }
+
+            PrototypePlacedObjectData m_NewObjectData = new PrototypePlacedObjectData() {
+                placeableContents = ExpandUtility.GenerateDungeonPlacable(PlacableObject, useExternalPrefab: true),
+                nonenemyBehaviour = null,
+                spawnChance = SpawnChance,
+                unspecifiedContents = null,
+                enemyBehaviourGuid = string.Empty,
+                contentsBasePosition = position,
+                layer = layer,
+                xMPxOffset = xOffset,
+                yMPxOffset = yOffset,
+                fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                instancePrerequisites = new DungeonPrerequisite[0],
+                linkedTriggerAreaIDs = new List<int>(0),
+                assignedPathIDx = -1,
+                assignedPathStartNode = 0
+            };
 
             room.placedObjects.Add(m_NewObjectData);
             room.placedObjectPositions.Add(position);
