@@ -11,65 +11,72 @@ using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ItemAPI {
 
-    internal class CorruptionBomb : PlayerItem {
+    public class CorruptionBomb : PlayerItem {
+                        
+        public static GameObject corruptionbomb;
 
-        private static string basePath = "ExpandTheGungeon/Textures/Items/Animations/corruptionbomb/";
+        public static int CorruptionBombPickupID;
 
-        private static List<string> spritePaths = new List<string>() {
-            "corruptionbomb_spin_01",
-            "corruptionbomb_spin_02",
-            "corruptionbomb_spin_03",
-            "corruptionbomb_spin_04",
-            "corruptionbomb_spin_05",
-            "corruptionbomb_spin_06",
-            "corruptionbomb_spin_07",
-            "corruptionbomb_spin_08",
-            "corruptionbomb_spin_09",
-            "corruptionbomb_spin_10"
-        };
-        
         private static GameObject glitchBombSpawnObject;
         private static GameObject glitchBombMinimapObject;
-
+        
         private List<int> CommonItemDrops = new List<int>() { 73, 127, 224, 565 };
         private List<int> RareItemDrops = new List<int>() { 74, 276, 137, 104, 63, 78, 67, 120, 600 };
         
-        public static void Init() {
+        public static void Init(AssetBundle expandSharedAssets1) {
 
             string name = "Corruption Bomb";
-            string resourcePath = "ExpandTheGungeon/Textures/Items/corruptionbomb";
-            GameObject gameObject = new GameObject();
-            CorruptionBomb corruptionBomb = gameObject.AddComponent<CorruptionBomb>();
-            ItemBuilder.AddSpriteToObject(name, resourcePath, gameObject, true);
+            corruptionbomb = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb");
+            corruptionbomb.name = name;
+            ItemBuilder.AddSpriteToObject(corruptionbomb, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb"), false, false);
+            CorruptionBomb corruptionBombComponent = corruptionbomb.AddComponent<CorruptionBomb>();
+            
             string shortDesc = "Causes widespread corruption.";
             string longDesc = "It is said that a mysterious gungeoneer from a far away\nuniverse brought this item into the Gungeon.\n\nHis excessive use of this item may be responsible for the corrupted floors some gungeoneers may stumble upon.";
-            ItemBuilder.SetupItem(corruptionBomb, shortDesc, longDesc, "ex");
-            ItemBuilder.SetCooldownType(corruptionBomb, ItemBuilder.CooldownType.Damage, 750f);
-            corruptionBomb.IgnoredByRat = true;
-            corruptionBomb.consumable = false;
-            corruptionBomb.canStack = true;
-            corruptionBomb.numberOfUses = 3;
-            corruptionBomb.m_cachedNumberOfUses = 3;
-            corruptionBomb.UsesNumberOfUsesBeforeCooldown = true;
-            corruptionBomb.quality = ItemQuality.S;
+            ItemBuilder.SetupItem(corruptionBombComponent, shortDesc, longDesc, "ex");
+            ItemBuilder.SetCooldownType(corruptionBombComponent, ItemBuilder.CooldownType.Damage, 750f);
+            corruptionBombComponent.IgnoredByRat = true;
+            corruptionBombComponent.consumable = false;
+            corruptionBombComponent.canStack = true;
+            corruptionBombComponent.numberOfUses = 3;
+            corruptionBombComponent.m_cachedNumberOfUses = 3;
+            corruptionBombComponent.UsesNumberOfUsesBeforeCooldown = true;
+            corruptionBombComponent.quality = ItemQuality.S;
+            CorruptionBombPickupID = corruptionBombComponent.PickupObjectId;
+
 
             // Bomb Minimap Icon Object
-            glitchBombMinimapObject = new GameObject("CorruptionBomb_MinimapIcon");
-            ItemBuilder.AddSpriteToObject(glitchBombMinimapObject.name, "ExpandTheGungeon/Textures/Items/corruptionbomb_minimapicon", glitchBombMinimapObject, true);
-            DontDestroyOnLoad(glitchBombMinimapObject);
-            // corruptionBomb.minimapIcon = glitchBombMinimapObject;
+            glitchBombMinimapObject = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb_MinimapIcon");
+            ItemBuilder.AddSpriteToObject(glitchBombMinimapObject, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb_minimapicon"), false, false);
+            // DontDestroyOnLoad(glitchBombMinimapObject);
+            corruptionBombComponent.minimapIcon = glitchBombMinimapObject;
 
+            List<string> spritePaths = new List<string>() {
+                "corruptionbomb_spin_01",
+                "corruptionbomb_spin_02",
+                "corruptionbomb_spin_03",
+                "corruptionbomb_spin_04",
+                "corruptionbomb_spin_05",
+                "corruptionbomb_spin_06",
+                "corruptionbomb_spin_07",
+                "corruptionbomb_spin_08",
+                "corruptionbomb_spin_09",
+                "corruptionbomb_spin_10"
+            };
 
             // Bomb Spawn FX Object
-            glitchBombSpawnObject = new GameObject("CorruptionBombSpawningFX") { layer = 26 };
-            ItemBuilder.AddSpriteToObject(glitchBombSpawnObject.name, (basePath + spritePaths[0]), glitchBombSpawnObject, false);
+            glitchBombSpawnObject = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb_Projectile");
+            ItemBuilder.AddSpriteToObject(glitchBombSpawnObject, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb_spin_01"), false, false);
             tk2dBaseSprite spriteComponent = glitchBombSpawnObject.GetComponent<tk2dBaseSprite>();
 
-            foreach (string spriteName in spritePaths) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), spriteComponent.Collection); }
+            foreach (string spriteName in spritePaths) {
+                if (spriteName != "corruptionbomb_spin_01") {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), spriteComponent.Collection);
+                }
+            }
             
             ExpandUtility.GenerateSpriteAnimator(glitchBombSpawnObject, AlwaysIgnoreTimeScale: true);
             ExpandUtility.AddAnimation(glitchBombSpawnObject.GetComponent<tk2dSpriteAnimator>(), spriteComponent.Collection, spritePaths, "CorruptionSpawn", frameRate: 7);
-            DontDestroyOnLoad(glitchBombSpawnObject);
         }
         
 

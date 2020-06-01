@@ -11,21 +11,19 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static int RockSlidePickupID;
 
-        public static void Init() {
-            
-			string name = "Rock Slide";
-			string resourcePath = "ExpandTheGungeon/Textures/Items/rockslide";
-			GameObject rockslideObject = new GameObject();
-            RockSlide rockslide = rockslideObject.AddComponent<RockSlide>();
-			ItemBuilder.AddSpriteToObject(name, resourcePath, rockslideObject, true);
-			string shortDesc = "Crushing Defeat";
+        public static GameObject RockslideObject;
+
+        public static void Init(AssetBundle expandSharedAssets1) {
+            RockslideObject = expandSharedAssets1.LoadAsset<GameObject>("Rock Slide");
+			ItemBuilder.AddSpriteToObject(RockslideObject, expandSharedAssets1.LoadAsset<Texture2D>("rockslide"), false, false);
+
+            RockSlide rockslide = RockslideObject.AddComponent<RockSlide>();
+            string shortDesc = "Crushing Defeat";
 			string longDesc = "Falling rocks are a well known threat to everyone, especially within the Gungeon.\n\nIt does not help that a long gone Gungeoneer accidentally popularized the idea of using falling debris as a weapon among the Gundead.\n\nHowever, they quickly grew tired of it, seeming too easy or effortless to eliminate Gungeoneers compared to the exhilarating experience of the combat they were forged for.";
 			ItemBuilder.SetupItem(rockslide, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(rockslide, ItemBuilder.CooldownType.Damage, 275f);
             rockslide.quality = ItemQuality.B;
-
-            string basePath = "ExpandTheGungeon/Textures/Items/Animations/rockslide/";
-
+            
             List<string> spritePaths = new List<string>() {
                 "plunger_fire_001",
                 "plunger_fire_002",
@@ -35,12 +33,12 @@ namespace ExpandTheGungeon.ItemAPI {
                 "plunger_fire_006"
             };
 
-            tk2dSprite rockslidesprite = rockslideObject.GetComponent<tk2dSprite>();
-            foreach (string sprite in spritePaths) { SpriteBuilder.AddSpriteToCollection((basePath + sprite), rockslidesprite.Collection); }
+            tk2dSprite rockslidesprite = RockslideObject.GetComponent<tk2dSprite>();
+            foreach (string sprite in spritePaths) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(sprite), rockslidesprite.Collection); }
 
-            ExpandUtility.GenerateSpriteAnimator(rockslideObject);
+            ExpandUtility.GenerateSpriteAnimator(RockslideObject);
 
-            tk2dSpriteAnimator rockslideAnimator = rockslideObject.GetComponent<tk2dSpriteAnimator>();
+            tk2dSpriteAnimator rockslideAnimator = RockslideObject.GetComponent<tk2dSpriteAnimator>();
 
             ExpandUtility.AddAnimation(rockslideAnimator, rockslidesprite.Collection, spritePaths, "Activate", frameRate: 8);
 

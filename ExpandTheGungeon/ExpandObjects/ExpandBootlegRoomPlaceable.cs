@@ -40,17 +40,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             // ExpandPrefabs.EXBootlegRoomObject.SetActive(false);
             // ExpandPrefabs.EXBootlegRoomDoorTriggers.SetActive(false);
 
-            ItemBuilder.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_BottomLayer", false, false);
-            ItemBuilder.AddSpriteToObject(m_BorderObject_West, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_ExitTiles_West.png", false, false);
-            ItemBuilder.AddSpriteToObject(m_BorderObject_East, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_ExitTiles_East.png", false, false);
-            ItemBuilder.AddSpriteToObject(m_BorderObject_North, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_ExitTiles_North.png", false, false);
-            ItemBuilder.AddSpriteToObject(m_BorderObject_South, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_ExitTiles_South.png", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorFrameObject, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_TopLayer", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorObject, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_Doors", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_West, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_DoorBlock_West", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_East, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_DoorBlock_East", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_South, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_DoorBlock_South", false, false);
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_North, "ExpandTheGungeon/Textures/BootlegRoom/BootlegRoom_DoorBlock_North", false, false);
+            ItemBuilder.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_BottomLayer"), false, false);
+            ItemBuilder.AddSpriteToObject(m_BorderObject_West, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_West.png"), false, false);
+            ItemBuilder.AddSpriteToObject(m_BorderObject_East, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_East.png"), false, false);
+            ItemBuilder.AddSpriteToObject(m_BorderObject_North, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_North.png"), false, false);
+            ItemBuilder.AddSpriteToObject(m_BorderObject_South, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_South.png"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorFrameObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_TopLayer"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_Doors"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_West, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_West"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_East, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_East"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_South, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_South"), false, false);
+            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_North, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_North"), false, false);
 
 
             

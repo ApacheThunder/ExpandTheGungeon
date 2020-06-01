@@ -164,11 +164,16 @@ namespace ExpandTheGungeon.ExpandComponents {
         
         private GameObject m_LootCratePrefab;
 
+        private tk2dSpriteCollectionData BulletManMonochromeCollection;
+        private tk2dSpriteCollectionData BulletManUpsideDownCollection;
+
         private IEnumerator Start() {
             
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER | GameManager.Instance.IsLoadingLevel | Dungeon.IsGenerating) { yield break; }
             if (ChallengeManager.Instance.ChallengeMode == ChallengeModeType.None) { yield break; }
 
+            BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
+            BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManUpsideDownTexture, null, null, false);
 
             AlreadyIgnoredForRoomClearList.Add(ExpandCustomEnemyDatabase.RatGrenadeGUID); // rat_granade
             
@@ -214,14 +219,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             RoomHandler currentRoom = GameManager.Instance.BestActivePlayer.CurrentRoom;
             if (currentRoom == null) { yield break; }
-                        
-            if (ExpandPrefabs.BulletManMonochromeCollection == null) {
-                ExpandPrefabs.BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), true);
-            }
-            if (ExpandPrefabs.BulletManUpsideDownCollection == null) {
-                ExpandPrefabs.BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManUpsideDownTexture, null, null, true);
-            }
-
+            
             FlippableCover[] AllTables = FindObjectsOfType<FlippableCover>();
 
             if (AllTables != null) {
@@ -1030,18 +1028,12 @@ namespace ExpandTheGungeon.ExpandComponents {
 	        if (targetActor.EnemyGuid == "01972dee89fc4404a5c408d50007dad5" | targetActor.EnemyGuid == "db35531e66ce41cbb81d507a34366dfe") {
                 int Selector = UnityEngine.Random.Range(0, 3);
                 if (Selector == 0) {
-	        		if (ExpandPrefabs.BulletManMonochromeCollection == null) {
-                        ExpandPrefabs.BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
-                    }
-	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManMonochromeCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
+	        		ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: BulletManMonochromeCollection, overrideShader: ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"));
 	        		targetActor.OverrideDisplayName = ("1-Bit " + targetActor.GetActorName());
 	        		targetActor.ActorName += "ALT";
 	        		return;
 	        	} else if (Selector == 1){
-                    if (ExpandPrefabs.BulletManUpsideDownCollection == null) {
-                        ExpandPrefabs.BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManUpsideDownTexture, null, null, false);
-                    }
-                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.BulletManUpsideDownCollection);
+                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: BulletManUpsideDownCollection);
 	        		targetActor.OverrideDisplayName = ("Bizarro " + targetActor.GetActorName());
 	        		targetActor.ActorName += "ALT";
 	        		return;

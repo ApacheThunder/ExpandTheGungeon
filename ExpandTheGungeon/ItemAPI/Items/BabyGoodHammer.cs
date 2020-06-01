@@ -12,86 +12,16 @@ namespace ExpandTheGungeon.ItemAPI {
 
 	public class BabyGoodHammer : PlayerItem {
 
-        private static string basePath = "ExpandTheGungeon/Textures/Items/Animations/babygoodhammer/";
-
-        private static List<string> spritePaths = new List<string>() {
-            "babygoodhammer_spawn_00",
-            "babygoodhammer_spawn_00",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_02",
-            "babygoodhammer_spawn_03",
-            "babygoodhammer_spawn_04",
-            "babygoodhammer_spawn_05",
-            "babygoodhammer_spawn_06",
-            "babygoodhammer_spawn_07",
-            "babygoodhammer_spawn_08",
-            "babygoodhammer_spawn_09",
-            "babygoodhammer_spawn_10",
-            "babygoodhammer_spawn_11",
-            "babygoodhammer_spawn_12",
-            "babygoodhammer_spawn_13",
-            "babygoodhammer_spawn_14",
-            "babygoodhammer_spawn_15",
-            "babygoodhammer_spawn_16",
-            "babygoodhammer_spawn_17",
-            "babygoodhammer_spawn_18",
-            "babygoodhammer_spawn_19",
-            "babygoodhammer_spawn_20",
-            "babygoodhammer_spawn_21",
-            "babygoodhammer_spawn_22",
-            "babygoodhammer_spawn_23",
-            "babygoodhammer_spawn_24",
-            "babygoodhammer_spawn_25"
-        };
-
-        private static List<string> spritePaths_reversed = new List<string>() {
-            "babygoodhammer_spawn_25",
-            "babygoodhammer_spawn_24",
-            "babygoodhammer_spawn_23",
-            "babygoodhammer_spawn_22",
-            "babygoodhammer_spawn_21",
-            "babygoodhammer_spawn_20",
-            "babygoodhammer_spawn_19",
-            "babygoodhammer_spawn_18",
-            "babygoodhammer_spawn_17",
-            "babygoodhammer_spawn_16",
-            "babygoodhammer_spawn_15",
-            "babygoodhammer_spawn_14",
-            "babygoodhammer_spawn_13",
-            "babygoodhammer_spawn_12",
-            "babygoodhammer_spawn_11",
-            "babygoodhammer_spawn_10",
-            "babygoodhammer_spawn_09",
-            "babygoodhammer_spawn_08",
-            "babygoodhammer_spawn_07",
-            "babygoodhammer_spawn_06",
-            "babygoodhammer_spawn_05",
-            "babygoodhammer_spawn_04",
-            "babygoodhammer_spawn_03",
-            "babygoodhammer_spawn_02",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_01",
-            "babygoodhammer_spawn_00"
-        };
-
-
         private static GameObject hammerSpawnFX;
+        private static GameObject hammerItemObject;
 
         public static string CompanionGuid;
         public static int HammerPickupID;
 
-        public static void Init() {
-            
-			string name = "Baby Good Hammer";
-			string resourcePath = "ExpandTheGungeon/Textures/Items/babygoodhammer";
-			GameObject gameObject = new GameObject();
-            BabyGoodHammer babyGoodHammer = gameObject.AddComponent<BabyGoodHammer>();
-			ItemBuilder.AddSpriteToObject(name, resourcePath, gameObject, true);
+        public static void Init(AssetBundle expandSharedAssets1) {
+            hammerItemObject = expandSharedAssets1.LoadAsset<GameObject>("Baby Good Hammer");
+            BabyGoodHammer babyGoodHammer = hammerItemObject.AddComponent<BabyGoodHammer>();
+			ItemBuilder.AddSpriteToObject(hammerItemObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer"), false, false);
 			string shortDesc = "It's Hammer Time!";
 			string longDesc = "Summons a Dead Blow Hammer.\n\nIt's cry sounds a lot like a whistle.\n\nThe closer you are to the Forge, the more powerful the hammers will be.";
 			ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
@@ -99,21 +29,89 @@ namespace ExpandTheGungeon.ItemAPI {
             babyGoodHammer.quality = ItemQuality.B;
 
             // Hammer Spawn FX Object
-            hammerSpawnFX = new GameObject("HammerSpawningFX");
-            ItemBuilder.AddSpriteToObject(hammerSpawnFX.name, (basePath + spritePaths[0]), hammerSpawnFX, false);
+            hammerSpawnFX = expandSharedAssets1.LoadAsset<GameObject>("HammerSpawningFX");
+            ItemBuilder.AddSpriteToObject(hammerSpawnFX, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_spawn_00"), false, false);
             tk2dBaseSprite spriteComponent = hammerSpawnFX.GetComponent<tk2dBaseSprite>();
+            
+            List<string> spritePaths = new List<string>() {
+                "babygoodhammer_spawn_00",
+                "babygoodhammer_spawn_00",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_02",
+                "babygoodhammer_spawn_03",
+                "babygoodhammer_spawn_04",
+                "babygoodhammer_spawn_05",
+                "babygoodhammer_spawn_06",
+                "babygoodhammer_spawn_07",
+                "babygoodhammer_spawn_08",
+                "babygoodhammer_spawn_09",
+                "babygoodhammer_spawn_10",
+                "babygoodhammer_spawn_11",
+                "babygoodhammer_spawn_12",
+                "babygoodhammer_spawn_13",
+                "babygoodhammer_spawn_14",
+                "babygoodhammer_spawn_15",
+                "babygoodhammer_spawn_16",
+                "babygoodhammer_spawn_17",
+                "babygoodhammer_spawn_18",
+                "babygoodhammer_spawn_19",
+                "babygoodhammer_spawn_20",
+                "babygoodhammer_spawn_21",
+                "babygoodhammer_spawn_22",
+                "babygoodhammer_spawn_23",
+                "babygoodhammer_spawn_24",
+                "babygoodhammer_spawn_25"
+            };
 
-            foreach (string spriteName in spritePaths) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), spriteComponent.Collection); }
+            foreach (string spriteName in spritePaths) {
+                if (spriteName != "babygoodhammer_spawn_00") {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), spriteComponent.Collection);
+                }
+            }
 
             ExpandUtility.GenerateSpriteAnimator(hammerSpawnFX);
             tk2dSpriteAnimator hammerAnimator = hammerSpawnFX.GetComponent<tk2dSpriteAnimator>();
 
+            List<string> spritePaths_reversed = new List<string>() {
+                "babygoodhammer_spawn_25",
+                "babygoodhammer_spawn_24",
+                "babygoodhammer_spawn_23",
+                "babygoodhammer_spawn_22",
+                "babygoodhammer_spawn_21",
+                "babygoodhammer_spawn_20",
+                "babygoodhammer_spawn_19",
+                "babygoodhammer_spawn_18",
+                "babygoodhammer_spawn_17",
+                "babygoodhammer_spawn_16",
+                "babygoodhammer_spawn_15",
+                "babygoodhammer_spawn_14",
+                "babygoodhammer_spawn_13",
+                "babygoodhammer_spawn_12",
+                "babygoodhammer_spawn_11",
+                "babygoodhammer_spawn_10",
+                "babygoodhammer_spawn_09",
+                "babygoodhammer_spawn_08",
+                "babygoodhammer_spawn_07",
+                "babygoodhammer_spawn_06",
+                "babygoodhammer_spawn_05",
+                "babygoodhammer_spawn_04",
+                "babygoodhammer_spawn_03",
+                "babygoodhammer_spawn_02",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_00"
+            };
+
+
             ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths, "HammerSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
             ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths_reversed, "HammerReturnSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
-            DontDestroyOnLoad(hammerSpawnFX);
 
             HammerPickupID = babyGoodHammer.PickupObjectId;
-
         }
         
 

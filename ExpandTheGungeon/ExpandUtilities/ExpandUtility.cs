@@ -25,6 +25,79 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         private static ExpandUtility m_instance;
+        
+
+        // Quick and dirty way to clone any (non engine) component.
+        // Can't be used to clone things like Texture2D/Materials. But useful for most other things things like components and scriptable objects like DungeonFlows.
+        public static void DuplicateComponent(object target, object source, bool SaveOutputToFile = false, string OutputFilepath = null) {
+            string m_CachedSerializedComponent = JsonUtility.ToJson(source);
+            if (m_CachedSerializedComponent != null) {
+                if (SaveOutputToFile && OutputFilepath != null) { Tools.LogStringToFile(m_CachedSerializedComponent, OutputFilepath); }
+                JsonUtility.FromJsonOverwrite(m_CachedSerializedComponent, target);
+            }
+        }
+
+        public static tk2dSpriteAnimator DuplicateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimator sourceAnimator, bool duplicateAnimationData = false) {
+            tk2dSpriteAnimator targetAnimator;
+
+            if (targetObject.GetComponent<tk2dSpriteAnimator>()) {
+                targetAnimator = targetObject.GetComponent<tk2dSpriteAnimator>();
+            } else {
+                targetAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
+            }
+
+            if (!string.IsNullOrEmpty(sourceAnimator.name)) { targetAnimator.name = sourceAnimator.name; }
+            targetAnimator.DefaultClipId = sourceAnimator.DefaultClipId;
+            targetAnimator.AdditionalCameraVisibilityRadius = sourceAnimator.AdditionalCameraVisibilityRadius;
+            targetAnimator.AnimateDuringBossIntros = sourceAnimator.AnimateDuringBossIntros;
+            targetAnimator.AlwaysIgnoreTimeScale = sourceAnimator.AlwaysIgnoreTimeScale;
+            targetAnimator.ForceSetEveryFrame = sourceAnimator.ForceSetEveryFrame;
+            targetAnimator.playAutomatically = sourceAnimator.playAutomatically;
+            targetAnimator.IsFrameBlendedAnimation = sourceAnimator.IsFrameBlendedAnimation;
+            targetAnimator.clipTime = sourceAnimator.clipTime;
+            targetAnimator.deferNextStartClip = sourceAnimator.deferNextStartClip;
+            if (!duplicateAnimationData) {
+                targetAnimator.Library = sourceAnimator.Library;
+            } else if (sourceAnimator.Library != null && sourceAnimator.Library.clips != null) {
+                tk2dSpriteAnimation m_NewSpriteAnimation;
+                if (targetObject.GetComponent<tk2dSpriteAnimation>()) {
+                    m_NewSpriteAnimation = targetObject.GetComponent<tk2dSpriteAnimation>();
+                } else {
+                    m_NewSpriteAnimation = targetObject.AddComponent<tk2dSpriteAnimation>();
+                }
+                List<tk2dSpriteAnimationClip> m_clipList = new List<tk2dSpriteAnimationClip>();
+                foreach (tk2dSpriteAnimationClip clip in sourceAnimator.Library.clips) { m_clipList.Add(DuplicateAnimationClip(clip)); }
+                m_NewSpriteAnimation.clips = m_clipList.ToArray();
+            }
+
+            return targetAnimator;
+        }
+
+        public static void DuplicateSpriteAnimator(tk2dSpriteAnimator targetAnimator, tk2dSpriteAnimator sourceAnimator, bool duplicateAnimationData = false) {
+            if (!string.IsNullOrEmpty(sourceAnimator.name)) { targetAnimator.name = sourceAnimator.name; }
+            targetAnimator.DefaultClipId = sourceAnimator.DefaultClipId;
+            targetAnimator.AdditionalCameraVisibilityRadius = sourceAnimator.AdditionalCameraVisibilityRadius;
+            targetAnimator.AnimateDuringBossIntros = sourceAnimator.AnimateDuringBossIntros;
+            targetAnimator.AlwaysIgnoreTimeScale = sourceAnimator.AlwaysIgnoreTimeScale;
+            targetAnimator.ForceSetEveryFrame = sourceAnimator.ForceSetEveryFrame;
+            targetAnimator.playAutomatically = sourceAnimator.playAutomatically;
+            targetAnimator.IsFrameBlendedAnimation = sourceAnimator.IsFrameBlendedAnimation;
+            targetAnimator.clipTime = sourceAnimator.clipTime;
+            targetAnimator.deferNextStartClip = sourceAnimator.deferNextStartClip;
+            if (!duplicateAnimationData) {
+                targetAnimator.Library = sourceAnimator.Library;
+            } else if (sourceAnimator.Library != null && sourceAnimator.Library.clips != null) {
+                tk2dSpriteAnimation m_NewSpriteAnimation;
+                if (targetAnimator.gameObject.GetComponent<tk2dSpriteAnimation>()) {
+                    m_NewSpriteAnimation = targetAnimator.gameObject.GetComponent<tk2dSpriteAnimation>();
+                } else {
+                    m_NewSpriteAnimation = targetAnimator.gameObject.AddComponent<tk2dSpriteAnimation>();
+                }
+                List<tk2dSpriteAnimationClip> m_clipList = new List<tk2dSpriteAnimationClip>();
+                foreach (tk2dSpriteAnimationClip clip in sourceAnimator.Library.clips) { m_clipList.Add(DuplicateAnimationClip(clip)); }
+                m_NewSpriteAnimation.clips = m_clipList.ToArray();
+            }
+        }
 
         public static ExpandNoteDoer BuildNewCustomSign(GameObject TargetPrefab, GameObject PrefabToClone, string AssetSource, string SignName, string SignText) {
             
@@ -428,15 +501,20 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
 
             if (!targetObject.GetComponent<AIActor>() && !gunAttachObjectOverride && !EnemyHasNoShooter) {
-                m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-                m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
-                if (GunAttachOffset.HasValue) {
-                    m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
+                if (!targetObject.transform.Find("GunAttachPoint")) {
+                    m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
+                    m_CachedGunAttachPoint.transform.position = targetObject.transform.position;
+                    if (GunAttachOffset.HasValue) {
+                        m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
+                    } else {
+                        m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
+                    }
+                    m_CachedGunAttachPoint.transform.parent = targetObject.transform;
                 } else {
-                    m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
+                    if (GunAttachOffset.HasValue) { targetObject.transform.Find("GunAttachPoint").transform.localPosition = GunAttachOffset.Value; }
                 }
-                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
             } else if (!targetObject.GetComponent<AIActor>() && gunAttachObjectOverride && !EnemyHasNoShooter) {
+                // if (targetObject.transform.Find("GunAttachPoint")) { Destroy(targetObject.transform.Find("GunAttachPoint")); }
                 m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
                 if (GunAttachOffset.HasValue) {
                     m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
@@ -444,6 +522,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
                 }
                 m_CachedGunAttachPoint.transform.parent = targetObject.transform;
+                
             }
 
             if (!targetObject.GetComponent<tk2dSprite>() && spriteSource) {
@@ -1439,6 +1518,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 prebuiltCollection.name = targetActor.OverrideDisplayName;
                 targetActor.sprite.Collection = prebuiltCollection;
                 targetActor.spriteAnimator.Library = spriteAnimator;
+                targetActor.sprite.SetSprite(prebuiltCollection, targetActor.sprite.spriteId);
                 return;
             } 
             tk2dSpriteCollectionData collectionData = Instantiate(targetActor.sprite.Collection);
@@ -1838,7 +1918,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             if (sourceCollection.spriteDefinitions.Length > 0) {
                 List<tk2dSpriteDefinition> m_SpriteDefinitions = new List<tk2dSpriteDefinition>();
-                foreach (tk2dSpriteDefinition spriteDefinition in sourceCollection.spriteDefinitions) { m_SpriteDefinitions.Add(spriteDefinition.Copy()); }
+                // foreach (tk2dSpriteDefinition spriteDefinition in sourceCollection.spriteDefinitions) { m_SpriteDefinitions.Add(spriteDefinition.Copy()); }
+                foreach (tk2dSpriteDefinition spriteDefinition in sourceCollection.spriteDefinitions) {
+                    m_SpriteDefinitions.Add(DuplicateSpriteDefinition(spriteDefinition));
+                }
                 if (m_SpriteDefinitions.Count > 0) {
                     if (overrideShader) {
                         foreach (tk2dSpriteDefinition spriteDefinition in m_SpriteDefinitions) {
@@ -1848,8 +1931,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
                     if (spriteSheet) {
                         foreach (tk2dSpriteDefinition spriteDefinition in m_SpriteDefinitions) {
-                            spriteDefinition.material.SetTexture("_MainTex", spriteSheet);
-                            spriteDefinition.materialInst = new Material(spriteDefinition.material);
+                            // spriteDefinition.material.SetTexture("_MainTex", spriteSheet);
+                            spriteDefinition.material.mainTexture = spriteSheet;
+                            if (spriteDefinition.materialInst) { spriteDefinition.materialInst = new Material(spriteDefinition.material); }
                         }
                     }
                     newCollection.spriteDefinitions = m_SpriteDefinitions.ToArray();
@@ -1887,7 +1971,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
                 m_runtimeAtlasPage.Apply();
             }
-            // newCollection.InitDictionary();
+            newCollection.InitDictionary();
             // newCollection.InitMaterialIds();
             return newCollection;
         }

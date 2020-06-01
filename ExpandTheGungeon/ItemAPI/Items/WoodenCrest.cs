@@ -6,13 +6,15 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static int WoodCrestID = -1;
 
-        public static void Init() {
+        public static GameObject WoodCrestObject;
 
-            string name = "Wooden Crest";
-            string resourcePath = "ExpandTheGungeon/Textures/Items/junglecrest";
-            GameObject woodenCrestObject = new GameObject();
-            WoodenCrest woodenCrest = woodenCrestObject.AddComponent<WoodenCrest>();
-            ItemBuilder.AddSpriteToObject(name, resourcePath, woodenCrestObject, true);
+        public static void Init(AssetBundle expandSharedAssets1) {
+            
+            WoodCrestObject = expandSharedAssets1.LoadAsset<GameObject>("Wooden Crest");
+            ItemBuilder.AddSpriteToObject(WoodCrestObject, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest"), false, false);
+
+            WoodenCrest woodenCrest = WoodCrestObject.AddComponent<WoodenCrest>();
+            
             string shortDesc = "Protection of Wood";
             string longDesc = "A shield made of wood. Provides fleeting projection.";
             ItemBuilder.SetupItem(woodenCrest, shortDesc, longDesc, "ex");

@@ -98,14 +98,51 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public static void ReInitFloorDefinitions() {
-            
-            bool EntryNotExist = true;
-           
-            if (GameManager.Instance && GameManager.Instance.customFloors != null) {
-                if (!GameManagerObject) { GameManagerObject = GameManager.Instance.gameObject; }
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
 
-                foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
-                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
+            bool EntryNotExist = true;
+            bool EntryNotExist2 = true;
+            
+            if (!GameManagerObject) {
+                if (!GameManager.Instance) {
+                    GameManagerObject = braveResources.LoadAsset<GameObject>("_GameManager");
+                } else {
+                    GameManagerObject = GameManager.Instance.gameObject;
+                }
+            }
+
+            foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
+                if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
+                if (definition.dungeonSceneName == "tt_jungle") {
+                    definition.priceMultiplier = 1.20000005f;
+                    definition.secretDoorHealthMultiplier = 1;
+                    definition.enemyHealthMultiplier = 1.33329999f;
+                    definition.damageCap = 300;
+                    definition.bossDpsCap = 42;
+                    definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                    JungleDefinition = definition;
+                } else if (definition.dungeonSceneName == "tt_belly") {
+                    definition.priceMultiplier = 1.39999998f;
+                    definition.secretDoorHealthMultiplier = 1;
+                    definition.enemyHealthMultiplier = 1.66659999f;
+                    definition.damageCap = 300;
+                    definition.bossDpsCap = 60;
+                    definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                    BellyDefinition = definition;
+                } else if (definition.dungeonSceneName == "tt_west") {
+                    definition.priceMultiplier = 2;
+                    definition.secretDoorHealthMultiplier = 1;
+                    definition.enemyHealthMultiplier = 2.1f;
+                    definition.damageCap = 300;
+                    definition.bossDpsCap = 78;
+                    definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                    WestDefinition = definition;
+                }
+            }
+
+            if (GameManager.Instance) {
+                foreach (GameLevelDefinition definition in GameManager.Instance.customFloors) {
+                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist2 = false; }
                     if (definition.dungeonSceneName == "tt_jungle") {
                         definition.priceMultiplier = 1.20000005f;
                         definition.secretDoorHealthMultiplier = 1;
@@ -132,10 +169,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                         WestDefinition = definition;
                     }
                 }
-
-                if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition); }
             }
 
+            if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition); }
+            if (EntryNotExist2 && GameManager.Instance) { GameManager.Instance.customFloors.Add(CanyonDefinition); }
+            braveResources = null;
         }
 
 

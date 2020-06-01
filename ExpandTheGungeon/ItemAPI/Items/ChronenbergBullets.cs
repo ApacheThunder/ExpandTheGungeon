@@ -6,13 +6,14 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static CronenbergBullets m_CachedCronenbergBulletsItem;
 
-        public static void Init() {
+        private static GameObject CronebergItemObject;
 
-            string name = "Cronenberg Bullets";
-            string resourcePath = "ExpandTheGungeon/Textures/Items/cronenbergbullets";
-            GameObject targetObject = new GameObject();
-            CronenbergBullets chronenbergBullets = targetObject.AddComponent<CronenbergBullets>();
-            ItemBuilder.AddSpriteToObject(name, resourcePath, targetObject, false);
+        public static void Init(AssetBundle expandSharedAssets1) {
+            CronebergItemObject = expandSharedAssets1.LoadAsset<GameObject>("Cronenberg Bullets");
+            ItemBuilder.AddSpriteToObject(CronebergItemObject, expandSharedAssets1.LoadAsset<Texture2D>("cronenbergbullets"), false, false);
+
+            CronenbergBullets chronenbergBullets = CronebergItemObject.AddComponent<CronenbergBullets>();
+            
             string shortDesc = "Creates abominations...";
             string longDesc = "Legends say a mad scientist tried to experiment on the gundead to create monsters to do his bidding.\n\nHe ultimiately parished by the hands of his own abominations. The item he crafted was thought to be lost to the Gungeon...Until some lucky (or unlucky?) Gungeoneers found it.";
             ItemBuilder.SetupItem(chronenbergBullets, shortDesc, longDesc, "ex");

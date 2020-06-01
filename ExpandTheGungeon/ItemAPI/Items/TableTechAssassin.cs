@@ -9,22 +9,19 @@ namespace ExpandTheGungeon.ItemAPI {
     
     public class TableTechAssassin : PassiveItem {
 
-        public static void Init() {
+        public static GameObject TableTechAssasinObject;
 
+        public static void Init(AssetBundle expandSharedAssets1) {
             TableTechAssassinHook.TableExplosionData = ExpandUtility.GenerateExplosionData(damage: 60);
-            
-            string itemName = "Table Tech Assassin";
-            string resourceName = "ExpandTheGungeon/Textures/Items/tabletech_assassin";            
-            GameObject itemObj = new GameObject(itemName);
-            TableTechAssassin item = itemObj.AddComponent<TableTechAssassin>();
-            ItemBuilder.AddSpriteToObject(itemName, resourceName, itemObj);
-
-            
+                    
+            TableTechAssasinObject = expandSharedAssets1.LoadAsset<GameObject>("Table Tech Assassin");
+            TableTechAssassin tableTechAssassin = TableTechAssasinObject.AddComponent<TableTechAssassin>();
+            ItemBuilder.AddSpriteToObject(TableTechAssasinObject, expandSharedAssets1.LoadAsset<Texture2D>("tabletech_assassin"), false, false);
+                        
             string shortDesc = "Betray the Flipper";
-            // string longDesc = "This forbidden technique causes flipped tables to increase exponentially in mass, collapsing almost immediately.\n\nAn apocryphal text of the \"Tabla Sutra.\" Of that which we cannot flip, we must pass over in silence.";
-            string longDesc = "Description Pending...";
-            ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");
-            item.quality = ItemQuality.D;
+            string longDesc = "A forbidden technique thought lost was recoverd in the Gungeon.\n\nAll that was written was this: \n\n 'Do upon the flipper that which the flipper had done to you'";
+            ItemBuilder.SetupItem(tableTechAssassin, shortDesc, longDesc, "ex");
+            tableTechAssassin.quality = ItemQuality.D;
         }
 
         public override void Pickup(PlayerController player) {

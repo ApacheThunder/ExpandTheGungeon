@@ -18,6 +18,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Companions
         public static GameObject HammerCompanionPrefab;
+        public static GameObject FriendlyCultistPrefab;
 
         // Normal Enemies
         public static GameObject RatGrenadePrefab;
@@ -30,25 +31,16 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject AggressiveCronenbergPrefab;
 
         // Custom/Modified bosses
-        public static GameObject KillStumpsDummy;
+        // public static GameObject KillStumpsDummy;
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
-
-        // Corpse Objects
-        public static GameObject BootlegBulletManCorpse;
-        public static GameObject BootlegBulletManBandanaCorpse;
-        public static GameObject BootlegShotgunManRedCorpse;
-        public static GameObject BootlegShotgunManBlueCorpse;
-
+        
         // Misc Objects
         public static GameObject CronenbergCorpseDebrisObject1;
         public static GameObject CronenbergCorpseDebrisObject2;
         public static GameObject CronenbergCorpseDebrisObject3;
         public static GameObject CronenbergCorpseDebrisObject4;
-        public static GameObject AggressiveCronenbergCorpseDebrisObject1;
-        public static GameObject AggressiveCronenbergCorpseDebrisObject2;
-        public static GameObject AggressiveCronenbergCorpseDebrisObject3;
-        public static GameObject AggressiveCronenbergCorpseDebrisObject4;
+        public static GameObject AggressiveCronenbergCorpseDebrisObject;
 
         public static Texture2D[] RatGrenadeTextures;
 
@@ -65,6 +57,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         // public static string KillStumpsGUID;
         public static string ParasiteBossGUID;
         public static string com4nd0GUID;
+        public static string FriendlyCultistGUID;
 
         public static void InitPrefabs() {
             // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
@@ -77,25 +70,31 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
             );
-            
-            BuildBabyGoodHammerPrefab(out HammerCompanionPrefab);
 
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+
+            // Real Prefabs
+            BuildBabyGoodHammerPrefab(expandSharedAssets1, out HammerCompanionPrefab);
+            BuildBootlegBullatPrefab(expandSharedAssets1, out BootlegBullatPrefab);
+            BuildBootlegBulletManPrefab(expandSharedAssets1, out BootlegBulletManPrefab);
+            BuildBootlegBulletManBandanaPrefab(expandSharedAssets1, out BootlegBulletManBandanaPrefab);
+            BuildBootlegShotgunManRedPrefab(expandSharedAssets1, out BootlegShotgunManRedPrefab);
+            BuildBootlegShotgunManBluePrefab(expandSharedAssets1, out BootlegShotgunManBluePrefab);
+            BuildCronenbergPrefab(expandSharedAssets1, out CronenbergPrefab);
+            BuildAggressiveCronenbergPrefab(expandSharedAssets1, out AggressiveCronenbergPrefab);
+            BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
+
+            // Fake Prefabs
             BuildRatGrenadePrefab(out RatGrenadePrefab);
-            BuildBootlegBullatPrefab(out BootlegBullatPrefab);
-            BuildBootlegBulletManPrefab(out BootlegBulletManPrefab);
-            BuildBootlegBulletManBandanaPrefab(out BootlegBulletManBandanaPrefab);
-            BuildBootlegShotgunManRedPrefab(out BootlegShotgunManRedPrefab);
-            BuildBootlegShotgunManBluePrefab(out BootlegShotgunManBluePrefab);
-            BuildCronenbergPrefab(out CronenbergPrefab);
-            // BuildKillStumpsPrefab(out KillStumpsDummy);
             BuildParasiteBossPrefab(out MonsterParasitePrefab);
-            BuildAggressiveCronenbergPrefab(out AggressiveCronenbergPrefab);
             BuildJungleBossPrefab(out com4nd0BossPrefab);
 
             // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
             UpdateMTGSpawnPool();
             
             Game.Enemies.LockNamespace("gungeon");
+
+            expandSharedAssets1 = null;
         }
 
         public static void UpdateMTGSpawnPool() {
@@ -212,16 +211,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             RatGrenadeGUID = m_CachedAIActor.EnemyGuid;
         }
 
-        public static void BuildBabyGoodHammerPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBabyGoodHammerPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
             AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("01972dee89fc4404a5c408d50007dad5");
 
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Baby Good Hammer") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/Items/Animations/babygoodhammer/AIActorAnimations/";
-
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("EXBabyGoodHammer");
+                        
             List<string> IdleSpriteList = new List<string>() {
                 "babygoodhammer_idle_down_01",
                 "babygoodhammer_idle_down_02",
@@ -241,13 +238,17 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "babygoodhammer_move_right_02"
             };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_idle_down_01"), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in IdleSpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-            foreach (string spriteName in MoveLeftSpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-            foreach (string spriteName in MoveRightSpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
+            foreach (string spriteName in IdleSpriteList) {
+                if (spriteName != "babygoodhammer_idle_down_01") {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
+            foreach (string spriteName in MoveLeftSpriteList) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection); }
+            foreach (string spriteName in MoveRightSpriteList) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection); }
 
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, false, false, false, true, ClipFps: 6);
 
@@ -399,19 +400,16 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, false);
             BabyGoodHammer.CompanionGuid = m_CachedAIActor.EnemyGuid;
-            DontDestroyOnLoad(m_CachedTargetObject);
 
             m_CachedEnemyActor = null;
             return;
         }
 
-        public static void BuildBootlegBullatPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBootlegBullatPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Bootleg Bullat") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/BootlegEnemies/Bullat/";
-
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Bootleg Bullat");
+            
             List<string> SpriteList = new List<string>() {
                 "bullat_idle_001",
                 "bullat_idle_002",
@@ -441,11 +439,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "bullat_die_004"
             };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleSpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != IdleSpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
             
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, clipTime: 0, ClipFps: 0);
 
@@ -585,25 +587,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             BootlegBullatGUID = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
             return;
         }
 
-        public static void BuildBootlegBulletManPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBootlegBulletManPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
             AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("01972dee89fc4404a5c408d50007dad5"); //bullet_kin
-            BootlegBulletManCorpse = Instantiate(m_CachedEnemyActor.CorpseObject);
-            BootlegBulletManCorpse.SetActive(false);
-            BootlegBulletManCorpse.name = "Bootleg Bulletman Corpse";            
-            FakePrefab.MarkAsFakePrefab(BootlegBulletManCorpse);
-            DontDestroyOnLoad(BootlegBulletManCorpse);
-
-
+            
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Bootleg BulletMan") { layer = 28 };
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Bootleg BulletMan");
 
-            string basePath = "ExpandTheGungeon/Textures/BootlegEnemies/BulletMan/";
-
+            
             List<string> SpriteList = new List<string>() {
                 "bulletman_cover_left_idle_001",
                 "bulletman_cover_left_leap_001",
@@ -748,13 +742,17 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             List<string> DeathSpriteList = new List<string>() { "bulletman_corpse", "bulletman_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleDownSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != IdleDownSpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
 
-            BootlegBulletManCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
+            // BootlegBulletManCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
 
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
@@ -794,13 +792,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
 
 
-            GameObject m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-            m_CachedGunAttachPoint.transform.position = (m_CachedTargetObject.transform.position + new Vector3(0, 0.2f, 0));
-            m_CachedGunAttachPoint.transform.parent = m_CachedTargetObject.transform;
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
 
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegPistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "a52cfba8-f141-4a98-9022-48816201f834", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "a52cfba8-f141-4a98-9022-48816201f834", null, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1037,27 +1033,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             BootlegBulletManGUID = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
+            // DontDestroyOnLoad(m_CachedTargetObject);
 
             m_CachedEnemyActor = null;
             return;
         }
 
-        public static void BuildBootlegBulletManBandanaPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBootlegBulletManBandanaPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
             AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
-            BootlegBulletManBandanaCorpse = Instantiate(m_CachedEnemyActor.CorpseObject);
-            BootlegBulletManBandanaCorpse.SetActive(false);
-            BootlegBulletManBandanaCorpse.name = "Bootleg Bulletman Bandana Corpse";
-            FakePrefab.MarkAsFakePrefab(BootlegBulletManBandanaCorpse);
-            DontDestroyOnLoad(BootlegBulletManBandanaCorpse);
 
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Bootleg BulletMan(Bandana)") { layer = 28 };
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Bootleg BulletMan Bandana");
 
-            string basePath = "ExpandTheGungeon/Textures/BootlegEnemies/BulletManBandana/";
-
+            
             List<string> SpriteList = new List<string>() {
                 "bulletmanbandana_hit_left_001",
                 "bulletmanbandana_hit_left_002",
@@ -1198,14 +1188,16 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             List<string> DeathSpriteList = new List<string>() { "bulletmanbandana_corpse", "bulletmanbandana_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleDownSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-
-            BootlegBulletManBandanaCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
-
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != IdleDownSpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
+            
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
@@ -1243,14 +1235,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 8);
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
 
-            GameObject m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-            m_CachedGunAttachPoint.transform.position = (m_CachedTargetObject.transform.position + new Vector3(0f, 0.2f, 0));
-            m_CachedGunAttachPoint.transform.parent = m_CachedTargetObject.transform;
-
-            
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
+                        
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegMachinePistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "7093253e-a118-4813-8feb-703a1ad31665", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegBulletManBandanaCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "7093253e-a118-4813-8feb-703a1ad31665", null, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1469,27 +1458,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             BootlegBulletManBandanaGUID = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
-
+            
             m_CachedEnemyActor = null;
             return;
         }
 
-        public static void BuildBootlegShotgunManRedPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBootlegShotgunManRedPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
             AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            BootlegShotgunManRedCorpse = Instantiate(m_CachedEnemyActor.CorpseObject);
-            BootlegShotgunManRedCorpse.SetActive(false);
-            BootlegShotgunManRedCorpse.name = "Bootleg Shotgun Man(Red) Corpse";
-            FakePrefab.MarkAsFakePrefab(BootlegShotgunManRedCorpse);
-            DontDestroyOnLoad(BootlegShotgunManRedCorpse);
 
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Bootleg ShotgunMan(Red)") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/BootlegEnemies/ShotgunManRed/";
-
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Bootleg ShotgunMan Red");
+                        
             List<string> SpriteList = new List<string>() {
                 "shotgunman_red_up",
                 "shotgunman_red_down",
@@ -1590,14 +1571,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_red_corpse", "shotgunman_red_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleDownSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-
-            BootlegShotgunManRedCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
-
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != IdleDownSpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
+                        
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
@@ -1624,14 +1607,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
-            GameObject m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-            m_CachedGunAttachPoint.transform.position = (m_CachedTargetObject.transform.position + new Vector3(0, 0.2f, 0));
-            m_CachedGunAttachPoint.transform.parent = m_CachedTargetObject.transform;
-
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "01e4e238-89bb-4b30-b93a-ae17dc19e748", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManRedCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "01e4e238-89bb-4b30-b93a-ae17dc19e748", null, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1837,27 +1817,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             BootlegShotgunManRedGUID = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
-
+            
             m_CachedEnemyActor = null;
             return;
         }
 
-        public static void BuildBootlegShotgunManBluePrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildBootlegShotgunManBluePrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
             AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
-            BootlegShotgunManBlueCorpse = Instantiate(m_CachedEnemyActor.CorpseObject);
-            BootlegShotgunManBlueCorpse.SetActive(false);
-            BootlegShotgunManBlueCorpse.name = "Bootleg Shotgun Man(Blue) Corpse";
-            FakePrefab.MarkAsFakePrefab(BootlegShotgunManBlueCorpse);
-            DontDestroyOnLoad(BootlegShotgunManBlueCorpse);
 
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Bootleg ShotgunMan(Blue)") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/BootlegEnemies/ShotgunManBlue/";
-
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Bootleg ShotgunMan Blue");
+            
             List<string> SpriteList = new List<string>() {
                 "shotgunman_blue_up",
                 "shotgunman_blue_down",
@@ -1958,13 +1930,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_blue_corpse", "shotgunman_blue_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + IdleDownSpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-
-            BootlegShotgunManBlueCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != IdleDownSpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
 
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
@@ -1992,14 +1966,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
-            GameObject m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
-            m_CachedGunAttachPoint.transform.position = (m_CachedTargetObject.transform.position + new Vector3(0, 0.2f, 0));
-            m_CachedGunAttachPoint.transform.parent = m_CachedTargetObject.transform;
-
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "f7c0b0ab-3d80-4855-9fd6-38861af1147a", null, instantiateCorpseObject: false, ExternalCorpseObject: BootlegShotgunManBlueCorpse, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "f7c0b0ab-3d80-4855-9fd6-38861af1147a", null, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2205,19 +2176,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             BootlegShotgunManBlueGUID = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
-
             m_CachedEnemyActor = null;
             return;
         }
         
-        public static void BuildCronenbergPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
+        public static void BuildCronenbergPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
             GameObject m_DummyCorpseObject = null;
 
-            m_CachedTargetObject = new GameObject("Cronenberg Abomination") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/MiscEnemies/Cronenberg/";
-
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Cronenberg Abomination");
+            
             List<string> SpriteList = new List<string>() {
                 "Cronenberg_Idle_001",
                 "Cronenberg_Idle_002",
@@ -2266,11 +2233,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             List<string> DeathSpriteList = new List<string>() { "Cronenberg_Die_001", "Cronenberg_Die_002", "Cronenberg_Die_003" };
             
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + SpriteList[0]), false, isFakeprefab);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]), false, false);
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != SpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
                         
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
@@ -2322,14 +2293,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_BloodGoopDoer.DispersalMinCoherency = 0.2f;
                 m_BloodGoopDoer.DispersalMaxCoherency = 1;
 
-                CronenbergCorpseDebrisObject1 = new GameObject("CronenbergCorpseFragment_01") { layer = 22 };
-                CronenbergCorpseDebrisObject2 = new GameObject("CronenbergCorpseFragment_02") { layer = 22 };
-                CronenbergCorpseDebrisObject3 = new GameObject("CronenbergCorpseFragment_03") { layer = 22 };
-                CronenbergCorpseDebrisObject4 = new GameObject("CronenbergCorpseFragment_04") { layer = 22 };
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject1, (basePath + "Cronenberg_Fragment_01"), false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject2, (basePath + "Cronenberg_Fragment_02"), false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject3, (basePath + "Cronenberg_Fragment_03"), false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject4, (basePath + "Cronenberg_Fragment_04"), false);
+                CronenbergCorpseDebrisObject1 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_01");
+                CronenbergCorpseDebrisObject2 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_02");
+                CronenbergCorpseDebrisObject3 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_03");
+                CronenbergCorpseDebrisObject4 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_04");
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject1, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_01"), false, false);
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject2, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_02"), false, false);
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject3, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_03"), false, false);
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject4, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"), false, false);
 
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject1);
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject2);
@@ -2344,10 +2315,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_GenerateCronenbergDebris(CronenbergCorpseDebrisObject2, m_BloodGoopDoer.goopDefinition);
                 m_GenerateCronenbergDebris(CronenbergCorpseDebrisObject3, m_BloodGoopDoer.goopDefinition);
                 m_GenerateCronenbergDebris(CronenbergCorpseDebrisObject4, m_BloodGoopDoer.goopDefinition);
-                DontDestroyOnLoad(CronenbergCorpseDebrisObject1);
-                DontDestroyOnLoad(CronenbergCorpseDebrisObject2);
-                DontDestroyOnLoad(CronenbergCorpseDebrisObject3);
-                DontDestroyOnLoad(CronenbergCorpseDebrisObject4);
 
                 ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
                 m_Exploder.shardClusters = new ShardCluster[] {
@@ -2370,7 +2337,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_CachedMutantArmGun = null;
             }
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "0a2433d6-e078-4eef-b287-62c5c127d0b3", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "0a2433d6e0784eefb28762c5c127d0b3", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
                         
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2491,13 +2458,357 @@ namespace ExpandTheGungeon.ExpandObjects {
             CronenbergBullets.m_CachedCronenbergBulletsItem.TransmogTargetGuid = m_CachedAIActor.EnemyGuid;
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
             return;
         }
 
-        public static void BuildKillStumpsPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+        public static void BuildAggressiveCronenbergPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            GameObject m_DummyCorpseObject = null;
 
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Angry Cronenberg Abomination");
+            
+            List<string> SpriteList = new List<string>() {
+                "berg_tall_idle_front_001",
+                "berg_tall_idle_front_002",
+                "berg_tall_idle_front_003",
+                "berg_tall_idle_front_004",
+                "berg_tall_idle_back_001",
+                "berg_tall_idle_back_002",
+                "berg_tall_idle_back_003",
+                "berg_tall_idle_back_004",
+                "berg_tall_run_left_001",
+                "berg_tall_run_left_002",
+                "berg_tall_run_left_003",
+                "berg_tall_run_left_004",
+                "berg_tall_run_left_005",
+                "berg_tall_run_left_006",
+                "berg_tall_run_right_001",
+                "berg_tall_run_right_002",
+                "berg_tall_run_right_003",
+                "berg_tall_run_right_004",
+                "berg_tall_run_right_005",
+                "berg_tall_run_right_006",
+                "berg_tall_burst_001",
+                "berg_tall_burst_002",
+                "berg_tall_burst_003",
+                "berg_tall_run_back_left_001",
+                "berg_tall_run_back_left_002",
+                "berg_tall_run_back_left_003",
+                "berg_tall_run_back_left_004",
+                "berg_tall_run_back_left_005",
+                "berg_tall_run_back_left_006",
+                "berg_tall_run_back_right_001",
+                "berg_tall_run_back_right_002",
+                "berg_tall_run_back_right_003",
+                "berg_tall_run_back_right_004",
+                "berg_tall_run_back_right_005",
+                "berg_tall_run_back_right_006",
+                "berg_tall_spawn_001",
+                "berg_tall_spawn_002",
+                "berg_tall_spawn_003",
+                "berg_tall_spawn_004",
+                "berg_tall_spawn_005"
+            };
 
+            List<string> IdleFrontSpriteList = new List<string>() {
+                "berg_tall_idle_front_001",
+                "berg_tall_idle_front_002",
+                "berg_tall_idle_front_003",
+                "berg_tall_idle_front_004"
+            };
+
+            List<string> IdleBackSpriteList = new List<string>() {
+                "berg_tall_idle_back_001",
+                "berg_tall_idle_back_002",
+                "berg_tall_idle_back_003",
+                "berg_tall_idle_back_004"
+            };
+
+            List<string> MoveFrontLeftSpriteList = new List<string>() {
+                "berg_tall_run_left_001",
+                "berg_tall_run_left_002",
+                "berg_tall_run_left_003",
+                "berg_tall_run_left_004",
+                "berg_tall_run_left_005",
+                "berg_tall_run_left_006"
+            };
+
+            List<string> MoveFrontRightSpriteList = new List<string>() {
+                "berg_tall_run_right_001",
+                "berg_tall_run_right_002",
+                "berg_tall_run_right_003",
+                "berg_tall_run_right_004",
+                "berg_tall_run_right_005",
+                "berg_tall_run_right_006"
+            };
+
+            List<string> MoveBackLeftSpriteList = new List<string>() {
+                "berg_tall_run_back_left_001",
+                "berg_tall_run_back_left_002",
+                "berg_tall_run_back_left_003",
+                "berg_tall_run_back_left_004",
+                "berg_tall_run_back_left_005",
+                "berg_tall_run_back_left_006"
+            };
+
+            List<string> MoveBackRightSpriteList = new List<string>() {
+                "berg_tall_run_back_right_001",
+                "berg_tall_run_back_right_002",
+                "berg_tall_run_back_right_003",
+                "berg_tall_run_back_right_004",
+                "berg_tall_run_back_right_005",
+                "berg_tall_run_back_right_006"
+            };
+
+            
+            List<string> SpawnSpriteList = new List<string>() {
+                "berg_tall_spawn_001",
+                "berg_tall_spawn_002",
+                "berg_tall_spawn_003",
+                "berg_tall_spawn_004",
+                "berg_tall_spawn_005"
+            };
+            
+            List<string> DeathSpriteList = new List<string>() { "berg_tall_burst_001", "berg_tall_burst_002", "berg_tall_burst_003" };
+            
+
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]), false, false);
+
+            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
+
+            foreach (string spriteName in SpriteList) {
+                if (spriteName != SpriteList[0]) {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
+                }
+            }
+                        
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
+
+            tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "idle_front", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "idle_back", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveFrontLeftSpriteList, "move_front_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveFrontRightSpriteList, "move_front_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveBackLeftSpriteList, "move_back_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveBackRightSpriteList, "move_back_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            
+            if (m_SpawnAnimation != null && m_DeathAnimation != null && m_HitAnimation != null) {
+                m_DeathAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Die_01";
+                m_DeathAnimation.frames[0].triggerEvent = true;
+                m_HitAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Damage_01";
+                m_HitAnimation.frames[0].triggerEvent = true;
+            }
+
+            
+            Gun m_CachedMutantArmGun = (PickupObjectDatabase.GetById(333) as Gun);
+
+            if (m_CachedMutantArmGun) {
+                GoopDoer m_BloodGoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
+                m_BloodGoopDoer.goopDefinition = m_CachedMutantArmGun.singleModule.projectiles[0].gameObject.GetComponent<GoopModifier>().goopDefinition;
+                m_BloodGoopDoer.positionSource = GoopDoer.PositionSource.HitBoxCenter;
+                m_BloodGoopDoer.updateTiming = GoopDoer.UpdateTiming.Always;
+                m_BloodGoopDoer.updateFrequency = 0.05f;
+                m_BloodGoopDoer.isTimed = false;
+                m_BloodGoopDoer.goopTime = 1;
+                m_BloodGoopDoer.updateOnPreDeath = true;
+                m_BloodGoopDoer.updateOnDeath = false;
+                m_BloodGoopDoer.updateOnAnimFrames = true;
+                m_BloodGoopDoer.updateOnCollision = false;
+                m_BloodGoopDoer.updateOnGrounded = false;
+                m_BloodGoopDoer.updateOnDestroy = false;
+                m_BloodGoopDoer.defaultGoopRadius = 1.8f;
+                m_BloodGoopDoer.suppressSplashes = false;
+                m_BloodGoopDoer.goopSizeVaries = true;
+                m_BloodGoopDoer.varyCycleTime = 0.9f;
+                m_BloodGoopDoer.radiusMin = 1f;
+                m_BloodGoopDoer.radiusMax = 1.5f;
+                m_BloodGoopDoer.goopSizeRandom = true;
+                m_BloodGoopDoer.UsesDispersalParticles = false;
+                m_BloodGoopDoer.DispersalDensity = 3;
+                m_BloodGoopDoer.DispersalMinCoherency = 0.2f;
+                m_BloodGoopDoer.DispersalMaxCoherency = 1;
+
+                AggressiveCronenbergCorpseDebrisObject = expandSharedAssets1.LoadAsset<GameObject>("AngryCronenbergCorpseFragment");
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"), false, false);
+
+                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject);
+                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
+                
+                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject, m_BloodGoopDoer.goopDefinition);
+
+                ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
+                m_Exploder.shardClusters = new ShardCluster[] {
+                    new ShardCluster() {
+                        minFromCluster = 6,
+                        maxFromCluster = 10,
+                        forceMultiplier = 4,
+                        forceAxialMultiplier = new Vector3(1.25f, 1.25f, 1.25f),
+                        rotationMultiplier = 1.65f,
+                        clusterObjects = new DebrisObject[] {
+                            AggressiveCronenbergCorpseDebrisObject.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject.GetComponent<DebrisObject>(),
+                            AggressiveCronenbergCorpseDebrisObject.GetComponent<DebrisObject>()
+                        }
+                    }
+                };
+                m_Exploder.spawnShardsOnDeath = true;
+                m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
+                m_CachedMutantArmGun = null;
+            }
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "6d2d7a845e464d3ca453fe1fff5fed84", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+                        
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            m_CachedAIActor.HasShadow = false;
+            m_CachedAIActor.MovementSpeed = 5f;
+            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            m_CachedAIActor.procedurallyOutlined = true;
+            m_CachedAIActor.EnemySwitchState = string.Empty;
+            m_CachedAIActor.PreventFallingInPitsEver = true;
+            m_CachedAIActor.IgnoreForRoomClear = false;
+            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.CanTargetEnemies = true;
+            m_CachedAIActor.CanTargetPlayers = false;
+            m_CachedAIActor.CollisionKnockbackStrength = 5;
+            m_CachedAIActor.CollisionDamage = 1;
+            m_CachedAIActor.DiesOnCollison = true;
+            m_CachedAIActor.healthHaver.SetHealthMaximum(25);
+            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(15);
+
+            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyCollider,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 2,
+                    ManualOffsetY = 0,
+                    ManualWidth = 14,
+                    ManualHeight = 16,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyHitBox,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 2,
+                    ManualOffsetY = 0,
+                    ManualWidth = 15,
+                    ManualHeight = 29,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+                        
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "idle",
+                    AnimNames = new string[2],
+                    Flipped = new DirectionalAnimation.FlipType[2]
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "move",
+                    AnimNames = new string[4],
+                    Flipped = new DirectionalAnimation.FlipType[4]
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "hit",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "die",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.Single,
+                            Prefix = "die",
+                            AnimNames = new string[1],
+                            Flipped = new DirectionalAnimation.FlipType[1]
+                        }
+                    }
+                };
+            }
+            
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = false,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new SeekTargetBehavior() {
+                    StopWhenInRange = false,
+                    CustomRange = 6,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.5f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+            
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 1f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\AngryCronenberg_BehaviorScript.txt");
+
+            AggressiveCronenbergGUID = m_CachedAIActor.EnemyGuid;
+
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+            return;
+        }
+        
+        /*public static void BuildKillStumpsPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+            
             AIActorDummy KillPillarsTemplate = (GetOrLoadByGuid_Orig("3f11bbbc439c4086a180eb0fb9990cb4") as AIActorDummy);
             
             m_CachedTargetObject = new GameObject("BossStumpsDummy", new Type[] { typeof(SpeculativeRigidbody), typeof(HitEffectHandler), typeof(AIActorDummy) }) { layer = 0 };
@@ -2684,7 +2995,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
             }
-        }
+        }*/
 
         public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
@@ -2700,7 +3011,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetAIActor.ActorName = "Otherwordly Parasite";
 
             EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
-            ParasiteEncounterable.EncounterGuid = "afa1216f-8471-4d73-af66-d613627397cc";
+            ParasiteEncounterable.EncounterGuid = "afa1216f84714d73af66d613627397cc";
             ParasiteEncounterable.journalData.PrimaryDisplayName = "Parasatic Abomination";
             ParasiteEncounterable.journalData.NotificationPanelDescription = "Parasatic horror inside the beast.";
             ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This abomination may have been responsible for the rampage of the giant worm monster.";
@@ -2780,312 +3091,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 DontDestroyOnLoad(m_CachedTargetObject);
             }
         }
-
-        public static void BuildAggressiveCronenbergPrefab(out GameObject m_CachedTargetObject, bool isFakeprefab = true) {
-            GameObject m_DummyCorpseObject = null;
-
-            m_CachedTargetObject = new GameObject("Angry Cronenberg Abomination") { layer = 28 };
-
-            string basePath = "ExpandTheGungeon/Textures/MiscEnemies/Cronenberg/";
-
-            List<string> SpriteList = new List<string>() {
-                "Cronenberg_Idle_001",
-                "Cronenberg_Idle_002",
-                "Cronenberg_Idle_003",
-                "Cronenberg_Idle_004",
-                "Cronenberg_Move_001",
-                "Cronenberg_Move_002",
-                "Cronenberg_Move_003",
-                "Cronenberg_Move_004",
-                "Cronenberg_Move_005",
-                "Cronenberg_Spawn_001",
-                "Cronenberg_Spawn_002",
-                "Cronenberg_Spawn_003",
-                "Cronenberg_Spawn_004",
-                "Cronenberg_Spawn_005",
-                "Cronenberg_Spawn_006",
-                "Cronenberg_Die_001",
-                "Cronenberg_Die_002",
-                "Cronenberg_Die_003"
-            };
-
-            List<string> IdleSpriteList = new List<string>() {
-                "Cronenberg_Idle_001",
-                "Cronenberg_Idle_002",
-                "Cronenberg_Idle_003",
-                "Cronenberg_Idle_004"
-            };
-
-            List<string> MoveSpriteList = new List<string>() {
-                "Cronenberg_Move_001",
-                "Cronenberg_Move_002",
-                "Cronenberg_Move_003",
-                "Cronenberg_Move_004",
-                "Cronenberg_Move_005"
-            };
-                        
-            List<string> SpawnSpriteList = new List<string>() {
-                "Cronenberg_Spawn_001",
-                "Cronenberg_Spawn_002",
-                "Cronenberg_Spawn_003",
-                "Cronenberg_Spawn_004",
-                "Cronenberg_Spawn_005",
-                "Cronenberg_Spawn_006",
-            };
-            
-            List<string> DeathSpriteList = new List<string>() { "Cronenberg_Die_001", "Cronenberg_Die_002", "Cronenberg_Die_003" };
-            
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, (basePath + SpriteList[0]), false, isFakeprefab);
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) { SpriteBuilder.AddSpriteToCollection((basePath + spriteName), m_CachedSprite.Collection); }
-                        
-            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
-
-            tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
-            
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveSpriteList, "move", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            
-            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            
-            if (m_SpawnAnimation != null && m_DeathAnimation != null && m_HitAnimation != null) {
-                // m_SpawnAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Spawn_01";
-                // m_SpawnAnimation.frames[0].triggerEvent = true;
-                m_DeathAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Die_01";
-                m_DeathAnimation.frames[0].triggerEvent = true;
-                m_HitAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Damage_01";
-                m_HitAnimation.frames[0].triggerEvent = true;
-            }
-
-            
-            Gun m_CachedMutantArmGun = (PickupObjectDatabase.GetById(333) as Gun);
-
-            if (m_CachedMutantArmGun) {
-                GoopDoer m_BloodGoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
-                m_BloodGoopDoer.goopDefinition = m_CachedMutantArmGun.singleModule.projectiles[0].gameObject.GetComponent<GoopModifier>().goopDefinition;
-                m_BloodGoopDoer.positionSource = GoopDoer.PositionSource.HitBoxCenter;
-                m_BloodGoopDoer.updateTiming = GoopDoer.UpdateTiming.Always;
-                m_BloodGoopDoer.updateFrequency = 0.05f;
-                m_BloodGoopDoer.isTimed = false;
-                m_BloodGoopDoer.goopTime = 1;
-                m_BloodGoopDoer.updateOnPreDeath = true;
-                m_BloodGoopDoer.updateOnDeath = false;
-                m_BloodGoopDoer.updateOnAnimFrames = true;
-                m_BloodGoopDoer.updateOnCollision = false;
-                m_BloodGoopDoer.updateOnGrounded = false;
-                m_BloodGoopDoer.updateOnDestroy = false;
-                m_BloodGoopDoer.defaultGoopRadius = 1.8f;
-                m_BloodGoopDoer.suppressSplashes = false;
-                m_BloodGoopDoer.goopSizeVaries = true;
-                m_BloodGoopDoer.varyCycleTime = 0.9f;
-                m_BloodGoopDoer.radiusMin = 1.8f;
-                m_BloodGoopDoer.radiusMax = 2;
-                m_BloodGoopDoer.goopSizeRandom = true;
-                m_BloodGoopDoer.UsesDispersalParticles = false;
-                m_BloodGoopDoer.DispersalDensity = 3;
-                m_BloodGoopDoer.DispersalMinCoherency = 0.2f;
-                m_BloodGoopDoer.DispersalMaxCoherency = 1;
-
-                AggressiveCronenbergCorpseDebrisObject1 = new GameObject("AngryCronenbergCorpseFragment_01") { layer = 22 };
-                AggressiveCronenbergCorpseDebrisObject2 = new GameObject("AngryCronenbergCorpseFragment_02") { layer = 22 };
-                AggressiveCronenbergCorpseDebrisObject3 = new GameObject("AngryCronenbergCorpseFragment_03") { layer = 22 };
-                AggressiveCronenbergCorpseDebrisObject4 = new GameObject("AngryCronenbergCorpseFragment_04") { layer = 22 };
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject1, (basePath + "Cronenberg_Fragment_01"), false);
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject2, (basePath + "Cronenberg_Fragment_02"), false);
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject3, (basePath + "Cronenberg_Fragment_03"), false);
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject4, (basePath + "Cronenberg_Fragment_04"), false);
-
-                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject1);
-                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject2);
-                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject3);
-                ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject4);
-                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject1.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject1.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
-                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject2.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject2.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_02" }, "default");
-                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject3.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject3.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_03" }, "default");
-                ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject4.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject4.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_04" }, "default");
-
-                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject1, m_BloodGoopDoer.goopDefinition);
-                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject2, m_BloodGoopDoer.goopDefinition);
-                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject3, m_BloodGoopDoer.goopDefinition);
-                m_GenerateCronenbergDebris(AggressiveCronenbergCorpseDebrisObject4, m_BloodGoopDoer.goopDefinition);
-                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject1);
-                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject2);
-                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject3);
-                DontDestroyOnLoad(AggressiveCronenbergCorpseDebrisObject4);
-
-                ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
-                m_Exploder.shardClusters = new ShardCluster[] {
-                    new ShardCluster() {
-                        minFromCluster = 6,
-                        maxFromCluster = 10,
-                        forceMultiplier = 4,
-                        forceAxialMultiplier = new Vector3(1.25f, 1.25f, 1.25f),
-                        rotationMultiplier = 1.65f,
-                        clusterObjects = new DebrisObject[] {
-                            AggressiveCronenbergCorpseDebrisObject1.GetComponent<DebrisObject>(),
-                            AggressiveCronenbergCorpseDebrisObject2.GetComponent<DebrisObject>(),
-                            AggressiveCronenbergCorpseDebrisObject3.GetComponent<DebrisObject>(),
-                            AggressiveCronenbergCorpseDebrisObject4.GetComponent<DebrisObject>()
-                        }
-                    }
-                };
-                m_Exploder.spawnShardsOnDeath = true;
-                m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
-                m_CachedMutantArmGun = null;
-            }
-
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "6d2d7a84-5e46-4d3c-a453-fe1fff5fed84", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
-                        
-            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
-
-            m_CachedAIActor.HasShadow = false;
-            m_CachedAIActor.MovementSpeed = 3.25f;
-            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
-            m_CachedAIActor.procedurallyOutlined = true;
-            m_CachedAIActor.EnemySwitchState = string.Empty;
-            m_CachedAIActor.PreventFallingInPitsEver = true;
-            m_CachedAIActor.IgnoreForRoomClear = false;
-            m_CachedAIActor.HitByEnemyBullets = false;
-            m_CachedAIActor.CanTargetEnemies = true;
-            m_CachedAIActor.CanTargetPlayers = false;
-            m_CachedAIActor.CollisionKnockbackStrength = 5;
-            m_CachedAIActor.CollisionDamage = 1;
-            m_CachedAIActor.DiesOnCollison = true;
-            m_CachedAIActor.healthHaver.SetHealthMaximum(25);
-            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(15);
-
-            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
-            m_CachedAIActor.specRigidbody.PixelColliders.Add(
-                new PixelCollider() {
-                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
-                    CollisionLayer = CollisionLayer.EnemyCollider,
-                    IsTrigger = false,
-                    BagleUseFirstFrameOnly = false,
-                    SpecifyBagelFrame = string.Empty,
-                    BagelColliderNumber = 0,
-                    ManualOffsetX = 9,
-                    ManualOffsetY = 0,
-                    ManualWidth = 67,
-                    ManualHeight = 16,
-                    ManualDiameter = 0,
-                    ManualLeftX = 0,
-                    ManualLeftY = 0,
-                    ManualRightX = 0,
-                    ManualRightY = 0
-                }
-            );
-            m_CachedAIActor.specRigidbody.PixelColliders.Add(
-                new PixelCollider() {
-                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
-                    CollisionLayer = CollisionLayer.EnemyHitBox,
-                    IsTrigger = false,
-                    BagleUseFirstFrameOnly = false,
-                    SpecifyBagelFrame = string.Empty,
-                    BagelColliderNumber = 0,
-                    ManualOffsetX = 9,
-                    ManualOffsetY = 0,
-                    ManualWidth = 67,
-                    ManualHeight = 28,
-                    ManualDiameter = 0,
-                    ManualLeftX = 0,
-                    ManualLeftY = 0,
-                    ManualRightX = 0,
-                    ManualRightY = 0
-                }
-            );
-                        
-            if (m_CachedAIActor.aiAnimator) {
-                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
-                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
-                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
-                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
-                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
-                    Type = DirectionalAnimation.DirectionType.Single,
-                    Prefix = "idle",
-                    AnimNames = new string[1],
-                    Flipped = new DirectionalAnimation.FlipType[1]
-                };
-                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
-                    Type = DirectionalAnimation.DirectionType.Single,
-                    Prefix = "move",
-                    AnimNames = new string[1],
-                    Flipped = new DirectionalAnimation.FlipType[1]
-                };
-                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
-                    Type = DirectionalAnimation.DirectionType.Single,
-                    Prefix = "hit",
-                    AnimNames = new string[1],
-                    Flipped = new DirectionalAnimation.FlipType[1]
-                };
-                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
-                    new AIAnimator.NamedDirectionalAnimation() {
-                        name = "die",
-                        anim = new DirectionalAnimation() {
-                            Type = DirectionalAnimation.DirectionType.Single,
-                            Prefix = "die",
-                            AnimNames = new string[1],
-                            Flipped = new DirectionalAnimation.FlipType[1]
-                        }
-                    }
-                };
-            }
-            
-            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
-            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
-            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
-            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
-                new TargetPlayerBehavior() {
-                    Radius = 35,
-                    LineOfSight = false,
-                    ObjectPermanence = true,
-                    SearchInterval = 0.25f,
-                    PauseOnTargetSwitch = false,
-                    PauseTime = 0.25f
-                }
-            };
-            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
-            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
-                new SeekTargetBehavior() {
-                    StopWhenInRange = false,
-                    CustomRange = 6,
-                    LineOfSight = true,
-                    ReturnToSpawn = true,
-                    SpawnTetherDistance = 0,
-                    PathInterval = 0.5f,
-                    SpecifyRange = false,
-                    MinActiveRange = 0,
-                    MaxActiveRange = 0
-                }
-            };
-            
-            customBehaviorSpeculator.InstantFirstTick = false;
-            customBehaviorSpeculator.TickInterval = 0.1f;
-            customBehaviorSpeculator.PostAwakenDelay = 1f;
-            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
-            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
-            customBehaviorSpeculator.StartingFacingDirection = -90;
-            customBehaviorSpeculator.SkipTimingDifferentiator = false;
-
-            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
-            // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\AngryCronenberg_BehaviorScript.txt");
-
-            AggressiveCronenbergGUID = m_CachedAIActor.EnemyGuid;
-
-            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
-            DontDestroyOnLoad(m_CachedTargetObject);
-            return;
-        }
-
+        
         public static void BuildJungleBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
             m_CachedTargetObject = Instantiate(GetOrLoadByGuid("880bbe4ce1014740ba6b4e2ea521e49d").gameObject);
@@ -3099,7 +3105,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetAIActor.ActorName = "Com4nd0";
 
             EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
-            ParasiteEncounterable.EncounterGuid = "7330c080-88cf-4f8b-af6a-640d4f8f5c45";
+            ParasiteEncounterable.EncounterGuid = "7330c08088cf4f8baf6a640d4f8f5c45";
             ParasiteEncounterable.journalData.PrimaryDisplayName = "Com4nd0 Boss";
             ParasiteEncounterable.journalData.NotificationPanelDescription = "The Lost Human";
             ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This human was lost in the Jungle for many years and found refuge at an ancient temple ruins";
@@ -3161,6 +3167,157 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
         }
 
+        public static void BuildCultistCompanionPrefab(AssetBundle expandSharedAssets1, out GameObject CachedTargetEnemyObject) {
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
+
+            GameObject m_SelectedPlayer = braveResources.LoadAsset<GameObject>("PlayerCoopCultist").transform.Find("PlayerSprite").gameObject;
+                        
+            AIActor CachedEnemyActor = GetOrLoadByGuid_Orig("57255ed50ee24794b7aac1ac3cfb8a95");
+            AIActor CachedSpaceTurtle = GetOrLoadByGuid_Orig("9216803e9c894002a4b931d7ea9c6bdf");
+            GameObject m_DummyCorpseObject = null;
+
+            CachedTargetEnemyObject = expandSharedAssets1.LoadAsset<GameObject>("Cultist Companion");
+            
+            tk2dSprite newSprite = CachedTargetEnemyObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(newSprite, m_SelectedPlayer.GetComponent<tk2dSprite>());
+            
+            // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
+            // Always set false to ensure this doesn't happen.
+            newSprite.FlipX = false;
+
+            GameObject m_CachedGunAttachPoint = CachedTargetEnemyObject.transform.Find("GunAttachPoint").gameObject;
+
+            ExpandUtility.DuplicateAIShooterAndAIBulletBank(CachedTargetEnemyObject, CachedSpaceTurtle.aiShooter, CachedSpaceTurtle.GetComponent<AIBulletBank>(), 24, m_CachedGunAttachPoint.transform);
+
+            ExpandUtility.GenerateAIActorTemplate(CachedTargetEnemyObject, out m_DummyCorpseObject, "Cultist Companion", "1d1e1070617842f09e6f45df3cb223f6", null, instantiateCorpseObject: false, ExternalCorpseObject: CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+            
+            AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
+            
+            CachedGlitchEnemyActor.DoDustUps = true;
+            CachedGlitchEnemyActor.DustUpInterval = 0.4f;
+            CachedGlitchEnemyActor.MovementSpeed = 3.5f;
+            CachedGlitchEnemyActor.EnemySwitchState = "Gun Cultist";
+            
+
+            List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
+            foreach (tk2dSpriteAnimationClip clip in m_SelectedPlayer.GetComponent<tk2dSpriteAnimator>().Library.clips) {
+                if (clip != null && !string.IsNullOrEmpty(clip.name)) {
+                    if (clip.name.ToLower() == "idle") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "idle_backward") {
+                        m_AnimationClips.Add(clip);
+                    }  else if (clip.name.ToLower() == "dodge") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "dodge_bw") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "run_down") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "run_up") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "death") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "death_bw") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "pitfall") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "pitfall_down") {
+                        m_AnimationClips.Add(clip);
+                    }  
+                }
+            }
+            if (!CachedGlitchEnemyActor.spriteAnimator.Library) { CachedGlitchEnemyActor.spriteAnimator.Library = CachedTargetEnemyObject.AddComponent<tk2dSpriteAnimation>(); }
+            if (m_AnimationClips.Count > 0) { CachedGlitchEnemyActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray(); }
+            CachedGlitchEnemyActor.spriteAnimator.DefaultClipId = 0;
+            CachedGlitchEnemyActor.spriteAnimator.playAutomatically = true;
+            
+            if (CachedGlitchEnemyActor.aiAnimator) {
+                CachedGlitchEnemyActor.aiAnimator.facingType = AIAnimator.FacingType.Movement;
+                CachedGlitchEnemyActor.aiAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
+                CachedGlitchEnemyActor.aiAnimator.faceSouthWhenStopped = false;
+                CachedGlitchEnemyActor.aiAnimator.faceTargetWhenStopped = false;
+                CachedGlitchEnemyActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                CachedGlitchEnemyActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "idle",
+                    AnimNames = new string[] { "idle_backward", "idle" },
+                    Flipped = new DirectionalAnimation.FlipType[2],                    
+                };
+                CachedGlitchEnemyActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "run",
+                    AnimNames = new string[] { "run_up", "run_down" },
+                    Flipped = new DirectionalAnimation.FlipType[2],                    
+                };
+                CachedGlitchEnemyActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "dodgeroll",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                            Prefix = "dodge",
+                            AnimNames = new string[] { "dodge_bw", "dodge" },
+                            Flipped = new DirectionalAnimation.FlipType[2]
+                        }
+                    },
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "pitfall",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                            Prefix = "pitfall",
+                            AnimNames = new string[] { "pitfall", "pitfall_down" },
+                            Flipped = new DirectionalAnimation.FlipType[2]
+                        }
+                    }
+                };
+            }
+            
+            ExpandUtility.DuplicateComponent(CachedGlitchEnemyActor.healthHaver, GetOrLoadByGuid_Orig("705e9081261446039e1ed9ff16905d04").healthHaver);
+                        
+            BehaviorSpeculator behaviorSpeculator = CachedTargetEnemyObject.AddComponent<BehaviorSpeculator>();
+            ExpandUtility.DuplicateComponent(behaviorSpeculator, CachedEnemyActor.behaviorSpeculator);
+
+            behaviorSpeculator.MovementBehaviors.Add(new CompanionFollowPlayerBehavior() {
+                PathInterval = 0.25f,
+                DisableInCombat = true,
+                IdealRadius = 3f,
+                CatchUpRadius = 6f,
+                CatchUpAccelTime = 5,
+                CatchUpSpeed = 6,
+                CatchUpMaxSpeed = 10,
+                CatchUpAnimation = "dodge",
+                CatchUpOutAnimation = string.Empty,
+                IdleAnimations = new string[] { "idle" },
+                CanRollOverPits = true,
+                RollAnimation = "dodge",
+            });
+             
+
+            foreach (AttackBehaviorBase attackBehavior in behaviorSpeculator.AttackBehaviors) {
+                if (attackBehavior is ShootGunBehavior) {
+                    ShootGunBehavior shootGun = (attackBehavior as ShootGunBehavior);
+                    shootGun.GroupCooldownVariance = 0;
+                }
+            }
+
+            foreach (AttackBehaviorGroup.AttackGroupItem attackBehavior in behaviorSpeculator.AttackBehaviorGroup.AttackBehaviors) {
+                if (attackBehavior.NickName == "Basic Shoot") { (attackBehavior.Behavior as ShootGunBehavior).GroupCooldownVariance = 0; }
+            }
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = behaviorSpeculator;
+            // ExpandUtility.DuplicateComponent(m_TargetBehaviorSpeculatorSeralized, (CachedEnemyActor.behaviorSpeculator as ISerializedObject));
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>();
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = (CachedEnemyActor.behaviorSpeculator as ISerializedObject).SerializedStateKeys;
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\CultistCompanion_BehaviorScript.txt");
+            
+            ExpandUtility.MakeCompanion(CachedGlitchEnemyActor, null, null, true, false, true, false);
+
+            AddEnemyToDatabase(CachedTargetEnemyObject, CachedGlitchEnemyActor.EnemyGuid, false);
+
+            FriendlyCultistGUID = CachedGlitchEnemyActor.EnemyGuid;
+            braveResources = null;
+        }
+        
+
         private static void m_GenerateCronenbergDebris(GameObject targetObject, GoopDefinition goopSource) {
             DebrisObject m_CachedDebrisObject = targetObject.AddComponent<DebrisObject>();
             m_CachedDebrisObject.Priority = EphemeralObject.EphemeralPriority.Minor;
@@ -3198,6 +3355,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_CachedDebrisObject.AssignFinalWorldDepth(-1.5f);
             m_CachedDebrisObject.ForceUpdateIfDisabled = false;
         }
+        
     }
 }
 

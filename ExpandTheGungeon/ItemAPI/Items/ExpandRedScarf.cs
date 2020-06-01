@@ -12,18 +12,20 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static BlinkPassiveItem m_BlinkPassive;
 
-        public static void Init() {
+        public static GameObject EXRedScarfObject;
+
+        public static void Init(AssetBundle expandSharedAssets1) {
 
             m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
             
             if (!m_BlinkPassive) { return; }
 
-            GameObject RedScarfObject = new GameObject("Bloodied Scarf");
-            RedScarfObject.AddComponent<ExpandRedScarf>();
-            RedScarfObject.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(RedScarfObject.GetComponent<tk2dSprite>(), m_BlinkPassive.GetComponent<tk2dSprite>());
+            EXRedScarfObject = expandSharedAssets1.LoadAsset<GameObject>("Bloodied Scarf");
+            EXRedScarfObject.AddComponent<ExpandRedScarf>();
+            EXRedScarfObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(EXRedScarfObject.GetComponent<tk2dSprite>(), m_BlinkPassive.GetComponent<tk2dSprite>());
 
-            ExpandRedScarf redScarf = RedScarfObject.GetComponent<ExpandRedScarf>();
+            ExpandRedScarf redScarf = EXRedScarfObject.GetComponent<ExpandRedScarf>();
             ItemBuilder.SetupItem(redScarf, "Blink Away", "Dodge roll is augmented with a blink\n\nThis simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...", "ex");
             ItemBuilder.AddPassiveStatModifier(redScarf, PlayerStats.StatType.ReloadSpeed, 1.3f, StatModifier.ModifyMethod.MULTIPLICATIVE);
             // redScarf.PickupObjectId = m_BlinkPassive.PickupObjectId;
@@ -59,10 +61,6 @@ namespace ExpandTheGungeon.ItemAPI {
 
             // Try to prevent original item from showing up. (can still be accessed via MTG console's give command however)
             m_BlinkPassive.quality = ItemQuality.EXCLUDED;
-
-            RedScarfObject.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(RedScarfObject);
-            DontDestroyOnLoad(RedScarfObject);
         }
         
         public float DodgeRollTimeMultiplier;        

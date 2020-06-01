@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ExpandTheGungeon.ExpandObjects;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -8,12 +9,16 @@ namespace ExpandTheGungeon.ExpandMain {
         public static void Init(List<AGDEnemyReplacementTier> m_cachedReplacementTiers) {
             if (m_cachedReplacementTiers != null) {
                 for (int i = 0; i < m_cachedReplacementTiers.Count; i++) {
-                    if (m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exsewers") | m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exbbbey")) {
+                    if (m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exsewers") | 
+                        m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exbbbey") |
+                        m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exbelly"))
+                    {
                         m_cachedReplacementTiers.Remove(m_cachedReplacementTiers[i]);
                     }
                 }
                 InitReplacementEnemiesForSewers(m_cachedReplacementTiers);
                 InitReplacementEnemiesForAbbey(m_cachedReplacementTiers);
+                InitReplacementEnemiesForBelly(m_cachedReplacementTiers);
             }
         }
 
@@ -29,6 +34,13 @@ namespace ExpandTheGungeon.ExpandMain {
             agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("mutantBulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, mutantBulletKinSewersTargetGUIDs, mutantBulletKinSewersReplacementGUIDs));
             agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("gunzookieReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, gunzookieTargetGUIDs, gunzookieReplacementGUIDs));
             agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("shroomerReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, snakeofficeSewersTargetGUIDs, snakeofficeReplacementGUIDs));
+            return;
+        }
+
+        private static void InitReplacementEnemiesForBelly(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers) {            
+            GlobalDungeonData.ValidTilesets TargetTileset = GlobalDungeonData.ValidTilesets.BELLYGEON;
+            string nameAppend = "_EXBelly";
+            agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, new List<string>() { "01972dee89fc4404a5c408d50007dad5" }, new List<string>() { ExpandCustomEnemyDatabase.AggressiveCronenbergGUID } ));
             return;
         }
 

@@ -4,6 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -19,6 +20,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         public string targetLevelName;
         public IntVector2 PitOffset;
 
+        public GameObject JungleTreeTopFrame;
+        
         private bool m_Triggered;
         private bool m_Destroyed;
 
@@ -42,7 +45,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
                         
             specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(HandleCollision));
-            // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Combine(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));*/
+            // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Combine(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));
             yield break;
         }
 
@@ -97,8 +100,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             
             GameObject PitManager = new GameObject("Jungle Pit Manager") { layer = 0 };
             PitManager.transform.position = (transform.position + new Vector3(5, 2));
-            ItemBuilder.AddSpriteToObject(PitManager, "ExpandTheGungeon/Textures/Items/babygoodhammer", false, false);
-
+            tk2dSprite PitDummySprite = PitManager.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(PitDummySprite, ExpandSecretDoorPrefabs.EXSecretDoorMinimapIcon.GetComponent<tk2dSprite>());
             tk2dSprite pitSprite = PitManager.GetComponent<tk2dSprite>();
             pitSprite.renderer.enabled = false;
 
@@ -142,19 +145,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             CellData cellData2 = GameManager.Instance.Dungeon.data[cellPos2];
             cellData.fallingPrevented = false;
             cellData2.fallingPrevented = false;
-            yield return null;
-            GameObject JungleTreeFrame = new GameObject("Jungle Tree Frame") { layer = 0 };
-            JungleTreeFrame.transform.position = transform.position;
-            if (m_ParentRoom != null) { JungleTreeFrame.transform.parent = m_ParentRoom.hierarchyParent; }
-            ItemBuilder.AddSpriteToObject(JungleTreeFrame, "ExpandTheGungeon/Textures/JungleAssets/Jungle_Tree_Large_Frame", false, false);
-            tk2dSprite JungleTreeFrameSprite = JungleTreeFrame.GetComponent<tk2dSprite>();
-            JungleTreeFrameSprite.HeightOffGround = 3;
-            JungleTreeFrameSprite.UpdateZDepth();
+            GameObject JungleTreeFrame = Instantiate(JungleTreeTopFrame, transform.position, Quaternion.identity);
+            if (m_ParentRoom != null) { JungleTreeFrame.transform.SetParent(m_ParentRoom.hierarchyParent, true); }
             yield break;
         }        
 
         public void ConfigureOnPlacement(RoomHandler room) {
             m_ParentRoom = room;
+
+            Minimap.Instance.RegisterRoomIcon(m_ParentRoom, ExpandPrefabs.EXJungleTree_MinimapIcon, false);
 
             IntVector2 basePosition = (transform.position.IntXY(VectorConversions.Floor) + PitOffset);
             IntVector2 cellPos = basePosition;
@@ -169,7 +168,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             cellData.fallingPrevented = true;
             cellData2.fallingPrevented = true;
         }
-
+        
         private void Update() { }
         private void LateUpdate() { }
         

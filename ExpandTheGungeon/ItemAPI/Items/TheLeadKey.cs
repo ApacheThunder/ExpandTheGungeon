@@ -15,12 +15,13 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static int TheLeadKeyPickupID;
 
-        public static void Init() {
-            string name = "The Lead Key";
-            string resourcePath = "ExpandTheGungeon/Textures/Items/theleadkey";
-            GameObject gameObject = new GameObject();
-            TheLeadKey theleadkey = gameObject.AddComponent<TheLeadKey>();
-            ItemBuilder.AddSpriteToObject(name, resourcePath, gameObject, true);
+        public static GameObject TheLeadKeyObject;
+
+        public static void Init(AssetBundle expandSharedAssets1) {
+            TheLeadKeyObject = expandSharedAssets1.LoadAsset<GameObject>("The Lead Key");
+            ItemBuilder.AddSpriteToObject(TheLeadKeyObject, expandSharedAssets1.LoadAsset<Texture2D>("theleadkey"), false, false);
+
+            TheLeadKey theleadkey = TheLeadKeyObject.AddComponent<TheLeadKey>();
             string shortDesc = "Ancient Dungeons Beyond Space";
             string longDesc = "Takes you to a space that only exists in dreams, spitting you back out into the real world somewhere... else.";
             ItemBuilder.SetupItem(theleadkey, shortDesc, longDesc, "ex");

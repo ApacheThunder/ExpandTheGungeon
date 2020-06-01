@@ -6,24 +6,24 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static int MimiclayPickupID;
 
-        public static void Init() {
-            string itemName = "Mimiclay";
-            string resourceName = "ExpandTheGungeon/Textures/Items/mimiclay";
-            GameObject obj = new GameObject(itemName);
-            Mimiclay item = obj.AddComponent<Mimiclay>();
+        public static GameObject MimiclayObject;
 
-            ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
-
+        public static void Init(AssetBundle expandSharedAssets1) {
+            MimiclayObject = expandSharedAssets1.LoadAsset<GameObject>("Mimiclay");
+            ItemBuilder.AddSpriteToObject(MimiclayObject, expandSharedAssets1.LoadAsset<Texture2D>("ex_mimiclay"), false, false);
+            
+            Mimiclay mimiClay = MimiclayObject.AddComponent<Mimiclay>();
+            
             string shortDesc = "The Highest Form Of Flattery";
             string longDesc = "Becomes a copy of any item.\n\nMalleable material that formed the mysterious Doppelgunner. After its defeat, it seems oddly content with applying its ability in service of Gungeoneers.";
 
-            ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");
-            ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Timed, 1);
+            ItemBuilder.SetupItem(mimiClay, shortDesc, longDesc, "ex");
+            ItemBuilder.SetCooldownType(mimiClay, ItemBuilder.CooldownType.Timed, 1);
 
-            item.consumable = true;
-            item.quality = ItemQuality.SPECIAL;
+            mimiClay.consumable = true;
+            mimiClay.quality = ItemQuality.SPECIAL;
 
-            MimiclayPickupID = item.PickupObjectId;
+            MimiclayPickupID = mimiClay.PickupObjectId;
         }
 
         public override void Pickup(PlayerController player) { base.Pickup(player); }

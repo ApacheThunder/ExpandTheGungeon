@@ -1,7 +1,6 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using Dungeonator;
 using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -76,5 +75,5 @@ namespace ExpandTheGungeon.ExpandComponents {
         public float GetOverrideMaxDistance() { return -1f; }
         
     }
-}
+}*/
 

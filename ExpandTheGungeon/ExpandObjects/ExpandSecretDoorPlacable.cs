@@ -2,15 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dungeonator;
-using UnityEngine;
-using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
+using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
     public static class ExpandSecretDoorPrefabs {
+
+        public static GameObject EXSecretDoorMinimapIcon;
 
         public static GameObject EXSecretDoor;
         public static GameObject EXSecretDoor_Normal;
@@ -19,18 +20,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject EXSecretDoor_Frame_Bottom;
         public static GameObject EXSecretDoor_Background;
         public static GameObject EXSecretDoor_Light;
+        public static GameObject EXSecretDoor_Lock;
+        
 
-        public static int DoorOpenedSpriteID;
-        public static int DoorClosedSpriteID;
-
-        public static List<string> m_DoorOpenSprites;
-        public static List<string> m_DoorCloseSprites;
-
-        public static void InitPrefabs() {
-
-            string BasePath = "ExpandTheGungeon/Textures/EXSecretDoor/";
-
-            m_DoorOpenSprites = new List<string>() {
+        public static void InitPrefabs(AssetBundle expandSharedAssets1) {
+            
+            List<string> m_DoorOpenSprites = new List<string>() {
                 "EXSecretDoor_Open_00",
                 "EXSecretDoor_Open_01",
                 "EXSecretDoor_Open_02",
@@ -41,7 +36,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "EXSecretDoor_Open_07"
             };
 
-            m_DoorCloseSprites = new List<string>() {
+            List<string> m_DoorCloseSprites = new List<string>() {
                 "EXSecretDoor_Close_00",
                 "EXSecretDoor_Close_01",
                 "EXSecretDoor_Close_02",
@@ -52,48 +47,54 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "EXSecretDoor_Close_07",
             };
 
-            EXSecretDoor = new GameObject("EX Secret Door (Entrance)") { layer = LayerMask.NameToLayer("FG_Critical") };            
-            EXSecretDoor_Frame_Top = new GameObject("EX Secret Door Top") { layer = LayerMask.NameToLayer("FG_Critical") };
-            EXSecretDoor_Frame_Bottom = new GameObject("EX Secret Door Bottom") { layer = LayerMask.NameToLayer("FG_Critical") };
-            EXSecretDoor_Background = new GameObject("EX Secret Door Background") { layer = LayerMask.NameToLayer("FG_Critical") };
-            EXSecretDoor_Light = new GameObject("EX Secret Door Light") { layer = LayerMask.NameToLayer("FG_Critical") };
+            EXSecretDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretDoor_MinimapIcon");
+            ItemBuilder.AddSpriteToObject(EXSecretDoorMinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_MinimapIcon"), false, false);
+
+            EXSecretDoor = expandSharedAssets1.LoadAsset<GameObject>("EX Secret Door Entrance");            
+            EXSecretDoor_Frame_Top = EXSecretDoor.transform.Find("EX Secret Door Top").gameObject;
+            EXSecretDoor_Frame_Bottom = EXSecretDoor.transform.Find("EX Secret Door Bottom").gameObject;
+            EXSecretDoor_Background = EXSecretDoor.transform.Find("EX Secret Door Background").gameObject;
+            EXSecretDoor_Light = EXSecretDoor.transform.Find("EX Secret Door Light").gameObject;
+            EXSecretDoor_Frame_Top.layer = LayerMask.NameToLayer("FG_Critical");
+            EXSecretDoor_Frame_Bottom.layer = LayerMask.NameToLayer("FG_Critical");
+            EXSecretDoor_Background.layer = LayerMask.NameToLayer("FG_Critical");
+            EXSecretDoor_Light.layer = LayerMask.NameToLayer("FG_Critical");
             EXSecretDoor_Frame_Top.transform.parent = EXSecretDoor.transform;
             EXSecretDoor_Frame_Bottom.transform.parent = EXSecretDoor.transform;
             EXSecretDoor_Background.transform.parent = EXSecretDoor.transform;
             EXSecretDoor_Light.transform.parent = EXSecretDoor.transform;
 
-            ItemBuilder.AddSpriteToObject(EXSecretDoor.name, (BasePath + m_DoorOpenSprites[0]), EXSecretDoor, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Top.name, (BasePath + "EXSecretDoor_Frame_Top"), EXSecretDoor_Frame_Top, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Bottom.name, (BasePath + "EXSecretDoor_Frame_Bottom"), EXSecretDoor_Frame_Bottom, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Background.name, (BasePath + "EXSecretDoor_Background"), EXSecretDoor_Background, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Light.name, (BasePath + "EXSecretDoor_Light_Red"), EXSecretDoor_Light, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Open_00"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Top, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Top"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Bottom, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Bottom"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Background, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Background"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Light, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Red"), false, false);
 
 
             tk2dSprite m_DoorBorderTopSprite = EXSecretDoor_Frame_Top.GetComponent<tk2dSprite>();
             m_DoorBorderTopSprite.HeightOffGround = 3;
-            m_DoorBorderTopSprite.UpdateZDepth();
-            SpriteBuilder.AddSpriteToCollection((BasePath + "EXSecretDoor_Frame_NoDecal_Top"), m_DoorBorderTopSprite.Collection);
+            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_NoDecal_Top"), m_DoorBorderTopSprite.Collection);
 
             tk2dSprite m_DoorBorderBottomSprite = EXSecretDoor_Frame_Bottom.GetComponent<tk2dSprite>();
             m_DoorBorderBottomSprite.HeightOffGround = -0.5f;
-            m_DoorBorderBottomSprite.UpdateZDepth();
             
             tk2dSprite m_DoorSprite = EXSecretDoor.GetComponent<tk2dSprite>();
             m_DoorSprite.HeightOffGround = -1.5f;
-            m_DoorSprite.UpdateZDepth();
 
             tk2dSprite m_DoorBackgroundSprite = EXSecretDoor_Background.GetComponent<tk2dSprite>();
             m_DoorBackgroundSprite.HeightOffGround = -2f;
-            m_DoorBackgroundSprite.UpdateZDepth();
 
             tk2dSprite m_DoorLightSprite = EXSecretDoor_Light.GetComponent<tk2dSprite>();
             m_DoorLightSprite.HeightOffGround = 3.5f;
-            m_DoorLightSprite.UpdateZDepth();            
-            SpriteBuilder.AddSpriteToCollection((BasePath + "EXSecretDoor_Light_Green"), m_DoorLightSprite.Collection);
+               
+            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Green"), m_DoorLightSprite.Collection);
             
-            
-            foreach (string spriteName in m_DoorOpenSprites) { SpriteBuilder.AddSpriteToCollection(BasePath + spriteName, m_DoorSprite.Collection); }
-            foreach (string spriteName in m_DoorCloseSprites) { SpriteBuilder.AddSpriteToCollection(BasePath + spriteName, m_DoorSprite.Collection); }
+            foreach (string spriteName in m_DoorOpenSprites) {
+                if (spriteName != "EXSecretDoor_Open_00") {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_DoorSprite.Collection);
+                }
+            }
+            foreach (string spriteName in m_DoorCloseSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_DoorSprite.Collection); }
 
             ExpandUtility.GenerateSpriteAnimator(EXSecretDoor, ClipFps: 10);
 
@@ -110,20 +111,30 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_SecretDoorComponent.DoorBottomBorderObject = EXSecretDoor_Frame_Bottom;
             m_SecretDoorComponent.DoorBackgroundObject = EXSecretDoor_Background;
             m_SecretDoorComponent.DoorLightObject = EXSecretDoor_Light;
+            
+            GameObject m_RatLock = ExpandPrefabs.RatJailDoorPlacable.gameObject.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject;
+            
+            EXSecretDoor_Lock = EXSecretDoor.transform.Find("EX Secret Door Lock").gameObject;
+            tk2dSprite EXLockSprite = EXSecretDoor_Lock.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(EXLockSprite, m_RatLock.GetComponent<tk2dSprite>());
+            EXLockSprite.HeightOffGround = -0.3f;
 
-            Vector3 LockPositionOffset = (EXSecretDoor.transform.position + new Vector3(0.21f, 0));            
+            tk2dSpriteAnimator m_EXLockAnimator = ExpandUtility.DuplicateSpriteAnimator(EXSecretDoor_Lock, m_RatLock.GetComponent<tk2dSpriteAnimator>(), true);
 
-            GameObject m_LockObject = UnityEngine.Object.Instantiate(ExpandPrefabs.RatJailDoorPlacable.gameObject.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject, LockPositionOffset, Quaternion.identity);            
-            m_LockObject.GetComponent<InteractableLock>().lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
-            m_SecretDoorComponent.Lock = m_LockObject.GetComponent<InteractableLock>();
-            m_LockObject.transform.parent = EXSecretDoor.transform;
-            m_LockObject.gameObject.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
-            m_LockObject.GetComponent<InteractableLock>().sprite.HeightOffGround = -0.3f;
-            m_LockObject.GetComponent<InteractableLock>().sprite.UpdateZDepth();
-            m_LockObject.SetActive(false);
+            InteractableLock m_EXLock = EXSecretDoor_Lock.AddComponent<InteractableLock>();
+            m_EXLock.Suppress = m_RatLock.GetComponent<InteractableLock>().Suppress;
+            m_EXLock.lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
+            m_EXLock.JailCellKeyId = m_RatLock.GetComponent<InteractableLock>().JailCellKeyId;
+            m_EXLock.IdleAnimName = m_RatLock.GetComponent<InteractableLock>().IdleAnimName;
+            m_EXLock.UnlockAnimName = m_RatLock.GetComponent<InteractableLock>().UnlockAnimName;
+            m_EXLock.NoKeyAnimName = m_RatLock.GetComponent<InteractableLock>().NoKeyAnimName;
+            m_EXLock.SpitAnimName = m_RatLock.GetComponent<InteractableLock>().SpitAnimName;
+            m_EXLock.BustedAnimName = m_RatLock.GetComponent<InteractableLock>().BustedAnimName;
 
+            m_SecretDoorComponent.Lock = m_EXLock;
+            EXSecretDoor_Lock.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
+            
             EXSecretDoorDestination = UnityEngine.Object.Instantiate(EXSecretDoor);
-            EXSecretDoorDestination.SetActive(false);
             EXSecretDoorDestination.name = "EX Secret Door (Exit)";
             ExpandSecretDoorExitPlacable m_ExitDoorComponent = EXSecretDoorDestination.AddComponent<ExpandSecretDoorExitPlacable>();
             m_ExitDoorComponent.MinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
@@ -132,10 +143,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_ExitDoorComponent.DoorBottomBorderObject = EXSecretDoorDestination.GetComponent<ExpandSecretDoorPlacable>().DoorBottomBorderObject;
             m_ExitDoorComponent.DoorLightObject = EXSecretDoorDestination.GetComponent<ExpandSecretDoorPlacable>().DoorLightObject;
             m_ExitDoorComponent.DoorTopBorderObject = EXSecretDoorDestination.GetComponent<ExpandSecretDoorPlacable>().DoorTopBorderObject;
-            m_ExitDoorComponent.DoorBackgroundObject.SetActive(false);
-            m_ExitDoorComponent.DoorBottomBorderObject.SetActive(false);
-            m_ExitDoorComponent.DoorLightObject.SetActive(false);
-            m_ExitDoorComponent.DoorTopBorderObject.SetActive(false);
             UnityEngine.Object.Destroy(EXSecretDoorDestination.GetComponent<ExpandSecretDoorPlacable>().Lock.gameObject);
             UnityEngine.Object.Destroy(EXSecretDoorDestination.GetComponent<ExpandSecretDoorPlacable>());
 
@@ -145,7 +152,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             // Setup copy with no rat decal and normal lock instead of rat lock. A general purpose version of the Mini-Elevator.
             EXSecretDoor_Normal = UnityEngine.Object.Instantiate(EXSecretDoor);
-            EXSecretDoor_Normal.SetActive(false);
             EXSecretDoor_Normal.name = "EX Secret Door 2 (Entrance)";
 
             Vector3 Lock2PositionOffset = (EXSecretDoor_Normal.transform.position + new Vector3(1.22f, 0.34f));
@@ -158,15 +164,22 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_LockObject2.gameObject.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
             m_LockObject2.GetComponent<InteractableLock>().sprite.HeightOffGround = 1.7f;
             m_LockObject2.GetComponent<InteractableLock>().sprite.UpdateZDepth();
-            m_LockObject2.SetActive(false);
-            m_LockObject2.transform.parent = EXSecretDoor_Normal.transform;
+            // m_LockObject2.SetActive(false);
+            m_LockObject2.transform.SetParent(EXSecretDoor_Normal.transform, true);
             m_SecretDoor2Component.Lock = m_LockObject2.GetComponent<InteractableLock>();
 
-            FakePrefab.MarkAsFakePrefab(EXSecretDoorDestination);
+
+            /*m_ExitDoorComponent.DoorBackgroundObject.SetActive(false);
+            m_ExitDoorComponent.DoorBottomBorderObject.SetActive(false);
+            m_ExitDoorComponent.DoorLightObject.SetActive(false);
+            m_ExitDoorComponent.DoorTopBorderObject.SetActive(false);*/
+            EXSecretDoor_Normal.SetActive(false);
+            EXSecretDoorDestination.SetActive(false);
             FakePrefab.MarkAsFakePrefab(EXSecretDoor_Normal);
-            UnityEngine.Object.DontDestroyOnLoad(EXSecretDoor);
+            FakePrefab.MarkAsFakePrefab(EXSecretDoorDestination);
             UnityEngine.Object.DontDestroyOnLoad(EXSecretDoor_Normal);
             UnityEngine.Object.DontDestroyOnLoad(EXSecretDoorDestination);
+
             Base_Castle = null;
             m_NormalLock = null;
         }
@@ -422,14 +435,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
         public void ConfigureOnPlacement(RoomHandler room) {
-            // FakePrefab doesn't hook DungeonPlaceableBehaviour.InstantiateObject so we must enable these ourselves.
-            gameObject.SetActive(true);
-            DoorTopBorderObject.SetActive(true);
-            DoorBottomBorderObject.SetActive(true);
-            DoorBackgroundObject.SetActive(true);
-            DoorLightObject.SetActive(true);
-            Lock.gameObject.SetActive(true);
-            Lock.enabled = true;
             m_parentRoom = room;
 
             DoorTopBorderObject.transform.parent = room.hierarchyParent;
@@ -438,9 +443,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (spawnUnlocked) { Lock.ForceUnlock(); }
             
-            enabled = true;
-            
-            gameObject.transform.parent = GameManager.Instance.Dungeon.gameObject.transform;
+            gameObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform, true);
         }
 
         protected override void OnDestroy() { base.OnDestroy(); }
@@ -700,12 +703,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
         public void ConfigureOnPlacement(RoomHandler room) {
-            // FakePrefab doesn't hook DungeonPlaceableBehaviour.InstantiateObject so we must enable these ourselves.
-            gameObject.SetActive(true);
-            DoorTopBorderObject.SetActive(true);
-            DoorBottomBorderObject.SetActive(true);
-            DoorBackgroundObject.SetActive(true);
-            DoorLightObject.SetActive(true);
             m_parentRoom = room;
 
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
@@ -715,11 +712,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             DoorTopBorderObject.transform.parent = room.hierarchyParent;
             DoorBottomBorderObject.transform.parent = room.hierarchyParent;
             DoorBackgroundObject.transform.parent = room.hierarchyParent;
-
-            enabled = true;
-
+            
             // gameObject.transform.parent = GameManager.Instance.Dungeon.gameObject.transform;
-            gameObject.transform.parent = ETGModMainBehaviour.Instance.gameObject.transform;
+            gameObject.transform.SetParent(ETGModMainBehaviour.Instance.gameObject.transform, true);
         }
 
         protected override void OnDestroy() { base.OnDestroy(); }

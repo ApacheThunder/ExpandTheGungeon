@@ -148,10 +148,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ParentRoom.npcSealState = RoomHandler.NPCSealState.SealAll;
                 m_ParentRoom.SealRoom();
                 // Minimap.Instance.PreventAllTeleports = true;
-                GameObject m_BackSpriteObject = new GameObject("Worm BackSprite") { layer = LayerMask.NameToLayer("FG_Critical") };
-                ItemBuilder.AddSpriteToObject(m_BackSpriteObject, "ExpandTheGungeon/Textures/BellyAssets/BellyMonster/Belly_Monster_BackEnd", false, false);
+                /*GameObject m_BackSpriteObject = new GameObject("Worm BackSprite") { layer = LayerMask.NameToLayer("FG_Critical") };
+                ItemBuilder.AddSpriteToObject(m_BackSpriteObject, "Belly_Monster_BackEnd", false, false);
                 m_BackSpriteObject.transform.position = transform.position;
-                m_BackSpriteObject.transform.parent = transform;
+                m_BackSpriteObject.transform.parent = transform;*/
 
                 GameManager.Instance.MainCameraController.SetManualControl(true, true);
                 spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
@@ -240,6 +240,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             ExpandUtility.DuplicateSprite(targetSprite, (player.sprite as tk2dSprite));
             targetSprite.SetSprite(player.sprite.spriteId);
             yield return null;
+            AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
             while (elapsed < duration) {
                 elapsed += BraveTime.DeltaTime;
                 if (!targetSprite || !targetSprite.transform) { break; }

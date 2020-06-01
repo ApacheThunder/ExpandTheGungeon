@@ -935,6 +935,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Belly_ExitHub = RoomFactory.BuildFromResource("Belly\\Expand_Belly_ExitHub.room", true);
 
             Expand_Belly_RealExit = RoomFactory.BuildFromResource("Belly\\Expand_Belly_RealExit.room", true);
+            Expand_Belly_RealExit.associatedMinimapIcon = ExpandPrefabs.Belly_ExitRoomIcon;
             Expand_Belly_RealExit.usesProceduralDecoration = false;
             Expand_Belly_RealExit.usesProceduralLighting = false;
 
@@ -8982,7 +8983,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRatEntranceRoom.rewardChestSpawnPosition = IntVector2.One;
             SecretRatEntranceRoom.Width = 16;
             SecretRatEntranceRoom.Height = 18;
-            SecretRatEntranceRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
+            SecretRatEntranceRoom.associatedMinimapIcon = ExpandSecretDoorPrefabs.EXSecretDoorMinimapIcon;
             SecretRatEntranceRoom.usesProceduralDecoration = true;
             SecretRatEntranceRoom.usesProceduralLighting = true;
             SecretRatEntranceRoom.allowFloorDecoration = false;
@@ -8992,7 +8993,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(2, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoor, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandSecretDoorPrefabs.EXSecretDoor);
             RoomBuilder.GenerateRoomLayoutFromPNG(SecretRatEntranceRoom, "Secret_Rat_MiniElevator_Room_Layout.png");
 
 
@@ -9037,13 +9038,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorEntranceRoom.usesProceduralDecoration = true;
             Expand_SecretElevatorEntranceRoom.usesProceduralLighting = true;
             Expand_SecretElevatorEntranceRoom.allowFloorDecoration = false;
-            Expand_SecretElevatorEntranceRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
+            Expand_SecretElevatorEntranceRoom.associatedMinimapIcon = ExpandSecretDoorPrefabs.EXSecretDoorMinimapIcon;
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(0, 4), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(11, 4), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoor_Normal, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor_Normal);
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_SecretElevatorEntranceRoom, "Secret_MiniElevator_Room_Layout.png");
 
             // This will share same layout as it's entrance version.

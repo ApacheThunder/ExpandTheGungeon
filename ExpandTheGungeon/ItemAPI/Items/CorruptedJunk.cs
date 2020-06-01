@@ -14,44 +14,46 @@ using Pathfinding;
 namespace ExpandTheGungeon.ItemAPI {
     
     public class CorruptedJunk : PassiveItem {
-
-        private static string basePath = "ExpandTheGungeon/Textures/Items/Animations/corrupted_poopsack/";
-
-        private static List<string> m_SpriteNames = new List<string> {            
-            "corrupted_poopsack_01",
-            "corrupted_poopsack_02",
-            "corrupted_poopsack_03",
-            "corrupted_poopsack_04",
-            "corrupted_poopsack_05",
-            "corrupted_poopsack_06",
-            "corrupted_poopsack_07",
-            "corrupted_poopsack_08",
-            "corrupted_poopsack_09",
-            "corrupted_poopsack_10"            
-        };
-
+                
         public static GameObject CorruptedJunkObject;
 
-        public static void Init() {
+        private static List<string> m_SpriteNames;
+
+        public static void Init(AssetBundle expandSharedAssets1) {
             
-            string itemName = "Corrupted Junk";
+            CorruptedJunkObject = expandSharedAssets1.LoadAsset<GameObject>("Corrupted Junk");
 
-            CorruptedJunkObject = new GameObject(itemName);
-
-            CorruptedJunk item = CorruptedJunkObject.AddComponent<CorruptedJunk>();
-            ItemBuilder.AddSpriteToObject(itemName, (basePath + m_SpriteNames[8]), CorruptedJunkObject, false);
+            CorruptedJunk poopSack = CorruptedJunkObject.AddComponent<CorruptedJunk>();
+            ItemBuilder.AddSpriteToObject(CorruptedJunkObject, expandSharedAssets1.LoadAsset<Texture2D>("corrupted_poopsack_09"), false, false);
 
             string shortDesc = "Next Time... What even is this!?";
             string longDesc = "Just some corrupted junk.\n\nCarrying this around makes you question your sanity...";
 
-            ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");
-            item.quality = ItemQuality.S;
-            item.CanBeDropped = false;
+            ItemBuilder.SetupItem(poopSack, shortDesc, longDesc, "ex");
+            poopSack.quality = ItemQuality.A;
+            poopSack.CanBeDropped = false;
 
-            foreach (string spritePath in m_SpriteNames) { SpriteBuilder.AddSpriteToCollection((basePath + spritePath), item.sprite.Collection); }
+            m_SpriteNames = new List<string> {
+                "corrupted_poopsack_01",
+                "corrupted_poopsack_02",
+                "corrupted_poopsack_03",
+                "corrupted_poopsack_04",
+                "corrupted_poopsack_05",
+                "corrupted_poopsack_06",
+                "corrupted_poopsack_07",
+                "corrupted_poopsack_08",
+                "corrupted_poopsack_09",
+                "corrupted_poopsack_10"
+            };
 
-            ExpandUtility.GenerateSpriteAnimator(item.gameObject, playAutomatically: true);
-            ExpandUtility.AddAnimation(item.spriteAnimator, item.sprite.Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
+            foreach (string spritePath in m_SpriteNames) {
+                if (spritePath != "corrupted_poopsack_09") {
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spritePath), CorruptedJunkObject.GetComponent<tk2dSprite>().Collection);
+                }
+            }
+
+            ExpandUtility.GenerateSpriteAnimator(CorruptedJunkObject, playAutomatically: true);
+            ExpandUtility.AddAnimation(CorruptedJunkObject.GetComponent<tk2dSpriteAnimator>(), CorruptedJunkObject.GetComponent<tk2dSprite>().Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
         }
         
 

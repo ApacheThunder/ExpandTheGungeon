@@ -10,6 +10,7 @@ using HutongGames.PlayMaker;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using System.Collections.ObjectModel;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -249,6 +250,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandDungeonDoorManager).GetMethod("Expand_Open", BindingFlags.Public | BindingFlags.Instance),
                 typeof(DungeonDoorController)
             );
+
+
+            /*Hook handleBulletDeletionFramesHook = new Hook(
+                typeof(Exploder).GetMethod("HandleBulletDeletionFrames", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("HandleBulletDeletionFrames", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(Exploder)
+            );*/
 
             return;
         }
@@ -1101,6 +1109,44 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
         }
+
+        private IEnumerator HandleBulletDeletionFrames(Action<Exploder, Vector3, float, float>orig, Exploder self, Vector3 centerPosition, float bulletDeletionSqrRadius, float duration) {
+            float elapsed = 0f;
+            /*if (GameManager.HasInstance && GameManager.Instance.Dungeon) {
+                Dungeon dungeon = GameManager.Instance.Dungeon;
+                bulletDeletionSqrRadius *= Mathf.InverseLerp(0.66f, 1f, dungeon.ExplosionBulletDeletionMultiplier);
+                if (!dungeon.IsExplosionBulletDeletionRecovering) {
+                    dungeon.ExplosionBulletDeletionMultiplier = Mathf.Clamp01(dungeon.ExplosionBulletDeletionMultiplier - 0.8f);
+                }
+                if (bulletDeletionSqrRadius <= 0f) { yield break; }
+            }*/
+            while (elapsed < duration) {
+                elapsed += BraveTime.DeltaTime;
+                ReadOnlyCollection<Projectile> allProjectiles = StaticReferenceManager.AllProjectiles;
+                for (int i = allProjectiles.Count - 1; i >= 0; i--) {
+                    Projectile projectile = allProjectiles[i];
+                    if (projectile) {
+                        if (!(projectile.Owner is PlayerController)) {
+                            Vector2 vector = (projectile.transform.position - centerPosition).XY();
+                            if (projectile.CanBeKilledByExplosions && vector.sqrMagnitude < bulletDeletionSqrRadius) {
+                                projectile.DieInAir(false, true, true, false);
+                            }
+                        }
+                    }
+                }
+                List<BasicTrapController> allTraps = StaticReferenceManager.AllTriggeredTraps;
+                for (int j = allTraps.Count - 1; j >= 0; j--) {
+                    BasicTrapController basicTrapController = allTraps[j];
+                    if (basicTrapController && basicTrapController.triggerOnBlank) {
+                        float sqrMagnitude = (basicTrapController.CenterPoint() - centerPosition.XY()).sqrMagnitude;
+                        if (sqrMagnitude < bulletDeletionSqrRadius) { basicTrapController.Trigger(); }
+                    }
+                }
+                yield return null;
+            }
+            yield break;
+        }
+
     }
 }
 

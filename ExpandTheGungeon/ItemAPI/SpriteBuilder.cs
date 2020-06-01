@@ -88,6 +88,31 @@ namespace ExpandTheGungeon.ItemAPI {
 			return AddSpriteToCollection(tk2dSpriteDefinition, collection);
 		}
 
+        public static void AddSpritesToCollection(AssetBundle assetSource, List<string> AssetNames, tk2dSpriteCollectionData collection) {
+            List<Texture> m_Textures = new List<Texture>();
+            foreach (string AssetName in AssetNames) { m_Textures.Add(assetSource.LoadAsset<Texture2D>(AssetName)); }
+
+            if (m_Textures.Count > 0) {
+                foreach (Texture2D texture in m_Textures) {
+                    tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(texture);
+                    tk2dSpriteDefinition.name = texture.name;
+                    AddSpriteToCollection(tk2dSpriteDefinition, collection);
+                }
+            }
+        }
+
+        public static void AddSpritesToCollection(List<string> ResourceNames, tk2dSpriteCollectionData collection) {
+            foreach (string ResourceName in ResourceNames) {
+                string resourcePath = ResourceName;
+                string str = (!resourcePath.EndsWith(".png")) ? ".png" : "";
+                resourcePath += str;
+                Texture2D textureFromResource = ResourceExtractor.GetTextureFromResource(resourcePath);
+                tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(textureFromResource);
+                tk2dSpriteDefinition.name = textureFromResource.name;
+                AddSpriteToCollection(tk2dSpriteDefinition, collection);
+            }
+        }
+        
 		public static int AddSpriteToCollection(tk2dSpriteDefinition spriteDefinition, tk2dSpriteCollectionData collection) {
 			tk2dSpriteDefinition[] spriteDefinitions = collection.spriteDefinitions;
 			tk2dSpriteDefinition[] array = spriteDefinitions.Concat(new tk2dSpriteDefinition[] { spriteDefinition }).ToArray();
@@ -196,9 +221,9 @@ namespace ExpandTheGungeon.ItemAPI {
 			return tk2dSpriteDefinition;
 		}
 
-		public static tk2dSpriteCollectionData ConstructCollection(GameObject obj, string name) {
+		public static tk2dSpriteCollectionData ConstructCollection(GameObject obj, string name, bool isFakePrefab = true) {
 			tk2dSpriteCollectionData tk2dSpriteCollectionData = obj.AddComponent<tk2dSpriteCollectionData>();
-			UnityEngine.Object.DontDestroyOnLoad(tk2dSpriteCollectionData);
+            if (isFakePrefab) { UnityEngine.Object.DontDestroyOnLoad(obj); }
 			tk2dSpriteCollectionData.assetName = name;
 			tk2dSpriteCollectionData.spriteCollectionGUID = name;
 			tk2dSpriteCollectionData.spriteCollectionName = name;

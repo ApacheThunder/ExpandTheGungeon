@@ -548,10 +548,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 if (targetActor.EnemyGuid == "ba928393c8ed47819c2c5f593100a5bc") {
-                    if (ExpandPrefabs.StoneCubeCollection_West == null) {
-                        ExpandPrefabs.StoneCubeCollection_West = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection, ExpandPrefabs.StoneCubeWestTexture, null, null, false);
-                    }
-                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandPrefabs.StoneCubeCollection_West);
+                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection, ExpandPrefabs.StoneCubeWestTexture, null, null, false));
                 }
             }
 

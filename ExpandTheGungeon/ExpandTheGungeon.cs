@@ -10,13 +10,14 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandAudio;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using ExpandTheGungeon.ExpandResources;
 
 namespace ExpandTheGungeon {
 
     public class ExpandTheGungeon : ETGModule {
 
         public static string ConsoleCommandName;
+
+        public static List<string> AssetBundles = new List<string>() { "ExpandAssetBundles\\expandsharedauto" };
 
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
@@ -26,7 +27,7 @@ namespace ExpandTheGungeon {
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
 
-        private static string ExceptionText;
+        public static string ExceptionText;
         
         private static List<string> itemList;
 
@@ -69,9 +70,10 @@ namespace ExpandTheGungeon {
             
             AudioResourceLoader.InitAudio();
 
-            ModLogo = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\logo.png");
-            ModLogo.filterMode = FilterMode.Point;
+            InitCustomAssetBundles();
 
+            ModLogo = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EXLogo");
+            
             try {
                 MainMenuFoyerUpdateHook = new Hook(
                     typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -90,10 +92,11 @@ namespace ExpandTheGungeon {
 
         public override void Start() {
 
-            if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
-
-            ExpandResourceManager.InitCustomAssetBundles();
-
+            if (!string.IsNullOrEmpty(ExceptionText)) {
+                ETGModConsole.Log(ExceptionText);
+                return;
+            }
+            
             ExpandSharedHooks.InstallRequiredHooks();
             
             // Init ItemAPI
@@ -161,28 +164,54 @@ namespace ExpandTheGungeon {
             }
         }
 
+        
+        public static void InitCustomAssetBundles() {
+            
+            FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
+            Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
+
+            try { 
+                foreach (string bundlePath in AssetBundles) {
+                    m_AssetBundles.Add("ExpandSharedAuto", ExpandUtilities.ResourceExtractor.GetAssetBundleFromResource(bundlePath));
+                }
+            } catch (Exception ex) {
+                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading assetbundles! Possible GUID conflict with other custom AssetBundles?";
+                Debug.Log(ErrorMessage);
+                Debug.LogException(ex);
+                ExceptionText = ErrorMessage;
+                return;
+            }
+
+        }
+
         private void SetupItemAPI() {
             if (!ItemAPISetup) {
                 try {
+                    AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+
                     Tools.Init();
                     ItemBuilder.Init();
-                    BabyGoodHammer.Init();
-                    CorruptionBomb.Init();
-                    ExpandRedScarf.Init();
-                    TableTechAssassin.Init();
-                    CorruptedJunk.Init();
+                    BabyGoodHammer.Init(expandSharedAssets1);
+                    CorruptionBomb.Init(expandSharedAssets1);
+                    ExpandRedScarf.Init(expandSharedAssets1);
+                    TableTechAssassin.Init(expandSharedAssets1);
+                    CorruptedJunk.Init(expandSharedAssets1);
                     BootlegGuns.Init();
-                    CronenbergBullets.Init();
-                    Mimiclay.Init();
-                    TheLeadKey.Init();
-                    TableTechExpand.Init();
-                    RockSlide.Init();
-                    CustomMasterRounds.Init();
-                    WoodenCrest.Init();
+                    CronenbergBullets.Init(expandSharedAssets1);
+                    Mimiclay.Init(expandSharedAssets1);
+                    TheLeadKey.Init(expandSharedAssets1);
+                    // TableTechExpand.Init();
+                    RockSlide.Init(expandSharedAssets1);
+                    CustomMasterRounds.Init(expandSharedAssets1);
+                    WoodenCrest.Init(expandSharedAssets1);
                     BulletKinGun.Init();
+                    BabySitter.Init(expandSharedAssets1);
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
+
+                    expandSharedAssets1 = null;
+
                     ItemAPISetup = true;
                 } catch (Exception e2) {
                     Tools.PrintException(e2, "FF0000");
@@ -369,9 +398,13 @@ namespace ExpandTheGungeon {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
             Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
 
-            Pixelator.Instance.RegisterAdditionalRenderPass(expandSharedAssets1.LoadAsset<Material>("ExpandScanlinesMaterial"));
+            GameObject Icon = sharedAssets.LoadAsset<GameObject>("minimap_teleporter_icon");
+
+            ExpandUtilities.ResourceExtractor.DumpSpriteCollection(Icon.GetComponent<tk2dSprite>().Collection);
+
+
             /*RoomHandler SelectedRoom = null;
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Gungeon_BellyEntranceRoom.name)) {
@@ -379,6 +412,7 @@ namespace ExpandTheGungeon {
                     break;
                 }
             }
+
 
             if (SelectedRoom != null) {
                 IntVector2 targetPoint = SelectedRoom.area.basePosition + new IntVector2(8, 6);
