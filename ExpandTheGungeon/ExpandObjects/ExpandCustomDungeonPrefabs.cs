@@ -12,9 +12,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandCustomDungeonPrefabs : DungeonDatabase {
 
-        // public static GameObject GameManagerObject;
-        
-        public static GameLevelDefinition CanyonDefinition;
+        public static GameLevelDefinition SpaceDefinition;
         public static GameLevelDefinition JungleDefinition;
         public static GameLevelDefinition BellyDefinition;
         public static GameLevelDefinition WestDefinition;
@@ -24,8 +22,8 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             Dungeon dungeon = null;
-            if (name.ToLower() == "base_canyon") {
-                dungeon = CanyonDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+            if (name.ToLower() == "base_space") {
+                dungeon = SpaceDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
             } else if (name.ToLower() == "base_jungle") {
                 dungeon = JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
             } else if (name.ToLower() == "base_belly") {
@@ -81,10 +79,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(ExpandCustomDungeonPrefabs).GetMethod("DungeonStart_Hook", BindingFlags.Instance | BindingFlags.Public),
                 typeof(ItemDB)
             );
-                        
-            CanyonDefinition = new GameLevelDefinition() {
-                dungeonSceneName = "tt_canyon",
-                dungeonPrefabPath = "Base_Canyon",
+
+            SpaceDefinition = new GameLevelDefinition() {
+                dungeonSceneName = "tt_space",
+                dungeonPrefabPath = "Base_Space",
                 priceMultiplier = 2,
                 secretDoorHealthMultiplier = 1,
                 enemyHealthMultiplier = 2.1f,
@@ -171,13 +169,13 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
 
-            if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(CanyonDefinition); }
-            if (EntryNotExist2 && GameManager.Instance) { GameManager.Instance.customFloors.Add(CanyonDefinition); }
+            if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(SpaceDefinition); }
+            if (EntryNotExist2 && GameManager.Instance) { GameManager.Instance.customFloors.Add(SpaceDefinition); }
             braveResources = null;
         }
 
 
-        public static Dungeon CanyonDungeon(Dungeon dungeon) {
+        public static Dungeon SpaceDungeon(Dungeon dungeon) {
             Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
             Dungeon RatDungeonPrefab = GetOrLoadByName_Orig("Base_ResourcefulRat");
             Dungeon FinalScenarioPilotPrefab = GetOrLoadByName_Orig("FinalScenario_Pilot");
@@ -196,7 +194,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             FinalScenario_MainMaterial.pitBorderFlatGrid = MinesDungeonPrefab.roomMaterialDefinitions[0].pitBorderFlatGrid;
 
             DungeonTileStampData m_CanyonStampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
-            m_CanyonStampData.name = "ENV_CANYON_STAMP_DATA";
+            m_CanyonStampData.name = "ENV_SPACE_STAMP_DATA";
             m_CanyonStampData.tileStampWeight = 0;
             m_CanyonStampData.spriteStampWeight = 0;
             m_CanyonStampData.objectStampWeight = 1;
@@ -206,12 +204,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_CanyonStampData.SymmetricFrameChance = 0.25f;
             m_CanyonStampData.SymmetricCompleteChance = 0.6f;
 
-            dungeon.gameObject.name = "Base_Canyon";            
+            dungeon.gameObject.name = "Base_Space";            
             dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
             dungeon.DungeonSeed = 0;
-            dungeon.DungeonFloorName = "A Corrupted Place.";
-            dungeon.DungeonShortName = "A Corrupted Place.";
-            dungeon.DungeonFloorLevelTextOverride = "Beneath the Melting Permafrost.";
+            dungeon.DungeonFloorName = "An Alien Place.";
+            dungeon.DungeonShortName = "An Alien Place.";
+            dungeon.DungeonFloorLevelTextOverride = "Unknown location...";
             dungeon.LevelOverrideType = GameManager.LevelOverrideState.NONE;
             dungeon.debugSettings = new DebugDungeonSettings() {
                 RAPID_DEBUG_DUNGEON_ITERATION_SEEKER = false,
@@ -227,7 +225,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { secretglitchfloor_flow.SecretGlitchFloor_Flow() },
+                flows = new List<DungeonFlow>() { complex_flow_test.Complex_Flow_Test() },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -307,9 +305,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 lightCookies = MinesDungeonPrefab.decoSettings.lightCookies,
                 debug_view = false
             };
+                        
             dungeon.tileIndices = new TileIndices() {
-                tilesetId = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
-                dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Canyon")),
+                tilesetId = GlobalDungeonData.ValidTilesets.SPACEGEON,
+                // dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Canyon")),
+                dungeonCollection = FinalScenarioPilotPrefab.tileIndices.dungeonCollection,
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = FinalScenarioBulletPrefab.tileIndices.aoTileIndices,
                 placeBorders = true,
@@ -327,7 +327,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 globalSecondBorderTiles = new List<int>(0),
                 edgeDecorationTiles = null
             };
-            dungeon.tileIndices.dungeonCollection.name = "ENV_Canyon_Collection";
+            // dungeon.tileIndices.dungeonCollection.name = "ENV_Canyon_Collection";
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
                 FinalScenario_MainMaterial,
                 FinalScenario_MainMaterial,
@@ -1617,7 +1617,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 WALLS_ARE_PITS = false
             };
 
-            dungeon.PatternSettings.flows = new List<DungeonFlow>() { demo_stage_flow.DEMO_STAGE_FLOW() };
+            dungeon.PatternSettings.flows = new List<DungeonFlow>() { f4c_west_flow_01.F4c_West_Flow_01() };
+            dungeon.PatternSettings.MAX_GENERATION_ATTEMPTS = 1;
             dungeon.ForceRegenerationOfCharacters = false;
             dungeon.ActuallyGenerateTilemap = true;
             dungeon.decoSettings = new TilemapDecoSettings {
@@ -1789,6 +1790,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightIntensity = 3;
             dungeon.PlayerLightRadius = 5;
             // dungeon.musicEventName = string.Empty;
+            dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
 
             CastlePrefab = null;
             sharedAssets2 = null;

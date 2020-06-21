@@ -16,14 +16,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Utiliroom_SpecialPit;
         public static PrototypeDungeonRoom Utiliroom_Pitfall;
         // Special Room Prefabs for secret glitch floor
-        public static PrototypeDungeonRoom SpecialWallMimicRoom;
-        public static PrototypeDungeonRoom SpecialMaintenanceRoom;
-        public static PrototypeDungeonRoom ShopBackRoom;
         public static PrototypeDungeonRoom SecretRewardRoom;
         public static PrototypeDungeonRoom SecretBossRoom;
         public static PrototypeDungeonRoom FakeBossRoom;
         public static PrototypeDungeonRoom SecretExitRoom;
         public static PrototypeDungeonRoom PuzzleRoom1;
+        public static PrototypeDungeonRoom PuzzleRoom2;
         public static PrototypeDungeonRoom PuzzleRoom3;
         public static PrototypeDungeonRoom ThwompCrossingVerticalNoRain;
 
@@ -172,6 +170,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Misc Custom Rooms
         public static PrototypeDungeonRoom Expand_BootlegRoom;
+        public static PrototypeDungeonRoom Bunny_Special4ShrineRoom; // Room from Bunnie's room pack integrated into mod to fix an issue with exit setup.
 
         // Unsorted Room Factory Rooms
         public static PrototypeDungeonRoom Expand_Secret_Brother10;
@@ -417,7 +416,20 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Belly_ExitHub;
         public static PrototypeDungeonRoom Expand_Belly_RealExit;
         public static PrototypeDungeonRoom Expand_Belly_Reward;
-        
+
+        public static PrototypeDungeonRoom Expand_West_Entrance;
+        public static PrototypeDungeonRoom Expand_West_SecretWarp;
+        public static PrototypeDungeonRoom Expand_West_SecretHub;
+        public static PrototypeDungeonRoom Expand_West_SecretHub2;
+        public static PrototypeDungeonRoom Expand_West_SecretShopWarp;
+        public static PrototypeDungeonRoom Expand_West_SecretKeyShop;
+        public static PrototypeDungeonRoom Expand_West_ChestRoom;
+        public static PrototypeDungeonRoom Expand_West_BlankPedestalRoom;
+        public static PrototypeDungeonRoom Expand_West_RatKeyPedestalRoom;
+        public static PrototypeDungeonRoom Expand_West_SecretRatKeyPedestalRoom;
+        public static PrototypeDungeonRoom Expand_West_ShrineRoom;
+
+
         // All Belly rooms except special ones will be stored here
         // public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
         public static PrototypeDungeonRoom Expand_Gungeon_BellyEntranceRoom;
@@ -466,7 +478,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "Expand_Forest_MushZookie.room",
                 "Expand_Forest_ParrotShroom.room",
                 "Expand_Forest_Professionals.room",
-                "Expand_Forest_RegularBuffTotem.room",
                 "Expand_Forest_RegularSnakeParrot.room",
                 "Expand_Forest_ShamblingArrows.room",
                 "Expand_Forest_SniperTotemBuff.room",
@@ -725,7 +736,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(4, 5), objectDatabase.GodRays);
             Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
             Expand_Jungle_OldCrest = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_OldCrest.room", true);
-            // Old Crest setup in ExpandDungeonFlow
+            Expand_Jungle_OldCrest.associatedMinimapIcon = ExpandPrefabs.EXJungleCrest_MinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(5, 7), objectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
+            
 
             Expand_Jungle_Exit = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Exit.room", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
@@ -896,7 +910,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             };
             RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(20, 19), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.ParasiteBossGUID);
-
+            // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(1, 30), ExpandPrefabs.Belly_Shipwreck_Left);
+            // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(26, 31), ExpandPrefabs.Belly_Shipwreck_Right);
 
 
             Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromResource("Expand_Gungeon_HiddenMonsterRoom.room", true);
@@ -944,20 +959,72 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(9, 24), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightStone, useExternalPrefab: true));
 
+            Expand_West_Entrance = RoomFactory.BuildFromResource("West\\Expand_West_Entrance.room", true);
+            Expand_West_Entrance.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_West_Entrance.usesProceduralDecoration = false;
+            Expand_West_Entrance.overrideRoomVisualType = 0;
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(16, 25), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(34, 25), ExpandPrefabs.Door_Horizontal_West);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(25, 17), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(25, 35), ExpandPrefabs.Door_Vertical_West);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(9, 42), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(41, 10), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
+            
 
+
+            Expand_West_SecretWarp = RoomFactory.BuildFromResource("West\\Expand_West_SecretWarp.room", true);
+            Expand_West_SecretWarp.usesProceduralDecoration = false;
+            Expand_West_SecretWarp.overrideRoomVisualType = 1;
+            // RoomBuilder.AddObjectToRoom(Expand_West_SecretWarp1, new Vector2(4, 9), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
+
+            Expand_West_SecretHub = RoomFactory.BuildFromResource("West\\Expand_West_SecretHub.room", true);
+            Expand_West_SecretHub.overrideRoomVisualType = 0;
+            Expand_West_SecretHub.usesProceduralDecoration = false;
+            // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub, new Vector2(10, 19), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
+
+            Expand_West_SecretHub2 = RoomFactory.BuildFromResource("West\\Expand_West_SecretHub.room", true);
+            Expand_West_SecretHub2.name = "Expand_West_SecretHub2";
+            Expand_West_SecretHub2.overrideRoomVisualType = 2;
+            Expand_West_SecretHub2.usesProceduralDecoration = false;
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
+            // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, new Vector2(10, 19), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
+
+            Expand_West_SecretShopWarp = RoomFactory.BuildFromResource("West\\Expand_West_SecretShopWarp.room", true);
+            Expand_West_SecretShopWarp.overrideRoomVisualType = 2;
+            Expand_West_SecretShopWarp.usesProceduralDecoration = false;
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 4), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 8), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 12), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 16), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            // RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(3, 22), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
+            
+            Expand_West_SecretKeyShop = Instantiate(ExpandPrefabs.shop_special_key_01);
+            Expand_West_SecretKeyShop.overrideRoomVisualType = 1;
+            Expand_West_SecretKeyShop.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+
+            Expand_West_ChestRoom = Instantiate(ExpandPrefabs.reward_room);
+            Expand_West_ChestRoom.overrideRoomVisualType = 1;
+
+            Expand_West_BlankPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_West_RatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_West_SecretRatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_West_ShrineRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_SpecialPit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_Pitfall = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            SpecialWallMimicRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            SpecialMaintenanceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            ShopBackRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRewardRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             FakeBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ThwompCrossingVerticalNoRain = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            PuzzleRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1060,23 +1127,185 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
-
+            Bunny_Special4ShrineRoom = RoomFactory.BuildFromResource("Bunny_Special4ShrineRoom.room", true, true);
+            foreach (PrototypeRoomExit exit in Bunny_Special4ShrineRoom.exitData.exits) {
+                exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY;
+            }
+            
             Expand_Keep_TreeRoom = RoomFactory.BuildFromResource("Keep_TreeRoom.room", true, false);
             Expand_Keep_TreeRoom.overrideRoomVisualType = 6;
             Expand_Keep_TreeRoom.allowFloorDecoration = false;
-            // Expand_Keep_TreeRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
+            Expand_Keep_TreeRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Keep_TreeRoom.associatedMinimapIcon = ExpandPrefabs.EXJungleTree_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 9), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 7), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(5, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
             Expand_Keep_TreeRoom2 = RoomFactory.BuildFromResource("Keep_TreeRoom2.room", true, false);
+            Expand_Keep_TreeRoom2.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
             Expand_Keep_TreeRoom2.overrideRoomVisualType = 6;
             Expand_Keep_TreeRoom2.allowFloorDecoration = false;
+            Expand_Keep_TreeRoom2.associatedMinimapIcon = ExpandPrefabs.EXJungleTree_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(9, 17), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(9, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
+            
 
+            Expand_West_BlankPedestalRoom.name = "Blank Reward Room";
+            Expand_West_BlankPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_West_BlankPedestalRoom.GUID = Guid.NewGuid().ToString();
+            Expand_West_BlankPedestalRoom.PreventMirroring = false;
+            Expand_West_BlankPedestalRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
+            Expand_West_BlankPedestalRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_West_BlankPedestalRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_West_BlankPedestalRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_West_BlankPedestalRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_West_BlankPedestalRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_West_BlankPedestalRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_West_BlankPedestalRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_West_BlankPedestalRoom.placedObjectPositions = new List<Vector2>();
+            Expand_West_BlankPedestalRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_West_BlankPedestalRoom.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_West_BlankPedestalRoom.overriddenTilesets = 0;
+            Expand_West_BlankPedestalRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_West_BlankPedestalRoom.InvalidInCoop = false;
+            Expand_West_BlankPedestalRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_West_BlankPedestalRoom.preventAddedDecoLayering = false;
+            Expand_West_BlankPedestalRoom.precludeAllTilemapDrawing = false;
+            Expand_West_BlankPedestalRoom.drawPrecludedCeilingTiles = false;
+            Expand_West_BlankPedestalRoom.preventBorders = false;
+            Expand_West_BlankPedestalRoom.preventFacewallAO = false;
+            Expand_West_BlankPedestalRoom.usesCustomAmbientLight = false;
+            Expand_West_BlankPedestalRoom.customAmbientLight = Color.white;
+            Expand_West_BlankPedestalRoom.ForceAllowDuplicates = false;
+            Expand_West_BlankPedestalRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_West_BlankPedestalRoom.IsLostWoodsRoom = false;
+            Expand_West_BlankPedestalRoom.UseCustomMusic = false;
+            Expand_West_BlankPedestalRoom.UseCustomMusicState = false;
+            Expand_West_BlankPedestalRoom.CustomMusicEvent = string.Empty;
+            Expand_West_BlankPedestalRoom.UseCustomMusicSwitch = false;
+            Expand_West_BlankPedestalRoom.CustomMusicSwitch = string.Empty;
+            Expand_West_BlankPedestalRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_West_BlankPedestalRoom.rewardChestSpawnPosition = IntVector2.One;
+            Expand_West_BlankPedestalRoom.Width = 4;
+            Expand_West_BlankPedestalRoom.Height = 4;
+            Expand_West_BlankPedestalRoom.usesProceduralDecoration = false;
+            Expand_West_BlankPedestalRoom.overrideRoomVisualType = 0;
+            RoomBuilder.AddExitToRoom(Expand_West_BlankPedestalRoom, new Vector2(0, 2), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_BlankPedestalRoom, new Vector2(2, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_BlankPedestalRoom, new Vector2(2, 5), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_BlankPedestalRoom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.AddObjectToRoom(Expand_West_BlankPedestalRoom, Vector2.one, ExpandPrefabs.BlankRewardPedestal, 3, 8);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_West_BlankPedestalRoom);
+
+            Expand_West_RatKeyPedestalRoom.name = "Special Key Reward Room";
+            Expand_West_RatKeyPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_West_RatKeyPedestalRoom.GUID = Guid.NewGuid().ToString();
+            Expand_West_RatKeyPedestalRoom.PreventMirroring = false;
+            Expand_West_RatKeyPedestalRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
+            Expand_West_RatKeyPedestalRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_West_RatKeyPedestalRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_West_RatKeyPedestalRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_West_RatKeyPedestalRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_West_RatKeyPedestalRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_West_RatKeyPedestalRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_West_RatKeyPedestalRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_West_RatKeyPedestalRoom.placedObjectPositions = new List<Vector2>();
+            Expand_West_RatKeyPedestalRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_West_RatKeyPedestalRoom.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_West_RatKeyPedestalRoom.overriddenTilesets = 0;
+            Expand_West_RatKeyPedestalRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_West_RatKeyPedestalRoom.InvalidInCoop = false;
+            Expand_West_RatKeyPedestalRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_West_RatKeyPedestalRoom.preventAddedDecoLayering = false;
+            Expand_West_RatKeyPedestalRoom.precludeAllTilemapDrawing = false;
+            Expand_West_RatKeyPedestalRoom.drawPrecludedCeilingTiles = false;
+            Expand_West_RatKeyPedestalRoom.preventBorders = false;
+            Expand_West_RatKeyPedestalRoom.preventFacewallAO = false;
+            Expand_West_RatKeyPedestalRoom.usesCustomAmbientLight = false;
+            Expand_West_RatKeyPedestalRoom.customAmbientLight = Color.white;
+            Expand_West_RatKeyPedestalRoom.ForceAllowDuplicates = false;
+            Expand_West_RatKeyPedestalRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_West_RatKeyPedestalRoom.IsLostWoodsRoom = false;
+            Expand_West_RatKeyPedestalRoom.UseCustomMusic = false;
+            Expand_West_RatKeyPedestalRoom.UseCustomMusicState = false;
+            Expand_West_RatKeyPedestalRoom.CustomMusicEvent = string.Empty;
+            Expand_West_RatKeyPedestalRoom.UseCustomMusicSwitch = false;
+            Expand_West_RatKeyPedestalRoom.CustomMusicSwitch = string.Empty;
+            Expand_West_RatKeyPedestalRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_West_RatKeyPedestalRoom.rewardChestSpawnPosition = IntVector2.One;
+            Expand_West_RatKeyPedestalRoom.Width = 4;
+            Expand_West_RatKeyPedestalRoom.Height = 4;
+            Expand_West_RatKeyPedestalRoom.usesProceduralDecoration = false;
+            Expand_West_RatKeyPedestalRoom.overrideRoomVisualType = 0;
+            RoomBuilder.AddExitToRoom(Expand_West_RatKeyPedestalRoom, new Vector2(0, 2), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_RatKeyPedestalRoom, new Vector2(2, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_RatKeyPedestalRoom, new Vector2(2, 5), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_RatKeyPedestalRoom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.AddObjectToRoom(Expand_West_RatKeyPedestalRoom, Vector2.one, ExpandPrefabs.RatKeyRewardPedestal, 3, 8);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_West_RatKeyPedestalRoom);
+            
+            Expand_West_SecretRatKeyPedestalRoom.name = "Secret Special Key Reward Room";
+            Expand_West_SecretRatKeyPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_West_SecretRatKeyPedestalRoom.GUID = Guid.NewGuid().ToString();
+            Expand_West_SecretRatKeyPedestalRoom.PreventMirroring = false;
+            Expand_West_SecretRatKeyPedestalRoom.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+            Expand_West_SecretRatKeyPedestalRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_West_SecretRatKeyPedestalRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_West_SecretRatKeyPedestalRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_West_SecretRatKeyPedestalRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_West_SecretRatKeyPedestalRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_West_SecretRatKeyPedestalRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_West_SecretRatKeyPedestalRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_West_SecretRatKeyPedestalRoom.placedObjectPositions = new List<Vector2>();
+            Expand_West_SecretRatKeyPedestalRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_West_SecretRatKeyPedestalRoom.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_West_SecretRatKeyPedestalRoom.overriddenTilesets = 0;
+            Expand_West_SecretRatKeyPedestalRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_West_SecretRatKeyPedestalRoom.InvalidInCoop = false;
+            Expand_West_SecretRatKeyPedestalRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_West_SecretRatKeyPedestalRoom.preventAddedDecoLayering = false;
+            Expand_West_SecretRatKeyPedestalRoom.precludeAllTilemapDrawing = false;
+            Expand_West_SecretRatKeyPedestalRoom.drawPrecludedCeilingTiles = false;
+            Expand_West_SecretRatKeyPedestalRoom.preventBorders = false;
+            Expand_West_SecretRatKeyPedestalRoom.preventFacewallAO = false;
+            Expand_West_SecretRatKeyPedestalRoom.usesCustomAmbientLight = false;
+            Expand_West_SecretRatKeyPedestalRoom.customAmbientLight = Color.white;
+            Expand_West_SecretRatKeyPedestalRoom.ForceAllowDuplicates = false;
+            Expand_West_SecretRatKeyPedestalRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_West_SecretRatKeyPedestalRoom.IsLostWoodsRoom = false;
+            Expand_West_SecretRatKeyPedestalRoom.UseCustomMusic = false;
+            Expand_West_SecretRatKeyPedestalRoom.UseCustomMusicState = false;
+            Expand_West_SecretRatKeyPedestalRoom.CustomMusicEvent = string.Empty;
+            Expand_West_SecretRatKeyPedestalRoom.UseCustomMusicSwitch = false;
+            Expand_West_SecretRatKeyPedestalRoom.CustomMusicSwitch = string.Empty;
+            Expand_West_SecretRatKeyPedestalRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_West_SecretRatKeyPedestalRoom.rewardChestSpawnPosition = IntVector2.One;
+            Expand_West_SecretRatKeyPedestalRoom.Width = 4;
+            Expand_West_SecretRatKeyPedestalRoom.Height = 4;
+            Expand_West_SecretRatKeyPedestalRoom.usesProceduralDecoration = false;
+            Expand_West_SecretRatKeyPedestalRoom.overrideRoomVisualType = 0;
+            RoomBuilder.AddExitToRoom(Expand_West_SecretRatKeyPedestalRoom, new Vector2(0, 2), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_SecretRatKeyPedestalRoom, new Vector2(2, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_SecretRatKeyPedestalRoom, new Vector2(2, 5), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_West_SecretRatKeyPedestalRoom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretRatKeyPedestalRoom, Vector2.one, ExpandPrefabs.RatKeyRewardPedestal, 3, 8);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_West_SecretRatKeyPedestalRoom);
+
+
+            ExpandUtility.DuplicateComponent(Expand_West_ShrineRoom, ExpandPrefabs.letsgetsomeshrines_001);
+            Expand_West_ShrineRoom.name = "Old West Shrine Room";
+            Expand_West_ShrineRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_West_ShrineRoom.GUID = Guid.NewGuid().ToString();
+            Expand_West_ShrineRoom.overrideRoomVisualType = 0;
+            RoomBuilder.GenerateBasicRoomLayout(Expand_West_ShrineRoom);
 
 
             FakeBossRoom.name = "Fake Boss Room";
@@ -1439,155 +1668,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(9, 4), DungeonData.Direction.EAST, ContainsDoor: false);
             RoomBuilder.GenerateRoomLayoutFromPNG(Utiliroom_Pitfall, "Utiliroom_Pitfall_Layout.png");
 
-
-            SpecialWallMimicRoom.name = "Special WallMimic Room";
-            SpecialWallMimicRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
-            SpecialWallMimicRoom.GUID = Guid.NewGuid().ToString();
-            SpecialWallMimicRoom.PreventMirroring = false;
-            SpecialWallMimicRoom.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
-            SpecialWallMimicRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            SpecialWallMimicRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
-            SpecialWallMimicRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            SpecialWallMimicRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            SpecialWallMimicRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            SpecialWallMimicRoom.pits = new List<PrototypeRoomPitEntry>();
-            SpecialWallMimicRoom.placedObjects = new List<PrototypePlacedObjectData>();
-            SpecialWallMimicRoom.placedObjectPositions = new List<Vector2>();
-            SpecialWallMimicRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            SpecialWallMimicRoom.roomEvents = new List<RoomEventDefinition>(0);
-            SpecialWallMimicRoom.overriddenTilesets = 0;
-            SpecialWallMimicRoom.prerequisites = new List<DungeonPrerequisite>();
-            SpecialWallMimicRoom.InvalidInCoop = false;
-            SpecialWallMimicRoom.cullProceduralDecorationOnWeakPlatforms = false;
-            SpecialWallMimicRoom.preventAddedDecoLayering = false;
-            SpecialWallMimicRoom.precludeAllTilemapDrawing = false;
-            SpecialWallMimicRoom.drawPrecludedCeilingTiles = false;
-            SpecialWallMimicRoom.preventBorders = false;
-            SpecialWallMimicRoom.preventFacewallAO = false;
-            SpecialWallMimicRoom.usesCustomAmbientLight = false;
-            SpecialWallMimicRoom.customAmbientLight = Color.white;
-            SpecialWallMimicRoom.ForceAllowDuplicates = false;
-            SpecialWallMimicRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            SpecialWallMimicRoom.IsLostWoodsRoom = false;
-            SpecialWallMimicRoom.UseCustomMusic = false;
-            SpecialWallMimicRoom.UseCustomMusicState = false;
-            SpecialWallMimicRoom.CustomMusicEvent = string.Empty;
-            SpecialWallMimicRoom.UseCustomMusicSwitch = false;
-            SpecialWallMimicRoom.CustomMusicSwitch = string.Empty;
-            SpecialWallMimicRoom.overrideRoomVisualTypeForSecretRooms = false;
-            SpecialWallMimicRoom.rewardChestSpawnPosition = new IntVector2(16, 9);
-            SpecialWallMimicRoom.Width = 20;
-            SpecialWallMimicRoom.Height = 20;
-            SpecialWallMimicRoom.overrideRoomVisualType = 3;
-            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(0, 10), DungeonData.Direction.WEST);
-            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(10, 21), DungeonData.Direction.NORTH);
-            RoomBuilder.AddExitToRoom(SpecialWallMimicRoom, new Vector2(21, 10), DungeonData.Direction.EAST);
-            RoomBuilder.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 6), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
-            RoomBuilder.AddObjectToRoom(SpecialWallMimicRoom, new Vector2(9, 13), EnemyBehaviourGuid: "479556d05c7c44f3b6abb3b2067fc778"); // Wall_Mimic
-            RoomBuilder.GenerateRoomLayoutFromPNG(SpecialWallMimicRoom, "Special_WallMimic_Room_Layout.png");
-
-            SpecialMaintenanceRoom.name = "Special Maintenance Room";
-            SpecialMaintenanceRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
-            SpecialMaintenanceRoom.GUID = Guid.NewGuid().ToString();
-            SpecialMaintenanceRoom.PreventMirroring = false;
-            SpecialMaintenanceRoom.category = PrototypeDungeonRoom.RoomCategory.HUB;
-            SpecialMaintenanceRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            SpecialMaintenanceRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
-            SpecialMaintenanceRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            SpecialMaintenanceRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            SpecialMaintenanceRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            SpecialMaintenanceRoom.pits = new List<PrototypeRoomPitEntry>();
-            SpecialMaintenanceRoom.placedObjects = new List<PrototypePlacedObjectData>();
-            SpecialMaintenanceRoom.placedObjectPositions = new List<Vector2>();
-            SpecialMaintenanceRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            SpecialMaintenanceRoom.roomEvents = new List<RoomEventDefinition>(0);
-            SpecialMaintenanceRoom.overriddenTilesets = 0;
-            SpecialMaintenanceRoom.prerequisites = new List<DungeonPrerequisite>();
-            SpecialMaintenanceRoom.InvalidInCoop = false;
-            SpecialMaintenanceRoom.cullProceduralDecorationOnWeakPlatforms = false;
-            SpecialMaintenanceRoom.preventAddedDecoLayering = false;
-            SpecialMaintenanceRoom.precludeAllTilemapDrawing = false;
-            SpecialMaintenanceRoom.drawPrecludedCeilingTiles = false;
-            SpecialMaintenanceRoom.preventBorders = false;
-            SpecialMaintenanceRoom.preventFacewallAO = false;
-            SpecialMaintenanceRoom.usesCustomAmbientLight = false;
-            SpecialMaintenanceRoom.customAmbientLight = Color.white;
-            SpecialMaintenanceRoom.ForceAllowDuplicates = false;
-            SpecialMaintenanceRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            SpecialMaintenanceRoom.IsLostWoodsRoom = false;
-            SpecialMaintenanceRoom.UseCustomMusic = false;
-            SpecialMaintenanceRoom.UseCustomMusicState = false;
-            SpecialMaintenanceRoom.CustomMusicEvent = string.Empty;
-            SpecialMaintenanceRoom.UseCustomMusicSwitch = false;
-            SpecialMaintenanceRoom.CustomMusicSwitch = string.Empty;
-            SpecialMaintenanceRoom.overrideRoomVisualTypeForSecretRooms = false;
-            SpecialMaintenanceRoom.rewardChestSpawnPosition = new IntVector2(10, 10);
-            SpecialMaintenanceRoom.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
-            SpecialMaintenanceRoom.Width = 30;
-            SpecialMaintenanceRoom.Height = 30;
-            // SpecialMaintenanceRoom.usesProceduralDecoration = false;
-            SpecialMaintenanceRoom.allowFloorDecoration = false;
-            SpecialMaintenanceRoom.overrideRoomVisualType = 1;
-            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
-            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(31, 16), DungeonData.Direction.EAST);
-            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(SpecialMaintenanceRoom, new Vector2(15, 31), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(8, 9), NonEnemyBehaviour: ExpandPrefabs.elevator_maintenance_room.placedObjects[0].nonenemyBehaviour);
-            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(18, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SpecialMaintenanceRoom, new Vector2(14, 5), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromPNG(SpecialMaintenanceRoom, "Special_Maintenance_Room_Layout.png");
-
-            ShopBackRoom.name = "Shop Back Room";
-            ShopBackRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
-            ShopBackRoom.GUID = Guid.NewGuid().ToString();
-            ShopBackRoom.PreventMirroring = false;
-            ShopBackRoom.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
-            ShopBackRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            ShopBackRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
-            ShopBackRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            ShopBackRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            ShopBackRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            ShopBackRoom.pits = new List<PrototypeRoomPitEntry>();
-            ShopBackRoom.placedObjects = new List<PrototypePlacedObjectData>();
-            ShopBackRoom.placedObjectPositions = new List<Vector2>();
-            ShopBackRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            ShopBackRoom.roomEvents = new List<RoomEventDefinition>(0);
-            ShopBackRoom.overriddenTilesets = 0;
-            ShopBackRoom.prerequisites = new List<DungeonPrerequisite>();
-            ShopBackRoom.InvalidInCoop = false;
-            ShopBackRoom.cullProceduralDecorationOnWeakPlatforms = false;
-            ShopBackRoom.preventAddedDecoLayering = false;
-            ShopBackRoom.precludeAllTilemapDrawing = false;
-            ShopBackRoom.drawPrecludedCeilingTiles = false;
-            ShopBackRoom.preventBorders = false;
-            ShopBackRoom.preventFacewallAO = false;
-            ShopBackRoom.usesCustomAmbientLight = false;
-            ShopBackRoom.customAmbientLight = Color.white;
-            ShopBackRoom.ForceAllowDuplicates = false;
-            ShopBackRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            ShopBackRoom.IsLostWoodsRoom = false;
-            ShopBackRoom.UseCustomMusic = false;
-            ShopBackRoom.UseCustomMusicState = false;
-            ShopBackRoom.CustomMusicEvent = string.Empty;
-            ShopBackRoom.UseCustomMusicSwitch = false;
-            ShopBackRoom.CustomMusicSwitch = string.Empty;
-            ShopBackRoom.overrideRoomVisualTypeForSecretRooms = false;
-            ShopBackRoom.rewardChestSpawnPosition = new IntVector2(9, 2);
-            ShopBackRoom.Width = 18;
-            ShopBackRoom.Height = 34;
-            ShopBackRoom.overrideRoomVisualType = 1;
-            ShopBackRoom.associatedMinimapIcon = ExpandPrefabs.basic_special_rooms.includedRooms.elements[1].room.associatedMinimapIcon;
-            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(0, 2), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(9, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(19, 2), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.ENTRANCE_ONLY);
-            RoomBuilder.AddExitToRoom(ShopBackRoom, new Vector2(14, 35), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(3, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 4), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 6), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(ShopBackRoom, new Vector2(13, 32), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.GenerateRoomLayoutFromPNG(ShopBackRoom, "Shop_Back_Room_Layout.png");
-
             SecretRewardRoom.name = "Secret Reward Room";
             SecretRewardRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             SecretRewardRoom.GUID = Guid.NewGuid().ToString();
@@ -1626,8 +1706,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRewardRoom.rewardChestSpawnPosition = new IntVector2(8, 2);
             SecretRewardRoom.Width = 20;
             SecretRewardRoom.Height = 64;
-            // SecretRewardRoom.usesProceduralDecoration = false;
-            SecretRewardRoom.overrideRoomVisualType = 3;
+            SecretRewardRoom.usesProceduralDecoration = false;
+            SecretRewardRoom.overrideRoomVisualType = 2;
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 2), DungeonData.Direction.EAST);
@@ -1645,7 +1725,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(6, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Info_Sign, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 15), ExpandPrefabs.RatKeyRewardPedestal);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             RoomBuilder.GenerateRoomLayoutFromPNG(SecretRewardRoom, "Secret_Reward_Room_Layout.png");
 
             SecretBossRoom.name = "Secret Boss Room";
@@ -1693,6 +1774,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretBossRoom.associatedMinimapIcon = ExpandPrefabs.DraGunRoom01.associatedMinimapIcon;
             RoomBuilder.AddExitToRoom(SecretBossRoom, new Vector2(17, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
             RoomBuilder.AddExitToRoom(SecretBossRoom, new Vector2(18, 31), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddObjectToRoom(SecretBossRoom, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             RoomBuilder.GenerateBasicRoomLayout(SecretBossRoom);
 
 
@@ -1893,51 +1975,23 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingHorizontal, "TrapRooms\\Expand_Thwomp_Crossing_Horizontal_Layout.png");
 
                                     
+            
+            ExpandUtility.DuplicateComponent(PuzzleRoom1, ExpandPrefabs.gungeon_checkerboard);
             PuzzleRoom1.name = "Zelda Puzzle Room 1";
             PuzzleRoom1.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             PuzzleRoom1.GUID = Guid.NewGuid().ToString();
-            PuzzleRoom1.PreventMirroring = false;
-            PuzzleRoom1.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
-            PuzzleRoom1.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            PuzzleRoom1.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
-            PuzzleRoom1.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            PuzzleRoom1.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            PuzzleRoom1.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            PuzzleRoom1.pits = ExpandPrefabs.gungeon_gauntlet_001.pits;
-            PuzzleRoom1.placedObjects = ExpandPrefabs.gungeon_checkerboard.placedObjects;
-            PuzzleRoom1.placedObjectPositions = ExpandPrefabs.gungeon_checkerboard.placedObjectPositions;
-            PuzzleRoom1.additionalObjectLayers = ExpandPrefabs.gungeon_checkerboard.additionalObjectLayers;
-            PuzzleRoom1.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            PuzzleRoom1.roomEvents = new List<RoomEventDefinition>() {
-                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
-                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
-            };
-            PuzzleRoom1.overriddenTilesets = 0;
-            PuzzleRoom1.prerequisites = new List<DungeonPrerequisite>();
-            PuzzleRoom1.InvalidInCoop = false;
-            PuzzleRoom1.cullProceduralDecorationOnWeakPlatforms = false;
-            PuzzleRoom1.preventAddedDecoLayering = false;
-            PuzzleRoom1.precludeAllTilemapDrawing = false;
-            PuzzleRoom1.drawPrecludedCeilingTiles = false;
-            PuzzleRoom1.preventBorders = false;
-            PuzzleRoom1.preventFacewallAO = false;
-            PuzzleRoom1.usesCustomAmbientLight = false;
-            PuzzleRoom1.customAmbientLight = Color.white;
-            PuzzleRoom1.ForceAllowDuplicates = false;
-            PuzzleRoom1.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            PuzzleRoom1.IsLostWoodsRoom = false;
-            PuzzleRoom1.UseCustomMusic = false;
-            PuzzleRoom1.UseCustomMusicState = false;
-            PuzzleRoom1.CustomMusicEvent = string.Empty;
-            PuzzleRoom1.UseCustomMusicSwitch = false;
-            PuzzleRoom1.CustomMusicSwitch = string.Empty;
-            PuzzleRoom1.overrideRoomVisualTypeForSecretRooms = false;
-            PuzzleRoom1.rewardChestSpawnPosition = new IntVector2(-1, -1);
-            PuzzleRoom1.Width = ExpandPrefabs.gungeon_checkerboard.Width;
-            PuzzleRoom1.Height = ExpandPrefabs.gungeon_checkerboard.Height;
-            foreach (PrototypeRoomExit exit in ExpandPrefabs.gungeon_checkerboard.exitData.exits) { PuzzleRoom1.exitData.exits.Add(exit); }
+            PuzzleRoom1.overrideRoomVisualType = 2;
+            RoomBuilder.AddObjectToRoom(PuzzleRoom1, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             RoomBuilder.GenerateBasicRoomLayout(PuzzleRoom1);
 
+
+            ExpandUtility.DuplicateComponent(PuzzleRoom2, ExpandPrefabs.gungeon_normal_fightinaroomwithtonsoftraps);
+            PuzzleRoom2.name = "Zelda Puzzle Room 2";
+            PuzzleRoom2.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            PuzzleRoom2.GUID = Guid.NewGuid().ToString();
+            PuzzleRoom2.overrideRoomVisualType = 2;
+            RoomBuilder.AddObjectToRoom(PuzzleRoom2, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
+            PuzzleRoom2.UpdatePrecalculatedData();
 
             PuzzleRoom3.name = "Zelda Puzzle Room 3";
             PuzzleRoom3.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1949,7 +2003,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PuzzleRoom3.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             PuzzleRoom3.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
             PuzzleRoom3.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            PuzzleRoom3.pits = ExpandPrefabs.gungeon_gauntlet_001.pits;
+            PuzzleRoom3.pits = new List<PrototypeRoomPitEntry>(0);
             PuzzleRoom3.placedObjects = ExpandPrefabs.gungeon_gauntlet_001.placedObjects;
             PuzzleRoom3.placedObjectPositions = ExpandPrefabs.gungeon_gauntlet_001.placedObjectPositions;
             PuzzleRoom3.additionalObjectLayers = ExpandPrefabs.gungeon_gauntlet_001.additionalObjectLayers;
@@ -1981,9 +2035,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             PuzzleRoom3.rewardChestSpawnPosition = new IntVector2(-1, -1);
             PuzzleRoom3.Width = 38;
             PuzzleRoom3.Height = 22;
-            PuzzleRoom3.overrideRoomVisualType = 3;
+            PuzzleRoom3.overrideRoomVisualType = 2;
             RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(0, 10), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(39, 10), DungeonData.Direction.EAST);
+            RoomBuilder.AddObjectToRoom(PuzzleRoom3, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             RoomBuilder.GenerateRoomLayoutFromPNG(PuzzleRoom3, "Zelda_Puzzle_Room_3_Layout.png");
 
 
@@ -2120,6 +2175,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             GungeoneerMimicBossRoom.rewardChestSpawnPosition = new IntVector2(13, 25);
             GungeoneerMimicBossRoom.Width = 32;
             GungeoneerMimicBossRoom.Height = 32;
+            GungeoneerMimicBossRoom.overrideRoomVisualType = 2;
             GungeoneerMimicBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
@@ -8936,7 +8992,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretExitRoom2.usesProceduralDecoration = true;
             SecretExitRoom2.usesProceduralLighting = true;
             SecretExitRoom2.allowFloorDecoration = false;
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 7), ExpandPrefabs.ElevatorDeparture);
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromPNG(SecretExitRoom2, "Secret_Elevator_Exit_Layout.png");
@@ -9459,7 +9515,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     placedObjects = new List<PrototypePlacedObjectData>() {
                         new PrototypePlacedObjectData() {
                             enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID, // bootleg_shotgunmanred
-                            contentsBasePosition = new Vector2(12, 12),
+                            contentsBasePosition = new Vector2(12, 11),
                             layer = 0,
                             xMPxOffset = 0,
                             yMPxOffset = 0,

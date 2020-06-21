@@ -93,6 +93,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject Sconce_Light_Side;
         public GameObject DefaultTorch;
         public GameObject DefaultTorchSide;
+        public GameObject GungeonWarpDoor;
+        public GameObject CastleWarpDoor;
 
         // public GameObject DimensionFog;
 
@@ -110,6 +112,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public DungeonPlaceable BushFlowers;
         public DungeonPlaceable WoodenBarrel;
         public DungeonPlaceable WrithingBulletman;
+        public DungeonPlaceable GungeonLockedDoors;
+        public DungeonPlaceable IronWoodDoors;
 
         public ExpandObjectDatabase() {
 
@@ -122,7 +126,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Dungeon catacombsDungeon = DungeonDatabase.GetOrLoadByName("base_catacombs");
             Dungeon sewersDungeon = DungeonDatabase.GetOrLoadByName("base_sewer");
             Dungeon forgeDungeon = DungeonDatabase.GetOrLoadByName("base_forge");
-           
+            Dungeon gungeonDungeon = DungeonDatabase.GetOrLoadByName("base_gungeon");
+            Dungeon castleDungeon = DungeonDatabase.GetOrLoadByName("base_castle");
 
             YellowDrum = sharedAssets2.LoadAsset<GameObject>("Yellow Drum");
             RedDrum = sharedAssets.LoadAsset<GameObject>("Red Drum");
@@ -187,6 +192,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             Sconce_Light_Side = sharedAssets.LoadAsset<GameObject>("Sconce_Light_Side");
             DefaultTorch = sharedAssets.LoadAsset<GameObject>("DefaultTorch");
             DefaultTorchSide = sharedAssets.LoadAsset<GameObject>("DefaultTorchSide");
+            GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
+            CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
@@ -218,7 +225,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             BushFlowers = sharedAssets2.LoadAsset<DungeonPlaceable>("Bush Flowers");
             WoodenBarrel = sharedAssets.LoadAsset<DungeonPlaceable>("Barrel_collection");
             WrithingBulletman = sharedAssets2.LoadAsset<DungeonPlaceable>("Writhing Bulletman");
-
+            GungeonLockedDoors = gungeonDungeon.lockedDoorObjects;
+            IronWoodDoors = sharedAssets2.LoadAsset<DungeonPlaceable>("DoorTest");
             // DimensionFog = marinePastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("DimensionFog").gameObject;
 
             ConvictPastController pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
@@ -275,6 +283,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             catacombsDungeon = null;
             sewersDungeon = null;
             forgeDungeon = null;
+            gungeonDungeon = null;
+            castleDungeon = null;
         }
         
 

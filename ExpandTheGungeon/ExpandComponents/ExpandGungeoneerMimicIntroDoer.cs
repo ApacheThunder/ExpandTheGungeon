@@ -13,7 +13,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public bool m_finished;
 
-        private bool m_initialized;        
+        // private bool m_initialized;        
         private bool m_MirrorHasShattered;
         private bool m_MirrorDepthUpdated;
 
@@ -22,7 +22,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private AIActor m_AIActor;
 
         public void Update() {
-            if (!m_initialized) {
+            /*if (!m_initialized) {
                 m_AIActor = aiActor;                
                 m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
                 if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
@@ -32,11 +32,23 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_MirrorDepthUpdated = false;
                 m_MirrorHasShattered = false;
                 m_initialized = true;
-            }
+            }*/
         }
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators) {
+            
+            if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
+                MirrorBase.GetComponent<tk2dSprite>().HeightOffGround += 2f;
+                MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
+            }
+
+            m_MirrorDepthUpdated = false;
+            m_MirrorHasShattered = false;
+
+            m_AIActor = aiActor;
+
             if (m_AIActor) {
+                m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
                 m_AIActor.GetAbsoluteParentRoom().CompletelyPreventLeaving = true;
                 m_AIActor.ToggleRenderers(false);
                 m_AIActor.aiShooter.handObject.gameObject.SetActive(false);
@@ -93,7 +105,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             int RandomString = BraveUtility.RandomElement(RandomStrings);
 
-            string DialogOption1 = "I...MUST...BECOME...YOU!";
+            string DialogOption1 = "This Gungeon ain't big enough for both of us!";
 
             string DialogOption2 = "I will kill you twice!";
             string DialogOption2_Line2 = "First I will kill you here.";

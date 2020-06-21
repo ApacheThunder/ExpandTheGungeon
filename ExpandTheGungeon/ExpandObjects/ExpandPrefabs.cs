@@ -30,7 +30,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         
 
         // Custom Textures
-        public static Texture2D StoneCubeWestTexture;
         public static Texture2D ENV_Tileset_Belly_Texture;
         public static Texture2D ENV_Tileset_West_Texture;
         public static Texture2D BulletManMonochromeTexture;
@@ -40,7 +39,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static Texture2D BulletManEyepatchTexture;
         
         // Rat Trap Door
-        public static GameObject RatTrapdoor;        
+        public static GameObject RatTrapdoor;
         public static ResourcefulRatMinesHiddenTrapdoor RRMinesHiddenTrapDoorController;
 
         // Room Prefabs
@@ -152,6 +151,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericRoomTable AbbeyAblernRoomTable;
         public static GenericRoomTable JungleRoomTable;
         public static GenericRoomTable BellyRoomTable;
+        public static GenericRoomTable WestRoomTable;
 
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
@@ -266,6 +266,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Jungle_LargeTree;
         public static GameObject Jungle_LargeTreeTopFrame;
         public static GameObject EXJungleTree_MinimapIcon;
+        public static GameObject EXJungleCrest_MinimapIcon;
         public static GameObject Jungle_ExitLadder;
         public static GameObject Jungle_BlobLostSign;
         public static GameObject Jungle_ItemStump;
@@ -273,8 +274,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Door_Vertical_Belly;
         public static GameObject Belly_ExitWarp;
         public static GameObject Belly_ExitRoomIcon;
+        public static GameObject Belly_DoorAnimations;
+        public static GameObject Belly_Shipwreck_Left;
+        public static GameObject Belly_Shipwreck_Right;
         public static GameObject Door_Horizontal_West;
         public static GameObject Door_Vertical_West;
+        public static GameObject West_PuzzleSetupPlacable;
 
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
@@ -297,11 +302,15 @@ namespace ExpandTheGungeon.ExpandObjects {
         // West Light
         public static GameObject WestLight;
 
-        // Cactus Object for West
+        // Cactus Objects for West
         public static GameObject Cactus_A;
         public static GameObject Cactus_B;
         public static GameObject CactusShard1;
         public static GameObject CactusShard2;
+
+        // Custom Reward Pedestals (using custom component)
+        public static GameObject BlankRewardPedestal;
+        public static GameObject RatKeyRewardPedestal;
 
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
@@ -335,9 +344,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
                         
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-
-            StoneCubeWestTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
-                        
+                                    
             ENV_Tileset_Belly_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly");
             ENV_Tileset_West_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West");
                                     
@@ -400,8 +407,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_10")
             };
             
-
-
             ResourcefulRat_LongMinecartRoom_01 = RRMinesHiddenTrapDoorController.TargetMinecartRoom;
             ResourcefulRat_FirstSecretRoom_01 = RRMinesHiddenTrapDoorController.FirstSecretRoom;
             ResourcefulRat_SecondSecretRoom_01 = RRMinesHiddenTrapDoorController.SecondSecretRoom;
@@ -471,6 +476,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyRoomTable.includedRooms = new WeightedRoomCollection();
             BellyRoomTable.includedRooms.elements = new List<WeightedRoom>();
             BellyRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            WestRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            WestRoomTable.includedRooms = new WeightedRoomCollection();
+            WestRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            WestRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
 
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
@@ -1272,6 +1282,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.behaviorSpeculator.AttackBehaviors[0] as ZeldaChargeBehavior;
             zeldaChargeComponent.primeAnim = null;
             MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
+            MetalCubeGuy.behaviorSpeculator.PostAwakenDelay = 0;
 
             SkusketHead.DiesOnCollison = true;
 
@@ -1868,12 +1879,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXJungleTree_MinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXJungleTree_MinimapIcon");
             ItemBuilder.AddSpriteToObject(EXJungleTree_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("JungleTree_MinimapIcon"), false, false);
 
+            EXJungleCrest_MinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXJungleCrest_MinimapIcon");
+            ItemBuilder.AddSpriteToObject(EXJungleCrest_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest_minimapicon"), false, false);
+            
             Jungle_ExitLadder = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ExitLadder");
             ItemBuilder.AddSpriteToObject(Jungle_ExitLadder, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_ExitLadder"), false, false);
             Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
             
             Jungle_BlobLostSign = expandSharedAssets1.LoadAsset<GameObject>("Expand_JungleSign");
-            ExpandUtility.BuildNewCustomSign(Jungle_BlobLostSign, Teleporter_Info_Sign, "Expand_JungleSign", "Lost Blob Note", "This poor fella got lost on his way home.");
+            ExpandUtility.BuildNewCustomSign(Jungle_BlobLostSign, Teleporter_Info_Sign, "Lost Blob Note", "This poor fella got lost on his way home.");
             
             Jungle_ItemStump = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ItemStump");
             ItemBuilder.AddSpriteToObject(Jungle_ItemStump, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_TreeStump"), false, false);
@@ -1885,6 +1899,42 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Door_Horizontal_Belly = Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
             Door_Vertical_Belly = Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[1].nonDatabasePlaceable);
+
+            Belly_DoorAnimations = sharedAssets2.LoadAsset<GameObject>("MonstroNakatomiWest_Door_Animation");
+            foreach (tk2dSpriteAnimationClip clip in Belly_DoorAnimations.GetComponent<tk2dSpriteAnimation>().clips) {
+                if (clip.name == "monstro_door_horizontall_top_open" | 
+                    clip.name == "monstro_door_horizontall_bottom_open" |
+                    clip.name == "monstro_door_vertical_left_open" |
+                    clip.name == "monstro_door_vertical_right_open")
+                {
+                    clip.frames[0].eventAudio = "Play_EX_BellyDoor_Open";
+                    clip.frames[0].triggerEvent = true;
+                }
+                if (clip.name == "monstro_door_horizontal_top_close" |
+                    clip.name == "monstro_door_horizontal_bottom_close" |
+                    clip.name == "monstro_door_vertical_left_close" |
+                    clip.name == "monstro_door_vertical_right_close")
+                {
+                    clip.frames[0].eventAudio = "Play_EX_BellyDoor_Close";
+                    clip.frames[0].triggerEvent = true;
+                }
+                if (clip.name == "monstro_blocker_horizontal_down" | clip.name == "monstro_blocker_vertical_down") {
+                    clip.frames[0].eventAudio = "Play_EX_BellyDoor_Seal";
+                    clip.frames[0].triggerEvent = true;
+                }
+                if (clip.name == "monstro_blocker_horizontal_up" | clip.name == "monstro_blocker_vertical_up") {
+                    clip.frames[0].eventAudio = "Play_EX_BellyDoor_Unseal";
+                    clip.frames[0].triggerEvent = true;
+                }
+            }
+
+            Belly_Shipwreck_Left = expandSharedAssets1.LoadAsset<GameObject>("EXShipwreck_Left");
+            Belly_Shipwreck_Right = expandSharedAssets1.LoadAsset<GameObject>("EXShipwreck_Right");
+            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Left, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Left"), false, false);
+            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Right, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Right"), false, false);
+            Belly_Shipwreck_Left.GetComponent<tk2dSprite>().HeightOffGround = -8;
+            Belly_Shipwreck_Right.GetComponent<tk2dSprite>().HeightOffGround = -8;
+
 
             DungeonDoorController Door_Horizontal_Belly_Controller = Door_Horizontal_Belly.GetComponent<DungeonDoorController>();
             Door_Horizontal_Belly_Controller.sealAnimationName = "monstro_blocker_horizontal_down";
@@ -1966,6 +2016,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             DontDestroyOnLoad(Door_Vertical_Belly);
             DontDestroyOnLoad(Door_Horizontal_Belly);
 
+
+            West_PuzzleSetupPlacable = expandSharedAssets1.LoadAsset<GameObject>("EXWest_PuzzleSetupPlacable");
+            West_PuzzleSetupPlacable.AddComponent<ExpandWestPuzzleRoomController>();
 
 
             Door_Horizontal_West = Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
@@ -2448,7 +2501,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, -3), dimensions: new IntVector2(6, 6));
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, 3), dimensions: new IntVector2(4, 12));
-            ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, -3), dimensions: new IntVector2(6, 6));
+            // ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, -3), dimensions: new IntVector2(6, 6));
 
             MajorBreakable Cactus_A_Braakable = Cactus_A.AddComponent<MajorBreakable>();
             Cactus_A_Braakable.HitPoints = 25;
@@ -2512,7 +2565,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, -3), dimensions: new IntVector2(10, 5));
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 3), dimensions: new IntVector2(8, 14));
-            ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, -3), dimensions: new IntVector2(10, 5));
+            // ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, -3), dimensions: new IntVector2(10, 5));
 
             MajorBreakable Cactus_B_Braakable = Cactus_B.AddComponent<MajorBreakable>();
             Cactus_B_Braakable.HitPoints = 25;
@@ -2554,7 +2607,41 @@ namespace ExpandTheGungeon.ExpandObjects {
             Cactus_B_Braakable.delayDamageVfx = false;
             Cactus_B_Braakable.SpawnItemOnBreak = false;
             Cactus_B_Braakable.HandlePathBlocking = false;
-                        
+
+
+            BlankRewardPedestal = expandSharedAssets1.LoadAsset<GameObject>("EXReward_Pedestal_Blank");
+            tk2dSprite BlankRewardPedestalSprite = BlankRewardPedestal.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(BlankRewardPedestalSprite, RewardPedestalPrefab.GetComponent<tk2dSprite>());
+            
+
+            tk2dSprite BlankRewardPedestalShadowSprite = BlankRewardPedestal.transform.Find("shadow").gameObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(BlankRewardPedestalShadowSprite, RewardPedestalPrefab.transform.Find("Pedestal_Shadow").gameObject.GetComponent<tk2dSprite>());
+            BlankRewardPedestalShadowSprite.SetSprite("pedestal_gun_shadow_002");
+
+            SpeculativeRigidbody BlankRewardPedestalRigidBody = BlankRewardPedestal.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateComponent(BlankRewardPedestalRigidBody, RewardPedestalPrefab.GetComponent<SpeculativeRigidbody>());
+
+
+            RatKeyRewardPedestal = expandSharedAssets1.LoadAsset<GameObject>("EXReward_Pedestal_RatKey");
+            tk2dSprite RatKeyRewardPedestalSprite = RatKeyRewardPedestal.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(RatKeyRewardPedestalSprite, RewardPedestalPrefab.GetComponent<tk2dSprite>());
+
+
+            tk2dSprite RatKeyPedestalShadowSprite = RatKeyRewardPedestal.transform.Find("shadow").gameObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(RatKeyPedestalShadowSprite, RewardPedestalPrefab.transform.Find("Pedestal_Shadow").gameObject.GetComponent<tk2dSprite>());
+            RatKeyPedestalShadowSprite.SetSprite("pedestal_gun_shadow_002");
+
+            SpeculativeRigidbody RatKeyPedestalRigidBody = RatKeyRewardPedestal.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateComponent(RatKeyPedestalRigidBody, RewardPedestalPrefab.GetComponent<SpeculativeRigidbody>());
+
+            ExpandRewardPedestal BlankPedestal = BlankRewardPedestal.AddComponent<ExpandRewardPedestal>();
+            BlankPedestal.spawnTransform = BlankRewardPedestal.transform.Find("Reward_Spawn");
+
+            ExpandRewardPedestal ratKeyPedestal = RatKeyRewardPedestal.AddComponent<ExpandRewardPedestal>();
+            ratKeyPedestal.spawnTransform = RatKeyRewardPedestal.transform.Find("Reward_Spawn");
+            ratKeyPedestal.ItemID = 727;
+
+
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");
 
@@ -2642,7 +2729,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             challengeManager.PossibleChallenges.Add(new ChallengeDataEntry() {
                 Annotation = "Apache Thunder's Chaos Mode in a room!",
                 challenge = Challenge_ChaosMode.GetComponent<ExpandChaosChallengeComponent>(),
-                excludedTilesets = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
+                excludedTilesets = 0,
                 tilesetsWithCustomValues = new List<GlobalDungeonData.ValidTilesets>(0),
                 CustomValues = new List<int>(0)
             });
@@ -2650,7 +2737,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             challengeMegaManager.PossibleChallenges.Add(new ChallengeDataEntry() {
                 Annotation = "Apache Thunder's Chaos Mode in a room!",
                 challenge = Challenge_ChaosMode.GetComponent<ExpandChaosChallengeComponent>(),                
-                excludedTilesets = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
+                excludedTilesets = 0,
                 tilesetsWithCustomValues = new List<GlobalDungeonData.ValidTilesets>(0),
                 CustomValues = new List<int>(0)
             });

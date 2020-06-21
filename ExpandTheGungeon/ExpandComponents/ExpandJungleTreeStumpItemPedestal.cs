@@ -26,7 +26,16 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private RoomHandler m_ParentRoom;
 
-        // public void Start() { }
+        public void Start() {
+            if (m_SubSpriteObject && m_ParentRoom != null) {
+                m_ParentRoom.RegisterInteractable(this);
+            } else if (!m_SubSpriteObject) {
+                ConfigureOnPlacement(transform.position.GetAbsoluteRoom());
+                if (m_SubSpriteObject) {
+                    m_ParentRoom.RegisterInteractable(this);
+                }
+            }
+        }
         // private void Awake() { }
         // private void Update() { }
 

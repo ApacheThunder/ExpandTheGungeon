@@ -10,15 +10,14 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandAudio;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.SerializedData;
 
 namespace ExpandTheGungeon {
 
     public class ExpandTheGungeon : ETGModule {
 
         public static string ConsoleCommandName;
-
-        public static List<string> AssetBundles = new List<string>() { "ExpandAssetBundles\\expandsharedauto" };
-
+        
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
@@ -64,13 +63,19 @@ namespace ExpandTheGungeon {
                 "The Lead Key",
                 "RockSlide",
                 "Corrupted Master Round",
-                "Wooden Crest"
+                "Wooden Crest",
+                "Bootleg Pistol",
+                "Bootleg Shotgun",
+                "Bootleg Machine Pistol",
+                "Bulletkin Gun",
+                "Baby Sitter",
+                "Pow Block"
                 // "Table Tech Expand"
             };
             
             AudioResourceLoader.InitAudio();
 
-            InitCustomAssetBundles();
+            InitCustomAssetBundle();
 
             ModLogo = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EXLogo");
             
@@ -118,7 +123,6 @@ namespace ExpandTheGungeon {
 
                 ExpandLists.InvalidRatFloorRainRooms = new List<string>() {
                     ExpandRoomPrefabs.SecretBossRoom.name,
-                    ExpandRoomPrefabs.SpecialMaintenanceRoom.name,
                     ExpandRoomPrefabs.ThwompCrossingVerticalNoRain.name,
                     ExpandRoomPrefabs.SecretRewardRoom.name,
                     ExpandPrefabs.DragunBossFoyerRoom.name,
@@ -137,8 +141,6 @@ namespace ExpandTheGungeon {
                 ExpandPrefabs.sharedAssets2 = null;
                 ExpandPrefabs.braveResources = null;
                 ExpandPrefabs.enemiesBase = null;
-                /*RoomFactory.sharedAssets = null;
-                RoomFactory.sharedAssets2 = null;*/
                 return;
             }
             // Modified version of Anywhere mod
@@ -151,9 +153,6 @@ namespace ExpandTheGungeon {
             ExpandPrefabs.sharedAssets2 = null;
             ExpandPrefabs.braveResources = null;
             ExpandPrefabs.enemiesBase = null;
-            /*RoomFactory.sharedAssets = null;
-            RoomFactory.sharedAssets2 = null;
-            RoomFactory.braveResources = null;*/
         }
         public override void Exit() {
             if (GameManagerHook != null) {
@@ -165,23 +164,30 @@ namespace ExpandTheGungeon {
         }
 
         
-        public static void InitCustomAssetBundles() {
+        public static void InitCustomAssetBundle() {
             
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
             Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
 
-            try { 
-                foreach (string bundlePath in AssetBundles) {
-                    m_AssetBundles.Add("ExpandSharedAuto", ExpandUtilities.ResourceExtractor.GetAssetBundleFromResource(bundlePath));
+            AssetBundle m_ExpandSharedAssets1 = null;
+
+            try {
+                m_ExpandSharedAssets1 = ExpandAssets.LoadFromModZIPOrModFolder();
+                if (m_ExpandSharedAssets1 != null) {
+                    m_AssetBundles.Add("ExpandSharedAuto", m_ExpandSharedAssets1);
+                } else {
+                    string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
+                    Debug.Log(ErrorMessage);
+                    ExceptionText = ErrorMessage;
+                    return;
                 }
             } catch (Exception ex) {
-                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading assetbundles! Possible GUID conflict with other custom AssetBundles?";
+                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading ExpandSharedAuto asset bundle! Possible GUID conflict with other custom AssetBundles?";
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
                 ExceptionText = ErrorMessage;
                 return;
             }
-
         }
 
         private void SetupItemAPI() {
@@ -206,6 +212,7 @@ namespace ExpandTheGungeon {
                     WoodenCrest.Init(expandSharedAssets1);
                     BulletKinGun.Init();
                     BabySitter.Init(expandSharedAssets1);
+                    PowBlock.Init(expandSharedAssets1);
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
@@ -396,14 +403,35 @@ namespace ExpandTheGungeon {
         
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-            Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            // UnityEngine.Object.Instantiate(ExpandPrefabs.BlankRewardPedestal, (CurrentPlayer.transform.position + new Vector3(-2, 2)), Quaternion.identity);
+            /*// UnityEngine.Object.Instantiate(ExpandPrefabs.RatKeyRewardPedestal, (CurrentPlayer.transform.position + new Vector3(2, 2)), Quaternion.identity);
+            Dungeon m_dungeonPrefab = DungeonDatabase.GetOrLoadByName("finalscenario_guide");
+            DungeonFlow dungeonFlowPrefab = m_dungeonPrefab.PatternSettings.flows[0];
+            PrototypeDungeonRoom GuidePastRoom = dungeonFlowPrefab.AllNodes[0].overrideExactRoom;
+            GameObject GuidePastRoomObject = GuidePastRoom.placedObjects[0].nonenemyBehaviour.gameObject;
+            GameObject m_RainPrefab = GuidePastRoomObject.transform.Find("Rain").gameObject;
+            
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            AssetBundle SharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
 
-            GameObject Icon = sharedAssets.LoadAsset<GameObject>("minimap_teleporter_icon");
+            GameObject TestObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandDustStormFX");
 
-            ExpandUtilities.ResourceExtractor.DumpSpriteCollection(Icon.GetComponent<tk2dSprite>().Collection);
+            ParticleSystemRenderer testSystem = TestObject.GetComponent<ParticleSystemRenderer>();
+            // testSystem.materials[0].shader = m_RainPrefab.GetComponent<ThunderstormController>().RainSystemTransform.gameObject.GetComponent<ParticleSystemRenderer>().materials[0].shader;
+            // testSystem.materials[0].shader = SharedAssets1.LoadAsset<Shader>("BlendVertexColorTilted");
+            testSystem.materials[0].shader = SharedAssets1.LoadAsset<Shader>("BraveParticlesAdditive");
+            testSystem.materials[0].mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("ExpandDustFXSprite_001");
+            testSystem.allowOcclusionWhenDynamic = true;
 
+            GameObject NewTestObject = UnityEngine.Object.Instantiate(TestObject, CurrentPlayer.transform.position.GetAbsoluteRoom().area.basePosition.ToVector3(), Quaternion.identity);*/
+
+
+            AIActor Temp = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc");
+
+            string collection = JsonUtility.ToJson(Temp.sprite.Collection);
+
+            Tools.LogStringToFile(collection, "StoneCubeCollection_West.txt");
 
             /*RoomHandler SelectedRoom = null;
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {

@@ -61,11 +61,9 @@ namespace ExpandTheGungeon.ExpandMain {
                         BraveMemory.HandleRoomEntered(roomHandler.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.All));
                     }
                 }
-                AkSoundEngine.PostEvent("play_OBJ_door_open_01", self.gameObject);
+                if (GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.BELLYGEON) { AkSoundEngine.PostEvent("play_OBJ_door_open_01", self.gameObject); }
                 SetState(self, true, flipped);
-                if (doorClosesAfterEveryOpen) {
-                    GameManager.Instance.StartCoroutine(ExpandDelayedReclose(self));
-                }
+                if (doorClosesAfterEveryOpen) { GameManager.Instance.StartCoroutine(ExpandDelayedReclose(self)); }
             }
         }
         
@@ -207,7 +205,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) { SecondaryPlayer = GameManager.Instance.SecondaryPlayer; }
             while (Vector2.Distance(DoorPosition, PrimaryPlayer.CenterPosition) < DistanceFromDoor) { yield return null; }
             if (SecondaryPlayer) { while (Vector2.Distance(DoorPosition, PrimaryPlayer.CenterPosition) < DistanceFromDoor) { yield return null; } }
-            AkSoundEngine.PostEvent("play_OBJ_door_open_01", self.gameObject);
+            if (GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.BELLYGEON) { AkSoundEngine.PostEvent("play_OBJ_door_open_01", self.gameObject); }
             self.Close();
             yield break;
         }

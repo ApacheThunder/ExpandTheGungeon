@@ -26,17 +26,130 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         private static ExpandUtility m_instance;
         
-
         // Quick and dirty way to clone any (non engine) component.
         // Can't be used to clone things like Texture2D/Materials. But useful for most other things things like components and scriptable objects like DungeonFlows.
         public static void DuplicateComponent(object target, object source, bool SaveOutputToFile = false, string OutputFilepath = null) {
             string m_CachedSerializedComponent = JsonUtility.ToJson(source);
             if (m_CachedSerializedComponent != null) {
-                if (SaveOutputToFile && OutputFilepath != null) { Tools.LogStringToFile(m_CachedSerializedComponent, OutputFilepath); }
+                if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(m_CachedSerializedComponent, OutputFilepath); }
                 JsonUtility.FromJsonOverwrite(m_CachedSerializedComponent, target);
             }
         }
 
+        public static AIActor BuildNewAIActor(GameObject targetObject, string EnemyName, string EnemyGUID, float EnemyHealth = 15, tk2dSprite spriteSource = null, Transform gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
+
+            if (!targetObject | targetObject.GetComponent<AIActor>()) { return null; }
+
+            Transform m_CachedGunAttachPoint = gunAttachObjectOverride;
+                        
+            if (!m_CachedGunAttachPoint && !EnemyHasNoShooter && targetObject.transform.Find("GunAttachPoint")) {
+                m_CachedGunAttachPoint = targetObject.transform.Find("GunAttachPoint");
+                if (GunAttachOffset.HasValue) {
+                    m_CachedGunAttachPoint.transform.localPosition = GunAttachOffset.Value;
+                }
+            } else if (m_CachedGunAttachPoint && !EnemyHasNoShooter && !targetObject.transform.Find("GunAttachPoint")) {
+                if (GunAttachOffset.HasValue) {
+                    m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
+                } else {
+                    m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
+                }
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
+            } else if (!m_CachedGunAttachPoint && !EnemyHasNoShooter && !targetObject.transform.Find("GunAttachPoint")) {
+                GameObject gunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
+                m_CachedGunAttachPoint = gunAttachPoint.transform;
+                if (GunAttachOffset.HasValue) {
+                    m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
+                } else {
+                    m_CachedGunAttachPoint.transform.position = new Vector3(0.3125f, 0.25f, 0);
+                }
+                m_CachedGunAttachPoint.transform.parent = targetObject.transform;
+            } 
+            
+
+            if (!targetObject.GetComponent<tk2dSprite>() && spriteSource) {
+                tk2dSprite newSprite = targetObject.AddComponent<tk2dSprite>();
+                DuplicateComponent(newSprite, spriteSource);
+            }
+
+            if (!targetObject.GetComponent<SpeculativeRigidbody>()) {
+                if (customColliders != null) {
+                    foreach (PixelCollider collider in customColliders) {
+                        int SizeX = collider.ManualWidth;
+                        int SizeY = collider.ManualHeight;
+                        int OffsetX = collider.ManualOffsetX;
+                        int OffsetY = collider.ManualOffsetY;
+                        GenerateOrAddToRigidBody(targetObject, collider.CollisionLayer, collider.ColliderGenerationMode, RigidBodyCollidesWithTileMap, RigidBodyCollidesWithOthers, RigidBodyCanBeCarried, RigidBodyCanBePushed, false, collider.IsTrigger, false, true, new IntVector2(SizeX, SizeY), new IntVector2(OffsetX, OffsetY));
+                    }
+                } else {
+                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyCollider, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 4), new IntVector2(5, 0));
+                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyHitBox, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 23), new IntVector2(5, 0));
+                }
+
+                SpeculativeRigidbody targetRigidBody = targetObject.GetComponent<SpeculativeRigidbody>();
+                tk2dSprite targetSprite = targetObject.GetComponent<tk2dSprite>();
+
+                targetRigidBody.Reinitialize();
+                if (customColliders == null && targetSprite) { targetRigidBody.PixelColliders[1].Sprite = targetSprite; }
+            }
+                        
+            if (!targetObject.GetComponent<tk2dSpriteAnimator>()) {
+                GenerateSpriteAnimator(targetObject, null, 0, 0, false, false, false, false, true, false, 0, 0, false);
+            }
+            
+            if (!targetObject.GetComponent<HealthHaver>()) {
+                GenerateHealthHaver(targetObject, EnemyHealth, false, false, OnDeathBehavior.DeathType.Death, true, false, false, false, true, true);
+            }
+            
+            if (!targetObject.GetComponent<HitEffectHandler>()) { targetObject.AddComponent<HitEffectHandler>(); }
+
+            HitEffectHandler hitEffectHandler = targetObject.GetComponent<HitEffectHandler>();
+            hitEffectHandler.overrideHitEffect = new VFXComplex() { effects = new VFXObject[0] };
+            hitEffectHandler.overrideHitEffectPool = new VFXPool() { effects = new VFXComplex[0] };
+            hitEffectHandler.additionalHitEffects = new HitEffectHandler.AdditionalHitEffect[0];
+            hitEffectHandler.SuppressAllHitEffects = false;
+            
+            if (!targetObject.GetComponent<KnockbackDoer>()) { targetObject.AddComponent<KnockbackDoer>(); }
+
+            KnockbackDoer knockBackDoer = targetObject.GetComponent<KnockbackDoer>();
+            knockBackDoer.weight = 35;
+            knockBackDoer.deathMultiplier = 2.5f;
+            knockBackDoer.knockbackWhileReflecting = false;
+            knockBackDoer.shouldBounce = true;
+            knockBackDoer.collisionDecay = 0.5f;
+
+            if (!targetObject.GetComponent<AIAnimator>()) { GenerateBlankAIAnimator(targetObject); }
+
+            if (!targetObject.GetComponent<ObjectVisibilityManager>()) { targetObject.AddComponent<ObjectVisibilityManager>(); }
+
+            ObjectVisibilityManager visibilityManager = targetObject.GetComponent<ObjectVisibilityManager>();
+            visibilityManager.SuppressPlayerEnteredRoom = false;
+
+            AIActor bulletManTemplate = EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5"); // bullet_kin
+
+            if ((!targetObject.GetComponent<AIShooter>() | !targetObject.GetComponent<AIBulletBank>()) && !EnemyHasNoShooter) {
+                DuplicateAIShooterAndAIBulletBank(targetObject, bulletManTemplate.gameObject.GetComponent<AIShooter>(), bulletManTemplate.gameObject.GetComponent<AIBulletBank>(), StartingGunID, m_CachedGunAttachPoint.transform);
+            }
+            
+            AIActor m_CachedAIActor = targetObject.AddComponent<AIActor>();
+            DuplicateComponent(m_CachedAIActor, bulletManTemplate);
+            m_CachedAIActor.ActorName = EnemyName;
+            m_CachedAIActor.OverrideDisplayName = EnemyName;
+            m_CachedAIActor.EnemyId = UnityEngine.Random.Range(10000, 99999);
+            m_CachedAIActor.EnemyGuid = EnemyGUID;
+            m_CachedAIActor.ForcedPositionInAmmonomicon = -1;
+            if (EnemyHasNoCorpse) {
+                m_CachedAIActor.CorpseObject = null;
+                m_CachedAIActor.CorpseShadow = false;
+                m_CachedAIActor.TransferShadowToCorpse = false;
+                m_CachedAIActor.shadowDeathType = AIActor.ShadowDeathType.Fade;
+            } else if (ExternalCorpseObject) {
+                m_CachedAIActor.CorpseObject = ExternalCorpseObject;
+            }
+            
+            bulletManTemplate = null;
+            return m_CachedAIActor;
+        }
+        
         public static tk2dSpriteAnimator DuplicateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimator sourceAnimator, bool duplicateAnimationData = false) {
             tk2dSpriteAnimator targetAnimator;
 
@@ -99,7 +212,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-        public static ExpandNoteDoer BuildNewCustomSign(GameObject TargetPrefab, GameObject PrefabToClone, string AssetSource, string SignName, string SignText) {
+        public static ExpandNoteDoer BuildNewCustomSign(GameObject TargetPrefab, GameObject PrefabToClone, string SignName, string SignText) {
             
             if (!TargetPrefab | !TargetPrefab.transform.Find("nooto pointo")) { return null; }
             

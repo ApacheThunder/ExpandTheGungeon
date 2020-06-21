@@ -528,12 +528,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 targetElevator.gameObject.AddComponent<ExpandElevatorDepartureManager>();
                 ExpandElevatorDepartureManager expandElevatorComponent = targetElevator.gameObject.GetComponent<ExpandElevatorDepartureManager>();
                 expandElevatorComponent.UsesOverrideTargetFloor = true;
-                expandElevatorComponent.OverrideTargetFloor = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-                if (expandElevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
-                    foreach (tk2dBaseSprite baseSprite in expandElevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>()) {
-                        ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
-                    }
-                }
+                expandElevatorComponent.OverrideTargetFloor = GlobalDungeonData.ValidTilesets.WESTGEON;
             }
             
             return;

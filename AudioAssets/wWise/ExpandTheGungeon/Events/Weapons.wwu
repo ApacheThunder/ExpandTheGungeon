@@ -459,6 +459,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_PowBlock_Trigger" ID="{1EC6C408-7230-4FC9-9C25-40E36AA4AA6D}">
+					<ChildrenList>
+						<Action Name="" ID="{6B84985C-39CC-4903-BF51-C00E831E7958}" ShortID="413884594">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="PowBlock" ID="{D532CF84-88CC-4072-BB52-2F907F792888}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_PowBlock_EnemyDeath" ID="{8ADEFB7C-29C8-435E-87B3-C68A0EC69909}">
+					<ChildrenList>
+						<Action Name="" ID="{91221F65-23B4-42C3-9F54-013321071F97}" ShortID="521134200">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="PowEnemyDeath" ID="{D44B8BE3-EADB-458A-978D-BD89A5BE17A9}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

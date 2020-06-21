@@ -1,16 +1,16 @@
-﻿// using Ionic.Zip;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Ionic.Zip;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandAudio {
 	
 	public class ResourceLoaderSoundbanks {
         
-		public void AutoloadFromAssembly(Assembly assembly, string prefix) {
+		/*public void AutoloadFromAssembly(Assembly assembly, string prefix) {
 			bool flag = assembly == null;
 			if (flag) { throw new ArgumentNullException("assembly", "Assembly cannot be null."); }
 			bool flag2 = prefix == null;
@@ -42,10 +42,9 @@ namespace ExpandTheGungeon.ExpandAudio {
 					}
 				}
 			}
-		}
+		}*/
 
-
-        /*public void AutoloadFromModZIPOrModFolder(string path) {
+        public void AutoloadFromModZIPOrModFolder(string path) {
             int FilesLoaded = 0;
             if (File.Exists(path + ".zip")) {
                 Debug.Log("Zip Found");
@@ -66,7 +65,7 @@ namespace ExpandTheGungeon.ExpandAudio {
             }
             // Zip file wasn't found. Try to load from Mod folder instead.
             AutoloadFromPath(AudioResourceLoader.FullPathAutoprocess, "ExpandTheGungeon");
-        }*/
+        }
         
 		public void AutoloadFromPath(string path, string prefix) {
 			if (string.IsNullOrEmpty(path)) { throw new ArgumentNullException("path", "Path cannot be null."); }			
@@ -100,7 +99,7 @@ namespace ExpandTheGungeon.ExpandAudio {
 		}
         
 		private void LoadSoundbankFromStream(Stream stream, string name) {
-			byte[] array = OtherUtilities.StreamToByteArray(stream);
+			byte[] array = StreamToByteArray(stream);
 			IntPtr intPtr = Marshal.AllocHGlobal(array.Length);
 			try {
 				Marshal.Copy(array, 0, intPtr, array.Length);
@@ -112,6 +111,17 @@ namespace ExpandTheGungeon.ExpandAudio {
 			} finally {
                 Marshal.FreeHGlobal(intPtr);
             }
+		}
+
+        public static byte[] StreamToByteArray(Stream input) {
+			byte[] array = new byte[16384];
+			byte[] result;
+			using (MemoryStream memoryStream = new MemoryStream()) {
+				int count;
+				while ((count = input.Read(array, 0, array.Length)) > 0) { memoryStream.Write(array, 0, count); }
+				result = memoryStream.ToArray();
+			}
+			return result;
 		}
 	}
 }

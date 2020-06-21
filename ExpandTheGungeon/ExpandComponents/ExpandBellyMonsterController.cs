@@ -58,7 +58,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             NoteDoer DeadGuyNoteComponent = DeadGuyNote.GetComponent<NoteDoer>();
 
             if (DeadGuyNoteComponent != null) {
-                DeadGuyNoteComponent.stringKey = "We shipwrecked chasing a terrible monster.\n\nManaged to lure and trap it in this wierd dungeon full of living bullets...\n\nAlas, I could not slay the beast but managed to trap it in this chamber. I used a teleporter prototype to teleport the key to this chamber far away.\n\nI don't know where it ended up, but I hope no one finds it.";
+                DeadGuyNoteComponent.stringKey = "We shipwrecked chasing a terrible monster.\n\nManaged to lure and trap it in this weird dungeon full of living bullets...\n\nAlas, I could not slay the beast but managed to trap it in this chamber. I used a teleporter prototype to teleport the key to this chamber far away.\n\nI don't know where it ended up, but I hope no one finds it.";
                 DeadGuyNoteComponent.useAdditionalStrings = false;
                 DeadGuyNoteComponent.alreadyLocalized = true;
                 DeadGuyNoteComponent.name = "Dead Man's Note";

@@ -26,7 +26,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
 
-            if (roomHandler == null && (dungeon.IsGlitchDungeon | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON)) {
+            if (roomHandler == null && dungeon.IsGlitchDungeon) {
                 if (StaticReferenceManager.AllNpcs != null && StaticReferenceManager.AllNpcs.Count > 0) {
                     foreach (TalkDoerLite npc in StaticReferenceManager.AllNpcs) { npc.SpeaksGleepGlorpenese = true; }
                 }

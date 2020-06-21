@@ -28,12 +28,15 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BootlegShotgunManRedPrefab;
         public static GameObject BootlegShotgunManBluePrefab;
         public static GameObject CronenbergPrefab;
+        public static GameObject MetalCubeGuyWestPrefab;
         public static GameObject AggressiveCronenbergPrefab;
+        public static GameObject CorruptedEnemyPrefab;
 
         // Custom/Modified bosses
         // public static GameObject KillStumpsDummy;
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
+        public static GameObject WestBrosNomePrefab;
         
         // Misc Objects
         public static GameObject CronenbergCorpseDebrisObject1;
@@ -41,6 +44,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject CronenbergCorpseDebrisObject3;
         public static GameObject CronenbergCorpseDebrisObject4;
         public static GameObject AggressiveCronenbergCorpseDebrisObject;
+        public static GameObject WestBrosAnimations_Nome;
+        public static GameObject StoneCubeCollection_West;
+        
+
+        public static Gun WestBrosNomeGun;
+
 
         public static Texture2D[] RatGrenadeTextures;
 
@@ -54,10 +63,13 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static string BootlegShotgunManBlueGUID;
         public static string CronenbergGUID;
         public static string AggressiveCronenbergGUID;
+        public static string MetalCubeGuyWestGUID;
         // public static string KillStumpsGUID;
         public static string ParasiteBossGUID;
         public static string com4nd0GUID;
         public static string FriendlyCultistGUID;
+        public static string westBrosNomeGUID;
+        public static string corruptedEnemyGUID;
 
         public static void InitPrefabs() {
             // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
@@ -83,9 +95,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildCronenbergPrefab(expandSharedAssets1, out CronenbergPrefab);
             BuildAggressiveCronenbergPrefab(expandSharedAssets1, out AggressiveCronenbergPrefab);
             BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
-
+            BuildCorruptedEnemyPrefab(expandSharedAssets1, out CorruptedEnemyPrefab);
+            // WestBrosNomePrefab = BuildWestBrosBossNomePrefab(expandSharedAssets1);
+            
             // Fake Prefabs
             BuildRatGrenadePrefab(out RatGrenadePrefab);
+            BuildMetalCubeGuyWestPrefab(expandSharedAssets1, out MetalCubeGuyWestPrefab);
             BuildParasiteBossPrefab(out MonsterParasitePrefab);
             BuildJungleBossPrefab(out com4nd0BossPrefab);
 
@@ -2806,196 +2821,51 @@ namespace ExpandTheGungeon.ExpandObjects {
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
             return;
         }
-        
-        /*public static void BuildKillStumpsPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
-            
-            AIActorDummy KillPillarsTemplate = (GetOrLoadByGuid_Orig("3f11bbbc439c4086a180eb0fb9990cb4") as AIActorDummy);
-            
-            m_CachedTargetObject = new GameObject("BossStumpsDummy", new Type[] { typeof(SpeculativeRigidbody), typeof(HitEffectHandler), typeof(AIActorDummy) }) { layer = 0 };
-            
-            SpeculativeRigidbody rigidBody = m_CachedTargetObject.GetComponent<SpeculativeRigidbody>();
-            rigidBody.CollideWithTileMap = true;
-            rigidBody.CollideWithOthers = true;
-            rigidBody.Velocity = Vector2.zero;
-            rigidBody.CapVelocity = false;
-            rigidBody.MaxVelocity = Vector2.zero;
-            rigidBody.ForceAlwaysUpdate = false;
-            rigidBody.CanPush = false;
-            rigidBody.CanBePushed = false;
-            rigidBody.PushSpeedModifier = 1;
-            rigidBody.CanCarry = false;
-            rigidBody.CanBeCarried = true;
-            rigidBody.PreventPiercing = false;
-            rigidBody.SkipEmptyColliders = false;
-            rigidBody.RecheckTriggers = false;
-            rigidBody.UpdateCollidersOnRotation = false;
-            rigidBody.UpdateCollidersOnScale = false;
-            rigidBody.AxialScale = Vector2.one;
-            rigidBody.DebugParams = new SpeculativeRigidbody.DebugSettings() {
-                ShowPosition = false,
-                PositionHistory = 0,
-                ShowVelocity = false,
-                ShowSlope = false
-            };
-            rigidBody.IgnorePixelGrid = false;
-            rigidBody.m_position = new Position() { m_position = IntVector2.Zero, m_remainder = Vector2.zero };
-            rigidBody.PixelColliders = new List<PixelCollider>() {
-                new PixelCollider() {
-                    Enabled = false,
-                    CollisionLayer = CollisionLayer.LowObstacle,
-                    IsTrigger = false,
-                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
-                    BagleUseFirstFrameOnly = false,
-                    SpecifyBagelFrame = string.Empty,
-                    BagelColliderNumber = 0,
-                    ManualOffsetX = 0,
-                    ManualOffsetY = 0,
-                    ManualWidth = 0,
-                    ManualHeight = 0,
-                    ManualDiameter = 0,
-                    ManualLeftX = 0,
-                    ManualLeftY = 0,
-                    ManualRightX = 0,
-                    ManualRightY = 0
-                }
-            };
 
-            HitEffectHandler hitEffectHandler = m_CachedTargetObject.GetComponent<HitEffectHandler>();
-            hitEffectHandler.overrideHitEffect = new VFXComplex() { effects = new VFXObject[0] };
-            hitEffectHandler.overrideHitEffectPool = new VFXPool() { effects = new VFXComplex[0], type = VFXPoolType.None };
-            hitEffectHandler.additionalHitEffects = new HitEffectHandler.AdditionalHitEffect[0];
-            hitEffectHandler.SuppressAllHitEffects = false;
+        public static void BuildMetalCubeGuyWestPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
-
-            AIActorDummy KillStumpsAIActorDummy = m_CachedTargetObject.GetComponent<AIActorDummy>();
-            KillStumpsAIActorDummy.placeableWidth = 12;
-            KillStumpsAIActorDummy.placeableHeight = 12;
-            KillStumpsAIActorDummy.difficulty = 0;
-            KillStumpsAIActorDummy.isPassable = true;
-            KillStumpsAIActorDummy.ActorName = "Kill Stumps";
-            KillStumpsAIActorDummy.OverrideDisplayName = "Kill Stumps";
-            KillStumpsAIActorDummy.actorTypes = 0;
-            KillStumpsAIActorDummy.HasShadow = true;
-            KillStumpsAIActorDummy.ShadowHeightOffGround = 0;
-            KillStumpsAIActorDummy.ActorShadowOffset = Vector3.zero;
-            KillStumpsAIActorDummy.DoDustUps = false;
-            KillStumpsAIActorDummy.DustUpInterval = 0;
-            KillStumpsAIActorDummy.FreezeDispelFactor = 20;
-            KillStumpsAIActorDummy.ImmuneToAllEffects = false;
-            KillStumpsAIActorDummy.EffectResistances = new ActorEffectResistance[0];
-            KillStumpsAIActorDummy.OverrideColorOverridden = false;
-            KillStumpsAIActorDummy.EnemyId = -1;
-            KillStumpsAIActorDummy.EnemyGuid = "12e65e5a-8996-4803-b906-d8b4e5c5d261";
-            KillStumpsAIActorDummy.ForcedPositionInAmmonomicon = -1;
-            KillStumpsAIActorDummy.SetsFlagOnActivation = false;
-            KillStumpsAIActorDummy.SetsFlagOnDeath = false;
-            KillStumpsAIActorDummy.FlagToSetOnDeath = 0;
-            KillStumpsAIActorDummy.FlagToSetOnActivation = 0;
-            KillStumpsAIActorDummy.SetsCharacterSpecificFlagOnDeath = false;
-            KillStumpsAIActorDummy.CharacterSpecificFlagToSetOnDeath = 0;
-            KillStumpsAIActorDummy.IsNormalEnemy = true;
-            KillStumpsAIActorDummy.IsSignatureEnemy = false;
-            KillStumpsAIActorDummy.IsHarmlessEnemy = false;
-            KillStumpsAIActorDummy.CompanionSettings = new ActorCompanionSettings() { WarpsToRandomPoint = false };
-            KillStumpsAIActorDummy.MovementSpeed = 2;
-            KillStumpsAIActorDummy.PathableTiles = Dungeonator.CellTypes.FLOOR;
-            KillStumpsAIActorDummy.DiesOnCollison = false;
-            KillStumpsAIActorDummy.CollisionDamage = 1;
-            KillStumpsAIActorDummy.CollisionKnockbackStrength = 5;
-            KillStumpsAIActorDummy.CollisionDamageTypes = CoreDamageTypes.None;
-            KillStumpsAIActorDummy.EnemyCollisionKnockbackStrengthOverride = -1;
-            KillStumpsAIActorDummy.CollisionVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
-            KillStumpsAIActorDummy.NonActorCollisionVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
-            KillStumpsAIActorDummy.CollisionSetsPlayerOnFire = false;
-            KillStumpsAIActorDummy.TryDodgeBullets = true;
-            KillStumpsAIActorDummy.AvoidRadius = 4;
-            KillStumpsAIActorDummy.ReflectsProjectilesWhileInvulnerable = false;
-            KillStumpsAIActorDummy.HitByEnemyBullets = false;
-            KillStumpsAIActorDummy.HasOverrideDodgeRollDeath = false;
-            KillStumpsAIActorDummy.OverrideDodgeRollDeath = string.Empty;
-            KillStumpsAIActorDummy.CanDropCurrency = true;
-            KillStumpsAIActorDummy.AdditionalSingleCoinDropChance = 0;
-            KillStumpsAIActorDummy.CanDropItems = true;
-            KillStumpsAIActorDummy.CanDropDuplicateItems = false;
-            KillStumpsAIActorDummy.CustomLootTableMinDrops = 1;
-            KillStumpsAIActorDummy.CustomLootTableMaxDrops = 1;
-            KillStumpsAIActorDummy.ChanceToDropCustomChest = 0;
-            KillStumpsAIActorDummy.IgnoreForRoomClear = false;
-            KillStumpsAIActorDummy.SpawnLootAtRewardChestPos = false;
-            KillStumpsAIActorDummy.CorpseShadow = true;
-            KillStumpsAIActorDummy.TransferShadowToCorpse = false;
-            KillStumpsAIActorDummy.shadowDeathType = AIActor.ShadowDeathType.Fade;
-            KillStumpsAIActorDummy.PreventDeathKnockback = false;
-            KillStumpsAIActorDummy.OnCorpseVFX = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
-            KillStumpsAIActorDummy.OnEngagedVFXAnchor  = tk2dBaseSprite.Anchor.LowerLeft;
-            KillStumpsAIActorDummy.shadowHeightOffset = 0;
-            KillStumpsAIActorDummy.invisibleUntilAwaken = false;
-            KillStumpsAIActorDummy.procedurallyOutlined = true;
-            KillStumpsAIActorDummy.forceUsesTrimmedBounds = true;
-            KillStumpsAIActorDummy.reinforceType = AIActor.ReinforceType.FullVfx;
-            KillStumpsAIActorDummy.UsesVaryingEmissiveShaderPropertyBlock = false;
-            KillStumpsAIActorDummy.EnemySwitchState = string.Empty;
-            KillStumpsAIActorDummy.OverrideSpawnReticleAudio = string.Empty;
-            KillStumpsAIActorDummy.OverrideSpawnAppearAudio = string.Empty;
-            KillStumpsAIActorDummy.UseMovementAudio = false;
-            KillStumpsAIActorDummy.StartMovingEvent = string.Empty;
-            KillStumpsAIActorDummy.StopMovingEvent = string.Empty;
-            KillStumpsAIActorDummy.animationAudioEvents = new List<ActorAudioEvent>(0);
-            KillStumpsAIActorDummy.HealthOverrides = new List<AIActor.HealthOverride>(0);
-            KillStumpsAIActorDummy.IdentifierForEffects = AIActor.EnemyTypeIdentifier.UNIDENTIFIED;
-            KillStumpsAIActorDummy.BehaviorOverridesVelocity = false;
-            KillStumpsAIActorDummy.BehaviorVelocity = Vector2.zero;
-            KillStumpsAIActorDummy.AlwaysShowOffscreenArrow = false;
-            KillStumpsAIActorDummy.BlackPhantomProperties = new BlackPhantomProperties() {
-                BonusHealthPercentIncrease = 0,
-                BonusHealthFlatIncrease = 0,
-                MaxTotalHealth = 175,
-                CooldownMultiplier = 0.66f,
-                MovementSpeedMultiplier = 1.5f,
-                LocalTimeScaleMultiplier = 1,
-                BulletSpeedMultiplier = 1,
-                GradientScale = 0.75f,
-                ContrastPower = 1.3f
-            };
-            KillStumpsAIActorDummy.ForceBlackPhantomParticles = false;
-            KillStumpsAIActorDummy.OverrideBlackPhantomParticlesCollider = false;
-            KillStumpsAIActorDummy.BlackPhantomParticlesCollider = 0;
-            KillStumpsAIActorDummy.PreventFallingInPitsEver = false;
-            KillStumpsAIActorDummy.isInBossTab = true;
-
-            GameObject m_RealPrefab = Instantiate(KillPillarsTemplate.realPrefab);
-            m_RealPrefab.transform.parent = m_CachedTargetObject.transform;
-
-            KillStumpsAIActorDummy.realPrefab = m_RealPrefab;
-
-            m_RealPrefab.name = "BossStumps";
-
-            GenericIntroDoer genericIntroDoer = m_RealPrefab.GetComponent<GenericIntroDoer>();
-
-            genericIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
-                bossNameString = "Kill Stumps",
-                bossSubtitleString = "Test Subtitle String",
-                bossQuoteString = "Test Quate String",
-                bossArtSprite = ExpandUtilities.ResourceExtractor.GetTextureFromResource("Textures\\MiscEnemies\\KillStumps\\KillStumpsBossCard.png"),
-                bossSpritePxOffset = IntVector2.Zero,
-                topLeftTextPxOffset = IntVector2.Zero,
-                bottomRightTextPxOffset = IntVector2.Zero,
-                bgColor = new Color(0, 0, 1, 1)                
-            };
-
-            GameObject Statue1 = m_RealPrefab.transform.Find("AK47").gameObject;
-            GameObject Statue2 = m_RealPrefab.transform.Find("Shotgun").gameObject;
-            GameObject Statue3 = m_RealPrefab.transform.Find("Uzi").gameObject;
-            GameObject Statue4 = m_RealPrefab.transform.Find("DesertEagle").gameObject;
-            
+            m_CachedTargetObject = Instantiate(ExpandPrefabs.MetalCubeGuy.gameObject);
             m_CachedTargetObject.SetActive(false);
-            if (isFakePrefab) {
-                // KillStumpsGUID = KillStumpsAIActorDummy.EnemyGuid;
-                AddEnemyToDatabase(m_CachedTargetObject, KillStumpsAIActorDummy.EnemyGuid, true);
-                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-                DontDestroyOnLoad(m_CachedTargetObject);
+            m_CachedTargetObject.name = "MetalCubeGuy_TrapVersion_West";
+
+            AIActor m_CachedTargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            m_CachedTargetAIActor.ActorName += " West";
+            m_CachedTargetAIActor.OverrideDisplayName = m_CachedTargetAIActor.ActorName;
+            m_CachedTargetAIActor.EnemyGuid = "c1e60b8c0691499183c69393e02c9de9";
+            
+            StoneCubeCollection_West = expandSharedAssets1.LoadAsset<GameObject>("StoneCubeCollection_West");
+            tk2dSpriteCollectionData StoneCubeCollection_WestCollection = StoneCubeCollection_West.AddComponent<tk2dSpriteCollectionData>();
+
+            JsonUtility.FromJsonOverwrite(ExpandUtilities.ResourceExtractor.BuildStringFromEmbeddedResource("SerializedData/MiscAssets/StoneCubeCollection_West.txt"), StoneCubeCollection_WestCollection);
+
+            Material m_NewMaterial = new Material(GetOrLoadByGuid_Orig("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection.materials[0]);
+            m_NewMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
+
+            StoneCubeCollection_WestCollection.materials[0] = m_NewMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in StoneCubeCollection_WestCollection.spriteDefinitions) {
+                spriteDefinition.material = m_NewMaterial;
             }
-        }*/
+
+            tk2dSpriteAnimation m_StoneCubeGuyWestAnimation = StoneCubeCollection_West.AddComponent<tk2dSpriteAnimation>();
+            ExpandUtility.DuplicateComponent(m_StoneCubeGuyWestAnimation, m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>().Library);
+
+            foreach (tk2dSpriteAnimationClip clip in m_StoneCubeGuyWestAnimation.clips) {
+                foreach (tk2dSpriteAnimationFrame frame in clip.frames) {
+                    frame.spriteCollection = StoneCubeCollection_WestCollection;
+                }
+            }
+
+            m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>().Library = m_StoneCubeGuyWestAnimation;
+            m_CachedTargetObject.GetComponent<tk2dSprite>().Collection = StoneCubeCollection_WestCollection;
+            m_CachedTargetObject.GetComponent<tk2dSprite>().SetSprite(m_CachedTargetObject.GetComponent<tk2dSprite>().spriteId);
+            
+            MetalCubeGuyWestGUID = m_CachedTargetAIActor.EnemyGuid;
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedTargetAIActor.EnemyGuid, true);
+            FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+            DontDestroyOnLoad(m_CachedTargetObject);
+        }
 
         public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
@@ -3012,8 +2882,8 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
             ParasiteEncounterable.EncounterGuid = "afa1216f84714d73af66d613627397cc";
-            ParasiteEncounterable.journalData.PrimaryDisplayName = "Parasatic Abomination";
-            ParasiteEncounterable.journalData.NotificationPanelDescription = "Parasatic horror inside the beast.";
+            ParasiteEncounterable.journalData.PrimaryDisplayName = "Parasitic Abomination";
+            ParasiteEncounterable.journalData.NotificationPanelDescription = "Parasitic horror inside the beast.";
             ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This abomination may have been responsible for the rampage of the giant worm monster.";
 
             m_TargetAIActor.SetsFlagOnDeath = false;
@@ -3165,6 +3035,154 @@ namespace ExpandTheGungeon.ExpandObjects {
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
             }
+        }
+        
+        /*public static GameObject BuildWestBrosBossNomePrefab(AssetBundle expandSharedAssets1) {
+            
+            GameObject m_CachedTargetObject = Instantiate(GetOrLoadByGuid("c00390483f394a849c36143eb878998f").gameObject); // Shades
+            m_CachedTargetObject.SetActive(false);
+            m_CachedTargetObject.name = "West Bros Nome";
+            
+            AIActor m_TargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+            m_TargetAIActor.EnemyGuid = "b5ae92d7891b468abff0944ee810296f";
+            m_TargetAIActor.EnemyId = UnityEngine.Random.Range(100000, 999999);
+
+            m_TargetAIActor.ActorName = "West Bros Nome";
+            
+            EncounterTrackable Encounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
+            Encounterable.EncounterGuid = "42078e2bc49543a5a0e171cc16aa937d";
+            Encounterable.journalData.PrimaryDisplayName = "Test Boss";
+            Encounterable.journalData.NotificationPanelDescription = "Test";
+            Encounterable.journalData.AmmonomiconFullEntry = "Test";
+            
+
+            // GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
+            // bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
+            // bossIntroDoer.portraitSlideSettings.bossNameString = "Test";
+            // bossIntroDoer.portraitSlideSettings.bossSubtitleString= "Test";
+            // bossIntroDoer.portraitSlideSettings.bossQuoteString = string.Empty;
+            
+            m_TargetAIActor.RegenerateCache();
+
+            
+            WestBrosAnimations_Nome = expandSharedAssets1.LoadAsset<GameObject>("WestBrosAnimations_Nome");
+
+            tk2dSpriteAnimation WestBrosAnimation_Nome = WestBrosAnimations_Nome.AddComponent<tk2dSpriteAnimation>();
+
+            List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
+
+            WestBrosNomeGun = (PickupObjectDatabase.GetById(752) as Gun);
+            WestBrosNomeGun.NoOwnerOverride = false;
+
+            tk2dSpriteAnimation m_SourceAnimations = WestBrosNomeGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
+
+            foreach (tk2dSpriteAnimationClip clip in m_SourceAnimations.clips) {
+                if (clip.name.StartsWith("nome_")) { m_AnimationClips.Add(ExpandUtility.DuplicateAnimationClip(clip)); }
+            }
+            
+            foreach (tk2dSpriteAnimationClip clip in m_AnimationClips) {
+                clip.name = clip.name.Replace("nome_", string.Empty);
+                if (clip.name == "idle_front") {
+                    clip.name = "idle";
+                } else if (clip.name == "summon") {
+                    clip.name = "whistle";
+                } else if (clip.name == "pound") {
+                    clip.name = "jump_attack";
+                }
+            }
+
+            WestBrosAnimation_Nome.clips = m_AnimationClips.ToArray();
+            
+            tk2dSpriteCollectionData m_WestBrosSpriteCollectionData = WestBrosAnimations_Nome.AddComponent<tk2dSpriteCollectionData>();
+            ExpandUtility.DuplicateComponent(m_WestBrosSpriteCollectionData, WestBrosNomeGun.gameObject.GetComponent<tk2dSprite>().Collection);
+            
+            m_TargetAIActor.HasShadow = false;
+            m_TargetAIActor.ShadowPrefab = null;
+
+            Destroy(m_CachedTargetObject.transform.Find("shadow").gameObject);
+
+            tk2dSprite WestBros_NomeSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
+            // ExpandUtility.DuplicateComponent(WestBros_NomeSprite, WestBrosNomeGun.gameObject.GetComponent<tk2dSprite>());
+            WestBros_NomeSprite.Collection = m_WestBrosSpriteCollectionData;
+            WestBros_NomeSprite.SetSprite("BB_nome_idle_front_001");
+            WestBros_NomeSprite.PlaceAtPositionByAnchor(new Vector3(0.1f, 0.1f), tk2dBaseSprite.Anchor.LowerLeft);
+
+            tk2dSpriteAnimator WestBrosNome_Animator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
+            WestBrosNome_Animator.Library = WestBrosAnimation_Nome;
+
+            AIAnimator NomeAIAnimator = m_CachedTargetObject.GetComponent<AIAnimator>();
+            
+            NomeAIAnimator.OtherAnimations.Remove(NomeAIAnimator.OtherAnimations[0]);
+            
+            AIShooter aiShooter = m_CachedTargetObject.GetComponent<AIShooter>();
+            aiShooter.equippedGunId = 752;
+            
+            westBrosNomeGUID = m_TargetAIActor.EnemyGuid;
+            AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
+            FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+            DontDestroyOnLoad(m_CachedTargetObject);
+
+            return m_CachedTargetObject;
+        }*/
+
+        // Dummy prefab for assinging corrupted enemies to room prefabs.
+        public static void BuildCorruptedEnemyPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedSourceActor = GetOrLoadByGuid_Orig("01972dee89fc4404a5c408d50007dad5"); //bullet_kin
+            
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptedEnemy");
+                        
+            tk2dSprite m_CachedSprite = m_CachedTargetObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(m_CachedSprite, m_CachedSourceActor.gameObject.GetComponent<tk2dSprite>());
+
+            tk2dSpriteAnimation m_CachedAnimation = m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>();
+            ExpandUtility.DuplicateComponent(m_CachedAnimation, m_CachedSourceActor.gameObject.GetComponent<tk2dSpriteAnimator>().Library);
+
+            tk2dSpriteAnimator m_CachedAnimator = m_CachedTargetObject.AddComponent<tk2dSpriteAnimator>();
+            ExpandUtility.DuplicateComponent(m_CachedAnimator, m_CachedSourceActor.gameObject.GetComponent<tk2dSpriteAnimator>());
+            m_CachedAnimator.Library = m_CachedAnimation;
+            
+            SpeculativeRigidbody m_CachedRigidBody = m_CachedTargetObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateComponent(m_CachedRigidBody, m_CachedSourceActor.gameObject.GetComponent<SpeculativeRigidbody>());
+
+            AIAnimator m_CachedAIAnimator = m_CachedTargetObject.AddComponent<AIAnimator>();
+            ExpandUtility.DuplicateComponent(m_CachedAIAnimator, m_CachedSourceActor.gameObject.GetComponent<AIAnimator>());
+
+            AIActor m_CachedAIActor = ExpandUtility.BuildNewAIActor(m_CachedTargetObject, "Corrupted Enemy", "182c39c4d904493283f75ab29775d9c6", EnemyHasNoShooter: true);
+
+            if (!m_CachedAIActor) {
+                if (ExpandStats.debugMode) ETGModConsole.Log("[ExpandTheGungeon] [BuildCorruptedEnemyPrefab] ERROR: New AIActor component returned null!", false);
+                return;
+            }
+
+            m_CachedAIActor.invisibleUntilAwaken = true;
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>(0);
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>(0);
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>(0);
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BlankBehavior_BehaviorScript.txt");
+            
+            m_CachedTargetObject.AddComponent<ExpandCorruptedEnemyEngageDoer>();
+
+            corruptedEnemyGUID = m_CachedAIActor.EnemyGuid;
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+            m_CachedSourceActor = null;
+            return;
         }
 
         public static void BuildCultistCompanionPrefab(AssetBundle expandSharedAssets1, out GameObject CachedTargetEnemyObject) {

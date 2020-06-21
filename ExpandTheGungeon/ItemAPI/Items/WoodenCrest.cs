@@ -16,7 +16,7 @@ namespace ExpandTheGungeon.ItemAPI {
             WoodenCrest woodenCrest = WoodCrestObject.AddComponent<WoodenCrest>();
             
             string shortDesc = "Protection of Wood";
-            string longDesc = "A shield made of wood. Provides fleeting projection.";
+            string longDesc = "A shield made of wood. Provides fleeting protection.";
             ItemBuilder.SetupItem(woodenCrest, shortDesc, longDesc, "ex");
             // woodenCrest.quality = ItemQuality.SPECIAL;
             woodenCrest.quality = ItemQuality.EXCLUDED;

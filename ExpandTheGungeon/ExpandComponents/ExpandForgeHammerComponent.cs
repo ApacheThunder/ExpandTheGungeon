@@ -329,7 +329,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     DamageToEnemies = 55f;
                     DoesBulletsOnImpact = false;
                     DoGoopOnImpact = true;
-                } else if (currentTileset == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                } else if (currentTileset == GlobalDungeonData.ValidTilesets.WESTGEON) {
                     DamageToEnemies = 57f;
                     DoesBulletsOnImpact = false;
                     DoGoopOnImpact = true;

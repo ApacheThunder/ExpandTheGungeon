@@ -484,7 +484,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             return;
         }
 
-        public void SpawnRandomGlitchEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnRandomGlitchEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
 
             // int GlitchEnemyNumber = UnityEngine.Random.Range(0, 52);
             int GlitchEnemyCount = 52;
@@ -496,64 +496,68 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             int GlitchEnemyNumber = BraveUtility.RandomElement(GlitchEnemyNumberList);
 
+            GameObject targetObject = null;
+
             try {
                 if (UnityEngine.Random.value <= 0.85f) {
-                    if (GlitchEnemyNumber == 0) { SpawnGlitchedBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 1) { SpawnGlitchedCultist(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 2) { SpawnGlitchedGhost(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 3) { SpawnGlitchedArrowheadKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 4) { SpawnGlitchedSniperKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 5) { SpawnGlitchedAshBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 6) { SpawnGlitchedAshShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 7) { SpawnGlitchedCardinalBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 8) { SpawnGlitchedBulletMachineGunMan(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 9) { SpawnGlitchedBulletManDevil(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 10) { SpawnGlitchedBulletManShroomed(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 11) { SpawnGlitchedBulletSkeletonHelmet(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 12) { SpawnGlitchedVeteranShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 13) { SpawnGlitchedMutantShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 14) { SpawnGlitchedMutantBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 15) { SpawnGlitchedShotGrubKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 16) { SpawnGlitchedWizardRed(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 17) { SpawnGlitchedWizardYellow(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 18) { SpawnGlitchedWizardBlue(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 19) { SpawnGlitchedWizardBlue(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 20) { SpawnGlitchedChicken(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 21) { SpawnGlitchedBird(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 22) { SpawnGlitchedBulletShark(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 23) { SpawnGlitchedBlueLeadWizard(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 24) { SpawnGlitchedNecromancer(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 25) { SpawnGlitchedJamromancer(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 26) { SpawnGlitchedAngryBook(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 27) { SpawnGlitchedBullatGiant(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 28) { SpawnGlitchedResourcefulRat(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 29) { SpawnGlitchedBlockner(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 30) { SpawnGlitchedBandanaBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 31) { SpawnGlitchedAngryBook(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 32) { SpawnGlitchedBeadie(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 33) { SpawnGlitchedSnake(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 34) { SpawnGlitchedCop(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 35) { SpawnGlitchedCopAndroid(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 36) { SpawnGlitchedSpaceTurtle(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 37) { SpawnGlitchedCursedSpaceTurtle(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 38) { SpawnGlitchedPayDayShotGunGuy(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 39) { SpawnGlitchedR2G2(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 40) { SpawnGlitchedPortableTurret(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 41) { SpawnGlitchedBabyMimic(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 42) { SpawnGlitchedDog(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 43) { SpawnGlitchedWolf(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 44) { SpawnGlitchedSerJunkan(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 45) { SpawnGlitchedCaterpillar(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 46) { SpawnGlitchedRaccoon(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 47) { SpawnGlitchedTurkey(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 48) { SpawnGlitchedBlizzbulon(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 49) { SpawnGlitchedRandomBlob(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 50) { SpawnGlitchedBlanky(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 51) { SpawnGlitchedBabyShelleton(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-                    if (GlitchEnemyNumber == 52) { SpawnGlitchedPlayerAsEnemy(CurrentRoom, position, autoEngage, awakenAnimType); return; }
+                    if (GlitchEnemyNumber == 0) { targetObject = SpawnGlitchedBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 1) { targetObject = SpawnGlitchedCultist(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 2) { targetObject = SpawnGlitchedGhost(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 3) { targetObject = SpawnGlitchedArrowheadKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 4) { targetObject = SpawnGlitchedSniperKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 5) { targetObject = SpawnGlitchedAshBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 6) { targetObject = SpawnGlitchedAshShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 7) { targetObject = SpawnGlitchedCardinalBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 8) { targetObject = SpawnGlitchedBulletMachineGunMan(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 9) { targetObject = SpawnGlitchedBulletManDevil(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 10) { targetObject = SpawnGlitchedBulletManShroomed(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 11) { targetObject = SpawnGlitchedBulletSkeletonHelmet(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 12) { targetObject = SpawnGlitchedVeteranShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 13) { targetObject = SpawnGlitchedMutantShotGunKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 14) { targetObject = SpawnGlitchedMutantBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 15) { targetObject = SpawnGlitchedShotGrubKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 16) { targetObject = SpawnGlitchedWizardRed(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 17) { targetObject = SpawnGlitchedWizardYellow(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 18) { targetObject = SpawnGlitchedWizardBlue(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 19) { targetObject = SpawnGlitchedWizardBlue(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 20) { targetObject = SpawnGlitchedChicken(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 21) { targetObject = SpawnGlitchedBird(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 22) { targetObject = SpawnGlitchedBulletShark(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 23) { targetObject = SpawnGlitchedBlueLeadWizard(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 24) { targetObject = SpawnGlitchedNecromancer(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 25) { targetObject = SpawnGlitchedJamromancer(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 26) { targetObject = SpawnGlitchedAngryBook(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 27) { targetObject = SpawnGlitchedBullatGiant(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 28) { targetObject = SpawnGlitchedResourcefulRat(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 29) { targetObject = SpawnGlitchedBlockner(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 30) { targetObject = SpawnGlitchedBandanaBulletKin(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 31) { targetObject = SpawnGlitchedAngryBook(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 32) { targetObject = SpawnGlitchedBeadie(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 33) { targetObject = SpawnGlitchedSnake(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 34) { targetObject = SpawnGlitchedCop(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 35) { targetObject = SpawnGlitchedCopAndroid(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 36) { targetObject = SpawnGlitchedSpaceTurtle(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 37) { targetObject = SpawnGlitchedCursedSpaceTurtle(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 38) { targetObject = SpawnGlitchedPayDayShotGunGuy(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 39) { targetObject = SpawnGlitchedR2G2(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 40) { targetObject = SpawnGlitchedPortableTurret(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 41) { targetObject = SpawnGlitchedBabyMimic(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 42) { targetObject = SpawnGlitchedDog(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 43) { targetObject = SpawnGlitchedWolf(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 44) { targetObject = SpawnGlitchedSerJunkan(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 45) { targetObject = SpawnGlitchedCaterpillar(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 46) { targetObject = SpawnGlitchedRaccoon(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 47) { targetObject = SpawnGlitchedTurkey(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 48) { targetObject = SpawnGlitchedBlizzbulon(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 49) { targetObject = SpawnGlitchedRandomBlob(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 50) { targetObject = SpawnGlitchedBlanky(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 51) { targetObject = SpawnGlitchedBabyShelleton(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    if (GlitchEnemyNumber == 52) { targetObject = SpawnGlitchedPlayerAsEnemy(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+                    END:;
+
                 } else {
                     try {
-                        SpawnGlitchedBigEnemy(CurrentRoom, position, autoEngage, awakenAnimType);
+                        targetObject = SpawnGlitchedBigEnemy(CurrentRoom, position, autoEngage, awakenAnimType);
                     } catch (Exception ex) {
                         if (ExpandStats.debugMode) {
                             ETGModConsole.Log("[DEBUG] WARNING: Exception while attempting to spawn glitched big enemy!");
@@ -569,17 +573,35 @@ namespace ExpandTheGungeon.ExpandObjects {
                 Debug.Log("WARNING: Exception while attempting to spawn glitched enemy with ID: " + GlitchEnemyNumber.ToString());
                 Debug.LogException(ex);
             }
-            return;
+
+            if (targetObject) {
+                targetObject.transform.SetParent(CurrentRoom.hierarchyParent, true);
+                if (targetObject.GetComponent<AIActor>()) {
+                    CurrentRoom.RegisterEnemy(targetObject.GetComponent<AIActor>());
+                }
+            }
+            return targetObject;
         }
-        public void SpawnRandomGlitchBoss(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnRandomGlitchBoss(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             int GlitchBossNumber = UnityEngine.Random.Range(0, 6);
 
-            if (GlitchBossNumber == 0) { SpawnGlitchedBulletBros(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-            if (GlitchBossNumber == 1) { SpawnGlitchedGatlingGull(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-            if (GlitchBossNumber == 2) { SpawnGlitchedBeholster(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-            if (GlitchBossNumber == 3) { SpawnGlitchedBossDoorMimic(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-            if (GlitchBossNumber == 4) { SpawnGlitchedHighPriest(CurrentRoom, position, autoEngage, awakenAnimType); return; }
-            if (GlitchBossNumber >= 5) { SpawnGlitchedKillPillar(CurrentRoom, position, autoEngage, awakenAnimType); return; }
+            GameObject targetObject = null;
+
+            if (GlitchBossNumber == 0) { targetObject = SpawnGlitchedBulletBros(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+            if (GlitchBossNumber == 1) { targetObject = SpawnGlitchedGatlingGull(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+            if (GlitchBossNumber == 2) { targetObject = SpawnGlitchedBeholster(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+            if (GlitchBossNumber == 3) { targetObject = SpawnGlitchedBossDoorMimic(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+            if (GlitchBossNumber == 4) { targetObject = SpawnGlitchedHighPriest(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+            if (GlitchBossNumber >= 5) { targetObject = SpawnGlitchedKillPillar(CurrentRoom, position, autoEngage, awakenAnimType); goto END; }
+
+            END:;
+
+            if (targetObject) {
+                targetObject.transform.SetParent(CurrentRoom.hierarchyParent, true);
+                if (targetObject.GetComponent<AIActor>()) { CurrentRoom.RegisterEnemy(targetObject.GetComponent<AIActor>()); }
+            }
+
+            return targetObject;
         }
 
         public void AddOrReplaceAIActorConfig(AIActor target, AIActor source, bool isResourcefulRat = false) {
@@ -747,11 +769,34 @@ namespace ExpandTheGungeon.ExpandObjects {
                     target.behaviorSpeculator.RefreshBehaviors();
                     target.behaviorSpeculator.RegenerateCache();
                 }
+
+                if (source.gameObject.GetComponent<CrazedController>()) {
+                    CrazedController crazedController = target.gameObject.AddComponent<CrazedController>();
+                    ExpandUtility.DuplicateComponent(crazedController, source.gameObject.GetComponent<CrazedController>());
+                }
+
+                // Fix missing magic circle thingy on wizards/jammerlengo/necromancer
+                if (source.aiAnimator.OtherVFX != null && source.aiAnimator.OtherVFX.Count > 0) {
+                    target.aiAnimator.OtherVFX = new List<AIAnimator.NamedVFXPool>();
+
+                    foreach (AIAnimator.NamedVFXPool vfx in source.aiAnimator.OtherVFX) {
+                        AIAnimator.NamedVFXPool NewVFXEntry = new AIAnimator.NamedVFXPool() { name = vfx.name, vfxPool = vfx.vfxPool };
+                        if (vfx.anchorTransform) {
+                            GameObject anchorObject = Instantiate(vfx.anchorTransform.gameObject, target.transform.position, Quaternion.identity);
+                            anchorObject.name.Replace("(Clone)", string.Empty);
+                            anchorObject.name.Replace("(clone)", string.Empty);
+                            anchorObject.transform.SetParent(target.transform, false);
+                            anchorObject.transform.localPosition = vfx.anchorTransform.localPosition;
+                            NewVFXEntry.anchorTransform = anchorObject.transform;
+                        }
+                        target.aiAnimator.OtherVFX.Add(NewVFXEntry);
+                    }
+                }
             } catch (Exception) { }
         }
 
 
-        public void SpawnGlitchedBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -798,7 +843,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -887,11 +932,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedCultist(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCultist(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(CultistPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -938,7 +983,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1024,12 +1069,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedGhost(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedGhost(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(GhostPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1075,7 +1120,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1160,12 +1205,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedArrowheadKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedArrowheadKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(ArrowheadManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1212,7 +1257,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1297,12 +1342,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedSniperKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedSniperKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletRifleManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1341,7 +1386,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1427,11 +1472,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedAshBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedAshBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(AshBulletManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1478,7 +1523,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1563,11 +1608,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedAshShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedAshShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(AshBulletShotgunManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1613,7 +1658,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1698,11 +1743,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedCardinalBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCardinalBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletCardinalPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1749,7 +1794,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1834,11 +1879,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBulletMachineGunMan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletMachineGunMan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletMachineGunManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -1884,7 +1929,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -1969,11 +2014,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBulletManDevil(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletManDevil(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManDevilPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2019,7 +2064,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2104,11 +2149,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBulletManShroomed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletManShroomed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManShroomedPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2153,7 +2198,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2234,11 +2279,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBulletSkeletonHelmet(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletSkeletonHelmet(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletSkeletonHelmetPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2283,7 +2328,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2368,11 +2413,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedVeteranShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedVeteranShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletShotgunManSawedOffPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2416,7 +2461,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2501,11 +2546,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedMutantShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedMutantShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletShotgunManMutantPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2550,7 +2595,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2635,11 +2680,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedMutantBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedMutantBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManMutantPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2685,7 +2730,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2770,11 +2815,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedShotGrubKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedShotGrubKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletShotgrubManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2819,7 +2864,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -2904,11 +2949,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBird(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBird(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BirdPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -2938,7 +2983,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3022,11 +3067,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBulletShark(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletShark(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletSharkPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3059,7 +3104,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3144,11 +3189,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBlueLeadWizard(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBlueLeadWizard(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(LeadWizardBluePrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3170,7 +3215,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3257,11 +3302,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedNecromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedNecromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(NecromancerPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3291,7 +3336,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3378,11 +3423,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedJamromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedJamromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(JamromancerPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3412,7 +3457,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3499,11 +3544,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedWizardRed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedWizardRed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(WizardRedPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3533,7 +3578,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3618,11 +3663,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedWizardYellow(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedWizardYellow(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(WizardYellowPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3652,7 +3697,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3737,11 +3782,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedWizardBlue(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedWizardBlue(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(WizardBluePrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3771,7 +3816,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3856,11 +3901,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedSunburst(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedSunburst(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(SunburstPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -3891,7 +3936,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -3977,11 +4022,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBullatGiant(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBullatGiant(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BullatGiantPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -4012,7 +4057,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4102,17 +4147,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedResourcefulRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedResourcefulRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             // GameObject CachedTargetEnemyObject = Instantiate(ResourcefulRatBossPrefab);
             // DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             GameObject CachedTargetEnemyObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(EnemyDatabase.GetOrLoadByGuid("6868795625bd46f3ae3e4377adce288b").gameObject, CurrentRoom, position, true, awakenAnimType, autoEngage);
             GameObject CachedSourceEnemyObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             List<GameObject> SpecialSourceEnemies = new List<GameObject>();
@@ -4152,7 +4197,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4242,13 +4287,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             // DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             CachedGlitchEnemyActor.ConfigureOnPlacement(CurrentRoom);
             // Destroy(CachedTargetEnemyObject);
-            return;
+            return CachedTargetEnemyObject;
         }
-        public void SpawnGlitchedBlockner(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBlockner(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(ManfredsRivalPrefab);
             GameObject CachedSourceEnemyObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             List<GameObject> SpecialSourceEnemies = new List<GameObject>();
@@ -4289,7 +4334,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4380,11 +4425,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBandanaBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBandanaBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManBandanaPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -4428,7 +4473,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4513,11 +4558,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedAngryBook(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedAngryBook(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> RandomSourceEnemyPrefabs = new List<GameObject>();
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             RandomSourceEnemyPrefabs.Add(AngryBookPrefab);
@@ -4553,7 +4598,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4638,11 +4683,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBeadie(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBeadie(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(FloatingEyePrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -4681,7 +4726,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4771,11 +4816,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedChicken(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedChicken(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -4804,7 +4849,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -4926,11 +4971,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedSnake(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedSnake(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(BulletManPrefab);
             ValidSourceEnemies.Add(GhostPrefab);
@@ -4961,7 +5006,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5048,11 +5093,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBlizzbulon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBlizzbulon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BlizzbulonPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -5084,7 +5129,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5169,11 +5214,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedRandomBlob(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedRandomBlob(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject BlobulonObject = BlobulonPrefab;
 
             if (BraveUtility.RandomBool()) { BlobulonObject = PoisbulonPrefab; }
@@ -5209,7 +5254,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5304,11 +5349,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             }
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>() {
                 GhostPrefab,
                 // CultistPrefab,
@@ -5336,7 +5381,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5448,12 +5493,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject CorruptedRat = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            CurrentRoom.RegisterEnemy(CorruptedRat.GetComponent<AIActor>());
+            // CurrentRoom.RegisterEnemy(CorruptedRat.GetComponent<AIActor>());
             Destroy(CachedTargetEnemyObject);
-            return;
+            return CorruptedRat;
         }
 
-        public void SpawnGlitchedBigEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBigEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> RandomSourceEnemyPrefabs = new List<GameObject>();
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             RandomSourceEnemyPrefabs.Add(PhaseSpiderPrefab);
@@ -5496,7 +5541,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5585,12 +5630,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
 
-        public void SpawnGlitchedCop(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCop(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(CopPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -5629,7 +5674,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5744,11 +5789,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedCopAndroid(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCopAndroid(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(CopAndroidPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -5787,7 +5832,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -5902,11 +5947,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(SuperSpaceTurtlePrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -5949,7 +5994,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6069,11 +6114,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedCursedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCursedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(CursedSuperSpaceTurtlePrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -6116,7 +6161,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6237,14 +6282,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             // tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             // ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
             Destroy(CachedTargetEnemyObject);
 
             CachedGlitchEnemyActor.BecomeBlackPhantom();
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedPayDayShotGunGuy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedPayDayShotGunGuy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(PayDayShootPrefab);
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -6280,7 +6325,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6395,11 +6440,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedR2G2(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedR2G2(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(R2G2Prefab);
             GameObject CachedSourceEnemyObject;
 
@@ -6438,7 +6483,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6558,11 +6603,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedPortableTurret(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedPortableTurret(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(ArrowheadManPrefab);
             ValidSourceEnemies.Add(BulletRifleManPrefab);
@@ -6585,7 +6630,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6702,11 +6747,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBabyMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBabyMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Clear();
             ValidSourceEnemies.Add(GhostPrefab);
@@ -6735,7 +6780,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -6856,11 +6901,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedDog(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedDog(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -6888,7 +6933,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -7007,11 +7052,11 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedWolf(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedWolf(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -7041,7 +7086,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -7164,11 +7209,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 float RnadomColorIntensityFloat = UnityEngine.Random.Range(0.1f, 0.25f);
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             }
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedSerJunkan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedSerJunkan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Clear();
             ValidSourceEnemies.Add(SerJunkanPrefab);
@@ -7197,7 +7242,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             bool isMaxLevelJunkan = false;
@@ -7446,11 +7491,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             }
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedCaterpillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedCaterpillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -7478,7 +7523,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -7603,11 +7648,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedRaccoon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
+        public GameObject SpawnGlitchedRaccoon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -7642,7 +7687,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -7756,11 +7801,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite);
             }
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedTurkey(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
+        public GameObject SpawnGlitchedTurkey(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -7794,7 +7839,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -7912,11 +7957,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             }
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBlanky(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBlanky(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(GhostPrefab);
             ValidSourceEnemies.Add(CultistPrefab);
@@ -7944,7 +7989,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8054,11 +8099,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBabyShelleton(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBabyShelleton(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Clear();
             ValidSourceEnemies.Add(GhostPrefab);
@@ -8087,7 +8132,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8210,13 +8255,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
 
 
-        public void SpawnGlitchedBulletBros(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBulletBros(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject;
             GameObject CachedSourceEnemyObject;
 
@@ -8226,7 +8271,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 CachedTargetEnemyObject = Instantiate(BulletBrosShadesPrefab);
             }
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             List<GameObject> SpecialSourceEnemies = new List<GameObject>();
@@ -8264,7 +8309,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8358,15 +8403,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedGatlingGull(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedGatlingGull(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(GatlingGullPrefab);
             GameObject CachedSourceEnemyObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             List<GameObject> SpecialSourceEnemies = new List<GameObject>();
@@ -8401,7 +8446,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8500,11 +8545,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBeholster(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBeholster(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(CultistPrefab);
             ValidSourceEnemies.Add(ArrowheadManPrefab);
@@ -8532,11 +8577,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject CachedTargetEnemyObject = Instantiate(BeholsterPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8637,11 +8682,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedBossDoorMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedBossDoorMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(JamromancerPrefab);
             ValidSourceEnemies.Add(LeadWizardBluePrefab);
@@ -8651,10 +8696,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject CachedTargetEnemyObject = Instantiate(BossDoorMimicPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8746,11 +8791,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
-        public void SpawnGlitchedHighPriest(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedHighPriest(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(JamromancerPrefab);
             ValidSourceEnemies.Add(LeadWizardBluePrefab);
@@ -8760,10 +8805,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject CachedTargetEnemyObject = Instantiate(HighPriestPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8854,12 +8899,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
 
-        public void SpawnGlitchedKillPillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedKillPillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             ValidSourceEnemies.Add(CultistPrefab);
             ValidSourceEnemies.Add(ArrowheadManPrefab);
@@ -8886,10 +8931,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject CachedTargetEnemyObject = Instantiate(BossDoorMimicPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
-            if (CachedTargetEnemyObject == null) { return; }
+            if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -8992,12 +9037,12 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             Destroy(CachedTargetEnemyObject);
-            return;
+            return targetObject;
         }
 
-        public void SpawnGlitchedObjectAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedObjectAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             GameObject CachedTargetEnemyObject = Instantiate(BulletManPrefab);
             GameObject CachedSourceEnemyObject;
 
@@ -9029,7 +9074,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (CachedSourceEnemyObject == null) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
@@ -9163,7 +9208,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Destroy(CachedGlitchEnemyActor.aiAnimator);
             CachedGlitchEnemyActor.specRigidbody.RegenerateColliders = true;
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);            
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);            
             Destroy(CachedTargetEnemyObject);
             /*if (!isConvictPastCrowdNPC) {
                 ETGModConsole.Log(m_SelectedNPC.name);
@@ -9171,10 +9216,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ETGModConsole.Log(m_SelectedNPCSprite.name);
             }*/
             objectDatabase = null;
-            return;
+            return targetObject;
         }
         
-        public void SpawnGlitchedPlayerAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
+        public GameObject SpawnGlitchedPlayerAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
             PlayerController m_SelectedPlayer = GameManager.Instance.PrimaryPlayer;
 
             AIActor CachedEnemyActor = CultistPrefab.GetComponent<AIActor>();
@@ -9194,7 +9239,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             if (!CachedEnemyActor) {
                 if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
-                return;
+                return null;
             }
 
             if (ExpandStats.debugMode) {
@@ -9356,11 +9401,11 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             behaviorSpeculator.RegenerateCache();
 
-            DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
             Destroy(CachedTargetEnemyObject);
             CachedEnemyActor = null;
-            return;
+            return targetObject;
         }        
     }
 }

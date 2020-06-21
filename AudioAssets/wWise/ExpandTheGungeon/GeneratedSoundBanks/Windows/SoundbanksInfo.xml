@@ -38,6 +38,8 @@
 				<Event Id="2184586371" Name="Play_EX_Cronenberg_Spawn_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Spawn_01"/>
 				<Event Id="1687291301" Name="Play_EX_ElevatorBell_01" ObjectPath="\Events\Weapons\Play_EX_ElevatorBell_01"/>
 				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
+				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
+				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
@@ -87,6 +89,10 @@
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_22BDB8A3.wem</Path>
 				</File>
+				<File Id="448206274" Language="SFX">
+					<ShortName>PowBlock.wav</ShortName>
+					<Path>SFX\PowBlock_255C9D35.wem</Path>
+				</File>
 				<File Id="587730353" Language="SFX">
 					<ShortName>GlitchBombDrop.wav</ShortName>
 					<Path>SFX\GlitchBombDrop_255C9D35.wem</Path>
@@ -118,6 +124,10 @@
 				<File Id="958802487" Language="SFX">
 					<ShortName>Abomination_Die.wav</ShortName>
 					<Path>SFX\Abomination_Die_255C9D35.wem</Path>
+				</File>
+				<File Id="979919218" Language="SFX">
+					<ShortName>PowEnemyDeath.wav</ShortName>
+					<Path>SFX\PowEnemyDeath_255C9D35.wem</Path>
 				</File>
 				<File Id="984890443" Language="SFX">
 					<ShortName>Belly_Door_Close.wav</ShortName>

@@ -10,7 +10,7 @@ namespace ExpandTheGungeon.ItemAPI {
     public class BulletKinGun : Gun {
 
         public static int BulletKinGunID = -1;
-
+                
         public static void Init() {
             Gun bulletkinGun = ETGMod.Databases.Items.NewGun("The Bullet Kin Gun", "bulletkin_gun");
             Game.Items.Rename("outdated_gun_mods:the_bullet_kin_gun", "ex:bulletkin_gun");
@@ -32,7 +32,7 @@ namespace ExpandTheGungeon.ItemAPI {
             bulletkinGun.quality = ItemQuality.C;
             bulletkinGun.alternateSwitchGroup = (PickupObjectDatabase.GetById(150) as Gun).gunSwitchGroup;
             bulletkinGun.gunSwitchGroup = (PickupObjectDatabase.GetById(150) as Gun).gunSwitchGroup;
-            bulletkinGun.encounterTrackable.EncounterGuid = "43a080b4-6fa4-48ef-8d2b-e35f93ab6e64";
+            bulletkinGun.encounterTrackable.EncounterGuid = "43a080b46fa448ef8d2be35f93ab6e64";
             bulletkinGun.gameObject.AddComponent<ExpandFireEnemiesGunMod>();
 
             ETGMod.Databases.Items.Add(bulletkinGun);

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 106656846
+CRC: 3017407364
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ca7b6263d3eb73e119d4c3ef12a7d2e8
+    Hash: 85a3466b734a394f8f17eaad15dec711
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8d78c789b460eaa1196c7eb1000217e0
+    Hash: 6441f4c48b8293a736413520ea1a9530
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,7 +17,13 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
   Script: {instanceID: 0}
 Assets:
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_ShatterDebris_01.png
@@ -28,6 +34,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_right_004.png
 - Assets/ExpandTextures/BellyAssets/Belly_Monster_Move_003.png
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_DoorBlock_East.png
+- Assets/ExpandPrefabs/AIActors/EXCorruptedEnemy.prefab
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_pitfall_001.png
 - Assets/ExpandTextures/RickRoll/RickRoll_RiseUp_08.png
@@ -52,6 +59,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BabyGoodHammer/babygoodhammer_move_right_02.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_burst_003.png
 - Assets/ExpandTextures/EXLogo.png
+- Assets/ExpandTextures/Items/JungleCrest/junglecrest_minimapicon.png
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_door_005.png
 - Assets/ExpandTextures/AIActors/BabyGoodHammer/babygoodhammer_move_left_01.png
 - Assets/ExpandTextures/JungleAssets/JungleTree_MinimapIcon.png
@@ -67,6 +75,7 @@ Assets:
 - Assets/ExpandPrefabs/Expand_RickRollChest.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_pitfall_002.png
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_ExitTiles_South.png
+- Assets/ExpandPrefabs/EXReward_Pedestal_RatKey.prefab
 - Assets/ExpandPrefabs/BootlegRoomDoorFramesTop.prefab
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_BottomLayer.png
 - Assets/ExpandTextures/RickRoll/RickRoll_02.png
@@ -114,7 +123,6 @@ Assets:
 - Assets/ExpandTextures/Items/CorruptedPoopsack/corrupted_poopsack_08.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_corpse.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_back_left_006.png
-- Assets/ExpandTextures/Items/junglecrest.png
 - Assets/ExpandTextures/JungleAssets/Jungle_Tree_Large_Open.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_back_right_002.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_03.png
@@ -122,6 +130,7 @@ Assets:
 - Assets/ExpandTextures/Misc/BulletManEyepatch.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_MinimapIcon.png
 - Assets/ExpandTextures/RickRoll/RickRoll_01.png
+- Assets/ExpandPrefabs/WestBrosAnimations_Nome.prefab
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Spawn_005.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_pitfall_004.png
 - Assets/ExpandPrefabs/ExpandJungle_ExitLadder.prefab
@@ -197,10 +206,13 @@ Assets:
 - Assets/ExpandPrefabs/ExpandChallenge_KingsMen.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_hit_left_001.png
 - Assets/ExpandTextures/Items/RockSlide/plunger_fire_003.png
+- Assets/ExpandTextures/BellyAssets/Shipwreck_Right.png
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_break_004.png
 - Assets/ExpandPrefabs/Items/Bloodied Scarf.prefab
+- Assets/ExpandPrefabs/ExpandDustStormFX.prefab
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_07.png
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_door_004.png
+- Assets/ExpandPrefabs/EXShipwreck_Right.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_right_001.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_burst_006.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_corpse.png
@@ -222,6 +234,7 @@ Assets:
 - Assets/ExpandTextures/RickRoll/RickRoll_20.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_front_004.png
 - Assets/ExpandTextures/BellyAssets/Belly_Monster_Move_010.png
+- Assets/ExpandTextures/Items/PowBlock/PowBlock.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_right_003.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_left_001.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Close_03.png
@@ -229,6 +242,7 @@ Assets:
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_alarm_006.png
 - Assets/ExpandTextures/BellyAssets/PedestalRuins.png
 - Assets/ExpandPrefabs/CronenbergCorpseFragment_01.prefab
+- Assets/ExpandTextures/Items/PowBlock/PowBlock_Used.png
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_idle_004.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_up.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_MimicFadeIn_01.png
@@ -247,6 +261,7 @@ Assets:
 - Assets/ExpandPrefabs/Jungle Tree Frame.prefab
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_back_right_006.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Open_01.png
+- Assets/ExpandTextures/Items/JungleCrest/junglecrest.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicFadeIn_05.png
 - Assets/ExpandPrefabs/AIActors/Bootleg Bullat.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_left_001.png
@@ -341,6 +356,7 @@ Assets:
 - Assets/ExpandTextures/Items/glitchround.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_09.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Frame_Top.png
+- Assets/ExpandPrefabs/EXShipwreck_Left.prefab
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicFadeIn_09.png
 - Assets/ExpandTextures/RickRoll/RickRoll_05.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_08.png
@@ -364,6 +380,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_idle_down_001.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_down_005.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_left_002.png
+- Assets/ExpandTextures/BellyAssets/Shipwreck_Left.png
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_B.prefab
 - Assets/ExpandPrefabs/RoomCorruptionAmbience_Placable.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_down_002.png
@@ -497,6 +514,7 @@ Assets:
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_ExitTiles_East.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicFadeIn_01.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_spawn_003.png
+- Assets/ExpandPrefabs/EXWest_PuzzleSetupPlacable.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_up_002.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Open_04.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_06.png
@@ -510,6 +528,7 @@ Assets:
 - Assets/ExpandTextures/RickRoll/RickRoll_RiseUp_07.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_down_004.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_right_005.png
+- Assets/ExpandPrefabs/Items/Pow Block.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_right_004.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_spawn_003.png
 - Assets/ExpandTextures/RickRoll/RickRoll_15.png
@@ -528,6 +547,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BabyGoodHammer/babygoodhammer_idle_down_01.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_run_down_002.png
 - Assets/ExpandTextures/AIActors/BootlegBullat/bullat_idle_003.png
+- Assets/ExpandTextures/WestAssets/ExpandDustFXSprite_001.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_back_right_004.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_pitfall_005.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_hit_left.png
@@ -539,6 +559,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_left_005.png
 - Assets/ExpandPrefabs/ENV_Tileset_West.prefab
 - Assets/ExpandTextures/RickRoll/RickRoll_25.png
+- Assets/ExpandPrefabs/StoneCubeCollection_West.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_right_005.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_hit_left_004.png
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_door_008.png
@@ -551,6 +572,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_right_003.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_spawn_003.png
 - Assets/ExpandPrefabs/AIActors/Cronenberg Abomination.prefab
+- Assets/ExpandPrefabs/EXReward_Pedestal_Blank.prefab
 - Assets/ExpandPrefabs/CronenbergCorpseFragment_04.prefab
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_back_left_001.png
 - Assets/ExpandPrefabs/AngryCronenbergCorpseFragment.prefab
@@ -580,6 +602,7 @@ Assets:
 - Assets/ExpandTextures/Items/CorruptedPoopsack/corrupted_poopsack_07.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_left.png
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_001.png
+- Assets/ExpandPrefabs/Items/EXJungleCrest_MinimapIcon.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_down.png
 - Assets/ExpandTextures/RickRoll/RickRoll_19.png
 - Assets/ExpandPrefabs/EX SawBlade PlacableObject.prefab
@@ -600,6 +623,7 @@ Assets:
 - Assets/ExpandPrefabs/CronenbergCorpseFragment_02.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_burst_006.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_03.png
+- Assets/ExpandPrefabs/ExpandDustFXMaterial.mat
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_left_003.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_spawn_002.png
 - Assets/ExpandPrefabs/ExpandJungle_Tree.prefab

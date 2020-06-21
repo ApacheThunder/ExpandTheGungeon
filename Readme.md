@@ -1,10 +1,10 @@
-ExpandTheGungeon - v1.9 by Apache Thunder.
+ExpandTheGungeon - v1.9.5 by Apache Thunder.
 
 Features:
 
 1. Updated version of old Anywhere mod. Use load_flow to load a DungeonFlow. Command syntax is mostly the same as old anywhere mod. Use "load_flow help" in console to get help on how to use this command.
 
-2. Two new secret floors! Both with brand new tilesets pulled from unused tilesets from old versions of the game.
+2. Three new secret floors! Both with brand new tilesets pulled from unused tilesets from old versions of the game.
 
 3. Glitch Chests now take player to a full floor with glitched enmies instead of just a simple 3 room floor that goes direct to the boss.
 
@@ -39,8 +39,11 @@ Features:
  * "Corrupted Junk". Junk warped by corruption. May grant player an obscene amount of a random consumable.
  * "Cronenberg Bullets". Bullets that have a chance to transmorgify enemies into a horrible cronenberg abomination. Sprite work courtasy of Neighborino!
  * "Mimiclay". Special item dropped by custom boss on custom secret floor. One time use active item. Clones another active or passive when used while said active/passive is spawned/near the player. This item idea/code was created thanks to Retrash.
- * "The Lead Key' Special active item taht will teleport the player to a new room not normally connected to the floor. Small chance of beign a shop, shrine, or chest room.
- 
+ * "The Lead Key". Special active item taht will teleport the player to a new room not normally connected to the floor. Small chance of beign a shop, shrine, or chest room.
+ * "The Bullet Kin Gun". Fires Bullet Kin....No further explenation needed.
+ * "Baby Sitter". Companion item that gives you the COOP cultist as a non playable friend. Like Cop, he can die. When this happes you get curse and damage up.
+ * "Rock Slide". Causes rocks to fall on your enemies! Amount of rocks is random. Sometimes all enemies get targeted while other times only a few do.
+ * "Pow Block". Flips enemies and makes them easier to kill. Flipped enemies can no longer attack.
  
 14. Certain NPCs and objects and even a copy of the player can appear as enemies on glitch floors.
 
@@ -60,6 +63,6 @@ Credits:
 
 * KyleTheScientist, Zatherz, Abe Clancy, and PlaguedPixel for their help/code for improving/making certain features possible.
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
-* Retrash for the Baby Good Hammer item sprite.
+* Retrash for the Baby Good Hammer item sprite, Wooden Crest sprite, improvements to Jungle tree sprite, and for some room designs on Belly floor.
 * Charcola for the Table Tech Assassin sprite design.
-* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided some additional room designs.
+* Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided some additional room designs and revised versions of Cronenberg sprites for aggressive versions found on Belly.

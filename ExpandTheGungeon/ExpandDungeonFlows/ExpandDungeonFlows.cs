@@ -14,7 +14,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static List<string> GlitchChestFlows = new List<string>() {
             "custom_glitch_flow",
             "custom_glitchchest_flow",
-            "custom_glitchchestalt_flow",
+            // "custom_glitchchestalt_flow",
             "apache_fucking_around_flow"
         };
 
@@ -99,7 +99,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static GenericRoomTable m_KeepJungleEntranceRooms;
 
         // Generate a DungeonFlowNode with a default configuration
-        public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null, DungeonFlowNode.NodePriority priority = DungeonFlowNode.NodePriority.MANDATORY, float percentChance = 1) {
+        public static DungeonFlowNode GenerateDefaultNode(DungeonFlow targetflow, PrototypeDungeonRoom.RoomCategory roomType, PrototypeDungeonRoom overrideRoom = null, GenericRoomTable overrideTable = null, bool oneWayLoopTarget = false, bool isWarpWingNode = false, string nodeGUID = null, DungeonFlowNode.NodePriority priority = DungeonFlowNode.NodePriority.MANDATORY, float percentChance = 1, bool handlesOwnWarping = true) {
 
             if (string.IsNullOrEmpty(nodeGUID)) { nodeGUID = Guid.NewGuid().ToString(); }
 
@@ -118,7 +118,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 subchainIdentifiers = new List<string>(0),
                 receivesCaps = false,
                 isWarpWingEntrance = isWarpWingNode,
-                handlesOwnWarping = isWarpWingNode,
+                handlesOwnWarping = handlesOwnWarping,
                 forcedDoorType = DungeonFlowNode.ForcedDoorType.NONE,
                 loopForcedDoorType = DungeonFlowNode.ForcedDoorType.NONE,
                 nodeExpands = false,
@@ -152,7 +152,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
 
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FORGEGEON | 
-                dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON |
+                dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON |
                 dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FINALGEON |
                 dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON |
                 dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON |
@@ -461,13 +461,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(really_big_flow.Really_Big_Flow());
             KnownFlows.Add(fruit_loops.Fruit_Loops());
             KnownFlows.Add(custom_glitchchestalt_flow.Custom_GlitchChestAlt_Flow());
-            KnownFlows.Add(secretglitchfloor_flow.SecretGlitchFloor_Flow());
             KnownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow());
             KnownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow());
             KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
             KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
             KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
             KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
+            KnownFlows.Add(f4c_west_flow_01.F4c_West_Flow_01());
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
             Foyer_Flow.name = "Foyer_Flow";
@@ -535,15 +535,6 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             BossrushFlows.Bossrush_05_Forge.AllNodes[1].overrideExactRoom = ExpandPrefabs.DragunBossFoyerRoom;
             BossrushFlows.Bossrush_05_Forge.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
 
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-
-            // Due to load order, I need to set this up here instead.
-            ExpandRoomPrefabs.Expand_Jungle_OldCrest.associatedMinimapIcon = SewersInjectionData.InjectionData[1].exactRoom.associatedMinimapIcon;
-            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(5, 7), objectDatabase.GodRays);
-            RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
-            // RoomBuilder.AddObjectToRoom(ExpandRoomPrefabs.Expand_Jungle_OldCrest, new Vector2(7, 7), NonEnemyBehaviour: SewersInjectionData.InjectionData[1].exactRoom.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 4, yOffset: 8);
-
-            objectDatabase = null;
             TutorialPrefab = null;
             CastlePrefab = null;
             SewerPrefab = null;

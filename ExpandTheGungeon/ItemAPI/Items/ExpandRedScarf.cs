@@ -13,9 +13,9 @@ namespace ExpandTheGungeon.ItemAPI {
         public static BlinkPassiveItem m_BlinkPassive;
 
         public static GameObject EXRedScarfObject;
-
+        
         public static void Init(AssetBundle expandSharedAssets1) {
-
+            
             m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
             
             if (!m_BlinkPassive) { return; }

@@ -1253,7 +1253,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>-0</YPos>
+												<YPos>0</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -1498,6 +1498,143 @@
 					</StateInfo>
 					<ActiveSourceList>
 						<ActiveSource Name="Belly_Door_Unlock" ID="{66609A34-F0C7-40E6-8BF2-20A2915D05EF}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="PowBlock" ID="{D532CF84-88CC-4072-BB52-2F907F792888}" ShortID="326169973">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{A589AD5E-04A6-46F1-AD95-A81B32D207FC}" ShortID="74565659">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{77499DEB-FB13-4888-9508-8FD43AE07DED}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="PowBlock" ID="{2BDFE0B8-9EE9-49FB-A278-46AE1735D744}" ShortID="448206274">
+							<Language>SFX</Language>
+							<AudioFile>PowBlock.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{19306B34-B577-4832-A3F7-B6FB3009B84D}" ShortID="329666897"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{7DFC5F5B-4CDB-43C8-B491-087D90BEF42D}" ShortID="658884334"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="PowBlock" ID="{2BDFE0B8-9EE9-49FB-A278-46AE1735D744}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="PowEnemyDeath" ID="{D44B8BE3-EADB-458A-978D-BD89A5BE17A9}" ShortID="907849766">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{02AB5763-3C01-42BD-9E3A-6A9D6A25D993}" ShortID="570561039">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{6473AB88-AC08-4F78-A132-4B3B8BFA1A28}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="PowEnemyDeath" ID="{F0ECAB7E-B6AA-4E6C-AAEC-5CAB705A67F5}" ShortID="979919218">
+							<Language>SFX</Language>
+							<AudioFile>PowEnemyDeath.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{017BDBFD-5DAE-40D0-A08B-DA7BEF4226A6}" ShortID="491603763"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{D7DFD51A-5042-4D5E-95FF-7FECED299608}" ShortID="642384381"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="PowEnemyDeath" ID="{F0ECAB7E-B6AA-4E6C-AAEC-5CAB705A67F5}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>

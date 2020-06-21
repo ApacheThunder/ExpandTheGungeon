@@ -43,7 +43,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_isArrived = Tribool.Unready;
             ConfigurationWasDeferred = false;
             UsesOverrideTargetFloor = true;
-            OverrideTargetFloor = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+            OverrideTargetFloor = GlobalDungeonData.ValidTilesets.WESTGEON;
         }
 
         private void Start() {
@@ -181,10 +181,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void TransitionToDepart(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
-            /*if (!m_depatureIsPlayerless) {
-                if (OverrideTargetFloor == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { Pixelator.Instance.RegisterAdditionalRenderPass(ExpandShaders.GlitchScreenShader); }
-            }*/
-
+            
             GameManager.Instance.MainCameraController.DoDelayedScreenShake(departureShake, 0.25f, null);
             if (!m_depatureIsPlayerless) {                
                 for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].PrepareForSceneTransition(); }
@@ -215,8 +212,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                             } else {
                                 GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), useNakatomiTileset: BraveUtility.RandomBool()));
                             }
-                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                            GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, "SecretGlitchFloor_Flow", true));
+                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_west");
+                            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, "SecretGlitchFloor_Flow", true));
                         } else {
                             GameManager.Instance.DelayedLoadNextLevel(delay);
                         }

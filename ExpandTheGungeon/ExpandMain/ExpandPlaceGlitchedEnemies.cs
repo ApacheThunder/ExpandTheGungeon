@@ -12,7 +12,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public ExpandGlitchedEnemies m_GlitchEnemyDatabase;        
 
         public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor) {
-            if (!dungeon.IsGlitchDungeon && /*!ExpandTheGungeon.isGlitchFloor &&*/ dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
+            if (!dungeon.IsGlitchDungeon) { return; }
 
             List<string> BannedRooms = new List<string>();
 
@@ -31,8 +31,7 @@ namespace ExpandTheGungeon.ExpandMain {
             float BonusGlitchEnemyOdds = 0.05f;
             
             if (dungeon.IsGlitchDungeon) { MaxEnemies = 65; GlitchedBossOdds = 0.3f; BonusGlitchEnemyOdds = 0.28f; }
-            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { MaxEnemies = 60; GlitchedBossOdds = 0.3f; BonusGlitchEnemyOdds = 0.28f; }
-            
+                        
             if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
             foreach (RoomHandler currentRoom in dungeon.data.rooms) {             
                 PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;                

@@ -62,6 +62,9 @@ namespace ExpandTheGungeon.ItemAPI {
             CanyonMasterRoundItem.CurrencyToGive = 0;
             CanyonMasterRoundItem.IsMasteryToken = true;
             CanyonMasterRoundID = CanyonMasterRoundItem.PickupObjectId;
+
+            ExpandShaders.Instance.ApplyGlitchShader(CanyonMasterRoundItem.sprite);
+            CanyonMasterRoundItem.sprite.usesOverrideMaterial = true;
         }
     }
 }

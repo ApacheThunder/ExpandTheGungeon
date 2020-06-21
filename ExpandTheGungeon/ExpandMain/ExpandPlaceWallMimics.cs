@@ -59,20 +59,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false);
                     ETGModConsole.Log("[DEBUG] Wall Mimics assigned by RewardManager: " + numWallMimicsForFloor, false);
                 }
-
-                /*if (ExpandTheGungeon.isGlitchFloor && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                    dungeon.DungeonFloorName = "A Corrupted Place.";
-                    dungeon.DungeonShortName = "A Corrupted Place.";
-                    dungeon.DungeonFloorLevelTextOverride = "Beneath the Melting Permafrost.";
-                }*/
-
-
-                /*if (!ExpandStats.allowGlitchFloor && GameManager.Instance.PrimaryPlayer.HasPickupID(316)) {
-                    if (!ExpandSharedHooks.IsHooksInstalled) { ExpandSharedHooks.InstallPrimaryHooks(); }
-                    ExpandStats.allowGlitchFloor = true;
-                }*/
-
-
+                                
                 SetupSecretDoorDestinations(dungeon);
 
                 if (currentFloor < 4) { PlaceGlitchElevator(dungeon); }
@@ -80,9 +67,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandJunkEnemySpawneer m_ExpandJunkEnemySpawneer = new ExpandJunkEnemySpawneer();
                 m_ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
                 m_ExpandJunkEnemySpawneer = null;
-                // Destroy(m_ExpandJunkEnemySpawneer);
 
-                if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON | dungeon.IsGlitchDungeon) {
+                if (dungeon.IsGlitchDungeon) {
                     ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
                 } else {
                     ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
@@ -91,9 +77,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandPlaceCorruptTiles m_CorruptTilePlayer = new ExpandPlaceCorruptTiles();
                 m_CorruptTilePlayer.PlaceCorruptTiles(dungeon);
                 m_CorruptTilePlayer = null;
-                // Destroy(m_CorruptTilePlayer);
-
-                PlaceAlarmMushRooms(dungeon);
 
                 ExpandFloorDecorator FloorDecorator = new ExpandFloorDecorator();
                 FloorDecorator.PlaceFloorDecoration(dungeon);
@@ -278,135 +261,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
         }
-             
-        /*private void PlaceSecretRatGrate(Dungeon dungeon) {
-            if (dungeon.IsGlitchDungeon | GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) {
-                return;
-            }
-            PlaceSecretRatGrateInternal(dungeon, new IntVector2(4, 4), Vector2.zero);
-        }
-        private void PlaceSecretRatGrateInternal(Dungeon dungeon, IntVector2 dimensions, Vector2 offset) {
-            List<IntVector2> list = new List<IntVector2>();
-            for (int i = 0; i < dungeon.data.rooms.Count; i++) {
-                RoomHandler roomHandler = dungeon.data.rooms[i];
-                if (!roomHandler.area.IsProceduralRoom && roomHandler.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.NORMAL && !roomHandler.OptionalDoorTopDecorable && !roomHandler.area.prototypeRoom.UseCustomMusic) {
-                    for (int j = roomHandler.area.basePosition.x; j < roomHandler.area.basePosition.x + roomHandler.area.dimensions.x; j++) {
-                        for (int k = roomHandler.area.basePosition.y; k < roomHandler.area.basePosition.y + roomHandler.area.dimensions.y; k++) {
-                            if (ClearForRatGrate(dungeon, dimensions.x, dimensions.y, j, k)) { list.Add(new IntVector2(j, k)); }
-                        }
-                    }
-                }
-            }
-            if (list.Count > 0) {
-                IntVector2 a = list[BraveRandom.GenerationRandomRange(0, list.Count)];
-                RoomHandler absoluteRoom = a.ToVector2().GetAbsoluteRoom();
-                GameObject gameObject = ExpandPrefabs.EXTrapDoor.GetComponent<ExpandGlitchTrapDoor>().InstantiateObject(absoluteRoom, a - absoluteRoom.area.basePosition, true);
-                gameObject.transform.position += offset.ToVector3ZUp(0f);
-                ExpandGlitchTrapDoor glitchTrapDoor = gameObject.GetComponent<ExpandGlitchTrapDoor>();
-                glitchTrapDoor.ConfigureOnPlacement(absoluteRoom);
-                for (int m = 0; m < dimensions.x; m++) {
-                    for (int n = 0; n < dimensions.y; n++) {
-                        IntVector2 intVector = a + new IntVector2(m, n);
-                        if (dungeon.data.CheckInBoundsAndValid(intVector)) { dungeon.data[intVector].cellVisualData.floorTileOverridden = true; }
-                    }
-                }
-            }
-        }
-        private bool ClearForRatGrate(Dungeon dungeon, int dmx, int dmy, int bpx, int bpy) {
-            int num = -1;
-            for (int i = 0; i < dmx; i++) {
-                for (int j = 0; j < dmy; j++) {
-                    IntVector2 intVector = new IntVector2(bpx + i, bpy + j);
-                    if (!dungeon.data.CheckInBoundsAndValid(intVector)) { return false; }
-                    CellData cellData = dungeon.data[intVector];
-                    if (num == -1) {
-                        num = cellData.cellVisualData.roomVisualTypeIndex;
-                        if (num != 0 && num != 1) { return false; }
-                    }
-                    if (cellData.parentRoom == null || cellData.parentRoom.IsMaintenanceRoom() || cellData.type != CellType.FLOOR || cellData.isOccupied || !cellData.IsPassable || cellData.containsTrap || cellData.IsTrapZone) {
-                        return false;
-                    }
-                    if (cellData.cellVisualData.roomVisualTypeIndex != num || cellData.HasPitNeighbor(dungeon.data) || cellData.PreventRewardSpawn || cellData.cellVisualData.isPattern || cellData.cellVisualData.IsPhantomCarpet) {
-                        return false;
-                    }
-                    if (cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Water || cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Carpet || cellData.cellVisualData.floorTileOverridden) {
-                        return false;
-                    }
-                    if (cellData.doesDamage || cellData.cellVisualData.preventFloorStamping || cellData.cellVisualData.hasStampedPath || cellData.forceDisallowGoop) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }*/
-        
-        private void PlaceAlarmMushRooms(Dungeon dungeon, int Clearence = 3) {
-
-            if (dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.MINEGEON |
-                ChallengeManager.ChallengeModeType == ChallengeModeType.ChallengeMegaMode | 
-                ChallengeManager.ChallengeModeType == ChallengeModeType.ChallengeMode)
-            {
-                return;
-            }
-            
-            int MushroomCount = BraveRandom.GenerationRandomRange(20, 35);
-                        
-            List<IntVector2> spawnList = new List<IntVector2>();
-            for (int i = 0; i < dungeon.data.rooms.Count; i++) {
-                RoomHandler roomHandler = dungeon.data.rooms[i];
-                if (roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && 
-                    roomHandler.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.REWARD &&
-                    roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SPECIAL && roomHandler.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET)
-                {
-                    for (int X = roomHandler.area.basePosition.x; X < roomHandler.area.basePosition.x + roomHandler.area.dimensions.x; X++) {
-                        for (int Y = roomHandler.area.basePosition.y; Y < roomHandler.area.basePosition.y + roomHandler.area.dimensions.y; Y++) {
-                            if (ClearForAlarmMushroom(dungeon, Clearence, Clearence, X, Y)) { spawnList.Add(new IntVector2(X, Y)); }
-                        }
-                    }
-                }
-            }
-            for (int i = 0; i < MushroomCount; i++) {
-                if (spawnList.Count > 0) {
-                    IntVector2 RandomSpawn = spawnList[BraveRandom.GenerationRandomRange(0, spawnList.Count)];
-                    RoomHandler absoluteRoom = RandomSpawn.ToVector2().GetAbsoluteRoom();
-                    spawnList.Remove(RandomSpawn);
-
-                    GameObject alarmMushroomObject = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().InstantiateObject(absoluteRoom, RandomSpawn - absoluteRoom.area.basePosition, true);
-                    alarmMushroomObject.transform.parent = absoluteRoom.hierarchyParent;
-
-                    ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>();
-                    m_AlarmMushRoomPlacable.ConfigureOnPlacement(absoluteRoom);
-                    if (spawnList.Count <= 0) { return; }
-                }
-            }
-        }
-
-        private bool ClearForAlarmMushroom(Dungeon dungeon, int dmx, int dmy, int bpx, int bpy) {
-            for (int i = 0; i < dmx; i++) {
-                for (int j = 0; j < dmy; j++) {
-                    IntVector2 intVector = new IntVector2(bpx + i, bpy + j);
-                    if (!dungeon.data.CheckInBoundsAndValid(intVector)) { return false; }
-                    CellData cellData = dungeon.data[intVector];
-                    if (cellData.parentRoom == null || cellData.parentRoom.IsMaintenanceRoom() || cellData.parentRoom == dungeon.data.Entrance ||
-                        cellData.parentRoom.IsShop || cellData.parentRoom.IsDarkAndTerrifying ||  cellData.parentRoom.IsSecretRoom || 
-                        string.IsNullOrEmpty(cellData.parentRoom.GetRoomName()) || cellData.parentRoom.GetRoomName().ToLower().StartsWith("boss") ||
-                        cellData.parentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS ||
-                        cellData.type != CellType.FLOOR ||  cellData.isOccupied || cellData.isExitCell || cellData.isExitNonOccluder || 
-                        cellData.isDoorFrameCell || cellData.isNextToWall || cellData.isWallMimicHideout ||
-                        !cellData.IsPassable || cellData.containsTrap ||  cellData.IsTrapZone)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
+                
         private void PlaceGlitchElevator(Dungeon dungeon) {
 
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
-            if (dungeon.IsGlitchDungeon | /*ExpandTheGungeon.isGlitchFloor |*/ ExpandStats.elevatorHasBeenUsed | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return; }
+            if (dungeon.IsGlitchDungeon | ExpandStats.elevatorHasBeenUsed) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
 
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
@@ -545,13 +405,7 @@ namespace ExpandTheGungeon.ExpandMain {
         private void EnemyModRandomizer(AIActor targetActor) {
             
             if (string.IsNullOrEmpty(targetActor.EnemyGuid)) { return; }
-
-            if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                if (targetActor.EnemyGuid == "ba928393c8ed47819c2c5f593100a5bc") {
-                    ExpandUtility.ApplyCustomTexture(targetActor, prebuiltCollection: ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection, ExpandPrefabs.StoneCubeWestTexture, null, null, false));
-                }
-            }
-
+            
             if (GameManager.Instance.Dungeon.IsGlitchDungeon && !targetActor.IsBlackPhantom && !string.IsNullOrEmpty(targetActor.EnemyGuid)) {
                 if (UnityEngine.Random.value <= 0.3 && targetActor.healthHaver != null && !ExpandLists.DontGlitchMeList.Contains(targetActor.EnemyGuid) && !ExpandLists.blobsAndCritters.Contains(targetActor.EnemyGuid) && targetActor.EnemyGuid != "5e0af7f7d9de4755a68d2fd3bbc15df4") {
                     if (!targetActor.healthHaver.IsBoss && !targetActor.sprite.usesOverrideMaterial && targetActor.optionalPalette == null) {

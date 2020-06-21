@@ -18,6 +18,8 @@ namespace ExpandTheGungeon {
 
             ExpandStats.randomSeed = Random.value;
 
+            if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
+
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
                 List<AGDEnemyReplacementTier> m_cachedReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
                 // Removes special enemies added after the secret floor
@@ -30,26 +32,9 @@ namespace ExpandTheGungeon {
                 ExpandEnemyReplacements.Init(m_cachedReplacementTiers);
             }
             
-            /*if (ExpandDungeonFlows.Custom_GlitchChest_Flow.sharedInjectionData.Count > 0) {
-                ExpandDungeonFlows.Custom_GlitchChest_Flow.sharedInjectionData.Clear();
-            }
-
-            if (ExpandDungeonFlows.Custom_Glitch_Flow.sharedInjectionData.Count > 0) {
-                ExpandDungeonFlows.Custom_Glitch_Flow.sharedInjectionData.Clear();
-            }
-
-            if (ExpandDungeonFlows.Custom_GlitchChestAlt_Flow.sharedInjectionData.Count > 0) {
-                ExpandDungeonFlows.Custom_GlitchChestAlt_Flow.sharedInjectionData.Clear();
-            }*/
-
-            if (/*ExpandTheGungeon.isGlitchFloor && */GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                GameManager.Instance.StartCoroutine(secretglitchfloor_flow.InitCustomObjects(Random.value, BraveUtility.RandomBool(), BraveUtility.RandomBool()));                
-            }
-
             InitObjectMods(GameManager.Instance.Dungeon);
 
             ExpandDungeonFlow.isGlitchFlow = false;
-            //ExpandTheGungeon.isGlitchFloor = false;
         }
 
         private void InitObjectMods(Dungeon dungeon) {
@@ -63,7 +48,7 @@ namespace ExpandTheGungeon {
                 ThunderstormPlacable.isSecretFloor = false;
                 ThunderstormPlacable.ConfigureOnPlacement(null);
             }
-
+            
 
             if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
 
@@ -94,6 +79,9 @@ namespace ExpandTheGungeon {
             }
             
             if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
+
+                dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
+
                 foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
                     if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
                         if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
@@ -125,29 +113,12 @@ namespace ExpandTheGungeon {
                 Destroy(m_GlitchEnemyRandomizer);
 
                 MaybeSetupGlitchEnemyStun(dungeon);
-            } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
-                    if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid) && !enemy.healthHaver.IsBoss) {
-                        if (Random.value <= 0.6f) {
-                            ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
-                            ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
-                        }
-                    }
-                }
-
-                ExpandPlaceGlitchedEnemies m_GlitchEnemyRandomizer = new ExpandPlaceGlitchedEnemies();
-                m_GlitchEnemyRandomizer.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
-                Destroy(m_GlitchEnemyRandomizer);
-
-                MaybeSetupGlitchEnemyStun(dungeon);
             }
         }
 
         private void MaybeSetupGlitchEnemyStun(Dungeon dungeon) {
 
-            if (!dungeon.IsGlitchDungeon && dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                return;
-            }
+            if (!dungeon.IsGlitchDungeon) { return; }
 
             List<RoomHandler> RoomList = dungeon.data.rooms;
             foreach (RoomHandler room in RoomList) {

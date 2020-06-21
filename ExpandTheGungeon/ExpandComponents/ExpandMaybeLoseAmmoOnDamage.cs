@@ -1,8 +1,7 @@
-﻿using ExpandTheGungeon.ExpandObjects;
-using ExpandTheGungeon.ExpandUtilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ExpandTheGungeon.ExpandObjects;
 
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -13,8 +12,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             DepleteAmmoOnDamage = true;
             DepleteAmmoOnDamageOdds = 0.2f;
             HasBootlegTransmorgify = true;
-            IsBootlegShotgun = true;
+            IsBootlegShotgun = false;
             TransfmorgifyTargetGUIDs = new List<string>();
+            m_gunBroken = false;
         }
         
         public bool DepleteAmmoOnDamage;
@@ -42,13 +42,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_gun.OnDropped = (Action)Delegate.Combine(m_gun.OnDropped, new Action(OnGunDroppedOrDestroyed));
                 if (m_gun.CurrentOwner != null) { OnGunInitialized(m_gun.CurrentOwner); }
 
-                if (TransfmorgifyTargetGUIDs != null && IsBootlegShotgun) {
+                if (TransfmorgifyTargetGUIDs != null && TransfmorgifyTargetGUIDs.Count <= 0 && IsBootlegShotgun) {
                     List<string> m_GUIDlist = new List<string>() {
                         ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
                         ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
                     };
                     m_GUIDlist = m_GUIDlist.Shuffle();
-                    TransfmorgifyTargetGUIDs = new List<string>() { BraveUtility.RandomElement(m_GUIDlist) };
+                    TransfmorgifyTargetGUIDs.Add(BraveUtility.RandomElement(m_GUIDlist));
                 }
             }
         }
@@ -69,9 +69,11 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void TransmorgifyPostProcess(Projectile projectile) {
-            projectile.CanTransmogrify = true;
-            projectile.ChanceToTransmogrify = 0.15f;
-            projectile.TransmogrifyTargetGuids = TransfmorgifyTargetGUIDs.ToArray();
+            projectile.CanTransmogrify = HasBootlegTransmorgify;
+            if (HasBootlegTransmorgify) {
+                projectile.ChanceToTransmogrify = 0.1f;
+                projectile.TransmogrifyTargetGuids = TransfmorgifyTargetGUIDs.ToArray();
+            }
         }
 
         private void OnReceivedDamage(PlayerController player) {

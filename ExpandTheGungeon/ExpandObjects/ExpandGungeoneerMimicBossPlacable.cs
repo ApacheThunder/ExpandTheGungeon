@@ -212,10 +212,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             return;
         }
 
-        public ExpandGungeoneerMimicBossPlacable() { isSecretRatFloorBoss = true; }
-
-        bool isSecretRatFloorBoss;
-
+        public ExpandGungeoneerMimicBossPlacable() { }
+        
         private void Start() { }
 
         private void BuildBossPrefab(RoomHandler room) {
@@ -267,15 +265,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject SpawnedBossObject = m_CachedNewObject.GetComponent<AIActor>().InstantiateObject(room, SpawnPosition, false);
             SpawnedBossObject.transform.parent = room.hierarchyParent;
             Destroy(m_CachedNewObject);
-
-            if (GameManager.Instance.Dungeon && GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                isSecretRatFloorBoss = false;
-            }
-
-            if (isSecretRatFloorBoss) {
-                PickupObject rat_key = PickupObjectDatabase.GetById(727);
-                if (rat_key) { SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(rat_key); }
-            }
 
             PickupObject MimiclayItem = PickupObjectDatabase.GetById(Mimiclay.MimiclayPickupID);
 

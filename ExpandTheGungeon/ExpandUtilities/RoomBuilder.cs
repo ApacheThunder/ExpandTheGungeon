@@ -6,7 +6,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
 	public class RoomBuilder {
 
-        public static string TextureBasePath = "Textures\\RoomLayoutData\\";
+        public static string TextureBasePath = "SerializedData\\RoomLayoutData\\";
         
         public static void GenerateRoomLayoutFromPNG(PrototypeDungeonRoom room, string filePath, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             Texture2D m_TextureFromResource = ResourceExtractor.GetTextureFromResource(TextureBasePath + filePath);
@@ -234,7 +234,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 exitGroup = ExitGroup,
                 containsDoor = ContainsDoor,
                 exitLength = ExitLength,
-                containedCells = new List<Vector2>()
+                containedCells = new List<Vector2>(),
             };
 
             if (ExitDirection == DungeonData.Direction.WEST | ExitDirection == DungeonData.Direction.EAST) {

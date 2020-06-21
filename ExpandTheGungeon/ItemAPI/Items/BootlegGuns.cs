@@ -1,8 +1,10 @@
 ﻿using System;
 using Gungeon;
+using System.Collections.Generic;
+using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
-using System.Collections.Generic;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -15,14 +17,13 @@ namespace ExpandTheGungeon.ItemAPI {
         public static Gun BootlegPistol;
         public static Gun BootlegMachinePistol;
         public static Gun BootlegShotgun;
-
+        
         public static void Init() {
-           
             Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "bootleg_pistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
-            GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);
+            GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);            
             pistol.AddProjectileModuleFrom("Magnum", true, false);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
@@ -37,10 +38,9 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.quality = ItemQuality.D;
             pistol.UsesCustomCost = true;
             pistol.CustomCost = 10;
-            pistol.encounterTrackable.EncounterGuid = "baad9dd6-d005-458d-af02-933f6a1ba926";            
+            pistol.encounterTrackable.EncounterGuid = "baad9dd6d005458daf02933f6a1ba926";            
             pistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
-
             ETGMod.Databases.Items.Add(pistol);
 
             BootlegPistolID = pistol.PickupObjectId;
@@ -65,8 +65,7 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.gunSwitchGroup = "Uzi";
             machinepistol.UsesCustomCost = true;
             machinepistol.CustomCost = 15;
-            machinepistol.encounterTrackable.EncounterGuid = "e56adda5-0813-47e5-b9e0-cf2556689b0e";
-
+            machinepistol.encounterTrackable.EncounterGuid = "e56adda5081347e5b9e0cf2556689b0e";
             machinepistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
 
@@ -94,8 +93,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.gunSwitchGroup = "Shotgun";
             shotgun.UsesCustomCost = true;
             shotgun.CustomCost = 18;
-            shotgun.encounterTrackable.EncounterGuid = "fa0575b4-cf01-40dd-b6b0-ed6d962bff47";
-
+            shotgun.encounterTrackable.EncounterGuid = "fa0575b4cf0140ddb6b0ed6d962bff47";
             shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
 
@@ -120,11 +118,9 @@ namespace ExpandTheGungeon.ItemAPI {
                     ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID
                 };
             }
-            /*if (BootlegShotgun && BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
-                BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
-                    ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
-                };
-            }*/
+            if (BootlegShotgun && BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
+                BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().IsBootlegShotgun = true;
+            }
         }
     }
 }

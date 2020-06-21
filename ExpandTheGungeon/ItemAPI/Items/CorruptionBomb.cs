@@ -780,11 +780,12 @@ namespace ExpandTheGungeon.ItemAPI {
                                         }
 
                                         if (enemy.sprite) {
-                                            if (enemy.EnemyGuid == "ba928393c8ed47819c2c5f593100a5bc" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                                            /*if (enemy.EnemyGuid == "ba928393c8ed47819c2c5f593100a5bc" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
                                                 ExpandShaders.Instance.ApplyGlitchShader(ExpandPrefabs.StoneCubeWestTexture, enemy.sprite);
                                             } else {
                                                 ExpandShaders.Instance.ApplyGlitchShader(enemy.sprite);
-                                            }
+                                            }*/
+                                            ExpandShaders.Instance.ApplyGlitchShader(enemy.sprite);
                                         }
                                         
                                         if (enemy.gameObject.GetComponent<FloatingEyeController>()) {

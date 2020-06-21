@@ -22,7 +22,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             AbbeyGunID = 806;
             RatgeonGunID = 808;
             OfficeGunID = 823;
-            CanyonGunID = 734; // mimic_gun
+            PhobosGunID = 734; // mimic_gun
             OldWestGunID = 734; // mimic_gun
             RefillsOnFloorChange = true;
         }
@@ -64,7 +64,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public int OfficeGunID;
 
         [PickupIdentifier]
-        public int CanyonGunID; // Using Phobos tileset ID
+        public int PhobosGunID;
 
         [PickupIdentifier]
         public int OldWestGunID;
@@ -97,8 +97,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (t == GlobalDungeonData.ValidTilesets.GUNGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Gungeon)) { return true; }
                 if (t == GlobalDungeonData.ValidTilesets.MINEGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Mines)) { return true; }
                 if (t == GlobalDungeonData.ValidTilesets.CATACOMBGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Catacombs)) { return true; }
-                if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON && playerController.HasPassiveItem(CustomMasterRounds.CanyonMasterRoundID)) { return true; }
                 if (t == GlobalDungeonData.ValidTilesets.FORGEGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Forge)) { return true; }
+                // Getting this master round will unlock all forms.
+                if (playerController.HasPassiveItem(CustomMasterRounds.CanyonMasterRoundID)) { return true; }
             }
             return false;
         }
@@ -134,15 +135,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (t == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
                 ChangeForme(OfficeGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.OFFICEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                ChangeForme(CanyonGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                ChangeForme(CanyonGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
             } else if (t == GlobalDungeonData.ValidTilesets.WESTGEON) {
                 ChangeForme(OldWestGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.WESTGEON;
+            } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
+                ChangeForme(PhobosGunID);
+                m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+            } else if (t == GlobalDungeonData.ValidTilesets.FORGEGEON) {
+                ChangeForme(ForgeGunID);
+                m_currentTileset = GlobalDungeonData.ValidTilesets.FORGEGEON;
             } else if (t == GlobalDungeonData.ValidTilesets.HELLGEON) {
                 ChangeForme(HellGunID);
                 m_currentTileset = GlobalDungeonData.ValidTilesets.HELLGEON;
@@ -183,12 +184,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else if (inTileset == GlobalDungeonData.ValidTilesets.RATGEON) {
                 return GlobalDungeonData.ValidTilesets.CATACOMBGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
-                return GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                return GlobalDungeonData.ValidTilesets.OFFICEGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
                 return GlobalDungeonData.ValidTilesets.WESTGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                return GlobalDungeonData.ValidTilesets.OFFICEGEON;
+            } else if (inTileset == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
+                return GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+            } else if (inTileset == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
                 return GlobalDungeonData.ValidTilesets.FORGEGEON;
             } else if (inTileset == GlobalDungeonData.ValidTilesets.FORGEGEON) {
                 return GlobalDungeonData.ValidTilesets.HELLGEON;
