@@ -51,13 +51,12 @@ namespace ExpandTheGungeon {
             
 
             if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
-
-
+                        
             // Disable victory music for Ser Manuel if not on tutorial floor. (it can cause double music bug if you kill him on other floors)
             if (dungeon.LevelOverrideType != GameManager.LevelOverrideState.TUTORIAL) {
-                ExpandPrefabs.SerManuel.healthHaver.forcePreventVictoryMusic = true;
+                ExpandPrefabs.SerManuel.GetComponent<HealthHaver>().forcePreventVictoryMusic = true;
             } else {
-                ExpandPrefabs.SerManuel.healthHaver.forcePreventVictoryMusic = false;
+                ExpandPrefabs.SerManuel.GetComponent<HealthHaver>().forcePreventVictoryMusic = false;
             }
 
             // Assign pitfall destination to entrance on Floor 1 if in Bossrush mode and special entrance room to Miniboss room path is available.

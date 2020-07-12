@@ -426,12 +426,7 @@ namespace ExpandTheGungeon {
 
             GameObject NewTestObject = UnityEngine.Object.Instantiate(TestObject, CurrentPlayer.transform.position.GetAbsoluteRoom().area.basePosition.ToVector3(), Quaternion.identity);*/
 
-
-            AIActor Temp = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc");
-
-            string collection = JsonUtility.ToJson(Temp.sprite.Collection);
-
-            Tools.LogStringToFile(collection, "StoneCubeCollection_West.txt");
+            
 
             /*RoomHandler SelectedRoom = null;
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {

@@ -27,7 +27,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         private static Dungeon ForgeDungeonPrefab;
         private static Dungeon CatacombsDungeonPrefab;
         private static Dungeon NakatomiDungeonPrefab;
-        
+
+        // Materials
+        public static Material SpaceFog;        
 
         // Custom Textures
         public static Texture2D ENV_Tileset_Belly_Texture;
@@ -221,9 +223,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static DungeonPlaceable West_Doors;
 
         // Modified/Reference AIActors
-        public static AIActor MetalCubeGuy;
-        public static AIActor SerManuel;
-        public static AIActor SkusketHead;
+        public static GameObject MetalCubeGuy;
+        public static GameObject SerManuel;
+        public static GameObject SkusketHead;
+        public static GameObject CandleGuy;
 
         // Test
         // public static AIActor SpectreTest = EnemyDatabase.GetOrLoadByGuid("56f5a0f2c1fc4bc78875aea617ee31ac"); // spectre
@@ -280,6 +283,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Door_Horizontal_West;
         public static GameObject Door_Vertical_West;
         public static GameObject West_PuzzleSetupPlacable;
+        public static GameObject EXSpaceFloor_50x50;
 
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
@@ -344,6 +348,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
                         
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
+
+            SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
                                     
             ENV_Tileset_Belly_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly");
             ENV_Tileset_West_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West");
@@ -799,9 +805,9 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             };
 
-            MetalCubeGuy = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc");
-            SerManuel = EnemyDatabase.GetOrLoadByGuid("fc809bd43a4d41738a62d7565456622c");
-            SkusketHead = EnemyDatabase.GetOrLoadByGuid("c2f902b7cbe745efb3db4399927eab34");
+            MetalCubeGuy = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").gameObject;
+            SerManuel = EnemyDatabase.GetOrLoadByGuid("fc809bd43a4d41738a62d7565456622c").gameObject;
+            SkusketHead = EnemyDatabase.GetOrLoadByGuid("c2f902b7cbe745efb3db4399927eab34").gameObject;
 
             RatJailDoorPlacable = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour;
             CurrsedMirrorPlacable = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour;
@@ -1275,16 +1281,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForNakatomi);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
 
-            MetalCubeGuy.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
-            MetalCubeGuy.IsHarmlessEnemy = true;
-            ExpandExplodeOnDeath metalcubeguyExploder = MetalCubeGuy.healthHaver.gameObject.GetComponent<ExpandExplodeOnDeath>();
+            MetalCubeGuy.AddComponent<ExpandExplodeOnDeath>();
+            MetalCubeGuy.GetComponent<AIActor>().IsHarmlessEnemy = true;
+            ExpandExplodeOnDeath metalcubeguyExploder = MetalCubeGuy.GetComponent<ExpandExplodeOnDeath>();
             metalcubeguyExploder.deathType = OnDeathBehavior.DeathType.Death;
-            ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.behaviorSpeculator.AttackBehaviors[0] as ZeldaChargeBehavior;
+            ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.GetComponent<BehaviorSpeculator>().AttackBehaviors[0] as ZeldaChargeBehavior;
             zeldaChargeComponent.primeAnim = null;
             MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
-            MetalCubeGuy.behaviorSpeculator.PostAwakenDelay = 0;
+            MetalCubeGuy.GetComponent<BehaviorSpeculator>().PostAwakenDelay = 0;
 
-            SkusketHead.DiesOnCollison = true;
+            SkusketHead.GetComponent<AIActor>().DiesOnCollison = true;
+
+            CandleGuy = EnemyDatabase.GetOrLoadByGuid("eeb33c3a5a8e4eaaaaf39a743e8767bc").gameObject;
+            CandleGuy.AddComponent<ExpandCandleGuyEngageDoer>();
 
             // Destroy(WallMimic.GetComponent<WallMimicController>());
             // WallMimic.gameObject.AddComponent<ChaosWallMimicManager>();
@@ -1297,7 +1306,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (ReplacementTiers != null && ReplacementTiers.Count > 0) {
                 foreach (AGDEnemyReplacementTier replacementTier in ReplacementTiers) {
                     if (replacementTier.RoomCantContain == null) { replacementTier.RoomCantContain = new List<string>(); }
-                    replacementTier.RoomCantContain.Add(MetalCubeGuy.EnemyGuid);
+                    replacementTier.RoomCantContain.Add(MetalCubeGuy.GetComponent<AIActor>().EnemyGuid);
                 }
             }
             
@@ -2121,9 +2130,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             DontDestroyOnLoad(Door_Vertical_West);
             DontDestroyOnLoad(Door_Horizontal_West);
 
-
-
-
+            
             // Sarcophagus Objects have unused sprites still in the game. I'll set them up to use them for my Belly entrance room for Gungeon Proper.
             Sarcophagus_ShotgunBook_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_ShotgunBook")); 
             Sarcophagus_ShotgunMace_Kaliber = Instantiate(sharedAssets.LoadAsset<GameObject>("Sarcophagus_ShotgunMace"));
@@ -2641,6 +2648,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             ratKeyPedestal.spawnTransform = RatKeyRewardPedestal.transform.Find("Reward_Spawn");
             ratKeyPedestal.ItemID = 727;
 
+
+            EXSpaceFloor_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloor_50x50");
+            ItemBuilder.AddSpriteToObject(EXSpaceFloor_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad"), false, false);
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().HeightOffGround = -200;
+            // EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(braveResources.LoadAsset<Shader>("finalgunroom_bg_02"));
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().usesOverrideMaterial = true;
+            EXSpaceFloor_50x50.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

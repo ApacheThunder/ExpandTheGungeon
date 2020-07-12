@@ -303,6 +303,17 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{F2A756A1-FF62-49E7-A702-624E7C800E45}" ShortID="289823740">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UnicornMusic" ID="{0886B0D3-A9D1-45F8-8A76-D12388BB3AFA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -482,6 +493,35 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="PowEnemyDeath" ID="{D44B8BE3-EADB-458A-978D-BD89A5BE17A9}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_UnicornMusic_01" ID="{1E59F6C1-A93A-4354-BF62-9806008EF25E}">
+					<ChildrenList>
+						<Action Name="" ID="{9FF6A201-8441-45AE-A89B-2034B433D2CB}" ShortID="738005227">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UnicornMusic" ID="{0886B0D3-A9D1-45F8-8A76-D12388BB3AFA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_UnicornMusic_01" ID="{89D81E12-466A-4924-8905-05DFB4DF4329}">
+					<ChildrenList>
+						<Action Name="" ID="{58029F71-9C7F-460B-8F4A-C515B2FE81B5}" ShortID="300205951">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UnicornMusic" ID="{0886B0D3-A9D1-45F8-8A76-D12388BB3AFA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

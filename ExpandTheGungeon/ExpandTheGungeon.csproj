@@ -107,11 +107,13 @@
     <Compile Include="ExpandComponents\ExpandBlobulinRancherChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBooChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBulletKingChallengeComponent.cs" />
+    <Compile Include="ExpandComponents\ExpandCandleGuyEngageDoer.cs" />
     <Compile Include="ExpandComponents\ExpandChamberGunProcessor.cs" />
     <Compile Include="ExpandComponents\ExpandChaosModeChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandCorruptedEnemyEngageDoer.cs" />
     <Compile Include="ExpandComponents\ExpandCorruptedObjectAmbienceComponent.cs" />
     <Compile Include="ExpandComponents\ExpandEnableCorpseOnDeath.cs" />
+    <Compile Include="ExpandComponents\ExpandEnableSpacePitOnEnterComponent.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchedEnemyStunManager.cs" />
     <Compile Include="ExpandComponents\ExpandCustomEnemyBehaviorEnabler.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
@@ -1041,6 +1043,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\MiscAssets\StoneCubeCollection_West.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Expand_RainbowRoom.room" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

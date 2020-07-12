@@ -187,7 +187,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
                 PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
-                if (RoomSelectionSeed <= 0.05f) {
+                if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6) {
                     SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
                 } else if (RoomSelectionSeed <= 0.25f) {
                     SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
@@ -274,7 +274,7 @@ namespace ExpandTheGungeon.ItemAPI {
             yield break;
         }
 
-        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom) {
+        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false) {
             m_IsTeleporting = true;
             // if (targetPlayer.m_isStartingTeleport) { return; }
             // targetPlayer.m_isStartingTeleport = true;
@@ -283,9 +283,9 @@ namespace ExpandTheGungeon.ItemAPI {
                 m_IsTeleporting = false;
                 return;
             }
-            if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
+            if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER && !isSecondaryPlayer) {
                 PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(targetPlayer);
-                if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom); }
+                if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom, true); }
             }
             // targetPlayer.m_isStartingTeleport = false;
             targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);            

@@ -1,4 +1,4 @@
-ExpandTheGungeon - v1.9.5 by Apache Thunder.
+ExpandTheGungeon - v1.9.6 by Apache Thunder.
 
 Features:
 
@@ -6,7 +6,7 @@ Features:
 
 2. Three new secret floors! Both with brand new tilesets pulled from unused tilesets from old versions of the game.
 
-3. Glitch Chests now take player to a full floor with glitched enmies instead of just a simple 3 room floor that goes direct to the boss.
+3. Glitch Chests now take player to a full floor with glitched enemies instead of just a simple 3 room floor that goes direct to the boss.
 
 4. Fixed pit generated under sell creep on floor 4. Pit edge decoration of floor tiles near left side of sell creep is no longer missing.
 

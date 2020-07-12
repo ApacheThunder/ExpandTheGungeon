@@ -1637,6 +1637,67 @@
 						<ActiveSource Name="PowEnemyDeath" ID="{F0ECAB7E-B6AA-4E6C-AAEC-5CAB705A67F5}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="UnicornMusic" ID="{0886B0D3-A9D1-45F8-8A76-D12388BB3AFA}" ShortID="182443816">
+					<PropertyList>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{7BF486CE-4453-4A18-82AC-AE581094B558}" ShortID="942888917">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{5F0FBA36-8EF7-4F2F-8556-81839B023A4F}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>1.4</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="UnicornMusic" ID="{D2B4395B-A0E2-4EDB-BF52-83B1446DC45F}" ShortID="389740606">
+							<Language>SFX</Language>
+							<AudioFile>UnicornMusic.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="UnicornMusic" ID="{D2B4395B-A0E2-4EDB-BF52-83B1446DC45F}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

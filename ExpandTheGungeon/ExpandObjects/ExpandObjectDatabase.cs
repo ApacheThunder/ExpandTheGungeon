@@ -95,6 +95,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject DefaultTorchSide;
         public GameObject GungeonWarpDoor;
         public GameObject CastleWarpDoor;
+        public GameObject EndTimes;
 
         // public GameObject DimensionFog;
 
@@ -194,6 +195,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             DefaultTorchSide = sharedAssets.LoadAsset<GameObject>("DefaultTorchSide");
             GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
             CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
+            EndTimes = braveResources.LoadAsset<GameObject>("EndTimes");
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {

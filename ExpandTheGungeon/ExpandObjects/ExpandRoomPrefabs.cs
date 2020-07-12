@@ -152,6 +152,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Apache_SpikeAndPits;
         public static PrototypeDungeonRoom Expand_Apache_PitTraps;
         public static PrototypeDungeonRoom Expand_Apache_RickRollChest;
+        public static PrototypeDungeonRoom Expand_Apache_RainbowRoom;
 
 
         // Custom Secret Rooms
@@ -1114,6 +1115,23 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_PitTraps = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_RickRollChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
+            Expand_Apache_RainbowRoom = RoomFactory.BuildFromResource("Expand_RainbowRoom.room", true, false, assignDecorationSettings: true);
+            Expand_Apache_RainbowRoom.preventAddedDecoLayering = true;
+            Expand_Apache_RainbowRoom.precludeAllTilemapDrawing = true;
+            Expand_Apache_RainbowRoom.UseCustomMusic = true;
+            Expand_Apache_RainbowRoom.UseCustomMusicState = false;
+            Expand_Apache_RainbowRoom.CustomMusicEvent = "Play_MUS_Dungeon_State_Winner";
+            Expand_Apache_RainbowRoom.UseCustomMusicSwitch = true;
+            Expand_Apache_RainbowRoom.CustomMusicSwitch = "Play_EX_UnicornMusic_01";
+            Expand_Apache_RainbowRoom.usesProceduralLighting = false;
+            Expand_Apache_RainbowRoom.usesCustomAmbientLight = true;
+            Expand_Apache_RainbowRoom.customAmbientLight = new Color(0.8f, 0.8f, 0.8f, 1);
+            Expand_Apache_RainbowRoom.allowFloorDecoration = false;
+            Expand_Apache_RainbowRoom.allowWallDecoration = false;
+            Expand_Apache_RainbowRoom.usesProceduralDecoration = false;
+            Expand_Apache_RainbowRoom.drawPrecludedCeilingTiles = false;
+            RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandPrefabs.EXSpaceFloor_50x50);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, objectDatabase.EndTimes);
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -9548,12 +9566,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                         }
                     },
                     placedObjectBasePositions = new List<Vector2>() {
-                        new Vector2(12, 12),
+                        new Vector2(12, 11),
                         new Vector2(4, 6),
                         new Vector2(10, 6)
                     },
                     layerIsReinforcementLayer = true,
-                    shuffle = true,
+                    shuffle = false,
                     randomize = 0,
                     suppressPlayerChecks = true,
                     delayTime = 4,

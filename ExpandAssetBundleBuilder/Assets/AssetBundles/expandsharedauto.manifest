@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3017407364
+CRC: 3069950470
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 85a3466b734a394f8f17eaad15dec711
+    Hash: 494106150d41bae5fe5873a1875c5ec7
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6441f4c48b8293a736413520ea1a9530
@@ -265,6 +265,7 @@ Assets:
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicFadeIn_05.png
 - Assets/ExpandPrefabs/AIActors/Bootleg Bullat.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_left_001.png
+- Assets/ExpandTextures/Misc/RainbowRoad.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_idle_up_001.png
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_idle_003.png
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_ExitTiles_West.png
@@ -557,6 +558,7 @@ Assets:
 - Assets/ExpandTextures/TilesetAssets/ENV_Tileset_West.png
 - Assets/ExpandTextures/RickRoll/music_switch_activate_001.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_left_005.png
+- Assets/ExpandPrefabs/EXSpaceFloor_50x50.prefab
 - Assets/ExpandPrefabs/ENV_Tileset_West.prefab
 - Assets/ExpandTextures/RickRoll/RickRoll_25.png
 - Assets/ExpandPrefabs/StoneCubeCollection_West.prefab

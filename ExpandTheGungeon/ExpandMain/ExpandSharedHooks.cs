@@ -294,7 +294,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("ThrowGunHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Gun)
             );
-
+            
             return;
         }
 
@@ -1189,7 +1189,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (!self.renderer.enabled) { self.renderer.enabled = true; }
             if (self.sprite && !self.sprite.renderer.enabled) { self.sprite.renderer.enabled = true; }
         }
-
+        
     }
 }
 

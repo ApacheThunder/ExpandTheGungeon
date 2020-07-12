@@ -130,7 +130,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public List<string> ValidTransformSpecialEnemies;
         public List<string> ValidSourceEnemies;*/
 
-        bool m_isFinished;
+        private bool m_isFinished;
     
         public void Awake() { aiActor.HasDonePlayerEnterCheck = true; }
     

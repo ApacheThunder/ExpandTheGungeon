@@ -34,6 +34,7 @@
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
+				<Event Id="3935194361" Name="Play_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Play_EX_UnicornMusic_01"/>
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
 				<Event Id="582460727" Name="Stop_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Close"/>
 				<Event Id="1648051329" Name="Stop_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Open"/>
@@ -46,6 +47,7 @@
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
 				<Event Id="2623135779" Name="Stop_EX_SFX_All" ObjectPath="\Events\Weapons\Stop_EX_SFX_All"/>
 				<Event Id="633823961" Name="Stop_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Stop_EX_TableAssassin_01"/>
+				<Event Id="4051006923" Name="Stop_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Stop_EX_UnicornMusic_01"/>
 				<Event Id="301805658" Name="Stop_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Stop_EXAlarmMushroom_01"/>
 			</IncludedEvents>
 			<IncludedMemoryFiles>
@@ -72,6 +74,10 @@
 				<File Id="282880781" Language="SFX">
 					<ShortName>BootlegGungeonMusic.wav</ShortName>
 					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
+				</File>
+				<File Id="389740606" Language="SFX">
+					<ShortName>UnicornMusic.wav</ShortName>
+					<Path>SFX\UnicornMusic_AD29F36A.wem</Path>
 				</File>
 				<File Id="395418058" Language="SFX">
 					<ShortName>Belly_Door_Open.wav</ShortName>

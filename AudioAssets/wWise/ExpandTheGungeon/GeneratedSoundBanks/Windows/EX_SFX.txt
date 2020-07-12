@@ -32,7 +32,9 @@ Event	ID	Name			Wwise Object Path	Notes
 	3586982857	Stop_EX_CorruptionAmbience_01			\Weapons\Stop_EX_CorruptionAmbience_01	
 	3586982858	Stop_EX_CorruptionAmbience_02			\Weapons\Stop_EX_CorruptionAmbience_02	
 	3822868090	Play_EX_PowBlock_EnemyDeath			\Weapons\Play_EX_PowBlock_EnemyDeath	
+	3935194361	Play_EX_UnicornMusic_01			\Weapons\Play_EX_UnicornMusic_01	
 	3971937637	Play_EX_Cronenberg_Damage_01			\Weapons\Play_EX_Cronenberg_Damage_01	
+	4051006923	Stop_EX_UnicornMusic_01			\Weapons\Stop_EX_UnicornMusic_01	
 
 State Group	ID	Name			Wwise Object Path	Notes
 	3092587493	Pause			\Default Work Unit\Pause	
@@ -53,6 +55,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	210760446	TableAssassin	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\TableAssassin_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\TableAssassin		242060
 	270161796	Abomination_Damage	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Abomination_damage_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Damage		63204
 	282880781	BootlegGungeonMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BootlegGungeonMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\BootlegGungeonMusic		1462202
+	389740606	UnicornMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\UnicornMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\UnicornMusic		745599
 	395418058	Belly_Door_Open	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Open_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Open		20740
 	440225368	CorruptionAmbience_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_01		243240
 	448206274	PowBlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\PowBlock_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\PowBlock		74384

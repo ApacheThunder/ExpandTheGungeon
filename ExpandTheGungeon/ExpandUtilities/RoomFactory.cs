@@ -40,23 +40,24 @@ namespace ExpandTheGungeon.ExpandUtilities {
             public string[] floors;
             public float weight;
             public bool isSpecialRoom;
+            public bool randomizeEnemyPositions, doFloorDecoration, doWallDecoration, doLighting;
             [NonSerialized]
             public PrototypeDungeonRoom room;
         }
 
 
-        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false) {
+        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false, bool assignDecorationSettings = false) {
             string RoomPath = (TextureBasePath + roomPath);
             if (defineFullPath) { RoomPath = roomPath; }
             Texture2D texture = ResourceExtractor.GetTextureFromResource(RoomPath);
             RoomData roomData = ExtractRoomDataFromResource(RoomPath);
-            return Build(texture, roomData, setRoomCategory, autoAssignToFloor, roomData.weight);
+            return Build(texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
         }
 
-        public static PrototypeDungeonRoom Build(Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, float? Weight) {
+        public static PrototypeDungeonRoom Build(Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, bool AssignDecorationProperties, float? Weight) {
             try {
                 PrototypeDungeonRoom room = CreateRoomFromTexture(texture);
-                ApplyRoomData(room, roomData, SetRoomCategory, AutoAssignToFloor, Weight);
+                ApplyRoomData(room, roomData, SetRoomCategory, AutoAssignToFloor, AssignDecorationProperties, Weight);
                 room.OnBeforeSerialize();
                 room.OnAfterDeserialize();
                 room.UpdatePrecalculatedData();
@@ -68,7 +69,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return CreateEmptyRoom(12, 12);
         }
 
-        public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, float? Weight) {
+        public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, bool assignDecorationProperties, float? Weight) {
             // Tools.Print("Building Exits...");
             if (roomData.exitPositions != null) {
                 for (int i = 0; i < roomData.exitPositions.Length; i++) {
@@ -85,7 +86,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             // Tools.Print("Adding Enemies...");
             if (roomData.enemyPositions != null) {
                 for (int i = 0; i < roomData.enemyPositions.Length; i++) {
-                    AddEnemyToRoom(room, roomData.enemyPositions[i], roomData.enemyGUIDs[i], roomData.enemyReinforcementLayers[i]);
+                    AddEnemyToRoom(room, roomData.enemyPositions[i], roomData.enemyGUIDs[i], roomData.enemyReinforcementLayers[i], roomData.randomizeEnemyPositions);
                 }
             }
 
@@ -122,6 +123,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));
                     ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(room, Weight.Value));*/
                 }
+            }
+
+            if (assignDecorationProperties) {
+                room.allowFloorDecoration = roomData.doFloorDecoration;
+                room.allowWallDecoration = roomData.doWallDecoration;
+                room.usesProceduralLighting = roomData.doLighting;
             }
         }
 
@@ -295,7 +302,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         
-        public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer) {
+        public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer, bool shuffle) {
             DungeonPlaceable placeableContents = ScriptableObject.CreateInstance<DungeonPlaceable>();
             placeableContents.width = 1;
             placeableContents.height = 1;
@@ -318,7 +325,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             };
 
             if (layer > 0) {
-                AddObjectDataToReinforcementLayer(room, objectData, layer - 1, location);
+                AddObjectDataToReinforcementLayer(room, objectData, layer - 1, location, shuffle);
             } else {
                 room.placedObjects.Add(objectData);
                 room.placedObjectPositions.Add(location);
@@ -328,14 +335,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (!room.roomEvents.Contains(unsealOnRoomClear)) { room.roomEvents.Add(unsealOnRoomClear); }
         }
 
-        public static void AddObjectDataToReinforcementLayer(PrototypeDungeonRoom room, PrototypePlacedObjectData objectData, int layer, Vector2 location) {
+        public static void AddObjectDataToReinforcementLayer(PrototypeDungeonRoom room, PrototypePlacedObjectData objectData, int layer, Vector2 location, bool shuffle) {
             if (room.additionalObjectLayers.Count <= layer) {
                 for (int i = room.additionalObjectLayers.Count; i <= layer; i++) {
                     PrototypeRoomObjectLayer newLayer = new PrototypeRoomObjectLayer {
                         layerIsReinforcementLayer = true,
                         placedObjects = new List<PrototypePlacedObjectData>(),
                         placedObjectBasePositions = new List<Vector2>(),
-                        shuffle = false
+                        shuffle = shuffle
                     };
                     room.additionalObjectLayers.Add(newLayer);
                 }
@@ -428,7 +435,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
             room.usesProceduralDecoration = true;
             room.usesProceduralLighting = true;
-            room.usesProceduralDecoration = true;
             room.allowWallDecoration = true;
             room.allowFloorDecoration = true;            
             room.PreventMirroring = false;
