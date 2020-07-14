@@ -282,7 +282,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
-            if (UnityEngine.Random.value > 0.01f) { return; }
+            if (UnityEngine.Random.value > 0.003f) { return; }
 
             int MaxNumberOfElevators = 1;
             int ElevatorsPlaced = 0;

@@ -2875,7 +2875,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_CachedTargetObject.name = "BossParasite";
 
             AIActor m_TargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
-            m_TargetAIActor.EnemyGuid = "acd8d483-f24e-4c43-b964-fa4e54068cf1";
+            m_TargetAIActor.EnemyGuid = "acd8d483f24e4c43b964fa4e54068cf1";
             m_TargetAIActor.EnemyId = UnityEngine.Random.Range(100000, 999999);
 
             m_TargetAIActor.ActorName = "Otherwordly Parasite";
