@@ -115,6 +115,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_room.DeregisterInteractable(this);
             if (m_room.npcSealState != RoomHandler.NPCSealState.SealNone) { m_room.npcSealState = RoomHandler.NPCSealState.SealNone; }
             Exploder.DoDefaultExplosion(sprite.WorldCenter, Vector2.zero, null, true, CoreDamageTypes.None, false);
+            yield return null;
+            PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.B;
+            GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
+            PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
+            if (item) { LootEngine.SpawnItem(item.gameObject, sprite.WorldCenter, Vector2.zero, 0f, true, true, false); }
             yield break;
         }
 

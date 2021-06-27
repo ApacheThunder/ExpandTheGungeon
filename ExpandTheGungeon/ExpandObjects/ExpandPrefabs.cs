@@ -8,6 +8,7 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Reflection;
+using FullInspector;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -154,7 +155,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericRoomTable JungleRoomTable;
         public static GenericRoomTable BellyRoomTable;
         public static GenericRoomTable WestRoomTable;
-
+        public static GenericRoomTable WestCanyonRoomTable;
+        public static GenericRoomTable WestTinyCanyonRoomTable;
+        public static GenericRoomTable WestInterior1RoomTable;
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
@@ -191,6 +194,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject MouseTrap1;
         public static GameObject MouseTrap2;
         public static GameObject MouseTrap3;
+        // Custom Trap Objects
+        public static GameObject EXTrap_Apache;
 
 
         public static GameObject Teleporter_Gungeon_01;
@@ -284,6 +289,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Door_Vertical_West;
         public static GameObject West_PuzzleSetupPlacable;
         public static GameObject EXSpaceFloor_50x50;
+        public static GameObject EXSpaceFloorPitBorder_50x50;
 
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
@@ -488,6 +494,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             WestRoomTable.includedRooms.elements = new List<WeightedRoom>();
             WestRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
 
+            WestCanyonRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            WestCanyonRoomTable.includedRooms = new WeightedRoomCollection();
+            WestCanyonRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            WestCanyonRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            WestTinyCanyonRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            WestTinyCanyonRoomTable.includedRooms = new WeightedRoomCollection();
+            WestTinyCanyonRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            WestTinyCanyonRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            WestInterior1RoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            WestInterior1RoomTable.includedRooms = new WeightedRoomCollection();
+            WestInterior1RoomTable.includedRooms.elements = new List<WeightedRoom>();
+            WestInterior1RoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[2].overrideExactRoom),
@@ -578,6 +599,172 @@ namespace ExpandTheGungeon.ExpandObjects {
             MouseTrap2 = resourcefulRatControllerPrefab.MouseTraps[1];
             MouseTrap3 = resourcefulRatControllerPrefab.MouseTraps[2];
 
+            // Custom Trap Object for Rainbow room
+            EXTrap_Apache = expandSharedAssets1.LoadAsset<GameObject>("EX_Trap_Apache");
+            ItemBuilder.AddSpriteToObject(EXTrap_Apache, expandSharedAssets1.LoadAsset<Texture2D>("EX_Trap_Apache_01"), false, false);
+            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_Trap_Apache_02"), EXTrap_Apache.GetComponent<tk2dSprite>().Collection);
+            EXTrap_Apache.GetComponent<tk2dSprite>().HeightOffGround = 2;
+
+            ExpandUtility.GenerateSpriteAnimator(EXTrap_Apache, playAutomatically: true, ClipFps: 8);
+
+            tk2dSpriteAnimator ApacheTrapAnimator = EXTrap_Apache.GetComponent<tk2dSpriteAnimator>();
+
+            List<string> ApacheTrap_Normal = new List<string>() {
+                "EX_Trap_Apache_01",
+                "EX_Trap_Apache_01"
+            };
+            List<string> ApacheTrap_Flipped = new List<string>() {
+                "EX_Trap_Apache_02",
+                "EX_Trap_Apache_02"
+            };
+            
+            ExpandUtility.AddAnimation(ApacheTrapAnimator, EXTrap_Apache.GetComponent<tk2dSprite>().Collection, ApacheTrap_Normal, "ApacheTrap_Normal", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 8);
+            ExpandUtility.AddAnimation(ApacheTrapAnimator, EXTrap_Apache.GetComponent<tk2dSprite>().Collection, ApacheTrap_Flipped, "ApacheTrap_Flipped", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 8);
+            
+            SpeculativeRigidbody EXTrap_ApacheRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EXTrap_Apache, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(44, 58), offset: new IntVector2(10, 1));
+
+
+            PathingTrapController EXTrapApache_PathTrap = EXTrap_Apache.AddComponent<PathingTrapController>();
+            EXTrapApache_PathTrap.placeableHeight = 2;
+            EXTrapApache_PathTrap.placeableWidth = 2;
+            EXTrapApache_PathTrap.difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
+            EXTrapApache_PathTrap.isPassable = true;
+            // SoundEffect?
+            EXTrapApache_PathTrap.TrapSwitchState = string.Empty;
+            EXTrapApache_PathTrap.damage = 0.5f;
+            EXTrapApache_PathTrap.knockbackStrength = 50;
+            EXTrapApache_PathTrap.hitsEnemies = false;
+            EXTrapApache_PathTrap.enemyDamage = 0;
+            EXTrapApache_PathTrap.enemyKnockbackStrength = 0;
+            EXTrapApache_PathTrap.usesBloodyAnimation = false;
+            EXTrapApache_PathTrap.usesDirectionalAnimations = true;
+            EXTrapApache_PathTrap.northAnimation = "ApacheTrap_Flipped";
+            EXTrapApache_PathTrap.northShadowAnimation = string.Empty;
+            EXTrapApache_PathTrap.eastAnimation = "ApacheTrap_Normal";
+            EXTrapApache_PathTrap.eastShadowAnimation = string.Empty;
+            EXTrapApache_PathTrap.southAnimation = "ApacheTrap_Normal";
+            EXTrapApache_PathTrap.southShadowAnimation = string.Empty;
+            EXTrapApache_PathTrap.westAnimation = "ApacheTrap_Flipped";
+            EXTrapApache_PathTrap.westShadowAnimation = string.Empty;
+            EXTrapApache_PathTrap.usesDirectionalShadowAnimations = false;
+            EXTrapApache_PathTrap.pauseAnimationOnRest = false;
+
+            // This is a moving trap. It relies on paths. Please add paths to any rooms you intend to use this in!
+            PathMover EXTrapApache_PathMover = EXTrap_Apache.AddComponent<PathMover>();
+            EXTrapApache_PathMover.Paused = false;
+            EXTrapApache_PathMover.OriginalPathSpeed = 6;
+            EXTrapApache_PathMover.AdditionalNodeDelay = 0;
+            EXTrapApache_PathMover.ForceCornerDelayHack = false;
+            EXTrapApache_PathMover.IsUsingAlternateTargets = false;
+
+
+            PrototypeDungeonRoom m_hell_connector_pathburst_01 = null;
+
+            foreach (WeightedRoom wRoom in BulletHellRoomTable.includedRooms.elements) {
+                if (wRoom.room.name.ToLower().StartsWith("hell_connector_pathburst_01")) {
+                    m_hell_connector_pathburst_01 = wRoom.room;
+                    break;
+                }
+            }
+            
+            if (m_hell_connector_pathburst_01 && m_hell_connector_pathburst_01.placedObjects.Count > 2 && m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour && 
+                m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject && m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject.name == "RadialFireBurster") {
+
+                EXTrap_Apache.AddComponent<DungeonPlaceableBehaviour>();
+                EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>().placeableWidth = 2;
+                EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>().placeableHeight = 2;
+                EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>().difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
+
+                GameObject RadialFireBurster = m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject;                
+                
+                EXTrap_Apache.AddComponent<AIBulletBank>();
+                ExpandUtility.DuplicateComponent(EXTrap_Apache.GetComponent<AIBulletBank>(), RadialFireBurster.GetComponent<AIBulletBank>());
+                
+                BehaviorSpeculator EXTrap_ApacheBehavior = EXTrap_Apache.AddComponent<BehaviorSpeculator>();
+                // ExpandUtility.DuplicateComponent(EXTrap_Apache.GetComponent<BehaviorSpeculator>(), RadialFireBurster.GetComponent<BehaviorSpeculator>());
+                EXTrap_ApacheBehavior.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+                EXTrap_ApacheBehavior.OtherBehaviors = new List<BehaviorBase>(0);
+                EXTrap_ApacheBehavior.TargetBehaviors = new List<TargetBehaviorBase>(0);
+                EXTrap_ApacheBehavior.MovementBehaviors = new List<MovementBehaviorBase>(0);
+                EXTrap_ApacheBehavior.InstantFirstTick = false;
+                EXTrap_ApacheBehavior.TickInterval = 0.1f;
+                EXTrap_ApacheBehavior.PostAwakenDelay = 0;
+                EXTrap_ApacheBehavior.RemoveDelayOnReinforce = false;
+                EXTrap_ApacheBehavior.OverrideStartingFacingDirection = false;
+                EXTrap_ApacheBehavior.StartingFacingDirection = -90;
+                EXTrap_ApacheBehavior.SkipTimingDifferentiator = false;
+
+                EXTrap_ApacheBehavior.AttackBehaviors = new List<AttackBehaviorBase>() {
+                    new ShootBehavior() {
+                        ShootPoint = EXTrap_Apache.transform.Find("shoot point").gameObject,
+                        BulletScript = new BulletScriptSelector() { scriptTypeName = "CircleBurst12" },
+                        BulletName = null,
+                        LeadAmount = 0,
+                        StopDuring = ShootBehavior.StopType.None,
+                        ImmobileDuringStop = false,
+                        MoveSpeedModifier = 1,
+                        LockFacingDirection = false,
+                        ContinueAimingDuringTell = false,
+                        ReaimOnFire = false,
+                        MultipleFireEvents = false,
+                        RequiresTarget = false,
+                        PreventTargetSwitching = false,
+                        Uninterruptible = false,
+                        ClearGoop = false,
+                        ClearGoopRadius = 2,
+                        ShouldOverrideFireDirection = false,
+                        OverrideFireDirection = -1,
+                        SpecifyAiAnimator = null,
+                        ChargeAnimation = null,
+                        ChargeTime = 0,
+                        TellAnimation = null,
+                        FireAnimation = null,
+                        PostFireAnimation = null,
+                        HideGun = true,
+                        OverrideBaseAnims = false,
+                        OverrideIdleAnim = null,
+                        OverrideMoveAnim = null,
+                        UseVfx = false,
+                        ChargeVfx = null,
+                        TellVfx = null,
+                        FireVfx = null,
+                        Vfx = null,
+                        EnabledDuringAttack = new GameObject[0],
+                        Cooldown = 4,
+                        CooldownVariance = 0,
+                        AttackCooldown = 0,
+                        GlobalCooldown = 0,
+                        InitialCooldown = 0,
+                        InitialCooldownVariance = 0,
+                        GroupName = null,
+                        GroupCooldown = 0,
+                        MinRange = 0,
+                        Range = 0,
+                        MinWallDistance = 0,
+                        MaxEnemiesInRoom = 0,
+                        MinHealthThreshold = 0,
+                        MaxHealthThreshold = 1,
+                        HealthThresholds = new float[0],
+                        AccumulateHealthThresholds = true,
+                        targetAreaStyle = null,
+                        IsBlackPhantom = false,
+                        resetCooldownOnDamage = null,
+                        RequiresLineOfSight = false,
+                        MaxUsages = 0
+                    }
+                };
+
+                ISerializedObject m_TargetBehaviorSpeculatorSeralized = EXTrap_ApacheBehavior;
+                m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>() { EXTrap_Apache.transform.Find("shoot point").gameObject };
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+                // Loading a custom script from text file in place of one from an existing prefab..
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\ApacheTrap_BehaviorScript.txt");
+                
+                EXTrap_Apache.AddComponent<TrapEnemyConfigurator>();
+            }
+            
+
+            
             Teleporter_Gungeon_01 = braveResources.LoadAsset<GameObject>("Teleporter_Gungeon_01");
             ElevatorMaintanenceRoomIcon = sharedAssets2.LoadAsset<GameObject>("Minimap_Maintenance_Icon");
             Teleporter_Info_Sign = sharedAssets2.LoadAsset<GameObject>("teleporter_info_sign");
@@ -2650,13 +2837,17 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
             EXSpaceFloor_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloor_50x50");
+            EXSpaceFloorPitBorder_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloorPitBorder_50x50");
+
             ItemBuilder.AddSpriteToObject(EXSpaceFloor_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad_PitBorders"), false, false);
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().HeightOffGround = -200;
-            // EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
-            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(braveResources.LoadAsset<Shader>("finalgunroom_bg_02"));
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
+            //EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(braveResources.LoadAsset<Shader>("finalgunroom_bg_02"));
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
-            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().usesOverrideMaterial = true;
+            EXSpaceFloor_50x50.GetComponent<tk2dSprite>().usesOverrideMaterial = true;            
             EXSpaceFloor_50x50.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
+            EXSpaceFloorPitBorder_50x50.GetComponent<tk2dSprite>().HeightOffGround = -195;
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

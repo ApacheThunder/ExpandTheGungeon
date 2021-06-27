@@ -9,15 +9,17 @@ namespace ExpandTheGungeon.ExpandMain {
         public static void Init(List<AGDEnemyReplacementTier> m_cachedReplacementTiers) {
             if (m_cachedReplacementTiers != null) {
                 for (int i = 0; i < m_cachedReplacementTiers.Count; i++) {
-                    if (m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exsewers") | 
+                    if (m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exsewers") |
                         m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exbbbey") |
                         m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_exbelly"))
                     {
                         m_cachedReplacementTiers.Remove(m_cachedReplacementTiers[i]);
                     }
                 }
-                InitReplacementEnemiesForSewers(m_cachedReplacementTiers);
-                InitReplacementEnemiesForAbbey(m_cachedReplacementTiers);
+                if (!ExpandStats.IsHardModeBuild) {
+                    InitReplacementEnemiesForSewers(m_cachedReplacementTiers);
+                    InitReplacementEnemiesForAbbey(m_cachedReplacementTiers);
+                }
                 InitReplacementEnemiesForBelly(m_cachedReplacementTiers);
             }
         }

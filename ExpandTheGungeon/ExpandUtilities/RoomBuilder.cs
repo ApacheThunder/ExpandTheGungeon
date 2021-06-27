@@ -266,7 +266,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.exitData.exits.Add(m_NewExit);
         }
 
-        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpawnChance = 1f, int xOffset = 0, int yOffset = 0, int layer = 0) {
+        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, DungeonPlaceable PlacableContents = null, DungeonPlaceableBehaviour NonEnemyBehaviour = null, string EnemyBehaviourGuid = null, float SpawnChance = 1f, int xOffset = 0, int yOffset = 0, int layer = 0, int PathID = -1, int PathStartNode = 0) {
             if (room == null) { return; }
             if (room.placedObjects == null) { room.placedObjects = new List<PrototypePlacedObjectData>(); }
             if (room.placedObjectPositions == null) { room.placedObjectPositions = new List<Vector2>(); }
@@ -284,8 +284,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 fieldData = new List<PrototypePlacedObjectFieldData>(0),
                 instancePrerequisites = new DungeonPrerequisite[0],
                 linkedTriggerAreaIDs = new List<int>(0),
-                assignedPathIDx = -1,
-                assignedPathStartNode = 0
+                assignedPathIDx = PathID,
+                assignedPathStartNode = PathStartNode
             };
 
             if (PlacableContents != null) {
@@ -304,7 +304,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, GameObject PlacableObject, int xOffset = 0, int yOffset = 0, int layer = 0, float SpawnChance = 1f) {
+        public static void AddObjectToRoom(PrototypeDungeonRoom room, Vector2 position, GameObject PlacableObject, int xOffset = 0, int yOffset = 0, int layer = 0, float SpawnChance = 1f, int PathID = -1, int PathStartNode = 0) {
             if (room == null) { return; }
             if (room.placedObjects == null) { room.placedObjects = new List<PrototypePlacedObjectData>(); }
             if (room.placedObjectPositions == null) { room.placedObjectPositions = new List<Vector2>(); }
@@ -322,8 +322,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 fieldData = new List<PrototypePlacedObjectFieldData>(0),
                 instancePrerequisites = new DungeonPrerequisite[0],
                 linkedTriggerAreaIDs = new List<int>(0),
-                assignedPathIDx = -1,
-                assignedPathStartNode = 0
+                assignedPathIDx = PathID,
+                assignedPathStartNode = PathStartNode
             };
 
             room.placedObjects.Add(m_NewObjectData);

@@ -76,7 +76,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_SubSpriteObject = new GameObject("Item Display Object", new Type[] {typeof(tk2dSprite)}) { layer = 0 };
                 m_SubSpriteObject.transform.position = (transform.position + new Vector3(0.95f, 1));
                 m_ItemSprite = m_SubSpriteObject.GetComponent<tk2dSprite>();
-                ExpandUtility.DuplicateSprite(m_ItemSprite, (PickupObjectDatabase.GetById(ItemID).sprite as tk2dSprite));                
+                ExpandUtility.DuplicateSprite(m_ItemSprite, (PickupObjectDatabase.GetById(ItemID).sprite as tk2dSprite));
                 if (m_ParentRoom != null) { m_SubSpriteObject.transform.parent = m_ParentRoom.hierarchyParent; }
                 if (AddOutline) { SpriteOutlineManager.AddOutlineToSprite(m_ItemSprite, BaseOutlineColor, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL); }
             }

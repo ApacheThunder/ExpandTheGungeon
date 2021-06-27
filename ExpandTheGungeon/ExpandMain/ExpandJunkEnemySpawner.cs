@@ -128,7 +128,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     for (int height = -1; height <= currentRoom.area.dimensions.y; height++) {
                         int X = currentRoom.area.basePosition.x + Width;
                         int Y = currentRoom.area.basePosition.y + height;
-                        if (X % gridSnap == 0 && Y % gridSnap == 0) {
+                        if (X % gridSnap == 0 && Y % gridSnap == 0 && dungeon.data[new IntVector2(X, Y)].parentRoom == currentRoom) {
                             if (!dungeon.data.isWall(X - 2, Y + 2) && !dungeon.data.isWall(X - 1, Y + 2) && !dungeon.data.isWall(X, Y + 2) && !dungeon.data.isWall(X + 1, Y + 2) && !dungeon.data.isWall(X + 2, Y + 2) &&
                                 !dungeon.data.isWall(X - 2, Y + 1) && !dungeon.data.isWall(X - 1, Y + 1) && !dungeon.data.isWall(X, Y + 1) && !dungeon.data.isWall(X + 1, Y + 1) && !dungeon.data.isWall(X + 2, Y + 1) &&
                                 !dungeon.data.isWall(X - 2, Y) && !dungeon.data.isWall(X - 1, Y) && !dungeon.data.isWall(X, Y) && !dungeon.data.isWall(X + 1, Y) && !dungeon.data.isWall(X + 2, Y) &&

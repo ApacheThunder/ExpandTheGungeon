@@ -141,7 +141,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                     if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
                                         cellData.IsTopWall() | cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | 
                                         cellData.isWallMimicHideout | dungeon.data.isWall(targetArea1.x, targetArea1.y) | 
-                                        dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
+                                        dungeon.data[targetArea1.x, targetArea1.y].isOccupied | cellData.parentRoom != currentRoom)
                                     {
                                         isInvalid = true;
                                         break;

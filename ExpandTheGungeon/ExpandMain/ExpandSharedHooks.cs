@@ -254,12 +254,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(PaydayDrillItem)
             );
 
-            /*if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleSeamlessTransitionToCombatRoom Hook...."); }
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleSeamlessTransitionToCombatRoom Hook...."); }
             Hook handleSeamlessTransitionToCombatRoomHook = new Hook(
                 typeof(PaydayDrillItem).GetMethod("HandleSeamlessTransitionToCombatRoom", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandPaydayDrillItemFixes).GetMethod("ExpandHandleSeamlessTransitionToCombatRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PaydayDrillItem)
-            );*/
+            );
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.PostGenerationCleanup Hook...."); }
             postGenerationCleanupHook = new Hook(

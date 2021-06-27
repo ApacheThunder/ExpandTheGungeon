@@ -85,6 +85,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                 GameObject SkeletonCorpse = Instantiate(ExpandPrefabs.Sarco_Skeleton, RandomVector.Value.ToVector3(), Quaternion.identity);
                                 SkeletonCorpse.GetComponent<tk2dSprite>().HeightOffGround = -1;
                                 SkeletonCorpse.GetComponent<tk2dSprite>().UpdateZDepth();
+                                if (BraveUtility.RandomBool()) { SkeletonCorpse.GetComponent<tk2dSprite>().FlipX = true; }
                                 SkeletonCorpse.transform.parent = currentRoom.hierarchyParent;
                                 RandomObjectsPlaced++;
                             } else {
@@ -129,6 +130,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     MinCactiCount = 3;
                     MaxCactiCount = 6;
                 }
+
+                if (!string.IsNullOrEmpty(currentRoom.GetRoomName()) && currentRoom.GetRoomName().ToLower().StartsWith("expand_west_canyon1_tiny")) {
+                    MinCactiCount = 1;
+                    MaxCactiCount = 3;
+                }
                 
                 int CactusCount = Random.Range(MinCactiCount, MaxCactiCount);
 
@@ -156,7 +162,7 @@ namespace ExpandTheGungeon.ExpandMain {
             
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | string.IsNullOrEmpty(currentRoom.GetRoomName()) |
                 currentRoom.GetRoomName().StartsWith("Boss Foyer") | currentRoom.IsMaintenanceRoom() |
-               !currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear))
+               !currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) | roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS)
             {
                 return;
             }
@@ -217,6 +223,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         // Try and detect those pesky untrimmed rooms. :P
                         RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
                         if (ActualRoom == null | ActualRoom != currentRoom) { isInvalid = true; break; }
+                        // if (dungeon.data[TargetPosition].parentRoom != currentRoom) { isInvalid = true; break; }
 
                         if (isCactusDecoration) { if (!dungeon.data.isPlainEmptyCell(TargetPosition.X, TargetPosition.Y)) { isInvalid = true; break; } }
 

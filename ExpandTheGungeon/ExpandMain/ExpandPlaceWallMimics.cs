@@ -130,7 +130,7 @@ namespace ExpandTheGungeon.ExpandMain {
             							for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
             								int X = currentRoom.area.basePosition.x + Width;
             								int Y = currentRoom.area.basePosition.y + Height;
-            								if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0) {
+            								if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0 && dungeon.data[new IntVector2(X, Y)].parentRoom == currentRoom) {
             									int WallCount = 0;
             									if (!dungeon.data.isWall(X - 1, Y + 2) && !dungeon.data.isWall(X, Y + 2) && !dungeon.data.isWall(X + 1, Y + 2) && !dungeon.data.isWall(X + 2, Y + 2) &&
             										!dungeon.data.isWall(X - 1, Y + 1) && !dungeon.data.isWall(X, Y + 1) && !dungeon.data.isWall(X + 1, Y + 1) && !dungeon.data.isWall(X + 2, Y + 1) &&
@@ -298,7 +298,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     !currentRoom.GetRoomName().ToLower().StartsWith("tiny_exit") && !currentRoom.GetRoomName().ToLower().StartsWith("elevator") &&
                     !currentRoom.GetRoomName().ToLower().StartsWith("tiny_entrance") && !currentRoom.GetRoomName().ToLower().StartsWith("gungeon entrance") &&
                     !currentRoom.GetRoomName().ToLower().StartsWith("gungeon_rewardroom") && !currentRoom.GetRoomName().ToLower().StartsWith("reward room") &&
-                    !currentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_BootlegRoom.name))
+                    !currentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_BootlegRoom.name.ToLower()) && !currentRoom.area.prototypeRoom.precludeAllTilemapDrawing)
                 {
         			if (!currentRoom.area.IsProceduralRoom || currentRoom.area.proceduralCells == null) {
         				if (currentRoom.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS || (PlayerStats.GetTotalCurse() >= 5 && !BraveUtility.RandomBool())) {
@@ -313,7 +313,7 @@ namespace ExpandTheGungeon.ExpandMain {
         							for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
         								int X = currentRoom.area.basePosition.x + Width;
         								int Y = currentRoom.area.basePosition.y + Height;
-        								if (dungeon.data.isWall(X, Y)) {
+        								if (dungeon.data.isWall(X, Y) && dungeon.data[new IntVector2(X, Y)].parentRoom == currentRoom) {
         									int WallCellCount = 0;
                                             if (!dungeon.data.isPlainEmptyCell(X - 3, Y + 6) && !dungeon.data.isPlainEmptyCell(X - 2, Y + 6) && !dungeon.data.isPlainEmptyCell(X - 1, Y + 6) && !dungeon.data.isPlainEmptyCell(X, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 1, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 2, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 3, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 4, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 5, Y + 6) &&
                                                 !dungeon.data.isPlainEmptyCell(X - 3, Y + 5) && !dungeon.data.isPlainEmptyCell(X - 2, Y + 5) && !dungeon.data.isPlainEmptyCell(X - 1, Y + 5) && !dungeon.data.isPlainEmptyCell(X, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 1, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 2, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 3, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 4, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 5, Y + 5) &&

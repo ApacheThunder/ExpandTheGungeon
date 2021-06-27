@@ -25,7 +25,7 @@ namespace ExpandTheGungeon {
         // public static bool isGlitchFloor = false;
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
-
+        
         public static string ExceptionText;
         
         private static List<string> itemList;

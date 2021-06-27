@@ -90,8 +90,8 @@ MonoBehaviour:
     y: 0
     width: 299
     height: 510
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -360,19 +360,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/ExpandTextures
+    - Assets/ExpandTextures/RickRoll
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/ExpandTextures
+  - Assets/ExpandTextures/RickRoll
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssetBundleBuilder
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a2290000
-    m_LastClickedID: 10658
-    m_ExpandedIDs: 00000000842700005c290000a2290000262a00008e2c0000802d0000822d000000ca9a3bffffff7f
+    m_SelectedIDs: de2b0000
+    m_LastClickedID: 11230
+    m_ExpandedIDs: 00000000802700005e290000a4290000282a0000982c00008a2d00008c2d000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -400,7 +400,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000842700005c290000a2290000262a00008e2c0000802d0000822d0000
+    m_ExpandedIDs: 00000000802700005e290000a4290000282a0000982c00008a2d00008c2d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -427,8 +427,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000ccecffffb6ddffff80b5ffffa4ebffff00000000
+    m_HadKeyboardFocusLastEvent: 0
+    m_ExpandedInstanceIDs: c6230000ccecffffb6ddffff80b5ffffa4ebffff00000000b268ffff
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -518,9 +518,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: d0270000
+    m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 92fbffff00000000
+    m_ExpandedIDs: a2fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -571,7 +571,7 @@ MonoBehaviour:
     height: 489
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SceneLighting: 1
-  lastFramingTime: 681.5703052541411
+  lastFramingTime: 1062.143127611643
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
@@ -606,9 +606,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.67414427, y: -0.003553544, z: 0.0032420994, w: -0.7385839}
   m_Size:
-    m_Target: 498.5561
+    m_Target: 22
     speed: 2
-    m_Value: 498.5561
+    m_Value: 22
   m_Ortho:
     m_Target: 0
     speed: 2

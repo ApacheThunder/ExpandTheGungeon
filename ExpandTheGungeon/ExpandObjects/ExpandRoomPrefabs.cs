@@ -157,6 +157,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Custom Secret Rooms
         public static PrototypeDungeonRoom Expand_TinySecret;
+        public static PrototypeDungeonRoom Expand_TinySecretEmpty;
         public static PrototypeDungeonRoom Expand_GlitchedSecret;
         public static PrototypeDungeonRoom Expand_SecretElevatorEntranceRoom;
         public static PrototypeDungeonRoom Expand_RickRollSecret;
@@ -399,11 +400,12 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Jungle_Boss;
         // All jungle rooms except special ones will be stored here
         public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
-        public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
-        public static PrototypeDungeonRoom[] Expand_BulletHell_Rooms;
         public static List<string> Expand_Jungle_RoomList;
         public static List<string> Expand_Belly_RoomList;
         public static List<string> Expand_BulletHell_RoomList;
+        public static List<string> Expand_West_CanyonRoomList;
+        public static List<string> Expand_West_TinyCanyonRoomList;
+        public static List<string> Expand_West_Interior1RoomList;
 
         public static PrototypeDungeonRoom Expand_Belly_Entrance;
         public static PrototypeDungeonRoom Expand_Belly_BossRoom;
@@ -418,6 +420,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Belly_RealExit;
         public static PrototypeDungeonRoom Expand_Belly_Reward;
 
+        // All West rooms except special ones will be stored here
+        public static PrototypeDungeonRoom[] Expand_West_CanyonRooms;
+        public static PrototypeDungeonRoom[] Expand_West_TinyCanyonRooms;
+        public static PrototypeDungeonRoom[] Expand_West_Interior1Rooms;
         public static PrototypeDungeonRoom Expand_West_Entrance;
         public static PrototypeDungeonRoom Expand_West_SecretWarp;
         public static PrototypeDungeonRoom Expand_West_SecretHub;
@@ -433,8 +439,11 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // All Belly rooms except special ones will be stored here
         // public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
+        public static PrototypeDungeonRoom[] Expand_Belly_Rooms;        
         public static PrototypeDungeonRoom Expand_Gungeon_BellyEntranceRoom;
         public static PrototypeDungeonRoom Expand_Gungeon_HiddenMonsterRoom;
+
+        public static PrototypeDungeonRoom[] Expand_BulletHell_Rooms;
 
         public static WeightedRoom GenerateWeightedRoom(PrototypeDungeonRoom Room, float Weight = 1, bool LimitedCopies = true, int MaxCopies = 1, DungeonPrerequisite[] AdditionalPrerequisites = null) {
             if (Room == null) { return null; }
@@ -724,6 +733,143 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "Expand_Belly_Viscera29.room"
             };
 
+            Expand_West_CanyonRoomList = new List<string>() {
+                "Expand_West_Canyon_Yshape4.room",
+                "Expand_West_Canyon_AP_Passage.room",
+                "Expand_West_Canyon_Arm1.room",
+                "Expand_West_Canyon_Arm2.room",
+                "Expand_West_Canyon_BigGap1.room",
+                "Expand_West_Canyon_BigGap2.room",
+                "Expand_West_Canyon_BigGap3.room",
+                "Expand_West_Canyon_Circleish1.room",
+                "Expand_West_Canyon_Circleish2.room",
+                "Expand_West_Canyon_Circleish3.room",
+                "Expand_West_Canyon_Circleish4.room",
+                "Expand_West_Canyon_CornerBomb1.room",
+                "Expand_West_Canyon_CornerBomb2.room",
+                "Expand_West_Canyon_CornerBomb3.room",
+                "Expand_West_Canyon_CornerBomb4.room",
+                "Expand_West_Canyon_Fight1.room",
+                "Expand_West_Canyon_Fight2.room",
+                "Expand_West_Canyon_Fight3.room",
+                "Expand_West_Canyon_Fight4.room",
+                "Expand_West_Canyon_Fight5.room",
+                "Expand_West_Canyon_LongOdd1.room",
+                "Expand_West_Canyon_LongOdd2.room",
+                "Expand_West_Canyon_LongOdd3.room",
+                "Expand_West_Canyon_Odd1.room",
+                "Expand_West_Canyon_Odd2.room",
+                "Expand_West_Canyon_Odd3.room",
+                "Expand_West_Canyon_Odd4.room",
+                "Expand_West_Canyon_OddShape1.room",
+                "Expand_West_Canyon_OddShape2.room",
+                "Expand_West_Canyon_OddShape3.room",
+                "Expand_West_Canyon_OddShape4.room",
+                "Expand_West_Canyon_OddSquare1.room",
+                "Expand_West_Canyon_OddSquare2.room",
+                "Expand_West_Canyon_OddSquare3.room",
+                "Expand_West_Canyon_OddSquare4.room",
+                "Expand_West_Canyon_smol1.room",
+                "Expand_West_Canyon_smol2.room",
+                "Expand_West_Canyon_smol3.room",
+                "Expand_West_Canyon_smol4.room",
+                "Expand_West_Canyon_smol5.room",
+                "Expand_West_Canyon_tight1.room",
+                "Expand_West_Canyon_tight2.room",
+                "Expand_West_Canyon_tight3.room",
+                "Expand_West_Canyon_tight4.room",
+                "Expand_West_Canyon_Weird1.room",
+                "Expand_West_Canyon_Weird2.room",
+                "Expand_West_Canyon_Weird3.room",
+                "Expand_West_Canyon_Weird4.room",
+                "Expand_West_Canyon_Yshape1.room",
+                "Expand_West_Canyon_Yshape2.room",
+                "Expand_West_Canyon_Yshape3.room"
+            };
+
+            Expand_West_TinyCanyonRoomList = new List<string>() {
+                "Expand_West_Canyon1_Tiny1.room",
+                "Expand_West_Canyon1_Tiny2.room",
+                "Expand_West_Canyon1_Tiny3.room",
+                "Expand_West_Canyon1_Tiny4.room",
+                "Expand_West_Canyon1_Tiny5.room",
+                "Expand_West_Canyon1_Tiny6.room",
+                "Expand_West_Canyon1_Tiny7.room",
+                "Expand_West_Canyon1_Tiny8.room",
+                "Expand_West_Canyon1_Tiny9.room",
+                "Expand_West_Canyon1_Tiny10.room",
+                "Expand_West_Canyon1_Tiny11.room",
+                "Expand_West_Canyon1_Tiny12.room",
+                "Expand_West_Canyon1_Tiny13.room",
+                "Expand_West_Canyon1_Tiny14.room",
+                "Expand_West_Canyon1_Tiny15.room",
+                "Expand_West_Canyon1_Tiny16.room",
+                "Expand_West_Canyon1_Tiny17.room",
+                "Expand_West_Canyon1_Tiny18.room",
+                "Expand_West_Canyon1_Tiny19.room",
+                "Expand_West_Canyon1_Tiny20.room",
+                "Expand_West_Canyon1_TinyPassage1.room",
+                "Expand_West_Canyon1_TinyPassage2.room",
+                "Expand_West_Canyon1_TinyPassage3.room",
+                "Expand_West_Canyon1_TinyPassage4.room",
+                "Expand_West_Canyon1_TinyPassage5.room"
+            };
+
+            Expand_West_Interior1RoomList = new List<string>() {
+                "Expand_West_Interior1_Tabled1.room",
+                "Expand_West_Interior1_Tabled2.room",
+                "Expand_West_Interior1_Tabled3.room",
+                "Expand_West_Interior1_Teleport1.room",
+                "Expand_West_Interior1_Teleport2.room",
+                "Expand_West_Interior1_Teleport2_1.room",
+                "Expand_West_Interior1_Teleport2_2.room",
+                "Expand_West_Interior1_Teleport2_3.room",
+                "Expand_West_Interior1_Teleport2_4.room",
+                "Expand_West_Interior1_Teleport2_5.room",
+                "Expand_West_Interior1_Teleport3.room",
+                "Expand_West_Interior1_Thin1.room",
+                "Expand_West_Interior1_Thin2.room",
+                "Expand_West_Interior1_Thin3.room",
+                "Expand_West_Interior1_Thin4.room",
+                "Expand_West_Interior1_Thin5.room",
+                "Expand_West_Interior1_Trapped1.room",
+                "Expand_West_Interior1_Trapped2.room",
+                "Expand_West_Interior1_AP_HTrap.room",
+                "Expand_West_Interior1_AP_West.room",
+                "Expand_West_Interior1_Bar1.room",
+                "Expand_West_Interior1_Bar2.room",
+                "Expand_West_Interior1_BoomLine1.room",
+                "Expand_West_Interior1_BoomLine2.room",
+                "Expand_West_Interior1_BoomLine3.room",
+                "Expand_West_Interior1_Boxes1.room",
+                "Expand_West_Interior1_Boxes2.room",
+                "Expand_West_Interior1_Boxes3.room",
+                "Expand_West_Interior1_Boxes4.room",
+                "Expand_West_Interior1_Boxes5.room",
+                "Expand_West_Interior1_ImportantBusiness.room",
+                "Expand_West_Interior1_Square1.room",
+                "Expand_West_Interior1_Square2.room",
+                "Expand_West_Interior1_Square3.room",
+                "Expand_West_Interior1_Square4.room",
+                "Expand_West_Interior1_Square5.room",
+                "Expand_West_Interior1_Square6.room",
+                "Expand_West_Interior1_Squareish1.room",
+                "Expand_West_Interior1_Squareish2.room",
+                "Expand_West_Interior1_Squareish3.room",
+                "Expand_West_Interior1_Squareish4.room",
+                "Expand_West_Interior1_Squareish5.room",
+                "Expand_West_Interior1_Squareish6.room",
+                "Expand_West_Interior1_Squareish7.room",
+                "Expand_West_Interior1_Squareish8.room",
+                "Expand_West_Interior1_Steps1.room",
+                "Expand_West_Interior1_Steps2.room",
+                "Expand_West_Interior1_Steps3.room",
+                "Expand_West_Interior1_Steps4.room",
+                "Expand_West_Interior1_Straight1.room",
+                "Expand_West_Interior1_Straight2.room",
+                "Expand_West_Interior1_Straight3.room"
+            };
+                        
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion.room" };
 
             List<PrototypeDungeonRoom> m_BulletHellRoomList = new List<PrototypeDungeonRoom>() { };
@@ -732,15 +878,38 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_BulletHellRoomList.Add(RoomFactory.BuildFromResource("BulletHell/" + roomName, true, true));
             }
 
+            List<PrototypeDungeonRoom> m_West_Canyon_RoomList = new List<PrototypeDungeonRoom>();
+            List<PrototypeDungeonRoom> m_West_TinyCanyon_RoomList = new List<PrototypeDungeonRoom>();
+            List<PrototypeDungeonRoom> m_West_Interior1_RoomList = new List<PrototypeDungeonRoom>();
+
+            foreach (string roomName in Expand_West_CanyonRoomList) {
+                m_West_Canyon_RoomList.Add(RoomFactory.BuildFromResource("West/" + roomName, true, false));
+            }
+
+            foreach (string roomName in Expand_West_TinyCanyonRoomList) {
+                m_West_TinyCanyon_RoomList.Add(RoomFactory.BuildFromResource("West/" + roomName, true, false));
+            }
+
+            foreach (string roomName in Expand_West_Interior1RoomList) {
+                m_West_Interior1_RoomList.Add(RoomFactory.BuildFromResource("West/" + roomName, true, false));
+            }
+
+            foreach (PrototypeDungeonRoom room in m_West_Canyon_RoomList) { room.overrideRoomVisualType = 0; }
+            foreach (PrototypeDungeonRoom room in m_West_TinyCanyon_RoomList) { room.overrideRoomVisualType = 0; }
+            foreach (PrototypeDungeonRoom room in m_West_Interior1_RoomList) { room.overrideRoomVisualType = 1; }
+
+            Expand_West_CanyonRooms = m_West_Canyon_RoomList.ToArray();
+            Expand_West_TinyCanyonRooms = m_West_TinyCanyon_RoomList.ToArray();
+            Expand_West_Interior1Rooms = m_West_Interior1_RoomList.ToArray();
 
             Expand_Jungle_Entrance = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Entrance.room", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(4, 5), objectDatabase.GodRays);
-            Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;            
+            Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;
             Expand_Jungle_OldCrest = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_OldCrest.room", true);
             Expand_Jungle_OldCrest.associatedMinimapIcon = ExpandPrefabs.EXJungleCrest_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(5, 7), objectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
-            
+
 
             Expand_Jungle_Exit = RoomFactory.BuildFromResource("Jungle/Expand_Jungle_Exit.room", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
@@ -787,7 +956,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 25), objectDatabase.DefaultTorch, xOffset: 8);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(22, 14), objectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.com4nd0GUID);
-            
+
 
             Expand_Belly_Entrance = RoomFactory.BuildFromResource("Belly/Expand_Belly_Entrance.room", true);
 
@@ -802,13 +971,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_ShotgunBook_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 6), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletShield_Kaliber, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));            
+            RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(11, 18), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarcophagus_BulletSword_Kaliber, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.GungeonLightPurple, useExternalPrefab: true));
             // RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Gungeon_BellyEntranceRoom, "RoomFactoryRooms\\Expand_Gungeon_BellyEntranceRoom_ext.png", DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
 
-            
+
             Expand_Belly_BossRoom = RoomFactory.BuildFromResource("Belly/Expand_Belly_BossRoom.room");
             Expand_Belly_BossRoom.category = PrototypeDungeonRoom.RoomCategory.BOSS;
             Expand_Belly_BossRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
@@ -937,7 +1106,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Gungeon_HiddenMonsterRoom.allowWallDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.usesProceduralDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.precludeAllTilemapDrawing = true;
-            
+
 
             Expand_Belly_Connector_01 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_01.room", true);
             Expand_Belly_Connector_02 = RoomFactory.BuildFromResource("Belly\\Expand_Belly_Connector_02.room", true);
@@ -974,7 +1143,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(9, 42), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(41, 10), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
-            
+
 
 
             Expand_West_SecretWarp = RoomFactory.BuildFromResource("West\\Expand_West_SecretWarp.room", true);
@@ -983,7 +1152,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretWarp1, new Vector2(4, 9), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
             Expand_West_SecretHub = RoomFactory.BuildFromResource("West\\Expand_West_SecretHub.room", true);
-            Expand_West_SecretHub.overrideRoomVisualType = 0;
+            Expand_West_SecretHub.overrideRoomVisualType = 1;
             Expand_West_SecretHub.usesProceduralDecoration = false;
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub, new Vector2(10, 19), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
@@ -1002,19 +1171,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 12), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
             RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 16), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(3, 22), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
-            
+
             Expand_West_SecretKeyShop = Instantiate(ExpandPrefabs.shop_special_key_01);
-            Expand_West_SecretKeyShop.overrideRoomVisualType = 1;
+            Expand_West_SecretKeyShop.overrideRoomVisualType = 0;
             Expand_West_SecretKeyShop.category = PrototypeDungeonRoom.RoomCategory.SECRET;
 
             Expand_West_ChestRoom = Instantiate(ExpandPrefabs.reward_room);
-            Expand_West_ChestRoom.overrideRoomVisualType = 1;
+            Expand_West_ChestRoom.overrideRoomVisualType = 0;
 
             Expand_West_BlankPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_West_RatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_West_SecretRatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_West_ShrineRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            
+
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_SpecialPit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1027,7 +1196,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PuzzleRoom1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            
+
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             CreepyGlitchRoom_Entrance = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             GungeoneerMimicBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1131,7 +1300,43 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RainbowRoom.usesProceduralDecoration = false;
             Expand_Apache_RainbowRoom.drawPrecludedCeilingTiles = false;
             RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandPrefabs.EXSpaceFloor_50x50);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandPrefabs.EXSpaceFloorPitBorder_50x50);
             RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, objectDatabase.EndTimes);
+            if (ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>()) {
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(19, 47), null, ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>(), PathID: 0, PathStartNode: 0);
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(5, 2), null, ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>(), PathID: 0, PathStartNode: 2);
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(45, 30), null, ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>(), PathID: 1, PathStartNode: 0);
+            } else {
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(19, 47), ExpandPrefabs.EXTrap_Apache, PathID: 0, PathStartNode: 0);
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(5, 2), ExpandPrefabs.EXTrap_Apache, PathID: 0, PathStartNode: 2);
+                RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(45, 30), ExpandPrefabs.EXTrap_Apache, PathID: 1, PathStartNode: 0);
+            }
+            
+            
+            // Setup Path for Rainbow Room Trap object (EXTrap_Apache)
+            SerializedPath EXTrapApachePath = new SerializedPath(IntVector2.Zero); // Entire node list will be rebuilt so position value used here is not used
+            EXTrapApachePath.wrapMode = SerializedPath.SerializedPathWrapMode.Loop;
+            // Set this to 0 for Mines (mine cart paths usually). Otherwise set to -1 or leave undefined. (new path defaults as -1). Unless you are a mad lad and figured out how to define a custom tilesetindex grid for your custom floor! :P
+            EXTrapApachePath.tilesetPathGrid = -1;
+            // Generate path nodes. They must be in a specific order. Placement field is mostly relevent for SawBlade type PathMovers. MineCarts expect all nodes to have SouthWest. (must be unused I guess)
+            EXTrapApachePath.nodes = new List<SerializedPathNode>() {
+                ExpandUtility.GeneratePathNode(new IntVector2(19, 47), SerializedPathNode.SerializedNodePlacement.NorthEast),
+                ExpandUtility.GeneratePathNode(new IntVector2(2, 29), SerializedPathNode.SerializedNodePlacement.NorthWest),
+                ExpandUtility.GeneratePathNode(new IntVector2(5, 2), SerializedPathNode.SerializedNodePlacement.SouthWest),
+                ExpandUtility.GeneratePathNode(new IntVector2(47, 16), SerializedPathNode.SerializedNodePlacement.SouthEast),
+            };
+
+
+            SerializedPath EXTrapApachePath2 = new SerializedPath(IntVector2.Zero);
+            EXTrapApachePath2.wrapMode = SerializedPath.SerializedPathWrapMode.Loop;
+            EXTrapApachePath2.tilesetPathGrid = -1;
+            EXTrapApachePath2.nodes = new List<SerializedPathNode>() {
+                ExpandUtility.GeneratePathNode(new IntVector2(45, 30), SerializedPathNode.SerializedNodePlacement.West),
+                ExpandUtility.GeneratePathNode(new IntVector2(12, 30), SerializedPathNode.SerializedNodePlacement.East)
+            };
+            Expand_Apache_RainbowRoom.paths = new List<SerializedPath>() { EXTrapApachePath, EXTrapApachePath2 };
+            
+
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1139,6 +1344,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorDestinationRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_TinySecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_TinySecretEmpty = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_GlitchedSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_SecretElevatorEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_RickRollSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1149,7 +1355,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             foreach (PrototypeRoomExit exit in Bunny_Special4ShrineRoom.exitData.exits) {
                 exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY;
             }
-            
+
             Expand_Keep_TreeRoom = RoomFactory.BuildFromResource("Keep_TreeRoom.room", true, false);
             Expand_Keep_TreeRoom.overrideRoomVisualType = 6;
             Expand_Keep_TreeRoom.allowFloorDecoration = false;
@@ -1174,7 +1380,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(9, 15), ExpandUtility.GenerateDungeonPlacable(objectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
-            
+
 
             Expand_West_BlankPedestalRoom.name = "Blank Reward Room";
             Expand_West_BlankPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -1269,7 +1475,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(Expand_West_RatKeyPedestalRoom, new Vector2(5, 2), DungeonData.Direction.EAST, ContainsDoor: false);
             RoomBuilder.AddObjectToRoom(Expand_West_RatKeyPedestalRoom, Vector2.one, ExpandPrefabs.RatKeyRewardPedestal, 3, 8);
             RoomBuilder.GenerateBasicRoomLayout(Expand_West_RatKeyPedestalRoom);
-            
+
             Expand_West_SecretRatKeyPedestalRoom.name = "Secret Special Key Reward Room";
             Expand_West_SecretRatKeyPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_West_SecretRatKeyPedestalRoom.GUID = Guid.NewGuid().ToString();
@@ -1992,8 +2198,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(21, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.GenerateRoomLayoutFromPNG(ThwompCrossingHorizontal, "TrapRooms\\Expand_Thwomp_Crossing_Horizontal_Layout.png");
 
-                                    
-            
+
+
             ExpandUtility.DuplicateComponent(PuzzleRoom1, ExpandPrefabs.gungeon_checkerboard);
             PuzzleRoom1.name = "Zelda Puzzle Room 1";
             PuzzleRoom1.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -4440,7 +4646,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 7), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 15), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Steps, "Castle\\Expand_TurtleMelon_Steps_Layout.png");
-            
+
 
             Expand_Apache_Hub.name = "Expand MelonTurtle Apache Hub";
             Expand_Apache_Hub.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8137,7 +8343,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Undead2 = RoomFactory.BuildFromResource("Expand_Undead2.room");
             Expand_Undead3 = RoomFactory.BuildFromResource("Expand_Undead3.room");
             Expand_Undead4 = RoomFactory.BuildFromResource("Expand_Undead4.room");
-            
+
 
             Expand_4wave = RoomFactory.BuildFromResource("Expand_4wave.room");
             Expand_Bat = RoomFactory.BuildFromResource("Expand_Bat.room");
@@ -8218,79 +8424,79 @@ namespace ExpandTheGungeon.ExpandObjects {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };*/
-            
-            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromResource("Secret_Expand_Achievement_The_Password.room", true, true);
-            B_Expand_demon_onehand = RoomFactory.BuildFromResource("B_Expand_demon_onehand.room", true, true);
-            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromResource("B_Expand_Achievement_Rage_Mode.room", true, true);
-            B_Expand_Achievement_Jammed = RoomFactory.BuildFromResource("B_Expand_Achievement_Jammed.room", true, true);
-            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromResource("PMO_Expand_Achievement_Demolition_Man.room", true, true);
-            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromResource("PMO_Expand_Achievement_Beep.room", true, true);
-            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromResource("PMHFOA_Expand_Achievement_Gun_Game.room", true, true);
-            PMH_Expand_Kyle = RoomFactory.BuildFromResource("PMH_Expand_Kyle.room", true, true);
-            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromResource("PMH_Expand_Achievement_ReArmed.room", true, true);
-            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromResource("PMH_Expand_Achievement_Dat_Plat.room", true, true);
-            PM_Expand_bubblebuddy = RoomFactory.BuildFromResource("PM_Expand_bubblebuddy.room", true, true);
-            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromResource("PM_Expand_Achievement_Squad_Captain.room", true, true);
-            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromResource("PM_Expand_Achievement_Reverence_for_the_Dead.room", true, true);
-            PM_Expand_Achievement_Patron = RoomFactory.BuildFromResource("PM_Expand_Achievement_Patron.room", true, true);
-            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromResource("PM_Expand_Achievement_Castle_Crasher.room", true, true);
-            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromResource("PM_Expand_Achievement_Case_Closed.room", true, true);
-            P_Expand_MasterRound2 = RoomFactory.BuildFromResource("P_Expand_MasterRound2.room", true, true);
-            P_Expand_beholdter = RoomFactory.BuildFromResource("P_Expand_beholdter.room", true, true);
-            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromResource("O_Expand_Achievement_Sworn_Gun.room", true, true);
-            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromResource("O_Expand_Achievement_Pit_Lord.room", true, true);
-            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromResource("MHF_Expand_Achievement_Great_Hall.room", true, true);
-            MH_Expand_TheSellCreep = RoomFactory.BuildFromResource("MH_Expand_TheSellCreep.room", true, true);
-            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromResource("MH_Expand_Achievement_Trickshot.room", true, true);
-            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromResource("MH_Expand_Achievement_Lead_God.room", true, true);
-            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromResource("MH_Expand_Achievement_Going_Down.room", true, true);
-            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromResource("MH_Expand_Achievement_Challenger.room", true, true);
-            MFA_Expand_bigshotgun = RoomFactory.BuildFromResource("MFA_Expand_bigshotgun.room", true, true);
-            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromResource("MA_Expand_Achievement_Dungeon_Diver.room", true, true);
-            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromResource("MA_Expand_Achievement_Double_Jeopardy.room", true, true);
-            M_Expand_Retrashed = RoomFactory.BuildFromResource("M_Expand_Retrashed.room", true, true);
-            M_Expand_ratkey = RoomFactory.BuildFromResource("M_Expand_ratkey.room", true, true);
-            M_Expand_MasterRound3 = RoomFactory.BuildFromResource("M_Expand_MasterRound3.room", true, true);
-            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromResource("M_Expand_ArcaneGunpowder.room", true, true);
-            M_Expand_AK = RoomFactory.BuildFromResource("M_Expand_AK.room", true, true);
-            M_Expand_Achievement_Rider = RoomFactory.BuildFromResource("M_Expand_Achievement_Rider.room", true, true);
-            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromResource("M_Expand_Achievement_Resourceful.room", true, true);
-            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromResource("M_Expand_Achievement_Mine_Master.room", true, true);
-            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromResource("KPMHFAO_Expand_Achievement_Woodsie_Lord.room", true, true);
-            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromResource("KPMHFAO_Expand_Achievement_Wingman.room", true, true);
-            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromResource("KPM_Expand_Achievement_Last_Stop.room", true, true);
-            KP_Expand_hegemony = RoomFactory.BuildFromResource("KP_Expand_hegemony.room", true, true);
-            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromResource("KP_Expand_Achievement_Not_Just_A_Box.room", true, true);
-            KP_Expand_Achievement_Historian = RoomFactory.BuildFromResource("KP_Expand_Achievement_Historian.room", true, true);
-            K_Expand_Prime_Primer = RoomFactory.BuildFromResource("K_Expand_Prime_Primer.room", true, true);
-            K_Expand_MasterRound1 = RoomFactory.BuildFromResource("K_Expand_MasterRound1.room", true, true);
-            K_Expand_bonk = RoomFactory.BuildFromResource("K_Expand_bonk.room", true, true);
-            K_Expand_BigBird = RoomFactory.BuildFromResource("K_Expand_BigBird.room", true, true);
-            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromResource("K_Expand_Achievement_Money_Pit.room", true, true);
-            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromResource("K_Expand_Achievement_Hedge_Slinger.room", true, true);
-            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromResource("K_Expand_Achievement_Gungeon_Acolyte.room", true, true);
-            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromResource("K_Expand_Achievement_Biggest_Wallet.room", true, true);
-            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromResource("HFAB_Expand_Achievement_Forger.room", true, true);
-            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromResource("HF_Expand_Achievement_Weird_Tale.room", true, true);
-            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromResource("HF_Expand_Achievement_Cartographers_Assistant.room", true, true);
-            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromResource("HB_Expand_Achievement_Hollowed_Out.room", true, true);
-            H_Expand_Planar_Lead = RoomFactory.BuildFromResource("H_Expand_Planar_Lead.room", true, true);
-            H_Expand_MasterRound4 = RoomFactory.BuildFromResource("H_Expand_MasterRound4.room", true, true);
-            H_Expand_Highpriest = RoomFactory.BuildFromResource("H_Expand_Highpriest.room", true, true);
-            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromResource("H_Expand_Achievement_SledgeDog.room", true, true);
-            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromResource("H_Expand_Achievement_Exorcist.room", true, true);
-            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromResource("FB_Expand_Achievement_Time_Paradox.room", true, true);
-            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromResource("FB_Expand_Achievement_Lion_Leap.room", true, true);
-            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromResource("FB_Expand_Achievement_Gunsmith.room", true, true);
-            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromResource("FB_Expand_Achievement_Gungeon_Master.room", true, true);
-            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromResource("FB_Expand_Achievement_Day_Ruiner.room", true, true);
-            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromResource("F_Expand_Obsidian_Shell_Casing.room", true, true);
-            F_Expand_MasterRound5 = RoomFactory.BuildFromResource("F_Expand_MasterRound5.room", true, true);
-            F_Expand_dragun = RoomFactory.BuildFromResource("F_Expand_dragun.room", true, true);
-            F_Expand_Achievement_Terminated = RoomFactory.BuildFromResource("F_Expand_Achievement_Terminated.room", true, true);
-            F_Expand_Achievement_Slayer = RoomFactory.BuildFromResource("F_Expand_Achievement_Slayer.room", true, true);
-            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromResource("F_Expand_Achievement_I_Knew_Someone_Would_Do_It.room", true, true);
-            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromResource("F_Expand_Achievement_Advanced_Slayer.room", true, true);
+
+            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromResource("Secret_Expand_Achievement_The_Password.room", true, ExpandStats.RestoreOldRooms);
+            B_Expand_demon_onehand = RoomFactory.BuildFromResource("B_Expand_demon_onehand.room", true, ExpandStats.RestoreOldRooms);
+            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromResource("B_Expand_Achievement_Rage_Mode.room", true, ExpandStats.RestoreOldRooms);
+            B_Expand_Achievement_Jammed = RoomFactory.BuildFromResource("B_Expand_Achievement_Jammed.room", true, ExpandStats.RestoreOldRooms);
+            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromResource("PMO_Expand_Achievement_Demolition_Man.room", true, ExpandStats.RestoreOldRooms);
+            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromResource("PMO_Expand_Achievement_Beep.room", true, ExpandStats.RestoreOldRooms);
+            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromResource("PMHFOA_Expand_Achievement_Gun_Game.room", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Kyle = RoomFactory.BuildFromResource("PMH_Expand_Kyle.room", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromResource("PMH_Expand_Achievement_ReArmed.room", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromResource("PMH_Expand_Achievement_Dat_Plat.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_bubblebuddy = RoomFactory.BuildFromResource("PM_Expand_bubblebuddy.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromResource("PM_Expand_Achievement_Squad_Captain.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromResource("PM_Expand_Achievement_Reverence_for_the_Dead.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Patron = RoomFactory.BuildFromResource("PM_Expand_Achievement_Patron.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromResource("PM_Expand_Achievement_Castle_Crasher.room", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromResource("PM_Expand_Achievement_Case_Closed.room", true, ExpandStats.RestoreOldRooms);
+            P_Expand_MasterRound2 = RoomFactory.BuildFromResource("P_Expand_MasterRound2.room", true, ExpandStats.RestoreOldRooms);
+            P_Expand_beholdter = RoomFactory.BuildFromResource("P_Expand_beholdter.room", true, ExpandStats.RestoreOldRooms);
+            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromResource("O_Expand_Achievement_Sworn_Gun.room", true, ExpandStats.RestoreOldRooms);
+            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromResource("O_Expand_Achievement_Pit_Lord.room", true, ExpandStats.RestoreOldRooms);
+            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromResource("MHF_Expand_Achievement_Great_Hall.room", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_TheSellCreep = RoomFactory.BuildFromResource("MH_Expand_TheSellCreep.room", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromResource("MH_Expand_Achievement_Trickshot.room", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromResource("MH_Expand_Achievement_Lead_God.room", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromResource("MH_Expand_Achievement_Going_Down.room", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromResource("MH_Expand_Achievement_Challenger.room", true, ExpandStats.RestoreOldRooms);
+            MFA_Expand_bigshotgun = RoomFactory.BuildFromResource("MFA_Expand_bigshotgun.room", true, ExpandStats.RestoreOldRooms);
+            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromResource("MA_Expand_Achievement_Dungeon_Diver.room", true, ExpandStats.RestoreOldRooms);
+            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromResource("MA_Expand_Achievement_Double_Jeopardy.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Retrashed = RoomFactory.BuildFromResource("M_Expand_Retrashed.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_ratkey = RoomFactory.BuildFromResource("M_Expand_ratkey.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_MasterRound3 = RoomFactory.BuildFromResource("M_Expand_MasterRound3.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromResource("M_Expand_ArcaneGunpowder.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_AK = RoomFactory.BuildFromResource("M_Expand_AK.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Rider = RoomFactory.BuildFromResource("M_Expand_Achievement_Rider.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromResource("M_Expand_Achievement_Resourceful.room", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromResource("M_Expand_Achievement_Mine_Master.room", true, ExpandStats.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromResource("KPMHFAO_Expand_Achievement_Woodsie_Lord.room", true, ExpandStats.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromResource("KPMHFAO_Expand_Achievement_Wingman.room", true, ExpandStats.RestoreOldRooms);
+            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromResource("KPM_Expand_Achievement_Last_Stop.room", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_hegemony = RoomFactory.BuildFromResource("KP_Expand_hegemony.room", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromResource("KP_Expand_Achievement_Not_Just_A_Box.room", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_Achievement_Historian = RoomFactory.BuildFromResource("KP_Expand_Achievement_Historian.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Prime_Primer = RoomFactory.BuildFromResource("K_Expand_Prime_Primer.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_MasterRound1 = RoomFactory.BuildFromResource("K_Expand_MasterRound1.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_bonk = RoomFactory.BuildFromResource("K_Expand_bonk.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_BigBird = RoomFactory.BuildFromResource("K_Expand_BigBird.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromResource("K_Expand_Achievement_Money_Pit.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromResource("K_Expand_Achievement_Hedge_Slinger.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromResource("K_Expand_Achievement_Gungeon_Acolyte.room", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromResource("K_Expand_Achievement_Biggest_Wallet.room", true, ExpandStats.RestoreOldRooms);
+            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromResource("HFAB_Expand_Achievement_Forger.room", true, ExpandStats.RestoreOldRooms);
+            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromResource("HF_Expand_Achievement_Weird_Tale.room", true, ExpandStats.RestoreOldRooms);
+            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromResource("HF_Expand_Achievement_Cartographers_Assistant.room", true, ExpandStats.RestoreOldRooms);
+            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromResource("HB_Expand_Achievement_Hollowed_Out.room", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Planar_Lead = RoomFactory.BuildFromResource("H_Expand_Planar_Lead.room", true, ExpandStats.RestoreOldRooms);
+            H_Expand_MasterRound4 = RoomFactory.BuildFromResource("H_Expand_MasterRound4.room", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Highpriest = RoomFactory.BuildFromResource("H_Expand_Highpriest.room", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromResource("H_Expand_Achievement_SledgeDog.room", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromResource("H_Expand_Achievement_Exorcist.room", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromResource("FB_Expand_Achievement_Time_Paradox.room", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromResource("FB_Expand_Achievement_Lion_Leap.room", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromResource("FB_Expand_Achievement_Gunsmith.room", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromResource("FB_Expand_Achievement_Gungeon_Master.room", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromResource("FB_Expand_Achievement_Day_Ruiner.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromResource("F_Expand_Obsidian_Shell_Casing.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_MasterRound5 = RoomFactory.BuildFromResource("F_Expand_MasterRound5.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_dragun = RoomFactory.BuildFromResource("F_Expand_dragun.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Terminated = RoomFactory.BuildFromResource("F_Expand_Achievement_Terminated.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Slayer = RoomFactory.BuildFromResource("F_Expand_Achievement_Slayer.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromResource("F_Expand_Achievement_I_Knew_Someone_Would_Do_It.room", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromResource("F_Expand_Achievement_Advanced_Slayer.room", true, ExpandStats.RestoreOldRooms);
             Expand_Proper_Regular1 = RoomFactory.BuildFromResource("Expand_Proper_Regular1.room", true, true);
             Expand_Proper_Regular2 = RoomFactory.BuildFromResource("Expand_Proper_Regular2.room", true, true);
             Expand_Proper_Regular3 = RoomFactory.BuildFromResource("Expand_Proper_Regular3.room", true, true);
@@ -8391,7 +8597,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Mines_Regular48 = RoomFactory.BuildFromResource("Expand_Mines_Regular48.room", true, true);
             Expand_Mines_Regular49 = RoomFactory.BuildFromResource("Expand_Mines_Regular49.room", true, true);
             Expand_Mines_Regular50 = RoomFactory.BuildFromResource("Expand_Mines_Regular50.room", true, true);
-            Expand_Keep_Spiral = RoomFactory.BuildFromResource("Expand_Keep_Spiral.room", true, true);
+            Expand_Keep_Spiral = RoomFactory.BuildFromResource("Expand_Keep_Spiral.room", true, ExpandStats.RestoreOldRooms);
 
             // Trap_Expand_Turtlemelon = RoomFactory.BuildFromResource("Trap_Expand_Turtlemelon.room", true);
 
@@ -8965,7 +9171,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RickRollChest.additionalObjectLayers.Remove(Expand_Apache_RickRollChest.additionalObjectLayers[1]);
             RoomBuilder.AddObjectToRoom(Expand_Apache_RickRollChest, new Vector2(7, 9), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
             RoomBuilder.GenerateRoomLayoutFromPNG(Expand_Apache_RickRollChest, "TrapRooms\\Expand_Apache_RickRollChestRoom_Layout.png");
-             
+
 
             SecretExitRoom2.name = "Secret Elevator Exit";
             SecretExitRoom2.QAID = "AA" + UnityEngine.Random.Range(1000, 9999);
@@ -9222,6 +9428,55 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_TinySecret, new Vector2(0, 0), ExpandPrefabs.TinySecretRoomJunkReward, xOffset: 1, yOffset: 10);
             RoomBuilder.AddObjectToRoom(Expand_TinySecret, new Vector2(1, 0), ExpandPrefabs.TinySecretRoomRewards, yOffset: 10);
             RoomBuilder.GenerateBasicRoomLayout(Expand_TinySecret);
+
+            Expand_TinySecretEmpty.name = "Expand Apache Tiny Secret Empty";
+            Expand_TinySecretEmpty.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_TinySecretEmpty.GUID = Guid.NewGuid().ToString();
+            Expand_TinySecretEmpty.PreventMirroring = false;
+            Expand_TinySecretEmpty.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+            Expand_TinySecretEmpty.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_TinySecretEmpty.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_TinySecretEmpty.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_TinySecretEmpty.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_TinySecretEmpty.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_TinySecretEmpty.pits = new List<PrototypeRoomPitEntry>();
+            Expand_TinySecretEmpty.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_TinySecretEmpty.placedObjectPositions = new List<Vector2>();
+            Expand_TinySecretEmpty.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_TinySecretEmpty.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_TinySecretEmpty.overriddenTilesets = 0;
+            Expand_TinySecretEmpty.prerequisites = new List<DungeonPrerequisite>();
+            Expand_TinySecretEmpty.InvalidInCoop = false;
+            Expand_TinySecretEmpty.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_TinySecretEmpty.preventAddedDecoLayering = false;
+            Expand_TinySecretEmpty.precludeAllTilemapDrawing = false;
+            Expand_TinySecretEmpty.drawPrecludedCeilingTiles = false;
+            Expand_TinySecretEmpty.preventBorders = false;
+            Expand_TinySecretEmpty.preventFacewallAO = false;
+            Expand_TinySecretEmpty.usesCustomAmbientLight = false;
+            Expand_TinySecretEmpty.customAmbientLight = Color.white;
+            Expand_TinySecretEmpty.ForceAllowDuplicates = false;
+            Expand_TinySecretEmpty.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_TinySecretEmpty.IsLostWoodsRoom = false;
+            Expand_TinySecretEmpty.UseCustomMusic = false;
+            Expand_TinySecretEmpty.UseCustomMusicState = false;
+            Expand_TinySecretEmpty.CustomMusicEvent = string.Empty;
+            Expand_TinySecretEmpty.UseCustomMusicSwitch = false;
+            Expand_TinySecretEmpty.CustomMusicSwitch = string.Empty;
+            Expand_TinySecretEmpty.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_TinySecretEmpty.rewardChestSpawnPosition = new IntVector2(10, 12);
+            Expand_TinySecretEmpty.overrideRoomVisualType = -1;
+            Expand_TinySecretEmpty.Width = 2;
+            Expand_TinySecretEmpty.Height = 2;
+            Expand_TinySecretEmpty.allowFloorDecoration = false;
+            Expand_TinySecretEmpty.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            RoomBuilder.AddExitToRoom(Expand_TinySecretEmpty, new Vector2(0, 1), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_TinySecretEmpty, new Vector2(3, 1), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_TinySecretEmpty, new Vector2(1, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_TinySecretEmpty, new Vector2(1, 3), DungeonData.Direction.NORTH);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_TinySecretEmpty);
+
+
 
             Expand_GlitchedSecret.name = "Expand Apache Corrupted Secret";
             Expand_GlitchedSecret.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -9625,7 +9880,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             Expand_Belly_Rooms = m_BellyRooms.ToArray();
-            
+
             foreach (PrototypeDungeonRoom room in Expand_Belly_Rooms) { ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 1)); }
             ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_01, 1));
             ExpandPrefabs.BellyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Belly_Connector_02, 1));
@@ -9638,30 +9893,32 @@ namespace ExpandTheGungeon.ExpandObjects {
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(ThwompCrossingVertical),
                 GenerateWeightedRoom(ThwompCrossingHorizontal),
-                GenerateWeightedRoom(Expand_Apache_FieldOfSaws),
+                // GenerateWeightedRoom(Expand_Apache_FieldOfSaws), // Added only to Sewers and Abbey now
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
                 GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.25f),
+                GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.2f)
                 // GenerateWeightedRoom(Trap_Expand_Turtlemelon)
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
-                if (room.room != Expand_Apache_PitTraps) {
+                if (room.room != Expand_Apache_PitTraps && room.room != Expand_Apache_RainbowRoom) {
                     ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
                 }
                 ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
-                ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
+                if (room.room != Expand_Apache_RainbowRoom) { ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room); }
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(room);
-                if (room.room != Expand_Apache_RickRollChest) {
-                    ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room);
-                }
+                if (room.room != Expand_Apache_RickRollChest) { ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room); }
                 ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
             }
+
+            ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Apache_FieldOfSaws));
+            ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Apache_FieldOfSaws));
 
             WeightedRoom[] CustomSecretRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_TinySecret, 4),
@@ -9682,12 +9939,14 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Secret_Brother9),
                 GenerateWeightedRoom(Expand_Secret_Brother10)
             };
-            
+
             WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };
 
             foreach (WeightedRoom room in CustomMiscRooms) {
                 ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
-                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
+                if (!ExpandStats.IsHardModeBuild) {
+                    ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
+                }
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.MinesRoomTable.includedRooms.elements.Add(room);
@@ -9699,22 +9958,22 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             WeightedRoom[] CustomCastleRooms = new WeightedRoom[] {
+                // GenerateWeightedRoom(Expand_Challange1), // These removed based on feedback on TheTurtleMelon and/ore other players.
+                // GenerateWeightedRoom(Expand_Cross),
+                // GenerateWeightedRoom(Expand_Gate_Cross),
+                // GenerateWeightedRoom(Expand_Pit_Jump),
                 GenerateWeightedRoom(Expand_Explode),
                 GenerateWeightedRoom(Expand_C_Hub),
                 GenerateWeightedRoom(Expand_C_Gap),
                 GenerateWeightedRoom(Expand_ChainGap),
-                GenerateWeightedRoom(Expand_Challange1),
                 GenerateWeightedRoom(Expand_Pit_Line),
                 GenerateWeightedRoom(Expand_Singer_Gap),
                 GenerateWeightedRoom(Expand_Flying_Gap),
                 GenerateWeightedRoom(Expand_Battle),
-                GenerateWeightedRoom(Expand_Cross),
                 GenerateWeightedRoom(Expand_Blocks),
                 GenerateWeightedRoom(Expand_Blocks_Pits),
                 GenerateWeightedRoom(Expand_Wall_Pit),
-                GenerateWeightedRoom(Expand_Gate_Cross),
-                GenerateWeightedRoom(Expand_Passage),
-                GenerateWeightedRoom(Expand_Pit_Jump),
+                GenerateWeightedRoom(Expand_Passage),                
                 GenerateWeightedRoom(Expand_Pit_Passage),
                 GenerateWeightedRoom(Expand_R_Blocks),
                 GenerateWeightedRoom(Expand_Small_Passage),
@@ -9772,7 +10031,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_TableRoom2),
                 GenerateWeightedRoom(Expand_Walkway)
             };
-            
+
             WeightedRoom[] CustomHollowsRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_SpiderMaze),
                 GenerateWeightedRoom(Expand_BlobRoom),
@@ -9795,7 +10054,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Undead3),
                 GenerateWeightedRoom(Expand_Undead4)
             };
-            
+
             WeightedRoom[] CustomForgeRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(Expand_Arena),
                 GenerateWeightedRoom(Expand_CaptainCrunch),
@@ -9805,6 +10064,19 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_SkullRoom),
                 GenerateWeightedRoom(Expand_TableRoomAgain)
             };
+            
+                        
+            foreach (PrototypeDungeonRoom room in Expand_West_CanyonRooms) {
+                ExpandPrefabs.WestCanyonRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+
+            foreach (PrototypeDungeonRoom room in Expand_West_TinyCanyonRooms) {
+                ExpandPrefabs.WestTinyCanyonRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+
+            foreach (PrototypeDungeonRoom room in Expand_West_Interior1Rooms) {
+                ExpandPrefabs.WestInterior1RoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
 
             foreach (WeightedRoom room in CustomCastleRooms) {
                 ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
@@ -9825,11 +10097,13 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
 
-            foreach (WeightedRoom room in CustomSewersRooms) {
-                ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
-                ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
-                ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
-                ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
+            if (!ExpandStats.IsHardModeBuild) {
+                foreach (WeightedRoom room in CustomSewersRooms) {
+                    ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
+                    ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
+                    ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
+                    ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);
+                }
             }
 
             foreach (WeightedRoom room in CustomMinesRooms) {

@@ -25,7 +25,19 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         private static ExpandUtility m_instance;
-        
+
+        // Better method of defining new node positions on a path. (allows defining placement type at same time as creating it)
+        public static SerializedPathNode GeneratePathNode(IntVector2 position, SerializedPathNode.SerializedNodePlacement placement, bool usesAlternateTarget = false, float delayTime = 0, int alternateTargetPathIndex = -1, int alternateTargetNodeIndex = -1) {
+            SerializedPathNode m_PathNode = new SerializedPathNode();
+            m_PathNode.position = position;
+            m_PathNode.delayTime = delayTime;
+            m_PathNode.placement = placement;
+            m_PathNode.UsesAlternateTarget = usesAlternateTarget;
+            m_PathNode.AlternateTargetPathIndex = alternateTargetPathIndex;
+            m_PathNode.AlternateTargetNodeIndex = alternateTargetNodeIndex;
+            return m_PathNode;
+        }
+
         // Quick and dirty way to clone any (non engine) component.
         // Can't be used to clone things like Texture2D/Materials. But useful for most other things things like components and scriptable objects like DungeonFlows.
         public static void DuplicateComponent(object target, object source, bool SaveOutputToFile = false, string OutputFilepath = null) {

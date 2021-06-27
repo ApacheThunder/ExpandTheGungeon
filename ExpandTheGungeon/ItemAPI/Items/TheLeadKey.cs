@@ -63,6 +63,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         private bool IsUsableRightNow(PlayerController user) {
+			if (!user) { return false; }
             if (user.CurrentRoom != null) {
                 if (user.CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return false; }
             }
@@ -279,6 +280,9 @@ namespace ExpandTheGungeon.ItemAPI {
             // if (targetPlayer.m_isStartingTeleport) { return; }
             // targetPlayer.m_isStartingTeleport = true;
             IntVector2? randomAvailableCell = targetRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(2, 2)), new CellTypes?(CellTypes.FLOOR), false, null);
+            if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.EXIT) {
+                randomAvailableCell = (new IntVector2(5, 2) + targetRoom.area.basePosition);
+            }
             if (!randomAvailableCell.HasValue) {
                 m_IsTeleporting = false;
                 return;

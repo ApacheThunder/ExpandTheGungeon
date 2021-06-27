@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
-using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ItemAPI {
@@ -33,6 +31,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         public PowBlock() {
+
             PowScreenShake = new ScreenShakeSettings() {
                 magnitude = 3f,
                 speed = 15f,
@@ -44,9 +43,19 @@ namespace ExpandTheGungeon.ItemAPI {
                 simpleVibrationStrength = Vibration.Strength.Hard
             };
 
+            ExcludedEnemies = new List<string> {
+                "cd4a4b7f612a4ba9a720b9f97c52f38c",
+                "22fc2c2c45fb47cf9fb5f7b043a70122",
+                "9215d1a221904c7386b481a171e52859",
+                "9b4fb8a2a60a457f90dcf285d34143ac",
+                "45192ff6d6cb43ed8f1a874ab6bef316"
+            };
+
             m_InUse = false;
         }
 
+
+        public List<string> ExcludedEnemies;
 
         public ScreenShakeSettings PowScreenShake;
 
@@ -84,10 +93,9 @@ namespace ExpandTheGungeon.ItemAPI {
                     if (RoomEnemies[i] && !RoomEnemies[i].IsGone && RoomEnemies[i].specRigidbody &&
                         RoomEnemies[i].sprite && !RoomEnemies[i].healthHaver.IsDead && !RoomEnemies[i].healthHaver.IsBoss) 
                     {
-                        if (RoomEnemies[i].EnemyGuid != "cd4a4b7f612a4ba9a720b9f97c52f38c" && RoomEnemies[i].EnemyGuid != "22fc2c2c45fb47cf9fb5f7b043a70122" &&
-                            RoomEnemies[i].EnemyGuid != "cd4a4b7f612a4ba9a720b9f97c52f38c" && RoomEnemies[i].EnemyGuid != "9215d1a221904c7386b481a171e52859" &&
-                            RoomEnemies[i].EnemyGuid != "9b4fb8a2a60a457f90dcf285d34143ac")
-                        {
+                        if (ExcludedEnemies.Contains(RoomEnemies[i].EnemyGuid)) {
+                            RoomEnemies[i].healthHaver.ApplyDamage(100000, Vector2.zero, "Pow Block Death", ignoreInvulnerabilityFrames: true, ignoreDamageCaps: true);
+                        } else {
                             RoomEnemies[i].DiesOnCollison = true;
                             RoomEnemies[i].CollisionDamage = 0;
                             RoomEnemies[i].CorpseObject = null;
@@ -97,17 +105,16 @@ namespace ExpandTheGungeon.ItemAPI {
                             RoomEnemies[i].procedurallyOutlined = false;
                             RoomEnemies[i].StealthDeath = true;
                             StartCoroutine(FlipEnemy(RoomEnemies[i]));
-                        } else {
-                            RoomEnemies[i].healthHaver.ApplyDamage(100000, Vector2.zero, "Pow Block Death", ignoreInvulnerabilityFrames: true, ignoreDamageCaps: true);
                         }
                     }
                 }
             }
-            
+
+            StartCoroutine(ResetIcon());
             m_InUse = false;
             return;
         }
-
+        
         private IEnumerator FlipEnemy(AIActor target) {
             float elapsed = 0;
             float duration = 0.25f;
@@ -132,14 +139,15 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 yield return null;
             }
-            
+            yield break;
+        }
+
+        private IEnumerator ResetIcon() {
             yield return new WaitForSeconds(0.5f);
             sprite.SetSprite("PowBlock");
             yield break;
         }
-        
 
-        
         protected override void OnDestroy() { base.OnDestroy(); }
     }
 }
