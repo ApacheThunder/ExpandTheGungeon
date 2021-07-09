@@ -3,6 +3,7 @@ using System.IO;
 using MonoMod;
 using UnityEngine;
 using System;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -13,19 +14,26 @@ namespace ExpandTheGungeon.ExpandMain {
             m_currentSubDirectory = "english_items";
         }
 
+        public static Dictionary<string, StringTableManager.StringCollection> m_enemiesTable;
+        public static Dictionary<string, StringTableManager.StringCollection> m_backupEnemiesTable;
+
         private static string m_currentFile;
         private static string m_currentSubDirectory;
-
-        private static Dictionary<string, StringTableManager.StringCollection> m_enemiesTable;
-        private static Dictionary<string, StringTableManager.StringCollection> m_backupEnemiesTable;
-
+                
         public static string GetEnemiesString(string key, int index = -1) {
-            if (m_enemiesTable == null) {
-                m_enemiesTable = LoadEnemiesTable(m_currentSubDirectory);
-            }
-            if (m_backupEnemiesTable == null) {
-                m_backupEnemiesTable = LoadEnemiesTable("english_items");
-            }
+
+            Dictionary<string, StringTableManager.StringCollection> m_tempEnemyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_enemiesTable");
+
+            // This forces original StringTableManager to load it's dictionaries which I will try to use first before loading it with my code.
+            // THis hopefully fixes interactiosn with mods that add custom enemy names to the dictionaries.
+            if (m_tempEnemyTable == null) { string Temp = StringTableManager.GetEnemiesLongDescription("TEST"); }
+
+            if (m_tempEnemyTable != null) { m_enemiesTable = m_tempEnemyTable; }
+
+            if (m_enemiesTable == null) { m_enemiesTable = LoadEnemiesTable(m_currentSubDirectory); }
+
+            if (m_backupEnemiesTable == null) { m_backupEnemiesTable = LoadEnemiesTable("english_items"); }
+            
             if (m_enemiesTable.ContainsKey(key)) {
                 if (index == -1) {
                     string weightedString = m_enemiesTable[key].GetWeightedString();

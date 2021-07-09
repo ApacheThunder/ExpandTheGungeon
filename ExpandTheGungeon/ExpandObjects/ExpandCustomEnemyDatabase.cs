@@ -220,7 +220,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
             
-            if (isFakePrefab) { FakePrefab.MarkAsFakePrefab(m_CachedTargetObject); }
+            if (isFakePrefab) {
+                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
+                StaticReferenceManager.AllHealthHavers.Remove(m_CachedAIActor.healthHaver);
+            }
             DontDestroyOnLoad(m_CachedTargetObject);
 
             RatGrenadeGUID = m_CachedAIActor.EnemyGuid;
@@ -2959,6 +2962,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
+                StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
             }
         }
         
@@ -2976,7 +2980,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             EncounterTrackable ParasiteEncounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
             ParasiteEncounterable.EncounterGuid = "7330c08088cf4f8baf6a640d4f8f5c45";
-            ParasiteEncounterable.journalData.PrimaryDisplayName = "Com4nd0 Boss";
+            ParasiteEncounterable.journalData.PrimaryDisplayName = "Com4nd0";
             ParasiteEncounterable.journalData.NotificationPanelDescription = "The Lost Human";
             ParasiteEncounterable.journalData.AmmonomiconFullEntry = "This human was lost in the Jungle for many years and found refuge at an ancient temple ruins";
 
@@ -3034,9 +3038,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
+                StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
             }
         }
-        
+
         /*public static GameObject BuildWestBrosBossNomePrefab(AssetBundle expandSharedAssets1) {
             
             GameObject m_CachedTargetObject = Instantiate(GetOrLoadByGuid("c00390483f394a849c36143eb878998f").gameObject); // Shades
@@ -3121,6 +3126,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
             FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
             DontDestroyOnLoad(m_CachedTargetObject);
+            StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
 
             return m_CachedTargetObject;
         }*/

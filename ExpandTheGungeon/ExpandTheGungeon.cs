@@ -22,6 +22,9 @@ namespace ExpandTheGungeon {
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
 
+        public static string ZipFilePath;
+        public static string FilePath;
+
         // public static bool isGlitchFloor = false;
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
@@ -53,6 +56,9 @@ namespace ExpandTheGungeon {
 
             ConsoleCommandName = "expand";
 
+            ZipFilePath = Metadata.Archive;
+            FilePath = Metadata.Directory;
+
             itemList = new List<string>() {
                 "Baby Good Hammer",
                 "Corruption Bomb",
@@ -73,7 +79,7 @@ namespace ExpandTheGungeon {
                 // "Table Tech Expand"
             };
             
-            AudioResourceLoader.InitAudio();
+            AudioResourceLoader.InitAudio(ZipFilePath, FilePath);
 
             InitCustomAssetBundle();
 
@@ -291,7 +297,8 @@ namespace ExpandTheGungeon {
                         ExpandStats.debugMode = false;
                         if (ExpandSharedHooks.enterRoomHook != null) {
                             ETGModConsole.Log("[ExpandTheGungeon] Uninstalling RoomHandler.OnEntered Hook....");
-                            ExpandSharedHooks.enterRoomHook.Dispose(); ExpandSharedHooks.enterRoomHook = null;
+                            ExpandSharedHooks.enterRoomHook.Dispose();
+                            ExpandSharedHooks.enterRoomHook = null;
                         }
                     }
                 }                
@@ -404,8 +411,13 @@ namespace ExpandTheGungeon {
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
+            ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
+            GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
+
+            
             // UnityEngine.Object.Instantiate(ExpandPrefabs.BlankRewardPedestal, (CurrentPlayer.transform.position + new Vector3(-2, 2)), Quaternion.identity);
-            /*// UnityEngine.Object.Instantiate(ExpandPrefabs.RatKeyRewardPedestal, (CurrentPlayer.transform.position + new Vector3(2, 2)), Quaternion.identity);
+            /* 
+            // UnityEngine.Object.Instantiate(ExpandPrefabs.RatKeyRewardPedestal, (CurrentPlayer.transform.position + new Vector3(2, 2)), Quaternion.identity);
             Dungeon m_dungeonPrefab = DungeonDatabase.GetOrLoadByName("finalscenario_guide");
             DungeonFlow dungeonFlowPrefab = m_dungeonPrefab.PatternSettings.flows[0];
             PrototypeDungeonRoom GuidePastRoom = dungeonFlowPrefab.AllNodes[0].overrideExactRoom;
@@ -426,7 +438,7 @@ namespace ExpandTheGungeon {
 
             GameObject NewTestObject = UnityEngine.Object.Instantiate(TestObject, CurrentPlayer.transform.position.GetAbsoluteRoom().area.basePosition.ToVector3(), Quaternion.identity);*/
 
-            
+
 
             /*RoomHandler SelectedRoom = null;
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {

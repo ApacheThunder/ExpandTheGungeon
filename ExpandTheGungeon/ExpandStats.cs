@@ -6,7 +6,7 @@ namespace ExpandTheGungeon {
         public static bool allowGlitchFloor = false;
         public static bool elevatorHasBeenUsed = false;
         public static bool HasSpawnedSecretBoss = false;
-        public static bool youtubeSafeMode = true;
+        public static bool youtubeSafeMode = false;
         public static bool IsHardModeBuild = false;
         public static bool RestoreOldRooms = false;
 

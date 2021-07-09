@@ -6,15 +6,12 @@ using System;
 namespace ExpandTheGungeon.SerializedData {
 	
 	public static class ExpandAssets {
-
-        public static readonly string FullPathGame = Path.Combine(Application.dataPath, "..");        
-        public static readonly string ModFolderPath = Path.Combine(FullPathGame, "Mods/ExpandTheGungeon");
-
+        
         public static AssetBundle LoadFromModZIPOrModFolder(string AssetBundleName = "expandsharedauto") {
             AssetBundle m_CachedBundle = null;
-            if (File.Exists(ModFolderPath + ".zip")) {
+            if (File.Exists(ExpandTheGungeon.ZipFilePath)) {
                 if (ExpandStats.debugMode) { Debug.Log("Zip Found"); }
-                ZipFile ModZIP = ZipFile.Read(ModFolderPath + ".zip");
+                ZipFile ModZIP = ZipFile.Read(ExpandTheGungeon.ZipFilePath);
                 if (ModZIP != null && ModZIP.Entries.Count > 0) {                    
                     foreach (ZipEntry entry in ModZIP.Entries) {
                         if (entry.FileName == AssetBundleName) {
@@ -27,8 +24,8 @@ namespace ExpandTheGungeon.SerializedData {
                         }
                     }
                 }
-            } else if (File.Exists(ModFolderPath + "/" + AssetBundleName)) {
-                try { m_CachedBundle = AssetBundle.LoadFromFile(ModFolderPath + "/" + AssetBundleName); } catch (Exception) { }
+            } else if (File.Exists(ExpandTheGungeon.FilePath + "/" + AssetBundleName)) {
+                try { m_CachedBundle = AssetBundle.LoadFromFile(ExpandTheGungeon.FilePath + "/" + AssetBundleName); } catch (Exception) { }
             }
             if (m_CachedBundle) { return m_CachedBundle; } else { return null; }
         }

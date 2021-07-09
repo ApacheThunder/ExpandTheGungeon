@@ -99,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpandAudio\AudioResourceLoader.cs" />
-    <Compile Include="ExpandAudio\ResourceLoaderSoundbanks.cs" />
     <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBellyMonsterController.cs" />
     <Compile Include="ExpandComponents\ExpandBellyWarpWingDoor.cs" />

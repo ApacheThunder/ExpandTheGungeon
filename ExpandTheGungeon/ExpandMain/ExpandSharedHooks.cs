@@ -310,19 +310,16 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private void EnteredNewRoomHook(Action<RoomHandler, PlayerController> orig, RoomHandler self, PlayerController player) {
+        protected virtual void EnteredNewRoomHook(Action<RoomHandler, PlayerController> orig, RoomHandler self, PlayerController player) {
             orig(self, player);
 
             if (string.IsNullOrEmpty(self.GetRoomName())) {
-                if (ExpandStats.debugMode) {
-                    ETGModConsole.Log("[DEBUG] Player entered a room with null name field (hallway room?)", false);
-                }
+                ETGModConsole.Log("[DEBUG] Player entered a room with null name field (hallway room?)", false);
                 return;
             }
+
+            ETGModConsole.Log("[DEBUG] Player entered room with name '" + self.GetRoomName() + "' .", false);
             
-            if (ExpandStats.debugMode) {
-                ETGModConsole.Log("[DEBUG] Player entered room with name '" + player.CurrentRoom.GetRoomName() + "' .", false);
-            }
         }
 
         public static GameObject ApplyObjectStampHook(int ix, int iy, ObjectStampData osd, Dungeon d, tk2dTileMap map, bool flipX = false, bool isLightStamp = false) {
@@ -591,6 +588,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public IEnumerator HandlePitfallHook(Action<GetKicked, SpeculativeRigidbody>orig, GetKicked self, SpeculativeRigidbody srb) {
             FieldInfo field = typeof(GetKicked).GetField("m_isFalling", BindingFlags.Instance | BindingFlags.NonPublic);
             field.SetValue(self, true);
+                        
             RoomHandler firstRoom = srb.UnitCenter.GetAbsoluteRoom();
             TalkDoerLite talkdoer = srb.GetComponent<TalkDoerLite>();
             firstRoom.DeregisterInteractable(talkdoer);
