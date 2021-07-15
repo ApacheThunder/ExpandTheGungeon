@@ -75,7 +75,8 @@ namespace ExpandTheGungeon {
                 "Bootleg Machine Pistol",
                 "Bulletkin Gun",
                 "Baby Sitter",
-                "Pow Block"
+                "Pow Block",
+                "Cursed Brick"
                 // "Table Tech Expand"
             };
             
@@ -219,6 +220,7 @@ namespace ExpandTheGungeon {
                     BulletKinGun.Init();
                     BabySitter.Init(expandSharedAssets1);
                     PowBlock.Init(expandSharedAssets1);
+                    CursedBrick.Init(expandSharedAssets1);
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();

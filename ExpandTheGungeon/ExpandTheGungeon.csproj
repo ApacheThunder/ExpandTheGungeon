@@ -130,6 +130,7 @@
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandJungleTreeController.cs" />
     <Compile Include="ExpandComponents\ExpandTossSpriteOnDeath.cs" />
+    <Compile Include="ExpandComponents\ExpandWallMimicManager.cs" />
     <Compile Include="ExpandComponents\ExpandWestPuzzleRoomController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_01.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="ItemAPI\Items\BulletKinGun.cs" />
     <Compile Include="ItemAPI\Items\ChronenbergBullets.cs" />
     <Compile Include="ItemAPI\Items\CorruptedJunk.cs" />
+    <Compile Include="ItemAPI\Items\CursedBrick.cs" />
     <Compile Include="ItemAPI\Items\CustomMasterRounds.cs" />
     <Compile Include="ExpandMain\ExpandPayDayDrillItemFixes.cs" />
     <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
@@ -1132,9 +1134,9 @@
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Steps2.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Steps3.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Steps4.room" />
-    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Straight1.room" />
-    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Straight2.room" />
-    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Straight3.room" />
+    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon1_Straight1.room" />
+    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon1_Straight2.room" />
+    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon1_Straight3.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Tabled1.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Tabled2.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Interior1_Tabled3.room" />

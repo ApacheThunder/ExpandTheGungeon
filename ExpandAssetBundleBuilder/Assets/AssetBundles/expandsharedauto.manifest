@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1827398794
+CRC: 2644984303
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7802147cc93a37625b0809aba36f60c1
+    Hash: b3f28b58bc11ff59b6aa040fbcbb6d19
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6441f4c48b8293a736413520ea1a9530
@@ -206,6 +206,7 @@ Assets:
 - Assets/ExpandPrefabs/AIActors/Bootleg BulletMan Bandana.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_spawn_002.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_up_003.png
+- Assets/ExpandTextures/Items/cursedbrick.png
 - Assets/ExpandPrefabs/ExpandChallenge_KingsMen.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_hit_left_001.png
 - Assets/ExpandTextures/Items/RockSlide/plunger_fire_003.png
@@ -342,6 +343,7 @@ Assets:
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Open_00.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_back_001.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Move_002.png
+- Assets/ExpandPrefabs/Items/Cursed Brick.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_up_002.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_right.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_back_004.png

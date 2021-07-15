@@ -76,48 +76,78 @@ namespace ExpandTheGungeon {
                     }
                 }
             }
-            
-            if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
 
-                dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
+            PlayerController player1 = GameManager.Instance.PrimaryPlayer;
+            PlayerController player2 = GameManager.Instance.SecondaryPlayer;
 
-                foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
-                    if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
-                        if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
-                            if (Random.value <= 0.6f) {
-                                ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
-                                ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
-                            }
-                            if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
-                                enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
+            bool playerHasCorruptedJunk = false;
+
+            if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
+            if (player2) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
+
+            if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk) {
+                
+                if (!dungeon.IsGlitchDungeon && !ExpandDungeonFlow.isGlitchFlow && playerHasCorruptedJunk) {
+
+                    foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
+                        if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
+                            if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid) && enemy.GetAbsoluteParentRoom() != null && !string.IsNullOrEmpty(enemy.GetAbsoluteParentRoom().GetRoomName()) && enemy.GetAbsoluteParentRoom().GetRoomName().ToLower().StartsWith("corrupted")) {
+                                if (Random.value <= 0.6f) {
+                                    ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
+                                    ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
+                                }
+                                if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
+                                    enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
+                                }
                             }
                         }
                     }
+                    MaybeSetupGlitchEnemyStun(dungeon, true);
+                    return;
                 }
-                foreach (BraveBehaviour targetObject in FindObjectsOfType<BraveBehaviour>()) {
-                    if (Random.value <= 0.05f && targetObject.gameObject && !targetObject.gameObject.GetComponent<AIActor>() && !targetObject.gameObject.GetComponent<Chest>()) {
-                        if (string.IsNullOrEmpty(targetObject.gameObject.name) | (!targetObject.gameObject.name.ToLower().StartsWith("glitchtile") && !targetObject.gameObject.name.ToLower().StartsWith("ex secret door") && !targetObject.gameObject.name.ToLower().StartsWith("lock") && !targetObject.gameObject.name.ToLower().StartsWith("chest"))) {
-                            float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
-                            float RandomDispFloat = Random.Range(0.06f, 0.08f);
-                            float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
-                            float RandomColorProbFloat = Random.Range(0.035f, 0.1f);
-                            float RandomColorIntensityFloat = Random.Range(0.05f, 0.1f);
-                            ExpandShaders.Instance.BecomeGlitched(targetObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+
+                if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
+                    dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
+
+                    foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
+                        if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
+                            if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
+                                if (Random.value <= 0.6f) {
+                                    ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
+                                    ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
+                                }
+                                if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
+                                    enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
+                                }
+                            }
                         }
                     }
+
+                    foreach (BraveBehaviour targetObject in FindObjectsOfType<BraveBehaviour>()) {
+                        if (Random.value <= 0.05f && targetObject.gameObject && !targetObject.gameObject.GetComponent<AIActor>() && !targetObject.gameObject.GetComponent<Chest>()) {
+                            if (string.IsNullOrEmpty(targetObject.gameObject.name) | (!targetObject.gameObject.name.ToLower().StartsWith("glitchtile") && !targetObject.gameObject.name.ToLower().StartsWith("ex secret door") && !targetObject.gameObject.name.ToLower().StartsWith("lock") && !targetObject.gameObject.name.ToLower().StartsWith("chest"))) {
+                                float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
+                                float RandomDispFloat = Random.Range(0.06f, 0.08f);
+                                float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
+                                float RandomColorProbFloat = Random.Range(0.035f, 0.1f);
+                                float RandomColorIntensityFloat = Random.Range(0.05f, 0.1f);
+                                ExpandShaders.Instance.BecomeGlitched(targetObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                            }
+                        }
+                    }
+
+                    ExpandPlaceGlitchedEnemies m_GlitchEnemyRandomizer = new ExpandPlaceGlitchedEnemies();
+                    m_GlitchEnemyRandomizer.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
+                    Destroy(m_GlitchEnemyRandomizer);
+
+                    MaybeSetupGlitchEnemyStun(dungeon);
                 }
-
-                ExpandPlaceGlitchedEnemies m_GlitchEnemyRandomizer = new ExpandPlaceGlitchedEnemies();
-                m_GlitchEnemyRandomizer.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
-                Destroy(m_GlitchEnemyRandomizer);
-
-                MaybeSetupGlitchEnemyStun(dungeon);
             }
         }
 
-        private void MaybeSetupGlitchEnemyStun(Dungeon dungeon) {
+        private void MaybeSetupGlitchEnemyStun(Dungeon dungeon, bool forceRun = false) {
 
-            if (!dungeon.IsGlitchDungeon) { return; }
+            if (!dungeon.IsGlitchDungeon && !forceRun) { return; }
 
             List<RoomHandler> RoomList = dungeon.data.rooms;
             foreach (RoomHandler room in RoomList) {

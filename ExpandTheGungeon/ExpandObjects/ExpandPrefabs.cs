@@ -232,6 +232,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject SerManuel;
         public static GameObject SkusketHead;
         public static GameObject CandleGuy;
+        public static GameObject WallMimic;
 
         // Test
         // public static AIActor SpectreTest = EnemyDatabase.GetOrLoadByGuid("56f5a0f2c1fc4bc78875aea617ee31ac"); // spectre
@@ -1468,26 +1469,33 @@ namespace ExpandTheGungeon.ExpandObjects {
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForNakatomi);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
 
-            MetalCubeGuy.AddComponent<ExpandExplodeOnDeath>();
-            MetalCubeGuy.GetComponent<AIActor>().IsHarmlessEnemy = true;
-            ExpandExplodeOnDeath metalcubeguyExploder = MetalCubeGuy.GetComponent<ExpandExplodeOnDeath>();
-            metalcubeguyExploder.deathType = OnDeathBehavior.DeathType.Death;
-            ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.GetComponent<BehaviorSpeculator>().AttackBehaviors[0] as ZeldaChargeBehavior;
-            zeldaChargeComponent.primeAnim = null;
-            MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
-            MetalCubeGuy.GetComponent<BehaviorSpeculator>().PostAwakenDelay = 0;
-
-            SkusketHead.GetComponent<AIActor>().DiesOnCollison = true;
+            if (MetalCubeGuy) {
+                MetalCubeGuy.AddComponent<ExpandExplodeOnDeath>();
+                MetalCubeGuy.GetComponent<AIActor>().IsHarmlessEnemy = true;
+                ExpandExplodeOnDeath metalcubeguyExploder = MetalCubeGuy.GetComponent<ExpandExplodeOnDeath>();
+                metalcubeguyExploder.deathType = OnDeathBehavior.DeathType.Death;
+                ZeldaChargeBehavior zeldaChargeComponent = MetalCubeGuy.GetComponent<BehaviorSpeculator>().AttackBehaviors[0] as ZeldaChargeBehavior;
+                zeldaChargeComponent.primeAnim = null;
+                MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
+                MetalCubeGuy.GetComponent<BehaviorSpeculator>().PostAwakenDelay = 0;
+            }
+            
+            if (SkusketHead) { SkusketHead.GetComponent<AIActor>().DiesOnCollison = true; }
 
             CandleGuy = EnemyDatabase.GetOrLoadByGuid("eeb33c3a5a8e4eaaaaf39a743e8767bc").gameObject;
-            CandleGuy.AddComponent<ExpandCandleGuyEngageDoer>();
+            if (CandleGuy) { CandleGuy.AddComponent<ExpandCandleGuyEngageDoer>(); }
+            
 
-            // Destroy(WallMimic.GetComponent<WallMimicController>());
-            // WallMimic.gameObject.AddComponent<ChaosWallMimicManager>();
-
+            WallMimic = EnemyDatabase.GetOrLoadByGuid("479556d05c7c44f3b6abb3b2067fc778").gameObject;
+            if (WallMimic) {
+                Destroy(WallMimic.GetComponent<WallMimicController>());
+                WallMimic.AddComponent<ExpandWallMimicManager>();
+            }
+            
+            
             // CompanionController cuccoController = Cucco.gameObject.GetComponent<CompanionController>();
             // cuccoController.CanBePet = true;
-            
+
             List<AGDEnemyReplacementTier> ReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
 
             if (ReplacementTiers != null && ReplacementTiers.Count > 0) {

@@ -17,6 +17,8 @@ namespace ExpandTheGungeon.ItemAPI {
                 
         public static GameObject CorruptedJunkObject;
 
+        public static int CorruptedJunkID;
+
         private static List<string> m_SpriteNames;
 
         public static void Init(AssetBundle expandSharedAssets1) {
@@ -32,6 +34,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(poopSack, shortDesc, longDesc, "ex");
             poopSack.quality = ItemQuality.A;
             poopSack.CanBeDropped = false;
+            CorruptedJunkID = poopSack.PickupObjectId;
 
             m_SpriteNames = new List<string> {
                 "corrupted_poopsack_01",

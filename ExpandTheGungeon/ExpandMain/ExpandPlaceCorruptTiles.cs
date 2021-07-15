@@ -11,7 +11,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
     public class ExpandPlaceCorruptTiles : MonoBehaviour {
 
-        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false) {
+        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false, bool isCorruptedJunkRoom = false) {
 
             bool m_CorruptedSecretRoomsPresent = false;
 
@@ -30,7 +30,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (StaticReferenceManager.AllNpcs != null && StaticReferenceManager.AllNpcs.Count > 0) {
                     foreach (TalkDoerLite npc in StaticReferenceManager.AllNpcs) { npc.SpeaksGleepGlorpenese = true; }
                 }
-            } else if (roomHandler != null && StaticReferenceManager.AllNpcs != null && StaticReferenceManager.AllNpcs.Count > 0) {
+            } else if (roomHandler != null && !isCorruptedJunkRoom && StaticReferenceManager.AllNpcs != null && StaticReferenceManager.AllNpcs.Count > 0) {
                 foreach (TalkDoerLite npc in StaticReferenceManager.AllNpcs) {
                     if (npc.GetAbsoluteParentRoom() == roomHandler) {
                         npc.SpeaksGleepGlorpenese = true;
@@ -43,9 +43,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
 
-            if (!dungeon.IsGlitchDungeon && roomHandler == null && !m_CorruptedSecretRoomsPresent) { return; }
+            if (!dungeon.IsGlitchDungeon && roomHandler == null && !m_CorruptedSecretRoomsPresent) {
+                if (roomHandler == null | !isCorruptedJunkRoom) { return; }
+            }
 
-            if (dungeon.IsGlitchDungeon | roomHandler != null) { m_CorruptedSecretRoomsPresent = false; }
+            if (dungeon.IsGlitchDungeon | roomHandler != null) {
+                if (!isCorruptedJunkRoom) { m_CorruptedSecretRoomsPresent = false; }
+            }
 
             tk2dSpriteCollectionData dungeonCollection = dungeon.tileIndices.dungeonCollection;
 
@@ -150,8 +154,8 @@ namespace ExpandTheGungeon.ExpandMain {
             RoomHandler RoomBeingWorkedOn = null;
             
             while (iterations < roomList.Count) {
-                try { 
-            	    RoomHandler currentRoom = null;
+                try {
+                    RoomHandler currentRoom = null;
 
                     if (roomHandler == null) {
                         currentRoom = dungeon.data.rooms[roomList[iterations]];                        
@@ -171,15 +175,23 @@ namespace ExpandTheGungeon.ExpandMain {
 
                         bool isCorruptedSecretRoom = false;
 
-                        if (currentRoom.GetRoomName().ToLower().StartsWith("expand apache corrupted secret") && !isLeadKeyRoom) {
-                            GameObject m_CorruptionMarkerObject = new GameObject("CorruptionAmbienceMarkerObject"){ layer = 0 };
+                        if ((currentRoom.GetRoomName().ToLower().StartsWith("expand apache corrupted secret") | isCorruptedJunkRoom) && !isLeadKeyRoom) {
+                            GameObject m_CorruptionMarkerObject = new GameObject("CorruptionAmbienceMarkerObject") { layer = 0 };
                             m_CorruptionMarkerObject.transform.position = currentRoom.area.Center;
                             m_CorruptionMarkerObject.transform.parent = currentRoom.hierarchyParent;
                             ExpandStaticReferenceManager.AllCorruptionSoundObjects.Add(m_CorruptionMarkerObject);
                             isCorruptedSecretRoom = true;
+
+                            if (isCorruptedJunkRoom) {
+                                m_CorruptionMarkerObject.AddComponent<ExpandCorruptedRoomAmbiencePlacable>();
+                                ExpandCorruptedRoomAmbiencePlacable m_SoundPlacable = m_CorruptionMarkerObject.GetComponent<ExpandCorruptedRoomAmbiencePlacable>();
+                                m_SoundPlacable.CorruptionFXPlayEvent = "Play_EX_CorruptionAmbience_01";
+                                m_SoundPlacable.CorruptionFXStopEvent = "Stop_EX_CorruptionAmbience_01";
+                                m_SoundPlacable.ConfigureOnPlacement(currentRoom);
+                            }
                         }
 
-                        if (m_CorruptedSecretRoomsPresent | isLeadKeyRoom) {
+                        if ((m_CorruptedSecretRoomsPresent | isLeadKeyRoom) && !isCorruptedJunkRoom) {
                             foreach (TalkDoerLite npc in StaticReferenceManager.AllNpcs) {
                                 if (npc.GetAbsoluteParentRoom() != null && npc.GetAbsoluteParentRoom() == currentRoom) {
                                     npc.SpeaksGleepGlorpenese = true;
@@ -275,6 +287,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                         m_GlitchDebris.lifespanMax = 600;
                                         m_GlitchDebris.lifespanMin = 500;
                                         m_GlitchDebris.usesLifespan = true;
+                                        
                                     } else {
                                         m_GlitchTile.AddComponent<ExpandCorruptedObjectDummyComponent>();
                                         ExpandCorruptedObjectDummyComponent dummyComponent = m_GlitchTile.GetComponent<ExpandCorruptedObjectDummyComponent>();
@@ -302,7 +315,11 @@ namespace ExpandTheGungeon.ExpandMain {
 
                         if (UnityEngine.Random.value <= 0.2f | isCorruptedSecretRoom) {
                             if (isCorruptedSecretRoom) {
-                                OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(2, 5));
+                                if (isCorruptedJunkRoom) {
+                                    OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(3, 6));
+                                } else {
+                                    OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(2, 5));
+                                }
                             } else {
                                 OpenAreaCorruptionIntensity = (validOpenAreas.Count / UnityEngine.Random.Range(3, 6));
                             }

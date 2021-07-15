@@ -788,6 +788,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
 
             Expand_West_TinyCanyonRoomList = new List<string>() {
+                "Expand_West_Canyon1_Straight1.room",
+                "Expand_West_Canyon1_Straight2.room",
+                "Expand_West_Canyon1_Straight3.room",
                 "Expand_West_Canyon1_Tiny1.room",
                 "Expand_West_Canyon1_Tiny2.room",
                 "Expand_West_Canyon1_Tiny3.room",
@@ -864,10 +867,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "Expand_West_Interior1_Steps1.room",
                 "Expand_West_Interior1_Steps2.room",
                 "Expand_West_Interior1_Steps3.room",
-                "Expand_West_Interior1_Steps4.room",
-                "Expand_West_Interior1_Straight1.room",
-                "Expand_West_Interior1_Straight2.room",
-                "Expand_West_Interior1_Straight3.room"
+                "Expand_West_Interior1_Steps4.room"
             };
                         
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion.room" };

@@ -150,6 +150,39 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             );
 
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "Twisted Bricks...",
+                    MandatoryItemIDs = new List<int>() { 293, CursedBrick.CursedBrickID }, // Synergy for Mimic Tooth Neckless and Cursed Brick
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "Corrupted Bricks...",
+                    MandatoryItemIDs = new List<int>() { CorruptedJunk.CorruptedJunkID, CursedBrick.CursedBrickID }, // Synergy for Corrupted Junk and Cursed Brick
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
 
             GameManager.Instance.SynergyManager.synergies = m_TempSynergyList.ToArray();
             return;

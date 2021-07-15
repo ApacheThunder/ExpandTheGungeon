@@ -11,8 +11,9 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public ExpandGlitchedEnemies m_GlitchEnemyDatabase;        
 
-        public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor) {
-            if (!dungeon.IsGlitchDungeon) { return; }
+        public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
+
+            if (!dungeon.IsGlitchDungeon && roomHandler == null) { return; }
 
             List<string> BannedRooms = new List<string>();
 
@@ -23,7 +24,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (wRoom.room != null) { BannedRooms.Add(wRoom.room.name); }
             }
 
-            PlayerController player = GameManager.Instance.PrimaryPlayer;
+            // PlayerController player = GameManager.Instance.PrimaryPlayer;
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
             int MaxEnemies = 20;
@@ -31,12 +32,21 @@ namespace ExpandTheGungeon.ExpandMain {
             float BonusGlitchEnemyOdds = 0.05f;
             
             if (dungeon.IsGlitchDungeon) { MaxEnemies = 65; GlitchedBossOdds = 0.3f; BonusGlitchEnemyOdds = 0.28f; }
-                        
-            if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
-            foreach (RoomHandler currentRoom in dungeon.data.rooms) {             
+
+            List<RoomHandler> rooms = new List<RoomHandler>();
+
+            if (roomHandler != null) {
+                rooms.Add(roomHandler);
+            } else {
+                rooms = dungeon.data.rooms;
+            }
+
+            if (rooms == null | rooms.Count <= 0) { return; }
+
+            foreach (RoomHandler currentRoom in rooms) {             
                 PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;                
                 try {
-                    if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && 
+                    if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) &&
                         currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !currentRoom.IsMaintenanceRoom() && 
                        !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && !currentRoom.IsGunslingKingChallengeRoom &&
                        !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !BannedRooms.Contains(currentRoom.GetRoomName()))
