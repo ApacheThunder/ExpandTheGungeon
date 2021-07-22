@@ -10,6 +10,7 @@ namespace ExpandTheGungeon.ItemAPI {
     public class TableTechAssassin : PassiveItem {
 
         public static GameObject TableTechAssasinObject;
+        public static int TableTechAssasinID;
 
         public static void Init(AssetBundle expandSharedAssets1) {
             TableTechAssassinHook.TableExplosionData = ExpandUtility.GenerateExplosionData(damage: 60);
@@ -19,9 +20,10 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.AddSpriteToObject(TableTechAssasinObject, expandSharedAssets1.LoadAsset<Texture2D>("tabletech_assassin"), false, false);
                         
             string shortDesc = "Betray the Flipper";
-            string longDesc = "A forbidden technique thought lost was recoverd in the Gungeon.\n\nAll that was written was this: \n\n 'Do upon the flipper that which the flipper had done to you'";
+            string longDesc = "A forbidden technique thought lost was recovered in the Gungeon.\n\nAll that was written was this: \n\n 'Do upon the flipper that which the flipper had done to you'";
             ItemBuilder.SetupItem(tableTechAssassin, shortDesc, longDesc, "ex");
             tableTechAssassin.quality = ItemQuality.D;
+            TableTechAssasinID = tableTechAssassin.PickupObjectId;
         }
 
         public override void Pickup(PlayerController player) {
