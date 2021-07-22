@@ -2952,8 +2952,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Parasite_BehaviorScript.txt");
             bossBehaviorSpeculator.RegenerateCache();
 
-            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(700);
-            m_TargetAIActor.healthHaver.SetHealthMaximum(1800);
+            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(550);
+            m_TargetAIActor.healthHaver.SetHealthMaximum(1200);
 
             m_TargetAIActor.RegenerateCache();
 

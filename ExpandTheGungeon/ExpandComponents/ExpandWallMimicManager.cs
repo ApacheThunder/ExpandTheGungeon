@@ -170,7 +170,11 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void Update() {
-            if (CanAwaken) {
+            bool PlayerInRoom = false;
+            foreach (PlayerController playerController in GameManager.Instance.AllPlayers) {
+                if (playerController.CurrentRoom == aiActor.ParentRoom) { PlayerInRoom = true; }
+            }
+            if (PlayerInRoom && CanAwaken) {
                 Vector2 vector = specRigidbody.PixelColliders[0].UnitBottomLeft;
                 Vector2 vector2 = vector;
                 if (!m_failedWallConfigure) { vector = specRigidbody.PixelColliders[2].UnitBottomLeft; }

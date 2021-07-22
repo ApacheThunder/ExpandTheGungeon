@@ -166,6 +166,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GenericLootTable Shop_Key_Items_01;
         public static GenericLootTable BlackSmith_Items_01;
         public static GenericLootTable Shop_Truck_Items_01;
+        public static GenericLootTable Shop_Curse_Items_01;
 
         // Modified Flow Injection Data
         public static ProceduralFlowModifierData AbbeyFlowModifierData;
@@ -527,8 +528,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             Shop_Key_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Key_Items_01");
             Shop_Truck_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Truck_Items_01");
             BlackSmith_Items_01 = (BlacksmithShop.placedObjects[8].nonenemyBehaviour as BaseShopController).shopItemsGroup2;
+            Shop_Curse_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Curse_Items_01");
 
-            
+
+
             BlackSmith_Items_01.defaultItemDrops.Add(
                 new WeightedGameObject() {
                     rawGameObject = null,
@@ -553,6 +556,16 @@ namespace ExpandTheGungeon.ExpandObjects {
                 new WeightedGameObject() {
                     rawGameObject = null,
                     pickupId = RockSlide.RockSlidePickupID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+            
+            Shop_Curse_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = CursedBrick.CursedBrickID,
                     weight = 1,
                     forceDuplicatesPossible = false,
                     additionalPrerequisites = new DungeonPrerequisite[0],

@@ -133,40 +133,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 roomList = roomList.Shuffle();
                 
                 if (roomHandler != null) { roomList = new List<int>(new int[] { dungeon.data.rooms.IndexOf(roomHandler) }); }
-                                
-                // List<Tuple<IntVector2, DungeonData.Direction>> validWalls = new List<Tuple<IntVector2, DungeonData.Direction>>();
-                // List<AIActor> enemiesList = new List<AIActor>();
 
-                while (iterations < roomList.Count /*&& WallMimicsPlaced < numWallMimicsForFloor*/) {
+                while (iterations < roomList.Count && WallMimicsPlaced < numWallMimicsForFloor) {
             		RoomHandler currentRoom = dungeon.data.rooms[roomList[iterations]];
                     if (!currentRoom.IsShop && !currentRoom.PrecludeTilemapDrawing && !string.IsNullOrEmpty(currentRoom.GetRoomName())) {
             			if (!currentRoom.area.IsProceduralRoom || currentRoom.area.proceduralCells == null) {
             				if (currentRoom.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS || !BraveUtility.RandomBool()) {
             					if (!currentRoom.GetRoomName().StartsWith("DraGunRoom") && !currentRoom.IsMaintenanceRoom() && !BannedWallMimicRoomList.Contains(currentRoom.GetRoomName().ToLower())) {
-            						if (currentRoom.connectedRooms != null) {
-            							for (int i = 0; i < currentRoom.connectedRooms.Count; i++) {
-            								if (currentRoom.connectedRooms[i] == null || currentRoom.connectedRooms[i].area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { }
-            							}
-            						}
-                                    // It only ever goes through any room in the list once during floor generation so this is pointless.
-                                    // The while loop will end as a result of iterations reaching the list count so a room previously processed won't be processed a second time.
-                                    /*if (roomHandler == null) {
-                                        bool MaxMimicCountReached = false;
-            							currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All, ref enemiesList);
-                                        for (int j = 0; j < enemiesList.Count; j++) {
-            								AIActor aiactor = enemiesList[j];
-            								if (aiactor && aiactor.EnemyGuid == GameManager.Instance.RewardManager.WallMimicChances.EnemyGuid) {
-                                                wallMimics++;
-                                                MaxMimicCountReached = true;
-                                                break;
-                                            }
-                                        }
-            							if (MaxMimicCountReached) { goto IL_EXIT; }
-            						}*/
-                                    // No reason this list should be defined outside the while loop as nothing outside the while loop needs to use it.
-                                    // Defining the list here means that each time while loop advances validWalls will be redefined as new list.
-                                    // Thus validWalls.Clear() will not be needed here if we define the validWalls list inside the while loop!
-                                    // validWalls.Clear();
                                     List<Tuple<IntVector2, DungeonData.Direction>> validWalls = new List<Tuple<IntVector2, DungeonData.Direction>>();
                                     if (!DontPlaceWallMimics) {
             						    for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
@@ -285,7 +258,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                         if (PlayerHasCorruptedJunk && CorruptedRooms < 2 && !dungeon.IsGlitchDungeon && !ExpandDungeonFlows.ExpandDungeonFlow.isGlitchFlow &&
                                             currentRoom.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && 
                                             currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && UnityEngine.Random.value <= 0.2f &&
-                                            !currentRoom.PrecludeTilemapDrawing && !currentRoom.GetRoomName().ToLower().StartsWith("corrupted"))
+                                            !currentRoom.GetRoomName().ToLower().StartsWith("corrupted"))
                                         {
                                             string RoomName = currentRoom.GetRoomName();
                                             currentRoom.area.PrototypeRoomName = "Corrupted " + RoomName;
@@ -294,7 +267,6 @@ namespace ExpandTheGungeon.ExpandMain {
                                             m_PlaceCorruptedEnemies.PlaceRandomEnemies(dungeon, currentFloor, currentRoom);
 
                                             CorruptedRooms++;
-                                            // if (DontPlaceWallMimics) { WallMimicsPlaced++; }
                                         }
                                         int loopCount = 0;
                                         if (!DontPlaceWallMimics) {
@@ -328,7 +300,6 @@ namespace ExpandTheGungeon.ExpandMain {
             				}
             			}
             		}
-            		// IL_EXIT:
             		iterations++;
             	}
                 if (WallMimicsPlaced > 0) {

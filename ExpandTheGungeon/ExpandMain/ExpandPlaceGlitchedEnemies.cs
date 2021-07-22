@@ -23,8 +23,7 @@ namespace ExpandTheGungeon.ExpandMain {
             foreach (WeightedRoom wRoom in ExpandPrefabs.MegaBossRoomTable.includedRooms.elements) {
                 if (wRoom.room != null) { BannedRooms.Add(wRoom.room.name); }
             }
-
-            // PlayerController player = GameManager.Instance.PrimaryPlayer;
+            
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
             int MaxEnemies = 20;

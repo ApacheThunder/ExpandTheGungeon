@@ -16,29 +16,10 @@ namespace ExpandTheGungeon.ItemAPI {
             CursedBrick cursedBrick = CursedBrickObject.AddComponent<CursedBrick>();
             
             string shortDesc = "Fragment of a living wall...";
-            string longDesc = "There seems to be sounds emanating from the walls around you!";
+            string longDesc = "There seems to be sounds emanating from the walls around you!\n\nThis item can't be dropped.";
             ItemBuilder.SetupItem(cursedBrick, shortDesc, longDesc, "ex");
             cursedBrick.quality = ItemQuality.D;
-            cursedBrick.ItemSpansBaseQualityTiers = false;
-            cursedBrick.additionalMagnificenceModifier = 0;
-            cursedBrick.ItemRespectsHeartMagnificence = true;
-            cursedBrick.associatedItemChanceMods = new LootModData[0];
-            cursedBrick.contentSource = ContentSource.BASE;
-            cursedBrick.ShouldBeExcludedFromShops = false;
             cursedBrick.CanBeDropped = false;
-            cursedBrick.PreventStartingOwnerFromDropping = false;
-            cursedBrick.PersistsOnDeath = false;
-            cursedBrick.PersistsOnPurchase = false;
-            cursedBrick.RespawnsIfPitfall = false;
-            cursedBrick.PreventSaveSerialization = false;
-            cursedBrick.IgnoredByRat = false;
-            cursedBrick.SaveFlagToSetOnAcquisition = 0;
-            cursedBrick.UsesCustomCost = false;
-            cursedBrick.CustomCost = 65;
-            cursedBrick.CanBeSold = false;
-            cursedBrick.passiveStatModifiers = new StatModifier[0];
-            cursedBrick.ArmorToGainOnInitialPickup = 0;
-
             cursedBrick.passiveStatModifiers = new StatModifier[] {
                 new StatModifier() {
                     statToBoost = PlayerStats.StatType.Curse,
