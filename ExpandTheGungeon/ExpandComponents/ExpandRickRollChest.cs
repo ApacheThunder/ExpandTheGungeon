@@ -4,6 +4,7 @@ using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
+using System.IO;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -159,8 +160,29 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             m_room.RegisterInteractable(this);
             m_Opened = false;
+            ExportSettings();
             yield break;
         }
+
+        private void ExportSettings() {
+
+            string CachedJSONText = string.Empty;
+
+            ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
+            
+            CachedJSONText = JsonUtility.ToJson(cachedStats);
+
+            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
+                File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));
+            }
+            
+            ResourceExtractor.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName);
+
+            ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
+
+            return;
+        }
+
 
         private IEnumerator SpwanEnemyAirDrop(float delay = 0.4f) {
             Vector3 RoomOffset = m_room.area.basePosition.ToVector3();

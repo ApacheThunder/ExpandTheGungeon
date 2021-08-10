@@ -11,6 +11,8 @@ using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandAudio;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using ExpandTheGungeon.SerializedData;
+using System.IO;
+using System.Collections;
 
 namespace ExpandTheGungeon {
 
@@ -24,15 +26,17 @@ namespace ExpandTheGungeon {
 
         public static string ZipFilePath;
         public static string FilePath;
-
-        // public static bool isGlitchFloor = false;
+        
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
-        
+
         public static string ExceptionText;
+        public static string ExceptionText2;
+
+        public static readonly string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         
         private static List<string> itemList;
-
+        
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
                 if (!string.IsNullOrEmpty(validCommands) && !string.IsNullOrEmpty(sourceSubCommand)) { ETGModConsole.Log("[ExpandTheGungeon] [" + sourceSubCommand + "] ERROR: Invalid console command specified! Valid Sub-Commands: \n" + validCommands); }
@@ -53,12 +57,19 @@ namespace ExpandTheGungeon {
         public override void Init() {
 
             ExceptionText = string.Empty;
+            ExceptionText2 = string.Empty;
 
             ConsoleCommandName = "expand";
 
             ZipFilePath = Metadata.Archive;
             FilePath = Metadata.Directory;
 
+            try {
+                ImportSettings();
+            } catch (Exception ex) {
+                ExceptionText2 = ex.ToString();
+            }
+            
             itemList = new List<string>() {
                 "Baby Good Hammer",
                 "Corruption Bomb",
@@ -102,10 +113,12 @@ namespace ExpandTheGungeon {
             }
         }
 
+
         public override void Start() {
 
-            if (!string.IsNullOrEmpty(ExceptionText)) {
-                ETGModConsole.Log(ExceptionText);
+            if (!string.IsNullOrEmpty(ExceptionText) | !string.IsNullOrEmpty(ExceptionText2)) {
+                if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
+                if (!string.IsNullOrEmpty(ExceptionText2)) { ETGModConsole.Log(ExceptionText2); }
                 return;
             }
             
@@ -154,13 +167,21 @@ namespace ExpandTheGungeon {
             DungeonFlowModule.Install();
 
             InitConsoleCommands(ConsoleCommandName);
-            
+
+            if (ExpandStats.EnableLanguageFix) {
+                GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                GameManager.Instance.StartCoroutine(WaitForPlayerSelection());
+            }
+
             // Null bundles when done with them to avoid game crash issues.
             ExpandPrefabs.sharedAssets = null;
             ExpandPrefabs.sharedAssets2 = null;
             ExpandPrefabs.braveResources = null;
             ExpandPrefabs.enemiesBase = null;
         }
+
+
         public override void Exit() {
             if (GameManagerHook != null) {
                 ETGModConsole.Log("[ExpandTheGungeon] Uninstalling GameManager.Awake hook", true);
@@ -170,7 +191,38 @@ namespace ExpandTheGungeon {
             }
         }
 
-        
+
+
+        private void ImportSettings() {
+            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
+
+                string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
+
+                ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
+
+                JsonUtility.FromJsonOverwrite(CachedJSONText, cachedStats);
+                
+                ExpandStats.OverwriteUserSettings(cachedStats);
+            } else {
+                return;
+            }
+        }
+
+        private static IEnumerator WaitForPlayerSelection() {
+
+            while (!GameManager.Instance.PrimaryPlayer) {
+                if (!GameManager.Instance) { break; }
+                yield return null;
+            }
+
+            yield return null;
+
+            GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+            StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+
+            yield break;
+        }
+
         public static void InitCustomAssetBundle() {
             
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
@@ -254,6 +306,8 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("debug", ExpandDebug);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
@@ -410,12 +464,47 @@ namespace ExpandTheGungeon {
             }
         }
         
+        private void ExpandExportSettings(string[] consoleText) {
+
+            string CachedJSONText = string.Empty;
+
+            ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
+            
+            CachedJSONText = JsonUtility.ToJson(cachedStats);
+
+            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
+                File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
+            }
+            
+            ExpandUtilities.ResourceExtractor.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ModSettingsFileName);
+
+            ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
+
+            return;
+        }
+
+        private void ExpandToggleLanguageFix(string[] consoleText) {
+            if (ExpandStats.EnableLanguageFix) {
+                ExpandStats.EnableLanguageFix = false;
+                GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                ETGModConsole.Log("[ExpandTheGungeon] Language override disabled!");
+                ETGModConsole.Log("[ExpandTheGungeon] Game Language set back to English!\n\nSet game language back to your desired language before re-enabling this feature!");
+            } else {
+                ExpandStats.EnableLanguageFix = true;
+                ETGModConsole.Log("[ExpandTheGungeon] Language override enabled!");
+            }
+
+            ExpandStats.GameLanguage = ExpandUtility.LanguageToInt(GameManager.Options.CurrentLanguage);
+
+            ExpandExportSettings(consoleText);
+        }
+
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
             ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
             GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
-
             
             // UnityEngine.Object.Instantiate(ExpandPrefabs.BlankRewardPedestal, (CurrentPlayer.transform.position + new Vector3(-2, 2)), Quaternion.identity);
             /* 
@@ -464,7 +553,7 @@ namespace ExpandTheGungeon {
 
             // 
             return;
-        }        
+        }
     }
 }
 

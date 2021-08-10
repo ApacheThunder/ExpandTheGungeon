@@ -77,7 +77,6 @@ namespace ExpandTheGungeon.ExpandMain {
         
         public static void InstallRequiredHooks() {
 
-
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
                 typeof(Dungeon).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
@@ -298,7 +297,6 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        
         private void FlagCellsHook(Action<OccupiedCells> orig, OccupiedCells self) {
             try { orig(self); } catch (Exception ex) {
                 if (ExpandStats.debugMode) {

@@ -45,10 +45,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                     "4b21a913e8c54056bc05cafecf9da880", // gigi_parrot
                     "78e0951b097b46d89356f004dda27c42", // tablet_bookllet
                     "216fd3dfb9da439d9bd7ba53e1c76462", // necronomicon_bookllet
-                    "a446c626b56d4166915a4e29869737fd", // chance_bullet_kin
-                    "699cd24270af4cd183d671090d8323a1", // key_bullet_kin
+                    // "a446c626b56d4166915a4e29869737fd", // chance_bullet_kin
+                    // "699cd24270af4cd183d671090d8323a1", // key_bullet_kin
                     "9b2cf2949a894599917d4d391a0b7394", // high_gunjurer
-                    "RATCORPSE",
+                    "RATCORPSE"
                 };
             }            
             m_AssetBundle = null;

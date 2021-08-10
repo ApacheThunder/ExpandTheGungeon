@@ -7,6 +7,8 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
+using FullInspector.Internal;
+using System.Text;
 
 namespace ExpandTheGungeon {
 
@@ -15,7 +17,6 @@ namespace ExpandTheGungeon {
         public static ExpandObjectMods Instance { get { return new ExpandObjectMods(); } }
         
         public void InitSpecialMods() {
-
             ExpandStats.randomSeed = Random.value;
 
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }

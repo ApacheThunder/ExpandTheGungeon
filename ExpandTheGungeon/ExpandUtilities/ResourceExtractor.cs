@@ -280,7 +280,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static string BytesToString(byte[] bytes) { return Encoding.UTF8.GetString(bytes, 0, bytes.Length); }
-        
+
+        public static void SaveStringToFile(string text, string filePath, string fileName) {
+            using (StreamWriter streamWriter = new StreamWriter(Path.Combine(filePath, fileName), true)) { streamWriter.WriteLine(text); }
+        }
+
         public static byte[] ExtractEmbeddedResource(string filename) {
 			Assembly callingAssembly = Assembly.GetCallingAssembly();
 			byte[] result;

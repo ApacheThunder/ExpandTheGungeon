@@ -3625,6 +3625,69 @@ namespace ExpandTheGungeon.ExpandUtilities {
             res.Apply();
             return res;
         }
+
+
+        public static int LanguageToInt(StringTableManager.GungeonSupportedLanguages language) {
+            switch (language) {
+                case StringTableManager.GungeonSupportedLanguages.ENGLISH:
+                    return 0;
+                case StringTableManager.GungeonSupportedLanguages.RUBEL_TEST:
+                    //return 1;
+                    return 0;
+                case StringTableManager.GungeonSupportedLanguages.FRENCH:
+                    return 2;
+                case StringTableManager.GungeonSupportedLanguages.SPANISH:
+                    return 3;
+                case StringTableManager.GungeonSupportedLanguages.ITALIAN:
+                    return 4;
+                case StringTableManager.GungeonSupportedLanguages.GERMAN:
+                    return 5;
+                case StringTableManager.GungeonSupportedLanguages.BRAZILIANPORTUGUESE:
+                    return 6;
+                case StringTableManager.GungeonSupportedLanguages.JAPANESE:
+                    return 7;
+                case StringTableManager.GungeonSupportedLanguages.KOREAN:
+                    return 8;
+                case StringTableManager.GungeonSupportedLanguages.RUSSIAN:
+                    return 9;
+                case StringTableManager.GungeonSupportedLanguages.POLISH:
+                    return 10;
+                case StringTableManager.GungeonSupportedLanguages.CHINESE:
+                    return 11;
+            }
+            return 0;
+        }
+
+        public static StringTableManager.GungeonSupportedLanguages IntToLanguage(int input) {
+            switch (input) {
+                case 0:
+                    return StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                case 1:
+                    //return StringTableManager.GungeonSupportedLanguages.RUBEL_TEST;
+                    return StringTableManager.GungeonSupportedLanguages.ENGLISH;
+                case 2:
+                    return StringTableManager.GungeonSupportedLanguages.FRENCH;                    
+                case 3:
+                    return StringTableManager.GungeonSupportedLanguages.SPANISH;
+                case 4:
+                    return StringTableManager.GungeonSupportedLanguages.ITALIAN;
+                case 5:
+                    return StringTableManager.GungeonSupportedLanguages.GERMAN;
+                case 6:
+                    return StringTableManager.GungeonSupportedLanguages.BRAZILIANPORTUGUESE;
+                case 7:
+                    return StringTableManager.GungeonSupportedLanguages.JAPANESE;
+                case 8:
+                    return StringTableManager.GungeonSupportedLanguages.KOREAN;
+                case 9:
+                    return StringTableManager.GungeonSupportedLanguages.RUSSIAN;
+                case 10:
+                    return StringTableManager.GungeonSupportedLanguages.POLISH;
+                case 11:
+                    return StringTableManager.GungeonSupportedLanguages.CHINESE;
+            }
+            return 0;
+        }
     }
 
     public static class ExpandExtensions {

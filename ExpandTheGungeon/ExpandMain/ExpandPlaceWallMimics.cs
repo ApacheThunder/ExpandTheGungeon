@@ -23,7 +23,7 @@ namespace ExpandTheGungeon.ExpandMain {
         };
 
         private void PlaceWallMimics(Action<Dungeon, RoomHandler> orig, Dungeon dungeon, RoomHandler roomHandler) {
-
+            
             // Used for debug read out information
             int NorthWallCount = 0;
             int SouthWallCount = 0;
@@ -38,7 +38,7 @@ namespace ExpandTheGungeon.ExpandMain {
             bool DontPlaceWallMimics = false;
 
             if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
-
+            
             if (ExpandTheGungeon.GameManagerHook == null) {
                 if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                 ExpandTheGungeon.GameManagerHook = new Hook(
