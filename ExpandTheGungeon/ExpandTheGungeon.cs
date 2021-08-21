@@ -23,6 +23,8 @@ namespace ExpandTheGungeon {
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
+        public static CharacterCostumeSwapper BulletManSelector;
+
 
         public static string ZipFilePath;
         public static string FilePath;
@@ -98,12 +100,15 @@ namespace ExpandTheGungeon {
             ModLogo = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EXLogo");
             
             try {
+                ExpandSharedHooks.InstallMidGameSaveHooks();
                 MainMenuFoyerUpdateHook = new Hook(
                     typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
                     typeof(ExpandTheGungeon).GetMethod("MainMenuUpdateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                     typeof(MainMenuFoyerController)
                 );
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
+
+                // if (ExpandStats.ShotgunKinSecret) { ExpandSharedHooks.ToggleShotgunKinHook(); }
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
                 ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
@@ -154,6 +159,8 @@ namespace ExpandTheGungeon {
                     "Zelda Puzzle Room 3",
                     "Special Entrance"
                 };
+
+                if (ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
@@ -171,7 +178,7 @@ namespace ExpandTheGungeon {
             if (ExpandStats.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                GameManager.Instance.StartCoroutine(WaitForPlayerSelection());
+                GameManager.Instance.StartCoroutine(WaitForFoyerLoadForLanguageChange());
             }
 
             // Null bundles when done with them to avoid game crash issues.
@@ -204,22 +211,44 @@ namespace ExpandTheGungeon {
                 
                 ExpandStats.OverwriteUserSettings(cachedStats);
             } else {
+                ExpandExportSettings(null);
                 return;
             }
         }
 
-        private static IEnumerator WaitForPlayerSelection() {
-
-            while (!GameManager.Instance.PrimaryPlayer) {
-                if (!GameManager.Instance) { break; }
-                yield return null;
-            }
+        private static IEnumerator WaitForFoyerLoadForLanguageChange() {
+            while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
 
             yield return null;
 
             GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
             StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
 
+            yield break;
+        }
+
+        private static IEnumerator WaitForFoyerLoad() {
+            while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
+            yield return null;
+            CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
+            if (m_Characters != null && m_Characters.Length > 0) {
+                foreach (CharacterCostumeSwapper m_Character in m_Characters) {
+                    if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
+                        BulletManSelector = m_Character;
+                        break;
+                    }
+                }
+                if (BulletManSelector) {
+                    bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
+                    yield return null;
+                    if (!Allow) { yield break; }
+                    yield return null;
+                    FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
+                    m_active.SetValue(BulletManSelector, true);
+                    BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
+                    BulletManSelector.CostumeSprite.renderer.enabled = false;
+                }
+            }
             yield break;
         }
 
@@ -258,7 +287,7 @@ namespace ExpandTheGungeon {
                     ItemBuilder.Init();
                     BabyGoodHammer.Init(expandSharedAssets1);
                     CorruptionBomb.Init(expandSharedAssets1);
-                    ExpandRedScarf.Init(expandSharedAssets1);
+                    if (ExpandStats.EnableBloodiedScarfFix) { ExpandRedScarf.Init(expandSharedAssets1); }
                     TableTechAssassin.Init(expandSharedAssets1);
                     CorruptedJunk.Init(expandSharedAssets1);
                     BootlegGuns.Init();
@@ -378,23 +407,7 @@ namespace ExpandTheGungeon {
                 if (currentRoom != null) {
                     if (currentRoom.IsSealed) { currentRoom.UnsealRoom(); }
                 }
-            } else if (consoleText[0] == "shotgun") {
-                PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-
-                if (CurrentPlayer.characterIdentity != PlayableCharacters.Bullet) {
-                    ETGModConsole.Log("[ERROR] This isn't compatible with the currently active player!");
-                    return;
-                }
-
-                if (!ExpandCustomSpriteCollections.ShotgunReskinObject) { ExpandCustomSpriteCollections.InitShotgunKinCollection(); }
-
-                if (!ExpandCustomSpriteCollections.ShotgunReskinObject) {
-                    ETGModConsole.Log("Shotgun Man Data not found! Not available for public use!");
-                    return;
-                }
-                CurrentPlayer.OverrideAnimationLibrary = ExpandCustomSpriteCollections.ShotgunReskinObject.GetComponent<tk2dSpriteAnimation>();
-                CurrentPlayer.SetOverrideShader(ShaderCache.Acquire(CurrentPlayer.LocalShaderName));
-            }  else {
+            } else {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);
                 return;
             }
@@ -503,9 +516,42 @@ namespace ExpandTheGungeon {
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
-            GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
-            
+            // ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
+            // GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
+
+            ExpandPlaceWallMimic m_WallMimicPlacer = new ExpandPlaceWallMimic();
+
+            m_WallMimicPlacer.PlaceWallMimics(GameManager.Instance.Dungeon, CurrentPlayer.CurrentRoom);
+
+            m_WallMimicPlacer = null;
+            /*BlinkPassiveItem m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
+
+            AIActor[] AllEnemies = UnityEngine.Object.FindObjectsOfType<AIActor>();
+            ScarfAttachmentDoer m_Scarf = m_BlinkPassive.ScarfPrefab;
+
+            if (AllEnemies != null && AllEnemies.Length > 0) {
+                foreach (AIActor enemy in AllEnemies) {                    
+
+                    GameObject m_ExpandScarfObject = new GameObject("VFX_EXScarf");
+                    ExpandComponents.ExpandScarfComponent m_ExpandScarf = m_ExpandScarfObject.AddComponent<ExpandComponents.ExpandScarfComponent>();
+
+                    m_ExpandScarf.StartWidth = m_Scarf.StartWidth;
+                    m_ExpandScarf.EndWidth = m_Scarf.EndWidth;
+                    m_ExpandScarf.AnimationSpeed = m_Scarf.AnimationSpeed;
+                    m_ExpandScarf.ScarfLength = m_Scarf.ScarfLength;
+                    m_ExpandScarf.AngleLerpSpeed = m_Scarf.AngleLerpSpeed;
+                    m_ExpandScarf.BackwardZOffset = m_Scarf.BackwardZOffset;
+                    m_ExpandScarf.CatchUpScale = m_Scarf.CatchUpScale;
+                    m_ExpandScarf.SinSpeed = m_Scarf.SinSpeed;
+                    m_ExpandScarf.AmplitudeMod = m_Scarf.AmplitudeMod;
+                    m_ExpandScarf.WavelengthMod = m_Scarf.WavelengthMod;
+                    m_ExpandScarf.ScarfMaterial = Material.Instantiate(m_Scarf.ScarfMaterial);
+                    m_ExpandScarf.ScarfMaterial.SetColor("_OverrideColor", new Color(0.1f, 0.7f, 0.1f));
+
+                    m_ExpandScarf.Initialize(enemy);
+                }
+            }*/
+
             // UnityEngine.Object.Instantiate(ExpandPrefabs.BlankRewardPedestal, (CurrentPlayer.transform.position + new Vector3(-2, 2)), Quaternion.identity);
             /* 
             // UnityEngine.Object.Instantiate(ExpandPrefabs.RatKeyRewardPedestal, (CurrentPlayer.transform.position + new Vector3(2, 2)), Quaternion.identity);

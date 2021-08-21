@@ -9,7 +9,11 @@ namespace ExpandTheGungeon {
         public static bool youtubeSafeMode = false;
         public static bool IsHardModeBuild = false;
         public static bool RestoreOldRooms = false;
+        public static bool EnableJungleRain = true;
+        public static bool EnableBloodiedScarfFix = true;
+        public static bool ShotgunKinSecret = false;
         public static bool EnableLanguageFix = false;
+        public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         public static int GameLanguage = 0;
 
@@ -24,7 +28,11 @@ namespace ExpandTheGungeon {
             youtubeSafeMode = stats.youtubeSafeMode;
             IsHardModeBuild = stats.IsHardModeBuild;
             EnableLanguageFix = stats.EnableLanguageFix;
+            EnableJungleRain = stats.EnableJungleRain;
+            EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
+            ShotgunKinSecret = stats.ShotgunKinSecret;
             GameLanguage = stats.GameLanguage;
+            JungleRainIntensity = stats.JungleRainIntensity;
         }
 
     }
@@ -34,7 +42,11 @@ namespace ExpandTheGungeon {
         public bool youtubeSafeMode;
         public bool IsHardModeBuild;
         public bool RestoreOldRooms;
+        public bool EnableJungleRain;
+        public bool EnableBloodiedScarfFix;
+        public bool ShotgunKinSecret;
         public bool EnableLanguageFix;
+        public float JungleRainIntensity;
         public int GameLanguage;
         
         public ExpandCachedStats() {
@@ -42,7 +54,11 @@ namespace ExpandTheGungeon {
             youtubeSafeMode = ExpandStats.youtubeSafeMode;
             IsHardModeBuild = ExpandStats.IsHardModeBuild;
             RestoreOldRooms = ExpandStats.RestoreOldRooms;
+            EnableJungleRain = ExpandStats.EnableJungleRain;
+            EnableBloodiedScarfFix = ExpandStats.EnableBloodiedScarfFix;
+            ShotgunKinSecret = ExpandStats.ShotgunKinSecret;
             EnableLanguageFix = ExpandStats.EnableLanguageFix;
+            JungleRainIntensity = ExpandStats.JungleRainIntensity;
             GameLanguage = ExpandStats.GameLanguage;
         }
     }

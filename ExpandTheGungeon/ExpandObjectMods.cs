@@ -7,8 +7,6 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-using FullInspector.Internal;
-using System.Text;
 
 namespace ExpandTheGungeon {
 
@@ -32,24 +30,27 @@ namespace ExpandTheGungeon {
                 // Add some of the new FTA enemies to the old secret floors
                 ExpandEnemyReplacements.Init(m_cachedReplacementTiers);
             }
-            
+
             InitObjectMods(GameManager.Instance.Dungeon);
 
             ExpandDungeonFlow.isGlitchFlow = false;
         }
 
         private void InitObjectMods(Dungeon dungeon) {
-            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
+
+            if (!GameManager.Instance | !dungeon) { return; }
+
+
+            if (ExpandStats.EnableJungleRain && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
                 JungleRainPlacable.transform.parent = dungeon.gameObject.transform;
                 ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
                 ThunderstormPlacable.useCustomIntensity = true;
-                ThunderstormPlacable.RainIntensity = 425f;
+                ThunderstormPlacable.RainIntensity = ExpandStats.JungleRainIntensity;
                 ThunderstormPlacable.enableLightning = true;
                 ThunderstormPlacable.isSecretFloor = false;
                 ThunderstormPlacable.ConfigureOnPlacement(null);
             }
-            
 
             if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
                         
@@ -84,7 +85,7 @@ namespace ExpandTheGungeon {
             bool playerHasCorruptedJunk = false;
 
             if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
-            if (player2) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
+            if (player2) { if (player2.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
 
             if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk) {
                 

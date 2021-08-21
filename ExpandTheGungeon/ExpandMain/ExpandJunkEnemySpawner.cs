@@ -34,9 +34,10 @@ namespace ExpandTheGungeon.ExpandMain {
             
             while (iterations < roomList.Count && RandomEnemiesPlaced < MaxEnemies) {
                 RoomHandler currentRoom = dungeon.data.rooms[roomList[iterations]];
+                if (currentRoom == null | currentRoom.area == null) { continue; }
                 PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
                 try {
-                    if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) &&
+                    if (!string.IsNullOrEmpty(currentRoom.GetRoomName()) &&
                         currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !currentRoom.IsMaintenanceRoom() &&
                        !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && !currentRoom.IsGunslingKingChallengeRoom &&
                        !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom.name) &&

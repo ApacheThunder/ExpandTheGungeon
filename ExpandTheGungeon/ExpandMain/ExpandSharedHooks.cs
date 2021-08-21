@@ -11,6 +11,7 @@ using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections.ObjectModel;
+using InControl;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -48,8 +49,10 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook checkforPlayerCollisionHook;
         public static Hook doorOpenHook;
         public static Hook throwGunHook;
-
-
+        public static Hook shotgunKinHook;
+        public static Hook onContinueGameSelectedHook;
+        public static Hook getNextTilesetHook;
+        
         public static bool IsHooksInstalled = false;
         
         public static void InstallPrimaryHooks(bool InstallHooks = true) {
@@ -74,13 +77,31 @@ namespace ExpandTheGungeon.ExpandMain {
                 return;
             }
         }
+
+        public static void InstallMidGameSaveHooks() {
+            // Fix MidGame save stuff involving custom floors.
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing MainMenuFoyerController.OnContinueGameSelected Hook...."); }
+            onContinueGameSelectedHook = new Hook(
+                typeof(MainMenuFoyerController).GetMethod("OnContinueGameSelected", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("OnContinueGameSelected", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(MainMenuFoyerController)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.GetNextTileset Hook...."); }
+            generateRoomDoorMeshHook = new Hook(
+                typeof(GameManager).GetMethod("GetNextTileset", new Type[] { typeof(GlobalDungeonData.ValidTilesets) }),
+                typeof(ExpandSharedHooks).GetMethod("GetNextTileset", BindingFlags.Public | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+        }
+
         
         public static void InstallRequiredHooks() {
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
                 typeof(Dungeon).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandPlaceWallMimic).GetMethod("PlaceWallMimics", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandPlaceWallMimic).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
                 GameManager.Instance.Dungeon
             );
 
@@ -297,6 +318,21 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
+        public static void ToggleShotgunKinHook() {
+            if (shotgunKinHook == null) {
+                if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing CharacterCostumeSwapper.Start Hook...."); }
+                shotgunKinHook = new Hook(
+                    typeof(CharacterCostumeSwapper).GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(ExpandSharedHooks).GetMethod("StartHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(CharacterCostumeSwapper)
+                );
+            } else {
+                if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Uninstalling CharacterCostumeSwapper.Start Hook...."); }
+                shotgunKinHook.Dispose();
+                shotgunKinHook = null;
+            }
+        }
+        
         private void FlagCellsHook(Action<OccupiedCells> orig, OccupiedCells self) {
             try { orig(self); } catch (Exception ex) {
                 if (ExpandStats.debugMode) {
@@ -680,9 +716,7 @@ namespace ExpandTheGungeon.ExpandMain {
         // Prevent Arrival Elevator from departing while room still has active enemies. (currently only relevent to custom Giant Elevator Room)
         // Used to prevent player from going down elevator shaft while there are still enemies to clear.
         public void ArrivalElevatorUpdateHook(Action<ElevatorArrivalController>orig, ElevatorArrivalController self) {
-            
             if (!self.gameObject.transform.position.GetAbsoluteRoom().HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { orig(self); }
-
         }
         
         // Make the HellDragZone thing actually take player to direct to bullet hell instead of using normal DelayedLoadNextLevel().
@@ -1185,7 +1219,253 @@ namespace ExpandTheGungeon.ExpandMain {
             if (!self.renderer.enabled) { self.renderer.enabled = true; }
             if (self.sprite && !self.sprite.renderer.enabled) { self.sprite.renderer.enabled = true; }
         }
+
+        private void StartHook(Action<CharacterCostumeSwapper> orig, CharacterCostumeSwapper self) {
+            orig(self);
+
+            if (self.TargetCharacter == PlayableCharacters.Bullet) {
+                FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                bool killedPast = GameStatsManager.Instance.GetCharacterSpecificFlag(self.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST);
+
+                if (self.HasCustomTrigger) {
+                    if (self.CustomTriggerIsFlag) {
+                        killedPast = GameStatsManager.Instance.GetFlag(self.TriggerFlag);
+                    } else if (self.CustomTriggerIsSpecialReserve) {
+                        killedPast = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05));
+                    }
+                }
+
+                m_active.SetValue(self, killedPast);
+                self.AlternateCostumeSprite.renderer.enabled = killedPast;
+                self.CostumeSprite.renderer.enabled = false;
+            }
+        }
+
+        public GlobalDungeonData.ValidTilesets GetNextTileset(GameManager orig, GlobalDungeonData.ValidTilesets tilesetID) {
+            switch (tilesetID) {
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    return GlobalDungeonData.ValidTilesets.MINEGEON;
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    return GlobalDungeonData.ValidTilesets.GUNGEON;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    return GlobalDungeonData.ValidTilesets.GUNGEON;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    return GlobalDungeonData.ValidTilesets.GUNGEON;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    return GlobalDungeonData.ValidTilesets.MINEGEON;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    return GlobalDungeonData.ValidTilesets.MINEGEON;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    return GlobalDungeonData.ValidTilesets.FORGEGEON;
+                default:
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.MINEGEON) { return GlobalDungeonData.ValidTilesets.CATACOMBGEON; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.CATACOMBGEON) { return GlobalDungeonData.ValidTilesets.FORGEGEON; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.FORGEGEON) { return GlobalDungeonData.ValidTilesets.HELLGEON; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.OFFICEGEON) { return GlobalDungeonData.ValidTilesets.FORGEGEON; }
+                    if (tilesetID != GlobalDungeonData.ValidTilesets.RATGEON) { return GlobalDungeonData.ValidTilesets.CASTLEGEON; }
+                    return GlobalDungeonData.ValidTilesets.CATACOMBGEON;
+            }
+            // return (orig(tilesetID));
+        }
+
+        private void OnContinueGameSelected(Action<MainMenuFoyerController, dfControl, dfMouseEventArgs> orig, MainMenuFoyerController self, dfControl control, dfMouseEventArgs mouseEvent) {
+            MidGameSaveData.ContinuePressedDevice = InputManager.ActiveDevice;
+            bool m_faded = ReflectionHelpers.ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_faded", self);
+            bool m_wasFadedThisFrame = ReflectionHelpers.ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_wasFadedThisFrame", self);
+            if (m_faded || m_wasFadedThisFrame) { return; }
+            if (!IsDioramaRevealed(self, true)) { return; }
+            if (!Foyer.DoMainMenu) { return; }
+            MidGameSaveData midGameSaveData = null;
+            GameManager.VerifyAndLoadMidgameSave(out midGameSaveData, true);
+            Dungeon.ShouldAttemptToLoadFromMidgameSave = true;
+            self.DisableMainMenu();
+            Pixelator.Instance.FadeToBlack(0.15f, false, 0.05f);
+            GameManager.Instance.FlushAudio();
+            AkSoundEngine.PostEvent("Play_UI_menu_confirm_01", self.gameObject);
+            GameManager.Instance.SetNextLevelIndex(GetTargetLevelIndexFromSavedTileset(midGameSaveData.levelSaved));
+            GameManager.Instance.GeneratePlayersFromMidGameSave(midGameSaveData);
+            GameManager.Instance.IsFoyer = false;
+            Foyer.DoIntroSequence = false;
+            Foyer.DoMainMenu = false;
+            GameManager.Instance.IsSelectingCharacter = false;
+            DelayedLoadMidgameSave(GameManager.Instance, 0.25f, midGameSaveData);
+        }
+
+        // Fix for allowing custom floors with the unused tilesets to load from midgame saves correctly instead of game defaulting to floor 1.
+        public void DelayedLoadMidgameSave(GameManager self, float delay, MidGameSaveData saveToContinue) {
+            GlobalDungeonData.ValidTilesets levelSaved = saveToContinue.levelSaved;
+            string destinationLevel = "tt_castle";
+            bool isPast = false;
+            bool isBaseFloor = false;
+
+            switch (levelSaved) {
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    destinationLevel = "tt_sewer";
+                    break;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    destinationLevel = "tt_jungle";
+                    break;
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    destinationLevel = "tt_cathedral";
+                    break;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    destinationLevel = "tt_belly";
+                    break;
+                case GlobalDungeonData.ValidTilesets.MINEGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.RATGEON:
+                    destinationLevel = "ss_resourcefulrat";
+                    break;
+                case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                    destinationLevel = "tt_nakatomi";
+                    break;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    destinationLevel = "tt_west";
+                    break;
+                case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.HELLGEON:
+                    isBaseFloor = true;
+                    break;
+                case GlobalDungeonData.ValidTilesets.FINALGEON:
+                    isPast = true;
+                    break;
+                // Additional checks for possible future custom floors from other mods.
+                // tt_space doesn't normally exist. If a mod adds this floor they must add new tt_space level definition with correct
+                // dungeonSceneName that matches tt_phobos!
+                case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                    destinationLevel = "tt_phobos";
+                    break;
+                case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                    if (self.customFloors != null && self.customFloors.Count > 0) {
+                        foreach (GameLevelDefinition levelDefinition in self.customFloors) {
+                            if (!string.IsNullOrEmpty(levelDefinition.dungeonSceneName) && levelDefinition.dungeonSceneName.ToLower() == "tt_space") {
+                                destinationLevel = "tt_space";
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    // If unexpected tileset is selected (which shouldn't be possible), default to normal base floor setting.
+                    isBaseFloor = true;
+                    break;
+            }
+
+            if (isBaseFloor && !isPast) {
+                // This code path is if one of the base floors was detected as destination. 
+                // Original code didn't set specific destination for these.
+                self.DelayedLoadNextLevel(0.25f);
+                return;
+            } else if (isPast) {
+                switch (saveToContinue.playerOneData.CharacterIdentity) {
+                    case PlayableCharacters.Pilot:
+                        self.DelayedLoadCustomLevel(delay, "fs_pilot");
+                        break;
+                    case PlayableCharacters.Convict:
+                        self.DelayedLoadCustomLevel(delay, "fs_convict");
+                        break;
+                    case PlayableCharacters.Robot:
+                        self.DelayedLoadCustomLevel(delay, "fs_robot");
+                        break;
+                    case PlayableCharacters.Soldier:
+                        self.DelayedLoadCustomLevel(delay, "fs_soldier");
+                        break;
+                    case PlayableCharacters.Guide:
+                        self.DelayedLoadCustomLevel(delay, "fs_guide");
+                        break;
+                    case PlayableCharacters.Bullet:
+                        self.DelayedLoadCustomLevel(delay, "fs_bullet");
+                        break;
+                    case PlayableCharacters.Gunslinger:
+                        GameManager.IsGunslingerPast = true;
+                        self.DelayedLoadCustomLevel(delay, "tt_bullethell");
+                        break;
+                    default:
+                        // Default to normal level load if none of the normal character identities was set.
+                        self.DelayedLoadNextLevel(0.25f);
+                        break;
+                }
+                return;
+            } else if (destinationLevel == "tt_castle") {
+                // If custom/secret floor was detected but somehow destinationLevel wasn't changed, the default behavior will be to load next level instead of specific level.
+                self.DelayedLoadNextLevel(0.25f);
+                return;
+            } else {
+                // This code path runs only if not past and destination floor is not a base floor. (aka not secret floor/custom floor)
+                self.DelayedLoadCustomLevel(delay, destinationLevel);
+                return;
+            }
+        }
         
+        private bool IsDioramaRevealed(MainMenuFoyerController self, bool doReveal = false) {
+            TitleDioramaController m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
+            FieldInfo m_tdcfield = typeof(MainMenuFoyerController).GetField("m_tdc", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (m_tdc == null) {
+                m_tdc = FindObjectOfType<TitleDioramaController>();
+                m_tdcfield.SetValue(self, m_tdc);
+                m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
+            }
+            return !m_tdc || m_tdc.IsRevealed(doReveal);
+        }
+        
+        private IEnumerator FadeToBlack(FinalIntroSequenceManager self, float duration, bool startAtCurrent = false, bool force = false) {
+            float elapsed = 0f;
+            float startValue = 0f;
+            if (startAtCurrent) { startValue = self.FadeMaterial.GetColor("_Color").a; }
+            bool m_skipCycle = ReflectionHelpers.ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
+            while (elapsed < duration) {
+                if (!force && m_skipCycle) { yield break; }
+                m_skipCycle = ReflectionHelpers.ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                self.FadeMaterial.SetColor("_Color", new Color(0f, 0f, 0f, Mathf.Lerp(startValue, 1f, t)));
+                yield return null;
+            }
+            self.FadeMaterial.SetColor("_Color", new Color(0f, 0f, 0f, 1f));
+            yield break;
+        }
+
+        public int GetTargetLevelIndexFromSavedTileset(GlobalDungeonData.ValidTilesets tilesetID) {
+            switch (tilesetID) {
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    return 2;
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    return 1;
+                default:
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.MINEGEON) { return 3; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.CATACOMBGEON) { return 4; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.FORGEGEON) { return 5; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.HELLGEON) { return 6; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.OFFICEGEON) { return 5; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.FINALGEON) { return 6; }
+                    // if (tilesetID != GlobalDungeonData.ValidTilesets.RATGEON) { return 1; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.RATGEON) { return 4; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.SPACEGEON) { return 1; }
+                    if (tilesetID == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return 1; }
+                    return 4;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    return 2;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    return 2;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    return 3;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    return 5;
+            }
+        }
     }
 }
 

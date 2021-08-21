@@ -87,7 +87,7 @@ namespace ExpandTheGungeon.ExpandMain {
             return m_cachedEnemyReplacementTier;
         }
 
-        public static void InitReplacementEnemiesAfterSecret(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers, GlobalDungeonData.ValidTilesets TargetTileset, string nameAppend = "_Default") {
+        /*public static void InitReplacementEnemiesAfterSecret(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers, GlobalDungeonData.ValidTilesets TargetTileset, string nameAppend = "_Default") {
             if (agdEnemyReplacementTiers != null) {
                 agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinCowboyReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, CowboyKinTargetGUIDs, CowboyKinReplacementGUIDs));
                 agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("wizBangReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, snakeofficeTargetGUIDs, snakeofficeReplacementGUIDs));
@@ -101,7 +101,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("mutantBulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, mutantBulletKinTargetGUIDs, mutantBulletKinReplacementGUIDs));
                 agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("gunzookieReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, gunzookieTargetGUIDs, gunzookieReplacementGUIDs));
             }            
-        }
+        }*/
 
 
         public static List<string> gigiTargetGUIDs = new List<string>() { "ed37fa13e0fa4fcf8239643957c51293" }; // gigi

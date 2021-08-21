@@ -2,14 +2,18 @@
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandObjects;
-using System.Linq;
 
 namespace ExpandTheGungeon.ExpandMain {
 
     public class ExpandFloorDecorator : MonoBehaviour {
 
-        public ExpandFloorDecorator() { }
+        public ExpandFloorDecorator() {
+            RandomObjectsPlaced = 0;
+            RandomObjectsSkipped = 0;
+        }
         
+        private int RandomObjectsPlaced;
+        private int RandomObjectsSkipped;
 
         public void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
 
@@ -21,9 +25,6 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (!ignoreTilesetType && !ValidTilesets.Contains(dungeon.tileIndices.tilesetId)) { return; }
             
-            int RandomObjectsPlaced = 0;
-            int RandomObjectsSkipped = 0;            
-
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             if ((dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) && roomListOverride == null) { return; }
@@ -35,29 +36,32 @@ namespace ExpandTheGungeon.ExpandMain {
             foreach (RoomHandler currentRoom in DungeonRooms) {                 
                 try {
                     if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                        PlaceRandomCacti(dungeon, currentRoom, objectDatabase, RandomObjectsPlaced, RandomObjectsSkipped);
+                        PlaceRandomCacti(dungeon, currentRoom, objectDatabase);
                     } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                        PlaceRandomCorpses(dungeon, currentRoom, objectDatabase, RandomObjectsPlaced, RandomObjectsSkipped);
+                        PlaceRandomCorpses(dungeon, currentRoom, objectDatabase);
                     } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.MINEGEON) {
-                        PlaceRandomAlarmMushrooms(dungeon, currentRoom, RandomObjectsPlaced, RandomObjectsSkipped);
+                        PlaceRandomAlarmMushrooms(dungeon, currentRoom);
                     }
-                } catch (System.Exception ex) {
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up or objects for current room", false);
+                } catch (System.Exception ex) {                    
+                    if (ExpandStats.debugMode && currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName())) {
+                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for room: " + currentRoom.GetRoomName(), false);
+                    } else if (ExpandStats.debugMode) {
+                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for current room", false);
+                    }
                     if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
                     if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
                 }
             }
             if (ExpandStats.debugMode) {
-                // ETGModConsole.Log("[DEBUG] Max Number of floor decoration objects assignable per room: " + MaxObjectsPerRoom, false);
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects placed: " + RandomObjectsPlaced, false);
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, false);
-                if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No corpse objects have been placed!", false); }
+                if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", false); }
             }
             objectDatabase = null;
             return;
         }
 
-        private void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase, int RandomObjectsPlaced, int RandomObjectsSkipped) {
+        private void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             int MaxObjectsPerRoom = 12;
@@ -102,7 +106,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase, int RandomObjectsPlaced, int RandomObjectsSkipped) {
+        private void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | currentRoom.IsMaintenanceRoom() |
@@ -154,10 +158,9 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }
             }
-            
         }
         
-        private void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom, int RandomObjectsPlaced, int RandomObjectsSkipped) {
+        private void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
             
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | string.IsNullOrEmpty(currentRoom.GetRoomName()) |

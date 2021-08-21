@@ -121,7 +121,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             PlayerController player = GameManager.Instance.PrimaryPlayer;
             PlayerController player2 = GameManager.Instance.SecondaryPlayer;
 
-            if ((player && player.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) | (player2 && player2.HasPassiveItem(CorruptedJunk.CorruptedJunkID))) { GlitchedEnemyMode = true; }
+            if ((player && player.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) | (player2 && player2.HasPassiveItem(CorruptedJunk.CorruptedJunkID))) {
+                GlitchedEnemyMode = true;
+            }
            
             if (GlitchedEnemyMode && UnityEngine.Random.value <= m_glitchOdds) { m_isGlitched = true; }
             

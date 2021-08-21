@@ -3688,6 +3688,41 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             return 0;
         }
+
+        public static void TryDestroyWallTileAtPosition(Dungeon dungeon, RoomHandler room, IntVector2 position, bool UseFX = false) {
+            if (UseFX) { AkSoundEngine.PostEvent("Play_OBJ_stone_crumble_01", GameManager.Instance.gameObject); }
+            if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Attempting to destroy wall tile at position: " + position.ToString());
+            tk2dTileMap tk2dTileMap = null;
+            bool m_WasSuccessful = false;
+            CellData cellData = (!dungeon.data.CheckInBoundsAndValid(position)) ? null : dungeon.data[position];
+            if (cellData != null && cellData.type == CellType.WALL && cellData.HasTypeNeighbor(dungeon.data, CellType.FLOOR)) {
+                m_WasSuccessful = true;
+                cellData.breakable = true;
+                cellData.occlusionData.overrideOcclusion = true;
+                cellData.occlusionData.cellOcclusionDirty = true;
+                tk2dTileMap = dungeon.DestroyWallAtPosition(cellData.position.x, cellData.position.y, true);
+                if (UseFX) {
+                    PaydayDrillItem drill = PickupObjectDatabase.GetById(625)?.gameObject?.GetComponent<PaydayDrillItem>();
+                    if (drill) {
+                        drill.VFXDustPoof.SpawnAtPosition(position.ToCenterVector3(position.y), 0f, null, null, null, null, false, null, null, false);
+                    }
+                }
+                room.Cells.Add(cellData.position);
+                room.CellsWithoutExits.Add(cellData.position);
+                room.RawCells.Add(cellData.position);
+                dungeon.data.ClearCachedCellData();
+            }
+            if (m_WasSuccessful) {
+                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Succesfully destroyed wall tile at position: " + position.ToString());
+                Pixelator.Instance.MarkOcclusionDirty();
+                Pixelator.Instance.ProcessOcclusionChange(room.Epicenter, 1f, room, false);
+                if (tk2dTileMap) {
+                    dungeon.RebuildTilemap(tk2dTileMap);
+                    // tk2dTileMap.ForceBuild();
+                    // tk2dTileMap.Build();
+                }
+            }
+        }
     }
 
     public static class ExpandExtensions {

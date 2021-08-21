@@ -98,11 +98,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
-        public void MidGameSerialize(List<object> data, int dataIndex) { data.Add(Broken); }
+        public void MidGameSerialize(List<object> data, int dataIndex) {
+            // data.Add(Broken);
+        }
 
         public void MidGameDeserialize(List<object> data, ref int dataIndex) {
-            Broken = (bool)data[dataIndex];
-            dataIndex++;
+            // Broken = (bool)data[dataIndex];
+            // dataIndex++;
         }
 
         private void OnDestroy() { OnGunDroppedOrDestroyed(); }

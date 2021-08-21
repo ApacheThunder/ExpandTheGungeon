@@ -127,6 +127,7 @@
     <Compile Include="ExpandComponents\ExpandRemoveGunOnAmmoDepletion.cs" />
     <Compile Include="ExpandComponents\ExpandRewardPedestal.cs" />
     <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
+    <Compile Include="ExpandComponents\ExpandScarfComponent.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandJungleTreeController.cs" />
     <Compile Include="ExpandComponents\ExpandTossSpriteOnDeath.cs" />
@@ -145,7 +146,6 @@
     <Compile Include="ExpandObjects\ExpandBootlegRoomPlaceable.cs" />
     <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
     <Compile Include="ExpandObjects\ExpandCustomDungeonPrefabs.cs" />
-    <Compile Include="ExpandObjects\ExpandCustomSpriteCollections.cs" />
     <Compile Include="ExpandObjects\ExpandDungeonCollections.cs" />
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
