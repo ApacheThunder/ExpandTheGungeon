@@ -151,7 +151,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (m_PickedUp | AllowedEffects == null | AllowedEffects.Count <=0 ) { return; }
 
             ExpandShaders.Instance.GlitchScreenForDuration();
-
+            
             AllowedEffects = AllowedEffects.Shuffle();
 
             m_SelectedEffect = BraveUtility.RandomElement(AllowedEffects);

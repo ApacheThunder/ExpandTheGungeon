@@ -38,7 +38,9 @@ namespace ExpandTheGungeon {
         public static readonly string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         
         private static List<string> itemList;
-        
+
+        private static bool m_ShotGunSecretWasActive = false;
+
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
                 if (!string.IsNullOrEmpty(validCommands) && !string.IsNullOrEmpty(sourceSubCommand)) { ETGModConsole.Log("[ExpandTheGungeon] [" + sourceSubCommand + "] ERROR: Invalid console command specified! Valid Sub-Commands: \n" + validCommands); }
@@ -55,6 +57,7 @@ namespace ExpandTheGungeon {
             }
             return true;
         }
+        
 
         public override void Init() {
 
@@ -66,11 +69,7 @@ namespace ExpandTheGungeon {
             ZipFilePath = Metadata.Archive;
             FilePath = Metadata.Directory;
 
-            try {
-                ImportSettings();
-            } catch (Exception ex) {
-                ExceptionText2 = ex.ToString();
-            }
+            try { ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
             
             itemList = new List<string>() {
                 "Baby Good Hammer",
@@ -202,13 +201,9 @@ namespace ExpandTheGungeon {
 
         private void ImportSettings() {
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
-
                 string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
-
                 ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
-
                 JsonUtility.FromJsonOverwrite(CachedJSONText, cachedStats);
-                
                 ExpandStats.OverwriteUserSettings(cachedStats);
             } else {
                 ExpandExportSettings(null);
@@ -218,16 +213,13 @@ namespace ExpandTheGungeon {
 
         private static IEnumerator WaitForFoyerLoadForLanguageChange() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
-
             yield return null;
-
             GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
             StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-
             yield break;
         }
 
-        private static IEnumerator WaitForFoyerLoad() {
+        public static IEnumerator WaitForFoyerLoad() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
             yield return null;
             CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
@@ -247,6 +239,7 @@ namespace ExpandTheGungeon {
                     m_active.SetValue(BulletManSelector, true);
                     BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
                     BulletManSelector.CostumeSprite.renderer.enabled = false;
+                    m_ShotGunSecretWasActive = true;
                 }
             }
             yield break;
@@ -294,7 +287,6 @@ namespace ExpandTheGungeon {
                     CronenbergBullets.Init(expandSharedAssets1);
                     Mimiclay.Init(expandSharedAssets1);
                     TheLeadKey.Init(expandSharedAssets1);
-                    // TableTechExpand.Init();
                     RockSlide.Init(expandSharedAssets1);
                     CustomMasterRounds.Init(expandSharedAssets1);
                     WoodenCrest.Init(expandSharedAssets1);
@@ -319,6 +311,7 @@ namespace ExpandTheGungeon {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions();
+            if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
@@ -337,7 +330,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 

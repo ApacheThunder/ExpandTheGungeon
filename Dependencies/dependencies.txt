@@ -9,10 +9,12 @@ PlayMaker.dll
 UnityEngine.CoreModule.Base.mm.dll
 UnityEngine.CoreModule.dll
 UnityEngine.dll
+UnityEngine.VideoModule.dll
 UnityEngine.ImageConversionModule.dll
 UnityEngine.JSONSerializeModule.dll
 UnityEngine.ParticleSystemModule.dll
 UnityEngine.Physics2DModule.dll
 UnityEngine.PhysicsModule.dll
 Ionic.Zip.dll
+
 

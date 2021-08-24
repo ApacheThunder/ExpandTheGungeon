@@ -1,19 +1,17 @@
 ManifestFileVersion: 0
-CRC: 3567059933
+CRC: 2806356876
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4ea69452863a08a9fdf0b01ba1f04655
+    Hash: 0a42af3d83069fb0912aa2c08f48d23d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6441f4c48b8293a736413520ea1a9530
+    Hash: d367006692d3ae3746e725828b98dd32
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
-  Script: {instanceID: 0}
-- Class: 21
   Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
@@ -25,9 +23,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 199
   Script: {instanceID: 0}
+- Class: 329
+  Script: {instanceID: 0}
 Assets:
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_ShatterDebris_01.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_up_005.png
+- Assets/ExpandTextures/Misc/OldFilm.mp4
 - Assets/ExpandTextures/RickRoll/music_switch_idle_on_001.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_MimicCrack_04.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_right_002.png
@@ -81,7 +82,6 @@ Assets:
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_BottomLayer.png
 - Assets/ExpandTextures/RickRoll/RickRoll_02.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Die_003.png
-- Assets/ExpandPrefabs/ExpandGlitchAlternate.mat
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_corpse.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_right_004.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_04.png
@@ -197,7 +197,6 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_run_down_005.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Idle_001.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Spawn_002.png
-- Assets/ExpandPrefabs/ExpandDistortionMaterial.mat
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Close_02.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Fragment_01.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicCrack_04.png
@@ -218,6 +217,7 @@ Assets:
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_door_004.png
 - Assets/ExpandPrefabs/EXShipwreck_Right.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_right_001.png
+- Assets/ExpandTextures/Misc/EmptyVHSTexture.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_burst_006.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_corpse.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_25.png
@@ -243,6 +243,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_left_001.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Close_03.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_down_002.png
+- Assets/ExpandTextures/Misc/VHSAnimation.mp4
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_alarm_006.png
 - Assets/ExpandTextures/BellyAssets/PedestalRuins.png
 - Assets/ExpandPrefabs/CronenbergCorpseFragment_01.prefab
@@ -449,6 +450,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_down_003.png
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_pit_001.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_MimicCrack_02.png
+- Assets/ExpandPrefabs/Shaders/ExpandVHSPostProcessEffect.shader
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_right.png
 - Assets/ExpandTextures/Items/RockSlide/plunger_fire_005.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_19.png
@@ -481,6 +483,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_up_002.png
 - Assets/ExpandTextures/Items/CorruptedPoopsack/corrupted_poopsack_10.png
 - Assets/ExpandTextures/RickRoll/RickRoll_03.png
+- Assets/ExpandPrefabs/EXGlitchFloorScreenFX.prefab
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_01.png
 - Assets/ExpandPrefabs/Items/Wooden Crest.prefab
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_ShatterDebris_06.png
@@ -542,7 +545,6 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_spawn_003.png
 - Assets/ExpandTextures/RickRoll/RickRoll_15.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_07.png
-- Assets/ExpandPrefabs/ExpandScanlinesMaterial.mat
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_MimicCrack_02.png
 - Assets/ExpandTextures/RickRoll/RickRoll_07.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_04.png
@@ -633,7 +635,6 @@ Assets:
 - Assets/ExpandPrefabs/CronenbergCorpseFragment_02.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_burst_006.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_03.png
-- Assets/ExpandPrefabs/ExpandDustFXMaterial.mat
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_left_003.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_spawn_002.png
 - Assets/ExpandPrefabs/ExpandJungle_Tree.prefab
@@ -652,7 +653,6 @@ Assets:
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Light_Red.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_run_up_001.png
 - Assets/ExpandTextures/AIActors/BabyGoodHammer/babygoodhammer_idle_down_04.png
-- Assets/ExpandPrefabs/ExpandGlitchBasicMaterial.mat
 - Assets/ExpandPrefabs/Items/Rock Slide.prefab
 - Assets/ExpandPrefabs/Items/Corrupted Junk.prefab
 - Assets/ExpandTextures/BootlegRoom/BootlegRoom_ExitTiles_North.png

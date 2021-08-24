@@ -96,6 +96,10 @@
       <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>..\Dependencies\UnityEngine.VideoModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpandAudio\AudioResourceLoader.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="ExpandComponents\ExpandEnableSpacePitOnEnterComponent.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchedEnemyStunManager.cs" />
     <Compile Include="ExpandComponents\ExpandCustomEnemyBehaviorEnabler.cs" />
+    <Compile Include="ExpandComponents\ExpandGlitchScreenFXController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />

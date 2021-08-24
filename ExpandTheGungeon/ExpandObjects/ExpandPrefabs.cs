@@ -307,6 +307,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Sarco_MonsterObject;
         public static GameObject Sarco_Skeleton;
 
+        // Custom Object for Glitch Floor Screen FX controller
+        public static GameObject EXGlitchFloorScreenFX;
+
         // Modified Nakatomi Light to match the one Jungle used
         public static GameObject JungleLight;
         // Belly Light prefabs for Belly DungeonMaterial
@@ -3025,6 +3028,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 Destroy(ChamberGun.gameObject.GetComponent<ChamberGunProcessor>());
                 ChamberGun.gameObject.AddComponent<ExpandChamberGunProcessor>();
             }
+
+
+            EXGlitchFloorScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXGlitchFloorScreenFX");
+            EXGlitchFloorScreenFX.AddComponent<ExpandGlitchScreenFXController>();
 
             MetalGearRatPrefab = null;
             MetalGearRatActorPrefab = null;

@@ -112,6 +112,9 @@ namespace ExpandTheGungeon {
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
 
+                    GameObject EXGlitchFloorScreenFX = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+                    EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
+
                     if (FindObjectsOfType<AIActor>() != null && FindObjectsOfType<AIActor>().Length > 0) {
                         foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
                             if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
