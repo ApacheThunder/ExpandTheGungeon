@@ -36,8 +36,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         // public static GameObject KillStumpsDummy;
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
-        public static GameObject WestBrosNomePrefab;
-        
+
         // Misc Objects
         public static GameObject CronenbergCorpseDebrisObject1;
         public static GameObject CronenbergCorpseDebrisObject2;
@@ -46,10 +45,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject AggressiveCronenbergCorpseDebrisObject;
         public static GameObject WestBrosAnimations_Nome;
         public static GameObject StoneCubeCollection_West;
-        
-
-        public static Gun WestBrosNomeGun;
-
 
         public static Texture2D[] RatGrenadeTextures;
 
@@ -68,7 +63,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static string ParasiteBossGUID;
         public static string com4nd0GUID;
         public static string FriendlyCultistGUID;
-        public static string westBrosNomeGUID;
         public static string corruptedEnemyGUID;
 
         public static void InitPrefabs() {
@@ -96,8 +90,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildAggressiveCronenbergPrefab(expandSharedAssets1, out AggressiveCronenbergPrefab);
             BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
             BuildCorruptedEnemyPrefab(expandSharedAssets1, out CorruptedEnemyPrefab);
-            // WestBrosNomePrefab = BuildWestBrosBossNomePrefab(expandSharedAssets1);
-            
+
+            ExpandWesternBrosPrefabBuilder.BuildWestBrosBossPrefabs(expandSharedAssets1);
+
             // Fake Prefabs
             BuildRatGrenadePrefab(out RatGrenadePrefab);
             BuildMetalCubeGuyWestPrefab(expandSharedAssets1, out MetalCubeGuyWestPrefab);
@@ -3041,95 +3036,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
             }
         }
-
-        /*public static GameObject BuildWestBrosBossNomePrefab(AssetBundle expandSharedAssets1) {
-            
-            GameObject m_CachedTargetObject = Instantiate(GetOrLoadByGuid("c00390483f394a849c36143eb878998f").gameObject); // Shades
-            m_CachedTargetObject.SetActive(false);
-            m_CachedTargetObject.name = "West Bros Nome";
-            
-            AIActor m_TargetAIActor = m_CachedTargetObject.GetComponent<AIActor>();
-            m_TargetAIActor.EnemyGuid = "b5ae92d7891b468abff0944ee810296f";
-            m_TargetAIActor.EnemyId = UnityEngine.Random.Range(100000, 999999);
-
-            m_TargetAIActor.ActorName = "West Bros Nome";
-            
-            EncounterTrackable Encounterable = m_CachedTargetObject.GetComponent<EncounterTrackable>();
-            Encounterable.EncounterGuid = "42078e2bc49543a5a0e171cc16aa937d";
-            Encounterable.journalData.PrimaryDisplayName = "Test Boss";
-            Encounterable.journalData.NotificationPanelDescription = "Test";
-            Encounterable.journalData.AmmonomiconFullEntry = "Test";
-            
-
-            // GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
-            // bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
-            // bossIntroDoer.portraitSlideSettings.bossNameString = "Test";
-            // bossIntroDoer.portraitSlideSettings.bossSubtitleString= "Test";
-            // bossIntroDoer.portraitSlideSettings.bossQuoteString = string.Empty;
-            
-            m_TargetAIActor.RegenerateCache();
-
-            
-            WestBrosAnimations_Nome = expandSharedAssets1.LoadAsset<GameObject>("WestBrosAnimations_Nome");
-
-            tk2dSpriteAnimation WestBrosAnimation_Nome = WestBrosAnimations_Nome.AddComponent<tk2dSpriteAnimation>();
-
-            List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
-
-            WestBrosNomeGun = (PickupObjectDatabase.GetById(752) as Gun);
-            WestBrosNomeGun.NoOwnerOverride = false;
-
-            tk2dSpriteAnimation m_SourceAnimations = WestBrosNomeGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
-
-            foreach (tk2dSpriteAnimationClip clip in m_SourceAnimations.clips) {
-                if (clip.name.StartsWith("nome_")) { m_AnimationClips.Add(ExpandUtility.DuplicateAnimationClip(clip)); }
-            }
-            
-            foreach (tk2dSpriteAnimationClip clip in m_AnimationClips) {
-                clip.name = clip.name.Replace("nome_", string.Empty);
-                if (clip.name == "idle_front") {
-                    clip.name = "idle";
-                } else if (clip.name == "summon") {
-                    clip.name = "whistle";
-                } else if (clip.name == "pound") {
-                    clip.name = "jump_attack";
-                }
-            }
-
-            WestBrosAnimation_Nome.clips = m_AnimationClips.ToArray();
-            
-            tk2dSpriteCollectionData m_WestBrosSpriteCollectionData = WestBrosAnimations_Nome.AddComponent<tk2dSpriteCollectionData>();
-            ExpandUtility.DuplicateComponent(m_WestBrosSpriteCollectionData, WestBrosNomeGun.gameObject.GetComponent<tk2dSprite>().Collection);
-            
-            m_TargetAIActor.HasShadow = false;
-            m_TargetAIActor.ShadowPrefab = null;
-
-            Destroy(m_CachedTargetObject.transform.Find("shadow").gameObject);
-
-            tk2dSprite WestBros_NomeSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-            // ExpandUtility.DuplicateComponent(WestBros_NomeSprite, WestBrosNomeGun.gameObject.GetComponent<tk2dSprite>());
-            WestBros_NomeSprite.Collection = m_WestBrosSpriteCollectionData;
-            WestBros_NomeSprite.SetSprite("BB_nome_idle_front_001");
-            WestBros_NomeSprite.PlaceAtPositionByAnchor(new Vector3(0.1f, 0.1f), tk2dBaseSprite.Anchor.LowerLeft);
-
-            tk2dSpriteAnimator WestBrosNome_Animator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
-            WestBrosNome_Animator.Library = WestBrosAnimation_Nome;
-
-            AIAnimator NomeAIAnimator = m_CachedTargetObject.GetComponent<AIAnimator>();
-            
-            NomeAIAnimator.OtherAnimations.Remove(NomeAIAnimator.OtherAnimations[0]);
-            
-            AIShooter aiShooter = m_CachedTargetObject.GetComponent<AIShooter>();
-            aiShooter.equippedGunId = 752;
-            
-            westBrosNomeGUID = m_TargetAIActor.EnemyGuid;
-            AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
-            FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-            DontDestroyOnLoad(m_CachedTargetObject);
-            StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
-
-            return m_CachedTargetObject;
-        }*/
 
         // Dummy prefab for assinging corrupted enemies to room prefabs.
         public static void BuildCorruptedEnemyPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {

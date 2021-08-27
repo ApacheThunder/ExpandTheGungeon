@@ -137,6 +137,8 @@
     <Compile Include="ExpandComponents\ExpandJungleTreeController.cs" />
     <Compile Include="ExpandComponents\ExpandTossSpriteOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandWallMimicManager.cs" />
+    <Compile Include="ExpandComponents\ExpandWesternBroDeathController.cs" />
+    <Compile Include="ExpandComponents\ExpandWesternBroIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandWestPuzzleRoomController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_01.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
+    <Compile Include="ExpandObjects\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
     <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
+    <Compile Include="ItemAPI\Items\GoldensRevolvers\WestBrosRevolverGenerator.cs" />
     <Compile Include="ItemAPI\Items\PowBlock.cs" />
     <Compile Include="ItemAPI\Items\RockSlide.cs" />
     <Compile Include="ItemAPI\Items\TableTechExpand.cs" />

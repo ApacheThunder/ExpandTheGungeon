@@ -295,6 +295,8 @@ namespace ExpandTheGungeon {
                     PowBlock.Init(expandSharedAssets1);
                     CursedBrick.Init(expandSharedAssets1);
 
+                    WestBrosRevolverGenerator.Init();
+
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
 
