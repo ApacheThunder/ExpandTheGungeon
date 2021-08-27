@@ -330,7 +330,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            if (ExpandStats.debugMode) { ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand); }
             return;
         }
 
@@ -509,14 +509,11 @@ namespace ExpandTheGungeon {
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
+            GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+            EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
             // ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
             // GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
 
-            ExpandPlaceWallMimic m_WallMimicPlacer = new ExpandPlaceWallMimic();
-
-            m_WallMimicPlacer.PlaceWallMimics(GameManager.Instance.Dungeon, CurrentPlayer.CurrentRoom);
-
-            m_WallMimicPlacer = null;
             /*BlinkPassiveItem m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
 
             AIActor[] AllEnemies = UnityEngine.Object.FindObjectsOfType<AIActor>();

@@ -210,7 +210,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             File.WriteAllBytes(path, ImageConversion.EncodeToPNG(m_NewImage));
         }
-
+        
         public static void LogRoomHandlerToPNGFile(RoomHandler room) {
             int width = room.area.dimensions.x;
             int height = room.area.dimensions.y;
@@ -317,7 +317,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             File.WriteAllBytes(path, ImageConversion.EncodeToPNG(m_NewImage));
         }
 
-         public static void LogDungeonToPNGFile() {
+        public static void LogDungeonToPNGFile() {
             // int width = GameManager.Instance.Dungeon.data.Height;
             // int height = GameManager.Instance.Dungeon.data.Width;
             int width = 1000;
@@ -422,6 +422,198 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (!File.Exists(path)) { Directory.GetParent(path).Create(); }
 
             File.WriteAllBytes(path, ImageConversion.EncodeToPNG(m_NewImage));
+        }
+
+        public static Texture2D DumpRoomAreaToTexture2D(RoomHandler room) {
+            int width = room.area.dimensions.x;
+            int height = room.area.dimensions.y;
+            IntVector2 basePosition = room.area.basePosition;
+            
+            Texture2D m_NewImage = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            if (!string.IsNullOrEmpty(room.GetRoomName())) { m_NewImage.name = room.GetRoomName(); }
+            
+            Color WhitePixel = new Color32(255, 255, 255, 255); // Wall Cell
+            Color PinkPixel = new Color32(255, 0, 255, 255); // Diagonal Wall Cell (North East)
+            Color YellowPixel = new Color32(255, 255, 0, 255); // Diagonal Wall Cell (North West)
+            Color HalfPinkPixel = new Color32(127, 0, 127, 255); // Diagonal Wall Cell (South East)
+            Color HalfYellowPixel = new Color32(127, 127, 0, 255); // Diagonal Wall Cell (South West)
+            
+            Color BluePixel = new Color32(0, 0, 255, 255); // Floor Cell
+
+            Color BlueHalfGreenPixel = new Color32(0, 127, 255, 255); // Floor Cell (Ice Override)
+            Color HalfBluePixel = new Color32(0, 0, 127, 255); // Floor Cell (Water Override)
+            Color HalfRedPixel = new Color32(0, 0, 127, 255); // Floor Cell (Carpet Override)
+            Color GreenHalfRBPixel = new Color32(127, 255, 127, 255); // Floor Cell (Grass Override)
+            Color HalfWhitePixel = new Color32(127, 127, 127, 255); // Floor Cell (Bone Override)
+            Color OrangePixel = new Color32(255, 127, 0, 255); // Floor Cell (Flesh Override)
+            Color RedHalfGBPixel = new Color32(255, 127, 127, 255); // Floor Cell (ThickGoop Override)
+
+            Color GreenPixel = new Color32(0, 255, 0, 255); // Damage Floor Cell
+
+            Color RedPixel = new Color32(255, 0, 0, 255); // Pit Cell
+
+            Color BlackPixel = new Color32(0, 0, 0, 255); // NULL Cell
+
+            for (int X = 0; X < width; X++) {
+                for (int Y = 0; Y < height; Y++) {
+                    IntVector2 m_CellPosition = (new IntVector2(X, Y) + basePosition);
+                    if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(m_CellPosition.x, m_CellPosition.y)) {                         
+                        CellType? cellData = GameManager.Instance.Dungeon.data[m_CellPosition].type;
+                        CellData localDungeonData = GameManager.Instance.Dungeon.data[m_CellPosition];
+                        bool DamageCell = false;
+                        DiagonalWallType diagonalWallType = DiagonalWallType.NONE;                    
+                        if (localDungeonData != null) {
+                            DamageCell = localDungeonData.doesDamage;
+                            diagonalWallType = localDungeonData.diagonalWallType;
+                        }
+                        if (localDungeonData == null | !cellData.HasValue) {
+                            m_NewImage.SetPixel(X, Y, BlackPixel);
+                        } else if (cellData.Value == CellType.FLOOR) {
+                            if (DamageCell) {
+                                m_NewImage.SetPixel(X, Y, GreenPixel);
+                            } else {
+                                CellVisualData.CellFloorType overrideFloorType = localDungeonData.cellVisualData.floorType;
+                                if (overrideFloorType == CellVisualData.CellFloorType.Stone) {
+                                    m_NewImage.SetPixel(X, Y, BluePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Ice) {
+                                    m_NewImage.SetPixel(X, Y, BlueHalfGreenPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Water) {
+                                    m_NewImage.SetPixel(X, Y, HalfBluePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Carpet) {
+                                    m_NewImage.SetPixel(X, Y, HalfRedPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Grass) {
+                                    m_NewImage.SetPixel(X, Y, GreenHalfRBPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Bone) {
+                                    m_NewImage.SetPixel(X, Y, HalfWhitePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Flesh) {
+                                    m_NewImage.SetPixel(X, Y, OrangePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.ThickGoop) {
+                                    m_NewImage.SetPixel(X, Y, RedHalfGBPixel);
+                                } else {
+                                    m_NewImage.SetPixel(X, Y, BluePixel);
+                                }
+                            }
+                        } else if (cellData.Value == CellType.WALL) {
+                            if (diagonalWallType == DiagonalWallType.NORTHEAST) {
+                                m_NewImage.SetPixel(X, Y, PinkPixel);
+                            } else if (diagonalWallType == DiagonalWallType.NORTHWEST) {
+                                m_NewImage.SetPixel(X, Y, YellowPixel);
+                            } else if (diagonalWallType == DiagonalWallType.SOUTHEAST) {
+                                m_NewImage.SetPixel(X, Y, HalfPinkPixel);
+                            } else if (diagonalWallType == DiagonalWallType.SOUTHWEST) {
+                                m_NewImage.SetPixel(X, Y, HalfYellowPixel);
+                            } else {
+                                m_NewImage.SetPixel(X, Y, WhitePixel);
+                            }
+                        } else if (cellData.Value == CellType.PIT) {
+                            m_NewImage.SetPixel(X, Y, RedPixel);
+                        }
+                    } else {
+                        m_NewImage.SetPixel(X, Y, BlackPixel);
+                    }
+                }
+            }
+
+            m_NewImage.Apply();
+
+            return m_NewImage;
+        }
+
+
+        public static Texture2D LogDungeonToTexture2D() {
+            int width = GameManager.Instance.Dungeon.data.Height;
+            int height = GameManager.Instance.Dungeon.data.Width;
+            // int width = 1000;
+            // int height = 1000;
+
+            Texture2D m_NewImage = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            m_NewImage.name = GameManager.Instance.Dungeon.gameObject.name;
+            
+            Color WhitePixel = new Color32(255, 255, 255, 255); // Wall Cell
+            Color PinkPixel = new Color32(255, 0, 255, 255); // Diagonal Wall Cell (North East)
+            Color YellowPixel = new Color32(255, 255, 0, 255); // Diagonal Wall Cell (North West)
+            Color HalfPinkPixel = new Color32(127, 0, 127, 255); // Diagonal Wall Cell (South East)
+            Color HalfYellowPixel = new Color32(127, 127, 0, 255); // Diagonal Wall Cell (South West)
+            
+            Color BluePixel = new Color32(0, 0, 255, 255); // Floor Cell
+
+            Color BlueHalfGreenPixel = new Color32(0, 127, 255, 255); // Floor Cell (Ice Override)
+            Color HalfBluePixel = new Color32(0, 0, 127, 255); // Floor Cell (Water Override)
+            Color HalfRedPixel = new Color32(0, 0, 127, 255); // Floor Cell (Carpet Override)
+            Color GreenHalfRBPixel = new Color32(127, 255, 127, 255); // Floor Cell (Grass Override)
+            Color HalfWhitePixel = new Color32(127, 127, 127, 255); // Floor Cell (Bone Override)
+            Color OrangePixel = new Color32(255, 127, 0, 255); // Floor Cell (Flesh Override)
+            Color RedHalfGBPixel = new Color32(255, 127, 127, 255); // Floor Cell (ThickGoop Override)
+
+            Color GreenPixel = new Color32(0, 255, 0, 255); // Damage Floor Cell
+
+            Color RedPixel = new Color32(255, 0, 0, 255); // Pit Cell
+
+            Color BlackPixel = new Color32(0, 0, 0, 255); // NULL Cell
+
+            for (int X = 0; X < width; X++) {
+                for (int Y = 0; Y < height; Y++) {
+                    if (GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(X, Y)) { 
+                        IntVector2 m_CellPosition = new IntVector2(X, Y);
+                        CellType? cellData = GameManager.Instance.Dungeon.data[m_CellPosition].type;
+                        CellData localDungeonData = GameManager.Instance.Dungeon.data[m_CellPosition];
+                        bool DamageCell = false;
+                        DiagonalWallType diagonalWallType = DiagonalWallType.NONE;                    
+                        if (localDungeonData != null) {
+                            DamageCell = localDungeonData.doesDamage;
+                            diagonalWallType = localDungeonData.diagonalWallType;
+                        }
+                        if (localDungeonData == null | !cellData.HasValue) {
+                            m_NewImage.SetPixel(X, Y, BlackPixel);
+                        } else if (cellData.Value == CellType.FLOOR) {
+                            if (DamageCell) {
+                                m_NewImage.SetPixel(X, Y, GreenPixel);
+                            } else {
+                                CellVisualData.CellFloorType overrideFloorType = localDungeonData.cellVisualData.floorType;
+                                if (overrideFloorType == CellVisualData.CellFloorType.Stone) {
+                                    m_NewImage.SetPixel(X, Y, BluePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Ice) {
+                                    m_NewImage.SetPixel(X, Y, BlueHalfGreenPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Water) {
+                                    m_NewImage.SetPixel(X, Y, HalfBluePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Carpet) {
+                                    m_NewImage.SetPixel(X, Y, HalfRedPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Grass) {
+                                    m_NewImage.SetPixel(X, Y, GreenHalfRBPixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Bone) {
+                                    m_NewImage.SetPixel(X, Y, HalfWhitePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.Flesh) {
+                                    m_NewImage.SetPixel(X, Y, OrangePixel);
+                                } else if (overrideFloorType == CellVisualData.CellFloorType.ThickGoop) {
+                                    m_NewImage.SetPixel(X, Y, RedHalfGBPixel);
+                                } else {
+                                    m_NewImage.SetPixel(X, Y, BluePixel);
+                                }
+                            }
+                        } else if (cellData.Value == CellType.WALL) {
+                            if (diagonalWallType == DiagonalWallType.NORTHEAST) {
+                                m_NewImage.SetPixel(X, Y, PinkPixel);
+                            } else if (diagonalWallType == DiagonalWallType.NORTHWEST) {
+                                m_NewImage.SetPixel(X, Y, YellowPixel);
+                            } else if (diagonalWallType == DiagonalWallType.SOUTHEAST) {
+                                m_NewImage.SetPixel(X, Y, HalfPinkPixel);
+                            } else if (diagonalWallType == DiagonalWallType.SOUTHWEST) {
+                                m_NewImage.SetPixel(X, Y, HalfYellowPixel);
+                            } else {
+                                m_NewImage.SetPixel(X, Y, WhitePixel);
+                            }
+                        } else if (cellData.Value == CellType.PIT) {
+                            m_NewImage.SetPixel(X, Y, RedPixel);
+                        }
+                    } else {
+                        m_NewImage.SetPixel(X, Y, BlackPixel);
+                    }
+                }
+            }
+
+            m_NewImage.Apply();
+
+            return m_NewImage;
         }
     }
 }

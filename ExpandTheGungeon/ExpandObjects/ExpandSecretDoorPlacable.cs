@@ -249,7 +249,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             m_parentRoom.RegisterInteractable(Lock);
 
-            if (isHollowsElevator) {
+            /*if (isHollowsElevator) {
                 List<IntVector2> CachedPositions = new List<IntVector2>();
                 IntVector2 RandomGlitchEnemyPosition1 = ExpandObjectDatabase.GetRandomAvailableCellForPlacable(GameManager.Instance.Dungeon, m_parentRoom, CachedPositions, false, true);
                 IntVector2 RandomGlitchEnemyPosition2 = ExpandObjectDatabase.GetRandomAvailableCellForPlacable(GameManager.Instance.Dungeon, m_parentRoom, CachedPositions, false, true);
@@ -260,7 +260,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_GlitchEnemyDatabase.SpawnGlitchedRat(m_parentRoom, RandomGlitchEnemyPosition3);
                 m_GlitchEnemyDatabase = null;
                 CachedPositions.Clear();
-            }
+            }*/
             
             if (MinimapIcon) {
                 Minimap.Instance.RegisterRoomIcon(m_parentRoom, MinimapIcon, false);

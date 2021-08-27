@@ -1,4 +1,5 @@
 ﻿using Dungeonator;
+using ExpandTheGungeon.ExpandComponents;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandObjects {
@@ -26,6 +27,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public RoomHandler m_Room;
         
         private GameObject m_RoomAmbienceSFX;
+        private GameObject m_ScreenFXObject;
         private bool m_HasBeenActivated;
 
         public void Start() { }
@@ -46,10 +48,18 @@ namespace ExpandTheGungeon.ExpandObjects {
         
         private void HandleBecomeVisible () {
             if (!m_HasBeenActivated && m_Room != null) {
-                if (m_RoomAmbienceSFX == null) {
+                if (!m_RoomAmbienceSFX) {
                     m_RoomAmbienceSFX = new GameObject("RoomCorruptionAmbience_SFX") { layer = 0 };
                     m_RoomAmbienceSFX.transform.position = m_Room.area.Center;
                     m_RoomAmbienceSFX.transform.parent = m_Room.hierarchyParent;
+                }
+                if (!m_ScreenFXObject) {
+                    m_ScreenFXObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, m_Room.area.UnitCenter, Quaternion.identity);
+                    ExpandGlitchScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandGlitchScreenFXController>();
+                    FXController.isRoomSpecific = true;
+                    FXController.ParentRoomIsSecretGlitchRoom = true;
+                    FXController.ParentRoom = m_Room;
+                    m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
                 }
                 AkSoundEngine.PostEvent(CorruptionFXPlayEvent, m_RoomAmbienceSFX);
                 m_HasBeenActivated = true;

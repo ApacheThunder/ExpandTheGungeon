@@ -1513,7 +1513,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD) {
+        public RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true) {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1604,19 +1604,21 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 Debug.LogException(ex);
             }
             targetRoom.OverrideTilemap = component;
-            for (int num7 = 0; num7 < targetRoom.area.dimensions.x; num7++) {
-                for (int num8 = 0; num8 < targetRoom.area.dimensions.y + 2; num8++) {
-                    IntVector2 intVector7 = targetRoom.area.basePosition + new IntVector2(num7, num8);
-                    if (dungeon.data.CheckInBoundsAndValid(intVector7)) {
-                        CellData currentCell = dungeon.data[intVector7];
-                        TK2DInteriorDecorator.PlaceLightDecorationForCell(dungeon, component, currentCell, intVector7);
+            if (allowProceduralLightFixtures) {
+                for (int num7 = 0; num7 < targetRoom.area.dimensions.x; num7++) {
+                    for (int num8 = 0; num8 < targetRoom.area.dimensions.y + 2; num8++) {
+                        IntVector2 intVector7 = targetRoom.area.basePosition + new IntVector2(num7, num8);
+                        if (dungeon.data.CheckInBoundsAndValid(intVector7)) {
+                            CellData currentCell = dungeon.data[intVector7];
+                            TK2DInteriorDecorator.PlaceLightDecorationForCell(dungeon, component, currentCell, intVector7);
+                        }
                     }
                 }
             }
 
             Pathfinder.Instance.InitializeRegion(dungeon.data, targetRoom.area.basePosition + new IntVector2(-3, -3), targetRoom.area.dimensions + new IntVector2(3, 3));
             
-            if (prototype.usesProceduralDecoration && prototype.allowFloorDecoration) {
+            if (prototype.usesProceduralDecoration && prototype.allowFloorDecoration && allowProceduralDecoration) {
                 TK2DInteriorDecorator decorator = new TK2DInteriorDecorator(assembler);
                 decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
             }
