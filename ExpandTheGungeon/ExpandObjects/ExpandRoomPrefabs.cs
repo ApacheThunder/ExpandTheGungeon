@@ -435,6 +435,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_West_RatKeyPedestalRoom;
         public static PrototypeDungeonRoom Expand_West_SecretRatKeyPedestalRoom;
         public static PrototypeDungeonRoom Expand_West_ShrineRoom;
+        public static PrototypeDungeonRoom Expand_West_WestBrosBossRoom;
 
 
         // All Belly rooms except special ones will be stored here
@@ -1200,6 +1201,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             CreepyGlitchRoom_Entrance = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             GungeoneerMimicBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_West_WestBrosBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_Explode = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_C_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1531,6 +1533,109 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_West_ShrineRoom.overrideRoomVisualType = 0;
             RoomBuilder.GenerateBasicRoomLayout(Expand_West_ShrineRoom);
 
+            Expand_West_WestBrosBossRoom.name = "West Bros Boss Room";
+            Expand_West_WestBrosBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_West_WestBrosBossRoom.GUID = Guid.NewGuid().ToString();
+            Expand_West_WestBrosBossRoom.PreventMirroring = false;
+            Expand_West_WestBrosBossRoom.category = PrototypeDungeonRoom.RoomCategory.BOSS;
+            Expand_West_WestBrosBossRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_West_WestBrosBossRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_West_WestBrosBossRoom.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_West_WestBrosBossRoom.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_West_WestBrosBossRoom.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_West_WestBrosBossRoom.pits = new List<PrototypeRoomPitEntry>();
+            Expand_West_WestBrosBossRoom.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_West_WestBrosBossRoom.placedObjectPositions = new List<Vector2>();
+            Expand_West_WestBrosBossRoom.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_West_WestBrosBossRoom.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_West_WestBrosBossRoom.overriddenTilesets = 0;
+            Expand_West_WestBrosBossRoom.prerequisites = new List<DungeonPrerequisite>();
+            Expand_West_WestBrosBossRoom.InvalidInCoop = false;
+            Expand_West_WestBrosBossRoom.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_West_WestBrosBossRoom.preventAddedDecoLayering = false;
+            Expand_West_WestBrosBossRoom.precludeAllTilemapDrawing = false;
+            Expand_West_WestBrosBossRoom.drawPrecludedCeilingTiles = false;
+            Expand_West_WestBrosBossRoom.preventBorders = false;
+            Expand_West_WestBrosBossRoom.preventFacewallAO = false;
+            Expand_West_WestBrosBossRoom.usesCustomAmbientLight = false;
+            Expand_West_WestBrosBossRoom.customAmbientLight = Color.white;
+            Expand_West_WestBrosBossRoom.ForceAllowDuplicates = false;
+            Expand_West_WestBrosBossRoom.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_West_WestBrosBossRoom.IsLostWoodsRoom = false;
+            Expand_West_WestBrosBossRoom.UseCustomMusic = false;
+            Expand_West_WestBrosBossRoom.UseCustomMusicState = false;
+            Expand_West_WestBrosBossRoom.CustomMusicEvent = string.Empty;
+            Expand_West_WestBrosBossRoom.UseCustomMusicSwitch = false;
+            Expand_West_WestBrosBossRoom.CustomMusicSwitch = string.Empty;
+            Expand_West_WestBrosBossRoom.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_West_WestBrosBossRoom.rewardChestSpawnPosition = new IntVector2(18, 21);
+            Expand_West_WestBrosBossRoom.Width = 38;
+            Expand_West_WestBrosBossRoom.Height = 27;
+            Expand_West_WestBrosBossRoom.overrideRoomVisualType = 1;
+            Expand_West_WestBrosBossRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
+                new PrototypeRoomObjectLayer() {
+                    placedObjects = new List<PrototypePlacedObjectData>() {
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "5861e5a077244905a8c25c2b7b4d6ebb", // Bullet Kin Cowboy
+                            contentsBasePosition = new Vector2(18, 25),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "5861e5a077244905a8c25c2b7b4d6ebb", // Bullet Kin Cowboy
+                            contentsBasePosition = new Vector2(10, 8),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        },
+                        new PrototypePlacedObjectData() {
+                            enemyBehaviourGuid = "ddf12a4881eb43cfba04f36dd6377abb", // Shotgun Kin Cowboy
+                            contentsBasePosition = new Vector2(8, 26),
+                            layer = 0,
+                            xMPxOffset = 0,
+                            yMPxOffset = 0,
+                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
+                            instancePrerequisites = new DungeonPrerequisite[0],
+                            linkedTriggerAreaIDs = new List<int>(0),
+                            assignedPathStartNode = 0
+                        }
+                    },
+                    placedObjectBasePositions = new List<Vector2>() {
+                        new Vector2(8, 25),
+                        new Vector2(10, 8),
+                        new Vector2(8, 26)
+                    },
+                    layerIsReinforcementLayer = true,
+                    shuffle = false,
+                    randomize = 0,
+                    suppressPlayerChecks = true,
+                    delayTime = 15,
+                    reinforcementTriggerCondition = RoomEventTriggerCondition.ENEMY_BEHAVIOR,
+                    probability = 1,
+                    numberTimesEncounteredRequired = 0
+                }
+            };
+            Expand_West_WestBrosBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(0, 14), DungeonData.Direction.WEST);
+            RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(39, 14), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(19, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(19, 28), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(Expand_West_WestBrosBossRoom, new Vector2(16, 15), EnemyBehaviourGuid: ExpandWesternBrosPrefabBuilder.WestBrosNomeGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_WestBrosBossRoom, new Vector2(18, 18), EnemyBehaviourGuid: ExpandWesternBrosPrefabBuilder.WestBrosAngelGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_WestBrosBossRoom, new Vector2(20, 15), EnemyBehaviourGuid: ExpandWesternBrosPrefabBuilder.WestBrosTucGUID);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_West_WestBrosBossRoom);
 
             FakeBossRoom.name = "Fake Boss Room";
             FakeBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);

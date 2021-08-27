@@ -15,7 +15,7 @@ namespace ExpandTheGungeon.ExpandObjects
         Tuc = 2
     }
 
-    class ExpandWesternBrosPrefabBuilder
+    public class ExpandWesternBrosPrefabBuilder
     {
         public static GameObject WestBrosAngelPrefab;
         public static GameObject WestBrosNomePrefab;

@@ -13,8 +13,7 @@ namespace ExpandTheGungeon.ExpandComponents
         {
             base.OnDestroy();
         }
-
-        // Token: 0x0600599A RID: 22938 RVA: 0x0021882C File Offset: 0x00216A2C
+        
         private void OnDeath(Vector2 finalDeathDir)
         {
             bool oneSurvivor = false;

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 178424716
+CRC: 2973818019
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7276fb4320c3e581665c382bb87b2100
+    Hash: 6df53c065d955e03526ebba0cda01434
   TypeTreeHash:
     serializedVersion: 2
     Hash: d367006692d3ae3746e725828b98dd32
@@ -214,6 +214,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/Bloodied Scarf.prefab
 - Assets/ExpandPrefabs/ExpandDustStormFX.prefab
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_ShatterDebris_07.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Nome.prefab
 - Assets/ExpandTextures/EXTrapDoor/RR_mine_lair_floor_door_004.png
 - Assets/ExpandPrefabs/EXShipwreck_Right.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_right_001.png
@@ -348,6 +349,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_up_002.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_right.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_back_004.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_Base.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_05.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_spawn_001.png
@@ -360,6 +362,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_hit_left_001.png
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Move_005.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_idle_left_001.png
+- Assets/ExpandTextures/AIActors/WestBros/WesternBrosBossCard.png
 - Assets/ExpandTextures/Items/glitchround.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_09.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Frame_Top.png
@@ -462,6 +465,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_hit_right_005.png
 - Assets/ExpandTextures/RickRoll/RickRoll_06.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_spawn_002.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Angel.prefab
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_right_004.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_run_up_002.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_burst_002.png
@@ -502,6 +506,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_burst_003.png
 - Assets/ExpandPrefabs/EXJungle_TreeMinimapIcon.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_hit_right_001.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Angel.prefab
 - Assets/ExpandTextures/AIActors/BootlegBullat/bullat_idle_005.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_hit_left.png
 - Assets/ExpandPrefabs/Chaos Baby Dragun.prefab
@@ -532,6 +537,7 @@ Assets:
 - Assets/ExpandTextures/BellyAssets/Belly_Monster_BackEnd.png
 - Assets/ExpandPrefabs/EX_Trap_Apache.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_up_001.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Tuc.prefab
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_Broken.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_06.png
 - Assets/ExpandPrefabs/ExpandChallenge_TripleTrouble.prefab
@@ -608,6 +614,7 @@ Assets:
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Open_06.png
 - Assets/ExpandTextures/AIActors/BootlegBullat/bullat_idle_006.png
 - Assets/ExpandTextures/Items/tabletech_assassin.png
+- Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Nome.prefab
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_MimicCrack_03.png
 - Assets/ExpandTextures/Items/CorruptedPoopsack/corrupted_poopsack_07.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_left.png
