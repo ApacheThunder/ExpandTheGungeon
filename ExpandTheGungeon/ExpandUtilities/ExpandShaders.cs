@@ -290,6 +290,65 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
+        public void BecomeGlitched(GameObject targetObject, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) { try {
+                if (targetObject == null) { return; }
+
+                tk2dBaseSprite sprite = null;
+                try {
+                    if (!targetObject.GetComponent<tk2dBaseSprite>()) { return; }
+                    sprite = targetObject.GetComponent<tk2dBaseSprite>();
+                } catch { };
+                if (sprite == null) { return; }
+                
+                if (targetObject.transform != null && targetObject.transform.position.GetAbsoluteRoom() != null) {
+                    if (GameManager.Instance.Dungeon.data.Entrance != null) {
+                        if (targetObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(GameManager.Instance.Dungeon.data.Entrance.GetRoomName())) {
+                            return;
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(targetObject.name)) { return; }
+                if (targetObject.name.StartsWith("SellPit")) { return; }
+                if (targetObject.name.StartsWith("PitTop")) { return; }
+                if (targetObject.name.StartsWith("PitBottom")) { return; }
+                if (targetObject.name.StartsWith("NPC_PitDweller")) { return; }
+                if (targetObject.name.StartsWith("player")) { return; }
+                if (targetObject.name.StartsWith("BossStatuesDummy")) { return; }
+                if (targetObject.GetComponentInChildren<BossStatueController>(true) != null | targetObject.GetComponent<BossStatueController>() != null) { return; }
+                if (targetObject.GetComponentInChildren<BossStatuesController>(true) != null | targetObject.GetComponent<BossStatuesController>() != null) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("glitchmaterial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("hologrammaterial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("galaxymaterial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("spacematerial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("paradoxmaterial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("cosmichorrormaterial")) { return; }
+                if (sprite.renderer.material.name.ToLower().StartsWith("rainbowmaterial")) { return; }
+                if (targetObject.GetComponent<AIActor>() != null) {
+                    AIActor m_AIActor = targetObject.GetComponent<AIActor>();
+                    if (m_AIActor.GetActorName().StartsWith("Glitched") | 
+                        m_AIActor.ActorName.ToLower().StartsWith("glitched") |
+                        ExpandLists.DontGlitchMeList.Contains(m_AIActor.EnemyGuid) |
+                        m_AIActor.IsBlackPhantom | m_AIActor.ActorName.StartsWith("Statue")
+                       )
+                    {
+                        return;
+                    } else {
+                        m_AIActor.ActorName = "Glitched " + m_AIActor.ActorName;
+                    }
+                }
+
+                ApplyGlitchShader(sprite, true, GlitchInterval, DispProbability, DispIntensity, ColorProbability, ColorIntensity);
+
+            } catch (Exception ex) {
+                if (ExpandStats.debugMode) {
+                    ETGModConsole.Log("Exception Caught at [BecomeGlitched] in ChaosShaders class.", false);
+                    Debug.Log("Exception Caught at[BecomeGlitched] in ChaosShaders class");
+                    Debug.LogException(ex);
+                }                
+                return;
+            }
+        }
+
         public void BecomeGlitched(AIActor aiActor, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) { try {
                 if (aiActor == null) { return; }
                 if (aiActor.gameObject == null) { return; }

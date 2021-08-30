@@ -56,7 +56,7 @@ namespace ExpandTheGungeon.ExpandObjects
             BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, sourceCollection, sourceAnimations, false);
         }
 
-        private static void BuildWestBrosHatPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, tk2dSpriteCollectionData spriteCollection, DebrisObject shadesDebris)
+        private static void BuildWestBrosHatPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, tk2dSpriteCollectionData spriteCollection, DebrisObject broDebris)
         {
             outObject = assetBundle.LoadAsset<GameObject>($"WestBrosHat_{whichBro}");
 
@@ -77,20 +77,17 @@ namespace ExpandTheGungeon.ExpandObjects
                     break;
             }
 
-            tk2dSprite sprite = outObject.AddComponent<tk2dSprite>();
-            sprite.SetSprite(spriteCollection, hatSpriteName);
-            sprite.SortingOrder = 0;
-            outObject.GetComponent<BraveBehaviour>().sprite = sprite;
+            tk2dSprite hatSprite = outObject.AddComponent<tk2dSprite>();
+            hatSprite.SetSprite(spriteCollection, hatSpriteName);
+            hatSprite.SortingOrder = 0;
+            hatSprite.sprite = hatSprite;
 
             ExpandUtility.GenerateSpriteAnimator(outObject);
 
             DebrisObject debrisObject = outObject.AddComponent<DebrisObject>();
-            debrisObject.Priority = shadesDebris.Priority;
+            debrisObject.Priority = broDebris.Priority;
 
-            foreach (var publicField in typeof(DebrisObject).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-            {
-                publicField.SetValue(debrisObject, publicField.GetValue(shadesDebris));
-            }
+            ExpandUtility.DuplicateComponent(debrisObject, broDebris);
         }
 
         // TODO fix gun offsets :/, TODO take from intro animation
@@ -124,10 +121,12 @@ namespace ExpandTheGungeon.ExpandObjects
 
         private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer)
         {
-            outObject = UnityEngine.Object.Instantiate(ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig(isSmiley
+
+            GameObject prefab = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig(isSmiley
                 ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
-                : "c00390483f394a849c36143eb878998f" // Shades
-                ).gameObject);
+                : "c00390483f394a849c36143eb878998f").gameObject; // Shades
+                        
+            outObject = UnityEngine.Object.Instantiate(prefab, null, false);
 
             try
             {
@@ -137,15 +136,29 @@ namespace ExpandTheGungeon.ExpandObjects
                 outObject.name = name;
 
                 AIActor actor = outObject.GetComponent<AIActor>();
-
-                actor.EnemyGuid = $"b5ae92d7891b468abff0944ee810296f{name}";
+                
+                // actor.EnemyGuid = $"b5ae92d7891b468abff0944ee810296f{name}";
                 actor.EnemyId = UnityEngine.Random.Range(100000, 999999);
-
                 actor.ActorName = name;
 
                 EncounterTrackable Encounterable = outObject.GetComponent<EncounterTrackable>();
 
-                Encounterable.EncounterGuid = $"42078e2bc49543a5a0e171cc16aa937d{name}";
+                switch (whichBro) {
+                    case WestBros.Angel:
+                        actor.EnemyGuid = "275354563e244f558be87fcff4b07f9f";
+                        Encounterable.EncounterGuid = "7d6e1faf682d4402b29535020313f383";
+                        break;
+                    case WestBros.Nome:
+                        actor.EnemyGuid = "3a1a33a905bb4b669e7d798f20674c4c";
+                        Encounterable.EncounterGuid = "78cb8889dc884dd9b3aafe64558d858e";
+                        break;
+                    case WestBros.Tuc:
+                        actor.EnemyGuid = "d2e7ea9ea9a444cebadd3bafa0832cd1";
+                        Encounterable.EncounterGuid = "1df53371ce084dafb46f6bcd5a6c1c5f";
+                        break;
+                }
+
+                // Encounterable.EncounterGuid = $"42078e2bc49543a5a0e171cc16aa937d{name}";
 
                 Encounterable.journalData.PrimaryDisplayName = name;
                 Encounterable.journalData.NotificationPanelDescription = name;
@@ -417,7 +430,6 @@ namespace ExpandTheGungeon.ExpandObjects
                 ExpandCustomEnemyDatabase.AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(outObject);
                 UnityEngine.Object.DontDestroyOnLoad(outObject);
-                StaticReferenceManager.AllHealthHavers.Remove(actor.healthHaver);
             }
             catch (Exception e)
             {

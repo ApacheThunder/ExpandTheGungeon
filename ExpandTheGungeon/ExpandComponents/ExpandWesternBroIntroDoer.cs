@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Dungeonator;
+using ExpandTheGungeon.ExpandObjects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +12,8 @@ namespace ExpandTheGungeon.ExpandComponents
         private bool initialized;
 
         private bool finished;
+
+        private GameObject m_ScreenFXObject;
 
         private AIAnimator thisWesternBro;
 
@@ -89,6 +93,16 @@ namespace ExpandTheGungeon.ExpandComponents
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators)
         {
+            if (gameObject.GetComponent<AIActor>() && !m_ScreenFXObject) 
+            {
+                RoomHandler parentRoom = this.gameObject.GetComponent<AIActor>().GetAbsoluteParentRoom();
+                m_ScreenFXObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, parentRoom.area.UnitCenter, Quaternion.identity);
+                ExpandGlitchScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandGlitchScreenFXController>();
+                FXController.shaderType = ExpandGlitchScreenFXController.ShaderType.VHSOldFilm;
+                m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
+            }
+            
+
             if (this.thisWesternBro && this.otherWesternBros != null)
             {
                 foreach (var bro in otherWesternBros)
@@ -229,6 +243,11 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
+            }
+
+            if (this.m_ScreenFXObject)
+            {
+                Destroy(m_ScreenFXObject);
             }
         }
 

@@ -23,9 +23,7 @@ namespace ExpandTheGungeon {
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
-        public static CharacterCostumeSwapper BulletManSelector;
-
-
+        
         public static string ZipFilePath;
         public static string FilePath;
         
@@ -40,6 +38,8 @@ namespace ExpandTheGungeon {
         private static List<string> itemList;
 
         private static bool m_ShotGunSecretWasActive = false;
+
+        private enum WaitType { ShotgunSecret, LanguageFix };
 
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
@@ -128,17 +128,25 @@ namespace ExpandTheGungeon {
             
             ExpandSharedHooks.InstallRequiredHooks();
             
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
+            AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
+
             // Init ItemAPI
-            SetupItemAPI();
-            try {
+            SetupItemAPI(expandSharedAssets1);
+
+            try
+            {
                 // Init Prefab Databases
-                ExpandPrefabs.InitCustomPrefabs();
+                ExpandPrefabs.InitCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom Enemy Prefabs
-                ExpandCustomEnemyDatabase.InitPrefabs();
+                ExpandCustomEnemyDatabase.InitPrefabs(expandSharedAssets1);
                 // Init Custom Room Prefabs
-                ExpandRoomPrefabs.InitCustomRooms();
+                ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom DungeonFlow(s)
-                ExpandDungeonFlow.InitDungeonFlows();
+                ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
                 // Init Custom Dungeons Prefabs
                 ExpandCustomDungeonPrefabs.InitCustomDungeons();
                 // Post Init
@@ -159,16 +167,18 @@ namespace ExpandTheGungeon {
                     "Special Entrance"
                 };
 
-                if (ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+                if (ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
-                ExpandPrefabs.sharedAssets = null;
-                ExpandPrefabs.sharedAssets2 = null;
-                ExpandPrefabs.braveResources = null;
-                ExpandPrefabs.enemiesBase = null;
+                expandSharedAssets1 = null;
+                sharedAssets = null;
+                sharedAssets2 = null;
+                braveResources = null;
+                enemiesBase = null;
                 return;
             }
+            
             // Modified version of Anywhere mod
             DungeonFlowModule.Install();
 
@@ -177,14 +187,22 @@ namespace ExpandTheGungeon {
             if (ExpandStats.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                GameManager.Instance.StartCoroutine(WaitForFoyerLoadForLanguageChange());
+                GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.LanguageFix));
             }
 
+
+            // This should fix issus with Pasts trying to spawn inactive versions of custom enemies.
+            // (and any other mod that has created a custom AIActor or object that has a HealthHaver component.
+            StaticReferenceManager.AllHealthHavers.Clear();
+            // Remove any custom instances that use BroController
+            StaticReferenceManager.AllBros.Clear();
+
             // Null bundles when done with them to avoid game crash issues.
-            ExpandPrefabs.sharedAssets = null;
-            ExpandPrefabs.sharedAssets2 = null;
-            ExpandPrefabs.braveResources = null;
-            ExpandPrefabs.enemiesBase = null;
+            expandSharedAssets1 = null;
+            sharedAssets = null;
+            sharedAssets2 = null;
+            braveResources = null;
+            enemiesBase = null;
         }
 
 
@@ -211,40 +229,41 @@ namespace ExpandTheGungeon {
             }
         }
 
-        private static IEnumerator WaitForFoyerLoadForLanguageChange() {
-            while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
-            yield return null;
-            GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-            StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-            yield break;
-        }
 
-        public static IEnumerator WaitForFoyerLoad() {
+        private static IEnumerator WaitForFoyerLoad(WaitType waitType) {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
             yield return null;
-            CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
-            if (m_Characters != null && m_Characters.Length > 0) {
-                foreach (CharacterCostumeSwapper m_Character in m_Characters) {
-                    if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
-                        BulletManSelector = m_Character;
-                        break;
+            switch (waitType) {
+                case WaitType.LanguageFix:
+                    GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+                    StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+                    yield break;
+                case WaitType.ShotgunSecret:
+                    CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
+                    if (m_Characters != null && m_Characters.Length > 0) {
+                        CharacterCostumeSwapper BulletManSelector = null;
+                        foreach (CharacterCostumeSwapper m_Character in m_Characters) {
+                            if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
+                                BulletManSelector = m_Character;
+                                break;
+                            }
+                        }
+                        yield return null;
+                        if (BulletManSelector) {
+                            bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
+                            if (Allow) {
+                                FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
+                                m_active.SetValue(BulletManSelector, true);
+                                BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
+                                BulletManSelector.CostumeSprite.renderer.enabled = false;
+                                m_ShotGunSecretWasActive = true;
+                            }
+                        }
                     }
-                }
-                if (BulletManSelector) {
-                    bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
-                    yield return null;
-                    if (!Allow) { yield break; }
-                    yield return null;
-                    FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
-                    m_active.SetValue(BulletManSelector, true);
-                    BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
-                    BulletManSelector.CostumeSprite.renderer.enabled = false;
-                    m_ShotGunSecretWasActive = true;
-                }
+                    yield break;
             }
-            yield break;
         }
-
+               
         public static void InitCustomAssetBundle() {
             
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
@@ -271,11 +290,9 @@ namespace ExpandTheGungeon {
             }
         }
 
-        private void SetupItemAPI() {
+        private void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ItemAPISetup) {
                 try {
-                    AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
-
                     Tools.Init();
                     ItemBuilder.Init();
                     BabyGoodHammer.Init(expandSharedAssets1);
@@ -299,9 +316,7 @@ namespace ExpandTheGungeon {
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
-
-                    expandSharedAssets1 = null;
-
+                    
                     ItemAPISetup = true;
                 } catch (Exception e2) {
                     Tools.PrintException(e2, "FF0000");
@@ -313,7 +328,7 @@ namespace ExpandTheGungeon {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions();
-            if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+            if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {

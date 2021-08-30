@@ -156,12 +156,12 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(WestRoom_02, WestRoom_12);
             m_CachedFlow.AddNodeToFlow(westBossfoyerNode, WestRoom_02);
             m_CachedFlow.AddNodeToFlow(westBossNode, westBossfoyerNode);
-            m_CachedFlow.AddNodeToFlow(RatKeyRoom_02, westBossNode);
+            m_CachedFlow.AddNodeToFlow(exitNode, westBossNode);
 
             m_CachedFlow.AddNodeToFlow(WestRoom_10, WestRoom_04);
             m_CachedFlow.AddNodeToFlow(fakebossFoyerNode, WestRoom_10);
             m_CachedFlow.AddNodeToFlow(fakebossNode, fakebossFoyerNode);
-            m_CachedFlow.AddNodeToFlow(exitNode, fakebossNode);
+            m_CachedFlow.AddNodeToFlow(RatKeyRoom_02, fakebossNode);
 
             m_CachedFlow.FirstNode = entranceNode;
 

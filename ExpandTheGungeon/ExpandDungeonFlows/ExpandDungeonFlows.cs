@@ -178,7 +178,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
 
         // Initialize KnownFlows array with custom + official flows.
-        public static void InitDungeonFlows(bool refreshFlows = false) {
+        public static void InitDungeonFlows(AssetBundle sharedAssets2, bool refreshFlows = false) {
 
             Dungeon TutorialPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
             Dungeon CastlePrefab = DungeonDatabase.GetOrLoadByName("Base_Castle");
@@ -192,7 +192,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             Dungeon ForgePrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             Dungeon BulletHellPrefab = DungeonDatabase.GetOrLoadByName("Base_BulletHell");
 
-            BaseSharedInjectionData = ExpandPrefabs.sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
+            BaseSharedInjectionData = sharedAssets2.LoadAsset<SharedInjectionData>("Base Shared Injection Data");
             GungeonInjectionData = GungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
@@ -445,7 +445,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
 
             // Don't build/add flows until injection data is created!
-            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandPrefabs.sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
+            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
 
             // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
             KnownFlows = new List<DungeonFlow>();

@@ -207,11 +207,9 @@
     <Compile Include="ExpandComponents\ExpandSpawnGlitchedObjectOnDeath.cs" />
     <Compile Include="ExpandMain\ExpandStringTableManager.cs" />
     <Compile Include="ExpandComponents\ExpandWeatherController.cs" />
-    <Compile Include="ExpandUtilities\AssetFinder.cs" />
     <Compile Include="ExpandComponents\ExpandExplodeOnDeath.cs" />
     <Compile Include="ExpandObjects\ExpandGlitchedEnemies.cs" />
     <Compile Include="ExpandMain\ExpandPlaceGlitchedEnemies.cs" />
-    <Compile Include="ExpandUtilities\ExpandLoadPrefab.cs" />
     <Compile Include="ExpandStats.cs" />
     <Compile Include="ExpandObjects\ExpandLists.cs" />
     <Compile Include="DungeonFlowModule.cs" />
@@ -243,70 +241,6 @@
     <EmbeddedResource Include="SerializedData\BehaviorScripts\BabyGoodHammer_BehaviorScript.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\BulletHell\Hell_Hath_No_Joery_009_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Giant_Elevator_Room_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Creepy_Glitched_Room_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_MelonTurtle_Apache_Hub_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_MelonTurtle_Box_Hub_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_MelonTurtle_Enclose_Hub_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Blocks_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Blocks_Pits_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Box_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Chain_Gap_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Challenge_1_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Cross_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_C_Gap_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_C_Hub_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Explode_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Flying_Gap_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Gate_Cross_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Passage_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Jump_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Line_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Pit_Passage_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_R_Blocks_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Singer_Gap_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Small_Passage_1_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Steps_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Castle\Expand_TurtleMelon_Wall_Pit_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Apache_SpiderMaze_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Secret_Exit_Room_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Secret_Reward_Room_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Thwomp_Crossing_Horizontal_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Thwomp_Crossing_Vertical_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Utiliroom_Pitfall_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Utiliroom_SpecialPit_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Zelda_Puzzle_Room_3_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Destination_MiniElevator_Room_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Secret_Elevator_Exit_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Secret_MiniElevator_Room_Layout.png" />
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Secret_Rat_MiniElevator_Room_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Large_Elevator_Entrance_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Apache_FieldOfSaws_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Creepy_MirrorBoss_Room_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Apache_TheCrushZone_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegBulletMan_BehaviorScript.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -326,87 +260,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\BehaviorScripts\Cronenberg_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_Crosshair_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_Basic_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_JumpInThePit_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_LongSpikeTrap_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_SpikeTrap_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Apache_SpikeAndPits_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\GungeonProper\Expand_Neighborino_SniperRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Mines\Neighborino_Hopscoth_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Mines\Neighborino_GoopTroop_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Mines\Neighborino_Pit_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Mines\Neighborino_Singer_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Mines\Neighborino_Walkway_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_BlobRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_CubeRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_HellInACell_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_IceIsNice_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_IceScotch_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_MrPresident_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Hollow\Expand_Neighborino_SawRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_Arena_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_CaptainCrunch_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_CorridorOfDoomDeath_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_FireRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_Pits_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\Forge\Expand_Neighborino_SkullRoom_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Apache_PitTraps_Layout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\RoomLayoutData\TrapRooms\Expand_Apache_RickRollChestRoom_Layout.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\BehaviorScripts\Parasite_BehaviorScript.txt" />

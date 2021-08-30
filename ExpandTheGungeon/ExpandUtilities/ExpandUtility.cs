@@ -48,6 +48,18 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
+        public static void DuplicateComponent(Type target, Type source) {
+            foreach (var publicField in target.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
+                publicField.SetValue(target, publicField.GetValue(source));
+            }
+        }
+
+        public static void DuplicateDebrisObject(DebrisObject target, DebrisObject source) {
+            foreach (var publicField in typeof(DebrisObject).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
+                publicField.SetValue(target, publicField.GetValue(source));
+            }
+        }
+
         public static AIActor BuildNewAIActor(GameObject targetObject, string EnemyName, string EnemyGUID, float EnemyHealth = 15, tk2dSprite spriteSource = null, Transform gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
 
             if (!targetObject | targetObject.GetComponent<AIActor>()) { return null; }
@@ -317,14 +329,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_NewBreakable;
         }
 
-        public static PrototypeDungeonRoom[] BuildRoomArrayFromTextFile(string textFilePath, bool AllowSetRoomCategory = true, bool AllowSetFloorTarget = false) {
+        public static PrototypeDungeonRoom[] BuildRoomArrayFromTextFile(AssetBundle[] bundles, string textFilePath, bool AllowSetRoomCategory = true, bool AllowSetFloorTarget = false) {
             List<PrototypeDungeonRoom> m_CachedRoomList = new List<PrototypeDungeonRoom>();
             List<string> m_CachedStringList = ResourceExtractor.BuildStringListFromEmbeddedResource(textFilePath);
 
             if (m_CachedStringList == null | m_CachedStringList.Count <= 0) { return null; }
             
             foreach (string roomEntry in m_CachedStringList) {
-                m_CachedRoomList.Add(RoomFactory.BuildFromResource(roomEntry, AllowSetRoomCategory, AllowSetFloorTarget));
+                m_CachedRoomList.Add(RoomFactory.BuildFromResource(bundles, roomEntry, AllowSetRoomCategory, AllowSetFloorTarget));
             }
 
             PrototypeDungeonRoom[] m_CachedRoomArray = new PrototypeDungeonRoom[0];

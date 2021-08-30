@@ -65,7 +65,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static string FriendlyCultistGUID;
         public static string corruptedEnemyGUID;
 
-        public static void InitPrefabs() {
+        public static void InitPrefabs(AssetBundle expandSharedAssets1) {
             // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
             HashSet<string> _LockedNamespaces = ReflectionHelpers.ReflectGetField<HashSet<string>>(typeof(IDPool<AIActor>), "_LockedNamespaces", Game.Enemies);
             _LockedNamespaces.Remove("gungeon");
@@ -76,9 +76,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
             );
-
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
-
+            
             // Real Prefabs
             BuildBabyGoodHammerPrefab(expandSharedAssets1, out HammerCompanionPrefab);
             BuildBootlegBullatPrefab(expandSharedAssets1, out BootlegBullatPrefab);
@@ -98,13 +96,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildMetalCubeGuyWestPrefab(expandSharedAssets1, out MetalCubeGuyWestPrefab);
             BuildParasiteBossPrefab(out MonsterParasitePrefab);
             BuildJungleBossPrefab(out com4nd0BossPrefab);
-
+            
             // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
             UpdateMTGSpawnPool();
             
             Game.Enemies.LockNamespace("gungeon");
-
-            expandSharedAssets1 = null;
         }
 
         public static void UpdateMTGSpawnPool() {
@@ -216,8 +212,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
             
             if (isFakePrefab) {
-                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-                StaticReferenceManager.AllHealthHavers.Remove(m_CachedAIActor.healthHaver);
+                FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);                
             }
             DontDestroyOnLoad(m_CachedTargetObject);
 
@@ -2957,7 +2952,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
                 DontDestroyOnLoad(m_CachedTargetObject);
-                StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
             }
         }
         
@@ -3032,8 +3026,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 com4nd0GUID = m_TargetAIActor.EnemyGuid;
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-                DontDestroyOnLoad(m_CachedTargetObject);
-                StaticReferenceManager.AllHealthHavers.Remove(m_TargetAIActor.healthHaver);
+                DontDestroyOnLoad(m_CachedTargetObject);                
             }
         }
 

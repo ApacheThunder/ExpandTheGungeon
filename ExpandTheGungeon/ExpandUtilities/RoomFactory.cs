@@ -15,11 +15,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static string TextureBasePath = "SerializedData\\RoomFactoryRooms\\";
         private static string nameSpace = "ExpandTheGungeon";
-
-        /*public static AssetBundle sharedAssets;
-        public static AssetBundle sharedAssets2;
-        public static AssetBundle braveResources;*/
-
+        
         private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
         private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
 
@@ -46,18 +42,18 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
 
-        public static PrototypeDungeonRoom BuildFromResource(string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false, bool assignDecorationSettings = false) {
+        public static PrototypeDungeonRoom BuildFromResource(AssetBundle[] Bundles, string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false, bool assignDecorationSettings = false) {
             string RoomPath = (TextureBasePath + roomPath);
             if (defineFullPath) { RoomPath = roomPath; }
             Texture2D texture = ResourceExtractor.GetTextureFromResource(RoomPath);
             RoomData roomData = ExtractRoomDataFromResource(RoomPath);
-            return Build(texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
+            return Build(Bundles, texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
         }
-
-        public static PrototypeDungeonRoom Build(Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, bool AssignDecorationProperties, float? Weight) {
+        
+        public static PrototypeDungeonRoom Build(AssetBundle[] Bundles, Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, bool AssignDecorationProperties, float? Weight) {
             try {
                 PrototypeDungeonRoom room = CreateRoomFromTexture(texture);
-                ApplyRoomData(room, roomData, SetRoomCategory, AutoAssignToFloor, AssignDecorationProperties, Weight);
+                ApplyRoomData(Bundles, room, roomData, SetRoomCategory, AutoAssignToFloor, AssignDecorationProperties, Weight);
                 room.OnBeforeSerialize();
                 room.OnAfterDeserialize();
                 room.UpdatePrecalculatedData();
@@ -69,7 +65,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return CreateEmptyRoom(12, 12);
         }
 
-        public static void ApplyRoomData(PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, bool assignDecorationProperties, float? Weight) {
+        public static void ApplyRoomData(AssetBundle[] Bundles, PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, bool assignDecorationProperties, float? Weight) {
             // Tools.Print("Building Exits...");
             if (roomData.exitPositions != null) {
                 for (int i = 0; i < roomData.exitPositions.Length; i++) {
@@ -93,7 +89,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             // Tools.Print("Adding Objects...");
             if (roomData.placeablePositions != null) {
                for (int i = 0; i < roomData.placeablePositions.Length; i++) {
-					AddPlaceableToRoom(room, roomData.placeablePositions[i], roomData.placeableGUIDs[i]);
+					AddPlaceableToRoom(Bundles, room, roomData.placeablePositions[i], roomData.placeableGUIDs[i]);
 				}
             }
 
@@ -278,28 +274,18 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         
-        public static GameObject GetGameObjectFromBundles(string assetPath) {
-            if (ExpandPrefabs.sharedAssets.LoadAsset<GameObject>(assetPath)) {
-                return ExpandPrefabs.sharedAssets.LoadAsset<GameObject>(assetPath);
-            } else if (ExpandPrefabs.sharedAssets2.LoadAsset<GameObject>(assetPath)) {
-                return ExpandPrefabs.sharedAssets2.LoadAsset<GameObject>(assetPath);
-            } else if (ExpandPrefabs.braveResources.LoadAsset<GameObject>(assetPath)) {
-                return ExpandPrefabs.braveResources.LoadAsset<GameObject>(assetPath);
-            } else {
-                return null;
+        public static GameObject GetGameObjectFromBundles(AssetBundle[] bundles, string assetPath) {
+            foreach (AssetBundle bundle in bundles) {
+                if (bundle.LoadAsset<GameObject>(assetPath)) { return bundle.LoadAsset<GameObject>(assetPath); }
             }
+            return null;            
         }
 
-        public static DungeonPlaceable GetPlaceableFromBundles(string assetPath) {
-            if (ExpandPrefabs.sharedAssets.LoadAsset<DungeonPlaceable>(assetPath)) {
-                return ExpandPrefabs.sharedAssets.LoadAsset<DungeonPlaceable>(assetPath);
-            } else if (ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>(assetPath)) {
-                return ExpandPrefabs.sharedAssets2.LoadAsset<DungeonPlaceable>(assetPath);
-            } else if (ExpandPrefabs.braveResources.LoadAsset<DungeonPlaceable>(assetPath)) {
-                return ExpandPrefabs.braveResources.LoadAsset<DungeonPlaceable>(assetPath);
-            } else {
-                return null;
+        public static DungeonPlaceable GetPlaceableFromBundles(AssetBundle[] bundles, string assetPath) {
+            foreach (AssetBundle bundle in bundles) {
+                if (bundle.LoadAsset<DungeonPlaceable>(assetPath)) { return bundle.LoadAsset<DungeonPlaceable>(assetPath); }
             }
+            return null;
         }
         
         public static void AddEnemyToRoom(PrototypeDungeonRoom room, Vector2 location, string guid, int layer, bool shuffle) {
@@ -351,9 +337,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.additionalObjectLayers[layer].placedObjectBasePositions.Add(location);
         }
 
-        public static void AddPlaceableToRoom(PrototypeDungeonRoom room, Vector2 location, string assetPath) {
+        public static void AddPlaceableToRoom(AssetBundle[] Bundles, PrototypeDungeonRoom room, Vector2 location, string assetPath) {
             try {
-               if (GetGameObjectFromBundles(assetPath) != null) {
+               if (GetGameObjectFromBundles(Bundles, assetPath) != null) {
 					DungeonPrerequisite[] array = new DungeonPrerequisite[0];
 					room.placedObjectPositions.Add(location);
 					DungeonPlaceable dungeonPlaceable = ScriptableObject.CreateInstance<DungeonPlaceable>();
@@ -363,7 +349,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 					dungeonPlaceable.variantTiers = new List<DungeonPlaceableVariant> {
 						new DungeonPlaceableVariant {
 							percentChance = 1f,
-							nonDatabasePlaceable = GetGameObjectFromBundles(assetPath),
+							nonDatabasePlaceable = GetGameObjectFromBundles(Bundles, assetPath),
 							prerequisites = array,
 							materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
 						}
@@ -376,7 +362,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 						placeableContents = dungeonPlaceable
 					});
                     return;                
-                } else if (GetPlaceableFromBundles(assetPath) != null) {
+                } else if (GetPlaceableFromBundles(Bundles, assetPath) != null) {
                     DungeonPrerequisite[] instancePrerequisites = new DungeonPrerequisite[0];
                     room.placedObjectPositions.Add(location);
                     room.placedObjects.Add(new PrototypePlacedObjectData {
@@ -384,7 +370,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     	fieldData = new List<PrototypePlacedObjectFieldData>(),
                     	instancePrerequisites = instancePrerequisites,
                     	linkedTriggerAreaIDs = new List<int>(),
-                    	placeableContents = GetPlaceableFromBundles(assetPath)
+                    	placeableContents = GetPlaceableFromBundles(Bundles, assetPath)
                     });
                     return;
                 } else {

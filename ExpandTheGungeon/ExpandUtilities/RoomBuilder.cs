@@ -6,7 +6,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
 	public class RoomBuilder {
 
-        public static string TextureBasePath = "SerializedData\\RoomLayoutData\\";
+        /*public static string TextureBasePath = "SerializedData\\RoomLayoutData\\";
         
         public static void GenerateRoomLayoutFromPNG(PrototypeDungeonRoom room, string filePath, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             Texture2D m_TextureFromResource = ResourceExtractor.GetTextureFromResource(TextureBasePath + filePath);
@@ -144,7 +144,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.OnBeforeSerialize();
             room.OnAfterDeserialize();
             room.UpdatePrecalculatedData();
-        }
+        }*/
 
         public static void GenerateRoomLayoutFromTexture2D(PrototypeDungeonRoom room, Texture2D sourceTexture, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             float DamageToPlayersPerTick = 0;

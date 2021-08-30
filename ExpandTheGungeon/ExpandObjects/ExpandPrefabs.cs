@@ -13,12 +13,7 @@ using FullInspector;
 namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandPrefabs : MonoBehaviour {
-
-        public static AssetBundle sharedAssets;
-        public static AssetBundle sharedAssets2;
-        public static AssetBundle braveResources;
-        public static AssetBundle enemiesBase;
-
+        
         private static Dungeon TutorialDungeonPrefab;
         private static Dungeon SewerDungeonPrefab;
         private static Dungeon MinesDungeonPrefab;
@@ -338,14 +333,9 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Modified Items
         public static Gun ChamberGun;
-        
+       
+        public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
-        public static void InitCustomPrefabs() {
-
-            sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
             TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
             SewerDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
             MinesDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Mines");
@@ -355,9 +345,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
-
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
-                        
+                                    
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
@@ -1194,7 +1182,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             
             if (Hell_Hath_No_Joery_009 != null) {
-                RoomBuilder.GenerateRoomLayoutFromPNG(Hell_Hath_No_Joery_009, "BulletHell\\Hell_Hath_No_Joery_009_Layout.png");
+                RoomBuilder.GenerateRoomLayoutFromTexture2D(Hell_Hath_No_Joery_009, expandSharedAssets1.LoadAsset<Texture2D>("Hell_Hath_No_Joery_009_Layout"));
             }
 
             List<PrototypeDungeonRoom> m_GatlingGullRooms = new List<PrototypeDungeonRoom>();
@@ -1419,7 +1407,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             big_entrance.placedObjectPositions[0] = big_entrance.placedObjects[0].contentsBasePosition;
             big_entrance.placedObjectPositions[1] = big_entrance.placedObjects[1].contentsBasePosition;
                         
-            RoomBuilder.GenerateRoomLayoutFromPNG(big_entrance, "Large_Elevator_Entrance_Layout.png");
+            RoomBuilder.GenerateRoomLayoutFromTexture2D(big_entrance, expandSharedAssets1.LoadAsset<Texture2D>("Large_Elevator_Entrance_Layout"));
 
             MegaChallengeShrineTable.includedRooms = new WeightedRoomCollection();
             MegaChallengeShrineTable.includedRooms.elements = new List<WeightedRoom>();
@@ -3045,7 +3033,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             objectDatabase = null;
 
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
-            expandSharedAssets1 = null;
             SewerDungeonPrefab = null;
             MinesDungeonPrefab = null;
             CathedralDungeonPrefab = null;

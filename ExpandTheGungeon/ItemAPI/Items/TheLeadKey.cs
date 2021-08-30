@@ -232,6 +232,8 @@ namespace ExpandTheGungeon.ItemAPI {
                     GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
                     newObject.transform.SetParent(GlitchRoom.hierarchyParent);
                     if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
+                    if (newObject.GetComponent<PathingTrapController>()) { Destroy(newObject.GetComponent<PathingTrapController>()); }
+                    if (newObject.GetComponent<ShopItemController>()) { Destroy(newObject.GetComponent<ShopItemController>()); }
                     if (newObject.GetComponent<Chest>()) { newObject.GetComponent<Chest>().ConfigureOnPlacement(GlitchRoom); }
                     if (newObject.GetComponent<FlippableCover>()) {
                         ExpandKickableObject kickableObject = newObject.AddComponent<ExpandKickableObject>();
@@ -245,6 +247,18 @@ namespace ExpandTheGungeon.ItemAPI {
                     if (newObject.GetComponent<TalkDoerLite>()) {
                         GlitchRoom.RegisterInteractable(newObject.GetComponent<TalkDoerLite>());
                         newObject.GetComponent<TalkDoerLite>().SpeaksGleepGlorpenese = true;
+                    }
+                    if (newObject.GetComponent<KickableObject>()) { GlitchRoom.RegisterInteractable(newObject.GetComponent<KickableObject>()); }
+
+                    if (newObject && UnityEngine.Random.value <= 0.4f && !newObject.GetComponent<AIActor>() && !newObject.GetComponent<Chest>()) {
+                        if (string.IsNullOrEmpty(newObject.name) | (!newObject.name.ToLower().StartsWith("glitchtile") && !newObject.name.ToLower().StartsWith("ex secret door") && !newObject.name.ToLower().StartsWith("lock") && !newObject.name.ToLower().StartsWith("chest"))) {
+                            float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.04f);
+                            float RandomDispFloat = UnityEngine.Random.Range(0.06f, 0.08f);
+                            float RandomDispIntensityFloat = UnityEngine.Random.Range(0.07f, 0.1f);
+                            float RandomColorProbFloat = UnityEngine.Random.Range(0.035f, 0.1f);
+                            float RandomColorIntensityFloat = UnityEngine.Random.Range(0.05f, 0.1f);
+                            ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                        }
                     }
                 }
             }

@@ -1,10 +1,7 @@
-﻿using System;
-using Gungeon;
+﻿using Gungeon;
 using System.Collections.Generic;
-using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandObjects;
-using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ItemAPI {
 
