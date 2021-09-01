@@ -527,6 +527,62 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_CorruptionRoomTransition_01" ID="{2361DC04-D42E-49A4-8FA9-F2DC49E570E7}">
+					<ChildrenList>
+						<Action Name="" ID="{731EAC93-1D81-49E8-BB96-557A8C1C422F}" ShortID="393896267">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BreachTransitionFast" ID="{C0005754-3F4A-482A-A3C9-1EE7A7324694}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptionRoomTransition_01" ID="{71879714-707C-4879-A55A-E9846773C43B}">
+					<ChildrenList>
+						<Action Name="" ID="{C8CC76ED-A853-4587-BE3C-FC8FC6BBD0AD}" ShortID="603522027">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BreachTransitionFast" ID="{C0005754-3F4A-482A-A3C9-1EE7A7324694}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CorruptionRoomTransition_02" ID="{A4DBFF90-5E04-4FAD-AD08-F39A90B6D045}">
+					<ChildrenList>
+						<Action Name="" ID="{42D71C1B-6720-4AE7-AEA4-543DBE9E4214}" ShortID="213054465">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BreachTransition" ID="{7297D268-92DA-4F84-8D93-309B08B77940}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_CorruptionRoomTransition_02" ID="{17811CE8-3817-4EF4-A24D-6E8014E4D5A5}">
+					<ChildrenList>
+						<Action Name="" ID="{ADE74D58-BD48-4CE6-BAFD-15062AC2653C}" ShortID="438911374">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BreachTransition" ID="{7297D268-92DA-4F84-8D93-309B08B77940}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

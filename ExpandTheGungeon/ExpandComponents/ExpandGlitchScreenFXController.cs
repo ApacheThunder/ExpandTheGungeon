@@ -12,6 +12,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             shaderType = ShaderType.VHSBasic;
             isRoomSpecific = false;
             ParentRoomIsSecretGlitchRoom = false;
+            UseCorruptionAmbience = true;
+
+            // For Glitch Shader
+            GlitchUpdatedExternally = true;
+            GlitchIntensityIsRandom = false;
+            GlitchUpdateFrequencyIsRandom = false;
+            GlitchAmount = 0.5f;
+            GlitchRandom = 0.1f;
+            GlitchUpdateFrequency = 0.05f;
+            GlitchMapTexture = "EX_GlitchMap_Snow";
 
             m_yScanline = 0;
             m_xScanline = 0;
@@ -33,12 +43,22 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public bool isRoomSpecific;
         public bool ParentRoomIsSecretGlitchRoom;
+        public bool UseCorruptionAmbience;
+        // For Glitch Shader
+        public bool GlitchUpdatedExternally;
+        public bool GlitchIntensityIsRandom;
+        public bool GlitchUpdateFrequencyIsRandom;
+        public float GlitchAmount;
+        public float GlitchRandom;
+        public float GlitchUpdateFrequency;
+        public string GlitchMapTexture;
+        
 
         public RoomHandler ParentRoom;
 
         public ShaderType shaderType;
 
-        public enum ShaderType { VHS, VHSOldFilm, VHSBasic }
+        public enum ShaderType { VHS, VHSOldFilm, VHSBasic, Glitch }
 
         private bool m_SetupComplete;
         private bool m_MaterialRegistered;
@@ -48,7 +68,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private float m_xScanline;
         private float m_xShift;
         private float m_xShiftIntensity;
-        private float m_colorBleedToggle;        
+        private float m_colorBleedToggle;
         
 
         private void Start() {
@@ -82,9 +102,16 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetTexture("_VHSTex", VHSClip_Empty);
                     m_colorBleedToggle = 0;
                     break;
+                case ShaderType.Glitch:
+                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandGlitchScreen"));
+                    ScreenMaterial.SetTexture("_GlitchMap", ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>(GlitchMapTexture));
+                    GlitchRandom = Random.Range(-1.0f, 1.0f);
+                    ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(GlitchAmount, 0f, 1f));
+                    ScreenMaterial.SetFloat("_GlitchRandom", GlitchRandom);
+                    break;
             }
             if (isRoomSpecific && !ParentRoomIsSecretGlitchRoom) {
-                AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_01", gameObject);
+                if (UseCorruptionAmbience) { AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_01", gameObject); }
             } else {
                 Pixelator.Instance.RegisterAdditionalRenderPass(ScreenMaterial);
                 m_MaterialRegistered = true;
@@ -148,6 +175,24 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetFloat("_xShiftIntensity", m_xShiftIntensity);
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
                     break;
+                case ShaderType.Glitch:
+                    if (!GlitchUpdatedExternally) {
+                        if (GlitchUpdateFrequencyIsRandom | Random.value < 0.4f) {
+                            if (Random.value < 0.3f) {
+                                ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(Random.Range(0, 0.05f), 0f, 1f));
+                            } else {
+                                ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(GlitchAmount, 0f, 1f));
+                            }
+                            if (Random.value < GlitchUpdateFrequency) {
+                                GlitchRandom = Random.Range(-1.0f, 1.0f);
+                                ScreenMaterial.SetFloat("_GlitchRandom", GlitchRandom);
+                            }
+                        }
+                    } else {
+                        ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(GlitchAmount, 0f, 1f));
+                        ScreenMaterial.SetFloat("_GlitchRandom", GlitchRandom);
+                    }
+                    break;
             }
         }
 
@@ -162,6 +207,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSBasic:
+                        // Nothing extra needed for now
+                        break;
+                    case ShaderType.Glitch:
                         // Nothing extra needed for now
                         break;
                 }

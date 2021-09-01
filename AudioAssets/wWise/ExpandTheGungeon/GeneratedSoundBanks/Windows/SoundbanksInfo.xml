@@ -33,6 +33,8 @@
 				<Event Id="1290858200" Name="Play_EX_CorruptionBombExplode_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombExplode_01"/>
 				<Event Id="184349599" Name="Play_EX_CorruptionBombFire_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombFire_01"/>
 				<Event Id="352490979" Name="Play_EX_CorruptionBombPickup_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionBombPickup_01"/>
+				<Event Id="2950242731" Name="Play_EX_CorruptionRoomTransition_01" ObjectPath="\Events\Weapons\Play_EX_CorruptionRoomTransition_01"/>
+				<Event Id="2950242728" Name="Play_EX_CorruptionRoomTransition_02" ObjectPath="\Events\Weapons\Play_EX_CorruptionRoomTransition_02"/>
 				<Event Id="3971937637" Name="Play_EX_Cronenberg_Damage_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Damage_01"/>
 				<Event Id="2420965190" Name="Play_EX_Cronenberg_Die_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Die_01"/>
 				<Event Id="2184586371" Name="Play_EX_Cronenberg_Spawn_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Spawn_01"/>
@@ -50,6 +52,8 @@
 				<Event Id="3492306034" Name="Stop_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3586982857" Name="Stop_EX_CorruptionAmbience_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_01"/>
 				<Event Id="3586982858" Name="Stop_EX_CorruptionAmbience_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_02"/>
+				<Event Id="1036099945" Name="Stop_EX_CorruptionRoomTransition_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_01"/>
+				<Event Id="1036099946" Name="Stop_EX_CorruptionRoomTransition_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_02"/>
 				<Event Id="3570814999" Name="Stop_EX_MUS_All" ObjectPath="\Events\Weapons\Stop_EX_MUS_All"/>
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
@@ -111,6 +115,10 @@
 					<ShortName>GlitchBombFire.wav</ShortName>
 					<Path>SFX\GlitchBombFire_255C9D35.wem</Path>
 				</File>
+				<File Id="661097150" Language="SFX">
+					<ShortName>BreachTransitionFast.wav</ShortName>
+					<Path>SFX\BreachTransitionFast_255C9D35.wem</Path>
+				</File>
 				<File Id="719081646" Language="SFX">
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem</Path>
@@ -118,6 +126,10 @@
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_255C9D35.wem</Path>
+				</File>
+				<File Id="861146735" Language="SFX">
+					<ShortName>BreachTransition.wav</ShortName>
+					<Path>SFX\BreachTransition_255C9D35.wem</Path>
 				</File>
 				<File Id="900807623" Language="SFX">
 					<ShortName>GlitchBombExplode.wav</ShortName>

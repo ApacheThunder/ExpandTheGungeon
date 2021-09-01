@@ -66,3 +66,5 @@ Credits:
 * Retrash for the Baby Good Hammer item sprite, Wooden Crest sprite, improvements to Jungle tree sprite, and for some room designs on Belly floor.
 * Charcola for the Table Tech Assassin sprite design.
 * Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided some additional room designs and revised versions of Cronenberg sprites for aggressive versions found on Belly.
+* https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
+* https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.

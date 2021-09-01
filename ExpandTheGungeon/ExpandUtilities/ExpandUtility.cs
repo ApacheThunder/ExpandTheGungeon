@@ -47,16 +47,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 JsonUtility.FromJsonOverwrite(m_CachedSerializedComponent, target);
             }
         }
+             
 
-        public static void DuplicateComponent(Type target, Type source) {
-            foreach (var publicField in target.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-                publicField.SetValue(target, publicField.GetValue(source));
-            }
-        }
-
-        public static void DuplicateDebrisObject(DebrisObject target, DebrisObject source) {
-            foreach (var publicField in typeof(DebrisObject).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-                publicField.SetValue(target, publicField.GetValue(source));
+        public static void ReflectionShallowCopyFields<T>(T target, T source, BindingFlags flags)
+        {
+            foreach (var field in typeof(T).GetFields(flags))
+            {
+                field.SetValue(target, field.GetValue(source));
             }
         }
 

@@ -5,147 +5,7 @@ using UnityEngine;
 namespace ExpandTheGungeon.ExpandUtilities {
 
 	public class RoomBuilder {
-
-        /*public static string TextureBasePath = "SerializedData\\RoomLayoutData\\";
-        
-        public static void GenerateRoomLayoutFromPNG(PrototypeDungeonRoom room, string filePath, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
-            Texture2D m_TextureFromResource = ResourceExtractor.GetTextureFromResource(TextureBasePath + filePath);
-            
-            float DamageToPlayersPerTick = 0;
-            float DamageToEnemiesPerTick = 0;
-            float TickFrequency = 0;
-            bool RespectsFlying = true;
-            bool DamageCellsArePoison = false;
-
-            if (DamageCellsType == CoreDamageTypes.Fire) {
-                DamageToPlayersPerTick = 0.5f;
-                TickFrequency = 1;
-            } else if (DamageCellsType == CoreDamageTypes.Poison) {
-                DamageCellsArePoison = true;
-                DamageToPlayersPerTick = 0.5f;
-                TickFrequency = 1;
-            }
-
-            if (m_TextureFromResource == null) {
-                ETGModConsole.Log("[ExpandTheGungeon] GenerateRoomFromImage: Error! Requested Texture Resource is Null!");
-                return;
-            }
-                                    
-            Color WhitePixel = new Color32(255, 255, 255, 255); // Wall Cell
-            Color PinkPixel = new Color32(255, 0, 255, 255); // Diagonal Wall Cell (North East)
-            Color YellowPixel = new Color32(255, 255, 0, 255); // Diagonal Wall Cell (North West)
-            Color HalfPinkPixel = new Color32(127, 0, 127, 255); // Diagonal Wall Cell (South East)
-            Color HalfYellowPixel = new Color32(127, 127, 0, 255); // Diagonal Wall Cell (South West)
-            
-            Color BluePixel = new Color32(0, 0, 255, 255); // Floor Cell
-
-            Color BlueHalfGreenPixel = new Color32(0, 127, 255, 255); // Floor Cell (Ice Override)
-            Color HalfBluePixel = new Color32(0, 0, 127, 255); // Floor Cell (Water Override)
-            Color HalfRedPixel = new Color32(0, 0, 127, 255); // Floor Cell (Carpet Override)
-            Color GreenHalfRBPixel = new Color32(127, 255, 127, 255); // Floor Cell (Grass Override)
-            Color HalfWhitePixel = new Color32(127, 127, 127, 255); // Floor Cell (Bone Override)
-            Color OrangePixel = new Color32(255, 127, 0, 255); // Floor Cell (Flesh Override)
-            Color RedHalfGBPixel = new Color32(255, 127, 127, 255); // Floor Cell (ThickGoop Override)
-
-            Color GreenPixel = new Color32(0, 255, 0, 255); // Damage Floor Cell
-
-            Color RedPixel = new Color32(255, 0, 0, 255); // Pit Cell
-
-            int width = room.Width;
-            int height = room.Height;
-            int ArrayLength = (width * height);
-
-            if (m_TextureFromResource.GetPixels32().Length != ArrayLength) {
-                ETGModConsole.Log("[ExpandTheGungeon] GenerateRoomFromImage: Error! Image resolution doesn't match size of room!");
-                return;
-            }
-
-            room.FullCellData = new PrototypeDungeonRoomCellData[ArrayLength];                        
-            List<Vector2> m_Pits = new List<Vector2>();
-            
-            for (int X = 0; X < width; X++) {
-                for (int Y = 0; Y < height; Y++) {
-                    int ArrayPosition = (Y * width + X);
-                    Color? m_Pixel = m_TextureFromResource.GetPixel(X, Y);
-                    CellType cellType = CellType.FLOOR;
-                    DiagonalWallType diagonalWallType = DiagonalWallType.NONE;
-                    CellVisualData.CellFloorType OverrideFloorType = CellVisualData.CellFloorType.Stone;
-                    bool isDamageCell = false;
-                    bool cellDamagesPlayer = false;
-                    if (m_Pixel.HasValue) {
-                        if (m_Pixel.Value == WhitePixel | m_Pixel.Value == PinkPixel | 
-                            m_Pixel.Value == YellowPixel | m_Pixel.Value == HalfPinkPixel | 
-                            m_Pixel.Value == HalfYellowPixel)
-                        {
-                            cellType = CellType.WALL;
-                            if (m_Pixel.Value == PinkPixel) {
-                                diagonalWallType = DiagonalWallType.NORTHEAST;
-                            } else if (m_Pixel.Value == YellowPixel) {
-                                diagonalWallType = DiagonalWallType.NORTHWEST;
-                            } else if (m_Pixel.Value == HalfPinkPixel) {
-                                diagonalWallType = DiagonalWallType.SOUTHEAST;
-                            } else if (m_Pixel.Value == HalfYellowPixel) {
-                                diagonalWallType = DiagonalWallType.SOUTHWEST;
-                            }
-                        } else if (m_Pixel.Value == RedPixel) {
-                            cellType = CellType.PIT;
-                            m_Pits.Add(new Vector2(X, Y));
-                        } else if (m_Pixel.Value == BluePixel | m_Pixel.Value == GreenPixel | 
-                            m_Pixel.Value == BlueHalfGreenPixel | m_Pixel.Value == HalfBluePixel |
-                            m_Pixel.Value == HalfRedPixel | m_Pixel.Value == GreenHalfRBPixel |
-                            m_Pixel.Value == HalfWhitePixel | m_Pixel.Value == OrangePixel |
-                            m_Pixel.Value == RedHalfGBPixel)
-                        {
-                            cellType = CellType.FLOOR;
-                            if (m_Pixel.Value == GreenPixel) {
-                                isDamageCell = true;
-                                if (DamageCellsType == CoreDamageTypes.Ice) {
-                                    cellDamagesPlayer = false;
-                                } else {
-                                    cellDamagesPlayer = true;
-                                }
-                            } else if (m_Pixel.Value == BlueHalfGreenPixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Ice;
-                            } else if (m_Pixel.Value == HalfBluePixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Water;
-                            } else if (m_Pixel.Value == HalfRedPixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Carpet;
-                            } else if (m_Pixel.Value == GreenHalfRBPixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Grass;
-                            } else if (m_Pixel.Value == HalfWhitePixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Bone;
-                            } else if (m_Pixel.Value == OrangePixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.Flesh;
-                            } else if (m_Pixel.Value == RedHalfGBPixel) {
-                                OverrideFloorType = CellVisualData.CellFloorType.ThickGoop;
-                            }
-                        } else {
-                            cellType = CellType.FLOOR;
-                        }
-                    } else {
-                        cellType = CellType.FLOOR;
-                    }
-                    if (DamageCellsType != CoreDamageTypes.None && isDamageCell) {
-                        room.FullCellData[ArrayPosition] = GenerateCellData(cellType, diagonalWallType, cellDamagesPlayer, DamageCellsArePoison, DamageCellsType, DamageToPlayersPerTick, DamageToEnemiesPerTick, TickFrequency, RespectsFlying);
-                    } else {
-                        room.FullCellData[ArrayPosition] = GenerateCellData(cellType, diagonalWallType, OverrideFloorType: OverrideFloorType);
-                    }
-                }
-            }
-
-            if (m_Pits.Count > 0) {
-                room.pits = new List<PrototypeRoomPitEntry>() {
-                    new PrototypeRoomPitEntry(m_Pits) {
-                        containedCells = m_Pits,
-                        borderType = PitBorderType
-                    }
-                };
-            }
-            room.OnBeforeSerialize();
-            room.OnAfterDeserialize();
-            room.UpdatePrecalculatedData();
-        }*/
-
+                
         public static void GenerateRoomLayoutFromTexture2D(PrototypeDungeonRoom room, Texture2D sourceTexture, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             float DamageToPlayersPerTick = 0;
             float DamageToEnemiesPerTick = 0;
@@ -259,7 +119,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             cellType = CellType.FLOOR;
                         }
                     } else {
-                        cellType = CellType.FLOOR;
+                        cellType = CellType.WALL;
                     }
                     if (DamageCellsType != CoreDamageTypes.None && isDamageCell) {
                         room.FullCellData[ArrayPosition] = GenerateCellData(cellType, diagonalWallType, cellDamagesPlayer, DamageCellsArePoison, DamageCellsType, DamageToPlayersPerTick, DamageToEnemiesPerTick, TickFrequency, RespectsFlying);
@@ -311,7 +171,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.UpdatePrecalculatedData();
         }
 
-        public static PrototypeDungeonRoom GenerateRoomPrefabFromTexture2D(Texture2D sourceTexture, PrototypeDungeonRoom.RoomCategory roomCategory = PrototypeDungeonRoom.RoomCategory.NORMAL) {
+        public static PrototypeDungeonRoom GenerateRoomPrefabFromTexture2D(Texture2D sourceTexture, PrototypeDungeonRoom.RoomCategory roomCategory = PrototypeDungeonRoom.RoomCategory.NORMAL, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             PrototypeDungeonRoom m_NewRoomPrefab = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             m_NewRoomPrefab.name = "Expand Corrupted Room";
             m_NewRoomPrefab.QAID = "FF" + Random.Range(1000, 9999);
@@ -355,7 +215,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_NewRoomPrefab.Width = sourceTexture.width;
             m_NewRoomPrefab.Height = sourceTexture.height;
             m_NewRoomPrefab.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            GenerateRoomLayoutFromTexture2D(m_NewRoomPrefab, sourceTexture);
+            GenerateRoomLayoutFromTexture2D(m_NewRoomPrefab, sourceTexture, PitBorderType, DamageCellsType);
             return m_NewRoomPrefab;
         }
         

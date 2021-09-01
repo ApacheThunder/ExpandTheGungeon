@@ -78,12 +78,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void DoEffect(PlayerController user) {
             m_InUse = true;
-            if (UnityEngine.Random.value < 0.45f) {
-                GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
-            } else {
-                // GameManager.Instance.StartCoroutine(TentacleTime(user));
-                GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
-            }
+            GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
         }
                 
         public override void Pickup(PlayerController player) {
@@ -173,36 +168,119 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
             }
         }
-        
+
+        private void TogglePlayerInput(PlayerController targetPlayer, bool lockState) {
+            Minimap.Instance.ToggleMinimap(false, false);
+            if (lockState) {
+                targetPlayer.ForceStopDodgeRoll();
+                targetPlayer.CurrentInputState = PlayerInputState.NoInput;
+                targetPlayer.healthHaver.IsVulnerable = false;
+            } else {
+                targetPlayer.CurrentInputState = PlayerInputState.AllInput;
+                targetPlayer.healthHaver.IsVulnerable = true;
+            }
+        }
+
         public IEnumerator CorruptionRoomTime(PlayerController user) {
             RoomHandler currentRoom = user.CurrentRoom;
             Dungeon dungeon = GameManager.Instance.Dungeon;
-           
-            if (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { StunEnemiesForTeleport(currentRoom, 4); }
-            AkSoundEngine.PostEvent("Play_OBJ_lock_pick_01", gameObject);
-            user.ForceStopDodgeRoll();
-            user.healthHaver.IsVulnerable = false;
 
+            TogglePlayerInput(user, true);
+
+            if (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { StunEnemiesForTeleport(currentRoom, 1f); }
+
+            // AkSoundEngine.PostEvent("Play_OBJ_lock_pick_01", gameObject);
+            AkSoundEngine.PostEvent("Play_EX_CorruptionRoomTransition_01", gameObject);
             ExpandShaders.Instance.GlitchScreenForDuration(1, 1.4f, 0.1f);
 
-            yield return new WaitForSeconds(0.1f);
+            GameObject TempFXObject = new GameObject("EXScreenFXTemp") { };
+            TempFXObject.transform.SetParent(dungeon.gameObject.transform);
+            TempFXObject.SetActive(false);
+            yield return null;
+            ExpandGlitchScreenFXController fxController = TempFXObject.AddComponent<ExpandGlitchScreenFXController>();
+            fxController.shaderType = ExpandGlitchScreenFXController.ShaderType.Glitch;
+            fxController.GlitchAmount = 0;
+            yield return null;
+            TempFXObject.SetActive(true);
+            while (fxController.GlitchAmount < 1) {
+                fxController.GlitchAmount += (BraveTime.DeltaTime / 0.5f);
+                yield return null;
+            }
 
-            PrototypeDungeonRoom SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
-             
+            bool m_CopyCurrentRoom = (UnityEngine.Random.value < 0.4f);
+
+            PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
+            ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
+
+            if (m_CopyCurrentRoom) {
+               SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
+            } else {
+                float RoomSelectionSeed = UnityEngine.Random.value;
+                bool GoingToSecretBoss = false;
+
+                if (RoomSelectionSeed <= 0.01f) { GoingToSecretBoss = true; }
+
+                if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
+                    if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6) {
+                        SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
+                    } else if (RoomSelectionSeed <= 0.25f) {
+                        SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
+                    } else if (RoomSelectionSeed <= 0.5f) {
+                        List<PrototypeDungeonRoom> m_SpecialRooms = new List<PrototypeDungeonRoom>();
+
+                        m_SpecialRooms.Add(BraveUtility.RandomElement(NPCRoomList));
+                        m_SpecialRooms.Add(BraveUtility.RandomElement(SecretRoomList));
+                        m_SpecialRooms.Add(BraveUtility.RandomElement(ShrineRoomList));
+
+                        SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(m_SpecialRooms);
+                    } else {
+                        SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(MainRoomlist);
+                    }
+                } else {
+                    ExpandStats.HasSpawnedSecretBoss = true;
+
+                    RoomHandler[] SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
+                    yield return null;
+                    if (SecretBossRoomCluster == null) {
+                        AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                        TogglePlayerInput(user, false);
+                        ClearCooldowns();
+                        yield break;
+                    }
+                    
+                    corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
+                    corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
+
+                    TeleportToRoom(user, SecretBossRoomCluster[0]);
+
+                    while (fxController.GlitchAmount > 0) {
+                        fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                        yield return null;
+                    }
+
+                    TogglePlayerInput(user, false);
+
+                    Destroy(TempFXObject);
+                    corruptedTilePlacer = null;
+                    m_InUse = false;
+                    yield break;
+                }
+            }
+
             if (SelectedPrototypeDungeonRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                user.healthHaver.IsVulnerable = true;
+                TogglePlayerInput(user, false);
                 ClearCooldowns();
                 yield break;
             }
 
-            SelectedPrototypeDungeonRoom.overrideRoomVisualType = currentRoom.RoomVisualSubtype;
+            if (m_CopyCurrentRoom) { SelectedPrototypeDungeonRoom.overrideRoomVisualType = currentRoom.RoomVisualSubtype; }
 
-            RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, addTeleporter: false, allowProceduralLightFixtures: false);
+            RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, addTeleporter: false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
 
             if (GlitchRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                user.healthHaver.IsVulnerable = true;
+                TogglePlayerInput(user, false);
                 ClearCooldowns();
                 yield break;
             }
@@ -217,47 +295,49 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandGlitchScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandGlitchScreenFXController>();
             FXController.isRoomSpecific = true;
             FXController.ParentRoom = GlitchRoom;
+            FXController.UseCorruptionAmbience = m_CopyCurrentRoom;
             GlitchShaderObject.transform.SetParent(dungeon.gameObject.transform);
+            
+            if (m_CopyCurrentRoom) {
+                GameObject[] Objects = FindObjectsOfType<GameObject>();
 
-            GameObject[] Objects = FindObjectsOfType<GameObject>();
+                foreach (GameObject Object in Objects) {
+                    if (Object && Object.transform.parent == currentRoom.hierarchyParent &&
+                        !Object.GetComponent<PlayerController>() && !Object.GetComponent<AIActor>() &&
+                        !Object.GetComponent<ElevatorDepartureController>() && !Object.GetComponent<TeleporterController>() &&
+                        !Object.GetComponent<BaseShopController>()
+                       )
+                    {
+                        Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());
+                        Vector3 NewPosition = (OrigPosition + GlitchRoom.area.basePosition.ToVector3());
+                        GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
+                        newObject.transform.SetParent(GlitchRoom.hierarchyParent);
+                        
+                        if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
+                        if (newObject.GetComponent<PathingTrapController>()) { Destroy(newObject.GetComponent<PathingTrapController>()); }
+                        
+                        if (newObject.GetComponent<IPlaceConfigurable>() != null) { newObject.GetComponent<IPlaceConfigurable>().ConfigureOnPlacement(GlitchRoom); }
 
-            foreach (GameObject Object in Objects) {
-                if (Object && Object.transform.parent == currentRoom.hierarchyParent &&
-                    !Object.GetComponent<PlayerController>() && !Object.GetComponent<AIActor>() &&
-                    !Object.GetComponent<ElevatorDepartureController>()
-                   )
-                {
-                    Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());
-                    Vector3 NewPosition = (OrigPosition + GlitchRoom.area.basePosition.ToVector3());
-                    GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
-                    newObject.transform.SetParent(GlitchRoom.hierarchyParent);
-                    if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
-                    if (newObject.GetComponent<PathingTrapController>()) { Destroy(newObject.GetComponent<PathingTrapController>()); }
-                    if (newObject.GetComponent<ShopItemController>()) { Destroy(newObject.GetComponent<ShopItemController>()); }
-                    if (newObject.GetComponent<Chest>()) { newObject.GetComponent<Chest>().ConfigureOnPlacement(GlitchRoom); }
-                    if (newObject.GetComponent<FlippableCover>()) {
-                        ExpandKickableObject kickableObject = newObject.AddComponent<ExpandKickableObject>();
-                        GlitchRoom.RegisterInteractable(kickableObject);
-                    }
-                    if (newObject.GetComponent<AdvancedShrineController>()) {
-                        GlitchRoom.RegisterInteractable(newObject.GetComponent<AdvancedShrineController>());
-                    } else if (newObject.GetComponent<ShrineController>()) {
-                        GlitchRoom.RegisterInteractable(newObject.GetComponent<ShrineController>());
-                    }
-                    if (newObject.GetComponent<TalkDoerLite>()) {
-                        GlitchRoom.RegisterInteractable(newObject.GetComponent<TalkDoerLite>());
-                        newObject.GetComponent<TalkDoerLite>().SpeaksGleepGlorpenese = true;
-                    }
-                    if (newObject.GetComponent<KickableObject>()) { GlitchRoom.RegisterInteractable(newObject.GetComponent<KickableObject>()); }
+                        if (newObject.GetComponent<FlippableCover>()) {
+                            Destroy(newObject.GetComponent<FlippableCover>());
+                            ExpandKickableObject kickableObject = newObject.AddComponent<ExpandKickableObject>();                        
+                        } else if (newObject.GetComponent<TalkDoerLite>()) {
+                            newObject.GetComponent<TalkDoerLite>().SpeaksGleepGlorpenese = true;
+                        }
 
-                    if (newObject && UnityEngine.Random.value <= 0.4f && !newObject.GetComponent<AIActor>() && !newObject.GetComponent<Chest>()) {
-                        if (string.IsNullOrEmpty(newObject.name) | (!newObject.name.ToLower().StartsWith("glitchtile") && !newObject.name.ToLower().StartsWith("ex secret door") && !newObject.name.ToLower().StartsWith("lock") && !newObject.name.ToLower().StartsWith("chest"))) {
-                            float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.04f);
-                            float RandomDispFloat = UnityEngine.Random.Range(0.06f, 0.08f);
-                            float RandomDispIntensityFloat = UnityEngine.Random.Range(0.07f, 0.1f);
-                            float RandomColorProbFloat = UnityEngine.Random.Range(0.035f, 0.1f);
-                            float RandomColorIntensityFloat = UnityEngine.Random.Range(0.05f, 0.1f);
-                            ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                        if (newObject.GetComponent<IPlayerInteractable>() != null) {
+                            GlitchRoom.RegisterInteractable(newObject.GetComponent<IPlayerInteractable>());
+                        }
+
+                        if (newObject && UnityEngine.Random.value <= 0.4f && !newObject.GetComponent<AIActor>() && !newObject.GetComponent<Chest>()) {
+                            if (!string.IsNullOrEmpty(newObject.name) && !newObject.name.ToLower().StartsWith("glitchtile") && !newObject.name.ToLower().StartsWith("ex secret door") && !newObject.name.ToLower().StartsWith("lock") && !newObject.name.ToLower().StartsWith("chest")) {
+                                float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.04f);
+                                float RandomDispFloat = UnityEngine.Random.Range(0.06f, 0.08f);
+                                float RandomDispIntensityFloat = UnityEngine.Random.Range(0.07f, 0.1f);
+                                float RandomColorProbFloat = UnityEngine.Random.Range(0.035f, 0.1f);
+                                float RandomColorIntensityFloat = UnityEngine.Random.Range(0.05f, 0.1f);
+                                ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                            }
                         }
                     }
                 }
@@ -267,10 +347,13 @@ namespace ExpandTheGungeon.ItemAPI {
                 GlitchRoom.secretRoomManager.OpenDoor();
             }
 
-            ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
-            corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true);
+            if (m_CopyCurrentRoom) {
+                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
+            } else {
+                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
+            }
 
-            TeleportToCorruptedRoom(user, GlitchRoom);
+            TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
 
             yield return null;
             while (m_IsTeleporting) { yield return null; }
@@ -282,194 +365,60 @@ namespace ExpandTheGungeon.ItemAPI {
             if (GameManager.Instance.CurrentFloor == 1) {
                 if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
             }
+
+            while (fxController.GlitchAmount > 0) {
+                fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                yield return null;
+            }
+
+            TogglePlayerInput(user, false);
+            Destroy(TempFXObject);
             corruptedTilePlacer = null;
             
             m_InUse = false;
             yield break;
         }
-        
-        public IEnumerator TentacleTime(PlayerController user) {
-            RoomHandler currentRoom = user.CurrentRoom;
-           
-            if (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { StunEnemiesForTeleport(currentRoom, 4); }
-            AkSoundEngine.PostEvent("Play_OBJ_lock_pick_01", gameObject);
-            user.ForceStopDodgeRoll();
-            user.healthHaver.IsVulnerable = false;
-            
-            yield return new WaitForSeconds(0.1f);
-                        
-            Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            float RoomSelectionSeed = UnityEngine.Random.value;
-            bool GoingToSecretBoss = false;
-
-            if (RoomSelectionSeed <= 0.01f) { GoingToSecretBoss = true; }
-
-            if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
-                PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
-
-                if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6) {
-                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
-                } else if (RoomSelectionSeed <= 0.25f) {
-                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
-                } else if (RoomSelectionSeed <= 0.5f) {
-                    List<PrototypeDungeonRoom> m_SpecialRooms = new List<PrototypeDungeonRoom>();
-                
-                    m_SpecialRooms.Add(BraveUtility.RandomElement(NPCRoomList));
-                    m_SpecialRooms.Add(BraveUtility.RandomElement(SecretRoomList));
-                    m_SpecialRooms.Add(BraveUtility.RandomElement(ShrineRoomList));
-                
-                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(m_SpecialRooms);
-                } else {
-                    SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(MainRoomlist);
-                }
-                            
-                if (SelectedPrototypeDungeonRoom == null) {
-                    AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                    user.healthHaver.IsVulnerable = true;
-                    ClearCooldowns();
-                    yield break;
-                }
-
-                RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom);
-
-                GlitchRoom.area.PrototypeRoomName = ("Corrupted " + GlitchRoom.GetRoomName());
-                
-                if (GlitchRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET && GlitchRoom.IsSecretRoom) {
-                    GlitchRoom.secretRoomManager.OpenDoor();
-                }
-
-                ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
-                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true);
-
-                // Spawn Rainbow chest. This room doesn't spawn NPC it seems.(unless player hasn't unlocked it yet? Not likely. Most would have unlocked this one by now)
-                /*if (GlitchRoom.GetRoomName().ToLower().EndsWith("earlymetashopcell")) {
-                    IntVector2 SpecialChestLocation = new IntVector2(10, 14);
-                    WeightedGameObject wChestObject = new WeightedGameObject();
-                    Chest RainbowChest = GameManager.Instance.RewardManager.Rainbow_Chest;
-                    wChestObject.rawGameObject = RainbowChest.gameObject;
-                    WeightedGameObjectCollection wChestObjectCollection = new WeightedGameObjectCollection();
-                    wChestObjectCollection.Add(wChestObject);
-                    Chest PlacableChest = GlitchRoom.SpawnRoomRewardChest(wChestObjectCollection, (SpecialChestLocation + GlitchRoom.area.basePosition));
-                }*/
-
-                
-                // user.EscapeRoom(PlayerController.EscapeSealedRoomStyle.TELEPORTER, true, GlitchRoom);
-                TeleportToRoom(user, GlitchRoom);
-                yield return null;
-                while (m_IsTeleporting) { yield return null; }
-                if (user.transform.position.GetAbsoluteRoom() != null) {
-                    if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-                        user.CurrentRoom.CompletelyPreventLeaving = true;
-                    }
-                }
-                if (GameManager.Instance.CurrentFloor == 1) {
-                    if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
-                }
-                corruptedTilePlacer = null;
-            } else {
-                ExpandStats.HasSpawnedSecretBoss = true;
-
-                RoomHandler[] SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
-                yield return null;
-                if (SecretBossRoomCluster == null) {
-                    AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                    user.healthHaver.IsVulnerable = true;
-                    ClearCooldowns();
-                    yield break;
-                }
-
-                ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
-                corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
-                corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
-
-                TeleportToRoom(user, SecretBossRoomCluster[0]);
-                yield return null;
-                while (m_IsTeleporting) { yield return null; }
-                if (GameManager.Instance.CurrentFloor == 1) {
-                    if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
-                }
-                corruptedTilePlacer = null;
-            }
-            m_InUse = false;
-            yield break;
-        }
-
-        public void TeleportToCorruptedRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false) {
+        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false, bool isCorruptedRoomCopy = false) {
             m_IsTeleporting = true;
+            bool m_NeedsNewPosition = false;
             Vector3 OldPosition = (targetPlayer.transform.position - targetPlayer.CurrentRoom.area.basePosition.ToVector3());
             IntVector2 OldPositionIntVec2 = (targetPlayer.CenterPosition.ToIntVector2() - targetPlayer.CurrentRoom.area.basePosition);
             Vector3 NewPosition = (OldPosition + targetRoom.area.basePosition.ToVector3());
-            
-            if (!GameManager.Instance.Dungeon.data.isPlainEmptyCell(OldPositionIntVec2.x + targetRoom.area.basePosition.x, OldPositionIntVec2.y + targetRoom.area.basePosition.y)) {
-                IntVector2? randomAvailableCell = targetRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(2, 2)), new CellTypes?(CellTypes.FLOOR), false, null);
-                if (!randomAvailableCell.HasValue) {
+
+            if (isCorruptedRoomCopy && !GameManager.Instance.Dungeon.data.isPlainEmptyCell(OldPositionIntVec2.x + targetRoom.area.basePosition.x, OldPositionIntVec2.y + targetRoom.area.basePosition.y)) {
+                m_NeedsNewPosition = true;
+            } else if (!isCorruptedRoomCopy) {
+                m_NeedsNewPosition = true;
+            }
+            if (m_NeedsNewPosition) {
+                IntVector2? randomAvailableCell = ExpandUtility.Instance.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 2));
+                if (randomAvailableCell.HasValue) {
+                    NewPosition = randomAvailableCell.Value.ToVector3();
+                } else {
                     m_IsTeleporting = false;
                     return;
-                } else {
-                    NewPosition = randomAvailableCell.Value.ToVector3();
                 }
             }
-
             if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER && !isSecondaryPlayer) {
                 PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(targetPlayer);
-                if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom, IsCorrupedRoomTeleport: true); }
+                if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom, true, true); }
             }
             targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);            
-            GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, NewPosition, true));
+            GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, NewPosition));
             targetPlayer.specRigidbody.Velocity = Vector2.zero;
             targetPlayer.knockbackDoer.TriggerTemporaryKnockbackInvulnerability(1f);
             targetRoom.EnsureUpstreamLocksUnlocked();
         }
 
-        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false, bool IsCorrupedRoomTeleport = false) {
-            m_IsTeleporting = true;
-            // if (targetPlayer.m_isStartingTeleport) { return; }
-            // targetPlayer.m_isStartingTeleport = true;
-            IntVector2? randomAvailableCell = targetRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(2, 2)), new CellTypes?(CellTypes.FLOOR), false, null);
-            if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.EXIT) {
-                randomAvailableCell = (new IntVector2(5, 2) + targetRoom.area.basePosition);
-            }
-            if (!randomAvailableCell.HasValue) {
-                m_IsTeleporting = false;
-                return;
-            }
-            if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER && !isSecondaryPlayer) {
-                PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(targetPlayer);
-                if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom, true, IsCorrupedRoomTeleport); }
-            }
-            // targetPlayer.m_isStartingTeleport = false;
-            targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);            
-            GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, randomAvailableCell.Value.ToCenterVector2(), IsCorrupedRoomTeleport));
-            targetPlayer.specRigidbody.Velocity = Vector2.zero;
-            targetPlayer.knockbackDoer.TriggerTemporaryKnockbackInvulnerability(1f);
-            targetRoom.EnsureUpstreamLocksUnlocked();
-            // GameManager.Instance.StartCoroutine(DelayedRoomReset(targetPlayer, targetPlayer.CurrentRoom));
-        }
-
-        private IEnumerator HandleTeleportToRoom(PlayerController targetPlayer, Vector2 targetPoint, bool isCorrupedRoomTeleport = false) {
-            if (targetPlayer.transform.position.GetAbsoluteRoom() != null) { StunEnemiesForTeleport(targetPlayer.transform.position.GetAbsoluteRoom(), 1f); }
-            targetPlayer.healthHaver.IsVulnerable = false;
+        private IEnumerator HandleTeleportToRoom(PlayerController targetPlayer, Vector2 targetPoint) {
+            // if (targetPlayer.transform.position.GetAbsoluteRoom() != null) { StunEnemiesForTeleport(targetPlayer.transform.position.GetAbsoluteRoom(), 0.25f); }
             CameraController cameraController = GameManager.Instance.MainCameraController;
             Vector2 offsetVector = (cameraController.transform.position - targetPlayer.transform.position);
             offsetVector -= cameraController.GetAimContribution();
-            Minimap.Instance.ToggleMinimap(false, false);
             cameraController.SetManualControl(true, false);
             cameraController.OverridePosition = cameraController.transform.position;
-            targetPlayer.CurrentInputState = PlayerInputState.NoInput;
-            if (!isCorrupedRoomTeleport) {
-                yield return new WaitForSeconds(0.1f);
-                DoTentacleVFX(targetPlayer);
-                // yield return new WaitForSeconds(0.4f);
-                yield return new WaitForSeconds(1);
-                targetPlayer.ToggleRenderer(false, "arbitrary teleporter");
-                targetPlayer.ToggleGunRenderers(false, "arbitrary teleporter");
-                targetPlayer.ToggleHandRenderers(false, "arbitrary teleporter");
-                yield return new WaitForSeconds(1);
-                Pixelator.Instance.FadeToBlack(0.15f, false, 0f);
-                yield return new WaitForSeconds(0.15f);
-            }
-            // targetPlayer.specRigidbody.Position = new Position(targetPoint);
+            yield return new WaitForSeconds(0.1f);
             targetPlayer.transform.position = targetPoint;
             targetPlayer.specRigidbody.Reinitialize();
             targetPlayer.specRigidbody.RecheckTriggers = true;
@@ -490,26 +439,12 @@ namespace ExpandTheGungeon.ItemAPI {
                 CombatManager.ParentRoom = targetPlayer.transform.position.GetAbsoluteRoom();
             }
             Pixelator.Instance.MarkOcclusionDirty();
-            if (!isCorrupedRoomTeleport) { Pixelator.Instance.FadeToBlack(0.15f, true, 0f); }
             yield return null;
             if (CombatManager) { CombatManager.Activated = true; }
             cameraController.SetManualControl(false, true);
-            if (!isCorrupedRoomTeleport) {
-                // yield return new WaitForSeconds(0.75f);
-                yield return new WaitForSeconds(0.15f);
-                DoTentacleVFX(targetPlayer);
-            }
+            yield return new WaitForSeconds(0.15f);
             targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);
-            if (!isCorrupedRoomTeleport) {
-                // yield return new WaitForSeconds(0.25f);
-                yield return new WaitForSeconds(1.7f);
-                targetPlayer.ToggleRenderer(true, "arbitrary teleporter");
-                targetPlayer.ToggleGunRenderers(true, "arbitrary teleporter");
-                targetPlayer.ToggleHandRenderers(true, "arbitrary teleporter");
-            }
             PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetPlayer.specRigidbody, null, false);
-            targetPlayer.CurrentInputState = PlayerInputState.AllInput;
-            targetPlayer.healthHaver.IsVulnerable = true;
             m_IsTeleporting = false;
             yield break;
         }
@@ -695,21 +630,6 @@ namespace ExpandTheGungeon.ItemAPI {
                 return;
             }
         }
-        
-        /*private IEnumerator DelayedRoomReset(PlayerController targetPlayer, RoomHandler targetRoom) {
-            if (targetRoom == null | targetPlayer.CurrentRoom == null) { yield break; }
-            while (targetPlayer.CurrentRoom == targetRoom) { yield return null; }
-            yield return null;
-            if (targetRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) || !targetRoom.EverHadEnemies || GameManager.Instance.InTutorial) {
-                targetRoom.ResetPredefinedRoomLikeDarkSouls();
-            }
-            if (!targetRoom.EverHadEnemies) { targetRoom.forceTeleportersActive = true; }
-            ReadOnlyCollection<Projectile> allProjectiles = StaticReferenceManager.AllProjectiles;
-            for (int i = allProjectiles.Count - 1; i >= 0; i--) {
-                if (allProjectiles[i]) { allProjectiles[i].DieInAir(false, true, true, false); }
-            }
-            yield break;
-        }*/
 
         protected override void OnDestroy() { base.OnDestroy(); }
     }
@@ -731,11 +651,13 @@ namespace ExpandTheGungeon.ItemAPI {
                         if (!ParentRoom.CompletelyPreventLeaving) {
                             ParentRoom.CompletelyPreventLeaving = true;
                             ParentRoom.SealRoom();
+                            AkSoundEngine.PostEvent("Play_OBJ_gate_slam_01", GameManager.Instance.PrimaryPlayer.gameObject);
                         }
                         return;
                     } else if (ParentRoom.CompletelyPreventLeaving) {
                         ParentRoom.CompletelyPreventLeaving = false;
                         ParentRoom.UnsealRoom();
+                        AkSoundEngine.PostEvent("Play_OBJ_gate_open_01", GameManager.Instance.PrimaryPlayer.gameObject);
                         return;
                     } else {
                         return;

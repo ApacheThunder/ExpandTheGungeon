@@ -80,14 +80,13 @@ namespace ExpandTheGungeon.ExpandObjects
             tk2dSprite hatSprite = outObject.AddComponent<tk2dSprite>();
             hatSprite.SetSprite(spriteCollection, hatSpriteName);
             hatSprite.SortingOrder = 0;
-            hatSprite.sprite = hatSprite;
 
             ExpandUtility.GenerateSpriteAnimator(outObject);
 
             DebrisObject debrisObject = outObject.AddComponent<DebrisObject>();
             debrisObject.Priority = broDebris.Priority;
-
-            ExpandUtility.DuplicateComponent(debrisObject, broDebris);
+            
+            ExpandUtility.ReflectionShallowCopyFields(debrisObject, broDebris, (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
         }
 
         // TODO fix gun offsets :/, TODO take from intro animation

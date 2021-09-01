@@ -7,6 +7,7 @@ Shader "Expand/Scanlines" {
 		_Color("Color - Full version only", Color) = (0,0,0,1) 
     	_ValueX("LinesSize", Range(1,10)) = 1 
 	}
+
 	SubShader {
 		Pass {
 			CGPROGRAM
@@ -36,7 +37,7 @@ Shader "Expand/Scanlines" {
 				float4 c = tex2D(_MainTex, i.uv);
 				
 		        fixed p = i.uv.y;
-		        if((int)(p*_ScreenParams.y/floor(_ValueX))%2==0) 
+		        if((uint)(p*_ScreenParams.y/floor(_ValueX))%2==0) 
 		        	return c;
 		        else {
 			        fixed4 result = c;

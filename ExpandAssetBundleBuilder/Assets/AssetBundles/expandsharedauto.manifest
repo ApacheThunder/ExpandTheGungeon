@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2101316449
+CRC: 2588049478
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e42755b617275b5ad9d09afa4e085eb3
+    Hash: c3e2d4ccde3ba4fe33d5f44aeb73a386
   TypeTreeHash:
     serializedVersion: 2
     Hash: d367006692d3ae3746e725828b98dd32
@@ -170,6 +170,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Giant_Elevator_Room_Layout.png
 - Assets/ExpandTextures/RickRoll/RickRoll_23.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_spawn_001.png
+- Assets/ExpandTextures/Misc/EX_GlitchMap_Snow.png
 - Assets/ExpandTextures/RickRoll/RickRoll_10.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_run_left_003.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_ShatterDebris_07.png
@@ -378,6 +379,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_right.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_back_004.png
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
+- Assets/ExpandTextures/Misc/EXGlitchMap_GS.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_Base.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_05.png
 - Assets/ExpandTextures/RoomBuilderAssets/Forge/Expand_Neighborino_CorridorOfDoomDeath_Layout.png
@@ -386,6 +388,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Forge/Expand_Neighborino_FireRoom_Layout.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_idle_down_001.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_hit_left_002.png
+- Assets/ExpandPrefabs/Shaders/ExpandGlitchScreen.shader
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_Shard_002.prefab
 - Assets/ExpandTextures/AIActors/BootlegBullat/bullat_die_003.png
 - Assets/ExpandPrefabs/Playable_Shotgun_Man_Swap_Rebuild.prefab
@@ -421,6 +424,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Move_004.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_up.png
 - Assets/ExpandTextures/TilesetAssets/ENV_Tileset_Belly.png
+- Assets/ExpandTextures/Misc/EX_GlitchMap.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_idle_down_001.png
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_TurtleMelon_Blocks_Pits_Layout.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_down_005.png
