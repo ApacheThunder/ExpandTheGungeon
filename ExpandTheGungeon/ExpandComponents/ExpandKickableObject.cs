@@ -96,6 +96,11 @@ namespace ExpandTheGungeon.ExpandComponents {
     
     	public void Update() {
             if (m_WasKicked) {
+                if (GetAbsoluteParentRoom() == null) {
+                    m_WasKicked = false;
+                    willDefinitelyExplode = true;
+                    SelfDestructOnKick();
+                }
                 FlippableCover m_Table = GetComponent<FlippableCover>();
                 if (m_Table) {
                     if (m_Table.IsBroken) {

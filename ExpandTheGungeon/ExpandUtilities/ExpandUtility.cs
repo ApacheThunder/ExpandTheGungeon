@@ -1498,6 +1498,46 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
+        public static IntVector2? GetRandomAvailableCellForPlayer(Dungeon dungeon, RoomHandler currentRoom, bool relativeToRoom = false) {
+            List<IntVector2> validCellsCached = new List<IntVector2>();
+            for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
+                for (int height = -1; height <= currentRoom.area.dimensions.y; height++) {
+                    int X = currentRoom.area.basePosition.x + Width;
+                    int Y = currentRoom.area.basePosition.y + height;
+                    if (!dungeon.data.isWall(X - 2, Y + 2) && !dungeon.data.isWall(X - 1, Y + 2) && !dungeon.data.isWall(X, Y + 2) && !dungeon.data.isWall(X + 1, Y + 2) && !dungeon.data.isWall(X + 2, Y + 2) &&
+                        !dungeon.data.isWall(X - 2, Y + 1) && !dungeon.data.isWall(X - 1, Y + 1) && !dungeon.data.isWall(X, Y + 1) && !dungeon.data.isWall(X + 1, Y + 1) && !dungeon.data.isWall(X + 2, Y + 1) &&
+                        !dungeon.data.isWall(X - 2, Y) && !dungeon.data.isWall(X - 1, Y) && !dungeon.data.isWall(X, Y) && !dungeon.data.isWall(X + 1, Y) && !dungeon.data.isWall(X + 2, Y) &&
+                        !dungeon.data.isWall(X - 2, Y - 1) && !dungeon.data.isWall(X - 1, Y - 1) && !dungeon.data.isWall(X, Y - 1) && !dungeon.data.isWall(X + 1, Y - 1) && !dungeon.data.isWall(X + 2, Y - 1) &&
+                        !dungeon.data.isWall(X - 2, Y - 2) && !dungeon.data.isWall(X - 1, Y - 2) && !dungeon.data.isWall(X, Y - 2) && !dungeon.data.isWall(X + 1, Y - 2) && !dungeon.data.isWall(X + 2, Y - 2) &&
+                        !dungeon.data[X - 2, Y + 2].isOccupied && !dungeon.data[X - 1, Y + 2].isOccupied && !dungeon.data[X, Y + 2].isOccupied && !dungeon.data[X + 1, Y + 2].isOccupied && !dungeon.data[X + 2, Y + 2].isOccupied &&
+                        !dungeon.data[X - 2, Y + 1].isOccupied && !dungeon.data[X - 1, Y + 1].isOccupied && !dungeon.data[X, Y + 1].isOccupied && !dungeon.data[X + 1, Y + 1].isOccupied && !dungeon.data[X + 2, Y + 1].isOccupied &&
+                        !dungeon.data[X - 2, Y].isOccupied && !dungeon.data[X - 1, Y].isOccupied && !dungeon.data[X, Y].isOccupied && !dungeon.data[X + 1, Y].isOccupied && !dungeon.data[X + 2, Y].isOccupied &&
+                        !dungeon.data[X - 2, Y - 1].isOccupied && !dungeon.data[X - 1, Y - 1].isOccupied && !dungeon.data[X, Y - 1].isOccupied && !dungeon.data[X + 1, Y - 1].isOccupied && !dungeon.data[X + 2, Y - 1].isOccupied &&
+                        !dungeon.data[X - 2, Y - 2].isOccupied && !dungeon.data[X - 1, Y - 2].isOccupied && !dungeon.data[X, Y - 2].isOccupied && !dungeon.data[X + 1, Y - 2].isOccupied && !dungeon.data[X + 2, Y - 2].isOccupied &&
+                        !dungeon.data.isPit(X - 2, Y + 2) && !dungeon.data.isPit(X - 1, Y + 2) && !dungeon.data.isPit(X, Y + 2) && !dungeon.data.isPit(X + 1, Y + 2) && !dungeon.data.isPit(X + 2, Y + 2) &&
+                        !dungeon.data.isPit(X - 2, Y + 1) && !dungeon.data.isPit(X - 1, Y + 1) && !dungeon.data.isPit(X, Y + 1) && !dungeon.data.isPit(X + 1, Y + 1) && !dungeon.data.isPit(X + 2, Y + 1) &&
+                        !dungeon.data.isPit(X - 2, Y) && !dungeon.data.isPit(X - 1, Y) && !dungeon.data.isPit(X, Y) && !dungeon.data.isPit(X + 1, Y) && !dungeon.data.isPit(X + 2, Y) &&
+                        !dungeon.data.isPit(X - 2, Y - 1) && !dungeon.data.isPit(X - 1, Y - 1) && !dungeon.data.isPit(X, Y - 1) && !dungeon.data.isPit(X + 1, Y - 1) && !dungeon.data.isPit(X + 2, Y - 1) &&
+                        !dungeon.data.isPit(X - 2, Y - 2) && !dungeon.data.isPit(X - 1, Y - 2) && !dungeon.data.isPit(X, Y - 2) && !dungeon.data.isPit(X + 1, Y - 2) && !dungeon.data.isPit(X + 2, Y - 2))
+                    {
+                        validCellsCached.Add(new IntVector2(X, Y));
+                    }
+                }
+            }
+            if (validCellsCached.Count > 0) {
+                IntVector2 SelectedCell = BraveUtility.RandomElement(validCellsCached);
+                IntVector2 RegisteredCell = (SelectedCell);
+                validCellsCached.Remove(SelectedCell);
+                if (relativeToRoom) {
+                    return (SelectedCell - currentRoom.area.basePosition);
+                } else {
+                    return (SelectedCell);
+                }
+            } else {
+                return null;
+            }
+        }
+
         public static void CorrectForWalls(AIActor targetActor) {
             bool flag = PhysicsEngine.Instance.OverlapCast(targetActor.specRigidbody, null, true, false, null, null, false, null, null, new SpeculativeRigidbody[0]);
             if (flag) {
@@ -1629,8 +1669,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
             
             if (prototype.usesProceduralDecoration && prototype.allowFloorDecoration && allowProceduralDecoration) {
                 TK2DInteriorDecorator decorator = new TK2DInteriorDecorator(assembler);
-                decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
+                try {
+                    decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
+                } catch (Exception ex) {
+                    if (ExpandStats.debugMode) {
+                        ETGModConsole.Log("WARNING: Exception occured during HandleRoomDecoration steps!");
+                        Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
+                        Debug.LogException(ex);
+                    }
+                }
             }
+
             targetRoom.PostGenerationCleanup();
 
             if (addRoomToMinimap) {

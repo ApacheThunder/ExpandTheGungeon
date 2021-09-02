@@ -265,6 +265,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject RickRollChestObject;
         public static GameObject RickRollAnimationObject;
         public static GameObject RickRollMusicSwitchObject;
+        public static GameObject SurpriseChestObject;
         public static GameObject ExpandThunderstormPlaceable;
         public static GameObject Door_Horizontal_Jungle;
         public static GameObject Door_Vertical_Jungle;
@@ -1828,16 +1829,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             FakePrefab.MarkAsFakePrefab(CorruptedRewardPedestal);
 
 
-            GameObject m_RedChestReference = sharedAssets2.LoadAsset<GameObject>("HighDragunfire_Chest_Red");
+            GameObject m_RedChestReference = objectDatabase.ChestRed;
 
             RickRollChestObject = expandSharedAssets1.LoadAsset<GameObject>("Expand_RickRollChest");
             if (m_RedChestReference.transform.Find("Shadow").gameObject) {
-                GameObject RickRollChestShadow = expandSharedAssets1.LoadAsset<GameObject>("Expand_RickRollChestShadow");
-                RickRollChestShadow.transform.SetParent(RickRollChestObject.transform);
-                RickRollChestShadow.layer = m_RedChestReference.transform.Find("Shadow").gameObject.layer;
+                GameObject RickRollChestShadow = RickRollChestObject.transform.Find("Expand_RickRollChestShadow").gameObject;
                 tk2dSprite RickRollChestShadowSprite = RickRollChestShadow.AddComponent<tk2dSprite>();
                 ExpandUtility.DuplicateSprite(RickRollChestShadowSprite, m_RedChestReference.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>());
-                RickRollChestShadow.transform.localPosition = m_RedChestReference.transform.Find("Shadow").gameObject.transform.localPosition;
             }
             
             
@@ -1986,7 +1984,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(RickRollAnimationObject.GetComponent<tk2dSpriteAnimator>(), m_RickRollBaseSprite.Collection, m_RickRollRiseFrames, "RickRollAnimation_Rise", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
             ExpandUtility.AddAnimation(RickRollAnimationObject.GetComponent<tk2dSpriteAnimator>(), m_RickRollBaseSprite.Collection, m_RickRollFrames, "RickRollAnimation", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 12);
 
-            ExpandRickRollChest RickRollChestComponent = RickRollChestObject.AddComponent<ExpandRickRollChest>();
+            ExpandFakeChest RickRollChestComponent = RickRollChestObject.AddComponent<ExpandFakeChest>();
             RickRollChestComponent.RickRollAnimationObject = RickRollAnimationObject;
             RickRollChestComponent.MinimapIconPrefab = m_RedChestReference.GetComponent<Chest>().MinimapIconPrefab;
             RickRollChestComponent.breakAnimName = m_RedChestReference.GetComponent<Chest>().breakAnimName;
@@ -2006,16 +2004,95 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), RickRollSwitchSprite.Collection, m_RickRollMusicSwitchTurnOnFrames, "RickRollSwitch_TurnOn", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), RickRollSwitchSprite.Collection, m_RickRollMusicSwitchTurnOffFrames, "RickRollSwitch_TurnOff", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
 
-            ExpandRickRollChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandRickRollChest>();
-            RickRollChest_SwitchComponent.isMusicSwitch = true;
-            RickRollChest_SwitchComponent.switchOnAnimName = "RickRollSwitch_TurnOn";
-            RickRollChest_SwitchComponent.switchOffAnimName = "RickRollSwitch_TurnOff";
+            ExpandFakeChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandFakeChest>();
+            RickRollChest_SwitchComponent.chestType = ExpandFakeChest.ChestType.MusicSwitch;
             
             RoomBuilder.AddObjectToRoom(gungeon_entrance, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
             RoomBuilder.AddObjectToRoom(gungeon_entrance_bossrush, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
+            
+
+            GameObject m_BrownChestReference = objectDatabase.ChestBrownTwoItems;
+
+            SurpriseChestObject = expandSharedAssets1.LoadAsset<GameObject>("Expand_SurpriseChest");
+
+            if (m_BrownChestReference.transform.Find("Shadow").gameObject) {
+                GameObject SurpriseChestChestShadow = SurpriseChestObject.transform.Find("Expand_SurpriseChestShadow").gameObject;
+                tk2dSprite SurpriseChestShadowSprite = SurpriseChestChestShadow.AddComponent<tk2dSprite>();
+                ExpandUtility.DuplicateSprite(SurpriseChestShadowSprite, m_BrownChestReference.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>());
+            }
+            
+            tk2dSprite SurpriseChestSprite = SurpriseChestObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(SurpriseChestSprite, m_BrownChestReference.GetComponent<tk2dSprite>());
+            SurpriseChestSprite.SetSprite("coop_chest_idle_001"); // coop_chest_open_001
+
+            tk2dSpriteAnimator SurpriseChestAnimator = SurpriseChestObject.AddComponent<tk2dSpriteAnimator>();
+            SurpriseChestAnimator.Library = m_BrownChestReference.GetComponent<tk2dSpriteAnimator>().Library;
+            SurpriseChestAnimator.DefaultClipId = 31;
+            SurpriseChestAnimator.AdditionalCameraVisibilityRadius = 0;
+            SurpriseChestAnimator.AlwaysIgnoreTimeScale = false;
+            SurpriseChestAnimator.ForceSetEveryFrame = false;
+            SurpriseChestAnimator.playAutomatically = false;
+            SurpriseChestAnimator.IsFrameBlendedAnimation = false;
+            SurpriseChestAnimator.clipTime = 0;
+            SurpriseChestAnimator.deferNextStartClip = false;
+
+            SpeculativeRigidbody SurpriseChestRigidBody = SurpriseChestObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(SurpriseChestRigidBody, m_BrownChestReference.GetComponent<SpeculativeRigidbody>());
+
+            PixelCollider SurpriseChestPixelCollider = SurpriseChestRigidBody.PrimaryPixelCollider;
+            SurpriseChestPixelCollider.ManualOffsetX = 3;
+            SurpriseChestPixelCollider.ManualOffsetY = 0;
+            SurpriseChestPixelCollider.ManualWidth = 25;
+            SurpriseChestPixelCollider.ManualHeight = 14;
+
+            MajorBreakable SurpriseChestBreakable = SurpriseChestObject.AddComponent<MajorBreakable>();
+            SurpriseChestBreakable.HitPoints = 40;
+            SurpriseChestBreakable.DamageReduction = 0;
+            SurpriseChestBreakable.MinHits = 0;
+            SurpriseChestBreakable.EnemyDamageOverride = -1;
+            SurpriseChestBreakable.ImmuneToBeastMode = false;
+            SurpriseChestBreakable.ScaleWithEnemyHealth = false;
+            SurpriseChestBreakable.OnlyExplosions = false;
+            SurpriseChestBreakable.IgnoreExplosions = false;
+            SurpriseChestBreakable.GameActorMotionBreaks = false;
+            SurpriseChestBreakable.PlayerRollingBreaks = false;
+            SurpriseChestBreakable.spawnShards = true;
+            SurpriseChestBreakable.distributeShards = false;
+            SurpriseChestBreakable.shardClusters = new ShardCluster[0];
+            SurpriseChestBreakable.minShardPercentSpeed = 0.05f;
+            SurpriseChestBreakable.maxShardPercentSpeed = 0.3f;
+            SurpriseChestBreakable.shardBreakStyle = MinorBreakable.BreakStyle.CONE;
+            SurpriseChestBreakable.usesTemporaryZeroHitPointsState = true;
+            SurpriseChestBreakable.overrideSpriteNameToUseAtZeroHP = "coop_chest_break001";
+            SurpriseChestBreakable.destroyedOnBreak = false;
+            SurpriseChestBreakable.childrenToDestroy = new List<GameObject>(0);
+            SurpriseChestBreakable.playsAnimationOnNotBroken = false;
+            SurpriseChestBreakable.notBreakAnimation = string.Empty;
+            SurpriseChestBreakable.handlesOwnBreakAnimation = false;
+            SurpriseChestBreakable.breakAnimation = string.Empty;
+            SurpriseChestBreakable.handlesOwnPrebreakFrames = false;
+            SurpriseChestBreakable.prebreakFrames = new BreakFrame[0];
+            SurpriseChestBreakable.damageVfx = new VFXPool { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            SurpriseChestBreakable.damageVfxMinTimeBetween = 0.2f;
+            SurpriseChestBreakable.breakVfx = new VFXPool { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            SurpriseChestBreakable.breakVfxParent = null;
+            SurpriseChestBreakable.delayDamageVfx = false;
+            SurpriseChestBreakable.SpawnItemOnBreak = true;
+            SurpriseChestBreakable.ItemIdToSpawnOnBreak = GlobalItemIds.Junk;
+            SurpriseChestBreakable.HandlePathBlocking = false;
+
+            ExpandFakeChest SurpriseChestComponent = SurpriseChestObject.AddComponent<ExpandFakeChest>();
+            SurpriseChestComponent.chestType = ExpandFakeChest.ChestType.SurpriseChest;
+            SurpriseChestComponent.MinimapIconPrefab = m_BrownChestReference.GetComponent<Chest>().MinimapIconPrefab;
+            // SurpriseChestComponent.breakAnimName = "coop_chest_break001";
+            SurpriseChestComponent.breakAnimName = "coop_chest_break";
+            SurpriseChestComponent.openAnimName = "coop_chest_open";
+
+
 
             ExpandThunderstormPlaceable = expandSharedAssets1.LoadAsset<GameObject>("ExpandThunderStorm");
             ExpandThunderstormPlaceable.AddComponent<ExpandThunderStormPlacable>();
+            
 
 
             Door_Horizontal_Jungle = Instantiate(ForgeDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);

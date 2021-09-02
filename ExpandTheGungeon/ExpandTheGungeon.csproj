@@ -123,6 +123,7 @@
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
+    <Compile Include="ExpandComponents\ExpandInvisibleChestController.cs" />
     <Compile Include="ExpandComponents\ExpandJungleExitLadderComponent.cs" />
     <Compile Include="ExpandComponents\ExpandJungleTreeStumpItemPedestal.cs" />
     <Compile Include="ExpandComponents\ExpandMaybeLoseAmmoOnDamage.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="ExpandComponents\ExpandParasiteBossPortalBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandRemoveGunOnAmmoDepletion.cs" />
     <Compile Include="ExpandComponents\ExpandRewardPedestal.cs" />
-    <Compile Include="ExpandComponents\ExpandRickRollChest.cs" />
+    <Compile Include="ExpandComponents\ExpandFakeChest.cs" />
     <Compile Include="ExpandComponents\ExpandScarfComponent.cs" />
     <Compile Include="ExpandComponents\ExpandSimpleMoveErraticallyBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandJungleTreeController.cs" />

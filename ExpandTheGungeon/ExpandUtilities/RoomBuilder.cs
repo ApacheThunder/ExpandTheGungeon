@@ -119,7 +119,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             cellType = CellType.FLOOR;
                         }
                     } else {
-                        cellType = CellType.WALL;
+                        cellType = CellType.FLOOR;
                     }
                     if (DamageCellsType != CoreDamageTypes.None && isDamageCell) {
                         room.FullCellData[ArrayPosition] = GenerateCellData(cellType, diagonalWallType, cellDamagesPlayer, DamageCellsArePoison, DamageCellsType, DamageToPlayersPerTick, DamageToEnemiesPerTick, TickFrequency, RespectsFlying);

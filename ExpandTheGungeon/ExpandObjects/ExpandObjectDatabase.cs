@@ -56,6 +56,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public GameObject ForgeHammer;
         public GameObject ChestBrownTwoItems;
         public GameObject ChestTruth;
+        public GameObject ChestBlue;
+        public GameObject ChestRed;
+        public GameObject ChestBlack;
         public GameObject ChestRat;
         public GameObject ChestMirror;
         public GameObject TallGrassStrip;
@@ -182,6 +185,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             ForgeHammer = sharedAssets.LoadAsset<GameObject>("Forge_Hammer");
             ChestBrownTwoItems = sharedAssets.LoadAsset<GameObject>("Chest_Wood_Two_Items");
             ChestTruth = sharedAssets.LoadAsset<GameObject>("TruthChest");
+            ChestBlue = ChestTruth = sharedAssets.LoadAsset<GameObject>("Chest_Silver");
+            ChestRed = ChestTruth = sharedAssets.LoadAsset<GameObject>("Chest_Red");
+            ChestBlack = ChestTruth = sharedAssets.LoadAsset<GameObject>("Chest_Black");
             ChestRat = sharedAssets.LoadAsset<GameObject>("Chest_Rat");
             ChestMirror = sharedAssets.LoadAsset<GameObject>("Shrine_Mirror");
             WinchesterMinimapIcon = sharedAssets.LoadAsset<GameObject>("minimap_winchester_icon");

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2588049478
+CRC: 139200979
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c3e2d4ccde3ba4fe33d5f44aeb73a386
+    Hash: c5ae18d97306ce511fd2c41f3c0f420a
   TypeTreeHash:
     serializedVersion: 2
     Hash: d367006692d3ae3746e725828b98dd32
@@ -47,6 +47,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_left_003.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_up_004.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_down_002.png
+- Assets/ExpandPrefabs/Expand_SurpriseChest.prefab
 - Assets/ExpandTextures/Items/RockSlide/plunger_fire_001.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_down_001.png
 - Assets/ExpandTextures/Items/BabyGoodHammer/babygoodhammer_spawn_24.png
@@ -165,7 +166,6 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_spawn_002.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_run_left_001.png
 - Assets/ExpandPrefabs/Items/EXCorruptionBomb.prefab
-- Assets/ExpandPrefabs/Expand_RickRollChestShadow.prefab
 - Assets/ExpandTextures/AIActors/BootlegBullat/bullat_die_004.png
 - Assets/ExpandTextures/RoomBuilderAssets/Giant_Elevator_Room_Layout.png
 - Assets/ExpandTextures/RickRoll/RickRoll_23.png
@@ -379,7 +379,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_right.png
 - Assets/ExpandTextures/AIActors/Cronenberg_tall/berg_tall_idle_back_004.png
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
-- Assets/ExpandTextures/Misc/EXGlitchMap_GS.png
+- Assets/ExpandTextures/Misc/EX_GlitchMap_GS.png
 - Assets/ExpandTextures/GungeoneerMimicAssets/PlayerMimicMirror_Base.png
 - Assets/ExpandTextures/Items/CorruptionBomb/corruptionbomb_spin_05.png
 - Assets/ExpandTextures/RoomBuilderAssets/Forge/Expand_Neighborino_CorridorOfDoomDeath_Layout.png
