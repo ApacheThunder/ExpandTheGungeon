@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ItemAPI;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ItemAPI;
-using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandObjects
 {
@@ -33,27 +33,35 @@ namespace ExpandTheGungeon.ExpandObjects
         public static int WestBrosNomeGunID = -1;
         public static int WestBrosTucGunID = -1;
 
+        // saving these as static references probably doesn't matter, but I'm not risking it to remove them and get crashes again
+
+        public static PickupObject WestBrosGun;
+        public static tk2dSpriteCollectionData Collection;
+        public static tk2dSpriteAnimation Animation;
+        public static AIActor Shades;
+        public static DebrisObject ShadesDebris;
+
         public static void BuildWestBrosBossPrefabs(AssetBundle assetBundle)
         {
             // all 3 west bros animation sets are actually in their 3 cut guns (752,753,754), they all contain the same ones, so we just take the first one
             // 752 is nome
             // 753 is tuc
             // 754 is angel
-            var westBrosGun = PickupObjectDatabase.GetById(752) as Gun;
+            WestBrosGun = PickupObjectDatabase.GetById(752);
 
-            var sourceCollection = westBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
-            var sourceAnimations = westBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
+            Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
+            Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
 
-            var shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
-            var shadesDebris = shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
+            Shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
+            ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
-            BuildWestBrosHatPrefab(assetBundle, out WestBrosAngelHatPrefab, WestBros.Angel, sourceCollection, shadesDebris);
-            BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, sourceCollection, shadesDebris);
-            BuildWestBrosHatPrefab(assetBundle, out WestBrosTucHatPrefab, WestBros.Tuc, sourceCollection, shadesDebris);
+            BuildWestBrosHatPrefab(assetBundle, out WestBrosAngelHatPrefab, WestBros.Angel, Collection, ShadesDebris);
+            BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, Collection, ShadesDebris);
+            BuildWestBrosHatPrefab(assetBundle, out WestBrosTucHatPrefab, WestBros.Tuc, Collection, ShadesDebris);
 
-            BuildWestBrosBossPrefab(assetBundle, out WestBrosAngelPrefab, WestBros.Angel, false, sourceCollection, sourceAnimations, false);
-            BuildWestBrosBossPrefab(assetBundle, out WestBrosNomePrefab, WestBros.Nome, true, sourceCollection, sourceAnimations, true);
-            BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, sourceCollection, sourceAnimations, false);
+            BuildWestBrosBossPrefab(assetBundle, out WestBrosAngelPrefab, WestBros.Angel, false, Collection, Animation, false);
+            BuildWestBrosBossPrefab(assetBundle, out WestBrosNomePrefab, WestBros.Nome, true, Collection, Animation, true);
+            BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, Collection, Animation, false);
         }
 
         private static void BuildWestBrosHatPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, tk2dSpriteCollectionData spriteCollection, DebrisObject broDebris)
@@ -85,7 +93,7 @@ namespace ExpandTheGungeon.ExpandObjects
 
             DebrisObject debrisObject = outObject.AddComponent<DebrisObject>();
             debrisObject.Priority = broDebris.Priority;
-            
+
             ExpandUtility.ReflectionShallowCopyFields(debrisObject, broDebris, (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
         }
 
@@ -120,11 +128,10 @@ namespace ExpandTheGungeon.ExpandObjects
 
         private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer)
         {
-
             GameObject prefab = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig(isSmiley
                 ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
                 : "c00390483f394a849c36143eb878998f").gameObject; // Shades
-                        
+
             outObject = UnityEngine.Object.Instantiate(prefab, null, false);
 
             try
@@ -135,30 +142,31 @@ namespace ExpandTheGungeon.ExpandObjects
                 outObject.name = name;
 
                 AIActor actor = outObject.GetComponent<AIActor>();
-                
-                // actor.EnemyGuid = $"b5ae92d7891b468abff0944ee810296f{name}";
+
                 actor.EnemyId = UnityEngine.Random.Range(100000, 999999);
                 actor.ActorName = name;
 
                 EncounterTrackable Encounterable = outObject.GetComponent<EncounterTrackable>();
 
-                switch (whichBro) {
+                switch (whichBro)
+                {
                     case WestBros.Angel:
                         actor.EnemyGuid = "275354563e244f558be87fcff4b07f9f";
                         Encounterable.EncounterGuid = "7d6e1faf682d4402b29535020313f383";
                         break;
+
                     case WestBros.Nome:
                         actor.EnemyGuid = "3a1a33a905bb4b669e7d798f20674c4c";
                         Encounterable.EncounterGuid = "78cb8889dc884dd9b3aafe64558d858e";
                         break;
+
                     case WestBros.Tuc:
                         actor.EnemyGuid = "d2e7ea9ea9a444cebadd3bafa0832cd1";
                         Encounterable.EncounterGuid = "1df53371ce084dafb46f6bcd5a6c1c5f";
                         break;
                 }
 
-                // Encounterable.EncounterGuid = $"42078e2bc49543a5a0e171cc16aa937d{name}";
-
+                // TODO at some distant point in time
                 Encounterable.journalData.PrimaryDisplayName = name;
                 Encounterable.journalData.NotificationPanelDescription = name;
                 Encounterable.journalData.AmmonomiconFullEntry = name;
@@ -176,7 +184,7 @@ namespace ExpandTheGungeon.ExpandObjects
                 // BulletBrosSweepAttack1
                 // BulletBrosTridentAttack1
 
-                //Destroy(outObject.GetComponent<BroController>());
+                // Destroy(outObject.GetComponent<BroController>());
                 UnityEngine.Object.Destroy(outObject.GetComponent<BulletBroDeathController>());
                 outObject.AddComponent<ExpandWesternBroDeathController>();
 
@@ -190,7 +198,7 @@ namespace ExpandTheGungeon.ExpandObjects
                     }
                     else
                     {
-                        // this is a BulletBrosIntroDoer, a SpecificIntroDoer. it does not inherent from generic intro doer
+                        // BulletBrosIntroDoer is a SpecificIntroDoer; it does not inherent from GenericIntroDoer, it requires it to be present
                         BulletBrosIntroDoer bulletBrosIntroDoer = outObject.GetComponent<BulletBrosIntroDoer>();
 
                         // destroy it so we can add our own
@@ -211,10 +219,6 @@ namespace ExpandTheGungeon.ExpandObjects
                     }
                 }
 
-                // TODO whats this?
-                ObjectVisibilityManager visiblityManager = outObject.GetComponent<ObjectVisibilityManager>();
-                visiblityManager.SuppressPlayerEnteredRoom = false;
-
                 var animationsAsset = assetBundle.LoadAsset<GameObject>($"WestBrosAnimations_{whichBro}");
 
                 List<tk2dSpriteAnimationClip> animationClips = new List<tk2dSpriteAnimationClip>();
@@ -226,17 +230,6 @@ namespace ExpandTheGungeon.ExpandObjects
                         animationClips.Add(ExpandUtility.DuplicateAnimationClip(clip));
                     }
                 }
-
-                ////ETGModConsole.Log("Shades/Smiley animations");
-                //foreach (var item in outObject.GetComponent<tk2dSpriteAnimator>().Library.clips)
-                //{
-                //    ETGModConsole.Log(item.name + " " + item.frames + " " + item.fps + " " + item.maxFidgetDuration + " " + item.minFidgetDuration + " " + item.wrapMode + " " + item.loopStart, true);
-                //}
-                ////ETGModConsole.Log("West Bros animations");
-                //foreach (var item in animationClips)
-                //{
-                //    ETGModConsole.Log(item.name + " " + item.frames + " " + item.fps + " " + item.maxFidgetDuration + " " + item.minFidgetDuration + " " + item.wrapMode + " " + item.loopStart, true);
-                //}
 
                 List<tk2dSpriteAnimationClip> clipsToAdd = new List<tk2dSpriteAnimationClip>();
 
@@ -336,24 +329,21 @@ namespace ExpandTheGungeon.ExpandObjects
 
                 spriteAnimation.clips = animationClips.ToArray();
 
-                tk2dSpriteCollectionData spriteCollectionData = animationsAsset.AddComponent<tk2dSpriteCollectionData>();
-                ExpandUtility.DuplicateComponent(spriteCollectionData, sourceSpriteCollection);
+                tk2dSpriteAnimator spriteAnimator = outObject.GetComponent<tk2dSpriteAnimator>();
+                spriteAnimator.Library = spriteAnimation;
+
+                tk2dSprite sprite = outObject.GetComponent<tk2dSprite>();
+                sprite.Collection = sourceSpriteCollection;
+                sprite.SetSprite($"BB_{whichBro.ToString().ToLower()}_idle_front_001");
+
+                AIAnimator animator = outObject.GetComponent<AIAnimator>();
+                // removes the 'appear' animation
+                animator.OtherAnimations.RemoveAt(0);
 
                 // TODO remove shadow for now, because it needs special treatment, maybe even ignore it forever, not that important in the desert
                 actor.HasShadow = false;
                 actor.ShadowPrefab = null;
                 UnityEngine.Object.Destroy(outObject.transform.Find("shadow").gameObject);
-
-                tk2dSprite sprite = outObject.GetComponent<tk2dSprite>();
-                sprite.Collection = spriteCollectionData;
-                sprite.SetSprite($"BB_{whichBro.ToString().ToLower()}_idle_front_001");
-
-                tk2dSpriteAnimator spriteAnimator = outObject.GetComponent<tk2dSpriteAnimator>();
-                spriteAnimator.Library = spriteAnimation;
-
-                AIAnimator animator = outObject.GetComponent<AIAnimator>();
-                // removes the 'appear' animation
-                animator.OtherAnimations.Remove(animator.OtherAnimations[0]);
 
                 AIShooter shooter = outObject.GetComponent<AIShooter>();
 
@@ -362,6 +352,7 @@ namespace ExpandTheGungeon.ExpandObjects
 
                 int gunID = -1;
                 DebrisObject hatPrefab = null;
+
                 switch (whichBro)
                 {
                     case WestBros.Angel:
@@ -410,6 +401,7 @@ namespace ExpandTheGungeon.ExpandObjects
 
                 // move the actual pixel colliders
                 var rigidbody = outObject.GetComponent<SpeculativeRigidbody>();
+
                 foreach (var item in rigidbody.PixelColliders)
                 {
                     item.ManualOffsetX = 32;
