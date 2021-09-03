@@ -171,7 +171,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedAIActor;
         }
         
-        public static tk2dSpriteAnimator DuplicateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimator sourceAnimator, bool duplicateAnimationData = false) {
+        public static tk2dSpriteAnimator DuplicateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimator sourceAnimator, bool duplicateAnimationData = false, tk2dSpriteCollectionData overrideSpriteCollection = null) {
             tk2dSpriteAnimator targetAnimator;
 
             if (targetObject.GetComponent<tk2dSpriteAnimator>()) {
@@ -200,7 +200,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     m_NewSpriteAnimation = targetObject.AddComponent<tk2dSpriteAnimation>();
                 }
                 List<tk2dSpriteAnimationClip> m_clipList = new List<tk2dSpriteAnimationClip>();
-                foreach (tk2dSpriteAnimationClip clip in sourceAnimator.Library.clips) { m_clipList.Add(DuplicateAnimationClip(clip)); }
+                foreach (tk2dSpriteAnimationClip clip in sourceAnimator.Library.clips) { m_clipList.Add(DuplicateAnimationClip(clip, overrideSpriteCollection)); }
                 m_NewSpriteAnimation.clips = m_clipList.ToArray();
             }
 
@@ -1034,7 +1034,32 @@ namespace ExpandTheGungeon.ExpandUtilities {
             newAnimator.maximumDeltaOneFrame = maximumDeltaOneFrame;
             return newAnimator;
         }
-        
+
+        public static tk2dSpriteAnimation DuplicateSpriteAnimation(GameObject targetObject, tk2dSpriteAnimation targetAnimation, tk2dSpriteAnimation sourceAnimation, tk2dSpriteCollectionData overrideCollection = null) {
+            tk2dSpriteAnimation m_CachedAnimation = null;
+            if (!targetObject.GetComponent<tk2dSpriteAnimation>()) {
+                m_CachedAnimation = targetObject.AddComponent<tk2dSpriteAnimation>();
+                m_CachedAnimation.clips = new tk2dSpriteAnimationClip[0];
+			} else {
+                m_CachedAnimation = targetObject.GetComponent<tk2dSpriteAnimation>();
+                m_CachedAnimation.clips = new tk2dSpriteAnimationClip[0];
+            }
+
+            List<tk2dSpriteAnimationClip> animationList = new List<tk2dSpriteAnimationClip>();
+            foreach (tk2dSpriteAnimationClip clip in sourceAnimation.clips) {
+                animationList.Add(DuplicateAnimationClip(clip, overrideCollection));
+            }
+
+            if (animationList.Count <= 0) {
+                ETGModConsole.Log("[ExpandTheGungeon] AddAnimation: ERROR! Animation Clip list is empty! No valid clips found in specified source!");
+                return null;
+            }
+
+            m_CachedAnimation.clips = animationList.ToArray();
+            
+            return m_CachedAnimation;
+        }
+
         public static void AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<int> spriteIDList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
             
             if (targetAnimator.Library == null) {
@@ -1136,7 +1161,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
             return animationClip;
         }
-
+        
         public static void AddAnimation(tk2dSpriteAnimation targetAnimation, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
             if (targetAnimation.clips == null) { targetAnimation.clips = new tk2dSpriteAnimationClip[0]; }
             List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
@@ -1390,7 +1415,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
         
-        public static tk2dSpriteAnimationClip DuplicateAnimationClip(tk2dSpriteAnimationClip sourceClip) {
+        public static tk2dSpriteAnimationClip DuplicateAnimationClip(tk2dSpriteAnimationClip sourceClip, tk2dSpriteCollectionData overrideCollection = null) {
             if (sourceClip == null) {
                 return new tk2dSpriteAnimationClip() {
                     name = string.Empty,
@@ -1418,7 +1443,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 if (Frame != null) {
                     m_FrameList.Add(
                         new tk2dSpriteAnimationFrame() {
-                            spriteCollection = Frame.spriteCollection,
+                            spriteCollection = overrideCollection != null ? overrideCollection : Frame.spriteCollection,
                             spriteId = Frame.spriteId,
                             invulnerableFrame = Frame.invulnerableFrame,
                             groundedFrame = Frame.groundedFrame,
@@ -1445,7 +1470,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             return m_CachedClip;
         }
-
+        
         public IntVector2? GetRandomAvailableCellSmart(RoomHandler CurrentRoom, IntVector2 Clearence, bool relativeToRoom = false) {            
             CellValidator cellValidator = delegate (IntVector2 c) {
                 for (int X = 0; X < Clearence.x; X++) {

@@ -32,9 +32,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static Texture2D ENV_Tileset_West_Texture;
         public static Texture2D BulletManMonochromeTexture;
         public static Texture2D BulletManUpsideDownTexture;
-        public static Texture2D RedBulletShotgunManTexture;
-        public static Texture2D BlueBulletShotgunManTexture;
-        public static Texture2D BulletManEyepatchTexture;
         
         // Rat Trap Door
         public static GameObject RatTrapdoor;
@@ -180,8 +177,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         private static FoldingTableItem FoldingTablePrefab;
         // public static GameObject NPCLunk;
         // public static GameObject FoldingTable;
-
-
 
 
         public static GameObject MimicNPC;
@@ -363,11 +358,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
             BulletManUpsideDownTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_UpsideDown");
-            
-            RedBulletShotgunManTexture = expandSharedAssets1.LoadAsset<Texture2D>("RedBulletShotgunMan");
-            BlueBulletShotgunManTexture = expandSharedAssets1.LoadAsset<Texture2D>("BlueBulletShotgunMan");
-            BulletManEyepatchTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletManEyepatch");
-            
+                        
             RatTrapdoor = MinesDungeonPrefab.RatTrapdoor;
             RRMinesHiddenTrapDoorController = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>();
 
@@ -588,6 +579,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             resourcefulRatControllerPrefab = ResourcefulRatBossActorPrefab.GetComponent<ResourcefulRatController>();
             // FoldingTablePrefab = ETGMod.Databases.Items[644].GetComponent<FoldingTableItem>();
             FoldingTablePrefab = PickupObjectDatabase.GetById(644).GetComponent<FoldingTableItem>();
+           
 
             SewersRatExitEoom = SewerDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom;
             // SewersRatExitEoom.placedObjects[0].nonenemyBehaviour.gameObject.AddComponent<ExpandSecretFloorController>();

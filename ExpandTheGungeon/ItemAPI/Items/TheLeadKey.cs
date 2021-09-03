@@ -304,7 +304,8 @@ namespace ExpandTheGungeon.ItemAPI {
                     if (Object && Object.transform.parent == currentRoom.hierarchyParent &&
                         !Object.GetComponent<PlayerController>() && !Object.GetComponent<AIActor>() &&
                         !Object.GetComponent<ElevatorDepartureController>() && !Object.GetComponent<TeleporterController>() &&
-                        !Object.GetComponent<BaseShopController>() && !Object.GetComponent<ExpandKickableObject>()
+                        !Object.GetComponent<BaseShopController>() && !Object.GetComponent<ExpandKickableObject>() &&
+                        !Object.GetComponent<MineCartController>()
                        )
                     {
                         Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());

@@ -152,6 +152,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom Expand_Apache_SpikeAndPits;
         public static PrototypeDungeonRoom Expand_Apache_PitTraps;
         public static PrototypeDungeonRoom Expand_Apache_RickRollChest;
+        public static PrototypeDungeonRoom Expand_Apache_SurpriseChest;
         public static PrototypeDungeonRoom Expand_Apache_RainbowRoom;
 
 
@@ -1287,6 +1288,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_SpikeAndPits = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_PitTraps = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_RickRollChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Apache_SurpriseChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_Apache_RainbowRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_RainbowRoom.room", true, false, assignDecorationSettings: true);
             Expand_Apache_RainbowRoom.preventAddedDecoLayering = true;
@@ -9378,6 +9380,65 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_RickRollChest, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_RickRollChestRoom_Layout"));
 
 
+            Expand_Apache_SurpriseChest.name = "Apache Suprise Chest Room";
+            Expand_Apache_SurpriseChest.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Apache_SurpriseChest.GUID = Guid.NewGuid().ToString();
+            Expand_Apache_SurpriseChest.PreventMirroring = false;
+            Expand_Apache_SurpriseChest.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
+            Expand_Apache_SurpriseChest.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Apache_SurpriseChest.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Apache_SurpriseChest.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Apache_SurpriseChest.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Apache_SurpriseChest.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Apache_SurpriseChest.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Apache_SurpriseChest.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Apache_SurpriseChest.placedObjectPositions = new List<Vector2>();
+            Expand_Apache_SurpriseChest.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Apache_SurpriseChest.roomEvents = new List<RoomEventDefinition>() {
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+            };
+            Expand_Apache_SurpriseChest.overriddenTilesets = GlobalDungeonData.ValidTilesets.FORGEGEON;
+            Expand_Apache_SurpriseChest.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Apache_SurpriseChest.InvalidInCoop = false;
+            Expand_Apache_SurpriseChest.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Apache_SurpriseChest.preventAddedDecoLayering = false;
+            Expand_Apache_SurpriseChest.precludeAllTilemapDrawing = false;
+            Expand_Apache_SurpriseChest.drawPrecludedCeilingTiles = false;
+            Expand_Apache_SurpriseChest.preventBorders = false;
+            Expand_Apache_SurpriseChest.preventFacewallAO = false;
+            Expand_Apache_SurpriseChest.usesCustomAmbientLight = false;
+            Expand_Apache_SurpriseChest.customAmbientLight = Color.white;
+            Expand_Apache_SurpriseChest.ForceAllowDuplicates = false;
+            Expand_Apache_SurpriseChest.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Apache_SurpriseChest.IsLostWoodsRoom = false;
+            Expand_Apache_SurpriseChest.UseCustomMusic = false;
+            Expand_Apache_SurpriseChest.UseCustomMusicState = false;
+            Expand_Apache_SurpriseChest.CustomMusicEvent = string.Empty;
+            Expand_Apache_SurpriseChest.UseCustomMusicSwitch = false;
+            Expand_Apache_SurpriseChest.CustomMusicSwitch = string.Empty;
+            Expand_Apache_SurpriseChest.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Apache_SurpriseChest.rewardChestSpawnPosition = new IntVector2(-1, -1);
+            Expand_Apache_SurpriseChest.Width = 18;
+            Expand_Apache_SurpriseChest.Height = 13;
+            Expand_Apache_SurpriseChest.additionalObjectLayers = new List<PrototypeRoomObjectLayer>();
+            foreach (PrototypeRoomExit exit in ExpandPrefabs.gungeon_rewardroom_1.exitData.exits) {
+                Expand_Apache_SurpriseChest.exitData.exits.Add(exit);
+            }
+            foreach (PrototypeRoomObjectLayer objectLayer in ExpandPrefabs.gungeon_rewardroom_1.additionalObjectLayers) {
+                Expand_Apache_SurpriseChest.additionalObjectLayers.Add(objectLayer);
+            }
+            foreach (PrototypePlacedObjectData objectData in ExpandPrefabs.gungeon_rewardroom_1.placedObjects) {
+                Expand_Apache_SurpriseChest.placedObjects.Add(objectData);
+            }
+            foreach (Vector2 placedObjectPosition in ExpandPrefabs.gungeon_rewardroom_1.placedObjectPositions) {
+                Expand_Apache_SurpriseChest.placedObjectPositions.Add(placedObjectPosition);
+            }
+            Expand_Apache_SurpriseChest.additionalObjectLayers.Remove(Expand_Apache_SurpriseChest.additionalObjectLayers[1]);
+            RoomBuilder.AddObjectToRoom(Expand_Apache_SurpriseChest, new Vector2(8, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.SurpriseChestObject, useExternalPrefab: true), yOffset: 8);
+            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_SurpriseChest, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_RickRollChestRoom_Layout"));
+
+
             SecretExitRoom2.name = "Secret Elevator Exit";
             SecretExitRoom2.QAID = "AA" + UnityEngine.Random.Range(1000, 9999);
             SecretExitRoom2.GUID = Guid.NewGuid().ToString();
@@ -10103,6 +10164,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
                 GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.25f),
+                GenerateWeightedRoom(Expand_Apache_SurpriseChest, Weight: 0.35f),
                 GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.2f)
                 // GenerateWeightedRoom(Trap_Expand_Turtlemelon)
             };

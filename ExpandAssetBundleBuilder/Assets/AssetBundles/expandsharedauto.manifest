@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 139200979
+CRC: 740094226
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c5ae18d97306ce511fd2c41f3c0f420a
+    Hash: 41d400efaf0e1ad3c3488e6d57685bbc
   TypeTreeHash:
     serializedVersion: 2
     Hash: d367006692d3ae3746e725828b98dd32
@@ -59,6 +59,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Spawn_001.png
 - Assets/ExpandTextures/JungleAssets/Jungle_Tree_Large_Shadow.png
 - Assets/ExpandPrefabs/ExpandSarco_Floor.prefab
+- Assets/ExpandPrefabs/BlueShotgunManCollection.prefab
 - Assets/ExpandTextures/AIActors/Cronenberg/Cronenberg_Die_001.png
 - Assets/ExpandTextures/AIActors/BabyGoodHammer/babygoodhammer_move_right_02.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_burst_003.png
@@ -265,6 +266,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_left_001.png
 - Assets/ExpandTextures/EXSecretDoor/EXSecretDoor_Close_03.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManBlue/shotgunman_blue_move_down_002.png
+- Assets/ExpandPrefabs/RedShotgunManCollection.prefab
 - Assets/ExpandTextures/Misc/VHSAnimation.mp4
 - Assets/ExpandTextures/AlarmMushroom/alarm_mushroom2_alarm_006.png
 - Assets/ExpandTextures/BellyAssets/PedestalRuins.png
@@ -721,6 +723,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_spawn_003.png
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_burst_003.png
 - Assets/ExpandPrefabs/BellyExitRoomIcon.prefab
+- Assets/ExpandPrefabs/BulletManEyepatchCollection.prefab
 - Assets/ExpandTextures/AIActors/BootlegShotgunManRed/shotgunman_red_move_up_003.png
 - Assets/ExpandTextures/Misc/RedBulletShotgunMan.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_hit_right_004.png

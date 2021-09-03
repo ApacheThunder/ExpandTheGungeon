@@ -37,6 +37,15 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
 
+        // Enemies with pallete system disabled
+        public static GameObject RedShotGunMan;
+        public static GameObject BlueShotGunMan;
+        public static GameObject RedShotgunManCollection;
+        public static GameObject BlueShotgunManCollection;
+        public static GameObject BulletManEyepatch;
+        public static GameObject BulletManEyepatchCollection;
+
+
         // Misc Objects
         public static GameObject CronenbergCorpseDebrisObject1;
         public static GameObject CronenbergCorpseDebrisObject2;
@@ -76,7 +85,11 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
             );
-            
+
+            // Palette Fix to Red/Blue Shotgun Kin and Veteran Bullet Kin (so they work correctly with glitch shader)
+            PaletteFixEnemies(expandSharedAssets1);
+
+
             // Real Prefabs
             BuildBabyGoodHammerPrefab(expandSharedAssets1, out HammerCompanionPrefab);
             BuildBootlegBullatPrefab(expandSharedAssets1, out BootlegBullatPrefab);
@@ -144,6 +157,79 @@ namespace ExpandTheGungeon.ExpandObjects {
             foreach (Tuple<string, string> tuple in FTAEnemyPool) {
                 if (!Game.Enemies.ContainsID(tuple.Second)) { Game.Enemies.Add(tuple.Second, GetOrLoadByGuid_Orig(tuple.First)); }
             }
+        }
+
+        public static void PaletteFixEnemies(AssetBundle expandSharedAssets1) {
+
+            RedShotGunMan = GetOrLoadByGuid("128db2f0781141bcb505d8f00f9e4d47").gameObject;
+            BlueShotGunMan = GetOrLoadByGuid("b54d89f9e802455cbb2b8a96a31e8259").gameObject;
+            BulletManEyepatch = GetOrLoadByGuid("70216cae6c1346309d86d4a0b4603045").gameObject;
+            RedShotgunManCollection = expandSharedAssets1.LoadAsset<GameObject>("RedShotgunManCollection");
+            BlueShotgunManCollection = expandSharedAssets1.LoadAsset<GameObject>("BlueShotgunManCollection");
+            BulletManEyepatchCollection = expandSharedAssets1.LoadAsset<GameObject>("BulletManEyepatchCollection");
+
+            // Red Shotgun Kin
+
+            AIActor RedShotGunEnemy = RedShotGunMan.GetComponent<AIActor>();
+
+            tk2dSpriteCollectionData RedShotGunCollectionData = RedShotgunManCollection.AddComponent<tk2dSpriteCollectionData>();
+            // string m_CachedRedShotgunManCollectionJSON = JsonUtility.ToJson(RedShotGunEnemy.sprite.Collection);
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(RedShotGunEnemy.sprite.Collection), RedShotGunCollectionData);
+
+            Material m_NewRedShotGunManMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            m_NewRedShotGunManMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RedBulletShotgunMan");
+            RedShotGunCollectionData.materials[0] = m_NewRedShotGunManMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in RedShotGunCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewRedShotGunManMaterial; }
+            RedShotGunEnemy.sprite.Collection = RedShotGunCollectionData;
+            // RedShotGunEnemy.sprite.SetSprite(RedShotGunCollectionData, "shotgunguy_idle_front_001");
+
+            ExpandUtility.DuplicateSpriteAnimation(RedShotgunManCollection, RedShotgunManCollection.AddComponent<tk2dSpriteAnimation>(), RedShotGunEnemy.spriteAnimator.Library, RedShotGunCollectionData);
+            RedShotGunEnemy.spriteAnimator.Library = RedShotgunManCollection.GetComponent<tk2dSpriteAnimation>();
+            RedShotGunEnemy.optionalPalette = null;
+
+            // Blue Shotgun Kin
+
+            AIActor BlueShotGunEnemy = BlueShotGunMan.GetComponent<AIActor>();
+
+            tk2dSpriteCollectionData BlueShotGunCollectionData = BlueShotgunManCollection.AddComponent<tk2dSpriteCollectionData>();
+            // string m_CachedBlueShotgunManCollectionJSON = JsonUtility.ToJson(BlueShotGunEnemy.sprite.Collection);
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BlueShotGunEnemy.sprite.Collection), BlueShotGunCollectionData);
+
+            Material m_NewBlueShotGunManMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            m_NewBlueShotGunManMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("BlueBulletShotgunMan");
+            BlueShotGunCollectionData.materials[0] = m_NewBlueShotGunManMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in BlueShotGunCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewBlueShotGunManMaterial; }
+            BlueShotGunEnemy.sprite.Collection = BlueShotGunCollectionData;
+            // BlueShotGunEnemy.sprite.SetSprite(BlueShotGunCollectionData, "shotgunguy_idle_front_001");
+
+            ExpandUtility.DuplicateSpriteAnimation(BlueShotgunManCollection, BlueShotgunManCollection.AddComponent<tk2dSpriteAnimation>(), BlueShotGunEnemy.spriteAnimator.Library, BlueShotGunCollectionData);
+            BlueShotGunEnemy.spriteAnimator.Library = BlueShotgunManCollection.GetComponent<tk2dSpriteAnimation>();
+            BlueShotGunEnemy.optionalPalette = null;
+
+            // Veteran Bullet Kin
+
+            AIActor BulletManEyepatchEnemy = BulletManEyepatch.GetComponent<AIActor>();
+
+            tk2dSpriteCollectionData BulletManEyepatchCollectionData = BulletManEyepatchCollection.AddComponent<tk2dSpriteCollectionData>();
+            // string m_CachedBulletManEyepatchCollectionJSON = JsonUtility.ToJson(BulletManEyepatchEnemy.sprite.Collection);
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BulletManEyepatchEnemy.sprite.Collection), BulletManEyepatchCollectionData);
+
+            Material m_NewBulletManEyepatchMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            m_NewBulletManEyepatchMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletManEyepatch");
+            BulletManEyepatchCollectionData.materials[0] = m_NewBulletManEyepatchMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in BulletManEyepatchCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewBulletManEyepatchMaterial; }
+            BulletManEyepatchEnemy.sprite.Collection = BulletManEyepatchCollectionData;
+
+            ExpandUtility.DuplicateSpriteAnimation(BulletManEyepatchCollection, BulletManEyepatchCollection.AddComponent<tk2dSpriteAnimation>(), BulletManEyepatchEnemy.spriteAnimator.Library, BulletManEyepatchCollectionData);
+            BulletManEyepatchEnemy.spriteAnimator.Library = BulletManEyepatchCollection.GetComponent<tk2dSpriteAnimation>();
+            BulletManEyepatchEnemy.optionalPalette = null;
+
         }
 
 

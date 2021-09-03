@@ -374,52 +374,74 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandDebug(string[] consoleText) {
-            string validSubCommands = "toggledebugstats\nclearroom\nunsealroom";
+            string validSubCommands = "toggledebugstats\nclearroom\nunsealroom\nfixplayerinput";
             
             if (!m_IsCommandValid(consoleText, validSubCommands, "debug")) { return; }
 
-            if (consoleText[0] == "toggledebugstats") {
-                if (!ExpandStats.debugMode) {
-                    ExpandStats.debugMode = true;
-                    ETGModConsole.Log("[ExpandTheGungeon] Installing RoomHandler.OnEntered Hook....");
-                    ExpandSharedHooks.enterRoomHook = new Hook(
-                        typeof(RoomHandler).GetMethod("OnEntered", BindingFlags.NonPublic | BindingFlags.Instance),
-                        typeof(ExpandSharedHooks).GetMethod("EnteredNewRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                        typeof(RoomHandler)
-                    );
-                } else {
-                    if (ExpandStats.debugMode) {
-                        ExpandStats.debugMode = false;
-                        if (ExpandSharedHooks.enterRoomHook != null) {
-                            ETGModConsole.Log("[ExpandTheGungeon] Uninstalling RoomHandler.OnEntered Hook....");
-                            ExpandSharedHooks.enterRoomHook.Dispose();
-                            ExpandSharedHooks.enterRoomHook = null;
-                        }
-                    }
-                }                
-                ETGModConsole.Log("[ExpandTheGungeon] Debug Stats: ", false);
-                ETGModConsole.Log("Debug Stats: " + ExpandStats.debugMode.ToString(), false);
-                ETGModConsole.Log("Debug Exceptions: " + ExpandStats.debugMode.ToString(), false);
-            } else if (consoleText[0] == "clearroom") {
-                RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
-                if (currentRoom != null) {
-                    List<AIActor> enemies = currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear);
+            RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
 
-                    if (enemies != null && enemies.Count > 0) {
-                        for (int i = 0; i < enemies.Count; i++) {
-                            currentRoom.DeregisterEnemy(enemies[i]);
-                            UnityEngine.Object.Destroy(enemies[i].gameObject);
+            switch (consoleText[0].ToLower()) {
+                case "toggledebugstats":
+                    if (!ExpandStats.debugMode) {
+                        ExpandStats.debugMode = true;
+                        ETGModConsole.Log("[ExpandTheGungeon] Installing RoomHandler.OnEntered Hook....");
+                        ExpandSharedHooks.enterRoomHook = new Hook(
+                            typeof(RoomHandler).GetMethod("OnEntered", BindingFlags.NonPublic | BindingFlags.Instance),
+                            typeof(ExpandSharedHooks).GetMethod("EnteredNewRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                            typeof(RoomHandler)
+                        );
+                    } else {
+                        if (ExpandStats.debugMode) {
+                            ExpandStats.debugMode = false;
+                            if (ExpandSharedHooks.enterRoomHook != null) {
+                                ETGModConsole.Log("[ExpandTheGungeon] Uninstalling RoomHandler.OnEntered Hook....");
+                                ExpandSharedHooks.enterRoomHook.Dispose();
+                                ExpandSharedHooks.enterRoomHook = null;
+                            }
+                        }
+                    }                
+                    ETGModConsole.Log("[ExpandTheGungeon] Debug Stats: ", false);
+                    ETGModConsole.Log("Debug Stats: " + ExpandStats.debugMode.ToString(), false);
+                    ETGModConsole.Log("Debug Exceptions: " + ExpandStats.debugMode.ToString(), false);
+                    break;
+                case "clearroom":
+                    if (currentRoom != null) {
+                        List<AIActor> enemies = currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear);
+                        if (enemies != null && enemies.Count > 0) {
+                            for (int i = 0; i < enemies.Count; i++) {
+                                currentRoom.DeregisterEnemy(enemies[i]);
+                                UnityEngine.Object.Destroy(enemies[i].gameObject);
+                            }
                         }
                     }
-                }
-            } else if (consoleText[0] == "unsealroom") {
-                RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
-                if (currentRoom != null) {
-                    if (currentRoom.IsSealed) { currentRoom.UnsealRoom(); }
-                }
-            } else {
-                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);
-                return;
+                    break;
+                case "unsealroom":
+                    if (currentRoom != null) {
+                        if (currentRoom.IsSealed) { currentRoom.UnsealRoom(); }
+                    }
+                    break;
+                case "fixplayerinput":
+                    PlayerController primaryPlayer = GameManager.Instance.PrimaryPlayer;
+                    CameraController cameraController = GameManager.Instance.MainCameraController;
+                    if (cameraController && primaryPlayer) {
+                        cameraController.OverridePosition = primaryPlayer.transform.position;
+                        cameraController.SetManualControl(false, true);
+                    }
+                    if (primaryPlayer) {
+                        primaryPlayer.CurrentInputState = PlayerInputState.AllInput;
+                        primaryPlayer.healthHaver.IsVulnerable = true;
+                    }
+                    if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
+                        PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(primaryPlayer);
+                        if (otherPlayer) {
+                            otherPlayer.CurrentInputState = PlayerInputState.AllInput;
+                            otherPlayer.healthHaver.IsVulnerable = true;
+                        }
+                    }
+                    break;
+                default:
+                    ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);
+                    return;
             }
         }
 
@@ -522,7 +544,7 @@ namespace ExpandTheGungeon {
 
             ExpandExportSettings(consoleText);
         }
-
+        
         private void ExpandTestCommand(string[] consoleText) {
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 

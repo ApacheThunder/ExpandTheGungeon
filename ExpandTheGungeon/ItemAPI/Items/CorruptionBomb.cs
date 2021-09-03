@@ -709,19 +709,8 @@ namespace ExpandTheGungeon.ItemAPI {
                                             }
                                         }
 
-                                        if (enemy.sprite) {
-                                            if (enemy.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47" | enemy.EnemyGuid == "b54d89f9e802455cbb2b8a96a31e8259" | enemy.EnemyGuid == "70216cae6c1346309d86d4a0b4603045") {
-                                                if (enemy.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {
-                                                    ExpandShaders.Instance.ApplyGlitchShader(ExpandPrefabs.RedBulletShotgunManTexture, enemy.sprite);
-                                                } else if (enemy.EnemyGuid == "b54d89f9e802455cbb2b8a96a31e8259") {
-                                                    ExpandShaders.Instance.ApplyGlitchShader(ExpandPrefabs.BlueBulletShotgunManTexture, enemy.sprite);
-                                                } else if (enemy.EnemyGuid == "70216cae6c1346309d86d4a0b4603045") {
-                                                    ExpandShaders.Instance.ApplyGlitchShader(ExpandPrefabs.BulletManEyepatchTexture, enemy.sprite);
-                                                }
-                                            } else {
-                                                ExpandShaders.Instance.ApplyGlitchShader(enemy.sprite);
-                                            }
-                                        }
+                                        if (enemy.sprite) { ExpandShaders.Instance.ApplyGlitchShader(enemy.sprite); }
+                                        
                                         // GameManager.Instance.StartCoroutine(DelayedEnemyDamage(enemy, 0.5f, 3, ignoreInvulnerablity: true));
                                         AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", enemy.gameObject);
                                         LootEngine.DoDefaultItemPoof(unitCenter, false, true);                                        
