@@ -105,7 +105,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 yield return dungeon.StartCoroutine(HandleCombatRoomExpansion(self, sourceRoom, newRoom, sourceChest));
                 self.DisappearDrillPoof.SpawnAtPosition(spawnedSprite.WorldBottomLeft + new Vector2(-0.0625f, 0.25f), 0f, null, null, null, new float?(3f), false, null, null, false);
-                Destroy(spawnedVFX.gameObject);
+                UnityEngine.Object.Destroy(spawnedVFX.gameObject);
                 sourceChest.ForceUnlock();
                 AkSoundEngine.PostEvent("Stop_OBJ_paydaydrill_loop_01", GameManager.Instance.gameObject);
                 AkSoundEngine.PostEvent("Play_OBJ_item_spawn_01", GameManager.Instance.gameObject);
@@ -186,7 +186,7 @@ namespace ExpandTheGungeon.ExpandMain {
             yield return new WaitForSeconds(drillItem.DelayPostExpansionPreEnemies);
             yield return GameManager.Instance.StartCoroutine(ExpandHandleCombatWaves(drillItem, d, newRoom, sourceChest));
             drillItem.DisappearDrillPoof.SpawnAtPosition(spawnedSprite.WorldBottomLeft + new Vector2(-0.0625f, 0.25f), 0f, null, null, null, new float?(3f), false, null, null, false);
-            Destroy(spawnedVFX.gameObject);
+            UnityEngine.Object.Destroy(spawnedVFX.gameObject);
             AkSoundEngine.PostEvent("Stop_OBJ_paydaydrill_loop_01", GameManager.Instance.gameObject);
             AkSoundEngine.PostEvent("Play_OBJ_item_spawn_01", GameManager.Instance.gameObject);
             sourceChest.ForceUnlock();

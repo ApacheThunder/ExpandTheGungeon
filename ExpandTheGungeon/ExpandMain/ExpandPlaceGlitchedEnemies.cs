@@ -5,13 +5,10 @@ using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPlaceGlitchedEnemies : MonoBehaviour {
+    public class ExpandPlaceGlitchedEnemies {
 
-        public ExpandPlaceGlitchedEnemies() { m_GlitchEnemyDatabase = new ExpandGlitchedEnemies(); }
-
-        public ExpandGlitchedEnemies m_GlitchEnemyDatabase;        
-
-        public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
+        public static void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
+            ExpandGlitchedEnemies m_GlitchEnemyDatabase = new ExpandGlitchedEnemies();
 
             if (!dungeon.IsGlitchDungeon && roomHandler == null) { return; }
 
@@ -94,7 +91,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
                     continue;
                 }
-                AIActor[] allAIActors = FindObjectsOfType<AIActor>();
+                AIActor[] allAIActors = Object.FindObjectsOfType<AIActor>();
                 if (allAIActors != null && allAIActors.Length > 0) {
                     foreach (AIActor enemy in allAIActors) {
                         if (enemy.name.ToLower().StartsWith("corrupted")) {
@@ -112,11 +109,11 @@ namespace ExpandTheGungeon.ExpandMain {
                 ETGModConsole.Log("[DEBUG] Number of Glitched Enemies skipped: " + RandomEnemiesSkipped, false);
                 if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Glitched Enemies have been placed!", false); }
             }
-            Destroy(m_GlitchEnemyDatabase);
+            Object.Destroy(m_GlitchEnemyDatabase);
             return;
         }
 
-        private IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = true) {
+        private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = true) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
                 for (int X = 0; X < currentRoom.area.dimensions.x; X++) {

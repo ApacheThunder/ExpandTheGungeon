@@ -144,7 +144,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Dungeon RatDungeonPrefab = GetOrLoadByName_Orig("Base_ResourcefulRat");
             Dungeon FinalScenarioPilotPrefab = GetOrLoadByName_Orig("FinalScenario_Pilot");
             Dungeon FinalScenarioBulletPrefab = GetOrLoadByName_Orig("FinalScenario_Bullet");
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
 
             DungeonMaterial FinalScenario_MainMaterial = UnityEngine.Object.Instantiate(FinalScenarioPilotPrefab.roomMaterialDefinitions[0]);
             FinalScenario_MainMaterial.supportsPits = true;
@@ -362,8 +361,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 4;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];            
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
-
-            expandSharedAssets1 = null;
+            
             FinalScenarioPilotPrefab = null;
             RatDungeonPrefab = null;
             MinesDungeonPrefab = null;
@@ -1314,9 +1312,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
             AbbeyPrefab = null;
-
-            Debug.Log("End Belly Construction...");
-
+            
             return dungeon;
         }
 
@@ -2003,7 +1999,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_PhobosGold.facadeTopGrid = null;
             m_PhobosGold.bridgeGrid = null;
 
-            DungeonMaterial m_PhobosStainedGlassLights = ScriptableObject.CreateInstance<DungeonMaterial>();
+            /*DungeonMaterial m_PhobosStainedGlassLights = ScriptableObject.CreateInstance<DungeonMaterial>();
             m_PhobosStainedGlassLights.name = "Boss_Cathedral_StainedGlass_Lights";
             m_PhobosStainedGlassLights.wallShards = CastlePrefab.roomMaterialDefinitions[0].wallShards;
             m_PhobosStainedGlassLights.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
@@ -2118,7 +2114,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_PhobosStainedGlassLights.forceEdgesDiagonal = false;
             m_PhobosStainedGlassLights.exteriorFacadeBorderGrid = null;
             m_PhobosStainedGlassLights.facadeTopGrid = null;
-            m_PhobosStainedGlassLights.bridgeGrid = null;
+            m_PhobosStainedGlassLights.bridgeGrid = null;*/
 
             
 
@@ -2258,7 +2254,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_PhobosBlue,
                 m_PhobosGold,
                 m_PhobosBlue,
-                m_PhobosStainedGlassLights,
+                sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights"),
                 m_PhobosBlue,
             };
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];

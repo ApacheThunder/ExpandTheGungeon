@@ -24,21 +24,17 @@ namespace ExpandTheGungeon.ExpandMain {
         public static bool PlayerHasWallMimicItem = false;
         public static bool PlayerHasCorruptedJunk = false;
 
-        public void PlaceWallMimics(Dungeon dungeon, RoomHandler roomHandler) {            
+        public void PlaceWallMimics(Dungeon dungeon, RoomHandler roomHandler) {
             int WallMimicsPlaced = 0;
             int WallMimicsPerRoom = 1;
             int numWallMimicsForFloor = MetaInjectionData.GetNumWallMimicsForFloor(dungeon.tileIndices.tilesetId);
             int currentFloor = GameManager.Instance.CurrentFloor;
 
             if (roomHandler != null) { goto IL_SKIP; }
-
-            ExpandPlaceCorruptTiles m_CorruptTilePlacer = new ExpandPlaceCorruptTiles();
-            ExpandPlaceGlitchedEnemies m_GlitchEnemiesPlacer = new ExpandPlaceGlitchedEnemies();
-            ExpandFloorDecorator FloorDecorator = new ExpandFloorDecorator();
-            ExpandJunkEnemySpawneer m_ExpandJunkEnemySpawneer = new ExpandJunkEnemySpawneer();            
-
-            if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
             
+            if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
+            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) { ExpandStats.elevatorHasBeenUsed = false; }
+
             ExpandStaticReferenceManager.ClearStaticPerLevelData();
             ExpandStaticReferenceManager.PopulateLists();
 
@@ -61,19 +57,11 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (levelOverrideState != GameManager.LevelOverrideState.NONE | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL | levelOverrideState == GameManager.LevelOverrideState.FOYER | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
                     if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] This floor has been excluded from having Wall Mimics", false); }
                     if (ExpandStats.debugMode && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { ETGModConsole.Log("[DEBUG] The Resourceful Rat Maze/tileset has been excluded from having wall mimics and other floor mods!", false); }
-                    FloorDecorator = null;
-                    m_CorruptTilePlacer = null;
-                    m_GlitchEnemiesPlacer = null;
-                    m_ExpandJunkEnemySpawneer = null;
                     return;
                 }
 
                 if (dungeon.data == null | dungeon.data.rooms.Count <= 0) {
-                    if (ExpandStats.debugMode) { ETGModConsole.Log("Dungeon has no rooms or Dungeon.data is null! This is super abnormal!", false); }                    
-                    FloorDecorator = null;
-                    m_CorruptTilePlacer = null;
-                    m_GlitchEnemiesPlacer = null;
-                    m_ExpandJunkEnemySpawneer = null;
+                    if (ExpandStats.debugMode) { ETGModConsole.Log("Dungeon has no rooms or Dungeon.data is null! This is super abnormal!", false); }
                     return;
                 }
 
@@ -81,7 +69,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 PlaceGlitchElevator(dungeon, currentFloor);
 
-                m_ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
+                ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
 
                 if (ExpandStats.EnableExpandedGlitchFloors) {
                     if (dungeon.IsGlitchDungeon) {
@@ -90,12 +78,12 @@ namespace ExpandTheGungeon.ExpandMain {
                         ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
                     }
 
-                    m_CorruptTilePlacer.PlaceCorruptTiles(dungeon);
+                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon);
                 }
 
-                FloorDecorator.PlaceFloorDecoration(dungeon);
+                ExpandFloorDecorator.PlaceFloorDecoration(dungeon);
 
-                if (PlayerHasCorruptedJunk) { CorruptRandomRooms(dungeon, m_GlitchEnemiesPlacer, m_CorruptTilePlacer, currentFloor); }
+                if (PlayerHasCorruptedJunk) { CorruptRandomRooms(dungeon, currentFloor); }
             } catch (Exception ex) {
                 if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!"); }
                 Debug.Log("Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!");
@@ -105,10 +93,6 @@ namespace ExpandTheGungeon.ExpandMain {
             if (numWallMimicsForFloor <= 0 && !PlayerHasWallMimicItem) {
                 if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] There will be no Wall Mimics for this floor.", false); }
                 PhysicsEngine.Instance.ClearAllCachedTiles();
-                FloorDecorator = null;
-                m_CorruptTilePlacer = null;
-                m_GlitchEnemiesPlacer = null;
-                m_ExpandJunkEnemySpawneer = null;
                 return;
             }
             
@@ -172,10 +156,6 @@ namespace ExpandTheGungeon.ExpandMain {
                         ETGModConsole.Log("[DEBUG] Wall Mimics Succewsfully Placed: " + WallMimicsPlaced);
                     }
                     PhysicsEngine.Instance.ClearAllCachedTiles();
-                    FloorDecorator = null;
-                    m_CorruptTilePlacer = null;
-                    m_GlitchEnemiesPlacer = null;
-                    m_ExpandJunkEnemySpawneer = null;
                     return;
                 }
                 if (RoomList.Count > 1) { RoomList = RoomList.Shuffle(); }
@@ -190,10 +170,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 ETGModConsole.Log("[DEBUG] Wall Mimics Succewsfully Placed: " + WallMimicsPlaced);
             }
             PhysicsEngine.Instance.ClearAllCachedTiles();
-            FloorDecorator = null;
-            m_CorruptTilePlacer = null;
-            m_GlitchEnemiesPlacer = null;
-            m_ExpandJunkEnemySpawneer = null;
         }
 
         public int SpawnWallMimic(Dungeon dungeon, RoomHandler currentRoom, int WallMimicsPerRoom = 1) {
@@ -375,7 +351,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 
         private void PlaceGlitchElevator(Dungeon dungeon, int CurrentFloor) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
-            if (dungeon.IsGlitchDungeon | ExpandStats.elevatorHasBeenUsed | CurrentFloor < 4) { return; }
+            if (dungeon.IsGlitchDungeon | ExpandStats.elevatorHasBeenUsed | CurrentFloor > 4) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
                 ExpandStats.elevatorHasBeenUsed = false;
@@ -385,12 +361,10 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandStats.elevatorHasBeenUsed = false;
                 return;
             }
-            if (!ExpandStats.EnableExpandedGlitchFloors) { return; }
-
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
-            if (UnityEngine.Random.value > 0.003f) { return; }
-            ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!", false);
+            // if (UnityEngine.Random.value > 0.003f) { return; }
+            if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
             foreach (RoomHandler room in dungeon.data.rooms) {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsShop && !room.IsMaintenanceRoom() && !room.GetRoomName().ToLower().StartsWith("exit") &&
@@ -426,7 +400,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
                     int X = currentRoom.area.basePosition.x + Width;
                     int Y = currentRoom.area.basePosition.y + Height;
-                    if (dungeon.data.isWall(X, Y) && dungeon.data[new IntVector2(X, Y)].parentRoom == currentRoom) {
+                    if (dungeon.data.isWall(X, Y) && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
                         int WallCellCount = 0;
                         if (!dungeon.data.isPlainEmptyCell(X - 3, Y + 6) && !dungeon.data.isPlainEmptyCell(X - 2, Y + 6) && !dungeon.data.isPlainEmptyCell(X - 1, Y + 6) && !dungeon.data.isPlainEmptyCell(X, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 1, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 2, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 3, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 4, Y + 6) && !dungeon.data.isPlainEmptyCell(X + 5, Y + 6) &&
                             !dungeon.data.isPlainEmptyCell(X - 3, Y + 5) && !dungeon.data.isPlainEmptyCell(X - 2, Y + 5) && !dungeon.data.isPlainEmptyCell(X - 1, Y + 5) && !dungeon.data.isPlainEmptyCell(X, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 1, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 2, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 3, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 4, Y + 5) && !dungeon.data.isPlainEmptyCell(X + 5, Y + 5) &&
@@ -474,8 +448,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 GameObject ElevatorObject = ExpandPrefabs.ElevatorDeparture.InstantiateObject(currentRoom, WallCell, false);
                 ElevatorObject.AddComponent<ExpandElevatorDepartureManager>();
                 ExpandElevatorDepartureManager elevatorComponent = ElevatorObject.GetComponent<ExpandElevatorDepartureManager>();
-                elevatorComponent.OverrideTargetFloor = GlobalDungeonData.ValidTilesets.OFFICEGEON;
                 elevatorComponent.UsesOverrideTargetFloor = true;
+                elevatorComponent.IsGlitchElevator = true;
                 if (elevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
                     foreach (tk2dBaseSprite baseSprite in elevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true)) {
                         ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
@@ -510,7 +484,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private void CorruptRandomRooms(Dungeon dungeon, ExpandPlaceGlitchedEnemies m_PlaceCorruptedEnemies, ExpandPlaceCorruptTiles m_CorruptTilePlacer, int currentFloor) {
+        private void CorruptRandomRooms(Dungeon dungeon, int currentFloor) {
             if (dungeon.IsGlitchDungeon | ExpandDungeonFlows.ExpandDungeonFlow.isGlitchFlow) { return; }
 
             List<string> LoggedExceptions = new List<string>();
@@ -566,8 +540,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     } else {
                         room.area.PrototypeRoomName = "Corrupted Room";
                     }
-                    m_CorruptTilePlacer.PlaceCorruptTiles(dungeon, room, isCorruptedJunkRoom: true);
-                    m_PlaceCorruptedEnemies.PlaceRandomEnemies(dungeon, currentFloor, room);
+                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, room, isCorruptedJunkRoom: true);
+                    ExpandPlaceGlitchedEnemies.PlaceRandomEnemies(dungeon, currentFloor, room);
                 } catch (Exception ex) {
                     string RoomName = room.GetRoomName();
                     string ExceptionText = string.Empty;

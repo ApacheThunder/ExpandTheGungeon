@@ -1,10 +1,9 @@
 ﻿using ExpandTheGungeon.ExpandObjects;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandEnemyReplacements : MonoBehaviour {
+    public class ExpandEnemyReplacements {
 
         public static void Init(List<AGDEnemyReplacementTier> m_cachedReplacementTiers) {
             if (m_cachedReplacementTiers != null) {
@@ -86,24 +85,7 @@ namespace ExpandTheGungeon.ExpandMain {
             };
             return m_cachedEnemyReplacementTier;
         }
-
-        /*public static void InitReplacementEnemiesAfterSecret(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers, GlobalDungeonData.ValidTilesets TargetTileset, string nameAppend = "_Default") {
-            if (agdEnemyReplacementTiers != null) {
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinCowboyReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, CowboyKinTargetGUIDs, CowboyKinReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("wizBangReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, snakeofficeTargetGUIDs, snakeofficeReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, bulletKinTargetGUIDs, bulletKinReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("rubberKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, musketKinTargetGUIDs, musketKinReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("grenadeKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, dynamiteKinOfficeTargetGUIDs, dynamiteKinOfficeReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("angryBookReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, booksOfficeTargetGUIDs, booksOfficeReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("kingBullatReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, bullatGargoyleTargetGUIDs, bullatGargoyleReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bigEnemyReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, bigEnemyTargetGUIDs, bigEnemyReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("shotgunKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, shotgunKinTargetGUIDs, shotgunKinReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("mutantBulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, mutantBulletKinTargetGUIDs, mutantBulletKinReplacementGUIDs));
-                agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("gunzookieReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, gunzookieTargetGUIDs, gunzookieReplacementGUIDs));
-            }            
-        }*/
-
-
+        
         public static List<string> gigiTargetGUIDs = new List<string>() { "ed37fa13e0fa4fcf8239643957c51293" }; // gigi
         public static List<string> gigiParrotReplacementGUIDs = new List<string>() { "4b21a913e8c54056bc05cafecf9da880" }; // gigi_parrot
 

@@ -5,17 +5,12 @@ using ExpandTheGungeon.ExpandObjects;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandFloorDecorator : MonoBehaviour {
-
-        public ExpandFloorDecorator() {
-            RandomObjectsPlaced = 0;
-            RandomObjectsSkipped = 0;
-        }
+    public class ExpandFloorDecorator {
         
-        private int RandomObjectsPlaced;
-        private int RandomObjectsSkipped;
+        private static int RandomObjectsPlaced = 0;
+        private static int RandomObjectsSkipped = 0;
 
-        public void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
+        public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
 
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {
                 GlobalDungeonData.ValidTilesets.BELLYGEON,
@@ -25,8 +20,6 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (!ignoreTilesetType && !ValidTilesets.Contains(dungeon.tileIndices.tilesetId)) { return; }
             
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-
             if ((dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) && roomListOverride == null) { return; }
 
             List<RoomHandler> DungeonRooms = dungeon.data.rooms;
@@ -36,9 +29,9 @@ namespace ExpandTheGungeon.ExpandMain {
             foreach (RoomHandler currentRoom in DungeonRooms) {                 
                 try {
                     if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                        PlaceRandomCacti(dungeon, currentRoom, objectDatabase);
+                        PlaceRandomCacti(dungeon, currentRoom);
                     } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                        PlaceRandomCorpses(dungeon, currentRoom, objectDatabase);
+                        PlaceRandomCorpses(dungeon, currentRoom);
                     } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.MINEGEON) {
                         PlaceRandomAlarmMushrooms(dungeon, currentRoom);
                     }
@@ -50,6 +43,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                     if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
                     if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
+                    RandomObjectsPlaced = 0;
+                    RandomObjectsSkipped = 0;
                 }
             }
             if (ExpandStats.debugMode) {
@@ -57,11 +52,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, false);
                 if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", false); }
             }
-            objectDatabase = null;
+            RandomObjectsPlaced = 0;
+            RandomObjectsSkipped = 0;
             return;
         }
 
-        private void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase) {
+        private static void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             int MaxObjectsPerRoom = 12;
@@ -86,14 +82,14 @@ namespace ExpandTheGungeon.ExpandMain {
 
                         if (RandomVector.HasValue) {
                             if (Random.value <= 0.08f) {
-                                GameObject SkeletonCorpse = Instantiate(ExpandPrefabs.Sarco_Skeleton, RandomVector.Value.ToVector3(), Quaternion.identity);
+                                GameObject SkeletonCorpse = Object.Instantiate(ExpandPrefabs.Sarco_Skeleton, RandomVector.Value.ToVector3(), Quaternion.identity);
                                 SkeletonCorpse.GetComponent<tk2dSprite>().HeightOffGround = -1;
                                 SkeletonCorpse.GetComponent<tk2dSprite>().UpdateZDepth();
                                 if (BraveUtility.RandomBool()) { SkeletonCorpse.GetComponent<tk2dSprite>().FlipX = true; }
                                 SkeletonCorpse.transform.parent = currentRoom.hierarchyParent;
                                 RandomObjectsPlaced++;
                             } else {
-                                GameObject WrithingBulletManCorpse = objectDatabase.WrithingBulletman.InstantiateObject(currentRoom, (RandomVector.Value - currentRoom.area.basePosition));
+                                GameObject WrithingBulletManCorpse = ExpandObjectDatabase.WrithingBulletman.InstantiateObject(currentRoom, (RandomVector.Value - currentRoom.area.basePosition));
                                 WrithingBulletManCorpse.transform.parent = currentRoom.hierarchyParent;
                                 RandomObjectsPlaced++;
                             }
@@ -106,7 +102,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom, ExpandObjectDatabase objectDatabase) {
+        private static void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | currentRoom.IsMaintenanceRoom() |
@@ -149,7 +145,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     CactiList = CactiList.Shuffle();
 
                     if (RandomVector.HasValue) {
-                        GameObject Cactus = Instantiate(BraveUtility.RandomElement(CactiList), RandomVector.Value.ToVector3(), Quaternion.identity);
+                        GameObject Cactus = Object.Instantiate(BraveUtility.RandomElement(CactiList), RandomVector.Value.ToVector3(), Quaternion.identity);
                         Cactus.transform.parent = currentRoom.hierarchyParent;
                         RandomObjectsPlaced++;
                         if (m_CachedPositions.Count <= 0) { break; }
@@ -160,7 +156,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
         
-        private void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom) {
+        private static void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
             
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | string.IsNullOrEmpty(currentRoom.GetRoomName()) |
@@ -213,7 +209,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
+        private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
                 for (int X = 0; X < currentRoom.area.dimensions.x; X++) {

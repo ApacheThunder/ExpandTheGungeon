@@ -66,8 +66,6 @@ namespace ExpandTheGungeon.ItemAPI {
         public void SpawnRockslides(PlayerController user) {
             spriteAnimator.Play("Activate");
             if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-                ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-
                 int EnemyCount = Random.Range(1, user.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count);
                 // Set a cap incase there's an insane amount of enemies in the room and it chose a very large value.
 
@@ -90,11 +88,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
                     if (TargetEnemy && !TargetEnemy.healthHaver.IsDead) {
                         Vector2 SelectedEnemyPosition = TargetEnemy.specRigidbody.GetUnitCenter(ColliderType.Ground);
-                        StartCoroutine(HandleTriggerRockSlide(user, objectDatabase.Mines_Cave_In, SelectedEnemyPosition));
+                        StartCoroutine(HandleTriggerRockSlide(user, ExpandObjectDatabase.Mines_Cave_In, SelectedEnemyPosition));
                         SelectedEnemies.Remove(TargetEnemy);
                     }
                 }
-                objectDatabase = null;
             }
         }
 

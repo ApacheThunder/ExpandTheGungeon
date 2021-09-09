@@ -3,10 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using FullInspector;
-using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
-using FullInspector.Internal;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -9148,24 +9146,23 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             List<TalkDoerLite> NPCList = new List<TalkDoerLite>() {
-                objectDatabase.NPCEvilMuncher.GetComponent<TalkDoerLite>(),
-                objectDatabase.NPCGunMuncher.GetComponent<TalkDoerLite>(),
-                objectDatabase.NPCOldMan.GetComponent<TalkDoerLite>(),
-                objectDatabase.NPCTonic.GetComponent<TalkDoerLite>(),
-                objectDatabase.NPCTruthKnower.GetComponent<TalkDoerLite>(),
-                objectDatabase.NPCCursola.GetComponent<TalkDoerLite>()
+                ExpandObjectDatabase.NPCEvilMuncher.GetComponent<TalkDoerLite>(),
+                ExpandObjectDatabase.NPCGunMuncher.GetComponent<TalkDoerLite>(),
+                ExpandObjectDatabase.NPCOldMan.GetComponent<TalkDoerLite>(),
+                ExpandObjectDatabase.NPCTonic.GetComponent<TalkDoerLite>(),
+                ExpandObjectDatabase.NPCTruthKnower.GetComponent<TalkDoerLite>(),
+                ExpandObjectDatabase.NPCCursola.GetComponent<TalkDoerLite>()
             };
 
             List<tk2dBaseSprite> OtherObjectsList = new List<tk2dBaseSprite>() {
-                objectDatabase.ConvictPastCrowdNPC_01.GetComponent<tk2dBaseSprite>(),
-                objectDatabase.PlayerCorpse.GetComponent<tk2dBaseSprite>(),
-                objectDatabase.TimefallCorpse.GetComponent<tk2dBaseSprite>(),
+                ExpandObjectDatabase.ConvictPastCrowdNPC_01.GetComponent<tk2dBaseSprite>(),
+                ExpandObjectDatabase.PlayerCorpse.GetComponent<tk2dBaseSprite>(),
+                ExpandObjectDatabase.TimefallCorpse.GetComponent<tk2dBaseSprite>(),
                 ExpandPrefabs.Teleporter_Info_Sign.GetComponent<tk2dBaseSprite>(),
                 ExpandPrefabs.PlayerLostRatNote.GetComponent<tk2dBaseSprite>(),
-                objectDatabase.LockedDoor.GetComponent<tk2dBaseSprite>(),
+                ExpandObjectDatabase.LockedDoor.GetComponent<tk2dBaseSprite>(),
                 ExpandPrefabs.MouseTrap1.GetComponent<tk2dBaseSprite>()
             };
 
@@ -9215,7 +9212,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             } else {
                 ETGModConsole.Log(m_SelectedNPCSprite.name);
             }*/
-            objectDatabase = null;
             return targetObject;
         }
         

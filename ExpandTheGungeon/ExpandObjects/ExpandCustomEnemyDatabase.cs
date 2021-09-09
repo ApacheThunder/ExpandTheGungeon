@@ -171,11 +171,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             BulletManEyepatchCollection = expandSharedAssets1.LoadAsset<GameObject>("BulletManEyepatchCollection");
 
             // Red Shotgun Kin
-
             AIActor RedShotGunEnemy = RedShotGunMan.GetComponent<AIActor>();
 
             tk2dSpriteCollectionData RedShotGunCollectionData = RedShotgunManCollection.AddComponent<tk2dSpriteCollectionData>();
-            // string m_CachedRedShotgunManCollectionJSON = JsonUtility.ToJson(RedShotGunEnemy.sprite.Collection);
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(RedShotGunEnemy.sprite.Collection), RedShotGunCollectionData);
 
@@ -185,18 +183,15 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             foreach (tk2dSpriteDefinition spriteDefinition in RedShotGunCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewRedShotGunManMaterial; }
             RedShotGunEnemy.sprite.Collection = RedShotGunCollectionData;
-            // RedShotGunEnemy.sprite.SetSprite(RedShotGunCollectionData, "shotgunguy_idle_front_001");
 
             ExpandUtility.DuplicateSpriteAnimation(RedShotgunManCollection, RedShotgunManCollection.AddComponent<tk2dSpriteAnimation>(), RedShotGunEnemy.spriteAnimator.Library, RedShotGunCollectionData);
             RedShotGunEnemy.spriteAnimator.Library = RedShotgunManCollection.GetComponent<tk2dSpriteAnimation>();
             RedShotGunEnemy.optionalPalette = null;
 
             // Blue Shotgun Kin
-
             AIActor BlueShotGunEnemy = BlueShotGunMan.GetComponent<AIActor>();
 
             tk2dSpriteCollectionData BlueShotGunCollectionData = BlueShotgunManCollection.AddComponent<tk2dSpriteCollectionData>();
-            // string m_CachedBlueShotgunManCollectionJSON = JsonUtility.ToJson(BlueShotGunEnemy.sprite.Collection);
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BlueShotGunEnemy.sprite.Collection), BlueShotGunCollectionData);
 
@@ -206,18 +201,15 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             foreach (tk2dSpriteDefinition spriteDefinition in BlueShotGunCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewBlueShotGunManMaterial; }
             BlueShotGunEnemy.sprite.Collection = BlueShotGunCollectionData;
-            // BlueShotGunEnemy.sprite.SetSprite(BlueShotGunCollectionData, "shotgunguy_idle_front_001");
 
             ExpandUtility.DuplicateSpriteAnimation(BlueShotgunManCollection, BlueShotgunManCollection.AddComponent<tk2dSpriteAnimation>(), BlueShotGunEnemy.spriteAnimator.Library, BlueShotGunCollectionData);
             BlueShotGunEnemy.spriteAnimator.Library = BlueShotgunManCollection.GetComponent<tk2dSpriteAnimation>();
             BlueShotGunEnemy.optionalPalette = null;
 
             // Veteran Bullet Kin
-
             AIActor BulletManEyepatchEnemy = BulletManEyepatch.GetComponent<AIActor>();
 
             tk2dSpriteCollectionData BulletManEyepatchCollectionData = BulletManEyepatchCollection.AddComponent<tk2dSpriteCollectionData>();
-            // string m_CachedBulletManEyepatchCollectionJSON = JsonUtility.ToJson(BulletManEyepatchEnemy.sprite.Collection);
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BulletManEyepatchEnemy.sprite.Collection), BulletManEyepatchCollectionData);
 

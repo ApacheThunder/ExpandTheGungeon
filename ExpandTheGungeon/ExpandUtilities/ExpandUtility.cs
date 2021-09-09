@@ -2971,24 +2971,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedExplosionData;
         }
         
-        public static IEnumerator DelayedGlitchLevelLoad(float delay, string flowPath, bool IsSecretRatFloor = false, bool useNakatomiTileset = false) {
+        public static IEnumerator DelayedGlitchLevelLoad(float delay, string flowPath, bool useSpaceTileset = false) {
             if (string.IsNullOrEmpty(flowPath)) { yield break; }            
-            if (IsSecretRatFloor) {
-                yield return new WaitForSeconds(delay);
-                // ExpandTheGungeon.isGlitchFloor = true;
-                GameManager.Instance.LoadCustomLevel("tt_canyon");
+            string flow = flowPath;
+            ExpandDungeonFlow.isGlitchFlow = true;
+            if (BraveUtility.RandomBool()) { flow = "custom_glitch_flow"; }
+            yield return new WaitForSeconds(delay);
+            if (useSpaceTileset) {
+                GameManager.Instance.LoadCustomFlowForDebug(flow, "Base_Space", "tt_space");
             } else {
-                string flow = flowPath;
-                ExpandDungeonFlow.isGlitchFlow = true;
-                if (BraveUtility.RandomBool()) { flow = "custom_glitch_flow"; }
-                if (useNakatomiTileset) {
-                    yield return new WaitForSeconds(delay);
-                    GameManager.Instance.LoadCustomFlowForDebug(flow, "Base_Nakatomi", "tt_nakatomi");
-                } else {
-                    GameManager.Instance.InjectedFlowPath = flowPath;
-                    GameManager.Instance.DelayedLoadNextLevel(delay);
-                }
-            }            
+                GameManager.Instance.LoadCustomFlowForDebug(flow, "Base_Phobos", "tt_phobos");
+            }
             yield break;
         }
 

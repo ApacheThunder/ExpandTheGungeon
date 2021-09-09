@@ -16,7 +16,7 @@ using InControl;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandSharedHooks : MonoBehaviour {
+    public class ExpandSharedHooks {
         public static Hook cellhook;
         public static Hook enterRoomHook;
 
@@ -388,7 +388,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 Vector3 vector = osd.objectReference.transform.position;
                 ObjectStampOptions component = osd.objectReference.GetComponent<ObjectStampOptions>();
                 if (component != null) { vector = component.GetPositionOffset(); }
-                GameObject gameObject = Instantiate(osd.objectReference);            
+                GameObject gameObject = UnityEngine.Object.Instantiate(osd.objectReference);            
                 gameObject.transform.position = new Vector3(ix, iy, z) + vector;
                 if (!isLightStamp && osd.placementRule == DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS) {
                     gameObject.transform.position = new Vector3(ix + 1, iy, z) + vector.WithX(-vector.x);
@@ -472,7 +472,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         }
                     }
                     // As far as I can tell it does not instantiate this during floor generation so best to instantiate before modifying it!
-                    PrototypeDungeonRoom m_FixedRoom = Instantiate(current.assignedPrototypeRoom);
+                    PrototypeDungeonRoom m_FixedRoom = UnityEngine.Object.Instantiate(current.assignedPrototypeRoom);
                     m_FixedRoom.overrideRoomVisualType = -1; // Setting this to -1 allows it to assign a random available subtype to the room during RoomHandler creation.
                     // Assign "fixed" room over the old one. 
                     // This must occur before the RoomHandler object is created as that is where the exception would have occured!
@@ -540,67 +540,57 @@ namespace ExpandTheGungeon.ExpandMain {
                 } else {
                     Dungeon dungeon = GameManager.Instance.Dungeon;
                     List<DungeonFlow> m_fallbacklist = new List<DungeonFlow>();
-
-                    if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f1_castle_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                    switch (dungeon.tileIndices.tilesetId) {
+                        case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f1_castle_flow")) { m_fallbacklist.Add(flow); }
+                            }                            
+                            break;
+                        case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f1a_sewers_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.SEWERGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f1a_sewers_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.GUNGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f2_gungeon_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.GUNGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f2_gungeon_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f2a_cathedral_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f2a_cathedral_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.MINEGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f3_mines_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.MINEGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f3_mines_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.RATGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("resourcefulratlair_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("resourcefulratlair_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f4_catacomb_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f3_mines_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("fs4_nakatomi_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("fs4_nakatomi_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f5_forge_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f5_forge_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.HELLGEON:
+                            foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
+                                if (flow.name.ToLower().StartsWith("f6_bullethell_flow")) { m_fallbacklist.Add(flow); }
                             }
-                        }
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON) {
-                        for (int i = 0; i < ExpandDungeonFlow.KnownFlows.Count; i ++) {
-                            if (ExpandDungeonFlow.KnownFlows[i].name.ToLower().StartsWith("f6_bullethell_flow")) {
-                                m_fallbacklist.Add(ExpandDungeonFlow.KnownFlows[i]);
-                            }
-                        }
+                            break;
                     }
                     if (m_fallbacklist.Count > 0) {
                         if (m_fallbacklist.Count == 1) {
@@ -660,7 +650,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         yield break;
                     } else {
                         // Could not find a suitable location to place corpse. Let's just destroy it and call it a day. :P
-                        Destroy(talkdoer.gameObject);
+                        UnityEngine.Object.Destroy(talkdoer.gameObject);
                         yield break;
                     }
                 }                
@@ -673,7 +663,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     RoomHandler startRoom = srb.UnitCenter.GetAbsoluteRoom();
                     RoomHandler randomTargetRoom = BraveUtility.RandomElement(GameManager.Instance.Dungeon.data.rooms);
                     RoomHandler maintanenceRoom = null;
-                    if (startRoom == null) { Destroy(talkdoer.gameObject); yield break; }
+                    if (startRoom == null) { UnityEngine.Object.Destroy(talkdoer.gameObject); yield break; }
 
                     for (int i = 0; i < GameManager.Instance.Dungeon.data.rooms.Count; i++) {
                         if (GameManager.Instance.Dungeon.data.rooms[i] != null &&
@@ -693,12 +683,12 @@ namespace ExpandTheGungeon.ExpandMain {
                         field.SetValue(self, false);
                         yield break;
                     } else {
-                        if (randomTargetRoom == null) { Destroy(talkdoer.gameObject); yield break; }
+                        if (randomTargetRoom == null) { UnityEngine.Object.Destroy(talkdoer.gameObject); yield break; }
                         IntVector2? RandomPosition = ExpandUtility.GetRandomAvailableCellSmart(randomTargetRoom, new IntVector2(2, 2));
                         if (RandomPosition.HasValue) {
                             srb.transform.position = RandomPosition.Value.ToVector3(srb.transform.position.z);
                         } else {
-                            Destroy(talkdoer.gameObject);
+                            UnityEngine.Object.Destroy(talkdoer.gameObject);
                             yield break;
                         }                        
                         srb.Reinitialize();
@@ -707,7 +697,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         yield break;
                     }
                 } else {
-                    Destroy(talkdoer.gameObject);
+                    UnityEngine.Object.Destroy(talkdoer.gameObject);
                     yield break;
                 }
             }
@@ -888,7 +878,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     playerController.CurrentPoisonMeterValue = 0f;
                 }
                 GameManager.Instance.DungeonMusicController.EndBossMusic();
-                MetalGearRatRoomController metalGearRatRoomController = FindObjectOfType<MetalGearRatRoomController>();
+                MetalGearRatRoomController metalGearRatRoomController = UnityEngine.Object.FindObjectOfType<MetalGearRatRoomController>();
                 if (metalGearRatRoomController) {
                     GameObject gameObject = PickupObjectDatabase.GetById(GlobalItemIds.RatKey).gameObject;
                     Vector3 position = metalGearRatRoomController.transform.position;
@@ -951,7 +941,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 GameStatsManager.Instance.SetFlag(GungeonFlags.ITEMSPECIFIC_BOXING_GLOVE, true);
                 BraveTime.ClearMultiplier(self.Player.gameObject);
-                Destroy(self.gameObject);
+                UnityEngine.Object.Destroy(self.gameObject);
             } else {
                 self.Reset();                
             }            
@@ -1414,7 +1404,7 @@ namespace ExpandTheGungeon.ExpandMain {
             TitleDioramaController m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
             FieldInfo m_tdcfield = typeof(MainMenuFoyerController).GetField("m_tdc", BindingFlags.Instance | BindingFlags.NonPublic);
             if (m_tdc == null) {
-                m_tdc = FindObjectOfType<TitleDioramaController>();
+                m_tdc = UnityEngine.Object.FindObjectOfType<TitleDioramaController>();
                 m_tdcfield.SetValue(self, m_tdc);
                 m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
             }

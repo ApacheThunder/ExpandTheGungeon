@@ -18,16 +18,58 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             "apache_fucking_around_flow"
         };
 
+        public static DungeonFlow GetRandomFlowFromNextDungeonPrefabForGlitchFloor() {
+            int NextLevelIndex = ReflectionHelpers.ReflectGetField<int>(typeof(GameManager), "nextLevelIndex", GameManager.Instance);
+            Dungeon dungeon = null;
+            bool useFallBack = true;
+            switch (NextLevelIndex) {
+                case 2:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Castle");
+                    break;
+                case 3:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Gungeon");
+                    break;
+                case 4:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
+                    break;
+                case 5:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
+                    break;
+                case 6:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Forge");
+                    break;
+                case 7:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Bullethell");
+                    break;
+                default:
+                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
+                    break;
+            }
+            DungeonFlow m_AssignedFallBackFlow = GetOrLoadByName(BraveUtility.RandomElement(GlitchChestFlows));
+            DungeonFlow m_AssignedFlow = FlowHelpers.DuplicateDungeonFlow(BraveUtility.RandomElement(dungeon.PatternSettings.flows));
+            dungeon = null;
+            foreach (DungeonFlowNode node in m_AssignedFlow.AllNodes) {
+                if (node.roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                    node.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
+                    useFallBack = false;
+                    break;
+                }
+            }
+            if (useFallBack) {
+                return m_AssignedFallBackFlow;
+            } else {
+                return m_AssignedFlow;
+            }
+        }
+
         public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
             if (flowName.ToLower().EndsWith("secret_doublebeholster_flow") && ExpandStats.EnableExpandedGlitchFloors) {
-                GlitchChestFlows = GlitchChestFlows.Shuffle();
-                if (ExpandStats.randomSeed <= 0.5f) {
-                    flowName = BraveUtility.RandomElement(GlitchChestFlows);
-                } else {
-                    flowName = GlitchChestFlows[UnityEngine.Random.Range(0, GlitchChestFlows.Count)];
-                }
+                DungeonFlow m_Flow = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
+                DebugTime.RecordStartTime();
+                DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { m_Flow.name });
+                return m_Flow;
             } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
                 flowName = "secret_doublebeholster_flow";
             }

@@ -9,9 +9,9 @@ using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPlaceCorruptTiles : MonoBehaviour {
+    public class ExpandPlaceCorruptTiles {
 
-        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false, bool isCorruptedJunkRoom = false) {
+        public static void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false, bool isCorruptedJunkRoom = false) {
 
             bool m_CorruptedSecretRoomsPresent = false;
 
@@ -231,7 +231,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                     float RandomColorProbFloat = UnityEngine.Random.Range(0.04f, 0.15f);
                                     float RandomColorIntensityFloat = UnityEngine.Random.Range(0.08f, 0.14f);
 
-                                    GameObject m_GlitchTile = Instantiate(GlitchedTileObject, (WallPosition.ToVector2()), Quaternion.identity);
+                                    GameObject m_GlitchTile = UnityEngine.Object.Instantiate(GlitchedTileObject, (WallPosition.ToVector2()), Quaternion.identity);
                                     m_GlitchTile.name += ("_" + UnityEngine.Random.Range(100000, 999999).ToString());
                                     m_GlitchTile.layer = 22;
                                     if (parentObject != null) {
@@ -340,7 +340,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                 float RandomColorProbFloat = UnityEngine.Random.Range(0.04f, 0.15f);
                                 float RandomColorIntensityFloat = UnityEngine.Random.Range(0.08f, 0.14f);
                         
-                                GameObject m_GlitchTile = Instantiate(GlitchedTileObject, (OpenAreaPosition.ToVector2()), Quaternion.identity);
+                                GameObject m_GlitchTile = UnityEngine.Object.Instantiate(GlitchedTileObject, (OpenAreaPosition.ToVector2()), Quaternion.identity);
                                 m_GlitchTile.name += ("_" + UnityEngine.Random.Range(100000, 999999).ToString());
 
                                 if (parentObject != null) {
@@ -435,7 +435,7 @@ namespace ExpandTheGungeon.ExpandMain {
             		ETGModConsole.Log("[DEBUG] Number of Valid Corrupted locations: " + CorruptOpenAreaTilesPlaced, false);
             	}
             }
-            Destroy(GlitchedTileObject);
+            UnityEngine.Object.Destroy(GlitchedTileObject);
             return;
         }
     }

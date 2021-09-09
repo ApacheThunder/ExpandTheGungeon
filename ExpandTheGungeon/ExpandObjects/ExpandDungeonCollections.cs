@@ -3,9 +3,8 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
-    public class ExpandDungeonCollections : MonoBehaviour {
+    public class ExpandDungeonCollections {
         
-
         public static tk2dSpriteCollectionData ENV_Tileset_Belly(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
             
             tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();

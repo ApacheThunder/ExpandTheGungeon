@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2129299644
+CRC: 2900706432
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ed8a99dbb2a22810f44c0fcd72806065
+    Hash: 3b85b9f0ac48f28a91ab979e2d433c6b
   TypeTreeHash:
     serializedVersion: 2
     Hash: f640b6811a558e00116c1340360ed0da
@@ -506,6 +506,7 @@ Assets:
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_run_left_004.png
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_cover_right_leap_001.png
 - Assets/ExpandTextures/RoomBuilderAssets/BulletHell/Hell_Hath_No_Joery_009_Layout.png
+- Assets/ExpandTextures/AIActors/WestBros/Western_Bros_Hand.png
 - Assets/ExpandPrefabs/BootlegRoomBorder_East.prefab
 - Assets/ExpandPrefabs/Items/The Lead Key.prefab
 - Assets/ExpandTextures/RoomBuilderAssets/GungeonProper/Expand_Neighborino_JumpInThePit_Layout.png

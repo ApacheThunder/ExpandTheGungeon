@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using ExpandTheGungeon.ItemAPI;
-using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandSynergies : MonoBehaviour {
+    public class ExpandSynergies {
 
         public static void Init() {
             List<AdvancedSynergyEntry> m_TempSynergyList = new List<AdvancedSynergyEntry>();

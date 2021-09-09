@@ -216,7 +216,6 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { m_CopyCurrentRoom = (UnityEngine.Random.value < 0.2f); }
 
             PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
-            ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
             
             if (m_CopyCurrentRoom) {
                 try {
@@ -276,8 +275,8 @@ namespace ExpandTheGungeon.ItemAPI {
                         yield break;
                     }
                     
-                    corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
-                    corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
+                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
+                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
 
                     TeleportToRoom(user, SecretBossRoomCluster[0]);
                     
@@ -301,7 +300,6 @@ namespace ExpandTheGungeon.ItemAPI {
                     TogglePlayerInput(user, false);
 
                     Destroy(TempFXObject);
-                    corruptedTilePlacer = null;
                     m_InUse = false;
                     yield break;
                 }
@@ -402,9 +400,9 @@ namespace ExpandTheGungeon.ItemAPI {
             if (GlitchRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET && GlitchRoom.IsSecretRoom) { GlitchRoom.secretRoomManager.OpenDoor(); }
 
             if (m_CopyCurrentRoom) {
-                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
+                ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
             } else {
-                corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
+                ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
             
             TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
@@ -438,7 +436,6 @@ namespace ExpandTheGungeon.ItemAPI {
             
             TogglePlayerInput(user, false);
             Destroy(TempFXObject);
-            corruptedTilePlacer = null;
             
             m_InUse = false;
             yield break;

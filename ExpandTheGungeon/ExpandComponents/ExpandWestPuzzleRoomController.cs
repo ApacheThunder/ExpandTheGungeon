@@ -64,11 +64,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void HandleHideKeyOnTable() {
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
             IntVector2 GlitchedTable1Position = new IntVector2(9, 10);
             IntVector2 GlitchedTable2Position = new IntVector2(9, 8);
-            GameObject GlitchedVerticalTable1 = ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, false, true).InstantiateObject(m_ParentRoom, GlitchedTable1Position);
-            GameObject GlitchedVerticalTable2 = ExpandUtility.GenerateDungeonPlacable(objectDatabase.TableVertical, false, true).InstantiateObject(m_ParentRoom, GlitchedTable2Position);
+            GameObject GlitchedVerticalTable1 = ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.TableVertical, false, true).InstantiateObject(m_ParentRoom, GlitchedTable1Position);
+            GameObject GlitchedVerticalTable2 = ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.TableVertical, false, true).InstantiateObject(m_ParentRoom, GlitchedTable2Position);
             GlitchedVerticalTable1.transform.SetParent(m_ParentRoom.hierarchyParent, true);
             GlitchedVerticalTable2.transform.SetParent(m_ParentRoom.hierarchyParent, true);
 
@@ -138,7 +137,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void HandleChestRoomSetup() {
             AssetBundle sharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             try { 
                 DungeonPlaceable ChestPlatform = sharedAssets2.LoadAsset<DungeonPlaceable>("Treasure_Dais_Stone_Carpet");
@@ -185,7 +183,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ParentRoom.RegisterInteractable(PlacedRainbowChestComponent);
 
                 Vector3 SpecialLockedDoorPosition = (new Vector3(9, 52.25f) + m_ParentRoom.area.basePosition.ToVector3());
-                GameObject SpecialLockedDoor = Instantiate(objectDatabase.LockedJailDoor, SpecialLockedDoorPosition, Quaternion.identity);
+                GameObject SpecialLockedDoor = Instantiate(ExpandObjectDatabase.LockedJailDoor, SpecialLockedDoorPosition, Quaternion.identity);
                 SpecialLockedDoor.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 InteractableLock SpecialLockedDoorComponent = SpecialLockedDoor.GetComponentInChildren<InteractableLock>();
                 SpecialLockedDoorComponent.lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
@@ -303,7 +301,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             sharedAssets1 = null;
             sharedAssets2 = null;
-            objectDatabase = null;
         }
 
         private void HandleWinchesterRoomSetup() {

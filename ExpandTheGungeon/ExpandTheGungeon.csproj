@@ -102,7 +102,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpandAudio\AudioResourceLoader.cs" />
     <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBellyMonsterController.cs" />
     <Compile Include="ExpandComponents\ExpandBellyWarpWingDoor.cs" />
@@ -237,7 +236,7 @@
     <Compile Include="ExpandUtilities\ResourceExtractor.cs" />
     <Compile Include="ExpandUtilities\RoomBuilder.cs" />
     <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
-    <Compile Include="SerializedData\ExpandAssets.cs" />
+    <Compile Include="ExpandAssets.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\BulletHell\BHell_TheReunion.room" />

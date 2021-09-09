@@ -32,6 +32,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool UsesOverrideTargetFloor;
         public bool ConfigurationWasDeferred;
         public GlobalDungeonData.ValidTilesets OverrideTargetFloor;
+        public bool IsGlitchElevator;
+        public string OverrideExactLevelName;
 
         public const bool c_savingEnabled = true;
 
@@ -43,6 +45,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_isArrived = Tribool.Unready;
             ConfigurationWasDeferred = false;
             UsesOverrideTargetFloor = true;
+            IsGlitchElevator = false;
+            OverrideExactLevelName = "tt_tutorial";
             OverrideTargetFloor = GlobalDungeonData.ValidTilesets.WESTGEON;
         }
 
@@ -198,25 +202,60 @@ namespace ExpandTheGungeon.ExpandComponents {
                         GlobalDungeonData.ValidTilesets nextTileset = GameManager.Instance.GetNextTileset(GameManager.Instance.Dungeon.tileIndices.tilesetId);
                         GameManager.DoMidgameSave(nextTileset);
                     }
-                    if (UsesOverrideTargetFloor) {
+                    if (IsGlitchElevator) {
+                        ExpandStats.elevatorHasBeenUsed = true;
+                        GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
+                    } else if (UsesOverrideTargetFloor) {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;
-                        if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
-                            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_catacombs");
-                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_forge");
-                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
-                            ExpandStats.elevatorHasBeenUsed = true;
-                            if (BraveUtility.RandomBool()) {
-                                GameManager.Instance.InjectedFlowPath = BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows);
-                                GameManager.Instance.DelayedLoadNextLevel(delay);
-                            } else {
-                                GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), useNakatomiTileset: BraveUtility.RandomBool()));
-                            }
-                        } else if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_west");
-                            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, "SecretGlitchFloor_Flow", true));
-                        } else {
-                            GameManager.Instance.DelayedLoadNextLevel(delay);
+                        switch (overrideTargetFloor) {
+                            case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_castle");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_sewer");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_jungle");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.GUNGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt5");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_cathedral");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_belly");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.MINEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_mines");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.RATGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "ss_resourcefulrat");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_catacombs");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_nakatomi");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.WESTGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_west");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_forge");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.HELLGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_bullethell");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_space");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_phobos");
+                                break;
+                            case GlobalDungeonData.ValidTilesets.FINALGEON: // Use FINALGEON to specify a name that does not have a matching tilesetID
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, OverrideExactLevelName);
+                                break;
                         }
                     } else {
                         GameManager.Instance.DelayedLoadNextLevel(delay);

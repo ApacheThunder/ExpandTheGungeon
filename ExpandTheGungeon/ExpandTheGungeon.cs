@@ -8,9 +8,7 @@ using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandObjects;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandAudio;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using ExpandTheGungeon.SerializedData;
 using System.IO;
 using System.Collections;
 
@@ -92,11 +90,10 @@ namespace ExpandTheGungeon {
                 // "Table Tech Expand"
             };
             
-            AudioResourceLoader.InitAudio(ZipFilePath, FilePath);
+            ExpandAssets.InitAudio(ZipFilePath, FilePath);
+            ExpandAssets.InitCustomAssetBundle();
 
-            InitCustomAssetBundle();
-
-            ModLogo = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EXLogo");
+            ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo");
 
             try {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
@@ -105,7 +102,7 @@ namespace ExpandTheGungeon {
                     typeof(ExpandTheGungeon).GetMethod("MainMenuUpdateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                     typeof(MainMenuFoyerController)
                 );
-                GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
+                GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
                 ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
@@ -261,33 +258,7 @@ namespace ExpandTheGungeon {
                     yield break;
             }
         }
-               
-        public static void InitCustomAssetBundle() {
-            
-            FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
-            Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
-
-            AssetBundle m_ExpandSharedAssets1 = null;
-
-            try {
-                m_ExpandSharedAssets1 = ExpandAssets.LoadFromModZIPOrModFolder();
-                if (m_ExpandSharedAssets1 != null) {
-                    m_AssetBundles.Add("ExpandSharedAuto", m_ExpandSharedAssets1);
-                } else {
-                    string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
-                    Debug.Log(ErrorMessage);
-                    ExceptionText = ErrorMessage;
-                    return;
-                }
-            } catch (Exception ex) {
-                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading ExpandSharedAuto asset bundle! Possible GUID conflict with other custom AssetBundles?";
-                Debug.Log(ErrorMessage);
-                Debug.LogException(ex);
-                ExceptionText = ErrorMessage;
-                return;
-            }
-        }
-
+        
         private void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ItemAPISetup) {
                 try {
@@ -324,7 +295,7 @@ namespace ExpandTheGungeon {
 
         private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
-            self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
+            self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
             if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
         }

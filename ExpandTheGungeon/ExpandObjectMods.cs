@@ -11,10 +11,8 @@ using ExpandTheGungeon.ExpandMain;
 namespace ExpandTheGungeon {
 
     public class ExpandObjectMods : MonoBehaviour {
-
-        public static ExpandObjectMods Instance { get { return new ExpandObjectMods(); } }
-        
-        public void InitSpecialMods() {
+                
+        public static void InitSpecialMods() {
             ExpandStats.randomSeed = Random.value;
 
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
@@ -36,7 +34,7 @@ namespace ExpandTheGungeon {
             ExpandDungeonFlow.isGlitchFlow = false;
         }
 
-        private void InitObjectMods(Dungeon dungeon) {
+        private static void InitObjectMods(Dungeon dungeon) {
 
             if (!GameManager.Instance | !dungeon) { return; }
 
@@ -153,17 +151,15 @@ namespace ExpandTheGungeon {
                             }
                         }
                     }
-
-                    ExpandPlaceGlitchedEnemies m_GlitchEnemyRandomizer = new ExpandPlaceGlitchedEnemies();
-                    m_GlitchEnemyRandomizer.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
+                    
+                    ExpandPlaceGlitchedEnemies.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
                     // Destroy(m_GlitchEnemyRandomizer);
-                    m_GlitchEnemyRandomizer = null;
                     MaybeSetupGlitchEnemyStun(dungeon);
                 }
             }
         }
 
-        private void MaybeSetupGlitchEnemyStun(Dungeon dungeon, bool forceRun = false) {
+        private static void MaybeSetupGlitchEnemyStun(Dungeon dungeon, bool forceRun = false) {
 
             if (!dungeon.IsGlitchDungeon && !forceRun) { return; }
 

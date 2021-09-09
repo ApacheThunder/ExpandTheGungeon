@@ -6,13 +6,9 @@ using System.Linq;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandJunkEnemySpawneer : MonoBehaviour {
-
-        public ExpandJunkEnemySpawneer() { m_GlitchEnemyDatabase = new ExpandGlitchedEnemies(); }
-
-        public ExpandGlitchedEnemies m_GlitchEnemyDatabase;
-
-        public void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler) {
+    public class ExpandJunkEnemySpawneer {
+        
+        public static void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler) {
             if (dungeon.IsGlitchDungeon) { return; }
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
 
@@ -31,7 +27,9 @@ namespace ExpandTheGungeon.ExpandMain {
             roomList = roomList.Shuffle();
 
             if (roomHandler != null) { roomList = new List<int>(new int[] { dungeon.data.rooms.IndexOf(roomHandler) }); }
-            
+
+            ExpandGlitchedEnemies m_GlitchEnemyDatabase = new ExpandGlitchedEnemies();
+
             while (iterations < roomList.Count && RandomEnemiesPlaced < MaxEnemies) {
                 RoomHandler currentRoom = dungeon.data.rooms[roomList[iterations]];
                 if (currentRoom == null | currentRoom.area == null) { continue; }
@@ -78,7 +76,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Junk Enemies have been placed!", false); }
             }
             if (RandomEnemiesPlaced > 0) {
-                AIActor[] actors = FindObjectsOfType<AIActor>();
+                AIActor[] actors = Object.FindObjectsOfType<AIActor>();
                 if (actors != null & actors.Length > 0) {
                     foreach (AIActor actor in actors) {
                         if (!string.IsNullOrEmpty(actor.ActorName)) {
@@ -118,11 +116,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }
             }
-            Destroy(m_GlitchEnemyDatabase);
+            Object.Destroy(m_GlitchEnemyDatabase);
             return;
         }
 
-        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int gridSnap = 1) {
+        private static IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int gridSnap = 1) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }
             if (validCellsCached.Count == 0) {
                 for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {

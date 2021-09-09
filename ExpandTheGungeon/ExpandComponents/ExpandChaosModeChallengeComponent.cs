@@ -462,8 +462,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (dungeon.IsGlitchDungeon) { return; }
             if (currentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return; }
             if (currentRoom.GetRoomName() == null) { return; }
-
-            ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
             
             bool RatCorpsePlaced = false;
             bool BabyDragunPlaced = false;
@@ -496,77 +494,77 @@ namespace ExpandTheGungeon.ExpandComponents {
             MiscPlacables.Clear();
 
             if (debugMode)ETGModConsole.Log("[DEBUG] Building KickableDrumObjects list...", true);
-            KickableDrumObjects.Add(objectDatabase.RedDrum);
-            KickableDrumObjects.Add(objectDatabase.YellowDrum);
-            KickableDrumObjects.Add(objectDatabase.WaterDrum);
+            KickableDrumObjects.Add(ExpandObjectDatabase.RedDrum);
+            KickableDrumObjects.Add(ExpandObjectDatabase.YellowDrum);
+            KickableDrumObjects.Add(ExpandObjectDatabase.WaterDrum);
             if (debugMode)ETGModConsole.Log("[DEBUG] Building TableObjects list...", true);
-            TableObjects.Add(objectDatabase.TableHorizontal);
-            TableObjects.Add(objectDatabase.TableVertical);
-            TableObjects.Add(objectDatabase.TableHorizontalStone);
-            TableObjects.Add(objectDatabase.TableVerticalStone);
-            CoffinObjects.Add(objectDatabase.CoffinHorizontal);
-            CoffinObjects.Add(objectDatabase.CoffinVertical);            
+            TableObjects.Add(ExpandObjectDatabase.TableHorizontal);
+            TableObjects.Add(ExpandObjectDatabase.TableVertical);
+            TableObjects.Add(ExpandObjectDatabase.TableHorizontalStone);
+            TableObjects.Add(ExpandObjectDatabase.TableVerticalStone);
+            CoffinObjects.Add(ExpandObjectDatabase.CoffinHorizontal);
+            CoffinObjects.Add(ExpandObjectDatabase.CoffinVertical);            
             if (debugMode)ETGModConsole.Log("[DEBUG] Building NPC list...", true);
-            InteractableNPCs.Add(objectDatabase.NPCOldMan);
-            InteractableNPCs.Add(objectDatabase.NPCGunMuncher);
-            InteractableNPCs.Add(objectDatabase.NPCEvilMuncher);
-            InteractableNPCs.Add(objectDatabase.NPCMonsterManuel);
-            InteractableNPCs.Add(objectDatabase.NPCVampire);
-            InteractableNPCs.Add(objectDatabase.NPCGuardLeft);
-            InteractableNPCs.Add(objectDatabase.NPCGuardRight);
-            InteractableNPCs.Add(objectDatabase.NPCTruthKnower);
-            InteractableNPCs.Add(objectDatabase.NPCSynergrace);
-            InteractableNPCs.Add(objectDatabase.CultistBaldBowLeft);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCOldMan);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCGunMuncher);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCEvilMuncher);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCMonsterManuel);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCVampire);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCGuardLeft);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCGuardRight);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCTruthKnower);
+            InteractableNPCs.Add(ExpandObjectDatabase.NPCSynergrace);
+            InteractableNPCs.Add(ExpandObjectDatabase.CultistBaldBowLeft);
             if (debugMode)ETGModConsole.Log("[DEBUG] Building NonInteractableObjects list...", true);
-            NonInteractableObjects.Add(objectDatabase.AmygdalaNorth);
-            NonInteractableObjects.Add(objectDatabase.AmygdalaSouth);
-            NonInteractableObjects.Add(objectDatabase.AmygdalaWest);
-            NonInteractableObjects.Add(objectDatabase.AmygdalaEast);
-            NonInteractableObjects.Add(objectDatabase.SpaceFog);
-            NonInteractableObjects.Add(objectDatabase.LockedDoor);
+            NonInteractableObjects.Add(ExpandObjectDatabase.AmygdalaNorth);
+            NonInteractableObjects.Add(ExpandObjectDatabase.AmygdalaSouth);
+            NonInteractableObjects.Add(ExpandObjectDatabase.AmygdalaWest);
+            NonInteractableObjects.Add(ExpandObjectDatabase.AmygdalaEast);
+            NonInteractableObjects.Add(ExpandObjectDatabase.SpaceFog);
+            NonInteractableObjects.Add(ExpandObjectDatabase.LockedDoor);
             // NonInteractableObjects.Add(LockedJailDoor);
-            NonInteractableObjects.Add(objectDatabase.SpikeTrap);
-            NonInteractableObjects.Add(objectDatabase.FlameTrap);
-            NonInteractableObjects.Add(objectDatabase.FakeTrap);
-            NonInteractableObjects.Add(objectDatabase.PlayerCorpse);
-            NonInteractableObjects.Add(objectDatabase.TimefallCorpse);
-            NonInteractableObjects.Add(objectDatabase.HangingPot);
-            NonInteractableObjects.Add(objectDatabase.IceBomb);
-            NonInteractableObjects.Add(objectDatabase.DoorsVertical);
-            NonInteractableObjects.Add(objectDatabase.DoorsHorizontal);
-            NonInteractableObjects.Add(objectDatabase.BigDoorsVertical);
-            NonInteractableObjects.Add(objectDatabase.BigDoorsHorizontal);
-            NonInteractableObjects.Add(objectDatabase.CultistBaldBowBackLeft);
-            NonInteractableObjects.Add(objectDatabase.CultistBaldBowBackRight);
-            NonInteractableObjects.Add(objectDatabase.CultistBaldBowBack);
-            NonInteractableObjects.Add(objectDatabase.CultistHoodBowBack);
-            NonInteractableObjects.Add(objectDatabase.CultistHoodBowLeft);
-            NonInteractableObjects.Add(objectDatabase.CultistHoodBowRight);
-            NonInteractableObjects.Add(objectDatabase.TallGrassStrip);
-            NonInteractableObjects.Add(objectDatabase.RatTrapDoorIcon);
+            NonInteractableObjects.Add(ExpandObjectDatabase.SpikeTrap);
+            NonInteractableObjects.Add(ExpandObjectDatabase.FlameTrap);
+            NonInteractableObjects.Add(ExpandObjectDatabase.FakeTrap);
+            NonInteractableObjects.Add(ExpandObjectDatabase.PlayerCorpse);
+            NonInteractableObjects.Add(ExpandObjectDatabase.TimefallCorpse);
+            NonInteractableObjects.Add(ExpandObjectDatabase.HangingPot);
+            NonInteractableObjects.Add(ExpandObjectDatabase.IceBomb);
+            NonInteractableObjects.Add(ExpandObjectDatabase.DoorsVertical);
+            NonInteractableObjects.Add(ExpandObjectDatabase.DoorsHorizontal);
+            NonInteractableObjects.Add(ExpandObjectDatabase.BigDoorsVertical);
+            NonInteractableObjects.Add(ExpandObjectDatabase.BigDoorsHorizontal);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistBaldBowBackLeft);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistBaldBowBackRight);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistBaldBowBack);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistHoodBowBack);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistHoodBowLeft);
+            NonInteractableObjects.Add(ExpandObjectDatabase.CultistHoodBowRight);
+            // NonInteractableObjects.Add(ExpandObjectDatabase.TallGrassStrip);
+            NonInteractableObjects.Add(ExpandObjectDatabase.RatTrapDoorIcon);
             NonInteractableObjects.Add(ExpandPrefabs.MouseTrap1);
             NonInteractableObjects.Add(ExpandPrefabs.MouseTrap2);
             NonInteractableObjects.Add(ExpandPrefabs.MouseTrap3);
             NonInteractableObjects.Add(ExpandPrefabs.PlayerLostRatNote);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_01);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_02);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_03);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_04);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_05);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_06);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_07);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_08);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_09);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_10);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_11);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_12);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_13);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_14);
-            NonInteractableObjects.Add(objectDatabase.ConvictPastCrowdNPC_15);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_01);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_02);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_03);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_04);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_05);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_06);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_07);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_08);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_09);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_10);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_11);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_12);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_13);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_14);
+            NonInteractableObjects.Add(ExpandObjectDatabase.ConvictPastCrowdNPC_15);
             if (debugMode) ETGModConsole.Log("[DEBUG] Building MiscPlacables list...", true);
-            MiscPlacables.Add(objectDatabase.Sarcophogus);
-            MiscPlacables.Add(objectDatabase.CursedPot);
-            MiscPlacables.Add(objectDatabase.GodRays);
+            MiscPlacables.Add(ExpandObjectDatabase.Sarcophogus);
+            MiscPlacables.Add(ExpandObjectDatabase.CursedPot);
+            MiscPlacables.Add(ExpandObjectDatabase.GodRays);
             // MiscPlacables.Add(PitTrap);
             // MiscPlacables.Add(SpecialTraps);
             InteractableNPCs.Add(ExpandPrefabs.MimicNPC);            
@@ -691,8 +689,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                             } else { RandomObjectsSkipped++; }
                         } else {
                             if (UnityEngine.Random.value <= 0.25) {
-                                if (debugMode)ETGModConsole.Log("[DEBUG] Attempting to place Table Object: " + objectDatabase.FoldingTable.name, true);
-                                GameObject portableTableInstance = DungeonPlaceableUtility.InstantiateDungeonPlaceable(objectDatabase.FoldingTable, currentRoom, RandomTableVector, false);
+                                if (debugMode)ETGModConsole.Log("[DEBUG] Attempting to place Table Object: " + ExpandObjectDatabase.FoldingTable.name, true);
+                                GameObject portableTableInstance = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandObjectDatabase.FoldingTable, currentRoom, RandomTableVector, false);
                                 portableTableInstance.transform.parent = currentRoom.hierarchyParent;
                                 portableTableInstance.AddComponent<ExpandKickableObject>();
                                 FlippableCover portableTableCoverComponent = portableTableInstance.GetComponent<FlippableCover>();
@@ -707,7 +705,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                                 PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(TableComponentInChildren, null, false);
                             } else {
                                 if (UnityEngine.Random.value <= 0.3) {
-                                    GameObject BrazierPlaced = objectDatabase.Brazier.InstantiateObject(currentRoom, RandomTableVector);
+                                    GameObject BrazierPlaced = ExpandObjectDatabase.Brazier.InstantiateObject(currentRoom, RandomTableVector);
                                     BrazierPlaced.transform.parent = currentRoom.hierarchyParent;
                                     BrazierPlaced.AddComponent<ExpandKickableObject>();
                                     BrazierController BrazierComponent = BrazierPlaced.GetComponent<BrazierController>();
@@ -753,7 +751,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         } else {
                             if (UnityEngine.Random.value <= 0.4) {
                                 if (debugMode) ETGModConsole.Log("[DEBUG] Attempting to place Exploding Drum/Barrel object.", true);
-                                GameObject SelectedExplodyBarrel = objectDatabase.ExplodyBarrel.InstantiateObject(currentRoom, RandomDrumVector);
+                                GameObject SelectedExplodyBarrel = ExpandObjectDatabase.ExplodyBarrel.InstantiateObject(currentRoom, RandomDrumVector);
                                 if (SelectedExplodyBarrel) {
                                     SelectedExplodyBarrel.transform.parent = currentRoom.hierarchyParent;
                                     KickableObject ExplodyBarrelComponent = SelectedExplodyBarrel.GetComponentInChildren<KickableObject>();
@@ -773,15 +771,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                                                                 
                         GameObject PlacedMiscObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(SelectedNonInteractable, currentRoom, RandomMiscObjectVector, false);
                         PlacedMiscObject.transform.parent = currentRoom.hierarchyParent;
-                        if (SelectedNonInteractable == objectDatabase.CultistBaldBowBack | SelectedNonInteractable == objectDatabase.CultistBaldBowBackLeft |
-                            SelectedNonInteractable == objectDatabase.CultistBaldBowBackRight | SelectedNonInteractable == objectDatabase.CultistBaldBowBack |
-                            SelectedNonInteractable == objectDatabase.CultistHoodBowBack | SelectedNonInteractable == objectDatabase.CultistHoodBowLeft |
-                            SelectedNonInteractable == objectDatabase.CultistHoodBowRight | SelectedNonInteractable == objectDatabase.NPCHeartDispenser)
+                        if (SelectedNonInteractable == ExpandObjectDatabase.CultistBaldBowBack | SelectedNonInteractable == ExpandObjectDatabase.CultistBaldBowBackLeft |
+                            SelectedNonInteractable == ExpandObjectDatabase.CultistBaldBowBackRight | SelectedNonInteractable == ExpandObjectDatabase.CultistBaldBowBack |
+                            SelectedNonInteractable == ExpandObjectDatabase.CultistHoodBowBack | SelectedNonInteractable == ExpandObjectDatabase.CultistHoodBowLeft |
+                            SelectedNonInteractable == ExpandObjectDatabase.CultistHoodBowRight | SelectedNonInteractable == ExpandObjectDatabase.NPCHeartDispenser)
                         {
                             SpeculativeRigidbody SelectedNonInteractableRigidBody = PlacedMiscObject.GetComponentInChildren<SpeculativeRigidbody>();
                             SelectedNonInteractableRigidBody.PrimaryPixelCollider.Enabled = false;                                                
                         }
-                        if (SelectedNonInteractable == objectDatabase.LockedDoor) {
+                        if (SelectedNonInteractable == ExpandObjectDatabase.LockedDoor) {
                             SpeculativeRigidbody SelectedDoorRigidBody = PlacedMiscObject.GetComponentInChildren<SpeculativeRigidbody>();
                             SelectedDoorRigidBody.CollideWithOthers = false;
                         }
@@ -792,7 +790,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                             }
                         }
                        
-                        if (SelectedNonInteractable == objectDatabase.IceBomb) {
+                        if (SelectedNonInteractable == ExpandObjectDatabase.IceBomb) {
                             if (PlacedMiscObject) {
                                 IPlayerInteractable[] IceBombInterfacesInChildren = PlacedMiscObject.GetInterfacesInChildren<IPlayerInteractable>();
                                 for (int i = 0; i < IceBombInterfacesInChildren.Length; i++) { currentRoom.RegisterInteractable(IceBombInterfacesInChildren[i]); }
@@ -809,7 +807,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (RandomMiscPlacableVector != IntVector2.Zero && UnityEngine.Random.value <= 0.3) {
                         DungeonPlaceable SelectedMiscPlacable = BraveUtility.RandomElement(MiscPlacables);
                         GameObject MiscPlacableObject = SelectedMiscPlacable.InstantiateObject(currentRoom, RandomMiscPlacableVector);
-                        if (SelectedMiscPlacable == objectDatabase.Sarcophogus) {
+                        if (SelectedMiscPlacable == ExpandObjectDatabase.Sarcophogus) {
                             SpeculativeRigidbody SarcophogusRigidBody = MiscPlacableObject.GetComponentInChildren<SpeculativeRigidbody>();
                             SarcophogusRigidBody.CollideWithOthers = false;
                         }
@@ -826,7 +824,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (debugMode)ETGModConsole.Log("[DEBUG] Exception while setting up or placing objects for current room: " + currentRoom.GetRoomName(), true);
                 if (debugMode)ETGModConsole.Log("[DEBUG] Skipping current room...", true);
                 if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, debugMode); }
-                Destroy(objectDatabase);
                 return;
             }
 
@@ -847,7 +844,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             KickableDrumObjects.Clear();
             InteractableNPCs.Clear();
             NonInteractableObjects.Clear();
-            Destroy(objectDatabase);
         }
         
         private void MakeTinyOrBig(AIActor aiActor, bool delayed = false) {
