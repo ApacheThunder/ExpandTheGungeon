@@ -52,7 +52,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject CronenbergCorpseDebrisObject3;
         public static GameObject CronenbergCorpseDebrisObject4;
         public static GameObject AggressiveCronenbergCorpseDebrisObject;
-        public static GameObject WestBrosAnimations_Nome;
         public static GameObject StoneCubeCollection_West;
 
         public static Texture2D[] RatGrenadeTextures;

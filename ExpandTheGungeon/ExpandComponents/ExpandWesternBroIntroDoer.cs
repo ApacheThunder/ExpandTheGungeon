@@ -43,34 +43,15 @@ namespace ExpandTheGungeon.ExpandComponents
             }
         }
 
-        //private GenericIntroDoer genericIntroDoer;
-        //private FieldInfo m_currentPhase;
-        //private string lastPhase;
-
-        //public void Awake()
-        //{
-        //    this.genericIntroDoer = this.GetComponent<GenericIntroDoer>();
-        //    m_currentPhase = typeof(GenericIntroDoer).GetField("m_currentPhase", BindingFlags.NonPublic | BindingFlags.Instance);
-        //}
-
         public void Update()
         {
-            //string currentPhase = m_currentPhase.GetValue(genericIntroDoer).ToString();
-
-            //if (lastPhase != currentPhase)
-            //{
-            //    lastPhase = currentPhase;
-
-            //    ETGModConsole.Log(currentPhase);
-            //}
-
             if (!this.initialized)
             {
                 this.thisWesternBro = base.aiAnimator;
 
                 otherWesternBros = new List<AIAnimator>();
 
-                foreach (var bro in StaticReferenceManager.AllBros)
+                foreach (var bro in ExpandWesternBroController.AllWesternBros)
                 {
                     if (bro.gameObject != base.gameObject)
                     {
@@ -81,10 +62,14 @@ namespace ExpandTheGungeon.ExpandComponents
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
 
+                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+
                 foreach (var bro in otherWesternBros)
                 {
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
+
+                    this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                 }
 
                 this.initialized = true;
@@ -99,7 +84,6 @@ namespace ExpandTheGungeon.ExpandComponents
                 m_ScreenFXObject = Instantiate(ExpandPrefabs.EXWestFloorBossIntroScreenFX, parentRoom.area.UnitCenter, Quaternion.identity);
                 m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
             }
-            
 
             if (this.thisWesternBro && this.otherWesternBros != null)
             {

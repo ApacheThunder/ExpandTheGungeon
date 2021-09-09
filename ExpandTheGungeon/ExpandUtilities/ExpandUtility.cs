@@ -41,12 +41,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(source), target);
             
         }
-             
 
-        public static void ReflectionShallowCopyFields<T>(T target, T source, BindingFlags flags)
-        {
-            foreach (var field in typeof(T).GetFields(flags))
-            {
+        public static void ReflectionShallowCopyFields<T>(T target, T source, BindingFlags flags) {
+            foreach (var field in typeof(T).GetFields(flags)) {
                 field.SetValue(target, field.GetValue(source));
             }
         }
@@ -605,7 +602,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return eCrateInstance;
         }
 
-        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false) {
+        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false, PlayerHandController overrideHandObject = null) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }
 
@@ -709,7 +706,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             AIActor bulletManTemplate = EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5"); // bullet_kin
 
             if ((!targetObject.GetComponent<AIShooter>() | !targetObject.GetComponent<AIBulletBank>()) && !EnemyHasNoShooter) {
-                DuplicateAIShooterAndAIBulletBank(targetObject, bulletManTemplate.gameObject.GetComponent<AIShooter>(), bulletManTemplate.gameObject.GetComponent<AIBulletBank>(), StartingGunID, m_CachedGunAttachPoint.transform);
+                DuplicateAIShooterAndAIBulletBank(targetObject, bulletManTemplate.gameObject.GetComponent<AIShooter>(), bulletManTemplate.gameObject.GetComponent<AIBulletBank>(), StartingGunID, m_CachedGunAttachPoint.transform, overrideHandObject: overrideHandObject);
             }
             
             if (!targetObject.GetComponent<AIActor>()) { targetObject.AddComponent<AIActor>(); }
