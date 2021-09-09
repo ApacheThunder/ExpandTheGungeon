@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -1170,10 +1169,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_West_SecretShopWarp = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_SecretShopWarp.room", true);
             Expand_West_SecretShopWarp.overrideRoomVisualType = 2;
             Expand_West_SecretShopWarp.usesProceduralDecoration = false;
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 4), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 8), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 12), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 16), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 4), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 8), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 12), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 16), ExpandPrefabs.RatJailDoor);
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(3, 22), objectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
             Expand_West_SecretKeyShop = Instantiate(ExpandPrefabs.shop_special_key_01);
@@ -1355,8 +1354,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_SecretElevatorEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_RickRollSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
-            Expand_BootlegRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-
+            
             Bunny_Special4ShrineRoom = RoomFactory.BuildFromResource(AssetBundles, "Bunny_Special4ShrineRoom.room", true, true);
             foreach (PrototypeRoomExit exit in Bunny_Special4ShrineRoom.exitData.exits) {
                 exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY;
@@ -1605,7 +1603,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "ddf12a4881eb43cfba04f36dd6377abb", // Shotgun Kin Cowboy
+                            enemyBehaviourGuid = "05cb719e0178478685dc610f8b3e8bfc", // Bullet Kin Explosive Vest
                             contentsBasePosition = new Vector2(12, 7),
                             layer = 0,
                             xMPxOffset = 0,
@@ -2148,14 +2146,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 60), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 65), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 9), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 11), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 9), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 11), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), ExpandPrefabs.RatJailDoor);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(objectDatabase.DoorsVertical, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), NonEnemyBehaviour: ExpandPrefabs.RatJailDoorPlacable);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), ExpandPrefabs.RatJailDoor);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 15), ExpandPrefabs.RatKeyRewardPedestal);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretRewardRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Reward_Room_Layout"));
@@ -2608,9 +2606,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             GungeoneerMimicBossRoom.Height = 32;
             GungeoneerMimicBossRoom.overrideRoomVisualType = 2;
             GungeoneerMimicBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
-            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
-            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
-            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 0), DungeonData.Direction.SOUTH);
+            // RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
+            // RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
+            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 33), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
             RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromTexture2D(GungeoneerMimicBossRoom, expandSharedAssets1.LoadAsset<Texture2D>("Creepy_MirrorBoss_Room_Layout"));
 
@@ -10009,7 +10008,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_RickRollSecret, new Vector2(6, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
             RoomBuilder.GenerateBasicRoomLayout(Expand_RickRollSecret);
 
-
+            Expand_BootlegRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_BootlegRoom.room", true, false);
             Expand_BootlegRoom.name = "Expand Apache Bootleg";
             Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
@@ -10107,17 +10106,16 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_BootlegRoom.allowFloorDecoration = false;
             Expand_BootlegRoom.allowWallDecoration = false;
             Expand_BootlegRoom.usesProceduralDecoration = false;
-            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(0, 7), DungeonData.Direction.WEST, ContainsDoor: false);
-            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(21, 7), DungeonData.Direction.EAST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(1, 7), DungeonData.Direction.WEST, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(20, 7), DungeonData.Direction.EAST, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
-            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 15), DungeonData.Direction.NORTH, ContainsDoor: false);
+            RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 14), DungeonData.Direction.NORTH, ContainsDoor: false);
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomObject, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomDoorTriggers, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
-            RoomBuilder.GenerateBasicRoomLayout(Expand_BootlegRoom);
 
 
             List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();

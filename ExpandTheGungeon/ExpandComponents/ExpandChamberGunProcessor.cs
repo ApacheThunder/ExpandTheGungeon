@@ -3,13 +3,15 @@ using System.Collections;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ItemAPI;
-using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandChamberGunProcessor : MonoBehaviour, ILevelLoadedListener {
 
         public ExpandChamberGunProcessor() {
+            RefillsOnFloorChange = true;
+            JustActiveReloaded = false;
+            // Mimic gun used as placeholder for unsupported/unused tilesets
             CastleGunID = 647;
             GungeonGunID = 660;
             MinesGunID = 807;
@@ -24,58 +26,52 @@ namespace ExpandTheGungeon.ExpandComponents {
             OfficeGunID = 823;
             PhobosGunID = 734; // mimic_gun
             OldWestGunID = 734; // mimic_gun
-            RefillsOnFloorChange = true;
+            SpaceGunID = 734; // mimic_gun
+            FinalGeonID = 734; // mimic_gun
         }
-        
-        [PickupIdentifier]
-        public int CastleGunID;
-
-        [PickupIdentifier]
-        public int GungeonGunID;
-
-        [PickupIdentifier]
-        public int MinesGunID;
-
-        [PickupIdentifier]
-        public int HollowGunID;
-
-        [PickupIdentifier]
-        public int ForgeGunID;
-
-        [PickupIdentifier]
-        public int HellGunID;
-
-        [PickupIdentifier]
-        public int OublietteGunID;
-
-        [PickupIdentifier]
-        public int JungleGunID;
-
-        [PickupIdentifier]
-        public int BellyGunID;
-
-        [PickupIdentifier]
-        public int AbbeyGunID;
-
-        [PickupIdentifier]
-        public int RatgeonGunID;
-
-        [PickupIdentifier]
-        public int OfficeGunID;
-
-        [PickupIdentifier]
-        public int PhobosGunID;
-
-        [PickupIdentifier]
-        public int OldWestGunID;
 
         public bool RefillsOnFloorChange;
 
-        private GlobalDungeonData.ValidTilesets m_currentTileset;
-        private Gun m_gun;
-
         [NonSerialized]
         public bool JustActiveReloaded;
+        
+
+        [PickupIdentifier]
+        public int CastleGunID;
+        [PickupIdentifier]
+        public int GungeonGunID;
+        [PickupIdentifier]
+        public int MinesGunID;
+        [PickupIdentifier]
+        public int HollowGunID;
+        [PickupIdentifier]
+        public int ForgeGunID;
+        [PickupIdentifier]
+        public int HellGunID;
+        [PickupIdentifier]
+        public int OublietteGunID;
+        [PickupIdentifier]
+        public int JungleGunID;
+        [PickupIdentifier]
+        public int BellyGunID;
+        [PickupIdentifier]
+        public int AbbeyGunID;
+        [PickupIdentifier]
+        public int RatgeonGunID;
+        [PickupIdentifier]
+        public int OfficeGunID;
+        [PickupIdentifier]
+        public int PhobosGunID;
+        [PickupIdentifier]
+        public int OldWestGunID;
+        [PickupIdentifier]
+        public int SpaceGunID;
+        [PickupIdentifier]
+        public int FinalGeonID;
+
+        
+        private GlobalDungeonData.ValidTilesets m_currentTileset;
+        private Gun m_gun;
 
         private void Awake() {
             m_currentTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON;
@@ -93,65 +89,102 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (t == GetFloorTileset()) { return true; }
             PlayerController playerController = m_gun.CurrentOwner as PlayerController;
             if (playerController) {
-                if (t == GlobalDungeonData.ValidTilesets.CASTLEGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Castle)) { return true; }
-                if (t == GlobalDungeonData.ValidTilesets.GUNGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Gungeon)) { return true; }
-                if (t == GlobalDungeonData.ValidTilesets.MINEGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Mines)) { return true; }
-                if (t == GlobalDungeonData.ValidTilesets.CATACOMBGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Catacombs)) { return true; }
-                if (t == GlobalDungeonData.ValidTilesets.FORGEGEON && playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Forge)) { return true; }
                 // Getting this master round will unlock all forms.
                 if (playerController.HasPassiveItem(CustomMasterRounds.CanyonMasterRoundID)) { return true; }
+                switch (t) {
+                    case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Castle)) { return true; } else { return false; }
+                    case GlobalDungeonData.ValidTilesets.GUNGEON:
+                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Gungeon)) { return true; } else { return false; }
+                    case GlobalDungeonData.ValidTilesets.MINEGEON:
+                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Mines)) { return true; } else { return false; }
+                    case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Catacombs)) { return true; } else { return false; }
+                    case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Forge)) { return true; } else { return false; }
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
             }
-            return false;
         }
 
-        private void ChangeToTileset(GlobalDungeonData.ValidTilesets t) {
-            if (t == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
-                ChangeForme(CastleGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.SEWERGEON) {
-                ChangeForme(OublietteGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.SEWERGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
-                ChangeForme(JungleGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.GUNGEON) {
-                ChangeForme(GungeonGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.GUNGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
-                ChangeForme(AbbeyGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                ChangeForme(BellyGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.BELLYGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.MINEGEON) {
-                ChangeForme(MinesGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.MINEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.RATGEON) {
-                ChangeForme(RatgeonGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.RATGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
-                ChangeForme(HollowGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.CATACOMBGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
-                ChangeForme(OfficeGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.OFFICEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                ChangeForme(OldWestGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.WESTGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                ChangeForme(PhobosGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                ChangeForme(ForgeGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.FORGEGEON;
-            } else if (t == GlobalDungeonData.ValidTilesets.HELLGEON) {
-                ChangeForme(HellGunID);
-                m_currentTileset = GlobalDungeonData.ValidTilesets.HELLGEON;
+        private void ChangeToTileset(GlobalDungeonData.ValidTilesets tileSet) {
+            switch (tileSet) {
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    ChangeForme(CastleGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    ChangeForme(OublietteGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.SEWERGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    ChangeForme(JungleGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    ChangeForme(GungeonGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.GUNGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    ChangeForme(AbbeyGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    ChangeForme(BellyGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.BELLYGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.MINEGEON:
+                    ChangeForme(MinesGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.MINEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.RATGEON:
+                    ChangeForme(RatgeonGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.RATGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                    ChangeForme(HollowGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.CATACOMBGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                    ChangeForme(OfficeGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.OFFICEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    ChangeForme(OldWestGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.WESTGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                    ChangeForme(PhobosGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                    ChangeForme(ForgeGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.FORGEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                    ChangeForme(SpaceGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.SPACEGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.HELLGEON:
+                    ChangeForme(HellGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.HELLGEON;
+                    return;
+                case GlobalDungeonData.ValidTilesets.FINALGEON:
+                    ChangeForme(FinalGeonID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.FINALGEON;
+                    return;
+                default:
+                    ChangeForme(CastleGunID);
+                    m_currentTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON;
+                    return;
             }
         }
 
         private void ChangeForme(int targetID) {
-            Gun targetGun = PickupObjectDatabase.GetById(targetID) as Gun;
+            Gun targetGun = (PickupObjectDatabase.GetById(targetID) as Gun);
             m_gun.TransformToTargetGun(targetGun);
         }
 
@@ -166,37 +199,41 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private GlobalDungeonData.ValidTilesets GetNextTileset(GlobalDungeonData.ValidTilesets inTileset) {
-
-            if (inTileset == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
-                return GlobalDungeonData.ValidTilesets.SEWERGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.SEWERGEON) {
-                return GlobalDungeonData.ValidTilesets.JUNGLEGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
-                return GlobalDungeonData.ValidTilesets.GUNGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.GUNGEON) {
-                return GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.CATHEDRALGEON) {
-                return GlobalDungeonData.ValidTilesets.BELLYGEON;
-            } if (inTileset == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                return GlobalDungeonData.ValidTilesets.MINEGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.MINEGEON) {
-                return GlobalDungeonData.ValidTilesets.RATGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.RATGEON) {
-                return GlobalDungeonData.ValidTilesets.CATACOMBGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
-                return GlobalDungeonData.ValidTilesets.WESTGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                return GlobalDungeonData.ValidTilesets.OFFICEGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.OFFICEGEON) {
-                return GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.PHOBOSGEON) {
-                return GlobalDungeonData.ValidTilesets.FORGEGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.FORGEGEON) {
-                return GlobalDungeonData.ValidTilesets.HELLGEON;
-            } else if (inTileset == GlobalDungeonData.ValidTilesets.HELLGEON) {
-                return GlobalDungeonData.ValidTilesets.CASTLEGEON;
-            } else {
-                return GlobalDungeonData.ValidTilesets.CASTLEGEON;
+            switch (inTileset) {
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    return GlobalDungeonData.ValidTilesets.SEWERGEON;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    return GlobalDungeonData.ValidTilesets.JUNGLEGEON;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    return GlobalDungeonData.ValidTilesets.GUNGEON;
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    return GlobalDungeonData.ValidTilesets.CATHEDRALGEON;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    return GlobalDungeonData.ValidTilesets.BELLYGEON;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    return GlobalDungeonData.ValidTilesets.MINEGEON;
+                case GlobalDungeonData.ValidTilesets.MINEGEON:
+                    return GlobalDungeonData.ValidTilesets.RATGEON;
+                case GlobalDungeonData.ValidTilesets.RATGEON:
+                    return GlobalDungeonData.ValidTilesets.CATACOMBGEON;
+                case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                    return GlobalDungeonData.ValidTilesets.OFFICEGEON;
+                case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                    return GlobalDungeonData.ValidTilesets.WESTGEON;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    return GlobalDungeonData.ValidTilesets.PHOBOSGEON;
+                case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                    return GlobalDungeonData.ValidTilesets.FORGEGEON;
+                case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                    return GlobalDungeonData.ValidTilesets.SPACEGEON;
+                case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                    return GlobalDungeonData.ValidTilesets.HELLGEON;
+                case GlobalDungeonData.ValidTilesets.HELLGEON:
+                    return GlobalDungeonData.ValidTilesets.FINALGEON;
+                case GlobalDungeonData.ValidTilesets.FINALGEON:
+                    return GlobalDungeonData.ValidTilesets.CASTLEGEON;
+                default:
+                    return GlobalDungeonData.ValidTilesets.CASTLEGEON;
             }
         }
 

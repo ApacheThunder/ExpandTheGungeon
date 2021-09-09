@@ -43,17 +43,19 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         public TheLeadKey() {
-            TentacleVFX = (GameObject)ResourceCache.Acquire("Global VFX/VFX_Tentacleport");
+            DarkPortalAsset = BraveResources.Load<GameObject>("Global Prefabs/VFX_ParadoxPortal");
             m_InUse = false;
             m_IsTeleporting = false;
         }
 
-        private GameObject TentacleVFX;
-        
+        private GameObject DarkPortalAsset;
+        private Texture2D m_CachedScreenCapture;
 
         private bool m_InUse;
         private bool m_IsTeleporting;
-        
+        private bool m_ScreenCapInProgress;
+
+        private Vector3 m_cachedRoomPosition;
 
         private List<PrototypeDungeonRoom> MainRoomlist;
         private List<PrototypeDungeonRoom> RewardRoomList;
@@ -78,9 +80,20 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void DoEffect(PlayerController user) {
             m_InUse = true;
+            SetupPortalTexture();
             GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
         }
-                
+        
+
+        private void SetupPortalTexture() {
+            m_ScreenCapInProgress = true;
+            if (Pixelator.Instance.slavedCameras != null && Pixelator.Instance.slavedCameras.Count > 0) {
+                m_CachedScreenCapture = ExpandUtility.GenerateTexture2DFromRenderTexture(Pixelator.Instance.slavedCameras[0].targetTexture);
+            }
+            m_ScreenCapInProgress = false;
+        }
+
+        
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
 
@@ -137,18 +150,6 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override void Update() { base.Update(); }
         
-        private GameObject DoTentacleVFX(PlayerController user) {
-            if (TentacleVFX) {
-                GameObject tentacleObjectInstance = Instantiate(TentacleVFX);
-                tentacleObjectInstance.GetComponent<tk2dBaseSprite>().PlaceAtLocalPositionByAnchor(user.specRigidbody.UnitBottomCenter + new Vector2(0f, -1f), tk2dBaseSprite.Anchor.LowerCenter);
-                tentacleObjectInstance.transform.position = tentacleObjectInstance.transform.position.Quantize(0.0625f);
-                tentacleObjectInstance.GetComponent<tk2dBaseSprite>().UpdateZDepth();
-                return tentacleObjectInstance;
-            } else {
-                return null;
-            }
-        }
-        
         public void UnfreezeClearChallenge(PlayerController user) {
             user.ClearAllInputOverrides();
             try {
@@ -185,10 +186,14 @@ namespace ExpandTheGungeon.ItemAPI {
             RoomHandler currentRoom = user.CurrentRoom;
             Dungeon dungeon = GameManager.Instance.Dungeon;
 
-            TogglePlayerInput(user, true);
+            while (m_ScreenCapInProgress) { yield return null; }
 
             if (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { StunEnemiesForTeleport(currentRoom, 1f); }
-            
+
+            TogglePlayerInput(user, true);
+
+            m_cachedRoomPosition = user.transform.position;
+
             AkSoundEngine.PostEvent("Play_EX_CorruptionRoomTransition_01", gameObject);
             ExpandShaders.Instance.GlitchScreenForDuration(1, 1.4f, 0.1f);
 
@@ -206,13 +211,26 @@ namespace ExpandTheGungeon.ItemAPI {
                 yield return null;
             }
 
-            bool m_CopyCurrentRoom = (UnityEngine.Random.value < 0.4f);
+            bool m_CopyCurrentRoom = false;
+
+            if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { m_CopyCurrentRoom = (UnityEngine.Random.value < 0.2f); }
 
             PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
             ExpandPlaceCorruptTiles corruptedTilePlacer = new ExpandPlaceCorruptTiles();
-
+            
             if (m_CopyCurrentRoom) {
-               SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
+                try {
+                    SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
+                } catch (Exception ex) {
+                    if (ExpandStats.debugMode) {
+                        ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
+                        Debug.LogException(ex);
+                    }
+                    AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                    TogglePlayerInput(user, false);
+                    ClearCooldowns();
+                    yield break;
+                }
             } else {
                 float RoomSelectionSeed = UnityEngine.Random.value;
                 bool GoingToSecretBoss = false;
@@ -238,7 +256,18 @@ namespace ExpandTheGungeon.ItemAPI {
                 } else {
                     ExpandStats.HasSpawnedSecretBoss = true;
 
-                    RoomHandler[] SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
+                    RoomHandler[] SecretBossRoomCluster = null;
+
+                    try {
+                        SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
+                    } catch (Exception ex) {
+                        ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
+                        if (ExpandStats.debugMode) { Debug.LogException(ex); }
+                        AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                        TogglePlayerInput(user, false);
+                        ClearCooldowns();
+                        yield break;
+                    }
                     yield return null;
                     if (SecretBossRoomCluster == null) {
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
@@ -251,6 +280,18 @@ namespace ExpandTheGungeon.ItemAPI {
                     corruptedTilePlacer.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
 
                     TeleportToRoom(user, SecretBossRoomCluster[0]);
+                    
+                    while (m_IsTeleporting) { yield return null; }
+
+                    if (m_CachedScreenCapture) {
+                        GameObject m_PortalWarpObject = Instantiate(ExpandPrefabs.EX_GlitchPortal, (user.gameObject.transform.position + new Vector3(0.75f, 0)), Quaternion.identity);
+                        ExpandGlitchPortalController m_PortalController = m_PortalWarpObject.GetComponent<ExpandGlitchPortalController>();
+                        m_PortalWarpObject.GetComponent<MeshRenderer>().materials[0].SetTexture("_PortalTex", m_CachedScreenCapture);
+                        m_PortalController.CachedPosition = m_cachedRoomPosition;
+                        m_PortalController.ParentRoom = SecretBossRoomCluster[0];
+                        SecretBossRoomCluster[0].RegisterInteractable(m_PortalController);
+                        m_PortalController.Configured = true;
+                    }
 
                     while (fxController.GlitchAmount > 0) {
                         fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
@@ -275,7 +316,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             if (m_CopyCurrentRoom) { SelectedPrototypeDungeonRoom.overrideRoomVisualType = currentRoom.RoomVisualSubtype; }
 
-            RoomHandler GlitchRoom = ExpandUtility.Instance.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, addTeleporter: false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+            RoomHandler GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, false, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
 
             if (GlitchRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
@@ -291,57 +332,60 @@ namespace ExpandTheGungeon.ItemAPI {
             }
             
             if (m_CopyCurrentRoom) {
-                GameObject GlitchShaderObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, GlitchRoom.area.UnitCenter, Quaternion.identity);
-                ExpandGlitchScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandGlitchScreenFXController>();
-                FXController.isRoomSpecific = true;
-                FXController.ParentRoom = GlitchRoom;
-                FXController.UseCorruptionAmbience = m_CopyCurrentRoom;
-                GlitchShaderObject.transform.SetParent(dungeon.gameObject.transform);
+                if (ExpandStats.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
+                    GameObject GlitchShaderObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, GlitchRoom.area.UnitCenter, Quaternion.identity);
+                    ExpandGlitchScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandGlitchScreenFXController>();
+                    FXController.isRoomSpecific = true;
+                    FXController.ParentRoom = GlitchRoom;
+                    FXController.UseCorruptionAmbience = m_CopyCurrentRoom;
+                    GlitchShaderObject.transform.SetParent(dungeon.gameObject.transform);
+                }
 
                 GameObject[] Objects = FindObjectsOfType<GameObject>();
 
-                foreach (GameObject Object in Objects) {
-                    if (Object && Object.transform.parent == currentRoom.hierarchyParent &&
-                        !Object.GetComponent<PlayerController>() && !Object.GetComponent<AIActor>() &&
-                        !Object.GetComponent<ElevatorDepartureController>() && !Object.GetComponent<TeleporterController>() &&
-                        !Object.GetComponent<BaseShopController>() && !Object.GetComponent<ExpandKickableObject>() &&
-                        !Object.GetComponent<MineCartController>()
-                       )
-                    {
-                        Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());
-                        Vector3 NewPosition = (OrigPosition + GlitchRoom.area.basePosition.ToVector3());
-                        GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
-                        newObject.transform.SetParent(GlitchRoom.hierarchyParent);
-                        
-                        if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
-                        if (newObject.GetComponent<PathingTrapController>()) { Destroy(newObject.GetComponent<PathingTrapController>()); }
-                        
-                        if (newObject.GetComponent<IPlaceConfigurable>() != null) { newObject.GetComponent<IPlaceConfigurable>().ConfigureOnPlacement(GlitchRoom); }
+                try {
+                    foreach (GameObject Object in Objects) {
+                        if (Object && Object.transform.parent == currentRoom.hierarchyParent && IsValidObject(Object)) {
+                            Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());
+                            Vector3 NewPosition = (OrigPosition + GlitchRoom.area.basePosition.ToVector3());
+                            GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
+                            newObject.transform.SetParent(GlitchRoom.hierarchyParent);
 
-                        if (newObject.GetComponent<TalkDoerLite>()) {
-                            newObject.GetComponent<TalkDoerLite>().SpeaksGleepGlorpenese = true;
-                        }
+                            if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
+                            if (newObject.GetComponent<PathingTrapController>()) { Destroy(newObject.GetComponent<PathingTrapController>()); }
 
-                        if (newObject.GetComponent<IPlayerInteractable>() != null) {
-                            GlitchRoom.RegisterInteractable(newObject.GetComponent<IPlayerInteractable>());
-                        }
+                            if (newObject.GetComponent<IPlaceConfigurable>() != null) { newObject.GetComponent<IPlaceConfigurable>().ConfigureOnPlacement(GlitchRoom); }
 
-                        if (newObject.GetComponent<FlippableCover>()) {
-                            ExpandKickableObject kickableObject = newObject.AddComponent<ExpandKickableObject>();
-                            newObject.GetComponent<ExpandKickableObject>().ConfigureOnPlacement(GlitchRoom);
-                            GlitchRoom.RegisterInteractable(kickableObject);
-                        }
-
-                        if (newObject && UnityEngine.Random.value <= 0.4f && !newObject.GetComponent<AIActor>() && !newObject.GetComponent<Chest>()) {
-                            if (!string.IsNullOrEmpty(newObject.name) && !newObject.name.ToLower().StartsWith("glitchtile") && !newObject.name.ToLower().StartsWith("ex secret door") && !newObject.name.ToLower().StartsWith("lock") && !newObject.name.ToLower().StartsWith("chest")) {
-                                float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.04f);
-                                float RandomDispFloat = UnityEngine.Random.Range(0.06f, 0.08f);
-                                float RandomDispIntensityFloat = UnityEngine.Random.Range(0.07f, 0.1f);
-                                float RandomColorProbFloat = UnityEngine.Random.Range(0.035f, 0.1f);
-                                float RandomColorIntensityFloat = UnityEngine.Random.Range(0.05f, 0.1f);
-                                ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                            if (newObject.GetComponent<TalkDoerLite>()) {
+                                newObject.GetComponent<TalkDoerLite>().SpeaksGleepGlorpenese = true;
                             }
-                        }
+
+                            if (newObject.GetComponent<IPlayerInteractable>() != null) {
+                                GlitchRoom.RegisterInteractable(newObject.GetComponent<IPlayerInteractable>());
+                            }
+
+                            if (newObject.GetComponent<FlippableCover>()) {
+                                ExpandKickableObject kickableObject = newObject.AddComponent<ExpandKickableObject>();
+                                newObject.GetComponent<ExpandKickableObject>().ConfigureOnPlacement(GlitchRoom);
+                                GlitchRoom.RegisterInteractable(kickableObject);
+                            }
+
+                            if (newObject && UnityEngine.Random.value <= 0.4f && !newObject.GetComponent<AIActor>() && !newObject.GetComponent<Chest>()) {
+                                if (!string.IsNullOrEmpty(newObject.name) && !newObject.name.ToLower().StartsWith("glitchtile") && !newObject.name.ToLower().StartsWith("ex secret door") && !newObject.name.ToLower().StartsWith("lock") && !newObject.name.ToLower().StartsWith("chest")) {
+                                    float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.04f);
+                                    float RandomDispFloat = UnityEngine.Random.Range(0.06f, 0.08f);
+                                    float RandomDispIntensityFloat = UnityEngine.Random.Range(0.07f, 0.1f);
+                                    float RandomColorProbFloat = UnityEngine.Random.Range(0.035f, 0.1f);
+                                    float RandomColorIntensityFloat = UnityEngine.Random.Range(0.05f, 0.1f);
+                                    ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                                }
+                            }
+                        }                    
+                    }
+                } catch (Exception ex) {
+                    if (ExpandStats.debugMode) {
+                        ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while duplicating objects for new room!", true);
+                        Debug.LogException(ex);
                     }
                 }
 
@@ -352,9 +396,6 @@ namespace ExpandTheGungeon.ItemAPI {
                     ExpandFakeChest fakeChest = newChest.GetComponent<ExpandFakeChest>();
                     fakeChest.ConfigureOnPlacement(GlitchRoom);
                     GlitchRoom.RegisterInteractable(fakeChest);
-                    ExpandKickableObject kickableChest = newChest.AddComponent<ExpandKickableObject>();
-                    kickableChest.ConfigureOnPlacement(GlitchRoom);
-                    GlitchRoom.RegisterInteractable(kickableChest);
                 }
             }
 
@@ -365,11 +406,12 @@ namespace ExpandTheGungeon.ItemAPI {
             } else {
                 corruptedTilePlacer.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
-
+            
             TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
 
             yield return null;
             while (m_IsTeleporting) { yield return null; }
+            
             if (user.transform.position.GetAbsoluteRoom() != null) {
                 if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
                     user.CurrentRoom.CompletelyPreventLeaving = true;
@@ -379,17 +421,47 @@ namespace ExpandTheGungeon.ItemAPI {
                 if (dungeon.data.Entrance != null) { dungeon.data.Entrance.AddProceduralTeleporterToRoom(); }
             }
 
+            if (m_CachedScreenCapture) {
+                GameObject m_PortalWarpObject = Instantiate(ExpandPrefabs.EX_GlitchPortal, (user.gameObject.transform.position + new Vector3(0.75f, 0)), Quaternion.identity);
+                ExpandGlitchPortalController m_PortalController = m_PortalWarpObject.GetComponent<ExpandGlitchPortalController>();
+                m_PortalWarpObject.GetComponent<MeshRenderer>().materials[0].SetTexture("_PortalTex", m_CachedScreenCapture);
+                m_PortalController.CachedPosition = m_cachedRoomPosition;
+                m_PortalController.ParentRoom = GlitchRoom;
+                GlitchRoom.RegisterInteractable(m_PortalController);
+                m_PortalController.Configured = true;
+            }
+
             while (fxController.GlitchAmount > 0) {
                 fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
                 yield return null;
             }
-
+            
             TogglePlayerInput(user, false);
             Destroy(TempFXObject);
             corruptedTilePlacer = null;
             
             m_InUse = false;
             yield break;
+        }
+
+        private bool IsValidObject(GameObject sourceObject) {
+            List<Type> ComponentsToCheck = new List<Type>() {
+                typeof(PlayerController),
+                typeof(AIActor),
+                typeof(ElevatorDepartureController),
+                typeof(TeleporterController),
+                typeof(BaseShopController),
+                typeof(ExpandKickableObject),
+                typeof(MineCartController),
+                typeof(ExpandSecretDoorPlacable),
+                typeof(ExpandElevatorDepartureManager),
+                typeof(ExpandSecretDoorExitPlacable),
+                typeof(TrapController)
+            };
+            foreach (Type type in ComponentsToCheck) {
+                if (sourceObject.GetComponent(type)) { return false; }
+            }
+            return true;
         }
 
         public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false, bool isCorruptedRoomCopy = false) {
@@ -409,7 +481,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 if (randomAvailableCell.HasValue) {
                     NewPosition = randomAvailableCell.Value.ToVector3();
                 } else {
-                    randomAvailableCell = ExpandUtility.Instance.GetRandomAvailableCellSmart(targetRoom, new IntVector2(1, 3));                    
+                    randomAvailableCell = ExpandUtility.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 3));                    
                 }
                 if (!randomAvailableCell.HasValue) {
                     m_IsTeleporting = false;

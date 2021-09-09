@@ -651,7 +651,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                     Debug.Log("[HutongGames.PlayMaker.Actions.GetKicked] Destination room does not have an Arrival object! Using a random location for the landing spot.");
                     // if target room doesn't have arrival object, choose a random landing spot instead.
-                    IntVector2? randomPosition = ExpandUtility.Instance.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 2));
+                    IntVector2? randomPosition = ExpandUtility.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 2));
                     if (randomPosition != null && randomPosition.HasValue) {
                         srb.transform.position = randomPosition.Value.ToVector3(srb.transform.position.z);
                         srb.Reinitialize();
@@ -694,7 +694,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         yield break;
                     } else {
                         if (randomTargetRoom == null) { Destroy(talkdoer.gameObject); yield break; }
-                        IntVector2? RandomPosition = ExpandUtility.Instance.GetRandomAvailableCellSmart(randomTargetRoom, new IntVector2(2, 2));
+                        IntVector2? RandomPosition = ExpandUtility.GetRandomAvailableCellSmart(randomTargetRoom, new IntVector2(2, 2));
                         if (RandomPosition.HasValue) {
                             srb.transform.position = RandomPosition.Value.ToVector3(srb.transform.position.z);
                         } else {

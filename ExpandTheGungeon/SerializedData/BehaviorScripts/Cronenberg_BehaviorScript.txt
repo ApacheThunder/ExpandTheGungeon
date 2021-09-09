@@ -1,5 +1,0 @@
-[]
-[]
-[{"AllowFearState":false,"PathInterval":0.5,"InitialDelay":1.0,"PointReachedPauseTime":0.0,"PathingTime":6.0,"$type":"ExpandSimpleMoveErraticallyBehavior"}]
-[]
-[]

@@ -588,30 +588,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 return;
             }
         }
-
-        // Alternate version for handling things like Blue/Red Shotgunners and Veteran bullet kins.
-        public void ApplyGlitchShader(Texture2D sourceTexture, tk2dBaseSprite targetSprite, bool usesOverrideMaterial = true, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
-            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandGlitchBasic"); }
-            Material m_cachedMaterial = new Material(EXGlitchShader);
-            m_cachedMaterial.name = "GlitchMaterial";
-            m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
-            m_cachedMaterial.SetFloat("_DispProbability", DispProbability);
-            m_cachedMaterial.SetFloat("_DispIntensity", DispIntensity);
-            m_cachedMaterial.SetFloat("_ColorProbability", ColorProbability);
-            m_cachedMaterial.SetFloat("_ColorIntensity", ColorIntensity);
-
-            m_cachedMaterial.SetFloat("_WrapDispCoords", 0);
-
-            MeshRenderer spriteComponent = targetSprite.GetComponent<MeshRenderer>();
-            Material[] sharedMaterials = spriteComponent.sharedMaterials;
-            Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
-            m_cachedMaterial.SetTexture("_MainTex", sourceTexture);
-            sharedMaterials[sharedMaterials.Length - 1] = m_cachedMaterial;
-            spriteComponent.sharedMaterials = sharedMaterials;
-            targetSprite.usesOverrideMaterial = usesOverrideMaterial;
-        }
-
+                
         public void ApplySuperGlitchShader(tk2dBaseSprite sprite, AIActor glitchactor, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
             if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandGlitchBasic"); }
             
@@ -824,6 +801,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_cachedMaterial.name = "HologramMaterial";
             Material m_cachedSharedMaterial = m_cachedMaterial;
 
+			// _ValueMaximum
+			// _OverrideColor
+			
             m_cachedMaterial.SetTexture("_MainTex", sprite.renderer.material.GetTexture("_MainTex"));
             m_cachedSharedMaterial.SetTexture("_MainTex", sprite.renderer.sharedMaterial.GetTexture("_MainTex"));
             if (isGreen) {

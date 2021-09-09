@@ -12,31 +12,30 @@ namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandCustomDungeonPrefabs : DungeonDatabase {
 
-        public static GameLevelDefinition SpaceDefinition;
-        public static GameLevelDefinition JungleDefinition;
-        public static GameLevelDefinition BellyDefinition;
-        public static GameLevelDefinition WestDefinition;
-
-        public static GameObject GameManagerObject;
-
-
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
-            Dungeon dungeon = null;
-            if (name.ToLower() == "base_space") {
-                dungeon = SpaceDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
-            } else if (name.ToLower() == "base_jungle") {
-                dungeon = JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
-            } else if (name.ToLower() == "base_belly") {
-                dungeon = BellyDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
-            } else if (name.ToLower() == "base_west") {
-                dungeon = WestDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
-            }
-            if (dungeon) {
-                DebugTime.RecordStartTime();
-                DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                return dungeon;
-            } else {
-                return orig(name);
+            switch (name.ToLower()) {
+                case "base_space":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return SpaceDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                case "base_jungle":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                case "base_belly":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return BellyDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                case "base_west":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return WestDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
+                case "base_phobos":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return PhobosDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
+                default:
+                    return orig(name);
             }
         }
                 
@@ -45,6 +44,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             DebugTime.RecordStartTime();
             Dungeon component = assetBundle.LoadAsset<GameObject>(name).GetComponent<Dungeon>();
             DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+            assetBundle = null;
             return component;
         }
 
@@ -65,8 +65,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
         }
 
-        public static void InitCustomDungeons() {
-
+        public static void InitCustomGameLevelDefinitions(AssetBundle braveResources) {
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDatabase.GetOrLoadByName Hook..."); }
             getOrLoadByName_Hook = new Hook(
                 typeof(DungeonDatabase).GetMethod("GetOrLoadByName", BindingFlags.Static | BindingFlags.Public),
@@ -79,105 +78,64 @@ namespace ExpandTheGungeon.ExpandObjects {
                 typeof(ExpandCustomDungeonPrefabs).GetMethod("DungeonStart_Hook", BindingFlags.Instance | BindingFlags.Public),
                 typeof(ItemDB)
             );
-
-            SpaceDefinition = new GameLevelDefinition() {
-                dungeonSceneName = "tt_space",
-                dungeonPrefabPath = "Base_Space",
-                priceMultiplier = 2,
-                secretDoorHealthMultiplier = 1,
-                enemyHealthMultiplier = 2.1f,
-                damageCap = 300,
-                bossDpsCap = 78,
-                flowEntries = new List<DungeonFlowLevelEntry>(0),
-                predefinedSeeds = new List<int>(0)
-            };
-
-            ReInitFloorDefinitions();
+            
+            ReInitFloorDefinitions(GameManager.Instance);
         }
+        
 
-        public static void ReInitFloorDefinitions() {
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-
-            try { 
-                bool EntryNotExist = true;
-                bool EntryNotExist2 = true;
-                
-                if (!GameManagerObject) {
-                    if (!GameManager.Instance) {
-                        GameManagerObject = braveResources.LoadAsset<GameObject>("_GameManager");
-                    } else {
-                        GameManagerObject = GameManager.Instance.gameObject;
-                    }
-                }
-
-                foreach (GameLevelDefinition definition in GameManagerObject.GetComponent<GameManager>().customFloors) {
-                    if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist = false; }
-                    if (definition.dungeonSceneName == "tt_jungle") {
-                        definition.priceMultiplier = 1.20000005f;
-                        definition.secretDoorHealthMultiplier = 1;
-                        definition.enemyHealthMultiplier = 1.33329999f;
-                        definition.damageCap = 300;
-                        definition.bossDpsCap = 42;
-                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                        JungleDefinition = definition;
-                    } else if (definition.dungeonSceneName == "tt_belly") {
-                        definition.priceMultiplier = 1.39999998f;
-                        definition.secretDoorHealthMultiplier = 1;
-                        definition.enemyHealthMultiplier = 1.66659999f;
-                        definition.damageCap = 300;
-                        definition.bossDpsCap = 60;
-                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                        BellyDefinition = definition;
-                    } else if (definition.dungeonSceneName == "tt_west") {
-                        definition.priceMultiplier = 2;
-                        definition.secretDoorHealthMultiplier = 1;
-                        definition.enemyHealthMultiplier = 2.1f;
-                        definition.damageCap = 300;
-                        definition.bossDpsCap = 78;
-                        definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                        WestDefinition = definition;
-                    }
-                }
-
-                if (GameManager.Instance) {
-                    foreach (GameLevelDefinition definition in GameManager.Instance.customFloors) {
-                        if (definition.dungeonSceneName == "tt_canyon") { EntryNotExist2 = false; }
-                        if (definition.dungeonSceneName == "tt_jungle") {
+        public static void ReInitFloorDefinitions(GameManager gameManager) {
+            if (gameManager) {
+                bool SpaceEntryExists = false;
+                foreach (GameLevelDefinition definition in gameManager.customFloors) {
+                    switch (definition.dungeonSceneName.ToLower()) {
+                        case "tt_jungle":
                             definition.priceMultiplier = 1.20000005f;
                             definition.secretDoorHealthMultiplier = 1;
                             definition.enemyHealthMultiplier = 1.33329999f;
                             definition.damageCap = 300;
                             definition.bossDpsCap = 42;
                             definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            JungleDefinition = definition;
-                        } else if (definition.dungeonSceneName == "tt_belly") {
+                            definition.predefinedSeeds = new List<int>(0);
+                            break;
+                        case "tt_belly":
                             definition.priceMultiplier = 1.39999998f;
                             definition.secretDoorHealthMultiplier = 1;
                             definition.enemyHealthMultiplier = 1.66659999f;
                             definition.damageCap = 300;
                             definition.bossDpsCap = 60;
                             definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            BellyDefinition = definition;
-                        } else if (definition.dungeonSceneName == "tt_west") {
+                            definition.predefinedSeeds = new List<int>(0);
+                            break;
+                        case "tt_west":
                             definition.priceMultiplier = 2;
                             definition.secretDoorHealthMultiplier = 1;
                             definition.enemyHealthMultiplier = 2.1f;
                             definition.damageCap = 300;
                             definition.bossDpsCap = 78;
                             definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            WestDefinition = definition;
-                        }
+                            definition.predefinedSeeds = new List<int>(0);
+                            break;
+                        case "tt_space":
+                            SpaceEntryExists = true;
+                            break;
                     }
                 }
-
-                if (EntryNotExist) { GameManagerObject.GetComponent<GameManager>().customFloors.Add(SpaceDefinition); }
-                if (EntryNotExist2 && GameManager.Instance) { GameManager.Instance.customFloors.Add(SpaceDefinition); }
-
-            } catch (Exception) {
-
+                if (!SpaceEntryExists) {
+                    gameManager.customFloors.Add(
+                        new GameLevelDefinition() {
+                            dungeonSceneName = "tt_space",
+                            dungeonPrefabPath = "Base_Space",
+                            priceMultiplier = 2,
+                            secretDoorHealthMultiplier = 1,
+                            enemyHealthMultiplier = 2.1f,
+                            damageCap = 300,
+                            bossDpsCap = 78,
+                            flowEntries = new List<DungeonFlowLevelEntry>(0),
+                            predefinedSeeds = new List<int>(0)
+                        }
+                    );
+                }
             }
-
-            braveResources = null;
         }
 
 
@@ -314,7 +272,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                         
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.SPACEGEON,
-                // dungeonCollection = ExpandUtility.ReplaceDungeonCollection(FinalScenarioPilotPrefab.tileIndices.dungeonCollection, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Canyon")),
                 dungeonCollection = FinalScenarioPilotPrefab.tileIndices.dungeonCollection,
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = FinalScenarioBulletPrefab.tileIndices.aoTileIndices,
@@ -333,7 +290,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 globalSecondBorderTiles = new List<int>(0),
                 edgeDecorationTiles = null
             };
-            // dungeon.tileIndices.dungeonCollection.name = "ENV_Canyon_Collection";
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
                 FinalScenario_MainMaterial,
                 FinalScenario_MainMaterial,
@@ -416,6 +372,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public static Dungeon JungleDungeon(Dungeon dungeon) {
+            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
             Dungeon GungeonPrefab = GetOrLoadByName_Orig("Base_Gungeon");
@@ -442,29 +399,29 @@ namespace ExpandTheGungeon.ExpandObjects {
             Jungle_Woods.supportsDiagonalWalls = false;
             Jungle_Woods.supportsUpholstery = false;
             Jungle_Woods.carpetIsMainFloor = false;
-            Jungle_Woods.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("JungleAssets/carpetGrid1.txt") };
+            Jungle_Woods.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/carpetGrid1") };
             Jungle_Woods.supportsChannels = false;
             Jungle_Woods.minChannelPools = 0;
             Jungle_Woods.maxChannelPools = 3;
             Jungle_Woods.channelTenacity = 0.75f;
             Jungle_Woods.channelGrids = new TileIndexGrid[0];
             Jungle_Woods.supportsLavaOrLavalikeSquares = false;
-            Jungle_Woods.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("JungleAssets/lavaGrid.txt") };
+            Jungle_Woods.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/lavaGrid") };
             Jungle_Woods.supportsIceSquares = false;
             Jungle_Woods.iceGrids = new TileIndexGrid[0];
             Jungle_Woods.roomFloorBorderGrid = null;
-            Jungle_Woods.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/roomCeilingBorderGrid.txt");
-            Jungle_Woods.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/pitLayoutGrid.txt");
+            Jungle_Woods.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/roomCeilingBorderGrid");
+            Jungle_Woods.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/pitLayoutGrid");
             Jungle_Woods.pitBorderRaisedGrid = null;
             Jungle_Woods.additionalPitBorderFlatGrid = null;
-            Jungle_Woods.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/outerCeilingBorderGrid.txt");
-            Jungle_Woods.outerCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/outerCeilingBorderGrid.txt");
+            Jungle_Woods.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/outerCeilingBorderGrid");
+            Jungle_Woods.outerCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/outerCeilingBorderGrid");
             Jungle_Woods.floorSquareDensity = 0.05f;
             Jungle_Woods.floorSquares = new TileIndexGrid[0];
             Jungle_Woods.usesFacewallGrids = false;
             Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[] {
                 new FacewallIndexGridDefinition() {
-                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid1.txt"),
+                    grid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/faceWallGrid1"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -484,7 +441,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid2.txt"),
+                    grid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/faceWallGrid2"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -504,7 +461,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     perTileFailureRate = 0.05f
                 },
                 new FacewallIndexGridDefinition() {
-                    grid = ExpandUtility.DeserializeTileIndexGrid("JungleAssets/faceWallGrid3.txt"),
+                    grid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "JungleAssets/faceWallGrid3"),
                     minWidth = 3,
                     maxWidth = 8,
                     hasIntermediaries = false,
@@ -913,7 +870,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = string.Empty;
-            
+
+            expandSharedAuto1 = null;
             braveResources = null;
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
@@ -922,6 +880,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public static Dungeon BellyDungeon(Dungeon dungeon) {
+            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
@@ -956,14 +915,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.channelTenacity = 0.75f;
             BellyMaterial.channelGrids = new TileIndexGrid[0];
             BellyMaterial.supportsLavaOrLavalikeSquares = false;
-            BellyMaterial.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("BellyAssets/carpetGrid1.txt") };
-            BellyMaterial.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("BellyAssets/lavaGrid.txt") };
+            BellyMaterial.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/carpetGrid1") };
+            BellyMaterial.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/lavaGrid") };
             BellyMaterial.supportsIceSquares = false;
             BellyMaterial.iceGrids = new TileIndexGrid[0];
-            BellyMaterial.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/roomFloorBorderGrid.txt");
-            BellyMaterial.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/roomCeilingBorderGrid.txt");
-            BellyMaterial.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/pitLayoutGrid.txt");
-            BellyMaterial.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/pitBorderFlatGrid.txt");
+            BellyMaterial.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/roomFloorBorderGrid");
+            BellyMaterial.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/roomCeilingBorderGrid");
+            BellyMaterial.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/pitLayoutGrid");
+            BellyMaterial.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/pitBorderFlatGrid");
             BellyMaterial.pitBorderRaisedGrid = null;
             BellyMaterial.additionalPitBorderFlatGrid = null;
             BellyMaterial.outerCeilingBorderGrid = null;
@@ -972,7 +931,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.usesFacewallGrids = false;
             BellyMaterial.facewallGrids = new FacewallIndexGridDefinition[] {
                 new FacewallIndexGridDefinition() {
-                    grid = ExpandUtility.DeserializeTileIndexGrid("BellyAssets/faceWallGrid1.txt"),
+                    grid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "BellyAssets/faceWallGrid1"),
                     minWidth = 3,
                     maxWidth = 20,
                     hasIntermediaries = true,
@@ -1348,7 +1307,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = AbbeyPrefab.musicEventName;
-            
+
+            expandSharedAuto1 = null;
             sharedAssets = null;
             sharedAssets2 = null;
             MinesDungeonPrefab = null;
@@ -1361,8 +1321,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         }
 
         public static Dungeon WestDungeon(Dungeon dungeon) {
+            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+            
 
             DungeonMaterial West_Canyon = ScriptableObject.CreateInstance<DungeonMaterial>();
             West_Canyon.name = "West_Canyon";
@@ -1385,7 +1347,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Canyon.supportsDiagonalWalls = false;
             West_Canyon.supportsUpholstery = false;
             West_Canyon.carpetIsMainFloor = false;
-            // West_Canyon.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/carpetGrid1.txt") };
             West_Canyon.carpetGrids = new TileIndexGrid[0];
             West_Canyon.supportsChannels = false;
             West_Canyon.minChannelPools = 0;
@@ -1393,18 +1354,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Canyon.channelTenacity = 0.75f;
             West_Canyon.channelGrids = new TileIndexGrid[0];
             West_Canyon.supportsLavaOrLavalikeSquares = false;
-            West_Canyon.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/lavaGrid.txt") };
+            West_Canyon.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/Canyon/lavaGrid") };
             West_Canyon.supportsIceSquares = false;
             West_Canyon.iceGrids = new TileIndexGrid[0];
             West_Canyon.roomFloorBorderGrid = null;
-            West_Canyon.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/roomCeilingBorderGrid.txt");
+            West_Canyon.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/Canyon/roomCeilingBorderGrid");
             West_Canyon.pitLayoutGrid = null;
             West_Canyon.pitBorderRaisedGrid = null;
             West_Canyon.additionalPitBorderFlatGrid = null;
             West_Canyon.pitBorderFlatGrid = null;
             West_Canyon.outerCeilingBorderGrid = null;
             West_Canyon.floorSquareDensity = 0f;
-            West_Canyon.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/Canyon/floorGrid1.txt") };
+            West_Canyon.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/Canyon/floorGrid1") };
             West_Canyon.usesFacewallGrids = false;
             West_Canyon.facewallGrids = new FacewallIndexGridDefinition[0];
             West_Canyon.usesInternalMaterialTransitions = false;
@@ -1463,18 +1424,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Wood_Interior.supportsDiagonalWalls = false;
             West_Wood_Interior.supportsUpholstery = true;
             West_Wood_Interior.carpetIsMainFloor = false;
-            West_Wood_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/carpetGrid1.txt") };
+            West_Wood_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/carpetGrid1") };
             West_Wood_Interior.supportsChannels = false;
             West_Wood_Interior.minChannelPools = 0;
             West_Wood_Interior.maxChannelPools = 3;            
             West_Wood_Interior.channelTenacity = 0.75f;
             West_Wood_Interior.channelGrids = new TileIndexGrid[0];
             West_Wood_Interior.supportsLavaOrLavalikeSquares = false;
-            West_Wood_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/lavaGrid.txt") };
+            West_Wood_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/lavaGrid") };
             West_Wood_Interior.supportsIceSquares = false;
             West_Wood_Interior.iceGrids = new TileIndexGrid[0];
             West_Wood_Interior.roomFloorBorderGrid = null;
-            West_Wood_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/roomCeilingBorderGrid.txt");
+            West_Wood_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/roomCeilingBorderGrid");
             West_Wood_Interior.roomCeilingBorderGrid.topCapIndices.indices[0] = 575;
             West_Wood_Interior.pitLayoutGrid = null;
             West_Wood_Interior.pitBorderRaisedGrid = null;
@@ -1482,7 +1443,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Wood_Interior.pitBorderFlatGrid = null;
             West_Wood_Interior.outerCeilingBorderGrid = null;
             West_Wood_Interior.floorSquareDensity = 0f;
-            West_Wood_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/floorGrid1.txt") };
+            West_Wood_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/floorGrid1") };
             West_Wood_Interior.usesFacewallGrids = false;
             West_Wood_Interior.facewallGrids = new FacewallIndexGridDefinition[0];
             West_Wood_Interior.usesInternalMaterialTransitions = false;
@@ -1516,8 +1477,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Wood_Interior.patternSize = 1;
             West_Wood_Interior.patternIndexGrid = null;
             West_Wood_Interior.forceEdgesDiagonal = false;
-            West_Wood_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/exteriorFacadeBorderGrid.txt");
-            West_Wood_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/WoodInterior/facadeTopGrid.txt");
+            West_Wood_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/exteriorFacadeBorderGrid");
+            West_Wood_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/WoodInterior/facadeTopGrid");
             West_Wood_Interior.bridgeGrid = null;
             
 
@@ -1542,18 +1503,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Red_Interior.supportsDiagonalWalls = false;
             West_Red_Interior.supportsUpholstery = true;
             West_Red_Interior.carpetIsMainFloor = false;
-            West_Red_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/carpetGrid1.txt") };
+            West_Red_Interior.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/carpetGrid1") };
             West_Red_Interior.supportsChannels = false;
             West_Red_Interior.minChannelPools = 0;
             West_Red_Interior.maxChannelPools = 3;            
             West_Red_Interior.channelTenacity = 0.75f;
             West_Red_Interior.channelGrids = new TileIndexGrid[0];
             West_Red_Interior.supportsLavaOrLavalikeSquares = false;
-            West_Red_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/lavaGrid.txt") };
+            West_Red_Interior.lavaGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/lavaGrid") };
             West_Red_Interior.supportsIceSquares = false;
             West_Red_Interior.iceGrids = new TileIndexGrid[0];
             West_Red_Interior.roomFloorBorderGrid = null;
-            West_Red_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/roomCeilingBorderGrid.txt");
+            West_Red_Interior.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/roomCeilingBorderGrid");
             West_Red_Interior.roomCeilingBorderGrid.topCapIndices.indices[0] = 580;
             West_Red_Interior.pitLayoutGrid = null;
             West_Red_Interior.pitBorderRaisedGrid = null;
@@ -1561,7 +1522,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Red_Interior.pitBorderFlatGrid = null;
             West_Red_Interior.outerCeilingBorderGrid = null;
             West_Red_Interior.floorSquareDensity = 0f;
-            West_Red_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/floorGrid1.txt") };
+            West_Red_Interior.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/floorGrid1") };
             West_Red_Interior.usesFacewallGrids = false;
             West_Red_Interior.facewallGrids = new FacewallIndexGridDefinition[0];
             West_Red_Interior.usesInternalMaterialTransitions = false;
@@ -1595,8 +1556,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             West_Red_Interior.patternSize = 1;
             West_Red_Interior.patternIndexGrid = null;
             West_Red_Interior.forceEdgesDiagonal = false;
-            West_Red_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/exteriorFacadeBorderGrid.txt");
-            West_Red_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGrid("WestAssets/RedInterior/facadeTopGrid.txt");
+            West_Red_Interior.exteriorFacadeBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/exteriorFacadeBorderGrid");
+            West_Red_Interior.facadeTopGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "WestAssets/RedInterior/facadeTopGrid");
             West_Red_Interior.bridgeGrid = null;
             
 
@@ -1696,7 +1657,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.WESTGEON,
-                // dungeonCollection = ExpandDungeonCollections.ENV_Tileset_West(dungeon.gameObject),
                 dungeonCollection = ExpandPrefabs.ENV_Tileset_West.GetComponent<tk2dSpriteCollectionData>(),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
@@ -1755,21 +1715,19 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
 
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
-            // dungeon.pathGridDefinitions
-            // dungeon.dungeonDustups
-            // dungeon.damageTypeEffectMatrix
+            
             ObjectStampData[] m_GungeonObjectStampData = dungeon.stampData.objectStamps;
-            dungeon.stampData = new DungeonTileStampData() {
-                name = "ENV_WEST_STAMP_DATA",
-                tileStampWeight = 1,
-                spriteStampWeight = 0,
-                objectStampWeight = 1,
-                stamps = new TileStampData[0],
-                spriteStamps = new SpriteStampData[0],
-                objectStamps = m_GungeonObjectStampData,
-                SymmetricFrameChance = 0.1f,
-                SymmetricCompleteChance = 0.1f
-            };
+
+            dungeon.stampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
+            dungeon.stampData.name = "ENV_WEST_STAMP_DATA";
+            dungeon.stampData.tileStampWeight = 1;
+            dungeon.stampData.spriteStampWeight = 0;
+            dungeon.stampData.objectStampWeight = 1;
+            dungeon.stampData.stamps = new TileStampData[0];
+            dungeon.stampData.spriteStamps = new SpriteStampData[0];
+            dungeon.stampData.objectStamps = m_GungeonObjectStampData;
+            dungeon.stampData.SymmetricFrameChance = 0.1f;
+            dungeon.stampData.SymmetricCompleteChance = 0.1f;
             dungeon.UsesCustomFloorIdea = false;
             // dungeon.FloorIdea
             dungeon.PlaceDoors = true;
@@ -1798,12 +1756,602 @@ namespace ExpandTheGungeon.ExpandObjects {
             // dungeon.musicEventName = string.Empty;
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
 
+            expandSharedAuto1 = null;
             CastlePrefab = null;
             sharedAssets2 = null;
 
             return dungeon;
         }
 
+        public static Dungeon PhobosDungeon(Dungeon dungeon) {
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            Dungeon NakatomiPrefab = GetOrLoadByName_Orig("Base_Nakatomi");
+            Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
+            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+            Dungeon CatacombsPrefab = GetOrLoadByName_Orig("Base_Catacombs");
+
+
+            DungeonMaterial m_PhobosBlue = ScriptableObject.CreateInstance<DungeonMaterial>();
+            m_PhobosBlue.name = "Phobos_Blue";
+            m_PhobosBlue.wallShards = CastlePrefab.roomMaterialDefinitions[0].wallShards;
+            m_PhobosBlue.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            m_PhobosBlue.bigWallShardDamageThreshold = 10;
+            m_PhobosBlue.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            m_PhobosBlue.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            m_PhobosBlue.pitfallVFXPrefab = SewersPrefab.roomMaterialDefinitions[0].pitfallVFXPrefab;
+            m_PhobosBlue.UsePitAmbientVFX = false;
+            m_PhobosBlue.AmbientPitVFX = new List<GameObject>(0);
+            m_PhobosBlue.PitVFXMinCooldown = 5;
+            m_PhobosBlue.PitVFXMaxCooldown = 30;
+            m_PhobosBlue.ChanceToSpawnPitVFXOnCooldown = 1;
+            m_PhobosBlue.stampFailChance = 0.2f;
+            m_PhobosBlue.overrideTableTable = null;
+            m_PhobosBlue.supportsPits = true;
+            m_PhobosBlue.doPitAO = true;
+            m_PhobosBlue.pitsAreOneDeep = false;
+            m_PhobosBlue.supportsDiagonalWalls = false;
+            m_PhobosBlue.supportsUpholstery = false;
+            m_PhobosBlue.carpetIsMainFloor = false;
+            m_PhobosBlue.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Blue/carpetGrid") };
+            m_PhobosBlue.supportsChannels = false;
+            m_PhobosBlue.minChannelPools = 0;
+            m_PhobosBlue.maxChannelPools = 3;
+            m_PhobosBlue.channelTenacity = 0.75f;
+            m_PhobosBlue.channelGrids = new TileIndexGrid[0];
+            m_PhobosBlue.supportsLavaOrLavalikeSquares = false;
+            m_PhobosBlue.lavaGrids = new TileIndexGrid[0];
+            m_PhobosBlue.supportsIceSquares = false;
+            m_PhobosBlue.iceGrids = new TileIndexGrid[0];
+            m_PhobosBlue.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Blue/roomFloorBorderGrid");
+            m_PhobosBlue.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Blue/roomCeilingBorderGrid");
+            m_PhobosBlue.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Blue/pitLayoutGrid");
+            m_PhobosBlue.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Blue/pitBorderFlatGrid");
+            m_PhobosBlue.pitBorderRaisedGrid = null;
+            m_PhobosBlue.additionalPitBorderFlatGrid = null;
+            m_PhobosBlue.outerCeilingBorderGrid = null;
+            m_PhobosBlue.floorSquareDensity = 0.05f;
+            m_PhobosBlue.floorSquares = new TileIndexGrid[0];
+            m_PhobosBlue.usesFacewallGrids = false;
+            m_PhobosBlue.facewallGrids = CatacombsPrefab.roomMaterialDefinitions[0].facewallGrids;
+            m_PhobosBlue.usesInternalMaterialTransitions = false;
+            m_PhobosBlue.usesProceduralMaterialTransitions = false;
+            m_PhobosBlue.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            m_PhobosBlue.secretRoomWallShardCollections = new List<GameObject>(0);
+            m_PhobosBlue.overrideStoneFloorType = false;
+            m_PhobosBlue.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            m_PhobosBlue.useLighting = true;
+            m_PhobosBlue.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = ExpandPrefabs.PhobosLight,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };
+            m_PhobosBlue.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            m_PhobosBlue.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            m_PhobosBlue.usesDecalLayer = false;
+            m_PhobosBlue.decalIndexGrid = null;
+            m_PhobosBlue.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            m_PhobosBlue.decalSize = 1;
+            m_PhobosBlue.decalSpacing = 1;
+            m_PhobosBlue.usesPatternLayer = false;
+            m_PhobosBlue.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            m_PhobosBlue.patternSpacing = 1;
+            m_PhobosBlue.patternSize = 1;
+            m_PhobosBlue.patternIndexGrid = null;
+            m_PhobosBlue.forceEdgesDiagonal = false;
+            m_PhobosBlue.exteriorFacadeBorderGrid = null;
+            m_PhobosBlue.facadeTopGrid = null;
+            m_PhobosBlue.bridgeGrid = null;
+
+            DungeonMaterial m_PhobosGrey = ScriptableObject.CreateInstance<DungeonMaterial>();
+            m_PhobosGrey.name = "Phobos_Grey";
+            m_PhobosGrey.wallShards = CastlePrefab.roomMaterialDefinitions[0].wallShards;
+            m_PhobosGrey.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            m_PhobosGrey.bigWallShardDamageThreshold = 10;
+            m_PhobosGrey.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            m_PhobosGrey.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            m_PhobosGrey.pitfallVFXPrefab = SewersPrefab.roomMaterialDefinitions[0].pitfallVFXPrefab;
+            m_PhobosGrey.UsePitAmbientVFX = false;
+            m_PhobosGrey.AmbientPitVFX = new List<GameObject>(0);
+            m_PhobosGrey.PitVFXMinCooldown = 5;
+            m_PhobosGrey.PitVFXMaxCooldown = 30;
+            m_PhobosGrey.ChanceToSpawnPitVFXOnCooldown = 1;
+            m_PhobosGrey.stampFailChance = 0.2f;
+            m_PhobosGrey.overrideTableTable = null;
+            m_PhobosGrey.supportsPits = true;
+            m_PhobosGrey.doPitAO = true;
+            m_PhobosGrey.pitsAreOneDeep = false;
+            m_PhobosGrey.supportsDiagonalWalls = false;
+            m_PhobosGrey.supportsUpholstery = false;
+            m_PhobosGrey.carpetIsMainFloor = false;
+            m_PhobosGrey.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/carpetGrid") };
+            m_PhobosGrey.supportsChannels = false;
+            m_PhobosGrey.minChannelPools = 0;
+            m_PhobosGrey.maxChannelPools = 3;
+            m_PhobosGrey.channelTenacity = 0.75f;
+            m_PhobosGrey.channelGrids = new TileIndexGrid[0];
+            m_PhobosGrey.supportsLavaOrLavalikeSquares = false;
+            m_PhobosGrey.lavaGrids = new TileIndexGrid[0];
+            m_PhobosGrey.supportsIceSquares = false;
+            m_PhobosGrey.iceGrids = new TileIndexGrid[0];
+            m_PhobosGrey.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/roomFloorBorderGrid");
+            m_PhobosGrey.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/roomCeilingBorderGrid");
+            m_PhobosGrey.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/pitLayoutGrid");
+            m_PhobosGrey.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/pitBorderFlatGrid");
+            m_PhobosGrey.pitBorderRaisedGrid = null;
+            m_PhobosGrey.additionalPitBorderFlatGrid = null;
+            m_PhobosGrey.outerCeilingBorderGrid = null;
+            m_PhobosGrey.floorSquareDensity = 0.05f;
+            m_PhobosGrey.floorSquares = new TileIndexGrid[0];
+            m_PhobosGrey.usesFacewallGrids = false;
+            m_PhobosGrey.facewallGrids = CatacombsPrefab.roomMaterialDefinitions[0].facewallGrids;
+            m_PhobosGrey.usesInternalMaterialTransitions = false;
+            m_PhobosGrey.usesProceduralMaterialTransitions = false;
+            m_PhobosGrey.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            m_PhobosGrey.secretRoomWallShardCollections = new List<GameObject>(0);
+            m_PhobosGrey.overrideStoneFloorType = false;
+            m_PhobosGrey.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            m_PhobosGrey.useLighting = true;
+            m_PhobosGrey.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = ExpandPrefabs.PhobosLight,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };
+            m_PhobosGrey.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            m_PhobosGrey.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            m_PhobosGrey.usesDecalLayer = false;
+            m_PhobosGrey.decalIndexGrid = null;
+            m_PhobosGrey.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            m_PhobosGrey.decalSize = 1;
+            m_PhobosGrey.decalSpacing = 1;
+            m_PhobosGrey.usesPatternLayer = false;
+            m_PhobosGrey.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            m_PhobosGrey.patternSpacing = 1;
+            m_PhobosGrey.patternSize = 1;
+            m_PhobosGrey.patternIndexGrid = null;
+            m_PhobosGrey.forceEdgesDiagonal = false;
+            m_PhobosGrey.exteriorFacadeBorderGrid = null;
+            m_PhobosGrey.facadeTopGrid = null;
+            m_PhobosGrey.bridgeGrid = null;
+
+            DungeonMaterial m_PhobosGold = ScriptableObject.CreateInstance<DungeonMaterial>();
+            m_PhobosGold.name = "Phobos_Gold";
+            m_PhobosGold.wallShards = CastlePrefab.roomMaterialDefinitions[0].wallShards;
+            m_PhobosGold.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            m_PhobosGold.bigWallShardDamageThreshold = 10;
+            m_PhobosGold.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            m_PhobosGold.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            m_PhobosGold.pitfallVFXPrefab = SewersPrefab.roomMaterialDefinitions[0].pitfallVFXPrefab;
+            m_PhobosGold.UsePitAmbientVFX = false;
+            m_PhobosGold.AmbientPitVFX = new List<GameObject>(0);
+            m_PhobosGold.PitVFXMinCooldown = 5;
+            m_PhobosGold.PitVFXMaxCooldown = 30;
+            m_PhobosGold.ChanceToSpawnPitVFXOnCooldown = 1;
+            m_PhobosGold.stampFailChance = 0.2f;
+            m_PhobosGold.overrideTableTable = null;
+            m_PhobosGold.supportsPits = true;
+            m_PhobosGold.doPitAO = true;
+            m_PhobosGold.pitsAreOneDeep = false;
+            m_PhobosGold.supportsDiagonalWalls = false;
+            m_PhobosGold.supportsUpholstery = false;
+            m_PhobosGold.carpetIsMainFloor = false;
+            m_PhobosGold.carpetGrids = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/carpetGrid") };
+            m_PhobosGold.supportsChannels = false;
+            m_PhobosGold.minChannelPools = 0;
+            m_PhobosGold.maxChannelPools = 3;
+            m_PhobosGold.channelTenacity = 0.75f;
+            m_PhobosGold.channelGrids = new TileIndexGrid[0];
+            m_PhobosGold.supportsLavaOrLavalikeSquares = false;
+            m_PhobosGold.lavaGrids = new TileIndexGrid[0];
+            m_PhobosGold.supportsIceSquares = false;
+            m_PhobosGold.iceGrids = new TileIndexGrid[0];
+            m_PhobosGold.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/roomFloorBorderGrid");
+            m_PhobosGold.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/roomCeilingBorderGrid");
+            m_PhobosGold.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/pitLayoutGrid");
+            m_PhobosGold.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/pitBorderFlatGrid");
+            m_PhobosGold.pitBorderRaisedGrid = null;
+            m_PhobosGold.additionalPitBorderFlatGrid = null;
+            m_PhobosGold.outerCeilingBorderGrid = null;
+            m_PhobosGold.floorSquareDensity = 0.05f;
+            m_PhobosGold.floorSquares = new TileIndexGrid[] { ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Gold/floorSquares") };
+            m_PhobosGold.usesFacewallGrids = false;
+            m_PhobosGold.facewallGrids = CatacombsPrefab.roomMaterialDefinitions[0].facewallGrids;
+            m_PhobosGold.usesInternalMaterialTransitions = false;
+            m_PhobosGold.usesProceduralMaterialTransitions = false;
+            m_PhobosGold.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            m_PhobosGold.secretRoomWallShardCollections = new List<GameObject>(0);
+            m_PhobosGold.overrideStoneFloorType = false;
+            m_PhobosGold.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            m_PhobosGold.useLighting = true;
+            m_PhobosGold.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = ExpandPrefabs.PhobosLight,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };
+            m_PhobosGold.facewallLightStamps = dungeon.roomMaterialDefinitions[0].facewallLightStamps;
+            m_PhobosGold.sidewallLightStamps = dungeon.roomMaterialDefinitions[0].sidewallLightStamps;
+            m_PhobosGold.usesDecalLayer = false;
+            m_PhobosGold.decalIndexGrid = null;
+            m_PhobosGold.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            m_PhobosGold.decalSize = 1;
+            m_PhobosGold.decalSpacing = 1;
+            m_PhobosGold.usesPatternLayer = false;
+            m_PhobosGold.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            m_PhobosGold.patternSpacing = 1;
+            m_PhobosGold.patternSize = 1;
+            m_PhobosGold.patternIndexGrid = null;
+            m_PhobosGold.forceEdgesDiagonal = false;
+            m_PhobosGold.exteriorFacadeBorderGrid = null;
+            m_PhobosGold.facadeTopGrid = null;
+            m_PhobosGold.bridgeGrid = null;
+
+            DungeonMaterial m_PhobosStainedGlassLights = ScriptableObject.CreateInstance<DungeonMaterial>();
+            m_PhobosStainedGlassLights.name = "Boss_Cathedral_StainedGlass_Lights";
+            m_PhobosStainedGlassLights.wallShards = CastlePrefab.roomMaterialDefinitions[0].wallShards;
+            m_PhobosStainedGlassLights.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            m_PhobosStainedGlassLights.bigWallShardDamageThreshold = 10;
+            m_PhobosStainedGlassLights.fallbackVerticalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            m_PhobosStainedGlassLights.fallbackHorizontalTileMapEffects = dungeon.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            m_PhobosStainedGlassLights.pitfallVFXPrefab = null;
+            m_PhobosStainedGlassLights.UsePitAmbientVFX = false;
+            m_PhobosStainedGlassLights.AmbientPitVFX = new List<GameObject>(0);
+            m_PhobosStainedGlassLights.PitVFXMinCooldown = 5;
+            m_PhobosStainedGlassLights.PitVFXMaxCooldown = 30;
+            m_PhobosStainedGlassLights.ChanceToSpawnPitVFXOnCooldown = 1;
+            m_PhobosStainedGlassLights.stampFailChance = 0.2f;
+            m_PhobosStainedGlassLights.overrideTableTable = null;
+            m_PhobosStainedGlassLights.supportsPits = true;
+            m_PhobosStainedGlassLights.doPitAO = true;
+            m_PhobosStainedGlassLights.pitsAreOneDeep = false;
+            m_PhobosStainedGlassLights.supportsDiagonalWalls = false;
+            m_PhobosStainedGlassLights.supportsUpholstery = false;
+            m_PhobosStainedGlassLights.carpetIsMainFloor = false;
+            m_PhobosStainedGlassLights.carpetGrids = new TileIndexGrid[0];
+            m_PhobosStainedGlassLights.supportsChannels = false;
+            m_PhobosStainedGlassLights.minChannelPools = 0;
+            m_PhobosStainedGlassLights.maxChannelPools = 3;
+            m_PhobosStainedGlassLights.channelTenacity = 0.75f;
+            m_PhobosStainedGlassLights.channelGrids = new TileIndexGrid[0];
+            m_PhobosStainedGlassLights.supportsLavaOrLavalikeSquares = false;
+            m_PhobosStainedGlassLights.lavaGrids = new TileIndexGrid[0];
+            m_PhobosStainedGlassLights.supportsIceSquares = false;
+            m_PhobosStainedGlassLights.iceGrids = new TileIndexGrid[0];
+            m_PhobosStainedGlassLights.roomFloorBorderGrid = null;
+            m_PhobosStainedGlassLights.roomCeilingBorderGrid = null;
+            m_PhobosStainedGlassLights.pitLayoutGrid = null;
+            m_PhobosStainedGlassLights.pitBorderFlatGrid = null;
+            m_PhobosStainedGlassLights.pitBorderRaisedGrid = null;
+            m_PhobosStainedGlassLights.additionalPitBorderFlatGrid = null;
+            m_PhobosStainedGlassLights.outerCeilingBorderGrid = null;
+            m_PhobosStainedGlassLights.floorSquareDensity = 0.05f;
+            m_PhobosStainedGlassLights.floorSquares = new TileIndexGrid[0];
+            m_PhobosStainedGlassLights.usesFacewallGrids = false;
+            m_PhobosStainedGlassLights.facewallGrids = new FacewallIndexGridDefinition[0];
+            m_PhobosStainedGlassLights.usesInternalMaterialTransitions = false;
+            m_PhobosStainedGlassLights.usesProceduralMaterialTransitions = false;
+            m_PhobosStainedGlassLights.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            m_PhobosStainedGlassLights.secretRoomWallShardCollections = new List<GameObject>(0);
+            m_PhobosStainedGlassLights.overrideStoneFloorType = false;
+            m_PhobosStainedGlassLights.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            m_PhobosStainedGlassLights.useLighting = true;
+            m_PhobosStainedGlassLights.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = ExpandPrefabs.PhobosLight2,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };            
+            m_PhobosStainedGlassLights.facewallLightStamps = new List<LightStampData>() {
+                new LightStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.WALL_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = null,
+                    CanBeTopWallLight = true,
+                    CanBeCenterLight = true,
+                    FallbackIndex = 0
+                }
+            };
+            m_PhobosStainedGlassLights.sidewallLightStamps = new List<LightStampData>() {
+                new LightStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                    occupySpace = DungeonTileStampData.StampSpace.WALL_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(0),
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = null,
+                    CanBeTopWallLight = true,
+                    CanBeCenterLight = true,
+                    FallbackIndex = 0
+                }
+            };
+            m_PhobosStainedGlassLights.usesDecalLayer = false;
+            m_PhobosStainedGlassLights.decalIndexGrid = null;
+            m_PhobosStainedGlassLights.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            m_PhobosStainedGlassLights.decalSize = 1;
+            m_PhobosStainedGlassLights.decalSpacing = 1;
+            m_PhobosStainedGlassLights.usesPatternLayer = false;
+            m_PhobosStainedGlassLights.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            m_PhobosStainedGlassLights.patternSpacing = 1;
+            m_PhobosStainedGlassLights.patternSize = 1;
+            m_PhobosStainedGlassLights.patternIndexGrid = null;
+            m_PhobosStainedGlassLights.forceEdgesDiagonal = false;
+            m_PhobosStainedGlassLights.exteriorFacadeBorderGrid = null;
+            m_PhobosStainedGlassLights.facadeTopGrid = null;
+            m_PhobosStainedGlassLights.bridgeGrid = null;
+
+            
+
+
+            dungeon.gameObject.name = "Base_Phobos";
+            dungeon.DungeonSeed = 0;
+            dungeon.DungeonShortName = "Phobos";
+            dungeon.DungeonFloorName = "Phobos";
+            dungeon.DungeonFloorLevelTextOverride = "An unknown place.";
+            dungeon.debugSettings = new DebugDungeonSettings() {
+                RAPID_DEBUG_DUNGEON_ITERATION_SEEKER = false,
+                RAPID_DEBUG_DUNGEON_ITERATION = false,
+                RAPID_DEBUG_DUNGEON_COUNT = 50,
+                GENERATION_VIEWER_MODE = false,
+                FULL_MINIMAP_VISIBILITY = false,
+                COOP_TEST = false,
+                DISABLE_ENEMIES = false,
+                DISABLE_LOOPS = true,
+                DISABLE_SECRET_ROOM_COVERS = false,
+                DISABLE_OUTLINES = false,
+                WALLS_ARE_PITS = false,
+            };
+            dungeon.PatternSettings = new SemioticDungeonGenSettings() {
+                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("Complex_Flow_Test") },
+                mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
+                optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
+                MAX_GENERATION_ATTEMPTS = 250,
+                DEBUG_RENDER_CANVASES_SEPARATELY = false,
+            };
+            dungeon.ForceRegenerationOfCharacters = false;
+            dungeon.ActuallyGenerateTilemap = true;
+            dungeon.decoSettings = new TilemapDecoSettings() {
+                standardRoomVisualSubtypes = new WeightedIntCollection() {
+                    elements = new WeightedInt[] {
+                      new WeightedInt() {
+                          annotation = "blue plate",
+                          value = 0,
+                          weight = 0.3f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "grey plate",
+                          value = 1,
+                          weight = 0.4f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "shop",
+                          value = 2,
+                          weight = 0,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "gold plate",
+                          value = 3,
+                          weight = 0.3f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                  }
+                },
+                decalLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                decalSize = 3,
+                decalSpacing = 1,
+                decalExpansion = 0,
+                patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                patternSize = 3,
+                patternSpacing = 3,
+                patternExpansion = 0,
+                decoPatchFrequency = 0.01f,
+                ambientLightColor = new Color(0.875462f, 0.882353f, 0.810986f, 1),
+                ambientLightColorTwo = new Color(0.87451f, 0.882353f, 0.811765f, 1),
+                lowQualityAmbientLightColor = Color.white,
+                lowQualityAmbientLightColorTwo = Color.white,
+                lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
+                UsesAlienFXFloorColor = false,
+                AlienFXFloorColor = Color.black,
+                generateLights = true,
+                lightCullingPercentage = 0.2f,
+                lightOverlapRadius = 8,
+                nearestAllowedLight = 12,
+                minLightExpanseWidth = 2,
+                lightHeight = -2,
+                lightCookies = new Texture2D[0],
+                debug_view = false
+            };
+            dungeon.tileIndices = new TileIndices() {
+                tilesetId = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
+                dungeonCollection = ExpandPrefabs.ENV_Tileset_Phobos.GetComponent<tk2dSpriteCollectionData>(),
+                dungeonCollectionSupportsDiagonalWalls = false,
+                aoTileIndices = new AOTileIndices() {
+                    AOFloorTileIndex = 0,
+                    AOBottomWallBaseTileIndex = 1,
+                    AOBottomWallTileRightIndex = 2,
+                    AOBottomWallTileLeftIndex = 3,
+                    AOBottomWallTileBothIndex = 4,
+                    AOTopFacewallRightIndex = 6,
+                    AOTopFacewallLeftIndex = 5,
+                    AOTopFacewallBothIndex = 7,
+                    AOFloorWallLeft = 5,
+                    AOFloorWallRight = 6,
+                    AOFloorWallBoth = 7,
+                    AOFloorPizzaSliceLeft = 8,
+                    AOFloorPizzaSliceRight = 9,
+                    AOFloorPizzaSliceBoth = 10,
+                    AOFloorPizzaSliceLeftWallRight = 11,
+                    AOFloorPizzaSliceRightWallLeft = 12,
+                    AOFloorWallUpAndLeft = 13,
+                    AOFloorWallUpAndRight = 14,
+                    AOFloorWallUpAndBoth = 15,
+                    AOFloorDiagonalWallNortheast = -1,
+                    AOFloorDiagonalWallNortheastLower = -1,
+                    AOFloorDiagonalWallNortheastLowerJoint = -1,
+                    AOFloorDiagonalWallNorthwest = -1,
+                    AOFloorDiagonalWallNorthwestLower = -1,
+                    AOFloorDiagonalWallNorthwestLowerJoint = -1,
+                    AOBottomWallDiagonalNortheast = -1,
+                    AOBottomWallDiagonalNorthwest = -1,
+                },
+                placeBorders = true,
+                placePits = false,
+                chestHighWallIndices = new List<TileIndexVariant>() {
+                    new TileIndexVariant() {
+                        index = 41,
+                        likelihood = 0.5f,
+                        overrideLayerIndex = 0,
+                        overrideIndex = 0
+                    }
+                },
+                decalIndexGrid = null,
+                patternIndexGrid = null,
+                globalSecondBorderTiles = new List<int>(0),
+                edgeDecorationTiles = null,
+            };
+            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
+                m_PhobosBlue,
+                m_PhobosGrey,
+                m_PhobosBlue,
+                m_PhobosGold,
+                m_PhobosBlue,
+                m_PhobosStainedGlassLights,
+                m_PhobosBlue,
+            };
+            dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
+            dungeon.pathGridDefinitions = new List<TileIndexGrid>(0);
+            // dungeon.dungeonDustups
+            dungeon.damageTypeEffectMatrix = new DamageTypeEffectMatrix() {
+                definitions = new List<DamageTypeEffectDefinition>() {
+                    new DamageTypeEffectDefinition() {
+                        name = "Fire",
+                        damageType = CoreDamageTypes.Magic,
+                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                    },
+                    new DamageTypeEffectDefinition() {
+                        name = "Ice",
+                        damageType = CoreDamageTypes.Fire,
+                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                    },
+                    new DamageTypeEffectDefinition() {
+                        name = "Rubel",
+                        damageType = CoreDamageTypes.Ice,
+                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                    },
+                    new DamageTypeEffectDefinition() {
+                        name = "Water",
+                        damageType = CoreDamageTypes.Poison,
+                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                    },
+                }
+            };
+            
+            dungeon.stampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
+            dungeon.stampData.name = "ENV_PHOBOS_STAMP_DATA";
+            dungeon.stampData.tileStampWeight = 1;
+            dungeon.stampData.spriteStampWeight = 0;
+            dungeon.stampData.objectStampWeight = 1;
+            dungeon.stampData.stamps = new TileStampData[0];
+            dungeon.stampData.spriteStamps = new SpriteStampData[0];
+            dungeon.stampData.objectStamps = SewersPrefab.stampData.objectStamps; // Original prefab had no object stamps setup. Using Sewers for now.
+            // dungeon.stampData.SymmetricFrameChance = 0.25f;
+            // dungeon.stampData.SymmetricCompleteChance = 0.5f;
+            // Using settings from Sewers for now.
+            dungeon.stampData.SymmetricFrameChance = 0.5f;
+            dungeon.stampData.SymmetricCompleteChance = 0.25f;
+            dungeon.UsesCustomFloorIdea = false;
+            dungeon.FloorIdea = new RobotDaveIdea() {
+                ValidEasyEnemyPlaceables = new DungeonPlaceable[0],
+                ValidHardEnemyPlaceables = new DungeonPlaceable[0],
+                UseWallSawblades = false,
+                UseRollingLogsVertical = false,
+                UseRollingLogsHorizontal = false,
+                UseFloorPitTraps = false,
+                UseFloorFlameTraps = false,
+                UseFloorSpikeTraps = false,
+                UseFloorConveyorBelts = false,
+                UseCaveIns = false,
+                UseAlarmMushrooms = false,
+                UseMineCarts = false,
+                UseChandeliers = false,
+                CanIncludePits = true
+            };
+            dungeon.doorObjects = NakatomiPrefab.alternateDoorObjectsNakatomi;
+            dungeon.lockedDoorObjects = null;
+            // Use Gungeon's existing oneWayDoor/pressure plate/phantomBlockers
+            // dungeon.oneWayDoorObjects 
+            // dungeon.oneWayDoorPressurePlate
+            // dungeon.phantomBlockerDoorObjects
+            dungeon.WarpWingDoorPrefab = null;
+            // dungeon.baseChestContents
+            dungeon.SecretRoomSimpleTriggersFacewall = SewersPrefab.SecretRoomSimpleTriggersFacewall;
+            dungeon.SecretRoomSimpleTriggersSidewall = SewersPrefab.SecretRoomSimpleTriggersSidewall;
+            dungeon.SecretRoomComplexTriggers = new List<ComplexSecretRoomTrigger>(0);
+            // dungeon.SecretRoomDoorSparkVFX
+            // dungeon.SecretRoomHorizontalPoofVFX
+            // dungeon.SecretRoomVerticalPoofVFX
+            // dungeon.sharedSettingsPrefab
+            dungeon.StripPlayerOnArrival = false;
+            dungeon.SuppressEmergencyCrates = false;
+            dungeon.SetTutorialFlag = false;
+            dungeon.PlayerIsLight = true;
+            dungeon.PlayerLightColor = new Color(0.985294f, 0.719884f, 0.383975f, 1);
+            dungeon.PlayerLightIntensity = 3.8f;
+            dungeon.PlayerLightRadius = 4.5f;
+            dungeon.musicEventName = "Play_MUS_Mines_Theme_01";
+
+            sharedAssets2 = null;
+            expandSharedAuto1 = null;
+            NakatomiPrefab = null;
+            SewersPrefab = null;
+            CastlePrefab = null;
+            CatacombsPrefab = null;
+
+            return dungeon;
+        }
     }
 }
 

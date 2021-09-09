@@ -16,16 +16,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility : MonoBehaviour {
 
-        public static ExpandUtility Instance {
-            get {
-                if (!m_instance) {
-                    m_instance = ETGModMainBehaviour.Instance.gameObject.AddComponent<ExpandUtility>();
-                }
-                return m_instance;
-            }
-        }
-        private static ExpandUtility m_instance;
-
         // Better method of defining new node positions on a path. (allows defining placement type at same time as creating it)
         public static SerializedPathNode GeneratePathNode(IntVector2 position, SerializedPathNode.SerializedNodePlacement placement, bool usesAlternateTarget = false, float delayTime = 0, int alternateTargetPathIndex = -1, int alternateTargetNodeIndex = -1) {
             SerializedPathNode m_PathNode = new SerializedPathNode();
@@ -41,11 +31,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
         // Quick and dirty way to clone any (non engine) component.
         // Can't be used to clone things like Texture2D/Materials. But useful for most other things things like components and scriptable objects like DungeonFlows.
         public static void DuplicateComponent(object target, object source, bool SaveOutputToFile = false, string OutputFilepath = null) {
-            string m_CachedSerializedComponent = JsonUtility.ToJson(source);
+            /*string m_CachedSerializedComponent = JsonUtility.ToJson(source);
             if (m_CachedSerializedComponent != null) {
                 if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(m_CachedSerializedComponent, OutputFilepath); }
                 JsonUtility.FromJsonOverwrite(m_CachedSerializedComponent, target);
-            }
+            }*/
+            if (string.IsNullOrEmpty(JsonUtility.ToJson(source))) { return; }
+            if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(JsonUtility.ToJson(source), OutputFilepath); }
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(source), target);
+            
         }
              
 
@@ -519,14 +513,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             return m_NewSpriteDefinition;
         }
-        
-        public static TileIndexGrid DeserializeTileIndexGrid(string assetPath) {
-            TileIndexGrid m_TileIndexGridData = ScriptableObject.CreateInstance<TileIndexGrid>();
-            string serializedData = ResourceExtractor.BuildStringFromEmbeddedResource("SerializedData/" + assetPath);
-            JsonUtility.FromJsonOverwrite(serializedData, m_TileIndexGridData);
-            return m_TileIndexGridData;
-        }
-        
+ 
         public static TileIndexGrid BuildNewTileIndexGrid(string name) {
             TileIndexGrid m_NewTileIndexGrid = ScriptableObject.CreateInstance<TileIndexGrid>();
 
@@ -1471,7 +1458,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedClip;
         }
         
-        public IntVector2? GetRandomAvailableCellSmart(RoomHandler CurrentRoom, IntVector2 Clearence, bool relativeToRoom = false) {            
+        public static IntVector2? GetRandomAvailableCellSmart(RoomHandler CurrentRoom, IntVector2 Clearence, bool relativeToRoom = false) {            
             CellValidator cellValidator = delegate (IntVector2 c) {
                 for (int X = 0; X < Clearence.x; X++) {
                     for (int Y = 0; Y < Clearence.y; Y++) {
@@ -1493,7 +1480,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }            
         }
 
-        public IntVector2 GetRandomAvailableCellSmart(RoomHandler CurrentRoom, PlayerController PrimaryPlayer, int MinClearence = 2, bool usePlayerVectorAsFallback = false) {
+        public static IntVector2 GetRandomAvailableCellSmart(RoomHandler CurrentRoom, PlayerController PrimaryPlayer, int MinClearence = 2, bool usePlayerVectorAsFallback = false) {
             Vector2 PlayerVector2 = PrimaryPlayer.CenterPosition;
             IntVector2 PlayerIntVector2 = PlayerVector2.ToIntVector2(VectorConversions.Floor);
             
@@ -1587,7 +1574,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true) {
+        public static RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true) {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1709,7 +1696,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             if (addRoomToMinimap) {
                 targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
-                StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(targetRoom, true, true, false));
+                GameManager.Instance.StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(targetRoom, true, true, false));
                 if (isSecretRatExitRoom) { targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED; }
             }         
             if (addTeleporter) { targetRoom.AddProceduralTeleporterToRoom(); }
@@ -3407,7 +3394,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             };
             return m_NewCollider;
         }
-
         
         public static SpeculativeRigidbody GenerateNewEnemyRigidBody(AIActor targetEnemy, IntVector2 offset, IntVector2 dimensions) {
             SpeculativeRigidbody orAddComponent = GameObjectExtensions.GetOrAddComponent<SpeculativeRigidbody>(targetEnemy.gameObject);
@@ -3711,7 +3697,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return res;
         }
 
-
         public static int LanguageToInt(StringTableManager.GungeonSupportedLanguages language) {
             switch (language) {
                 case StringTableManager.GungeonSupportedLanguages.ENGLISH:
@@ -3808,6 +3793,53 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
             }
         }
+
+        public static Texture2D GenerateTexture2DFromRenderTexture(RenderTexture rTex) {
+            Texture2D tex = new Texture2D(rTex.width, rTex.height, TextureFormat.RGB24, false);
+            var old_rt = RenderTexture.active;
+            RenderTexture.active = rTex;
+            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = old_rt;
+            return tex;
+        }
+
+        public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandPrefabs/SerializedData/", string fileExtension = ".txt") {
+            string m_ResultAsset = string.Empty;
+            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(m_ResultAsset)) {
+                return m_ResultAsset;
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath +" returned null! Ensure asset exists in asset bundle!", true);
+                return string.Empty;
+            }
+        }
+
+        public static string[] GetLinesFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/", string fileExtension = ".txt") {
+            string m_ResultAsset = string.Empty;
+            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(m_ResultAsset)) {
+                return m_ResultAsset.Split(new char[] { '\n' });
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return new string[0];
+            }
+        }
+
+        public static TileIndexGrid DeserializeTileIndexGridFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandPrefabs/SerializedData/", string fileExtension = ".txt") {
+            string serializedData = string.Empty;
+            try { serializedData = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(serializedData)) {
+                TileIndexGrid m_TileIndexGridData = ScriptableObject.CreateInstance<TileIndexGrid>();
+                JsonUtility.FromJsonOverwrite(serializedData, m_TileIndexGridData);
+                return m_TileIndexGridData;
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return null;
+            }
+        }
+
+
     }
 
     public static class ExpandExtensions {

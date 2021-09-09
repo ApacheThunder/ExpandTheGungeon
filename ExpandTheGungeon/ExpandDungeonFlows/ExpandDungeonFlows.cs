@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
-            if (flowName.ToLower().EndsWith("secret_doublebeholster_flow")) {
+            if (flowName.ToLower().EndsWith("secret_doublebeholster_flow") && ExpandStats.EnableExpandedGlitchFloors) {
                 GlitchChestFlows = GlitchChestFlows.Shuffle();
                 if (ExpandStats.randomSeed <= 0.5f) {
                     flowName = BraveUtility.RandomElement(GlitchChestFlows);
@@ -48,7 +48,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
             return orig(target);
         }
-        
+
         public static DungeonFlow LoadOfficialFlow(string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }

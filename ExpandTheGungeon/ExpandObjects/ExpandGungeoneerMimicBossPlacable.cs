@@ -272,7 +272,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(MimiclayItem);
             }
 
-            MirrorController mirror = ExpandPrefabs.CurrsedMirrorPlacable.gameObject.GetComponent<MirrorController>();
+            MirrorController mirror = ExpandPrefabs.CurrsedMirror.GetComponent<MirrorController>();
 
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
             MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));

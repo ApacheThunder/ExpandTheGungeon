@@ -92,8 +92,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SpecialRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
 
             DungeonFlowNode m_SecretBossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
-            // DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.DragunBossFoyerRoom);
-            DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.DragunBossFoyerRoom);
+            // DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
             DungeonFlowNode m_SecretBossExitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
             // DungeonFlowNode m_SecretBossExitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.DraGunExitRoom);
             // DungeonFlowNode m_SecretBossEndTimesNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandPrefabs.DraGunEndTimesRoom, isWarpWingNode: true);

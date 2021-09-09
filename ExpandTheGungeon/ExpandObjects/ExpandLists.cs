@@ -263,9 +263,10 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         public static string[] DontGlitchMeList = {
             "c0260c286c8d4538a697c5bf24976ccf", // dynamite_kin
-            "128db2f0781141bcb505d8f00f9e4d47", // red_shotgun_kin
-            "b54d89f9e802455cbb2b8a96a31e8259", // blue_shotgun_kin
-            "70216cae6c1346309d86d4a0b4603045", // veteran_bullet_kin
+            // These enemies can now be glitched via normal means
+            // "128db2f0781141bcb505d8f00f9e4d47", // red_shotgun_kin
+            // "b54d89f9e802455cbb2b8a96a31e8259", // blue_shotgun_kin
+            // "70216cae6c1346309d86d4a0b4603045", // veteran_bullet_kin
             "45192ff6d6cb43ed8f1a874ab6bef316", // misfire_beast
             "ba928393c8ed47819c2c5f593100a5bc" // MetalCubeGuy (trap version)
         };

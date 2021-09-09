@@ -8,6 +8,7 @@
 		_xShiftIntensity ("Horizontal Tiling Intensity", Float) = 500
 		// This controls how much the screen shifts to the left near the bottom of the screen. Higher values = more of bottom is shifted then the top is.
 		_xShift ("Horizontal Tiling Bottom Bias", Float) = 0.025
+		[MaterialToggle] _enableScanlineDistortion("Enable VHS Scanlines (0 = off)", Float) = 1
 		// Added to allow disabling of color bleed effect
 		[MaterialToggle] _colorBleedToggle("Color Bleed (0 = off)", Float) = 1
 	}
@@ -28,6 +29,7 @@
 			
 			float _yScanline;
 			float _xScanline;
+			float _enableScanlineDistortion;
 			float _xShift;
 			float _xShiftIntensity;
 			float _colorBleedToggle;
@@ -46,9 +48,11 @@
 				i.uv.x += dy * _xShift + rand(float3(dy,dy,dy)).r/_xShiftIntensity; //0.025;
 				
 				float white = (vhs.r+vhs.g+vhs.b)/3;
-				
-				if(dx > 0.99)
-					i.uv.y = _xScanline;				
+								
+				 if(dx > 0.99)
+					if (_enableScanlineDistortion == 1)
+						i.uv.y = _xScanline;
+						
 				// Disabled this as it caused some repeat of left side of screen on the right side.
 				// i.uv.x = i.uv.x % 1;
 				// i.uv.y = i.uv.y % 1;

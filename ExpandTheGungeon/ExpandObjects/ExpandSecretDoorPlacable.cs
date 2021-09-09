@@ -112,7 +112,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_SecretDoorComponent.DoorBackgroundObject = EXSecretDoor_Background;
             m_SecretDoorComponent.DoorLightObject = EXSecretDoor_Light;
             
-            GameObject m_RatLock = ExpandPrefabs.RatJailDoorPlacable.gameObject.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject;
+            GameObject m_RatLock = ExpandPrefabs.RatJailDoor.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject;
             
             EXSecretDoor_Lock = EXSecretDoor.transform.Find("EX Secret Door Lock").gameObject;
             tk2dSprite EXLockSprite = EXSecretDoor_Lock.AddComponent<tk2dSprite>();

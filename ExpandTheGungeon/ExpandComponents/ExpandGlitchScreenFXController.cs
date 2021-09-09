@@ -13,6 +13,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             isRoomSpecific = false;
             ParentRoomIsSecretGlitchRoom = false;
             UseCorruptionAmbience = true;
+            enableVHSScanlineDistortion = false;
 
             // For Glitch Shader
             GlitchUpdatedExternally = true;
@@ -21,7 +22,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             GlitchAmount = 0.5f;
             GlitchRandom = 0.1f;
             GlitchUpdateFrequency = 0.05f;
-            GlitchMapTexture = "EX_GlitchMap_Snow";
+            GlitchMapTexture = "EX_GlitchMap";
 
             m_yScanline = 0;
             m_xScanline = 0;
@@ -41,6 +42,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public VideoPlayer TexturePlayer;
         public Texture2D VHSClip_Empty;
 
+        public bool enableVHSScanlineDistortion;
         public bool isRoomSpecific;
         public bool ParentRoomIsSecretGlitchRoom;
         public bool UseCorruptionAmbience;
@@ -69,7 +71,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         private float m_xShift;
         private float m_xShiftIntensity;
         private float m_colorBleedToggle;
-        
+
+        // "Brave/Effects/Scanlines" // Useful shader reference I might use later.
 
         private void Start() {
             switch (shaderType) {
@@ -79,6 +82,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     VHSClip = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<VideoClip>("VHSAnimation");
                     m_colorBleedToggle = 1;
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
+                    if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
                     TexturePlayer.Play();
                     TexturePlayer.isLooping = true;
                     TexturePlayer.renderMode = VideoRenderMode.APIOnly;
@@ -90,6 +94,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     OldFilmClip = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<VideoClip>("OldFilm");
                     m_colorBleedToggle = 0;
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
+                    if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
                     TexturePlayer.Play();
                     TexturePlayer.isLooping = true;
                     TexturePlayer.renderMode = VideoRenderMode.APIOnly;
@@ -100,6 +105,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     VHSClip_Empty = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EmptyVHSTexture");
                     ScreenMaterial.SetTexture("_VHSTex", VHSClip_Empty);
+                    if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
                     m_colorBleedToggle = 0;
                     break;
                 case ShaderType.Glitch:
@@ -156,20 +162,23 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     m_xShiftIntensity = Random.Range(150, 500);
                     m_xShift = 0;
-                    ScreenMaterial.SetFloat("_yScanline", m_yScanline);
+                    m_xScanline = Random.Range(0.4f, 0.8f);
                     ScreenMaterial.SetFloat("_xScanline", m_xScanline);
                     ScreenMaterial.SetFloat("_xShift", m_xShift);
                     ScreenMaterial.SetFloat("_xShiftIntensity", m_xShiftIntensity);
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
                     break;
                 case ShaderType.VHSBasic:
-                    if (m_yScanline >= 1) { m_yScanline = Random.value; }
-                    if (m_xScanline <= 0 || Random.value < 0.05) { m_xScanline = Random.value; }
-                    m_yScanline += (BraveTime.DeltaTime * 0.01f);
-                    m_xScanline -= (BraveTime.DeltaTime * 0.1f);
-                    m_xShiftIntensity = Random.Range(200, 500);
+                    if (enableVHSScanlineDistortion) {
+                        if (m_yScanline >= 1) { m_yScanline = Random.value; }
+                        m_yScanline += (BraveTime.DeltaTime * 0.01f);
+                        ScreenMaterial.SetFloat("_yScanline", m_yScanline);
+                    }
+                    /*if (m_xScanline <= 0 || Random.value < 0.05) { m_xScanline = Random.value; }
+                    m_xScanline -= (BraveTime.DeltaTime * 0.1f);*/
+                    m_xScanline = Random.Range(0.4f, 0.6f);
+                    m_xShiftIntensity = Random.Range(190, 500);
                     m_xShift = Random.Range(0, 0.002f);
-                    ScreenMaterial.SetFloat("_yScanline", m_yScanline);
                     ScreenMaterial.SetFloat("_xScanline", m_xScanline);
                     ScreenMaterial.SetFloat("_xShift", m_xShift);
                     ScreenMaterial.SetFloat("_xShiftIntensity", m_xShiftIntensity);

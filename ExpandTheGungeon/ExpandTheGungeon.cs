@@ -97,7 +97,7 @@ namespace ExpandTheGungeon {
             InitCustomAssetBundle();
 
             ModLogo = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EXLogo");
-            
+
             try {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
                 MainMenuFoyerUpdateHook = new Hook(
@@ -106,12 +106,9 @@ namespace ExpandTheGungeon {
                     typeof(MainMenuFoyerController)
                 );
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
-
-                // if (ExpandStats.ShotgunKinSecret) { ExpandSharedHooks.ToggleShotgunKinHook(); }
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
                 ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
-                // ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!", true);
                 Debug.LogException(ex);
                 return;
             }
@@ -134,6 +131,9 @@ namespace ExpandTheGungeon {
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
 
+            // Init Custom GameLevelDefinitions
+            ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
+
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
 
@@ -147,8 +147,6 @@ namespace ExpandTheGungeon {
                 ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom DungeonFlow(s)
                 ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
-                // Init Custom Dungeons Prefabs
-                ExpandCustomDungeonPrefabs.InitCustomDungeons();
                 // Post Init
                 // Things thta need existing stuff created first have code run here
                 BootlegGuns.PostInit();
@@ -196,7 +194,7 @@ namespace ExpandTheGungeon {
             StaticReferenceManager.AllHealthHavers.Clear();
             // Remove any custom instances that use BroController
             StaticReferenceManager.AllBros.Clear();
-
+            
             // Null bundles when done with them to avoid game crash issues.
             expandSharedAssets1 = null;
             sharedAssets = null;
@@ -207,12 +205,12 @@ namespace ExpandTheGungeon {
 
 
         public override void Exit() {
-            if (GameManagerHook != null) {
+            /*if (GameManagerHook != null) {
                 ETGModConsole.Log("[ExpandTheGungeon] Uninstalling GameManager.Awake hook", true);
                 GameManagerHook.Dispose();
                 GameManagerHook = null;
                 GameManager.Instance.OnNewLevelFullyLoaded -= ExpandObjectMods.Instance.InitSpecialMods;
-            }
+            }*/
         }
 
 
@@ -327,7 +325,7 @@ namespace ExpandTheGungeon {
         private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.Instance.InitSpecialMods;
-            ExpandCustomDungeonPrefabs.ReInitFloorDefinitions();
+            ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
             if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
         }
 
@@ -546,10 +544,11 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandTestCommand(string[] consoleText) {
-            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            GC.Collect();
+            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
-            EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
+            // GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+            // EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
             // ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
             // GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
 

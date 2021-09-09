@@ -13,6 +13,8 @@ namespace ExpandTheGungeon {
         public static bool EnableBloodiedScarfFix = true;
         public static bool ShotgunKinSecret = false;
         public static bool EnableLanguageFix = false;
+        public static bool EnableExpandedGlitchFloors = true;
+        public static bool EnableGlitchFloorScreenShader = true;
         public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         public static int GameLanguage = 0;
@@ -32,6 +34,8 @@ namespace ExpandTheGungeon {
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
             ShotgunKinSecret = stats.ShotgunKinSecret;
             GameLanguage = stats.GameLanguage;
+            EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
+            EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             JungleRainIntensity = stats.JungleRainIntensity;
         }
 
@@ -46,6 +50,8 @@ namespace ExpandTheGungeon {
         public bool EnableBloodiedScarfFix;
         public bool ShotgunKinSecret;
         public bool EnableLanguageFix;
+        public bool EnableExpandedGlitchFloors;
+        public bool EnableGlitchFloorScreenShader;
         public float JungleRainIntensity;
         public int GameLanguage;
         
@@ -58,6 +64,8 @@ namespace ExpandTheGungeon {
             EnableBloodiedScarfFix = ExpandStats.EnableBloodiedScarfFix;
             ShotgunKinSecret = ExpandStats.ShotgunKinSecret;
             EnableLanguageFix = ExpandStats.EnableLanguageFix;
+            EnableExpandedGlitchFloors = ExpandStats.EnableExpandedGlitchFloors;
+            EnableGlitchFloorScreenShader = ExpandStats.EnableGlitchFloorScreenShader;
             JungleRainIntensity = ExpandStats.JungleRainIntensity;
             GameLanguage = ExpandStats.GameLanguage;
         }

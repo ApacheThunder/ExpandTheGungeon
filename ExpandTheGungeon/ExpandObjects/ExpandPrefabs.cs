@@ -13,29 +13,16 @@ using FullInspector;
 namespace ExpandTheGungeon.ExpandObjects {
 
     public class ExpandPrefabs : MonoBehaviour {
-        
-        private static Dungeon TutorialDungeonPrefab;
-        private static Dungeon SewerDungeonPrefab;
-        private static Dungeon MinesDungeonPrefab;
-        private static Dungeon ratDungeon;
-        private static Dungeon CathedralDungeonPrefab;
-        private static Dungeon BulletHellDungeonPrefab;
-        private static Dungeon ForgeDungeonPrefab;
-        private static Dungeon CatacombsDungeonPrefab;
-        private static Dungeon NakatomiDungeonPrefab;
-
+     
         // Materials
         public static Material SpaceFog;        
 
         // Custom Textures
-        public static Texture2D ENV_Tileset_Belly_Texture;
-        public static Texture2D ENV_Tileset_West_Texture;
         public static Texture2D BulletManMonochromeTexture;
         public static Texture2D BulletManUpsideDownTexture;
         
         // Rat Trap Door
         public static GameObject RatTrapdoor;
-        public static ResourcefulRatMinesHiddenTrapdoor RRMinesHiddenTrapDoorController;
 
         // Room Prefabs
         public static PrototypeDungeonRoom shop02;
@@ -67,8 +54,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static PrototypeDungeonRoom gungeon_checkerboard;
         public static PrototypeDungeonRoom gungeon_normal_fightinaroomwithtonsoftraps;
         public static PrototypeDungeonRoom gungeon_gauntlet_001;
-        
-        // public static PrototypeDungeonRoom beholsterroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("beholsterroom01");
 
         // Secret rooms from Rat Trap door
         public static PrototypeDungeonRoom ResourcefulRat_LongMinecartRoom_01;
@@ -163,20 +148,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Modified Flow Injection Data
         public static ProceduralFlowModifierData AbbeyFlowModifierData;
 
-        // Items
-        // public static PickupObject RatKeyItem;
 
         // Object Prefabs
         private static GameObject MetalGearRatPrefab;
         private static GameObject ResourcefulRatBossPrefab;
-        private static AIActor MetalGearRatActorPrefab;
-        private static AIActor ResourcefulRatBossActorPrefab;
-        private static MetalGearRatDeathController MetalGearRatDeathPrefab;
-        private static PunchoutController PunchoutPrefab;
-        private static ResourcefulRatController resourcefulRatControllerPrefab;
-        private static FoldingTableItem FoldingTablePrefab;
-        // public static GameObject NPCLunk;
-        // public static GameObject FoldingTable;
 
 
         public static GameObject MimicNPC;
@@ -202,8 +177,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Arrival;
 
         public static GameObject NPCBabyDragunChaos;
-        // public static GameObject SellPit;
-
 
         // DungeonPlacables        
         public static DungeonPlaceable ElevatorDeparture;
@@ -225,11 +198,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject CandleGuy;
         public static GameObject WallMimic;
 
-        // Test
-        // public static AIActor SpectreTest = EnemyDatabase.GetOrLoadByGuid("56f5a0f2c1fc4bc78875aea617ee31ac"); // spectre
-        
-        public static DungeonPlaceableBehaviour RatJailDoorPlacable;
-        public static DungeonPlaceableBehaviour CurrsedMirrorPlacable;
+        public static GameObject RatJailDoor;
+        public static GameObject CurrsedMirror;
         
         // Used for forcing Arrival Elevator to spawn on phobos floor tileset ID.
         private static DungeonPlaceableVariant ElevatorArrivalVarientForNakatomi;
@@ -246,9 +216,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         // Custom Objects
         public static GameObject RoomCorruptionAmbience;
         public static GameObject EXAlarmMushroom;
-        // public static GameObject EXTrapDoor;
-        // public static GameObject EXTrapDoorBorder;
-        // public static GameObject EXTrapDoorPit;
         public static GameObject EXPlayerMimicBoss;
         public static GameObject EXSawBladeTrap_4x4Zone;
         public static GameObject EXFriendlyForgeHammer;
@@ -300,6 +267,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Custom Object for Glitch Floor Screen FX controller
         public static GameObject EXGlitchFloorScreenFX;
+        public static GameObject EXWestFloorBossIntroScreenFX;
 
         // Modified Nakatomi Light to match the one Jungle used
         public static GameObject JungleLight;
@@ -307,6 +275,9 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BellyLight;
         // West Light
         public static GameObject WestLight;
+        // Phobos Light
+        public static GameObject PhobosLight;
+        public static GameObject PhobosLight2;
 
         // Cactus Objects for West
         public static GameObject Cactus_A;
@@ -318,9 +289,13 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BlankRewardPedestal;
         public static GameObject RatKeyRewardPedestal;
 
+        //
+        public static GameObject EX_GlitchPortal;
+
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
         public static GameObject ENV_Tileset_West;
+        public static GameObject ENV_Tileset_Phobos;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -328,39 +303,37 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject Challenge_KingsMen;
 
         // Modified Items
-        public static Gun ChamberGun;
-       
+        public static GameObject ChamberGun;
+
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
-            TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
-            SewerDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
-            MinesDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Mines");
-            ratDungeon = DungeonDatabase.GetOrLoadByName("base_resourcefulrat");
-            CathedralDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Cathedral");
-            BulletHellDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_BulletHell");
-            ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
-            CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
-            NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
-                                    
+            Dungeon TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
+            Dungeon SewerDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
+            Dungeon MinesDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Mines");
+            Dungeon ratDungeon = DungeonDatabase.GetOrLoadByName("base_resourcefulrat");
+            Dungeon CathedralDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Cathedral");
+            Dungeon BulletHellDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_BulletHell");
+            Dungeon ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
+            Dungeon CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
+            Dungeon NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
+
             ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
 
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
-                                    
-            ENV_Tileset_Belly_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly");
-            ENV_Tileset_West_Texture = expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West");
-                                    
+            
             ENV_Tileset_Belly = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Belly");
-            ExpandDungeonCollections.ENV_Tileset_Belly(ENV_Tileset_Belly, sharedAssets);
+            ExpandDungeonCollections.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
 
             ENV_Tileset_West = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_West");
-            ExpandDungeonCollections.ENV_Tileset_West(ENV_Tileset_West, sharedAssets);
-            
+            ExpandDungeonCollections.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
+
+            ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
+            ExpandDungeonCollections.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
 
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
             BulletManUpsideDownTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_UpsideDown");
-                        
+
             RatTrapdoor = MinesDungeonPrefab.RatTrapdoor;
-            RRMinesHiddenTrapDoorController = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>();
 
             shop02 = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("shop02");
             fusebombroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("fusebombroom01");
@@ -403,10 +376,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_09"),
                 sharedAssets2.LoadAsset<PrototypeDungeonRoom>("lockedcellminireward_10")
             };
-            
-            ResourcefulRat_LongMinecartRoom_01 = RRMinesHiddenTrapDoorController.TargetMinecartRoom;
-            ResourcefulRat_FirstSecretRoom_01 = RRMinesHiddenTrapDoorController.FirstSecretRoom;
-            ResourcefulRat_SecondSecretRoom_01 = RRMinesHiddenTrapDoorController.SecondSecretRoom;
+
+            ResourcefulRat_LongMinecartRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().TargetMinecartRoom;
+            ResourcefulRat_FirstSecretRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().FirstSecretRoom;
+            ResourcefulRat_SecondSecretRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().SecondSecretRoom;
 
             tiny_entrance = Instantiate(TutorialDungeonPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom);
             tiny_exit = Instantiate(TutorialDungeonPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom);
@@ -505,7 +478,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[8].overrideExactRoom),
                 ExpandRoomPrefabs.GenerateWeightedRoom(NakatomiDungeonPrefab.PatternSettings.flows[0].AllNodes[9].overrideExactRoom),
                 ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04),
-                ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04_copy)                
+                ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04_copy)
             };
 
             Shop_Key_Items_01 = sharedAssets.LoadAsset<GenericLootTable>("Shop_Key_Items_01");
@@ -544,7 +517,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     additionalPrerequisites = new DungeonPrerequisite[0],
                 }
             );
-            
+
             Shop_Curse_Items_01.defaultItemDrops.Add(
                 new WeightedGameObject() {
                     rawGameObject = null,
@@ -566,36 +539,20 @@ namespace ExpandTheGungeon.ExpandObjects {
             bosstable_01_gatlinggull_custom = ScriptableObject.CreateInstance<GenericRoomTable>();
 
             gatlinggull_noTileVisualOverrides = new PrototypeDungeonRoom[0];
-            
 
-            // RatKeyItem = PickupObjectDatabase.GetById(727);
 
             MetalGearRatPrefab = enemiesBase.LoadAsset<GameObject>("MetalGearRat");
             ResourcefulRatBossPrefab = enemiesBase.LoadAsset<GameObject>("ResourcefulRat_Boss");
-            MetalGearRatActorPrefab = MetalGearRatPrefab.GetComponent<AIActor>();
-            ResourcefulRatBossActorPrefab = ResourcefulRatBossPrefab.GetComponent<AIActor>();
-            MetalGearRatDeathPrefab = MetalGearRatActorPrefab.GetComponent<MetalGearRatDeathController>();
-            PunchoutPrefab = MetalGearRatDeathPrefab.PunchoutMinigamePrefab.GetComponent<PunchoutController>();
-            resourcefulRatControllerPrefab = ResourcefulRatBossActorPrefab.GetComponent<ResourcefulRatController>();
-            // FoldingTablePrefab = ETGMod.Databases.Items[644].GetComponent<FoldingTableItem>();
-            FoldingTablePrefab = PickupObjectDatabase.GetById(644).GetComponent<FoldingTableItem>();
-           
 
             SewersRatExitEoom = SewerDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom;
-            // SewersRatExitEoom.placedObjects[0].nonenemyBehaviour.gameObject.AddComponent<ExpandSecretFloorController>();
-
-            // FoldingTable = ETGMod.Databases.Items[644].GetComponent<FoldingTableItem>().TableToSpawn.gameObject;
-            // FoldingTable = FoldingTablePrefab.TableToSpawn.gameObject;
-
-            // NPCLunk = sharedAssets.LoadAsset<GameObject>("NPC_LostAdventurer");
 
             MimicNPC = ratDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.additionalObjectLayers[0].placedObjects[13].nonenemyBehaviour.gameObject;
 
-            RatCorpseNPC = PunchoutPrefab.PlayerWonRatNPC.gameObject;
-            PlayerLostRatNote = PunchoutPrefab.PlayerLostNotePrefab.gameObject;
-            MouseTrap1 = resourcefulRatControllerPrefab.MouseTraps[0];
-            MouseTrap2 = resourcefulRatControllerPrefab.MouseTraps[1];
-            MouseTrap3 = resourcefulRatControllerPrefab.MouseTraps[2];
+            RatCorpseNPC = MetalGearRatPrefab.GetComponent<MetalGearRatDeathController>().PunchoutMinigamePrefab.GetComponent<PunchoutController>().PlayerWonRatNPC.gameObject;
+            PlayerLostRatNote = MetalGearRatPrefab.GetComponent<MetalGearRatDeathController>().PunchoutMinigamePrefab.GetComponent<PunchoutController>().PlayerLostNotePrefab.gameObject;
+            MouseTrap1 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[0];
+            MouseTrap2 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[1];
+            MouseTrap3 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[2];
 
             // Custom Trap Object for Rainbow room
             EXTrap_Apache = expandSharedAssets1.LoadAsset<GameObject>("EX_Trap_Apache");
@@ -615,10 +572,10 @@ namespace ExpandTheGungeon.ExpandObjects {
                 "EX_Trap_Apache_02",
                 "EX_Trap_Apache_02"
             };
-            
+
             ExpandUtility.AddAnimation(ApacheTrapAnimator, EXTrap_Apache.GetComponent<tk2dSprite>().Collection, ApacheTrap_Normal, "ApacheTrap_Normal", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 8);
             ExpandUtility.AddAnimation(ApacheTrapAnimator, EXTrap_Apache.GetComponent<tk2dSprite>().Collection, ApacheTrap_Flipped, "ApacheTrap_Flipped", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 8);
-            
+
             SpeculativeRigidbody EXTrap_ApacheRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EXTrap_Apache, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(44, 58), offset: new IntVector2(10, 1));
 
 
@@ -664,8 +621,8 @@ namespace ExpandTheGungeon.ExpandObjects {
                     break;
                 }
             }
-            
-            if (m_hell_connector_pathburst_01 && m_hell_connector_pathburst_01.placedObjects.Count > 2 && m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour && 
+
+            if (m_hell_connector_pathburst_01 && m_hell_connector_pathburst_01.placedObjects.Count > 2 && m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour &&
                 m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject && m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject.name == "RadialFireBurster") {
 
                 EXTrap_Apache.AddComponent<DungeonPlaceableBehaviour>();
@@ -673,13 +630,12 @@ namespace ExpandTheGungeon.ExpandObjects {
                 EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>().placeableHeight = 2;
                 EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>().difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
 
-                GameObject RadialFireBurster = m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject;                
-                
+                GameObject RadialFireBurster = m_hell_connector_pathburst_01.placedObjects[3].nonenemyBehaviour.gameObject;
+
                 EXTrap_Apache.AddComponent<AIBulletBank>();
                 ExpandUtility.DuplicateComponent(EXTrap_Apache.GetComponent<AIBulletBank>(), RadialFireBurster.GetComponent<AIBulletBank>());
-                
+
                 BehaviorSpeculator EXTrap_ApacheBehavior = EXTrap_Apache.AddComponent<BehaviorSpeculator>();
-                // ExpandUtility.DuplicateComponent(EXTrap_Apache.GetComponent<BehaviorSpeculator>(), RadialFireBurster.GetComponent<BehaviorSpeculator>());
                 EXTrap_ApacheBehavior.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
                 EXTrap_ApacheBehavior.OtherBehaviors = new List<BehaviorBase>(0);
                 EXTrap_ApacheBehavior.TargetBehaviors = new List<TargetBehaviorBase>(0);
@@ -756,13 +712,19 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>() { EXTrap_Apache.transform.Find("shoot point").gameObject };
                 m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
                 // Loading a custom script from text file in place of one from an existing prefab..
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\ApacheTrap_BehaviorScript.txt");
-                
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                    "[]",
+                    "[]",
+                    "[]",
+                    "[]",
+                    "[{\"ShootPoint\":0,\"BulletScript\":{\"scriptTypeName\":\"CircleBurst12\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"None\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":false,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":-1.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":null,\"FireAnimation\":null,\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":4.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}]"
+                };
+
                 EXTrap_Apache.AddComponent<TrapEnemyConfigurator>();
             }
-            
 
-            
+
+
             Teleporter_Gungeon_01 = braveResources.LoadAsset<GameObject>("Teleporter_Gungeon_01");
             ElevatorMaintanenceRoomIcon = sharedAssets2.LoadAsset<GameObject>("Minimap_Maintenance_Icon");
             Teleporter_Info_Sign = sharedAssets2.LoadAsset<GameObject>("teleporter_info_sign");
@@ -781,17 +743,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandForgeHammerComponent.BuildPrefab();
 
 
-            // SquareLightCookie = sharedAssets2.LoadAsset<GameObject>("SquareLightCookie");
-            // Arrival = SquareLightCookie.transform.Find("Arrival");
             Arrival = expandSharedAssets1.LoadAsset<GameObject>("Arrival");
             Arrival.transform.name = "Arrival";
-            /*FakePrefab.MarkAsFakePrefab(Arrival);
-            Arrival.SetActive(false);
-            DontDestroyOnLoad(Arrival);*/
 
-            // NPCBabyDragunChaos = Instantiate(sharedAssets2.LoadAsset<GameObject>("BabyDragunJail"));
             NPCBabyDragunChaos = expandSharedAssets1.LoadAsset<GameObject>("Chaos Baby Dragun");
-            // NPCBabyDragunChaos.SetActive(false);
             NPCBabyDragunChaos.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(NPCBabyDragunChaos.GetComponent<tk2dSprite>(), sharedAssets2.LoadAsset<GameObject>("BabyDragunJail").GetComponentInChildren<tk2dSprite>());
             NPCBabyDragunChaos.AddComponent<tk2dSpriteAnimation>();
@@ -817,12 +772,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             NPCBabyDragunAnimator.deferNextStartClip = false;
 
             NPCBabyDragunChaos.AddComponent<ExpandBabyDragunComponent>();
-            /*DontDestroyOnLoad(NPCBabyDragunChaos);
-            FakePrefab.MarkAsFakePrefab(NPCBabyDragunChaos);*/
-
-
-            // SellPit = sharedAssets2.LoadAsset<GameObject>("SellPit");
-
+            
             ElevatorDeparture = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Departure");
             ElevatorArrival = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Arrival");
 
@@ -994,14 +944,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             SerManuel = EnemyDatabase.GetOrLoadByGuid("fc809bd43a4d41738a62d7565456622c").gameObject;
             SkusketHead = EnemyDatabase.GetOrLoadByGuid("c2f902b7cbe745efb3db4399927eab34").gameObject;
 
-            RatJailDoorPlacable = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour;
-            CurrsedMirrorPlacable = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour;
+            RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
+            CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
 
             ElevatorArrivalVarientForNakatomi = new DungeonPlaceableVariant() {
                 percentChance = 0.1f,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                // nonDatabasePlaceable = ElevatorArrival.variantTiers[4].nonDatabasePlaceable,
                 nonDatabasePlaceable = ElevatorArrival.variantTiers[0].nonDatabasePlaceable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
@@ -1065,7 +1014,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             CastleGungeonMergedTable.name = "CastleGungeonMergedTable";
             CastleGungeonMergedTable.includedRooms = new WeightedRoomCollection();
             CastleGungeonMergedTable.includedRooms.elements = new List<WeightedRoom>();
-            CastleGungeonMergedTable.includedRoomTables = new List<GenericRoomTable>() { SecretRoomTable };            
+            CastleGungeonMergedTable.includedRoomTables = new List<GenericRoomTable>() { SecretRoomTable };
 
             CastleGungeonMergedTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04));
             CastleGungeonMergedTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(paradox_04_copy));
@@ -1119,7 +1068,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     CustomRoomTable2.includedRooms.elements.Add(roomElement);
                     CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(roomElement);
                 }
-            }            
+            }
             foreach (WeightedRoom roomElement in Gungeon_RoomTable.includedRooms.elements) {
                 if (roomElement.room != null && !roomElement.room.name.ToLower().StartsWith("gungeon_snipe_city")) {
                     CustomRoomTable.includedRooms.elements.Add(roomElement);
@@ -1161,7 +1110,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                         CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(roomElement);
                     }
                 }
-            }           
+            }
             foreach (WeightedRoom roomElement in BulletHellDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (roomElement.room != null) {
                     CustomRoomTable.includedRooms.elements.Add(roomElement);
@@ -1173,7 +1122,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
 
-            
+
             if (Hell_Hath_No_Joery_009 != null) {
                 RoomBuilder.GenerateRoomLayoutFromTexture2D(Hell_Hath_No_Joery_009, expandSharedAssets1.LoadAsset<Texture2D>("Hell_Hath_No_Joery_009_Layout"));
             }
@@ -1201,7 +1150,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             MegaBossRoomTable.includedRooms = new WeightedRoomCollection();
             MegaBossRoomTable.includedRooms.elements = new List<WeightedRoom>();
             MegaBossRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
-            
+
             foreach (WeightedRoom roomElement in bosstable_01_bulletbros.includedRooms.elements) {
                 if (roomElement.room != null) {
                     MegaBossRoomTable.includedRooms.elements.Add(roomElement);
@@ -1250,7 +1199,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PrototypeDungeonRoom m_gungeon_rewardroom_1 = Instantiate(gungeon_rewardroom_1);
 
             // Add teleporter to make it like the other reward rooms post AG&D update.
-            RoomBuilder.AddObjectToRoom(reward_room, new Vector2(3, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
+            RoomBuilder.AddObjectToRoom(reward_room, new Vector2(3, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
             // This Room Prefab didn't include a chest placer...lol. We'll use the one from gungeon_rewardroom_1. :P
             reward_room.additionalObjectLayers.Add(m_gungeon_rewardroom_1.additionalObjectLayers[1]);
             reward_room.additionalObjectLayers[1].placedObjects[0].contentsBasePosition = new Vector2(4f, 7.5f);
@@ -1278,7 +1227,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             tiny_exit.placedObjectPositions = new List<Vector2>();
             tiny_exit.exitData.exits = new List<PrototypeRoomExit>();
             RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(3, 8), ElevatorDeparture);
-            RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());            
+            RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(4, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
             RoomBuilder.AddObjectToRoom(tiny_exit, new Vector2(9, 6), NonEnemyBehaviour: exit_room_basic.placedObjects[2].nonenemyBehaviour);
             RoomBuilder.AddExitToRoom(tiny_exit, new Vector2(0, 6), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(tiny_exit, new Vector2(6, 0), DungeonData.Direction.SOUTH);
@@ -1336,7 +1285,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             bossrush_alternate_entrance.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
             bossrush_alternate_entrance.associatedMinimapIcon = ElevatorMaintanenceRoomIcon;
 
-            
+
             tutorial_fakeboss.placedObjectPositions = new List<Vector2>();
             tutorial_fakeboss.placedObjects = new List<PrototypePlacedObjectData>();
             RoomBuilder.AddObjectToRoom(tutorial_fakeboss, new Vector2(8, 20), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
@@ -1365,7 +1314,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     probability = 1,
                     numberTimesEncounteredRequired = 0
                 },
-            };            
+            };
 
 
             big_entrance.name = "Large Elevator Entrance";
@@ -1399,16 +1348,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             };
             big_entrance.placedObjectPositions[0] = big_entrance.placedObjects[0].contentsBasePosition;
             big_entrance.placedObjectPositions[1] = big_entrance.placedObjects[1].contentsBasePosition;
-                        
+
             RoomBuilder.GenerateRoomLayoutFromTexture2D(big_entrance, expandSharedAssets1.LoadAsset<Texture2D>("Large_Elevator_Entrance_Layout"));
 
             MegaChallengeShrineTable.includedRooms = new WeightedRoomCollection();
             MegaChallengeShrineTable.includedRooms.elements = new List<WeightedRoom>();
             MegaChallengeShrineTable.includedRoomTables = new List<GenericRoomTable>(0);
 
-            /*foreach (WeightedRoom weightedRoom in castle_challengeshrine_roomtable.includedRooms.elements) {
-                MegaChallengeShrineTable.includedRooms.Add(weightedRoom);
-            }*/
             foreach (WeightedRoom weightedRoom in gungeon_challengeshrine_roomtable.includedRooms.elements) {
                 MegaChallengeShrineTable.includedRooms.Add(weightedRoom);
             }
@@ -1436,7 +1382,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             minibossrooms = m_CachedMiniBossRoomList.ToArray();
-            
+
             foreach (PrototypeDungeonRoom room in minibossrooms) { room.associatedMinimapIcon = fusebombroom01.associatedMinimapIcon; }
 
             foreach (WeightedRoom weightedRoom in blocknerminiboss_table_01.includedRooms.elements) {
@@ -1460,8 +1406,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[3]);
             basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[4]);
 
-
-            // RatKeyItem.RespawnsIfPitfall = true;
             
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForNakatomi);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
@@ -1476,23 +1420,20 @@ namespace ExpandTheGungeon.ExpandObjects {
                 MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
                 MetalCubeGuy.GetComponent<BehaviorSpeculator>().PostAwakenDelay = 0;
             }
-            
+
             if (SkusketHead) { SkusketHead.GetComponent<AIActor>().DiesOnCollison = true; }
 
             CandleGuy = EnemyDatabase.GetOrLoadByGuid("eeb33c3a5a8e4eaaaaf39a743e8767bc").gameObject;
             if (CandleGuy) { CandleGuy.AddComponent<ExpandCandleGuyEngageDoer>(); }
-            
+
 
             WallMimic = EnemyDatabase.GetOrLoadByGuid("479556d05c7c44f3b6abb3b2067fc778").gameObject;
             if (WallMimic) {
                 Destroy(WallMimic.GetComponent<WallMimicController>());
                 WallMimic.AddComponent<ExpandWallMimicManager>();
             }
-            
-            
-            // CompanionController cuccoController = Cucco.gameObject.GetComponent<CompanionController>();
-            // cuccoController.CanBePet = true;
 
+            
             List<AGDEnemyReplacementTier> ReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
 
             if (ReplacementTiers != null && ReplacementTiers.Count > 0) {
@@ -1502,8 +1443,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
             
-            // SellPit.AddComponent<ExpandSellCellManager>();
-
             List<WeightedRoom> m_wRoomList = new List<WeightedRoom>();
 
             foreach (WeightedRoom wRoom in CustomRoomTableSecretGlitchFloor.includedRooms.elements) {
@@ -1528,7 +1467,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     winchesterRoom.associatedMinimapIcon = objectDatabase.WinchesterMinimapIcon;
                 }
             }
-            
+
 
             RatTrapPlacable = ScriptableObject.CreateInstance<DungeonPlaceable>();
             RatTrapPlacable.name = "Rat Trap Placable";
@@ -1540,7 +1479,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RatTrapPlacable.UsePrefabTransformOffset = false;
             RatTrapPlacable.MarkSpawnedItemsAsRatIgnored = false;
             RatTrapPlacable.DebugThisPlaceable = false;
-            RatTrapPlacable.IsAnnexTable = false;            
+            RatTrapPlacable.IsAnnexTable = false;
             RatTrapPlacable.variantTiers = new List<DungeonPlaceableVariant>() {
                 new DungeonPlaceableVariant() {
                     percentChance = 1,
@@ -1584,7 +1523,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             DontDestroyOnLoad(RoomCorruptionAmbience);
 
             EXAlarmMushroom = expandSharedAssets1.LoadAsset<GameObject>("EX Alarm Mushroom");
-            
+
 
             List<string> m_AlarmMushroom_idleSprites = new List<string>() {
                 "alarm_mushroom2_idle_001",
@@ -1622,7 +1561,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             foreach (string spriteName in m_AlarmMushroom_breakSprites) {
                 SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_AlarmMushroomSprite.Collection);
             }
-            
+
             ExpandUtility.GenerateSpriteAnimator(EXAlarmMushroom, playAutomatically: true, ClipFps: 8);
             tk2dSpriteAnimator m_AlarmMushroomAnimator = EXAlarmMushroom.GetComponent<tk2dSpriteAnimator>();
 
@@ -1729,86 +1668,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             };
 
-            /*FakePrefab.MarkAsFakePrefab(EXAlarmMushroom);
-            DontDestroyOnLoad(EXAlarmMushroom);*/
-            
-
-            /*string m_TrapDoorBasePath = "ExpandTheGungeon/Textures/EXTrapDoor/";
-
-            List<string> m_TrapDoorSprites = new List<string>() {
-                "RR_mine_lair_floor_door_001",
-                "RR_mine_lair_floor_door_002",
-                "RR_mine_lair_floor_door_003",
-                "RR_mine_lair_floor_door_004",
-                "RR_mine_lair_floor_door_005",
-                "RR_mine_lair_floor_door_006",
-                "RR_mine_lair_floor_door_007",
-                "RR_mine_lair_floor_door_008"
-            };
-            
-            EXTrapDoor = new GameObject("EX Trap Door") { layer = 20 };
-            EXTrapDoorBorder = new GameObject("EX Trap Door Border") { layer = 20 };
-            EXTrapDoorPit = new GameObject("EX Trap Door Pit") { layer = 20 };
-            EXTrapDoor.transform.localPosition += new Vector3(0, 0, 1.25f);
-
-            EXTrapDoorBorder.transform.parent = EXTrapDoor.transform;
-            EXTrapDoorPit.transform.parent = EXTrapDoor.transform;
-
-            ItemBuilder.AddSpriteToObject(EXTrapDoor.name, (m_TrapDoorBasePath + m_TrapDoorSprites[0]), EXTrapDoor, false);
-            ItemBuilder.AddSpriteToObject(EXTrapDoorBorder.name, (m_TrapDoorBasePath + "RR_mine_lair_floor_001"), EXTrapDoorBorder, false);
-            ItemBuilder.AddSpriteToObject(EXTrapDoorPit.name, (m_TrapDoorBasePath + "RR_mine_lair_floor_pit_001"), EXTrapDoorPit, false);
-
-            tk2dSprite m_TrapDoorBorderSprite = EXTrapDoorBorder.GetComponent<tk2dSprite>();
-            m_TrapDoorBorderSprite.HeightOffGround = -1f;
-            m_TrapDoorBorderSprite.UpdateZDepth();
-            tk2dSprite m_EXTrapDoorPitSprite = EXTrapDoorPit.GetComponent<tk2dSprite>();
-            m_EXTrapDoorPitSprite.HeightOffGround = -2f;
-            m_EXTrapDoorPitSprite.UpdateZDepth();
-            
-
-            tk2dSprite m_TrapDoorSprite = EXTrapDoor.GetComponent<tk2dSprite>();
-            m_TrapDoorSprite.HeightOffGround = -2f;
-            m_TrapDoorSprite.UpdateZDepth();
-            
-            foreach (string spriteName in m_TrapDoorSprites) {
-                SpriteBuilder.AddSpriteToCollection((m_TrapDoorBasePath + spriteName), m_TrapDoorSprite.Collection);
-            }
-            
-            ExpandUtility.GenerateSpriteAnimator(EXTrapDoor, ClipFps: 8);
-            tk2dSpriteAnimator m_TrapDoorAnimator = EXTrapDoor.GetComponent<tk2dSpriteAnimator>();
-            ExpandUtility.AddAnimation(m_TrapDoorAnimator, m_TrapDoorSprite.Collection, m_TrapDoorSprites, "trapdoor_open", frameRate: 8);
-
-            ExpandGlitchTrapDoor m_TrapDoorComponent = EXTrapDoor.AddComponent<ExpandGlitchTrapDoor>();
-            m_TrapDoorComponent.PitBorderObject = EXTrapDoorBorder;
-            m_TrapDoorComponent.PitObject = EXTrapDoorPit;
-
-            ExpandUtility.GenerateOrAddToRigidBody(EXTrapDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(16, 16));
-
-            Vector3 LockPositionOffset = (EXTrapDoor.transform.position + new Vector3(0.2f, 1f));
-
-            GameObject m_LockObject = Instantiate(RatJailDoorPlacable.gameObject.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject, LockPositionOffset, Quaternion.identity);
-            m_LockObject.SetActive(false);
-            m_LockObject.GetComponent<InteractableLock>().lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
-            m_TrapDoorComponent.Lock = m_LockObject.GetComponent<InteractableLock>();            
-            m_LockObject.transform.parent = EXTrapDoor.transform;
-            m_LockObject.transform.localPosition += new Vector3(0, 0, 0.812f);
-            DontDestroyOnLoad(EXTrapDoor);*/
-
             EXPlayerMimicBoss = expandSharedAssets1.LoadAsset<GameObject>("Expand Gungeoneer Mimic Boss Placable");
-            // EXPlayerMimicBoss.SetActive(false);
             EXPlayerMimicBoss.AddComponent<ExpandGungeoneerMimicBossPlacable>();
-            /*FakePrefab.MarkAsFakePrefab(EXPlayerMimicBoss);
-            DontDestroyOnLoad(EXPlayerMimicBoss);*/
 
             EXSawBladeTrap_4x4Zone = expandSharedAssets1.LoadAsset<GameObject>("EX SawBlade PlacableObject");
-            // EXSawBladeTrap_4x4Zone.SetActive(false);
             EXSawBladeTrap_4x4Zone.AddComponent<ExpandSawBladeTrapPlaceable>();
-            /*FakePrefab.MarkAsFakePrefab(EXSawBladeTrap_4x4Zone);
-            DontDestroyOnLoad(EXSawBladeTrap_4x4Zone);*/
 
             ExpandBootlegRoomPlaceable.BuildPrefab(expandSharedAssets1);
-            
-            
+
+
             CorruptedRewardPedestal = Instantiate(RewardPedestalPrefab);
             CorruptedRewardPedestal.SetActive(false);
             CorruptedRewardPedestal.name = "Corrupted Reward Pedestal";
@@ -1830,7 +1698,28 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ExpandUtility.DuplicateSprite(RickRollChestShadowSprite, m_RedChestReference.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>());
             }
             
-            
+
+            EX_GlitchPortal = expandSharedAssets1.LoadAsset<GameObject>("EX_GlitchPortal");
+
+            GameObject m_ParadoxPortal = BraveResources.Load<GameObject>("Global Prefabs/VFX_ParadoxPortal");
+            if (m_ParadoxPortal) {
+                MeshRenderer m_EXGlitchPortalRenderer = EX_GlitchPortal.GetComponent<MeshRenderer>();
+                m_EXGlitchPortalRenderer.materials = new Material[] { new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().materials[0]) };
+                if (m_ParadoxPortal?.GetComponent<MeshRenderer>()?.material) {
+                    m_ParadoxPortal.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", new Color(1, 1, 1, 1));
+                    m_EXGlitchPortalRenderer.material = new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().material);
+                }
+            }
+
+            ForceToSortingLayer m_EXGlitchPortalSortingLayer = m_ParadoxPortal.AddComponent<ForceToSortingLayer>();
+            m_EXGlitchPortalSortingLayer.sortingLayer = DepthLookupManager.GungeonSortingLayer.PLAYFIELD;
+            m_EXGlitchPortalSortingLayer.targetSortingOrder = -1;
+
+            EX_GlitchPortal.AddComponent<ExpandGlitchPortalController>();
+
+            m_ParadoxPortal = null;
+
+
             tk2dSprite RickRollChestSprite = RickRollChestObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(RickRollChestSprite, m_RedChestReference.GetComponent<tk2dSprite>());
 
@@ -2076,7 +1965,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             ExpandFakeChest SurpriseChestComponent = SurpriseChestObject.AddComponent<ExpandFakeChest>();
             SurpriseChestComponent.chestType = ExpandFakeChest.ChestType.SurpriseChest;
             SurpriseChestComponent.MinimapIconPrefab = m_BrownChestReference.GetComponent<Chest>().MinimapIconPrefab;
-            // SurpriseChestComponent.breakAnimName = "coop_chest_break001";
             SurpriseChestComponent.breakAnimName = "coop_chest_break";
             SurpriseChestComponent.openAnimName = "coop_chest_open";
 
@@ -2306,7 +2194,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Door_Horizontal_West_Controller.sealAnimationName = "west_blocker_horizontal_down";
             Door_Horizontal_West_Controller.unsealAnimationName = "west_blocker_horizontal_up";
             Door_Horizontal_West_Controller.playerNearSealedAnimationName = string.Empty;
-            // Door_Horizontal_West_Controller.hideSealAnimators = true;
             Door_Horizontal_West_Controller.doorModules[0].openAnimationName = "west_door_east_top_open";
             Door_Horizontal_West_Controller.doorModules[0].closeAnimationName = "west_door_east_top_close";
             Door_Horizontal_West_Controller.doorModules[0].horizontalFlips = true;
@@ -2325,8 +2212,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Door_Horizontal_West_Controller.gameObject.transform.Find("DoorBottom").localPosition = new Vector3(0.4375f, -0.4375f, 0.4375f);
             Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Wall_Left").localPosition = new Vector3(0.5625f, 2.0625f, 3.0625f);
             Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Wall_Right").localPosition = new Vector3(-0.5625f, 2.0625f, 3.0625f);
-            // Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Floor_Left").localPosition = new Vector3(-0.625f, 1.0625f, 2.0625f);
-            // Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Floor_Right").localPosition = new Vector3(0.5625f, 1.0625f, 2.0625f);
             Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Floor_Left").localPosition = new Vector3(-0.755f, 1.0625f, 2.0625f);
             Door_Horizontal_West_Controller.gameObject.transform.Find("AO_Floor_Right").localPosition = new Vector3(0.655f, 1.0625f, 2.0625f);
 
@@ -2530,17 +2415,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].eventInfo = "slam";
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].triggerEvent = true;
 
-            // Sarco_MonsterObject.SetActive(false);
-
             ExpandBellyMonsterController BellyMonster = Sarco_MonsterObject.AddComponent<ExpandBellyMonsterController>();
             BellyMonster.ImpactVFXObjects = new GameObject[] {
                 sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
                 sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
                 sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
             };
-
-            // FakePrefab.MarkAsFakePrefab(Sarco_MonsterObject);
-            // DontDestroyOnLoad(Sarco_MonsterObject);
 
             Sarco_Skeleton = expandSharedAssets1.LoadAsset<GameObject>("ExpandDeadSkeleton");
             Sarco_Skeleton.AddComponent<tk2dSprite>();
@@ -2550,12 +2430,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SarcoSkeletonSprite.HeightOffGround = -2f;
             SarcoSkeletonSprite.UpdateZDepth();
 
-
-            /*Sarco_Skeleton.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(Sarco_Skeleton);
-            DontDestroyOnLoad(Sarco_Skeleton);*/
-
-
+            
             List<Color> m_ColorBytes = new List<Color>();
 
             int Length = (32 * 64);
@@ -2571,15 +2446,12 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Belly_ExitWarp = expandSharedAssets1.LoadAsset<GameObject>("ExpandBelly_ExitWarp");
             Belly_ExitWarp.layer = LayerMask.NameToLayer("FG_Critical");
-            // Belly_ExitWarp.SetActive(false);
+
             ItemBuilder.AddSpriteToObject(Belly_ExitWarp, Voidtexture, false, false);
             ExpandUtility.GenerateOrAddToRigidBody(Belly_ExitWarp, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(2, 2));
             ExpandBellyWarpWingDoor Belly_ExitWarpController = Belly_ExitWarp.AddComponent<ExpandBellyWarpWingDoor>();
             Belly_ExitWarpController.IsBellyExitDoor = true;
-
-            /*FakePrefab.MarkAsFakePrefab(Belly_ExitWarp);
-            DontDestroyOnLoad(Belly_ExitWarp);*/
-
+                        
             Belly_ExitRoomIcon = expandSharedAssets1.LoadAsset<GameObject>("BellyExitRoomIcon");
             ItemBuilder.AddSpriteToObject(Belly_ExitRoomIcon, expandSharedAssets1.LoadAsset<Texture2D>("Belly_ExitRoomIcon"), false, false);
 
@@ -2658,6 +2530,63 @@ namespace ExpandTheGungeon.ExpandObjects {
             FakePrefab.MarkAsFakePrefab(WestLight);
             DontDestroyOnLoad(WestLight);
 
+
+            PhobosLight = Instantiate(ratDungeon.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject);
+            PhobosLight.name = "Phobos Light";
+            GameObject PhobosShadowSettingsObject = PhobosLight.transform.Find("Shadow Render Settings").gameObject;
+            GameObject PhobosLightSettingsObject = PhobosLight.transform.Find("Point light").gameObject;
+
+            Light PhobosLightComponent = PhobosLightSettingsObject.GetComponent<Light>();
+            PhobosLightComponent.type = LightType.Point;
+            PhobosLightComponent.color = new Color(0.849914f, 0.958546f, 0.963235f, 1);
+            PhobosLightComponent.intensity = 1.6f;
+            PhobosLightComponent.range = 11;
+            PhobosLightComponent.spotAngle = 30;
+            PhobosLightComponent.cookieSize = 10;
+            PhobosLightComponent.shadowResolution = UnityEngine.Rendering.LightShadowResolution.FromQualitySettings;
+            PhobosLightComponent.shadowCustomResolution = -1;
+            PhobosLightComponent.shadowStrength = 1;
+            PhobosLightComponent.shadowBias = 0.05f;
+            PhobosLightComponent.shadowNormalBias = 0.4f;
+            PhobosLightComponent.shadowNearPlane = 0.2f;
+            PhobosLightComponent.renderMode = LightRenderMode.Auto;
+            PhobosLightComponent.bounceIntensity = 1;
+
+            SceneLightManager PhobosSceneLightManager = PhobosShadowSettingsObject.GetComponent<SceneLightManager>();
+            PhobosSceneLightManager.validColors = new Color[] { new Color(0.678309f, 0.744067f, 0.75f, 1) };
+
+            PhobosLight.SetActive(false);
+            FakePrefab.MarkAsFakePrefab(PhobosLight);
+            DontDestroyOnLoad(PhobosLight);
+
+
+            PhobosLight2 = Instantiate(ratDungeon.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject);
+            PhobosLight2.name = "Cathedral Light (Stained Glass)";
+            GameObject PhobosShadowSettingsObject2 = PhobosLight2.transform.Find("Shadow Render Settings").gameObject;
+            GameObject PhobosLightSettingsObject2 = PhobosLight2.transform.Find("Point light").gameObject;
+
+            Light PhobosLightComponent2 = PhobosLightSettingsObject2.GetComponent<Light>();
+            PhobosLightComponent2.type = LightType.Point;
+            PhobosLightComponent2.color = new Color(0.941176f, 0.429066f, 0.736332f, 1);
+            PhobosLightComponent2.intensity = 3.68f;
+            PhobosLightComponent2.range = 11;
+            PhobosLightComponent2.spotAngle = 30;            
+            PhobosLightComponent2.cookieSize = 10;
+            PhobosLightComponent2.shadowResolution = UnityEngine.Rendering.LightShadowResolution.FromQualitySettings;
+            PhobosLightComponent2.shadowCustomResolution = -1;
+            PhobosLightComponent2.shadowStrength = 1;
+            PhobosLightComponent2.shadowBias = 0.05f;
+            PhobosLightComponent2.shadowNormalBias = 0.4f;
+            PhobosLightComponent2.shadowNearPlane = 0.2f;
+            PhobosLightComponent2.renderMode = LightRenderMode.Auto;
+            PhobosLightComponent2.bounceIntensity = 1;
+
+            SceneLightManager PhobosSceneLightManager2 = PhobosShadowSettingsObject2.GetComponent<SceneLightManager>();
+            PhobosSceneLightManager2.validColors = new Color[] { Color.white };
+
+            PhobosLight2.SetActive(false);
+            FakePrefab.MarkAsFakePrefab(PhobosLight2);
+            DontDestroyOnLoad(PhobosLight2);
 
             // Reconstruct unused West Cactus destructibles. (the sprites and animation data still exist!)
 
@@ -2776,8 +2705,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, -3), dimensions: new IntVector2(6, 6));
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, 3), dimensions: new IntVector2(4, 12));
-            // ExpandUtility.GenerateOrAddToRigidBody(Cactus_A, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(1, -3), dimensions: new IntVector2(6, 6));
-
+            
             MajorBreakable Cactus_A_Braakable = Cactus_A.AddComponent<MajorBreakable>();
             Cactus_A_Braakable.HitPoints = 25;
             Cactus_A_Braakable.MinHits = 2;
@@ -2840,7 +2768,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, -3), dimensions: new IntVector2(10, 5));
             ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 3), dimensions: new IntVector2(8, 14));
-            // ExpandUtility.GenerateOrAddToRigidBody(Cactus_B, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(2, -3), dimensions: new IntVector2(10, 5));
 
             MajorBreakable Cactus_B_Braakable = Cactus_B.AddComponent<MajorBreakable>();
             Cactus_B_Braakable.HitPoints = 25;
@@ -2920,15 +2847,17 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXSpaceFloor_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloor_50x50");
             EXSpaceFloorPitBorder_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloorPitBorder_50x50");
 
+
             ItemBuilder.AddSpriteToObject(EXSpaceFloor_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad"), false, false);
             ItemBuilder.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad_PitBorders"), false, false);
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().HeightOffGround = -200;
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
-            //EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(braveResources.LoadAsset<Shader>("finalgunroom_bg_02"));
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().usesOverrideMaterial = true;            
             EXSpaceFloor_50x50.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
             EXSpaceFloorPitBorder_50x50.GetComponent<tk2dSprite>().HeightOffGround = -195;
+
+            
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");
@@ -2996,11 +2925,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             challengeManager.PossibleChallenges[21].challenge = Challenge_ZoneControl.GetComponent<ExpandZoneControlChallengeComponent>();
             challengeMegaManager.PossibleChallenges[21].challenge = Challenge_ZoneControl.GetComponent<ExpandZoneControlChallengeComponent>();
 
-            //  Challenge_ChaosMode = new GameObject("Challenge_ChaosMode") { layer = 0 };
             Challenge_ChaosMode = expandSharedAssets1.LoadAsset<GameObject>("ExpandChallenge_ChaosMode");
-            // Challenge_ChaosMode.name = "Challenge_ChaosMode";
             Challenge_ChaosMode.AddComponent<ExpandChaosChallengeComponent>();
-            // DontDestroyOnLoad(Challenge_ChaosMode);
             
             
             ExpandChaosChallengeComponent expandChaosChallenge = Challenge_ChaosMode.GetComponent<ExpandChaosChallengeComponent>();
@@ -3009,11 +2935,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 challengeMegaManager.PossibleChallenges[4].challenge,
                 challengeMegaManager.PossibleChallenges[10].challenge
             };
-
-            // Clear challenges to test just one.
-            // challengeManager.PossibleChallenges.Clear();
-            // challengeMegaManager.PossibleChallenges.Clear();
-
+                        
             challengeManager.PossibleChallenges.Add(new ChallengeDataEntry() {
                 Annotation = "Apache Thunder's Chaos Mode in a room!",
                 challenge = Challenge_ChaosMode.GetComponent<ExpandChaosChallengeComponent>(),
@@ -3031,22 +2953,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             });
 
 
-            // For testing            
-            /*ChallengeDataEntry testEntry = challengeManager.PossibleChallenges[21];
-            challengeManager.PossibleChallenges.Clear();
-            challengeManager.PossibleChallenges.Add(testEntry);*/
-
-            // Challenge_TripleTrouble = PickupObjectDatabase.GetById(754).gameObject;
-            // Challenge_TripleTrouble = new GameObject("Challenge_TripleTrouble") { layer = 0 };
             Challenge_TripleTrouble = expandSharedAssets1.LoadAsset<GameObject>("ExpandChallenge_TripleTrouble");
             Challenge_TripleTrouble.AddComponent<ExpandTripleTroubleChallengeComponent>();            
-            // DontDestroyOnLoad(Challenge_TripleTrouble);
-
-            // Challenge_KingsMen = new GameObject("Challenge_KingsMen") { layer = 0 };
+            
             Challenge_KingsMen = expandSharedAssets1.LoadAsset<GameObject>("ExpandChallenge_KingsMen");
             Challenge_KingsMen.AddComponent<ExpandBulletKingChallenge>();
-            // DontDestroyOnLoad(Challenge_KingsMen);
-
+            
             challengeManager.BossChallenges.Add(new BossChallengeData() {
                 Annotation = "Trigger Twin Triple Trouble!",
                 BossGuids = new string[] { "ea40fcc863d34b0088f490f4e57f8913", "c00390483f394a849c36143eb878998f" },
@@ -3079,7 +2991,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             ExpandSecretDoorPrefabs.InitPrefabs(expandSharedAssets1);
 
-            ChamberGun = PickupObjectDatabase.GetById(647) as Gun;
+            ChamberGun = (PickupObjectDatabase.GetById(647) as Gun).gameObject;
 
             if (ChamberGun.gameObject.GetComponent<ChamberGunProcessor>()) {
                 Destroy(ChamberGun.gameObject.GetComponent<ChamberGunProcessor>());
@@ -3090,14 +3002,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXGlitchFloorScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXGlitchFloorScreenFX");
             EXGlitchFloorScreenFX.AddComponent<ExpandGlitchScreenFXController>();
 
-            MetalGearRatPrefab = null;
-            MetalGearRatActorPrefab = null;
-            ResourcefulRatBossPrefab = null;
-            ResourcefulRatBossActorPrefab = null;
-            MetalGearRatDeathPrefab = null;
-            PunchoutPrefab = null;
-            resourcefulRatControllerPrefab = null;
-            FoldingTablePrefab = null;            
+            EXWestFloorBossIntroScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXWestFloorBossIntroScreenFX");
+            EXWestFloorBossIntroScreenFX.AddComponent<ExpandGlitchScreenFXController>();
+            ExpandGlitchScreenFXController FXController = EXWestFloorBossIntroScreenFX.GetComponent<ExpandGlitchScreenFXController>();
+            FXController.shaderType = ExpandGlitchScreenFXController.ShaderType.VHSOldFilm;
+            FXController.enableVHSScanlineDistortion = false;
+
+            
             m_gungeon_rewardroom_1 = null;
             objectDatabase = null;
 
@@ -3110,6 +3021,216 @@ namespace ExpandTheGungeon.ExpandObjects {
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
             ratDungeon = null;
+
+            ExemptPrefabsFromCollection();
+        }
+
+        public static void ExemptPrefabsFromCollection() {
+            GC.KeepAlive(SpaceFog);
+            GC.KeepAlive(BulletManMonochromeTexture);
+            GC.KeepAlive(BulletManUpsideDownTexture);
+            GC.KeepAlive(RatTrapdoor);
+            GC.KeepAlive(shop02);
+            GC.KeepAlive(fusebombroom01);
+            GC.KeepAlive(elevator_entrance);
+            GC.KeepAlive(gungeon_entrance);
+            GC.KeepAlive(gungeon_entrance_bossrush);
+            GC.KeepAlive(elevator_maintenance_room);
+            GC.KeepAlive(test_entrance);
+            GC.KeepAlive(exit_room_basic);
+            GC.KeepAlive(boss_foyer);
+            GC.KeepAlive(gungeon_rewardroom_1);
+            GC.KeepAlive(paradox_04);
+            GC.KeepAlive(paradox_04_copy);
+            GC.KeepAlive(doublebeholsterroom01);
+            GC.KeepAlive(bossstatuesroom01);
+            GC.KeepAlive(oldbulletking_room_01);
+            GC.KeepAlive(DragunBossFoyerRoom);
+            GC.KeepAlive(DraGunRoom01);
+            GC.KeepAlive(DraGunExitRoom);
+            GC.KeepAlive(DraGunEndTimesRoom);
+            GC.KeepAlive(BlacksmithShop);
+            GC.KeepAlive(GatlingGullRoom05);
+            GC.KeepAlive(letsgetsomeshrines_001);
+            GC.KeepAlive(shop_special_key_01);
+            GC.KeepAlive(square_hub);
+            GC.KeepAlive(subshop_muncher_01);
+            GC.KeepAlive(black_market);
+            GC.KeepAlive(gungeon_checkerboard);
+            GC.KeepAlive(gungeon_normal_fightinaroomwithtonsoftraps);
+            GC.KeepAlive(gungeon_gauntlet_001);
+            GC.KeepAlive(ResourcefulRat_LongMinecartRoom_01);
+            GC.KeepAlive(ResourcefulRat_FirstSecretRoom_01);
+            GC.KeepAlive(ResourcefulRat_SecondSecretRoom_01);
+            GC.KeepAlive(SewersRatExitEoom);
+            GC.KeepAlive(tiny_entrance);
+            GC.KeepAlive(tiny_exit);
+            GC.KeepAlive(reward_room);
+            GC.KeepAlive(tutorial_minibossroom);
+            GC.KeepAlive(bossrush_alternate_entrance);
+            GC.KeepAlive(tutorial_fakeboss);
+            GC.KeepAlive(big_entrance);
+            GC.KeepAlive(Hell_Hath_No_Joery_009);
+            GC.KeepAlive(gatlinggull_noTileVisualOverrides);
+            GC.KeepAlive(winchesterrooms);
+            GC.KeepAlive(minibossrooms);
+            GC.KeepAlive(BonusChestRooms);
+            GC.KeepAlive(castle_challengeshrine_roomtable);
+            GC.KeepAlive(catacombs_challengeshrine_roomtable);
+            GC.KeepAlive(forge_challengeshrine_roomtable);
+            GC.KeepAlive(gungeon_challengeshrine_roomtable);
+            GC.KeepAlive(mines_challengeshrine_roomtable);
+            GC.KeepAlive(shop_room_table);
+            GC.KeepAlive(CastleRoomTable);
+            GC.KeepAlive(Gungeon_RoomTable);
+            GC.KeepAlive(SecretRoomTable);
+            GC.KeepAlive(bosstable_02_beholster);
+            GC.KeepAlive(bosstable_01_bulletbros);
+            GC.KeepAlive(bosstable_01_bulletking);
+            GC.KeepAlive(bosstable_01_gatlinggull);
+            GC.KeepAlive(bosstable_02_meduzi);
+            GC.KeepAlive(bosstable_02a_highpriest);
+            GC.KeepAlive(bosstable_03_mineflayer);
+            GC.KeepAlive(bosstable_03_powderskull);
+            GC.KeepAlive(bosstable_03_tank);
+            GC.KeepAlive(bosstable_04_demonwall);
+            GC.KeepAlive(bosstable_04_statues);
+            GC.KeepAlive(blocknerminiboss_table_01);
+            GC.KeepAlive(phantomagunim_table_01);
+            GC.KeepAlive(basic_special_rooms);
+            GC.KeepAlive(winchesterroomtable);
+            GC.KeepAlive(boss_foyertable);
+            GC.KeepAlive(SewersRoomTable);
+            GC.KeepAlive(AbbeyRoomTable);
+            GC.KeepAlive(MinesRoomTable);
+            GC.KeepAlive(CatacombsRoomTable);
+            GC.KeepAlive(ForgeRoomTable);
+            GC.KeepAlive(BulletHellRoomTable);
+            GC.KeepAlive(CastleGungeonMergedTable);
+            GC.KeepAlive(CustomRoomTable);
+            GC.KeepAlive(CustomRoomTable2);
+            GC.KeepAlive(CustomRoomTableSecretGlitchFloor);
+            GC.KeepAlive(MegaBossRoomTable);
+            GC.KeepAlive(MegaChallengeShrineTable);
+            GC.KeepAlive(MegaMiniBossRoomTable);
+            GC.KeepAlive(basic_special_rooms_noBlackMarket);
+            GC.KeepAlive(bosstable_01_gatlinggull_custom);
+            GC.KeepAlive(AbbeyAblernRoomTable);
+            GC.KeepAlive(JungleRoomTable);
+            GC.KeepAlive(BellyRoomTable);
+            GC.KeepAlive(WestRoomTable);
+            GC.KeepAlive(WestCanyonRoomTable);
+            GC.KeepAlive(WestTinyCanyonRoomTable);
+            GC.KeepAlive(WestInterior1RoomTable);
+            GC.KeepAlive(OfficeAndUnusedWeightedRooms);
+            GC.KeepAlive(Shop_Key_Items_01);
+            GC.KeepAlive(BlackSmith_Items_01);
+            GC.KeepAlive(Shop_Truck_Items_01);
+            GC.KeepAlive(Shop_Curse_Items_01);
+            GC.KeepAlive(AbbeyFlowModifierData);
+            GC.KeepAlive(MetalGearRatPrefab);
+            GC.KeepAlive(ResourcefulRatBossPrefab);
+            GC.KeepAlive(MimicNPC);
+            GC.KeepAlive(RatCorpseNPC);
+            GC.KeepAlive(PlayerLostRatNote);
+            GC.KeepAlive(MouseTrap1);
+            GC.KeepAlive(MouseTrap2);
+            GC.KeepAlive(MouseTrap3);
+            GC.KeepAlive(EXTrap_Apache);
+            GC.KeepAlive(Teleporter_Gungeon_01);
+            GC.KeepAlive(ElevatorMaintanenceRoomIcon);
+            GC.KeepAlive(Teleporter_Info_Sign);
+            GC.KeepAlive(RewardPedestalPrefab);
+            GC.KeepAlive(Minimap_Maintenance_Icon);
+            GC.KeepAlive(ForgeHammer);
+            GC.KeepAlive(Arrival);
+            GC.KeepAlive(NPCBabyDragunChaos);
+            GC.KeepAlive(ElevatorDeparture);
+            GC.KeepAlive(ElevatorArrival);
+            GC.KeepAlive(TinySecretRoomRewards);
+            GC.KeepAlive(TinySecretRoomJunkReward);
+            GC.KeepAlive(RatTrapPlacable);
+            GC.KeepAlive(CorruptedSecretRoomSpecialItem);
+            GC.KeepAlive(Jungle_Doors);
+            GC.KeepAlive(Belly_Doors);
+            GC.KeepAlive(West_Doors);
+            GC.KeepAlive(MetalCubeGuy);
+            GC.KeepAlive(SerManuel);
+            GC.KeepAlive(SkusketHead);
+            GC.KeepAlive(CandleGuy);
+            GC.KeepAlive(WallMimic);
+            GC.KeepAlive(RatJailDoor);
+            GC.KeepAlive(CurrsedMirror);
+            GC.KeepAlive(ElevatorArrivalVarientForNakatomi);
+            GC.KeepAlive(ElevatorDepartureVarientForRatNakatomi);
+            GC.KeepAlive(ChallengeManagerObject);
+            GC.KeepAlive(ChallengeMegaManagerObject);
+            GC.KeepAlive(RatsRevengChallenge);
+            GC.KeepAlive(Challenge_BlobulinAmmo);
+            GC.KeepAlive(Challenge_BooRoom);
+            GC.KeepAlive(Challenge_ZoneControl);
+            GC.KeepAlive(RoomCorruptionAmbience);
+            GC.KeepAlive(EXAlarmMushroom);
+            GC.KeepAlive(EXPlayerMimicBoss);
+            GC.KeepAlive(EXSawBladeTrap_4x4Zone);
+            GC.KeepAlive(EXFriendlyForgeHammer);
+            GC.KeepAlive(EXFriendlyForgeHammerBullet);
+            GC.KeepAlive(EXBootlegRoomObject);
+            GC.KeepAlive(EXBootlegRoomDoorTriggers);
+            GC.KeepAlive(CorruptedRewardPedestal);
+            GC.KeepAlive(RickRollChestObject);
+            GC.KeepAlive(RickRollAnimationObject);
+            GC.KeepAlive(RickRollMusicSwitchObject);
+            GC.KeepAlive(SurpriseChestObject);
+            GC.KeepAlive(ExpandThunderstormPlaceable);
+            GC.KeepAlive(Door_Horizontal_Jungle);
+            GC.KeepAlive(Door_Vertical_Jungle);
+            GC.KeepAlive(Jungle_LargeTree);
+            GC.KeepAlive(Jungle_LargeTreeTopFrame);
+            GC.KeepAlive(EXJungleTree_MinimapIcon);
+            GC.KeepAlive(EXJungleCrest_MinimapIcon);
+            GC.KeepAlive(Jungle_ExitLadder);
+            GC.KeepAlive(Jungle_BlobLostSign);
+            GC.KeepAlive(Jungle_ItemStump);
+            GC.KeepAlive(Door_Horizontal_Belly);
+            GC.KeepAlive(Door_Vertical_Belly);
+            GC.KeepAlive(Belly_ExitWarp);
+            GC.KeepAlive(Belly_ExitRoomIcon);
+            GC.KeepAlive(Belly_DoorAnimations);
+            GC.KeepAlive(Belly_Shipwreck_Left);
+            GC.KeepAlive(Belly_Shipwreck_Right);
+            GC.KeepAlive(Door_Horizontal_West);
+            GC.KeepAlive(Door_Vertical_West);
+            GC.KeepAlive(West_PuzzleSetupPlacable);
+            GC.KeepAlive(EXSpaceFloor_50x50);
+            GC.KeepAlive(EXSpaceFloorPitBorder_50x50);
+            GC.KeepAlive(Sarcophagus_ShotgunBook_Kaliber);
+            GC.KeepAlive(Sarcophagus_ShotgunMace_Kaliber);
+            GC.KeepAlive(Sarcophagus_BulletSword_Kaliber);
+            GC.KeepAlive(Sarcophagus_BulletShield_Kaliber);
+            GC.KeepAlive(Sarco_WoodShieldPedestal);
+            GC.KeepAlive(Sarco_Door);
+            GC.KeepAlive(Sarco_Floor);
+            GC.KeepAlive(Sarco_MonsterObject);
+            GC.KeepAlive(Sarco_Skeleton);
+            GC.KeepAlive(EXGlitchFloorScreenFX);
+            GC.KeepAlive(EXWestFloorBossIntroScreenFX);
+            GC.KeepAlive(JungleLight);
+            GC.KeepAlive(BellyLight);
+            GC.KeepAlive(WestLight);
+            GC.KeepAlive(Cactus_A);
+            GC.KeepAlive(Cactus_B);
+            GC.KeepAlive(CactusShard1);
+            GC.KeepAlive(CactusShard2);
+            GC.KeepAlive(BlankRewardPedestal);
+            GC.KeepAlive(RatKeyRewardPedestal);
+            GC.KeepAlive(EX_GlitchPortal);
+            GC.KeepAlive(ENV_Tileset_Belly);
+            GC.KeepAlive(ENV_Tileset_West);
+            GC.KeepAlive(Challenge_ChaosMode);
+            GC.KeepAlive(Challenge_TripleTrouble);
+            GC.KeepAlive(Challenge_KingsMen);
+            GC.KeepAlive(ChamberGun);
         }
     }
 }

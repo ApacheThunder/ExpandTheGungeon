@@ -87,7 +87,7 @@ namespace ExpandTheGungeon {
             if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
             if (player2) { if (player2.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
 
-            if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk) {
+            if (ExpandStats.EnableExpandedGlitchFloors && (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk)) {
                 
                 if (!dungeon.IsGlitchDungeon && !ExpandDungeonFlow.isGlitchFlow && playerHasCorruptedJunk) {
                     if (FindObjectsOfType<AIActor>() != null && FindObjectsOfType<AIActor>().Length > 0) {
@@ -112,15 +112,23 @@ namespace ExpandTheGungeon {
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
 
-                    GameObject EXGlitchFloorScreenFX = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
-                    EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
-
+                    if (ExpandStats.EnableGlitchFloorScreenShader) {
+                        GameObject EXGlitchFloorScreenFX = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+                        EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
+                    }
+                    
                     if (FindObjectsOfType<AIActor>() != null && FindObjectsOfType<AIActor>().Length > 0) {
                         foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
+                            float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
+                            float RandomDispFloat = Random.Range(0.06f, 0.08f);
+                            float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
+                            float RandomColorProbFloat = Random.Range(0.035f, 0.1f);
+                            float RandomColorIntensityFloat = Random.Range(0.05f, 0.1f);
+
                             if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
                                     if (Random.value <= 0.6f) {
-                                        ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
+                                        ExpandShaders.Instance.BecomeGlitched(enemy, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
                                         ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
                                     }
                                     if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {

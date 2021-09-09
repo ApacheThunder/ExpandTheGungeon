@@ -114,6 +114,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             UpdateMTGSpawnPool();
             
             Game.Enemies.LockNamespace("gungeon");
+
+            ExemptPrefabsFromCollection();
         }
 
         public static void UpdateMTGSpawnPool() {
@@ -257,6 +259,37 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         public static AIActor GetOrLoadByGuid_Orig(string guid) { return Instance.InternalGetByGuid(guid); }
 
+        public static void ExemptPrefabsFromCollection() {
+            GC.KeepAlive(HammerCompanionPrefab);
+            GC.KeepAlive(FriendlyCultistPrefab);
+            GC.KeepAlive(RatGrenadePrefab);
+            GC.KeepAlive(BootlegBullatPrefab);
+            GC.KeepAlive(BootlegBulletManPrefab);
+            GC.KeepAlive(BootlegBulletManBandanaPrefab);
+            GC.KeepAlive(BootlegShotgunManRedPrefab);
+            GC.KeepAlive(BootlegShotgunManBluePrefab);
+            GC.KeepAlive(CronenbergPrefab);
+            GC.KeepAlive(MetalCubeGuyWestPrefab);
+            GC.KeepAlive(AggressiveCronenbergPrefab);
+            GC.KeepAlive(CorruptedEnemyPrefab);
+            GC.KeepAlive(MonsterParasitePrefab);
+            GC.KeepAlive(com4nd0BossPrefab);
+            GC.KeepAlive(RedShotGunMan);
+            GC.KeepAlive(BlueShotGunMan);
+            GC.KeepAlive(RedShotgunManCollection);
+            GC.KeepAlive(BlueShotgunManCollection);
+            GC.KeepAlive(BulletManEyepatch);
+            GC.KeepAlive(BulletManEyepatchCollection);
+            GC.KeepAlive(CronenbergCorpseDebrisObject1);
+            GC.KeepAlive(CronenbergCorpseDebrisObject2);
+            GC.KeepAlive(CronenbergCorpseDebrisObject3);
+            GC.KeepAlive(CronenbergCorpseDebrisObject4);
+            GC.KeepAlive(AggressiveCronenbergCorpseDebrisObject);
+            GC.KeepAlive(WestBrosAnimations_Nome);
+            GC.KeepAlive(StoneCubeCollection_West);
+            GC.KeepAlive(RatGrenadeTextures);
+        }
+
 
         public static void BuildRatGrenadePrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             m_CachedTargetObject = Instantiate(GetOrLoadByGuid_Orig("14ea47ff46b54bb4a98f91ffcffb656d").gameObject);
@@ -292,7 +325,13 @@ namespace ExpandTheGungeon.ExpandObjects {
                 m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
                 m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
                 // Loading a custom script from text file in place of one from an existing prefab..
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\GrenadeRat_BehaviorScript.txt");
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                    "[]",
+                    "[]",
+                    "[{\"PathInterval\":0.25,\"PointReachedPauseTime\":3.0,\"PreventFiringWhileMoving\":false,\"InitialDelay\":1.0,\"StayOnScreen\":false,\"AvoidTarget\":false,\"UseTargetsRoom\":false,\"$type\":\"MoveErraticallyBehavior\"}]",
+                    "[]",
+                    "[]"
+                };
             }
             
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
@@ -488,8 +527,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BabyGoodHammer_BehaviorScript.txt");
-
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"PathInterval\":0.25,\"DisableInCombat\":false,\"IdealRadius\":5.0,\"CatchUpRadius\":9.5,\"CatchUpAccelTime\":3.0,\"CatchUpSpeed\":6.0,\"CatchUpMaxSpeed\":10.0,\"CatchUpAnimation\":\"\",\"CatchUpOutAnimation\":\"\",\"IdleAnimations\":[],\"CanRollOverPits\":false,\"RollAnimation\":\"\",\"$type\":\"CompanionFollowPlayerBehavior\"}]",
+                "[]"
+            };
             ExpandUtility.MakeCompanion(m_CachedAIActor, null, null, true, false, true, true);
 
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, false);
@@ -676,7 +720,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBullat_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[]",
+                "[]"
+            };
 
             BootlegBullatGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1122,7 +1172,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBulletMan_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[]",
+                "[]"
+            };
 
             BootlegBulletManGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1547,7 +1603,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegBulletManBandana_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":false,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[{\"GroupCooldownVariance\":0.2,\"LineOfSight\":false,\"WeaponType\":\"AIShooterProjectile\",\"OverrideBulletName\":null,\"BulletScript\":null,\"FixTargetDuringAttack\":false,\"StopDuringAttack\":false,\"LeadAmount\":0.0,\"LeadChance\":1.0,\"RespectReload\":true,\"MagazineCapacity\":8.0,\"ReloadSpeed\":2.0,\"EmptiesClip\":true,\"SuppressReloadAnim\":false,\"TimeBetweenShots\":-1.0,\"PreventTargetSwitching\":false,\"OverrideAnimation\":null,\"OverrideDirectionalAnimation\":null,\"HideGun\":false,\"UseLaserSight\":false,\"UseGreenLaser\":false,\"PreFireLaserTime\":-1.0,\"AimAtFacingDirectionWhenSafe\":false,\"Cooldown\":0.2,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":16.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootGunBehavior\"}]",
+                "[]"
+            };
 
             BootlegBulletManBandanaGUID = m_CachedAIActor.EnemyGuid;
 
@@ -1906,7 +1968,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegShotgunManRed_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"$type\":\"RideInCartsBehavior\"},{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[{\"GroupCooldownVariance\":0.2,\"LineOfSight\":true,\"WeaponType\":\"BulletScript\",\"OverrideBulletName\":null,\"BulletScript\":{\"scriptTypeName\":\"BulletShotgunManRedBasicAttack1\"},\"FixTargetDuringAttack\":false,\"StopDuringAttack\":true,\"LeadAmount\":0.0,\"LeadChance\":1.0,\"RespectReload\":true,\"MagazineCapacity\":1.0,\"ReloadSpeed\":3.0,\"EmptiesClip\":false,\"SuppressReloadAnim\":false,\"TimeBetweenShots\":-1.0,\"PreventTargetSwitching\":false,\"OverrideAnimation\":null,\"OverrideDirectionalAnimation\":null,\"HideGun\":false,\"UseLaserSight\":false,\"UseGreenLaser\":false,\"PreFireLaserTime\":-1.0,\"AimAtFacingDirectionWhenSafe\":false,\"Cooldown\":3.5,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":20.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootGunBehavior\"}]",
+                "[]"
+            };
 
             BootlegShotgunManRedGUID = m_CachedAIActor.EnemyGuid;
 
@@ -2265,7 +2333,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BootlegShotgunManBlue_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"$type\":\"RideInCartsBehavior\"},{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[{\"GroupCooldownVariance\":0.2,\"LineOfSight\":true,\"WeaponType\":\"BulletScript\",\"OverrideBulletName\":null,\"BulletScript\":{\"scriptTypeName\":\"BulletShotgunManBlueBasicAttack1\"},\"FixTargetDuringAttack\":false,\"StopDuringAttack\":true,\"LeadAmount\":0.0,\"LeadChance\":1.0,\"RespectReload\":true,\"MagazineCapacity\":1.0,\"ReloadSpeed\":2.0,\"EmptiesClip\":true,\"SuppressReloadAnim\":false,\"TimeBetweenShots\":-1.0,\"PreventTargetSwitching\":false,\"OverrideAnimation\":null,\"OverrideDirectionalAnimation\":null,\"HideGun\":false,\"UseLaserSight\":false,\"UseGreenLaser\":false,\"PreFireLaserTime\":-1.0,\"AimAtFacingDirectionWhenSafe\":false,\"Cooldown\":4.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":20.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootGunBehavior\"}]",
+                "[]"
+            };
 
             BootlegShotgunManBlueGUID = m_CachedAIActor.EnemyGuid;
 
@@ -2546,7 +2620,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Cronenberg_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[]",
+                "[{\"AllowFearState\":false,\"PathInterval\":0.5,\"InitialDelay\":1.0,\"PointReachedPauseTime\":0.0,\"PathingTime\":6.0,\"$type\":\"ExpandSimpleMoveErraticallyBehavior\"}]",
+                "[]",
+                "[]"
+            };
             
             CronenbergGUID = m_CachedAIActor.EnemyGuid;
             CronenbergBullets.m_CachedCronenbergBulletsItem.TransmogTargetGuid = m_CachedAIActor.EnemyGuid;
@@ -2893,7 +2973,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\AngryCronenberg_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[]",
+                "[]"
+            };
 
             AggressiveCronenbergGUID = m_CachedAIActor.EnemyGuid;
 
@@ -2916,7 +3002,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             StoneCubeCollection_West = expandSharedAssets1.LoadAsset<GameObject>("StoneCubeCollection_West");
             tk2dSpriteCollectionData StoneCubeCollection_WestCollection = StoneCubeCollection_West.AddComponent<tk2dSpriteCollectionData>();
 
-            JsonUtility.FromJsonOverwrite(ExpandUtilities.ResourceExtractor.BuildStringFromEmbeddedResource("SerializedData/MiscAssets/StoneCubeCollection_West.txt"), StoneCubeCollection_WestCollection);
+            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "MiscAssets/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
 
             Material m_NewMaterial = new Material(GetOrLoadByGuid_Orig("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection.materials[0]);
             m_NewMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
@@ -3025,7 +3111,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
             ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Parasite_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":100.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":true,\"CustomRange\":8.0,\"LineOfSight\":false,\"ReturnToSpawn\":false,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[{\"AttackableDuringAnimation\":true,\"AvoidWalls\":false,\"StayOnScreen\":false,\"MinDistanceFromPlayer\":5.0,\"MaxDistanceFromPlayer\":-1.0,\"GoneTime\":1.0,\"OnlyTeleportIfPlayerUnreachable\":false,\"teleportOutBulletScript\":null,\"teleportInBulletScript\":null,\"goneAttackBehavior\":{\"RunInClass\":false,\"AttackBehaviors\":[{\"MaxRoomOccupancy\":-1,\"OverrideMaxOccupancyToSpawn\":-1,\"ReinforcementIndices\":[0],\"indexType\":\"Random\",\"StaggerSpawns\":true,\"staggerMode\":\"Timer\",\"staggerDelay\":0.600000023841858,\"StopDuringAnimation\":false,\"DisableDrops\":true,\"DelayAfterSpawn\":0.0,\"DelayAfterSpawnMinOccupancy\":0,\"DirectionalAnimation\":null,\"HideGun\":false,\"StaticCooldown\":0.0,\"Cooldown\":1.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"SpawnReinforcementsBehavior\"},{\"time\":8.0,\"$type\":\"BossFinalMarineWaitBehavior\"}],\"OverrideCooldowns\":null,\"$type\":\"SequentialAttackBehaviorGroup\"},\"AllowCrossRoomTeleportation\":false,\"teleportOutAnim\":\"teleport_out\",\"teleportInAnim\":\"teleport_in\",\"teleportRequiresTransparency\":false,\"hasOutlinesDuringAnim\":false,\"shadowSupport\":\"Fade\",\"shadowOutAnim\":null,\"shadowInAnim\":null,\"ManuallyDefineRoom\":false,\"roomMin\":{\"x\":4.0,\"y\":4.0},\"roomMax\":{\"x\":15.0,\"y\":15.0},\"Cooldown\":0.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":\"teleport\",\"GroupCooldown\":6.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[0.660000026226044,0.330000013113022],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"TeleportBehavior\"},{\"ShareCooldowns\":false,\"AttackBehaviors\":[{\"NickName\":\"Frequent Teleport\",\"Probability\":1.0,\"Behavior\":{\"AttackableDuringAnimation\":true,\"AvoidWalls\":false,\"StayOnScreen\":true,\"MinDistanceFromPlayer\":5.0,\"MaxDistanceFromPlayer\":-1.0,\"GoneTime\":1.0,\"OnlyTeleportIfPlayerUnreachable\":false,\"teleportOutBulletScript\":null,\"teleportInBulletScript\":null,\"goneAttackBehavior\":null,\"AllowCrossRoomTeleportation\":false,\"teleportOutAnim\":\"teleport_out\",\"teleportInAnim\":\"teleport_in\",\"teleportRequiresTransparency\":false,\"hasOutlinesDuringAnim\":false,\"shadowSupport\":\"Fade\",\"shadowOutAnim\":null,\"shadowInAnim\":null,\"ManuallyDefineRoom\":false,\"roomMin\":{\"x\":4.0,\"y\":4.0},\"roomMax\":{\"x\":15.0,\"y\":15.0},\"Cooldown\":6.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":\"teleport\",\"GroupCooldown\":6.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"TeleportBehavior\"}},{\"NickName\":\"Spiral Burst\",\"Probability\":1.0,\"Behavior\":{\"ShootPoint\":0,\"BulletScript\":{\"scriptTypeName\":\"BossFinalMarineSpinFire1\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"Tell\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":true,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":-1.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":\"weak_attack_charge\",\"FireAnimation\":\"weak_attack\",\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":1.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}},{\"NickName\":\"Belch Snakes\",\"Probability\":1.0,\"Behavior\":{\"ShootPoint\":1,\"BulletScript\":{\"scriptTypeName\":\"BossFinalMarineBelch1\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"Tell\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":true,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":-1.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":\"belch_attack\",\"FireAnimation\":null,\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":1.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}}],\"$type\":\"AttackBehaviorGroup\"}]",
+                "[]"
+            };
             bossBehaviorSpeculator.RegenerateCache();
 
             m_TargetAIActor.healthHaver.ForceSetCurrentHealth(550);
@@ -3099,7 +3191,13 @@ namespace ExpandTheGungeon.ExpandObjects {
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
             ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\Com4nd0_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":false,\"ReturnToSpawn\":false,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
+                "[{\"DefineSpawnRadius\":true,\"MinSpawnRadius\":3.0,\"MaxSpawnRadius\":9.0,\"MaxRoomOccupancy\":-1,\"MaxSummonedAtOnce\":-1,\"MaxToSpawn\":-1,\"NumToSpawn\":2,\"KillSpawnedOnDeath\":true,\"CrazeAfterMaxSpawned\":false,\"BlackPhantomChance\":0.0,\"EnemeyGuids\":[\"e861e59012954ab2b9b6977da85cb83c\",\"4b21a913e8c54056bc05cafecf9da880\",\"a9cc6a4e9b3d46ea871e70a03c9f77d4\",\"80ab6cd15bfc46668a8844b2975c6c26\"],\"selectionType\":\"Random\",\"OverrideCorpse\":null,\"SummonTime\":1.0,\"DisableDrops\":true,\"HideGun\":false,\"StopDuringAnimation\":true,\"SummonAnim\":\"summon\",\"SummonVfx\":null,\"TargetVfx\":\"spawn\",\"TargetVfxLoops\":false,\"PostSummonAnim\":\"summon_end\",\"ManuallyDefineRoom\":false,\"roomMin\":{\"x\":0.0,\"y\":0.0},\"roomMax\":{\"x\":0.0,\"y\":0.0},\"Cooldown\":1.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[0.899999976158142,0.675000011920929,0.449999988079071,0.224999994039536],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"SummonEnemyBehavior\"},{\"ShareCooldowns\":false,\"AttackBehaviors\":[{\"NickName\":\"Teleport\",\"Probability\":3.0,\"Behavior\":{\"AttackableDuringAnimation\":true,\"AvoidWalls\":false,\"StayOnScreen\":false,\"MinDistanceFromPlayer\":7.0,\"MaxDistanceFromPlayer\":16.0,\"GoneTime\":0.5,\"OnlyTeleportIfPlayerUnreachable\":false,\"teleportOutBulletScript\":null,\"teleportInBulletScript\":null,\"goneAttackBehavior\":null,\"AllowCrossRoomTeleportation\":false,\"teleportOutAnim\":\"teleport_in\",\"teleportInAnim\":\"teleport_out\",\"teleportRequiresTransparency\":false,\"hasOutlinesDuringAnim\":false,\"shadowSupport\":\"None\",\"shadowOutAnim\":null,\"shadowInAnim\":null,\"ManuallyDefineRoom\":false,\"roomMin\":{\"x\":0.0,\"y\":0.0},\"roomMax\":{\"x\":0.0,\"y\":0.0},\"Cooldown\":6.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":\"\",\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"TeleportBehavior\"}},{\"NickName\":\"Shoot Uzi\",\"Probability\":1.0,\"Behavior\":{\"ShootPoint\":0,\"BulletScript\":{\"scriptTypeName\":\"BossFinalRobotUzi1\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"Tell\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":true,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":0.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":\"uzi_start\",\"FireAnimation\":\"uzi_shoot\",\"PostFireAnimation\":\"uzi_end\",\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":true,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":\"uzi\",\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":3.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.5,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}},{\"NickName\":\"Shoot M16\",\"Probability\":1.0,\"Behavior\":{\"ShootPoint\":1,\"BulletScript\":{\"scriptTypeName\":\"BossFinalRobotM16\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"Tell\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":true,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":0.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":\"m16_attack\",\"FireAnimation\":null,\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":3.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.5,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}},{\"NickName\":\"Grenade\",\"Probability\":1.0,\"Behavior\":{\"ShootPoint\":2,\"BulletScript\":{\"scriptTypeName\":\"BossFinalRobotGrenades1\"},\"BulletName\":\"\",\"LeadAmount\":1.0,\"StopDuring\":\"Tell\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":true,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":-1.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":\"grenade\",\"FireAnimation\":\"\",\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":3.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.5,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":\"\",\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}},{\"NickName\":\"Poison Syringe\",\"Probability\":1.0,\"Behavior\":{\"initialAimDirection\":-90.0,\"turnRate\":-720.0,\"totalTurnDegrees\":360.0,\"divisions\":6,\"tellAnimation\":\"poison_attack\",\"Cooldown\":3.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.5,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"BossFinalRobotPoisonBehavior\"}}],\"$type\":\"AttackBehaviorGroup\"}]",
+                "[]"
+            };
             bossBehaviorSpeculator.RegenerateCache();
 
 
@@ -3166,7 +3264,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\BlankBehavior_BehaviorScript.txt");
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]"};
             
             m_CachedTargetObject.AddComponent<ExpandCorruptedEnemyEngageDoer>();
 
@@ -3316,8 +3414,14 @@ namespace ExpandTheGungeon.ExpandObjects {
             // ExpandUtility.DuplicateComponent(m_TargetBehaviorSpeculatorSeralized, (CachedEnemyActor.behaviorSpeculator as ISerializedObject));
             m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>();
             m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = (CachedEnemyActor.behaviorSpeculator as ISerializedObject).SerializedStateKeys;
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = ExpandUtilities.ResourceExtractor.BuildStringListFromEmbeddedResource("SerializedData\\BehaviorScripts\\CultistCompanion_BehaviorScript.txt");
-            
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                "[{\"AvoidRedBarrels\":true,\"ShootRedBarrels\":true,\"PushRedBarrels\":true,\"$type\":\"RedBarrelAwareness\"}]",
+                "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
+                "[{\"StopWhenInRange\":true,\"CustomRange\":7.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"},{\"PathInterval\":0.25,\"DisableInCombat\":true,\"IdealRadius\":3.0,\"CatchUpRadius\":6.0,\"CatchUpAccelTime\":5.0,\"CatchUpSpeed\":6.0,\"CatchUpMaxSpeed\":10.0,\"CatchUpAnimation\":\"dodge\",\"CatchUpOutAnimation\":\"\",\"IdleAnimations\":[\"idle\"],\"CanRollOverPits\":true,\"RollAnimation\":\"dodge\",\"$type\":\"CompanionFollowPlayerBehavior\"}]",
+                "[{\"RunInClass\":false,\"AttackBehaviors\":[{\"dashDirection\":\"Random\",\"quantizeDirection\":45.0,\"dashDistance\":5.0,\"dashTime\":0.649999976158142,\"postDashSpeed\":0.0,\"doubleDashChance\":0.0,\"avoidTarget\":false,\"ShootPoint\":null,\"bulletScript\":null,\"fireAtDashStart\":false,\"stopOnCollision\":false,\"chargeAnim\":null,\"dashAnim\":\"dodgeroll\",\"doDodgeDustUp\":true,\"warpDashAnimLength\":true,\"hideShadow\":false,\"hideGun\":true,\"toggleTrailRenderer\":false,\"enableShadowTrail\":false,\"Cooldown\":0.25,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"DashBehavior\"},{\"dashDirection\":\"Random\",\"quantizeDirection\":45.0,\"dashDistance\":5.0,\"dashTime\":0.649999976158142,\"postDashSpeed\":0.0,\"doubleDashChance\":0.0,\"avoidTarget\":false,\"ShootPoint\":null,\"bulletScript\":null,\"fireAtDashStart\":false,\"stopOnCollision\":false,\"chargeAnim\":null,\"dashAnim\":\"dodgeroll\",\"doDodgeDustUp\":true,\"warpDashAnimLength\":true,\"hideShadow\":false,\"hideGun\":true,\"toggleTrailRenderer\":false,\"enableShadowTrail\":false,\"Cooldown\":6.0,\"CooldownVariance\":2.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":6.0,\"InitialCooldownVariance\":2.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":{\"Cooldown\":true,\"AttackCooldown\":false,\"GlobalCooldown\":false,\"GroupCooldown\":false,\"ResetCooldown\":4.0},\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"DashBehavior\"}],\"OverrideCooldowns\":[],\"$type\":\"SequentialAttackBehaviorGroup\"},{\"ShareCooldowns\":false,\"AttackBehaviors\":[{\"NickName\":\"Basic Shoot\",\"Probability\":1.0,\"Behavior\":{\"GroupCooldownVariance\":0.0,\"LineOfSight\":true,\"WeaponType\":\"AIShooterProjectile\",\"OverrideBulletName\":null,\"BulletScript\":null,\"FixTargetDuringAttack\":false,\"StopDuringAttack\":false,\"LeadAmount\":1.0,\"LeadChance\":0.5,\"RespectReload\":true,\"MagazineCapacity\":6.0,\"ReloadSpeed\":2.0,\"EmptiesClip\":false,\"SuppressReloadAnim\":false,\"TimeBetweenShots\":-1.0,\"PreventTargetSwitching\":false,\"OverrideAnimation\":null,\"OverrideDirectionalAnimation\":null,\"HideGun\":false,\"UseLaserSight\":false,\"UseGreenLaser\":false,\"PreFireLaserTime\":-1.0,\"AimAtFacingDirectionWhenSafe\":false,\"Cooldown\":0.25,\"CooldownVariance\":0.0,\"AttackCooldown\":0.25,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":12.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootGunBehavior\"}}],\"$type\":\"AttackBehaviorGroup\"}]",
+                "[]"
+            };
+
             ExpandUtility.MakeCompanion(CachedGlitchEnemyActor, null, null, true, false, true, false);
 
             AddEnemyToDatabase(CachedTargetEnemyObject, CachedGlitchEnemyActor.EnemyGuid, false);

@@ -119,6 +119,7 @@
     <Compile Include="ExpandComponents\ExpandEnableSpacePitOnEnterComponent.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchedEnemyStunManager.cs" />
     <Compile Include="ExpandComponents\ExpandCustomEnemyBehaviorEnabler.cs" />
+    <Compile Include="ExpandComponents\ExpandGlitchPortalController.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchScreenFXController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
@@ -237,58 +238,6 @@
     <Compile Include="ExpandUtilities\RoomBuilder.cs" />
     <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
     <Compile Include="SerializedData\ExpandAssets.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BabyGoodHammer_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegBulletMan_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegBulletManBandana_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegShotgunManRed_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegShotgunManBlue_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BootlegBullat_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\GrenadeRat_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\Cronenberg_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\Parasite_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\AngryCronenberg_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BellyAssets\ENV_Tileset_Belly.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BellyAssets\carpetGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\faceWallGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\lavaGrid.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\pitBorderFlatGrid.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\pitLayoutGrid.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\roomCeilingBorderGrid.txt" />
-    <EmbeddedResource Include="SerializedData\BellyAssets\roomFloorBorderGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\JungleAssets\carpetGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\faceWallGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\faceWallGrid2.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\faceWallGrid3.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\lavaGrid.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\outerCeilingBorderGrid.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\pitLayoutGrid.txt" />
-    <EmbeddedResource Include="SerializedData\JungleAssets\roomCeilingBorderGrid.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\BulletHell\BHell_TheReunion.room" />
@@ -828,9 +777,6 @@
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Belly\Expand_Belly_Viscera_Shitfactory.room" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\Com4nd0_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Belly\Expand_Belly_Viscera12.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Belly\Expand_Belly_Viscera13.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Belly\Expand_Belly_Viscera14.room" />
@@ -852,44 +798,6 @@
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Belly\Expand_Belly_Viscera30.room" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\Canyon\carpetGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\Canyon\floorGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\Canyon\lavaGrid.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\Canyon\roomCeilingBorderGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\carpetGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\floorGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\lavaGrid.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\roomCeilingBorderGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\carpetGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\floorGrid1.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\lavaGrid.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\roomCeilingBorderGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\ENV_Tileset_West.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\exteriorFacadeBorderGrid.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\WoodInterior\facadeTopGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\exteriorFacadeBorderGrid.txt" />
-    <EmbeddedResource Include="SerializedData\WestAssets\RedInterior\facadeTopGrid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BellyAssets\ENV_Tileset_Belly_MaterialTable.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\WestAssets\ENV_Tileset_West_MaterialTable.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\CultistCompanion_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Entrance.room" />
   </ItemGroup>
   <ItemGroup>
@@ -900,19 +808,10 @@
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_SecretWarp.room" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\BlankBehavior_BehaviorScript.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Bunny_Special4ShrineRoom.room" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SerializedData\MiscAssets\StoneCubeCollection_West.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Expand_RainbowRoom.room" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SerializedData\BehaviorScripts\ApacheTrap_BehaviorScript.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon_AP_Passage.room" />
@@ -1046,6 +945,10 @@
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon1_TinyPassage4.room" />
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\West\Expand_West_Canyon1_TinyPassage5.room" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Expand_BootlegRoom.room" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -259,6 +259,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return BytesToString(ExtractEmbeddedResource(string.Format("{0}.", nameSpace) + filePath));
         }
 
+        public static string RetrieveStringFromAssetBundle(AssetBundle bundle, string AssetPath) {
+            return bundle.LoadAsset<TextAsset>(AssetPath).text;
+        }
+
         public static List<string> BuildStringListFromEmbeddedResource(string filePath) {
             List<string> m_CachedList = new List<string>();
 

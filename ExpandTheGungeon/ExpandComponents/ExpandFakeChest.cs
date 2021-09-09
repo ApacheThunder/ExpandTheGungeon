@@ -171,6 +171,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else {
                 SurpriseChestEnemySpawnPool = SurpriseChestEnemySpawnPool.Shuffle();
                 AIActor Enemy = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(SurpriseChestEnemySpawnPool)), sprite.WorldCenter + new Vector2(0, 1), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
+                if (Enemy && !Enemy.IgnoreForRoomClear) {
+                    PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.C;
+                    GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
+                    PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
+                    if (item) { Enemy.AdditionalSafeItemDrops.Add(item); }
+                }
                 yield return null;
                 if (Enemy && !Enemy.IgnoreForRoomClear) { m_room.SealRoom(); }
             }

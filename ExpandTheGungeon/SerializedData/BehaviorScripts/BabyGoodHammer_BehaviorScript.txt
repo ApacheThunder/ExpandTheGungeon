@@ -1,5 +1,0 @@
-﻿[]
-[]
-[{"Radius":35.0,"LineOfSight":true,"ObjectPermanence":true,"SearchInterval":0.25,"PauseOnTargetSwitch":false,"PauseTime":0.25,"$type":"TargetPlayerBehavior"}]
-[{"PathInterval":0.25,"DisableInCombat":false,"IdealRadius":5.0,"CatchUpRadius":9.5,"CatchUpAccelTime":3.0,"CatchUpSpeed":6.0,"CatchUpMaxSpeed":10.0,"CatchUpAnimation":"","CatchUpOutAnimation":"","IdleAnimations":[],"CanRollOverPits":false,"RollAnimation":"","$type":"CompanionFollowPlayerBehavior"}]
-[]

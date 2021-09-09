@@ -83,13 +83,15 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 m_ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
 
-                if (dungeon.IsGlitchDungeon) {
-                    ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
-                } else {
-                    ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                if (ExpandStats.EnableExpandedGlitchFloors) {
+                    if (dungeon.IsGlitchDungeon) {
+                        ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                    } else {
+                        ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                    }
+
+                    m_CorruptTilePlacer.PlaceCorruptTiles(dungeon);
                 }
-                
-                m_CorruptTilePlacer.PlaceCorruptTiles(dungeon);
 
                 FloorDecorator.PlaceFloorDecoration(dungeon);
 
@@ -383,6 +385,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandStats.elevatorHasBeenUsed = false;
                 return;
             }
+            if (!ExpandStats.EnableExpandedGlitchFloors) { return; }
+
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
             if (UnityEngine.Random.value > 0.003f) { return; }
