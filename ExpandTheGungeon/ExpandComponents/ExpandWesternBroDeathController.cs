@@ -8,19 +8,14 @@ namespace ExpandTheGungeon.ExpandComponents
         {
             base.healthHaver.OnDeath += this.OnDeath;
         }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
         
         private void OnDeath(Vector2 finalDeathDir)
         {
             bool oneSurvivor = false;
-            foreach (var bro in StaticReferenceManager.AllBros)
+            foreach (var bro in ExpandWesternBroController.AllWesternBros)
             {
-                // if bro not null and not ourself
-                if (bro && this.gameObject != bro.gameObject)
+                // if bro not null, not ourself and alive
+                if (bro && this.gameObject != bro.gameObject && bro.healthHaver && bro.healthHaver.IsAlive)
                 {
                     bro.Enrage();
                     oneSurvivor = true;

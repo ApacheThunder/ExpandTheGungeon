@@ -185,14 +185,13 @@ namespace ExpandTheGungeon {
                 GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.LanguageFix));
             }
 
-
-            // This should fix issus with Pasts trying to spawn inactive versions of custom enemies.
-            // (and any other mod that has created a custom AIActor or object that has a HealthHaver component.
+            // This should fix issus with Pasts trying to spawn inactive versions of custom enemies
+            // (and any other mod that has created a custom AIActor or object that has a HealthHaver component)
             StaticReferenceManager.AllHealthHavers.Clear();
             // Remove any custom instances that use BroController
             StaticReferenceManager.AllBros.Clear();
-            
-            // Null bundles when done with them to avoid game crash issues.
+
+            // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
             sharedAssets = null;
             sharedAssets2 = null;

@@ -19,14 +19,20 @@ namespace ExpandTheGungeon.ExpandObjects {
             if (sourcePlayer == null) { return; }
             
             tk2dSprite playerSprite = aiActorObject.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(playerSprite, (sourcePlayer.sprite as tk2dSprite));
+
+            ExpandUtility.DuplicateSprite(playerSprite, sourcePlayer.sprite as tk2dSprite);
 
             // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
             // Always set false to ensure this doesn't happen.
             playerSprite.FlipX = false;
 
-            ExpandUtility.GenerateAIActorTemplate(aiActorObject, out m_CorpseObject, aiActorObject.name, System.Guid.NewGuid().ToString(), GunAttachOffset: new Vector3(0.3f, 0.25f, 0), StartingGunID: 472);
-            
+            GameObject m_NewHandObject = new GameObject("PlayerMimicHand");
+            tk2dSprite m_HandSprite = m_NewHandObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(m_HandSprite, sourcePlayer.primaryHand.gameObject.GetComponent<tk2dSprite>());
+            PlayerHandController m_HandController = m_NewHandObject.AddComponent<PlayerHandController>();
+
+            ExpandUtility.GenerateAIActorTemplate(aiActorObject, out m_CorpseObject, aiActorObject.name, System.Guid.NewGuid().ToString(), GunAttachOffset: new Vector3(0.3f, 0.25f, 0), StartingGunID: 472, overrideHandObject: m_HandController);
+
             AIActor CachedEnemyActor = aiActorObject.GetComponent<AIActor>();
 
             if (!aiActorObject | !CachedEnemyActor) { return; }
@@ -35,15 +41,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 ETGModConsole.Log("Spawning '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
             }
 
-            GameObject m_NewHandObject = new GameObject("PlayerMimicHand");
-            tk2dSprite m_HandSprite = m_NewHandObject.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(m_HandSprite, sourcePlayer.primaryHand.gameObject.GetComponent<tk2dSprite>());
-            PlayerHandController m_HandController = m_NewHandObject.AddComponent<PlayerHandController>();
-            m_HandController.ForceRenderersOff = false;
-            m_HandController.handHeightFromGun = 0.05f;
-
-            CachedEnemyActor.aiShooter.handObject = m_HandController;
-
             // Generate BossCard based on current Player.
             Texture2D BossCardForeground = ExpandUtility.FlipTexture(Instantiate(sourcePlayer.BosscardSprites[0]));
             // Mirror thing will be used as static background. (will be the same for all possible boss cards)
@@ -51,8 +48,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // Combine foreground boss card generated from PlayerController onto the static background image loased in earlier. Resolutions must match!
             Texture2D BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
 
-
-            
+            string bossName = "Doppelgunner";
             GenericIntroDoer miniBossIntroDoer = aiActorObject.AddComponent<GenericIntroDoer>();
             aiActorObject.AddComponent<ExpandGungeoneerMimicIntroDoer>();
             miniBossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
@@ -73,7 +69,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             miniBossIntroDoer.fusebombLock = false;
             miniBossIntroDoer.AdditionalHeightOffset = 0;
             miniBossIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
-                bossNameString = "Dopplegunner",
+                bossNameString = bossName,
                 bossSubtitleString = "Imposter!",
                 bossQuoteString = "Clone gone rogue...",                    
                 bossSpritePxOffset = IntVector2.Zero,
@@ -81,6 +77,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 bottomRightTextPxOffset = IntVector2.Zero,
                 bgColor = new Color(0, 0, 1, 1)
             };
+
             if (BossCardTexture) {
                 miniBossIntroDoer.portraitSlideSettings.bossArtSprite = BossCardTexture;
                 miniBossIntroDoer.SkipBossCard = false;
@@ -89,6 +86,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 miniBossIntroDoer.SkipBossCard = true;
                 CachedEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.SubbossBar;
             }
+
             miniBossIntroDoer.HideGunAndHand = true;
             miniBossIntroDoer.SkipFinalizeAnimation = true;
             miniBossIntroDoer.RegenerateCache();
@@ -99,14 +97,14 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             CachedEnemyActor.healthHaver.SetHealthMaximum(1000);
             CachedEnemyActor.healthHaver.ForceSetCurrentHealth(1000);
-            CachedEnemyActor.healthHaver.overrideBossName = "Dopplegunner";
+            CachedEnemyActor.healthHaver.overrideBossName = bossName;
             CachedEnemyActor.healthHaver.RegenerateCache();
 
             CachedEnemyActor.EnemyId = Random.Range(2000, 9999);
             CachedEnemyActor.EnemyGuid = System.Guid.NewGuid().ToString();
-            CachedEnemyActor.OverrideDisplayName = ("Dopplegunner");
-            CachedEnemyActor.ActorName = ("Dopplegunner");
-            CachedEnemyActor.name = ("Dopplegunner");
+            CachedEnemyActor.OverrideDisplayName = bossName;
+            CachedEnemyActor.ActorName = bossName;
+            CachedEnemyActor.name = bossName;
             
             CachedEnemyActor.CanTargetEnemies = false;
             CachedEnemyActor.CanTargetPlayers = true;
@@ -138,7 +136,6 @@ namespace ExpandTheGungeon.ExpandObjects {
                 CachedEnemyActor.EnemySwitchState = "Gun Cultist";
             }
             
-
             ExpandGungeoneerMimicBossController playerMimicController = aiActorObject.AddComponent<ExpandGungeoneerMimicBossController>();
             playerMimicController.m_Player = sourcePlayer;
 
@@ -156,6 +153,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             CachedEnemyActor.spriteAnimator.playAutomatically = false;
 
             List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
+
             foreach (tk2dSpriteAnimationClip clip in sourcePlayer.spriteAnimator.Library.clips) {
                 if (!string.IsNullOrEmpty(clip.name)) {
                     if (clip.name.ToLower() == "dodge") {
@@ -209,6 +207,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]" };
             
             CachedEnemyActor.RegenerateCache();
+
             return;
         }
 
@@ -311,11 +310,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             expandSharedAssets1 = null;
         }
 
-        
         public void ConfigureOnPlacement(RoomHandler room) { BuildBossPrefab(room); }
 
         protected override void OnDestroy() { base.OnDestroy(); }
-
     }
 }
 

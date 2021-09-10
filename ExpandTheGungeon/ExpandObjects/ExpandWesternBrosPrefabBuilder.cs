@@ -1,8 +1,10 @@
 ﻿using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -24,6 +26,8 @@ namespace ExpandTheGungeon.ExpandObjects
         public static GameObject WestBrosAngelHatPrefab;
         public static GameObject WestBrosNomeHatPrefab;
         public static GameObject WestBrosTucHatPrefab;
+
+        public static GameObject WestBrosHandPrefab;
 
         public static string WestBrosAngelGUID;
         public static string WestBrosNomeGUID;
@@ -52,8 +56,13 @@ namespace ExpandTheGungeon.ExpandObjects
             Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
             Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
 
+            new Hook(typeof(GameManager).GetMethod(nameof(GameManager.ClearPerLevelData)), typeof(ExpandWesternBroController).GetMethod(nameof(ExpandWesternBroController.ClearPerLevelData)));
+            new Hook(typeof(GameManager).GetMethod(nameof(GameManager.ClearActiveGameData)), typeof(ExpandWesternBroController).GetMethod(nameof(ExpandWesternBroController.ClearActiveGameData)));
+
             Shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
+
+            SetupHand(assetBundle, out WestBrosHandPrefab, Collection);
 
             BuildWestBrosHatPrefab(assetBundle, out WestBrosAngelHatPrefab, WestBros.Angel, Collection, ShadesDebris);
             BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, Collection, ShadesDebris);
@@ -62,6 +71,37 @@ namespace ExpandTheGungeon.ExpandObjects
             BuildWestBrosBossPrefab(assetBundle, out WestBrosAngelPrefab, WestBros.Angel, false, Collection, Animation, false);
             BuildWestBrosBossPrefab(assetBundle, out WestBrosNomePrefab, WestBros.Nome, true, Collection, Animation, true);
             BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, Collection, Animation, false);
+        }
+
+        private static void SetupHand(AssetBundle assetBundle, out GameObject handPrefab, tk2dSpriteCollectionData collection)
+        {
+            var texture = assetBundle.LoadAsset<Texture2D>("Western_Bros_Hand");
+
+            tk2dSpriteDefinition spriteDefinition = SpriteBuilder.ConstructDefinition(texture);
+            spriteDefinition.name = texture.name;
+
+            // change the sprite definition so the sprite is centered, so it can be flipped without offsets
+            spriteDefinition.boundsDataCenter = Vector3.zero;
+            spriteDefinition.untrimmedBoundsDataCenter = Vector3.zero;
+
+            float val = 0.2f;
+
+            spriteDefinition.boundsDataExtents = new Vector3(val * 2, val * 2, 0);
+            spriteDefinition.untrimmedBoundsDataExtents = new Vector3(val * 2, val * 2, 0);
+
+            spriteDefinition.position0 = new Vector3(-val, -val, 0);
+            spriteDefinition.position1 = new Vector3(val, -val, 0);
+            spriteDefinition.position2 = new Vector3(-val, val, 0);
+            spriteDefinition.position3 = new Vector3(val, val, 0);
+
+            SpriteBuilder.AddSpriteToCollection(spriteDefinition, collection);
+
+            handPrefab = assetBundle.LoadAsset<GameObject>("WestBroHandObject");
+
+            var sprite = handPrefab.AddComponent<tk2dSprite>();
+            sprite.SetSprite(collection, texture.name);
+
+            handPrefab.AddComponent<PlayerHandController>();
         }
 
         private static void BuildWestBrosHatPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, tk2dSpriteCollectionData spriteCollection, DebrisObject broDebris)
@@ -92,39 +132,29 @@ namespace ExpandTheGungeon.ExpandObjects
             ExpandUtility.GenerateSpriteAnimator(outObject);
 
             DebrisObject debrisObject = outObject.AddComponent<DebrisObject>();
+
+            // this is set seperately because we use DeclaredOnly for the reflection field copying and Priority is inherited from EphemeralObject
             debrisObject.Priority = broDebris.Priority;
 
             ExpandUtility.ReflectionShallowCopyFields(debrisObject, broDebris, (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
         }
 
-        // TODO fix gun offsets :/, TODO take from intro animation
-
-        // TODO has smiley always been broken when spawned in with the console? the first one disappears into nothingness while all new ones don't have a weapon hold animation
-
-        // TODO give fitting hands sprite, TODO color changes when enraged, TODO you can take the hand sprite size, color and design from the intro animation
+        // TODO add summon vfx (maybe summon_vfx is not even the correct animation)
 
         // TODO what about hit_left and hit_right?
 
-        // TODO use summon vfx
-
         // TODO anger and charge are technically a loop section
-
-        // TODO this is how we can tweak attack behaviours, or in the custom BroController
-        //foreach (AttackBehaviorGroup item in actor.behaviorSpeculator.AttackBehaviors)
-        //{
-        //    foreach (var item2 in item.AttackBehaviors)
-        //    {
-        //        if (item2.NickName == "Spawn Bros")
-        //        {
-        //            item2.Probability = 0f;
-        //        }
-        //    }
-        //}
 
         // understanding the 'The Good, the Bad and the Ugly' reference:
         // Angel is 'Angel Eyes': The Bad, a ruthless, confident, borderline-sadistic mercenary, takes a pleasure in killing and always finishes a job for which he is paid
         // Nome is 'Blondie' (the Man with No Name): the Good, a taciturn, confident bounty hunter, teams up with Tuco, and Angel Eyes temporarily, to find the buried gold
         // Tuc is 'Tuco Benedicto Pacífico Juan María Ramírez': the Ugly, a fast-talking, comically oafish yet also cunning, cagey, resilient and resourceful Mexican bandit
+
+        // TODO remove at some point, I got tired of writing 'ToString()'
+        public static void Log(object o, bool debug = false)
+        {
+            ETGModConsole.Log(o != null ? o.ToString() : "null", debug);
+        }
 
         private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer)
         {
@@ -142,6 +172,8 @@ namespace ExpandTheGungeon.ExpandObjects
                 outObject.name = name;
 
                 AIActor actor = outObject.GetComponent<AIActor>();
+
+                actor.healthHaver.overrideBossName = "Western Bros";
 
                 actor.EnemyId = UnityEngine.Random.Range(100000, 999999);
                 actor.ActorName = name;
@@ -171,22 +203,37 @@ namespace ExpandTheGungeon.ExpandObjects
                 Encounterable.journalData.NotificationPanelDescription = name;
                 Encounterable.journalData.AmmonomiconFullEntry = name;
 
-                // TODO replace with custom variants that work with multiples bros
-
-                //   BroController (enraging twice currently does nothing)
+                // x BroController
                 // x BulletBroDeathController
                 // x BulletBrosIntroDoer
-                //   BulletBroRepositionBehavior
-                //   BulletBroSeekTargetBehavior
+                // x BulletBroSeekTargetBehavior // movement behaviour
+                //   BulletBroRepositionBehavior // completely unused
 
-                // BulletBrosJumpBurst1 / BulletBrosJumpBurst2
-                // BulletBrosAngryAttack1
-                // BulletBrosSweepAttack1
-                // BulletBrosTridentAttack1
+                var oldBroController = outObject.GetComponent<BroController>();
+                var newBroController = outObject.AddComponent<ExpandWesternBroController>();
 
-                // Destroy(outObject.GetComponent<BroController>());
+                newBroController.enrageAnim = oldBroController.enrageAnim;
+                newBroController.enrageAnimTime = oldBroController.enrageAnimTime;
+                newBroController.enrageHealToPercent = oldBroController.enrageHealToPercent;
+                newBroController.overheadVfx = oldBroController.overheadVfx;
+                newBroController.postEnrageMoveSpeed = oldBroController.postEnrageMoveSpeed;
+
+                newBroController.whichBro = whichBro;
+                newBroController.postSecondEnrageMoveSpeed = newBroController.postEnrageMoveSpeed;
+
+                UnityEngine.Object.Destroy(oldBroController);
+
                 UnityEngine.Object.Destroy(outObject.GetComponent<BulletBroDeathController>());
                 outObject.AddComponent<ExpandWesternBroDeathController>();
+
+                var newMovementBehavior = new ExpandWesternBroSeekTargetBehavior();
+                var oldMovementBehavior = actor.behaviorSpeculator.MovementBehaviors.First() as BulletBroSeekTargetBehavior;
+
+                newMovementBehavior.CustomRange = oldMovementBehavior.CustomRange;
+                newMovementBehavior.PathInterval = oldMovementBehavior.PathInterval;
+                newMovementBehavior.StopWhenInRange = oldMovementBehavior.StopWhenInRange;
+
+                actor.behaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() { newMovementBehavior };
 
                 // only smiley has a bossIntroDoer, so the stuff after this would null reference if done with shade
                 if (isSmiley)
@@ -280,6 +327,9 @@ namespace ExpandTheGungeon.ExpandObjects
                     {
                         clip.name = "whistle";
                         clip.wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
+                        // the summon vfx don't look right
+                        // clip.frames[0].eventVfx = "summon_vfx";
+                        // clip.frames[0].triggerEvent = true;
                     }
                     else if (clip.name == "pound")
                     {
@@ -323,6 +373,12 @@ namespace ExpandTheGungeon.ExpandObjects
                     }
                 }
 
+                // disables all attacks for debugging
+                //foreach (var item in (actor.behaviorSpeculator.AttackBehaviors.First() as AttackBehaviorGroup).AttackBehaviors)
+                //{
+                //    item.Probability = 0f;
+                //}
+
                 animationClips.AddRange(clipsToAdd);
 
                 tk2dSpriteAnimation spriteAnimation = animationsAsset.AddComponent<tk2dSpriteAnimation>();
@@ -330,11 +386,12 @@ namespace ExpandTheGungeon.ExpandObjects
                 spriteAnimation.clips = animationClips.ToArray();
 
                 tk2dSpriteAnimator spriteAnimator = outObject.GetComponent<tk2dSpriteAnimator>();
+
                 spriteAnimator.Library = spriteAnimation;
 
                 tk2dSprite sprite = outObject.GetComponent<tk2dSprite>();
-                sprite.Collection = sourceSpriteCollection;
-                sprite.SetSprite($"BB_{whichBro.ToString().ToLower()}_idle_front_001");
+                sprite.SetSprite(sourceSpriteCollection, $"BB_{whichBro.ToString().ToLower()}_idle_front_001");
+                sprite.PlaceAtPositionByAnchor(new Vector3(0f, 0f), tk2dBaseSprite.Anchor.LowerCenter);
 
                 AIAnimator animator = outObject.GetComponent<AIAnimator>();
                 // removes the 'appear' animation
@@ -347,40 +404,40 @@ namespace ExpandTheGungeon.ExpandObjects
 
                 AIShooter shooter = outObject.GetComponent<AIShooter>();
 
+                shooter.handObject = WestBrosHandPrefab.GetComponent<PlayerHandController>();
+
                 // I don't know why they were on to begin with
                 shooter.ToggleHandRenderers(false, "BroController");
 
-                int gunID = -1;
                 DebrisObject hatPrefab = null;
 
                 switch (whichBro)
                 {
                     case WestBros.Angel:
-                        gunID = WestBrosAngelGunID;
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
+                        shooter.equippedGunId = WestBrosAngelGunID;
                         WestBrosAngelGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosAngelHatPrefab.GetComponent<DebrisObject>();
                         break;
 
                     case WestBros.Nome:
-                        gunID = WestBrosNomeGunID;
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.4f);
+                        shooter.equippedGunId = WestBrosNomeGunID;
                         WestBrosNomeGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosNomeHatPrefab.GetComponent<DebrisObject>();
                         break;
 
                     case WestBros.Tuc:
-                        gunID = WestBrosTucGunID;
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
+                        shooter.equippedGunId = WestBrosTucGunID;
                         WestBrosTucGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosTucHatPrefab.GetComponent<DebrisObject>();
                         break;
                 }
 
-                if (gunID != -1)
+                if (shooter.equippedGunId == -1)
                 {
-                    shooter.equippedGunId = gunID;
-                }
-                else
-                {
-                    ETGModConsole.Log("The West Bros Gun ID should have been set at this point already. Assigning fallback gun.");
+                    ETGModConsole.Log("The West Bros Gun ID should have been set at this point already, but it wasn't. Assigning fallback gun.");
                     shooter.equippedGunId = isSmiley ? 35 : 22;
                 }
 
@@ -407,10 +464,6 @@ namespace ExpandTheGungeon.ExpandObjects
                     item.ManualOffsetX = 32;
                     item.Regenerate(outObject.transform);
                 }
-
-                // move the guns and recenter them, this can be tweaked later if needed or wanted
-                sprite.PlaceAtPositionByAnchor(new Vector3(0f, 0f), tk2dBaseSprite.Anchor.LowerCenter);
-                shooter.gunAttachPoint.position = new Vector3(-1f, 0.8f);
 
                 // TODO balance
                 //actor.healthHaver.ForceSetCurrentHealth(1000);

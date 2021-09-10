@@ -102,6 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpandComponents\ExpandWesternBroSeekTargetBehavior.cs" />
+    <Compile Include="ExpandComponents\ExpandWesternBroController.cs" />
     <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBellyMonsterController.cs" />
     <Compile Include="ExpandComponents\ExpandBellyWarpWingDoor.cs" />

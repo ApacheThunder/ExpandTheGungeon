@@ -51,7 +51,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
                 m_AIActor.GetAbsoluteParentRoom().CompletelyPreventLeaving = true;
                 m_AIActor.ToggleRenderers(false);
-                m_AIActor.aiShooter.handObject.gameObject.SetActive(false);
                 m_AIActor.IsGone = true;
                 m_AIActor.State = AIActor.ActorState.Inactive;
             }
@@ -64,6 +63,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public override void OnBossCard() { }
         
         private IEnumerator DoIntro() {
+
             yield return StartCoroutine(WaitForSecondsInvariant(1f));
             tk2dSpriteAnimator mirrorAnimation = null;
             if (MirrorBase) { mirrorAnimation = MirrorBase.GetComponent<tk2dSpriteAnimator>(); }
@@ -156,7 +156,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             // m_AIActor.State = AIActor.ActorState.Normal;
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.ToggleRenderers(true);
-            // m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
             if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
@@ -201,14 +200,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_finished = true;
             StopAllCoroutines();
             m_AIActor.ToggleRenderers(true);
-            m_AIActor.aiShooter.ToggleGunAndHandRenderers(true, "GungeoneerMimicIntroDoer");
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.IsGone = false;
             // m_AIActor.State = AIActor.ActorState.Normal;
             m_AIActor.State = AIActor.ActorState.Awakening;
             m_AIActor.aiShooter.AimAtPoint(m_AIActor.CenterPosition - new Vector2(0, -2));
             m_AIActor.aiShooter.gunAttachPoint.gameObject.SetActive(true);
-            m_AIActor.aiShooter.handObject.gameObject.SetActive(true);
             if (!m_MirrorDepthUpdated && MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
