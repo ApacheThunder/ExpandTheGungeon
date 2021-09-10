@@ -363,7 +363,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
-            // if (UnityEngine.Random.value > 0.003f) { return; }
+            if (UnityEngine.Random.value > 0.003f) { return; }
             if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
             foreach (RoomHandler room in dungeon.data.rooms) {

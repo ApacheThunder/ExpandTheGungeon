@@ -179,9 +179,9 @@ namespace ExpandTheGungeon.ExpandComponents
 
             foreach (var attackBehaviour in group.AttackBehaviors)
             {
-                if (attackBehaviour.Behavior is ShootGunBehavior shootGunBehavior)
+                if (attackBehaviour.Behavior is ShootGunBehavior)
                 {
-                    shootGunBehavior.StopDuringAttack = false;
+                    (attackBehaviour.Behavior as ShootGunBehavior).StopDuringAttack = false;
                 }
 
                 switch (attackBehaviour.NickName)

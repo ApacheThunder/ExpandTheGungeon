@@ -113,8 +113,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             UpdateMTGSpawnPool();
             
             Game.Enemies.LockNamespace("gungeon");
-
-            ExemptPrefabsFromCollection();
         }
 
         public static void UpdateMTGSpawnPool() {
@@ -250,37 +248,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         public static AIActor GetOrLoadByGuid_Orig(string guid) { return Instance.InternalGetByGuid(guid); }
 
-        public static void ExemptPrefabsFromCollection() {
-            GC.KeepAlive(HammerCompanionPrefab);
-            GC.KeepAlive(FriendlyCultistPrefab);
-            GC.KeepAlive(RatGrenadePrefab);
-            GC.KeepAlive(BootlegBullatPrefab);
-            GC.KeepAlive(BootlegBulletManPrefab);
-            GC.KeepAlive(BootlegBulletManBandanaPrefab);
-            GC.KeepAlive(BootlegShotgunManRedPrefab);
-            GC.KeepAlive(BootlegShotgunManBluePrefab);
-            GC.KeepAlive(CronenbergPrefab);
-            GC.KeepAlive(MetalCubeGuyWestPrefab);
-            GC.KeepAlive(AggressiveCronenbergPrefab);
-            GC.KeepAlive(CorruptedEnemyPrefab);
-            GC.KeepAlive(MonsterParasitePrefab);
-            GC.KeepAlive(com4nd0BossPrefab);
-            GC.KeepAlive(RedShotGunMan);
-            GC.KeepAlive(BlueShotGunMan);
-            GC.KeepAlive(RedShotgunManCollection);
-            GC.KeepAlive(BlueShotgunManCollection);
-            GC.KeepAlive(BulletManEyepatch);
-            GC.KeepAlive(BulletManEyepatchCollection);
-            GC.KeepAlive(CronenbergCorpseDebrisObject1);
-            GC.KeepAlive(CronenbergCorpseDebrisObject2);
-            GC.KeepAlive(CronenbergCorpseDebrisObject3);
-            GC.KeepAlive(CronenbergCorpseDebrisObject4);
-            GC.KeepAlive(AggressiveCronenbergCorpseDebrisObject);
-            GC.KeepAlive(StoneCubeCollection_West);
-            GC.KeepAlive(RatGrenadeTextures);
-        }
-
-
+        
         public static void BuildRatGrenadePrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             m_CachedTargetObject = Instantiate(GetOrLoadByGuid_Orig("14ea47ff46b54bb4a98f91ffcffb656d").gameObject);
             m_CachedTargetObject.SetActive(false);

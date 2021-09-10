@@ -287,7 +287,64 @@ namespace ExpandTheGungeon.ExpandObjects
                     clip.name = clip.name.Replace("dash_front", "dash_forward");
                     clip.name = clip.name.Replace("move_front", "move_forward");
 
-                    if (clip.name == "death_right")
+                    if (clip.name.EndsWith("forward_left_prime"))
+                    {
+                        clip.frames[5].eventAudio = "Play_ENM_bullet_dash_01";
+                        clip.frames[5].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("forward_right_prime"))
+                    {
+                        clip.frames[5].eventAudio = "Play_ENM_bullet_dash_01";
+                        clip.frames[5].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("back_right_prime"))
+                    {
+                        clip.frames[5].eventAudio = "Play_ENM_bullet_dash_01";
+                        clip.frames[5].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("back_left_prime"))
+                    {
+                        clip.frames[5].eventAudio = "Play_ENM_bullet_dash_01";
+                        clip.frames[5].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("move_back_right"))
+                    {
+                        clip.frames[2].eventAudio = "PLay_FS_ENM";
+                        clip.frames[2].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("move_back_left"))
+                    {
+                        clip.frames[2].eventAudio = "PLay_FS_ENM";
+                        clip.frames[2].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("move_forward_left"))
+                    {
+                        clip.frames[2].eventAudio = "PLay_FS_ENM";
+                        clip.frames[2].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("move_forward_right"))
+                    {
+                        clip.frames[2].eventAudio = "PLay_FS_ENM";
+                        clip.frames[2].triggerEvent = true;
+                    }
+                    else if (clip.name.EndsWith("anger"))
+                    {
+                        // Original anger clips on Shades/Smiley is over 8 frames long and was set to loop specific section while West bros are only 2 frames and loops entire clip more then once.
+                        // I have to extend this and set a loop section to make sure anger VFX only plays once.
+                        tk2dSpriteAnimationFrame[] angerFrames = new tk2dSpriteAnimationFrame[] 
+                        {
+                            DuplicateAnimationFrame(clip.frames[0]),
+                            DuplicateAnimationFrame(clip.frames[1]),
+                            DuplicateAnimationFrame(clip.frames[0]),
+                            DuplicateAnimationFrame(clip.frames[1])
+                        };
+                        clip.frames = angerFrames;
+                        clip.wrapMode = tk2dSpriteAnimationClip.WrapMode.LoopSection;
+                        clip.loopStart = 2;
+                        clip.frames[0].eventAudio = "Play_BOSS_bulletbros_anger_01";
+                        clip.frames[0].triggerEvent = true;
+                    }
+                    else if (clip.name == "death_right")
                     {
                         clip.name = "die";
 
@@ -334,6 +391,8 @@ namespace ExpandTheGungeon.ExpandObjects
                     else if (clip.name == "pound")
                     {
                         clip.name = "jump_attack";
+                        clip.frames[0].eventAudio = "Play_Boss_bulletbros_slam_01"; // was on frame 2 but needs to happen earlier since this animation goes faster for West Bros.
+                        clip.frames[0].triggerEvent = true;
                     }
                     else if (clip.name == "intro")
                     {
@@ -398,9 +457,11 @@ namespace ExpandTheGungeon.ExpandObjects
                 animator.OtherAnimations.RemoveAt(0);
 
                 // TODO remove shadow for now, because it needs special treatment, maybe even ignore it forever, not that important in the desert
-                actor.HasShadow = false;
+                /*actor.HasShadow = false;
                 actor.ShadowPrefab = null;
-                UnityEngine.Object.Destroy(outObject.transform.Find("shadow").gameObject);
+                UnityEngine.Object.Destroy(outObject.transform.Find("shadow").gameObject);*/
+
+                outObject.transform.Find("shadow").localPosition += new Vector3(1.52f,0.02f,0);
 
                 AIShooter shooter = outObject.GetComponent<AIShooter>();
 
@@ -480,5 +541,31 @@ namespace ExpandTheGungeon.ExpandObjects
                 ETGModConsole.Log($"Error setting up the western bro {whichBro}: " + e.ToString());
             }
         }
+
+        public static tk2dSpriteAnimationFrame DuplicateAnimationFrame (tk2dSpriteAnimationFrame source)
+        {
+            return new tk2dSpriteAnimationFrame()
+            {   
+                spriteCollection = source.spriteCollection,
+                spriteId = source.spriteId,
+                invulnerableFrame = source.invulnerableFrame,
+                groundedFrame = source.groundedFrame,
+                requiresOffscreenUpdate = source.requiresOffscreenUpdate,
+                eventAudio = source.eventAudio,
+                eventVfx = source.eventVfx,
+                eventStopVfx = source.eventStopVfx,
+                eventLerpEmissive = source.eventLerpEmissive,
+                eventLerpEmissiveTime = source.eventLerpEmissiveTime,
+                eventLerpEmissivePower = source.eventLerpEmissivePower,
+                forceMaterialUpdate = source.forceMaterialUpdate,
+                finishedSpawning = source.finishedSpawning,
+                triggerEvent = source.triggerEvent,
+                eventInfo = source.eventInfo,
+                eventInt = source.eventInt,
+                eventFloat = source.eventFloat,
+                eventOutline = source.eventOutline
+            };
+        }
     }
 }
+
