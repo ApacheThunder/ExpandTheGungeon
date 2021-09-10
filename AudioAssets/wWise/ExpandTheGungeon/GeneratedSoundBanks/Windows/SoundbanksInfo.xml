@@ -49,6 +49,7 @@
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
 				<Event Id="582460727" Name="Stop_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Close"/>
 				<Event Id="1648051329" Name="Stop_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Open"/>
+				<Event Id="1178149973" Name="Stop_EX_BOSS_westbros_slam_01" ObjectPath="\Events\Weapons\Stop_EX_BOSS_westbros_slam_01"/>
 				<Event Id="2148880510" Name="Stop_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDamage_01"/>
 				<Event Id="3492306034" Name="Stop_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3586982857" Name="Stop_EX_CorruptionAmbience_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_01"/>
@@ -96,6 +97,10 @@
 					<ShortName>Belly_Door_Open.wav</ShortName>
 					<Path>SFX\Belly_Door_Open_255C9D35.wem</Path>
 				</File>
+				<File Id="438768819" Language="SFX">
+					<ShortName>Play_EX_BOSS_westbros_slam_01.wav</ShortName>
+					<Path>SFX\Play_EX_BOSS_westbros_slam_01_255C9D35.wem</Path>
+				</File>
 				<File Id="440225368" Language="SFX">
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_22BDB8A3.wem</Path>
@@ -127,10 +132,6 @@
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_255C9D35.wem</Path>
-				</File>
-				<File Id="816971170" Language="SFX">
-					<ShortName>Play_BOSS_westbros_slam_01.wav</ShortName>
-					<Path>SFX\Play_BOSS_westbros_slam_01_255C9D35.wem</Path>
 				</File>
 				<File Id="861146735" Language="SFX">
 					<ShortName>BreachTransition.wav</ShortName>

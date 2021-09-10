@@ -1,4 +1,5 @@
 ﻿using Dungeonator;
+using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandObjects;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 otherWesternBros = new List<AIAnimator>();
 
-                foreach (var bro in ExpandWesternBroController.AllWesternBros)
+                foreach (var bro in ExpandStaticReferenceManager.AllWesternBros)
                 {
                     if (bro.gameObject != base.gameObject)
                     {

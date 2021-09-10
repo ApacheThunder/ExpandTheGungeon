@@ -1,4 +1,5 @@
-﻿using ExpandTheGungeon.ExpandObjects;
+﻿using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,21 +22,7 @@ namespace ExpandTheGungeon.ExpandComponents
         public float postSecondEnrageMoveSpeed;
 
         public float enrageHealToPercent;
-
-        public static List<ExpandWesternBroController> AllWesternBros = new List<ExpandWesternBroController>();
-
-        public static void ClearPerLevelData(Action<GameManager> orig, GameManager self)
-        {
-            AllWesternBros.Clear();
-            orig(self);
-        }
-
-        public static void ClearActiveGameData(Action<GameManager, bool, bool> orig, GameManager self, bool destroyGameManager, bool endSession)
-        {
-            AllWesternBros.Clear();
-            orig(self, destroyGameManager, endSession);
-        }
-
+                
         public static List<ExpandWesternBroController> GetOtherWesternBros(AIActor me)
         {
             return GetOtherWesternBros(me.gameObject);
@@ -44,7 +31,7 @@ namespace ExpandTheGungeon.ExpandComponents
         public static List<ExpandWesternBroController> GetOtherWesternBros(GameObject me)
         {
             bool flag = false;
-            List<ExpandWesternBroController> allBros = new List<ExpandWesternBroController>(AllWesternBros);
+            List<ExpandWesternBroController> allBros = new List<ExpandWesternBroController>(ExpandStaticReferenceManager.AllWesternBros);
 
             for (int i = allBros.Count - 1; i >= 0; i--)
             {
@@ -72,7 +59,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
         public void Awake()
         {
-            AllWesternBros.Add(this);
+            ExpandStaticReferenceManager.AllWesternBros.Add(this);
         }
 
         public void Update()
@@ -111,7 +98,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
         protected override void OnDestroy()
         {
-            AllWesternBros.Remove(this);
+            ExpandStaticReferenceManager.AllWesternBros.Remove(this);
             base.OnDestroy();
         }
 

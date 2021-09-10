@@ -591,7 +591,21 @@
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Play_BOSS_westbros_slam_01" ID="{1E2A7453-917A-4EE9-A22C-AEB36BB6B44F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+									<ObjectRef Name="Play_EX_BOSS_westbros_slam_01" ID="{E81A1DEE-7304-4779-9B4C-CCCD653CCEC0}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_BOSS_westbros_slam_01" ID="{820A0DEB-6E62-4943-8C56-F97D1210BE49}">
+					<ChildrenList>
+						<Action Name="" ID="{BF97E092-0BA2-4C6B-A0E5-369115A608E5}" ShortID="399714508">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Play_EX_BOSS_westbros_slam_01" ID="{E81A1DEE-7304-4779-9B4C-CCCD653CCEC0}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

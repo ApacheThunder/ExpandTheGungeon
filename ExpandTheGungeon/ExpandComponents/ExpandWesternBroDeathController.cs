@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ExpandTheGungeon.ExpandMain;
+using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents
 {
@@ -12,7 +13,7 @@ namespace ExpandTheGungeon.ExpandComponents
         private void OnDeath(Vector2 finalDeathDir)
         {
             bool oneSurvivor = false;
-            foreach (var bro in ExpandWesternBroController.AllWesternBros)
+            foreach (var bro in ExpandStaticReferenceManager.AllWesternBros)
             {
                 // if bro not null, not ourself and alive
                 if (bro && this.gameObject != bro.gameObject && bro.healthHaver && bro.healthHaver.IsAlive)

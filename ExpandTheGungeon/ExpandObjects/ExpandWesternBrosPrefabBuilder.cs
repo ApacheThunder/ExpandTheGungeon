@@ -55,10 +55,7 @@ namespace ExpandTheGungeon.ExpandObjects
 
             Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
             Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
-
-            new Hook(typeof(GameManager).GetMethod(nameof(GameManager.ClearPerLevelData)), typeof(ExpandWesternBroController).GetMethod(nameof(ExpandWesternBroController.ClearPerLevelData)));
-            new Hook(typeof(GameManager).GetMethod(nameof(GameManager.ClearActiveGameData)), typeof(ExpandWesternBroController).GetMethod(nameof(ExpandWesternBroController.ClearActiveGameData)));
-
+            
             Shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
@@ -330,7 +327,7 @@ namespace ExpandTheGungeon.ExpandObjects
                     else if (clip.name.EndsWith("anger"))
                     {
                         // Original anger clips on Shades/Smiley is over 8 frames long and was set to loop specific section while West bros are only 2 frames and loops entire clip more then once.
-                        // I have to extend this and set a loop section to make sure anger VFX only plays once.
+                        // I have to extend this and set a loop section to make sure anger SFX only plays once.
                         tk2dSpriteAnimationFrame[] angerFrames = new tk2dSpriteAnimationFrame[] 
                         {
                             DuplicateAnimationFrame(clip.frames[0]),

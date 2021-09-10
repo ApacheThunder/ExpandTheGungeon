@@ -34,8 +34,7 @@ namespace ExpandTheGungeon.ExpandMain {
             
             if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) { ExpandStats.elevatorHasBeenUsed = false; }
-
-            ExpandStaticReferenceManager.ClearStaticPerLevelData();
+                        
             ExpandStaticReferenceManager.PopulateLists();
 
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;

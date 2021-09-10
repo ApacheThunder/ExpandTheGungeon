@@ -20,6 +20,8 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook cellhook;
         public static Hook enterRoomHook;
 
+        public static Hook clearPerLevelDataHook;
+        public static Hook clearActiveGameDataHook;
         public static Hook wallmimichook;
         public static Hook Stringhook;
         public static Hook flowhook;
@@ -49,7 +51,6 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook checkforPlayerCollisionHook;
         public static Hook doorOpenHook;
         public static Hook throwGunHook;
-        public static Hook shotgunKinHook;
         public static Hook onContinueGameSelectedHook;
         public static Hook getNextTilesetHook;
         
@@ -97,6 +98,20 @@ namespace ExpandTheGungeon.ExpandMain {
 
         
         public static void InstallRequiredHooks() {
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearPerLevelData Hook...."); }
+            clearPerLevelDataHook = new Hook(
+                typeof(GameManager).GetMethod(nameof(GameManager.ClearPerLevelData), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(ClearPerLevelData), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearActiveGameData Hook...."); }
+            clearActiveGameDataHook = new Hook(
+                typeof(GameManager).GetMethod(nameof(GameManager.ClearActiveGameData), BindingFlags.Public | BindingFlags.Instance), 
+                typeof(ExpandSharedHooks).GetMethod(nameof(ClearActiveGameData), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(GameManager)
+            );
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
@@ -318,21 +333,20 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        public static void ToggleShotgunKinHook() {
-            if (shotgunKinHook == null) {
-                if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing CharacterCostumeSwapper.Start Hook...."); }
-                shotgunKinHook = new Hook(
-                    typeof(CharacterCostumeSwapper).GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Instance),
-                    typeof(ExpandSharedHooks).GetMethod("StartHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                    typeof(CharacterCostumeSwapper)
-                );
-            } else {
-                if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Uninstalling CharacterCostumeSwapper.Start Hook...."); }
-                shotgunKinHook.Dispose();
-                shotgunKinHook = null;
-            }
+
+
+        private void ClearPerLevelData(Action<GameManager> orig, GameManager self)
+        {
+            ExpandStaticReferenceManager.ClearStaticPerLevelData();
+            orig(self);
         }
-        
+
+        private void ClearActiveGameData(Action<GameManager, bool, bool> orig, GameManager self, bool destroyGameManager, bool endSession)
+        {
+            ExpandStaticReferenceManager.ClearStaticPerLevelData();
+            orig(self, destroyGameManager, endSession);
+        }
+
         private void FlagCellsHook(Action<OccupiedCells> orig, OccupiedCells self) {
             try { orig(self); } catch (Exception ex) {
                 if (ExpandStats.debugMode) {

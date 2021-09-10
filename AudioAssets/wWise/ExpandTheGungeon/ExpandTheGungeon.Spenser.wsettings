@@ -45,6 +45,7 @@
 				<Property Name="Event Action List\{6DC59465-00D5-4746-BFDF-0CFA359D8571}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="Event Action List\{71879714-707C-4879-A55A-E9846773C43B}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="Event Action List\{7CB9A6E1-CAAA-4378-92EC-57FEEB762536}\x64_Expand States" Type="string" Value=""/>
+				<Property Name="Event Action List\{820A0DEB-6E62-4943-8C56-F97D1210BE49}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="Event Action List\{84057BCB-FEB3-4CA1-B620-E9D5B9E2F742}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="Event Action List\{8461C769-F67F-42D0-8E43-020FCD98CAC7}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="Event Action List\{871238FD-CE6A-431D-87D0-86C21BC4ED3D}\x64_Expand States" Type="string" Value=""/>
@@ -110,8 +111,8 @@
 				<Property Name="PluginUserAcknowledge\iZotope Trash Distortion" Type="bool" Value="True"/>
 				<Property Name="ProjectExplorer\FirstVisible_10_1" Type="string" Value="{4C96B38B-3DB4-40C7-91C9-665510E38993}"/>
 				<Property Name="ProjectExplorer\FirstVisible_11_1" Type="string" Value="{23EC2DE3-3ED8-4B82-AC99-92E25F2E4C6B}"/>
-				<Property Name="ProjectExplorer\FirstVisible_1_1" Type="string" Value="{2388DAEA-9775-46C6-A2ED-C5222A397756}"/>
-				<Property Name="ProjectExplorer\FirstVisible_3_1" Type="string" Value="{D709CCA2-485B-40D8-8E78-EC8894D4D368}"/>
+				<Property Name="ProjectExplorer\FirstVisible_1_1" Type="string" Value="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+				<Property Name="ProjectExplorer\FirstVisible_3_1" Type="string" Value="{A69BF0FC-D84A-487C-ABDD-56F71CB2A126}"/>
 				<Property Name="ProjectExplorer\FirstVisible_4_1" Type="string" Value="{CB6175F1-6080-4A23-92EF-0807E304D0C1}"/>
 				<Property Name="ProjectExplorer\FirstVisible_6_1" Type="string" Value="{C98E673F-A24C-48A8-960F-10565FFE70A0}"/>
 				<Property Name="ProjectExplorer\FirstVisible_8_1" Type="string" Value="{41093F77-829F-4D88-8601-E8B25F3D4781}"/>

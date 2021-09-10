@@ -290,6 +290,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 GameObject ChestPuzzleInfoSign = Instantiate(ExpandPrefabs.Jungle_BlobLostSign, InfoSignPosition, Quaternion.identity);
                 ChestPuzzleInfoSign.name = "Lunk's Minigame Sign";
                 ChestPuzzleInfoSign.GetComponent<ExpandNoteDoer>().stringKey = "A minigame Lunk created based on a game he used to play in a land far away.\nGuess the right chest to continue forward.\n If you can guess the correct chest 3 times, the ultimate prize shall be gained!";
+                Destroy(ChestPuzzleInfoSign.GetComponent<SpeculativeRigidbody>());
+                Destroy(ChestPuzzleInfoSign.GetComponent<MajorBreakable>());
                 m_ParentRoom.RegisterInteractable(ChestPuzzleInfoSign.GetComponent<ExpandNoteDoer>());
             } catch (Exception ex) {
                 if (ExpandStats.debugMode) {

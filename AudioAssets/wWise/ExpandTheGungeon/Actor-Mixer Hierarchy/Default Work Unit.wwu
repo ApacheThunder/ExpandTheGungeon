@@ -1843,20 +1843,19 @@
 						<ActiveSource Name="BreachTransition" ID="{20FA7E6B-A960-4239-B3CF-3FB751C39419}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
-				<Sound Name="Play_BOSS_westbros_slam_01" ID="{1E2A7453-917A-4EE9-A22C-AEB36BB6B44F}" ShortID="296860397">
+				<Sound Name="Play_EX_BOSS_westbros_slam_01" ID="{E81A1DEE-7304-4779-9B4C-CCCD653CCEC0}" ShortID="239475433">
 					<PropertyList>
-						<Property Name="EnablePanner" Type="bool" Value="True"/>
 						<Property Name="PositioningType" Type="int16" Value="1"/>
 						<Property Name="Spatialization" Type="int16" Value="1"/>
 						<Property Name="Volume" Type="Real64">
 							<RTPCList>
-								<RTPC Name="" ID="{F4B2D9CB-BFEF-46F9-BF3B-0963700DFB4A}" ShortID="556109957">
+								<RTPC Name="" ID="{47B38E9E-4837-4C51-8DC2-C8C9E5A6521A}" ShortID="728353769">
 									<ReferenceList>
 										<Reference Name="ControlInput">
 											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
 										</Reference>
 									</ReferenceList>
-									<Curve Name="" ID="{736823C0-CF53-4710-BF93-15B274AAAB91}">
+									<Curve Name="" ID="{4CEEFBA0-7BFB-44FB-B13C-DB9E86497AD9}">
 										<PropertyList>
 											<Property Name="Flags" Type="int32" Value="3"/>
 										</PropertyList>
@@ -1889,14 +1888,11 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AudioFileSource Name="Play_BOSS_westbros_slam_01" ID="{017997D7-ABBC-4C62-A4A8-2C98716E56A0}" ShortID="816971170">
+						<AudioFileSource Name="Play_EX_BOSS_westbros_slam_01" ID="{D84E008A-6160-4862-8FB6-7619064FBD4E}" ShortID="438768819">
 							<Language>SFX</Language>
-							<AudioFile>Play_BOSS_westbros_slam_01.wav</AudioFile>
+							<AudioFile>Play_EX_BOSS_westbros_slam_01.wav</AudioFile>
 						</AudioFileSource>
 					</ChildrenList>
-					<PositioningInfo>
-						<Panner Name="" ID="{CB6B83C1-D6C0-4840-A6E5-87010E219290}"/>
-					</PositioningInfo>
 					<StateInfo>
 						<StateGroupList>
 							<StateGroupInfo>
@@ -1906,16 +1902,16 @@
 						<CustomStateList>
 							<CustomState>
 								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
-								<State Name="" ID="{C6E48FE5-400E-4E10-8531-048507487D23}" ShortID="231753377"/>
+								<State Name="" ID="{1904E5FB-7B13-4AB9-984A-E36582A20810}" ShortID="629823958"/>
 							</CustomState>
 							<CustomState>
 								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
-								<State Name="" ID="{AE405B1A-50A5-4F64-909E-177798EA9BCD}" ShortID="826201866"/>
+								<State Name="" ID="{24CB5A26-ECAC-4E4D-97B1-B4FA45B89736}" ShortID="993737106"/>
 							</CustomState>
 						</CustomStateList>
 					</StateInfo>
 					<ActiveSourceList>
-						<ActiveSource Name="Play_BOSS_westbros_slam_01" ID="{017997D7-ABBC-4C62-A4A8-2C98716E56A0}" Platform="Linked"/>
+						<ActiveSource Name="Play_EX_BOSS_westbros_slam_01" ID="{D84E008A-6160-4862-8FB6-7619064FBD4E}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>

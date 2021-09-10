@@ -14,6 +14,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static List<BeholsterShrineController> AllBeholsterShrines;
         public static List<PathingTrapController> AllMovingTraps;
         public static List<ConveyorBelt> AllConveyorBelts;
+        public static List<ExpandWesternBroController> AllWesternBros;
 
         static ExpandStaticReferenceManager() {
             AllSecretDoors = new List<ExpandSecretDoorPlacable>();
@@ -27,6 +28,9 @@ namespace ExpandTheGungeon.ExpandMain {
             //Things generated during floor generation or gameplay.
             AllBeholsterShrines = new List<BeholsterShrineController>();
             AllMovingTraps = new List<PathingTrapController>();
+
+            //West Bros List
+            AllWesternBros = new List<ExpandWesternBroController>();
         }
 
         public static void PopulateLists() {
@@ -56,6 +60,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllBeholsterShrines.Clear();
             AllMovingTraps.Clear();
             AllConveyorBelts.Clear();
+            AllWesternBros.Clear();
         }
 
         public static void ForceClearAllStaticMemory() {
@@ -66,6 +71,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllBeholsterShrines.Clear();
             AllMovingTraps.Clear();
             AllConveyorBelts.Clear();
+            AllWesternBros.Clear();
         }
     }
 }
