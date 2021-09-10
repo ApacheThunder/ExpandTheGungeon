@@ -514,8 +514,13 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandTestCommand(string[] consoleText) {
-            GC.Collect();
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            
+            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+
+            GameObject newObject = new GameObject("TestObject") { layer = 0 };
+            newObject.transform.position = CurrentPlayer.transform.position;
+
+            AkSoundEngine.PostEvent("Play_BOSS_bulletbros_slam_01", newObject);
 
             // GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
             // EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);

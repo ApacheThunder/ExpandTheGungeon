@@ -1553,6 +1553,10 @@
 							<Language>SFX</Language>
 							<AudioFile>PowBlock.wav</AudioFile>
 						</AudioFileSource>
+						<AudioFileSource Name="Play_BOSS_bulletbros_slam_01" ID="{FE2E9A13-F674-4124-B2AA-8578D61BA35B}" ShortID="373519835">
+							<Language>SFX</Language>
+							<AudioFile>Play_BOSS_bulletbros_slam_01.wav</AudioFile>
+						</AudioFileSource>
 					</ChildrenList>
 					<StateInfo>
 						<StateGroupList>
@@ -1751,6 +1755,23 @@
 							</ConvertedFileIDList>
 						</AudioFileSource>
 					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{1CD594CA-7B06-4629-9566-9A579978D219}" ShortID="600045039"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{246725B4-5D77-4750-BD95-39B9357AD3B0}" ShortID="824941218"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
 					<ActiveSourceList>
 						<ActiveSource Name="BreachTransitionFast" ID="{63799B47-4421-4F2E-BC2A-781FCC22E322}" Platform="Linked"/>
 					</ActiveSourceList>
@@ -1801,8 +1822,100 @@
 							<AudioFile>BreachTransition.wav</AudioFile>
 						</AudioFileSource>
 					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{C12ADC62-CBB5-4838-8039-BA0A3E1BAE17}" ShortID="611100556"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{CEACFF06-39AE-49FB-8E25-99FEDD2C069A}" ShortID="823184493"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
 					<ActiveSourceList>
 						<ActiveSource Name="BreachTransition" ID="{20FA7E6B-A960-4239-B3CF-3FB751C39419}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Play_BOSS_westbros_slam_01" ID="{1E2A7453-917A-4EE9-A22C-AEB36BB6B44F}" ShortID="296860397">
+					<PropertyList>
+						<Property Name="EnablePanner" Type="bool" Value="True"/>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="1"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{F4B2D9CB-BFEF-46F9-BF3B-0963700DFB4A}" ShortID="556109957">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{736823C0-CF53-4710-BF93-15B274AAAB91}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="NormalRange_Attenuation" ID="{E34E4A3F-97D5-42F6-9EEC-C3E375196CFA}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Play_BOSS_westbros_slam_01" ID="{017997D7-ABBC-4C62-A4A8-2C98716E56A0}" ShortID="816971170">
+							<Language>SFX</Language>
+							<AudioFile>Play_BOSS_westbros_slam_01.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<PositioningInfo>
+						<Panner Name="" ID="{CB6B83C1-D6C0-4840-A6E5-87010E219290}"/>
+					</PositioningInfo>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="Pause" ID="{93736008-F686-4752-BC7E-F037734C81AA}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="Paused" ID="{9EC42A63-2773-49F0-9C1E-49617EA67E9D}"/>
+								<State Name="" ID="{C6E48FE5-400E-4E10-8531-048507487D23}" ShortID="231753377"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="Unpaused" ID="{ACE36B91-212C-4E12-AF04-12EC3331E0DC}"/>
+								<State Name="" ID="{AE405B1A-50A5-4F64-909E-177798EA9BCD}" ShortID="826201866"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+					<ActiveSourceList>
+						<ActiveSource Name="Play_BOSS_westbros_slam_01" ID="{017997D7-ABBC-4C62-A4A8-2C98716E56A0}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>

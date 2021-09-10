@@ -17,6 +17,7 @@
 				<Event Id="330989735" Name="Play_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Open"/>
 				<Event Id="3501969484" Name="Play_EX_BellyDoor_Seal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Seal"/>
 				<Event Id="3121071097" Name="Play_EX_BellyDoor_Unseal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Unseal"/>
+				<Event Id="2430550659" Name="Play_EX_BOSS_westbros_slam_01" ObjectPath="\Events\Weapons\Play_EX_BOSS_westbros_slam_01"/>
 				<Event Id="797577896" Name="Play_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDamage_01"/>
 				<Event Id="2039091240" Name="Play_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3112632927" Name="Play_EX_CorruptedObjectTransform_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectTransform_01"/>
@@ -118,6 +119,10 @@
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_255C9D35.wem</Path>
+				</File>
+				<File Id="816971170" Language="SFX">
+					<ShortName>Play_BOSS_westbros_slam_01.wav</ShortName>
+					<Path>SFX\Play_BOSS_westbros_slam_01_255C9D35.wem</Path>
 				</File>
 				<File Id="861146735" Language="SFX">
 					<ShortName>BreachTransition.wav</ShortName>

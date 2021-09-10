@@ -24,6 +24,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	2228256165	Play_EX_MUS_BootlegMusic_01			\Weapons\Play_EX_MUS_BootlegMusic_01	
 	2264533643	Stop_EX_MUS_BootlegMusic_01			\Weapons\Stop_EX_MUS_BootlegMusic_01	
 	2420965190	Play_EX_Cronenberg_Die_01			\Weapons\Play_EX_Cronenberg_Die_01	
+	2430550659	Play_EX_BOSS_westbros_slam_01			\Weapons\Play_EX_BOSS_westbros_slam_01	
 	2623135779	Stop_EX_SFX_All			\Weapons\Stop_EX_SFX_All	
 	2950242728	Play_EX_CorruptionRoomTransition_02			\Weapons\Play_EX_CorruptionRoomTransition_02	
 	2950242731	Play_EX_CorruptionRoomTransition_01			\Weapons\Play_EX_CorruptionRoomTransition_01	
@@ -69,6 +70,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	661097150	BreachTransitionFast	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransitionFast_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransitionFast		542596
 	719081646	CorruptionAmbience_02	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_02		254016
 	737519471	Belly_Door_Unlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Unlock_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Unlock		13150
+	816971170	Play_BOSS_westbros_slam_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Play_BOSS_westbros_slam_01_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Play_BOSS_westbros_slam_01		517084
 	861146735	BreachTransition	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransition_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransition		705304
 	900807623	GlitchBombExplode	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombExplode_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombExplode		417356
 	908035244	RickRollMusic_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\RickRolled_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\RickRollMusic_01		111817

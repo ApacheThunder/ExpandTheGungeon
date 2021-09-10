@@ -391,7 +391,7 @@ namespace ExpandTheGungeon.ExpandObjects
                     else if (clip.name == "pound")
                     {
                         clip.name = "jump_attack";
-                        clip.frames[0].eventAudio = "Play_Boss_bulletbros_slam_01"; // was on frame 2 but needs to happen earlier since this animation goes faster for West Bros.
+                        clip.frames[0].eventAudio = "Play_EX_BOSS_westbros_slam_01"; // Uses modified sound that plays faster on the first half to account for west bros having faster animation.
                         clip.frames[0].triggerEvent = true;
                     }
                     else if (clip.name == "intro")
