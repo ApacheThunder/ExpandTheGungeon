@@ -949,9 +949,6 @@
   <ItemGroup>
     <EmbeddedResource Include="SerializedData\RoomFactoryRooms\Expand_BootlegRoom.room" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="western_bros_hand.png" />
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

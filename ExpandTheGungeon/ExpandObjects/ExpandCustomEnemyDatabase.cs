@@ -276,7 +276,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             GC.KeepAlive(CronenbergCorpseDebrisObject3);
             GC.KeepAlive(CronenbergCorpseDebrisObject4);
             GC.KeepAlive(AggressiveCronenbergCorpseDebrisObject);
-            GC.KeepAlive(WestBrosAnimations_Nome);
             GC.KeepAlive(StoneCubeCollection_West);
             GC.KeepAlive(RatGrenadeTextures);
         }

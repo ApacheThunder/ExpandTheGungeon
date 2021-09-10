@@ -75,9 +75,8 @@ namespace ExpandTheGungeon.ExpandObjects
 
         private static void SetupHand(AssetBundle assetBundle, out GameObject handPrefab, tk2dSpriteCollectionData collection)
         {
-            var texture = ItemAPI.ResourceExtractor.GetTextureFromResource("ExpandTheGungeon/western_bros_hand.png");
-            // TODO switch to this once I updated the bundle
-            //var texture = assetBundle.LoadAsset<Texture2D>("Western_Bros_Hand");
+            var texture = assetBundle.LoadAsset<Texture2D>("Western_Bros_Hand");
+
             tk2dSpriteDefinition spriteDefinition = SpriteBuilder.ConstructDefinition(texture);
             spriteDefinition.name = texture.name;
 
@@ -100,7 +99,7 @@ namespace ExpandTheGungeon.ExpandObjects
             handPrefab = assetBundle.LoadAsset<GameObject>("WestBroHandObject");
 
             var sprite = handPrefab.AddComponent<tk2dSprite>();
-            sprite.SetSprite(collection, "western_bros_hand");
+            sprite.SetSprite(collection, texture.name);
 
             handPrefab.AddComponent<PlayerHandController>();
         }
@@ -436,7 +435,7 @@ namespace ExpandTheGungeon.ExpandObjects
                         break;
                 }
 
-                if(shooter.equippedGunId == -1)
+                if (shooter.equippedGunId == -1)
                 {
                     ETGModConsole.Log("The West Bros Gun ID should have been set at this point already, but it wasn't. Assigning fallback gun.");
                     shooter.equippedGunId = isSmiley ? 35 : 22;
