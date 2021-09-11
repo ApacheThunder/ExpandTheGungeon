@@ -17,7 +17,7 @@ namespace ExpandTheGungeon.ExpandObjects
         Tuc = 2
     }
 
-    public class ExpandWesternBrosPrefabBuilder
+    public class ExpandWesternBrosPrefabBuilder : ExpandCustomEnemyDatabase
     {
         public static GameObject WestBrosAngelPrefab;
         public static GameObject WestBrosNomePrefab;
@@ -65,9 +65,9 @@ namespace ExpandTheGungeon.ExpandObjects
             BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, Collection, ShadesDebris);
             BuildWestBrosHatPrefab(assetBundle, out WestBrosTucHatPrefab, WestBros.Tuc, Collection, ShadesDebris);
 
-            BuildWestBrosBossPrefab(assetBundle, out WestBrosAngelPrefab, WestBros.Angel, false, Collection, Animation, false);
+            BuildWestBrosBossPrefab(assetBundle, out WestBrosAngelPrefab, WestBros.Angel, false, Collection, Animation);
             BuildWestBrosBossPrefab(assetBundle, out WestBrosNomePrefab, WestBros.Nome, true, Collection, Animation, true);
-            BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, Collection, Animation, false);
+            BuildWestBrosBossPrefab(assetBundle, out WestBrosTucPrefab, WestBros.Tuc, true, Collection, Animation);
         }
 
         private static void SetupHand(AssetBundle assetBundle, out GameObject handPrefab, tk2dSpriteCollectionData collection)
@@ -153,13 +153,13 @@ namespace ExpandTheGungeon.ExpandObjects
             ETGModConsole.Log(o != null ? o.ToString() : "null", debug);
         }
 
-        private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer)
+        private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer = false)
         {
-            GameObject prefab = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig(isSmiley
-                ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
-                : "c00390483f394a849c36143eb878998f").gameObject; // Shades
-
-            outObject = UnityEngine.Object.Instantiate(prefab, null, false);
+            GameObject prefab = GetOrLoadByGuid_Orig(isSmiley ? "ea40fcc863d34b0088f490f4e57f8913" : "c00390483f394a849c36143eb878998f").gameObject;
+            // Smiley
+            // Shades
+            // outObject = UnityEngine.Object.Instantiate(prefab, null, false);
+            outObject = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
             try
             {
@@ -218,9 +218,9 @@ namespace ExpandTheGungeon.ExpandObjects
                 newBroController.whichBro = whichBro;
                 newBroController.postSecondEnrageMoveSpeed = newBroController.postEnrageMoveSpeed;
 
-                UnityEngine.Object.Destroy(oldBroController);
+                Destroy(oldBroController);
 
-                UnityEngine.Object.Destroy(outObject.GetComponent<BulletBroDeathController>());
+                Destroy(outObject.GetComponent<BulletBroDeathController>());
                 outObject.AddComponent<ExpandWesternBroDeathController>();
 
                 var newMovementBehavior = new ExpandWesternBroSeekTargetBehavior();
@@ -237,8 +237,8 @@ namespace ExpandTheGungeon.ExpandObjects
                 {
                     if (!keepIntroDoer)
                     {
-                        UnityEngine.Object.Destroy(outObject.GetComponent<BulletBrosIntroDoer>());
-                        UnityEngine.Object.Destroy(outObject.GetComponent<GenericIntroDoer>());
+                        Destroy(outObject.GetComponent<BulletBrosIntroDoer>());
+                        Destroy(outObject.GetComponent<GenericIntroDoer>());
                     }
                     else
                     {
@@ -246,7 +246,7 @@ namespace ExpandTheGungeon.ExpandObjects
                         BulletBrosIntroDoer bulletBrosIntroDoer = outObject.GetComponent<BulletBrosIntroDoer>();
 
                         // destroy it so we can add our own
-                        UnityEngine.Object.Destroy(bulletBrosIntroDoer);
+                        Destroy(bulletBrosIntroDoer);
 
                         GenericIntroDoer genericIntroDoer = outObject.GetComponent<GenericIntroDoer>();
 
@@ -452,41 +452,76 @@ namespace ExpandTheGungeon.ExpandObjects
                 AIAnimator animator = outObject.GetComponent<AIAnimator>();
                 // removes the 'appear' animation
                 animator.OtherAnimations.RemoveAt(0);
-
-                // TODO remove shadow for now, because it needs special treatment, maybe even ignore it forever, not that important in the desert
-                /*actor.HasShadow = false;
-                actor.ShadowPrefab = null;
-                UnityEngine.Object.Destroy(outObject.transform.Find("shadow").gameObject);*/
-
+                
                 outObject.transform.Find("shadow").localPosition += new Vector3(1.52f,0.02f,0);
-
+                
                 AIShooter shooter = outObject.GetComponent<AIShooter>();
 
+                string m_CachedShooter = JsonUtility.ToJson(shooter);
+                // Caching the current localPosition of gunAttachPoint as it's going to get nuked soon.
+                Vector3 m_CachedGunAttachPointPosition = shooter.gunAttachPoint.localPosition;
+                
+                // AIShooter has some stuff setup prior to game object getting disabled. This ensures old stuff gets properly nuked.
+                GunInventory m_inventory = ReflectionHelpers.ReflectGetField<GunInventory>(typeof(AIShooter), "m_inventory", shooter);
+                List<PlayerHandController> m_attachedHands = ReflectionHelpers.ReflectGetField<List<PlayerHandController>>(typeof(AIShooter), "m_attachedHands", shooter);
+
+                // Removes old Smiley/Shades gun sprite renderers from main renderer
+                for (int i = 0; i < m_inventory.AllGuns.Count; i++) {
+                    sprite.DetachRenderer(m_inventory.AllGuns[i].GetSprite());
+                    Destroy(m_inventory.AllGuns[i].gameObject);
+                }
+                sprite.DetachRenderer(m_inventory.CurrentGun.GetSprite());
+                Destroy(m_inventory.CurrentGun.gameObject);
+
+
+                // Gets rid of old hands
+                // AIShooter had also attached the hand's renderer's to the gun's sprite but since the previous gun was nuked it doesn't matter.
+                foreach (PlayerHandController hand in m_attachedHands)
+                {
+                    Destroy(hand.gameObject);
+                }
+
+
+                Destroy(shooter.gunAttachPoint.gameObject);
+                Destroy(shooter);
+
+                // Now that old AIShooter is gone we can add a new one.
+                // This time host object is already inactive so don't have to worry about some unneeded trash hanging around. :P
+                shooter = outObject.AddComponent<AIShooter>();
+                // Restore some fields the previous AIShooter had.
+                JsonUtility.FromJsonOverwrite(m_CachedShooter, shooter);
+
+                // Setup new GunAttachPoint to avoid using any remnent of old AIShooter.
+                GameObject GunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
+                GunAttachPoint.transform.localPosition = m_CachedGunAttachPointPosition;
+                GunAttachPoint.transform.SetParent(outObject.transform);
+
+                shooter.gunAttachPoint = GunAttachPoint.transform;
                 shooter.handObject = WestBrosHandPrefab.GetComponent<PlayerHandController>();
 
+
                 // I don't know why they were on to begin with
-                shooter.ToggleHandRenderers(false, "BroController");
+                // Commented this out. Now that AIShooter is proper nuked and rebuilt, we don't have to do this anymore. :D
+                // shooter.ToggleHandRenderers(false, "BroController");
 
                 DebrisObject hatPrefab = null;
 
                 switch (whichBro)
                 {
                     case WestBros.Angel:
-                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
+                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.5f);
                         shooter.equippedGunId = WestBrosAngelGunID;
                         WestBrosAngelGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosAngelHatPrefab.GetComponent<DebrisObject>();
                         break;
-
                     case WestBros.Nome:
-                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.4f);
+                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.4f);
                         shooter.equippedGunId = WestBrosNomeGunID;
                         WestBrosNomeGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosNomeHatPrefab.GetComponent<DebrisObject>();
                         break;
-
                     case WestBros.Tuc:
-                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
+                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.5f);
                         shooter.equippedGunId = WestBrosTucGunID;
                         WestBrosTucGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosTucHatPrefab.GetComponent<DebrisObject>();
@@ -499,7 +534,7 @@ namespace ExpandTheGungeon.ExpandObjects
                     shooter.equippedGunId = isSmiley ? 35 : 22;
                 }
 
-                shooter.RegenerateCache();
+                // shooter.RegenerateCache();
 
                 var hatLauncher = outObject.GetComponentInChildren<ExplosionDebrisLauncher>();
 
@@ -529,9 +564,9 @@ namespace ExpandTheGungeon.ExpandObjects
 
                 actor.RegenerateCache();
 
-                ExpandCustomEnemyDatabase.AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
+                AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(outObject);
-                UnityEngine.Object.DontDestroyOnLoad(outObject);
+                DontDestroyOnLoad(outObject);
             }
             catch (Exception e)
             {

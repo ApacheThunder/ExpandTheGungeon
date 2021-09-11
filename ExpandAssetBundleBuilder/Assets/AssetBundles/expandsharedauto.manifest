@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1094628367
+CRC: 38207112
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6d4a861209e9d27120a1bf5a72d2a81d
+    Hash: de3a5f9b7baee5f3e68a45b433b66657
   TypeTreeHash:
     serializedVersion: 2
     Hash: f640b6811a558e00116c1340360ed0da
@@ -569,6 +569,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_TurtleMelon_Box_Layout.png
 - Assets/ExpandTextures/AIActors/GungeoneerMimic/PlayerMimicMirror_MimicCrack_05.png
 - Assets/ExpandTextures/RickRoll/music_switch_activate_003.png
+- Assets/ExpandPrefabs/AIActors/GunAttachPoint.prefab
 - Assets/ExpandTextures/AIActors/BootlegBulletMan/bulletman_hit_right_005.png
 - Assets/ExpandTextures/RickRoll/RickRoll_06.png
 - Assets/ExpandTextures/AIActors/BootlegBulletManBandana/bulletmanbandana_spawn_002.png

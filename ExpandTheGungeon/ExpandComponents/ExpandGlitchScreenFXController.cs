@@ -213,7 +213,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                         break;
                     case ShaderType.VHSOldFilm:
                         Pixelator.Instance.SetFreezeFramePower(0, false);
-                        Pixelator.Instance.SetVignettePower(0);
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSBasic:

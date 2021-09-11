@@ -163,26 +163,25 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield return new WaitForSeconds(0.7f);
             AkSoundEngine.PostEvent("play_obj_chest_open_01", gameObject);
             DoConfetti(sprite.WorldBottomCenter);
+            PickupObject.ItemQuality targetQuality = PickupObject.ItemQuality.D;
+            float m_RandomFloat = UnityEngine.Random.value;
             if (UnityEngine.Random.value < 0.3) {
-                PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.B;
+                targetQuality = (m_RandomFloat >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.B;
+            } else {
+                targetQuality = (m_RandomFloat >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.C;
+            }
+            SurpriseChestEnemySpawnPool = SurpriseChestEnemySpawnPool.Shuffle();
+            AIActor Enemy = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(SurpriseChestEnemySpawnPool)), sprite.WorldCenter + new Vector2(0, 1), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
+            if (Enemy) {
+                Enemy.IgnoreForRoomClear = false;
                 GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
                 PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
-                if (item) { LootEngine.SpawnItem(item.gameObject, (sprite.WorldCenter + new Vector2(0, 1)), new Vector2(0, 1), 0f, true, false, false); }
-            } else {
-                SurpriseChestEnemySpawnPool = SurpriseChestEnemySpawnPool.Shuffle();
-                AIActor Enemy = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(SurpriseChestEnemySpawnPool)), sprite.WorldCenter + new Vector2(0, 1), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
-                if (Enemy && !Enemy.IgnoreForRoomClear) {
-                    PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.C;
-                    GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
-                    PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
-                    if (item) { Enemy.AdditionalSafeItemDrops.Add(item); }
-                }
-                yield return null;
-                if (Enemy && !Enemy.IgnoreForRoomClear) { m_room.SealRoom(); }
+                if (item) { Enemy.AdditionalSafeItemDrops.Add(item); }
             }
+            yield return null;
+            if (Enemy && !Enemy.IgnoreForRoomClear) { m_room.SealRoom(); }
             yield break;
         }
-
 
         private IEnumerator DoRickRoll() {
             yield return new WaitForSeconds(0.1f);

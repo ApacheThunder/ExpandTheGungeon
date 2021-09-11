@@ -13,7 +13,7 @@ namespace ExpandTheGungeon.ExpandComponents
         private bool initialized;
 
         private bool finished;
-
+        
         private GameObject m_ScreenFXObject;
 
         private AIAnimator thisWesternBro;
@@ -69,12 +69,12 @@ namespace ExpandTheGungeon.ExpandComponents
                 {
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
-
-                    this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                 }
 
                 this.initialized = true;
             }
+
         }
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators)
@@ -139,37 +139,30 @@ namespace ExpandTheGungeon.ExpandComponents
 
         private IEnumerator DoIntro()
         {
-            //this.thisWesternBro.aiActor.ToggleRenderers(true);
             this.thisWesternBro.PlayUntilFinished("intro", false, null, -1f, false);
-            //SpriteOutlineManager.ToggleOutlineRenderers(this.thisWesternBro.sprite, true);
-
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
             this.thisWesternBro.FacingDirection = facingDirection;
 
             foreach (var bro in otherWesternBros)
             {
-                //bro.aiActor.ToggleRenderers(true);
                 bro.PlayUntilFinished("intro", false, null, -1f, false);
-                //SpriteOutlineManager.ToggleOutlineRenderers(bro.sprite, true);
-
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
             }
 
-            while (this.thisWesternBro.IsPlaying("intro"))
+            this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+
+            foreach (var bro in otherWesternBros)
             {
-                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
-
-                foreach (var bro in otherWesternBros)
-                {
-                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
-                }
-
-                yield return null;
+                bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
             }
 
-            this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
+            while (this.thisWesternBro.IsPlaying("intro"))
+            {
+                yield return null;
+            }
             this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
+            this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
 
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
             this.thisWesternBro.FacingDirection = facingDirection;
@@ -191,7 +184,6 @@ namespace ExpandTheGungeon.ExpandComponents
                 yield return null;
                 elapsed += GameManager.INVARIANT_DELTA_TIME;
             }
-
             this.finished = true;
             yield break;
         }
@@ -200,10 +192,8 @@ namespace ExpandTheGungeon.ExpandComponents
         {
             this.finished = true;
             base.StopAllCoroutines();
-
-            this.thisWesternBro.aiActor.ToggleRenderers(true);
+            
             SpriteOutlineManager.ToggleOutlineRenderers(this.thisWesternBro.sprite, true);
-            this.thisWesternBro.sprite.renderer.enabled = true;
             this.thisWesternBro.EndAnimation();
             this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
             this.thisWesternBro.specRigidbody.CollideWithOthers = true;
@@ -215,15 +205,12 @@ namespace ExpandTheGungeon.ExpandComponents
 
             foreach (var bro in otherWesternBros)
             {
-                bro.aiActor.ToggleRenderers(true);
                 SpriteOutlineManager.ToggleOutlineRenderers(bro.sprite, true);
-                bro.sprite.renderer.enabled = true;
                 bro.EndAnimation();
                 bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
                 bro.specRigidbody.CollideWithOthers = true;
                 bro.aiActor.IsGone = false;
                 bro.aiActor.State = AIActor.ActorState.Normal;
-
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
             }
