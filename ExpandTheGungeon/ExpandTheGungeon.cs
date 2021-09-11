@@ -37,7 +37,7 @@ namespace ExpandTheGungeon {
 
         private static bool m_ShotGunSecretWasActive = false;
 
-        private enum WaitType { ShotgunSecret, LanguageFix };
+        private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
 
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
@@ -161,8 +161,6 @@ namespace ExpandTheGungeon {
                     "Zelda Puzzle Room 3",
                     "Special Entrance"
                 };
-
-                if (ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
@@ -179,10 +177,13 @@ namespace ExpandTheGungeon {
 
             InitConsoleCommands(ConsoleCommandName);
 
+            if (ExpandStats.ShotgunKinSecret | ExpandStats.EnableTestDungeonFlow | ExpandStats.EnableLanguageFix) {
+                GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
+            }
+
             if (ExpandStats.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.LanguageFix));
             }
 
             // This should fix issus with Pasts trying to spawn inactive versions of custom enemies
@@ -224,38 +225,40 @@ namespace ExpandTheGungeon {
         }
 
 
-        private static IEnumerator WaitForFoyerLoad(WaitType waitType) {
+        private static IEnumerator WaitForFoyerLoad() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
-            yield return null;
-            switch (waitType) {
-                case WaitType.LanguageFix:
-                    GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-                    StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-                    yield break;
-                case WaitType.ShotgunSecret:
-                    CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
-                    if (m_Characters != null && m_Characters.Length > 0) {
-                        CharacterCostumeSwapper BulletManSelector = null;
-                        foreach (CharacterCostumeSwapper m_Character in m_Characters) {
-                            if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
-                                BulletManSelector = m_Character;
-                                break;
-                            }
-                        }
-                        yield return null;
-                        if (BulletManSelector) {
-                            bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
-                            if (Allow) {
-                                FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
-                                m_active.SetValue(BulletManSelector, true);
-                                BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
-                                BulletManSelector.CostumeSprite.renderer.enabled = false;
-                                m_ShotGunSecretWasActive = true;
-                            }
+            if (ExpandStats.EnableLanguageFix) {
+                GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+                StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+            }
+            if (ExpandStats.ShotgunKinSecret) {
+                CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
+                if (m_Characters != null && m_Characters.Length > 0) {
+                    CharacterCostumeSwapper BulletManSelector = null;
+                    foreach (CharacterCostumeSwapper m_Character in m_Characters) {
+                        if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
+                            BulletManSelector = m_Character;
+                            break;
                         }
                     }
-                    yield break;
+                    yield return null;
+                    if (BulletManSelector) {
+                        bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
+                        if (Allow) {
+                            FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
+                            m_active.SetValue(BulletManSelector, true);
+                            BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
+                            BulletManSelector.CostumeSprite.renderer.enabled = false;
+                            m_ShotGunSecretWasActive = true;
+                        }
+                    }
+                }
             }
+            if (ExpandStats.EnableTestDungeonFlow) {
+                GameManager.Instance.InjectedFlowPath = ExpandStats.TestFlow;
+                GameManager.Instance.InjectedLevelName = ExpandStats.TestFloor;
+            }
+            yield break;
         }
         
         private void SetupItemAPI(AssetBundle expandSharedAssets1) {
@@ -296,7 +299,9 @@ namespace ExpandTheGungeon {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
-            if (m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad(WaitType.ShotgunSecret)); }
+            if ((m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) | ExpandStats.EnableTestDungeonFlow) {
+                GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
+            }
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {

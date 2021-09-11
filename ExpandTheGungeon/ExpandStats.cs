@@ -5,6 +5,9 @@ namespace ExpandTheGungeon {
 
     public static class ExpandStats {
 
+        public static bool EnableTestDungeonFlow = false;
+        public static string TestFlow = "Test_CustomRoom_Flow";
+        public static string TestFloor = "tt_phobos";
         public static bool debugMode = false;        
         public static bool youtubeSafeMode = false;
         public static bool IsHardModeBuild = false;
@@ -26,6 +29,9 @@ namespace ExpandTheGungeon {
         public static float randomSeed = 0.5f;
         
         public static void OverwriteUserSettings(ExpandCachedStats stats) {
+            EnableTestDungeonFlow = stats.EnableTestDungeonFlow;
+            TestFlow = stats.TestFlow;
+            TestFloor = stats.TestFloor;
             debugMode = stats.debugMode;
             youtubeSafeMode = stats.youtubeSafeMode;
             IsHardModeBuild = stats.IsHardModeBuild;
@@ -38,10 +44,12 @@ namespace ExpandTheGungeon {
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             JungleRainIntensity = stats.JungleRainIntensity;
         }
-
     }
 
     public class ExpandCachedStats : ScriptableObject {
+        public bool EnableTestDungeonFlow;
+        public string TestFlow;
+        public string TestFloor;
         public bool debugMode;
         public bool youtubeSafeMode;
         public bool IsHardModeBuild;
@@ -56,6 +64,9 @@ namespace ExpandTheGungeon {
         public int GameLanguage;
         
         public ExpandCachedStats() {
+            EnableTestDungeonFlow = ExpandStats.EnableTestDungeonFlow;
+            TestFlow = ExpandStats.TestFlow;
+            TestFloor = ExpandStats.TestFloor;
             debugMode = ExpandStats.debugMode;
             youtubeSafeMode = ExpandStats.youtubeSafeMode;
             IsHardModeBuild = ExpandStats.IsHardModeBuild;

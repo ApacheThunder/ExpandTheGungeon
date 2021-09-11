@@ -1,6 +1,7 @@
 ﻿using Dungeonator;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandObjects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,16 +66,34 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
 
+                this.thisWesternBro.aiAnimator.enabled = false;
+
+                this.thisWesternBro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
+
                 foreach (var bro in otherWesternBros)
                 {
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
                     bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+                    bro.aiAnimator.enabled = false;
+                    bro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
                 }
 
                 this.initialized = true;
             }
 
+        }
+
+        private void AnimationEventTriggered(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip, int frame)
+        {
+            if (clip.GetFrame(frame).eventInfo == "guntoggle")
+            {
+                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
+                foreach (var bro in otherWesternBros)
+                {
+                    bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
+                }
+            }
         }
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators)
@@ -93,13 +112,15 @@ namespace ExpandTheGungeon.ExpandComponents
                     animators.Add(bro.spriteAnimator);
                 }
 
-                this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
+                // this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
+                this.thisWesternBro.spriteAnimator.Play("idle");
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
 
                 foreach (var bro in otherWesternBros)
                 {
-                    bro.PlayUntilFinished("idle", false, null, -1f, false);
+                    // bro.PlayUntilFinished("idle", false, null, -1f, false);
+                    bro.spriteAnimator.Play("idle");
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
                 }
@@ -139,13 +160,15 @@ namespace ExpandTheGungeon.ExpandComponents
 
         private IEnumerator DoIntro()
         {
-            this.thisWesternBro.PlayUntilFinished("intro", false, null, -1f, false);
+            // this.thisWesternBro.PlayUntilFinished("intro", false, null, -1f, false);
+            this.thisWesternBro.spriteAnimator.Play("intro");
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
             this.thisWesternBro.FacingDirection = facingDirection;
 
             foreach (var bro in otherWesternBros)
             {
-                bro.PlayUntilFinished("intro", false, null, -1f, false);
+                // bro.PlayUntilFinished("intro", false, null, -1f, false);
+                bro.spriteAnimator.Play("intro");
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
             }
@@ -157,25 +180,29 @@ namespace ExpandTheGungeon.ExpandComponents
                 bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
             }
 
-            while (this.thisWesternBro.IsPlaying("intro"))
+            // while (this.thisWesternBro.IsPlaying("intro"))
+            while (this.thisWesternBro.spriteAnimator.IsPlaying("intro"))
             {
                 yield return null;
             }
-            this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
-            this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
-
-            this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
-            this.thisWesternBro.FacingDirection = facingDirection;
 
             foreach (var bro in otherWesternBros)
             {
-                bro.PlayUntilFinished("idle", false, null, -1f, false);
-                bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
+                // bro.PlayUntilFinished("idle", false, null, -1f, false);
+                bro.spriteAnimator.Play("intro2");
+                // bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
 
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
             }
 
+            // this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
+            // this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
+            this.thisWesternBro.spriteAnimator.Play("intro2");
+
+            this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
+            this.thisWesternBro.FacingDirection = facingDirection;
+            
             float elapsed = 0f;
             float duration = 1f;
 
@@ -192,7 +219,9 @@ namespace ExpandTheGungeon.ExpandComponents
         {
             this.finished = true;
             base.StopAllCoroutines();
-            
+
+            this.thisWesternBro.aiAnimator.enabled = true;
+
             SpriteOutlineManager.ToggleOutlineRenderers(this.thisWesternBro.sprite, true);
             this.thisWesternBro.EndAnimation();
             this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
@@ -205,6 +234,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
             foreach (var bro in otherWesternBros)
             {
+                bro.aiAnimator.enabled = true;
                 SpriteOutlineManager.ToggleOutlineRenderers(bro.sprite, true);
                 bro.EndAnimation();
                 bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);

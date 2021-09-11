@@ -49,16 +49,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(TestSecretRoomNode, TestRewardNode);
 
             m_CachedFlow.AddNodeToFlow(TestShopNode, TestRoomNode_01);
-            // m_CachedFlow.AddNodeToFlow(SecondSecretRoom, TestShopNode);
-            
-            m_CachedFlow.AddNodeToFlow(TestRoomNode_02, TestShopNode);
-            
-
-            m_CachedFlow.AddNodeToFlow(testConnectorNode01, TestRoomNode_01);
-
-            m_CachedFlow.AddNodeToFlow(bossfoyerNode, testConnectorNode01);
+            m_CachedFlow.AddNodeToFlow(bossfoyerNode, TestShopNode);
             m_CachedFlow.AddNodeToFlow(bossNode, bossfoyerNode);
             m_CachedFlow.AddNodeToFlow(exitNode, bossNode);
+            // m_CachedFlow.AddNodeToFlow(SecondSecretRoom, TestShopNode);
+            
+            m_CachedFlow.AddNodeToFlow(testConnectorNode01, TestRoomNode_01);
+            m_CachedFlow.AddNodeToFlow(TestRoomNode_02, testConnectorNode01);
 
             m_CachedFlow.FirstNode = entranceNode;
 

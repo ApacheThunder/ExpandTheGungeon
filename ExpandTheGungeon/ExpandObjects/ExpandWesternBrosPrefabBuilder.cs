@@ -376,6 +376,14 @@ namespace ExpandTheGungeon.ExpandObjects
                         appear.wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
                         appear.name = "appear";
                         clipsToAdd.Add(appear);
+
+                        tk2dSpriteAnimationClip introguntoggle = ExpandUtility.DuplicateAnimationClip(clip);
+                        introguntoggle.wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
+                        introguntoggle.name = "intro2";
+                        clipsToAdd.Add(introguntoggle);
+
+                        introguntoggle.frames[0].eventInfo = "guntoggle";
+                        introguntoggle.frames[0].triggerEvent = true;
                     }
                     else if (clip.name == "summon")
                     {
@@ -394,7 +402,8 @@ namespace ExpandTheGungeon.ExpandObjects
                     else if (clip.name == "intro")
                     {
                         clip.wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
-
+                        // clip.frames[(clip.frames.Length - 1)].eventInfo = "guntoggle";
+                        // clip.frames[(clip.frames.Length - 1)].triggerEvent = true;
                         // this is setup in case we want the intro to continue looping during the boss card instead of the idle animation
                         // requires to change the intro doer so it sets finished to true once it reaches the first loop
 
