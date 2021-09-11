@@ -99,7 +99,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     TexturePlayer.isLooping = true;
                     TexturePlayer.renderMode = VideoRenderMode.APIOnly;
                     TexturePlayer.clip = OldFilmClip;
-                    Pixelator.Instance.SetFreezeFramePower(1, false);
+                    Pixelator.Instance.SetSaturationColorPower(Color.white, 1);
                     break;
                 case ShaderType.VHSBasic:
                     ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
@@ -212,7 +212,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSOldFilm:
-                        Pixelator.Instance.SetFreezeFramePower(0, false);
+                        Pixelator.Instance.SetSaturationColorPower(Color.white, 0);
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSBasic:

@@ -518,19 +518,19 @@ namespace ExpandTheGungeon.ExpandObjects
                 switch (whichBro)
                 {
                     case WestBros.Angel:
-                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.5f);
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
                         shooter.equippedGunId = WestBrosAngelGunID;
                         WestBrosAngelGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosAngelHatPrefab.GetComponent<DebrisObject>();
                         break;
                     case WestBros.Nome:
-                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.4f);
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.4f);
                         shooter.equippedGunId = WestBrosNomeGunID;
                         WestBrosNomeGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosNomeHatPrefab.GetComponent<DebrisObject>();
                         break;
                     case WestBros.Tuc:
-                        shooter.gunAttachPoint.position = new Vector3(-0.98f, 0.5f);
+                        shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
                         shooter.equippedGunId = WestBrosTucGunID;
                         WestBrosTucGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosTucHatPrefab.GetComponent<DebrisObject>();

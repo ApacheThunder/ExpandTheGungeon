@@ -61,11 +61,13 @@ namespace ExpandTheGungeon.ExpandComponents
                     }
                 }
 
+                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
                 
                 foreach (var bro in otherWesternBros)
                 {
+                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
                 }
@@ -102,8 +104,7 @@ namespace ExpandTheGungeon.ExpandComponents
                 {
                     animators.Add(bro.spriteAnimator);
                 }
-
-                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+                
                 this.thisWesternBro.aiAnimator.enabled = false;
                 this.thisWesternBro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
 
@@ -116,7 +117,6 @@ namespace ExpandTheGungeon.ExpandComponents
                     bro.spriteAnimator.Play("idle");
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
-                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                     bro.aiAnimator.enabled = false;
                     bro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
                 }
