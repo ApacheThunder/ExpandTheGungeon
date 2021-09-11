@@ -63,20 +63,11 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
-
-                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
-
-                this.thisWesternBro.aiAnimator.enabled = false;
-
-                this.thisWesternBro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
-
+                
                 foreach (var bro in otherWesternBros)
                 {
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
-                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
-                    bro.aiAnimator.enabled = false;
-                    bro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
                 }
 
                 this.initialized = true;
@@ -112,17 +103,22 @@ namespace ExpandTheGungeon.ExpandComponents
                     animators.Add(bro.spriteAnimator);
                 }
 
-                // this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
+                this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+                this.thisWesternBro.aiAnimator.enabled = false;
+                this.thisWesternBro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
+
                 this.thisWesternBro.spriteAnimator.Play("idle");
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
 
                 foreach (var bro in otherWesternBros)
                 {
-                    // bro.PlayUntilFinished("idle", false, null, -1f, false);
                     bro.spriteAnimator.Play("idle");
                     bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                     bro.FacingDirection = facingDirection;
+                    bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
+                    bro.aiAnimator.enabled = false;
+                    bro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
                 }
             }
 
@@ -160,14 +156,12 @@ namespace ExpandTheGungeon.ExpandComponents
 
         private IEnumerator DoIntro()
         {
-            // this.thisWesternBro.PlayUntilFinished("intro", false, null, -1f, false);
             this.thisWesternBro.spriteAnimator.Play("intro");
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
             this.thisWesternBro.FacingDirection = facingDirection;
 
             foreach (var bro in otherWesternBros)
             {
-                // bro.PlayUntilFinished("intro", false, null, -1f, false);
                 bro.spriteAnimator.Play("intro");
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
@@ -179,8 +173,7 @@ namespace ExpandTheGungeon.ExpandComponents
             {
                 bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
             }
-
-            // while (this.thisWesternBro.IsPlaying("intro"))
+            
             while (this.thisWesternBro.spriteAnimator.IsPlaying("intro"))
             {
                 yield return null;
@@ -188,16 +181,11 @@ namespace ExpandTheGungeon.ExpandComponents
 
             foreach (var bro in otherWesternBros)
             {
-                // bro.PlayUntilFinished("idle", false, null, -1f, false);
                 bro.spriteAnimator.Play("intro2");
-                // bro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
 
                 bro.aiShooter.AimAtPoint(bro.aiActor.CenterPosition + gunOffset);
                 bro.FacingDirection = facingDirection;
             }
-
-            // this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(true, rendererReason);
-            // this.thisWesternBro.PlayUntilFinished("idle", false, null, -1f, false);
             this.thisWesternBro.spriteAnimator.Play("intro2");
 
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
