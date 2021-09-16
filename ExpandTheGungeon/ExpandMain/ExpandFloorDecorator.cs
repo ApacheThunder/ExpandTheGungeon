@@ -167,7 +167,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
 
             if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && !currentRoom.IsMaintenanceRoom() &&
-                !currentRoom.GetRoomName().StartsWith("Boss Foyer") && currentRoom.RoomVisualSubtype == 0)
+                !currentRoom.GetRoomName().StartsWith("Boss Foyer"))
             {
                 if (Random.value <= 0.6f) {
             
@@ -177,8 +177,6 @@ namespace ExpandTheGungeon.ExpandMain {
                     if (Random.value <= 0.3f) {
                         MinMushroomCount = 6;
                         MaxMushroomCount = 12;
-                    } else if (roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
-                        MaxMushroomCount = 10;
                     }
 
                     int X = currentRoom.area.dimensions.x;
@@ -192,7 +190,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     int MushroomCount = Random.Range(MinMushroomCount, MaxMushroomCount);
                     
                     for (int i = 0; i < MushroomCount; i++) {
-                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 3, avoidExits: true, PositionRelativeToRoom: true);
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 4, 3, avoidExits: true, PositionRelativeToRoom: true);
                         
                         if (RandomVector.HasValue) {
                             GameObject alarmMushroomObject = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().InstantiateObject(currentRoom, RandomVector.Value, true);
@@ -210,58 +208,62 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
-            if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
-            if (validCellsCached.Count == 0) {
-                for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
-                    for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
-                        bool isInvalid = false;
-                        IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
+            if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }
+            try { 
+                if (validCellsCached.Count == 0) {
+                    for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
+                        for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
+                            bool isInvalid = false;
+                            IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
 
-                        if (!dungeon.data.CheckInBoundsAndValid(TargetPosition)) { isInvalid = true; break; }
+                            if (!dungeon.data.CheckInBoundsAndValid(TargetPosition)) { isInvalid = true; break; }
 
-                        // Try and detect those pesky untrimmed rooms. :P
-                        RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
-                        if (ActualRoom == null | ActualRoom != currentRoom) { isInvalid = true; break; }
-                        // if (dungeon.data[TargetPosition].parentRoom != currentRoom) { isInvalid = true; break; }
+                            // Try and detect those pesky untrimmed rooms. :P
+                            RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
+                            if (ActualRoom == null | ActualRoom != currentRoom) { isInvalid = true; break; }
+                            // if (dungeon.data[TargetPosition].parentRoom != currentRoom) { isInvalid = true; break; }
 
-                        if (isCactusDecoration) { if (!dungeon.data.isPlainEmptyCell(TargetPosition.X, TargetPosition.Y)) { isInvalid = true; break; } }
+                            if (isCactusDecoration) { if (!dungeon.data.isPlainEmptyCell(TargetPosition.X, TargetPosition.Y)) { isInvalid = true; break; } }
 
-                        if (avoidExits && ExitClearence > 0) {
-                            for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
-                                for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
-                                    IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
-                                    if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
-                                        CellData cellData = dungeon.data[targetArea1];
-                                        if (cellData.isExitCell | cellData.isDoorFrameCell) { isInvalid = true; break; }
-                                    }
-                                }
-                                if (isInvalid) { break; }
-                            }
-                        }
-
-                        if (Clearence > 0) { 
-                            for(int x = (0 - Clearence); x <= Clearence; x++) {
-                                for(int y = (0 - Clearence); y <= Clearence; y++) {
-                                    IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
-                                    if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
-                                        CellData cellData = dungeon.data[targetArea1];
-                                        if (avoidPits && dungeon.data.isPit(targetArea1.x, targetArea1.y)) { isInvalid = true; break; }
-                                        if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
-                                            cellData.IsTopWall() | cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | 
-                                            cellData.isWallMimicHideout | dungeon.data.isWall(targetArea1.x, targetArea1.y) | 
-                                            dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
-                                        {
-                                            isInvalid = true;
-                                            break;
+                            if (avoidExits && ExitClearence > 0) {
+                                for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
+                                    for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
+                                        IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
+                                        if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
+                                            CellData cellData = dungeon.data[targetArea1];
+                                            if (cellData.isExitCell | cellData.isDoorFrameCell) { isInvalid = true; break; }
                                         }
                                     }
+                                    if (isInvalid) { break; }
                                 }
-                                if (isInvalid) { break; }
                             }
+
+                            if (Clearence > 0) { 
+                                for(int x = (0 - Clearence); x <= Clearence; x++) {
+                                    for(int y = (0 - Clearence); y <= Clearence; y++) {
+                                        IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
+                                        if (dungeon.data.CheckInBoundsAndValid(targetArea1) && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
+                                            CellData cellData = dungeon.data[targetArea1];
+                                            if (avoidPits && dungeon.data.isPit(targetArea1.x, targetArea1.y)) { isInvalid = true; break; }
+                                            if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
+                                                cellData.IsTopWall() | cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | 
+                                                cellData.isWallMimicHideout | dungeon.data.isWall(targetArea1.x, targetArea1.y) | 
+                                                dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
+                                            {
+                                                isInvalid = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (isInvalid) { break; }
+                                }
+                            }
+                            if (!isInvalid && !validCellsCached.Contains(TargetPosition)) { validCellsCached.Add(TargetPosition); }
                         }
-                        if (!isInvalid && !validCellsCached.Contains(TargetPosition)) { validCellsCached.Add(TargetPosition); }
                     }
                 }
+            } catch (System.Exception){
+
             }
             if (validCellsCached.Count > 0) {
                 IntVector2 SelectedCell = BraveUtility.RandomElement(validCellsCached);

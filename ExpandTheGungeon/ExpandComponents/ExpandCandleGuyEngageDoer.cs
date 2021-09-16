@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace ExpandTheGungeon.ExpandComponents {
+﻿namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandCandleGuyEngageDoer : CustomEngageDoer {
     

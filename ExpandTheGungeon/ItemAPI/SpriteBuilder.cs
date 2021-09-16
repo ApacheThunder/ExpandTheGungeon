@@ -13,50 +13,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private static tk2dSpriteCollectionData ammonomiconCollection = AmmonomiconController.ForceInstance.EncounterIconCollection;
 
         private static tk2dSprite baseSprite = PickupObjectDatabase.GetByEncounterName("singularity").GetComponent<tk2dSprite>();
-
-        public static GameObject SpriteFromFile(string spriteName, GameObject obj = null, bool copyFromExisting = true) {
-			string fileName = spriteName.Replace(".png", "");
-			Texture2D textureFromFile = ResourceExtractor.GetTextureFromFile(fileName);
-			bool flag = textureFromFile == null;
-			GameObject result;
-			if (flag) {
-				result = null;
-			} else {
-				result = SpriteFromTexture(textureFromFile, spriteName, obj, copyFromExisting);
-			}
-			return result;
-		}
-
-		public static GameObject SpriteFromResource(string spriteName, GameObject obj = null, bool copyFromExisting = true) {
-			string str = (!spriteName.EndsWith(".png")) ? ".png" : "";
-			string text = spriteName + str;
-			Texture2D textureFromResource = ResourceExtractor.GetTextureFromResource(text);
-			bool flag = textureFromResource == null;
-			GameObject result;
-			if (flag) {
-				result = null;
-			} else {
-				result = SpriteFromTexture(textureFromResource, text, obj, copyFromExisting);
-			}
-			return result;
-		}
-
-		public static GameObject SpriteFromTexture(Texture2D texture, string spriteName, GameObject obj = null, bool copyFromExisting = true) {
-			bool flag = obj == null;
-			if (flag) { obj = new GameObject(); }
-			tk2dSprite tk2dSprite;
-			if (copyFromExisting) {
-				tk2dSprite = obj.AddComponent(baseSprite);
-			} else {
-				tk2dSprite = obj.AddComponent<tk2dSprite>();
-			}
-			int num = AddSpriteToCollection(spriteName, itemCollection);
-			tk2dSprite.SetSprite(itemCollection, num);
-			tk2dSprite.SortingOrder = 0;
-			obj.GetComponent<BraveBehaviour>().sprite = tk2dSprite;
-			return obj;
-		}
-
+        
         public static GameObject SpriteFromTexture(Texture2D existingTexture, GameObject obj = null, bool copyFromExisting = true) {
 			bool flag = obj == null;
 			if (flag) { obj = new GameObject(); }
@@ -73,15 +30,6 @@ namespace ExpandTheGungeon.ItemAPI {
 			return obj;
 		}
         
-        public static int AddSpriteToCollection(string resourcePath, tk2dSpriteCollectionData collection) {
-			string str = (!resourcePath.EndsWith(".png")) ? ".png" : "";
-			resourcePath += str;
-			Texture2D textureFromResource = ResourceExtractor.GetTextureFromResource(resourcePath);
-			tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(textureFromResource);
-			tk2dSpriteDefinition.name = textureFromResource.name;
-			return AddSpriteToCollection(tk2dSpriteDefinition, collection);
-		}
-
         public static int AddSpriteToCollection(Texture2D existingTexture, tk2dSpriteCollectionData collection) {
 			tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(existingTexture);
 			tk2dSpriteDefinition.name = existingTexture.name;
@@ -98,18 +46,6 @@ namespace ExpandTheGungeon.ItemAPI {
                     tk2dSpriteDefinition.name = texture.name;
                     AddSpriteToCollection(tk2dSpriteDefinition, collection);
                 }
-            }
-        }
-
-        public static void AddSpritesToCollection(List<string> ResourceNames, tk2dSpriteCollectionData collection) {
-            foreach (string ResourceName in ResourceNames) {
-                string resourcePath = ResourceName;
-                string str = (!resourcePath.EndsWith(".png")) ? ".png" : "";
-                resourcePath += str;
-                Texture2D textureFromResource = ResourceExtractor.GetTextureFromResource(resourcePath);
-                tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(textureFromResource);
-                tk2dSpriteDefinition.name = textureFromResource.name;
-                AddSpriteToCollection(tk2dSpriteDefinition, collection);
             }
         }
         

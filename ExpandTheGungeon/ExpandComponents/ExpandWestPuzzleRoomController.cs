@@ -135,19 +135,14 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void HandleChestRoomSetup() {
-            AssetBundle sharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-
             try { 
-                DungeonPlaceable ChestPlatform = sharedAssets2.LoadAsset<DungeonPlaceable>("Treasure_Dais_Stone_Carpet");
-                GameObject Chest_Black = sharedAssets1.LoadAsset<GameObject>("Chest_Black");
-                GameObject Chest_Rainbow = sharedAssets1.LoadAsset<GameObject>("Chest_Rainbow");
-                GameObject Chest_Rat = sharedAssets1.LoadAsset<GameObject>("Chest_Rat");
+                DungeonPlaceable ChestPlatform = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("Treasure_Dais_Stone_Carpet", ExpandAssets.AssetSource.SharedAuto2);
+                GameObject Chest_Rainbow = ExpandAssets.LoadOfficialAsset<GameObject>("Chest_Rainbow", ExpandAssets.AssetSource.SharedAuto1);
 
                 IntVector2 TreasureChestCarpetPosition1 = new IntVector2(8, 29);
-                IntVector2 TreasureChestCarpetPosition2 = new IntVector2(8, 54);
-                IntVector2 SecretChestPosition1 = new IntVector2(8, 31);
-                IntVector2 SecretChestPosition2 = new IntVector2(8, 56);
+                IntVector2 TreasureChestCarpetPosition2 = new IntVector2(8, 56);
+                IntVector2 SecretChestPosition1 = new IntVector2(9, 31);
+                IntVector2 SecretChestPosition2 = new IntVector2(8, 58);
                 GameObject TreasureChestStoneCarpet1 = ChestPlatform.InstantiateObject(m_ParentRoom, TreasureChestCarpetPosition1);
                 GameObject TreasureChestStoneCarpet2 = ChestPlatform.InstantiateObject(m_ParentRoom, TreasureChestCarpetPosition2);
                 TreasureChestStoneCarpet1.transform.position -= new Vector3(0.55f, 0);
@@ -155,31 +150,28 @@ namespace ExpandTheGungeon.ExpandComponents {
                 TreasureChestStoneCarpet1.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 TreasureChestStoneCarpet2.transform.SetParent(m_ParentRoom.hierarchyParent, true);
 
-                GameObject PlacedBlackChestObject = ExpandUtility.GenerateDungeonPlacable(Chest_Black, false, true).InstantiateObject(m_ParentRoom, SecretChestPosition1);
+                GameObject PlacedNormalWestChestObject = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, SecretChestPosition1);
                 GameObject PlacedRainbowChestObject = ExpandUtility.GenerateDungeonPlacable(Chest_Rainbow, false, true).InstantiateObject(m_ParentRoom, SecretChestPosition2);
-                PlacedBlackChestObject.transform.position += new Vector3(0.5f, 0);
+                // PlacedNormalWestChestObject.transform.position += new Vector3(0.5f, 0);
                 PlacedRainbowChestObject.transform.position += new Vector3(0.5f, 0);
                 TreasureChestStoneCarpet1.transform.position += new Vector3(0.5f, 0);
                 TreasureChestStoneCarpet2.transform.position += new Vector3(0.5f, 0);
-                PlacedBlackChestObject.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedNormalWestChestObject.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 PlacedRainbowChestObject.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-
-                tk2dBaseSprite PlacedBlackChestSprite = PlacedBlackChestObject.GetComponentInChildren<tk2dBaseSprite>();
-
+                
                 GenericLootTable BlackChestLootTable = GameManager.Instance.RewardManager.ItemsLootTable;
 
-                Chest PlacedBlackChestComponent = PlacedBlackChestObject.GetComponent<Chest>();
+                Chest PlacedNormalWestComponent = PlacedNormalWestChestObject.GetComponent<Chest>();
                 Chest PlacedRainbowChestComponent = PlacedRainbowChestObject.GetComponent<Chest>();
-                PlacedBlackChestComponent.ChestType = Chest.GeneralChestType.ITEM;
-                PlacedBlackChestComponent.lootTable.lootTable = BlackChestLootTable;
-                bool LootTableCheck = PlacedBlackChestComponent.lootTable.canDropMultipleItems && PlacedBlackChestComponent.lootTable.overrideItemLootTables != null && PlacedBlackChestComponent.lootTable.overrideItemLootTables.Count > 0;
-                if (LootTableCheck) { PlacedBlackChestComponent.lootTable.overrideItemLootTables[0] = BlackChestLootTable; }
-                PlacedBlackChestComponent.overrideMimicChance = 0f;
-                PlacedBlackChestComponent.ForceUnlock();
-                PlacedBlackChestComponent.PreventFuse = true;
+                PlacedNormalWestComponent.lootTable.lootTable = BlackChestLootTable;
+                bool LootTableCheck = PlacedNormalWestComponent.lootTable.canDropMultipleItems && PlacedNormalWestComponent.lootTable.overrideItemLootTables != null && PlacedNormalWestComponent.lootTable.overrideItemLootTables.Count > 0;
+                if (LootTableCheck) { PlacedNormalWestComponent.lootTable.overrideItemLootTables[0] = BlackChestLootTable; }
+                PlacedNormalWestComponent.overrideMimicChance = 0f;
+                PlacedNormalWestComponent.ForceUnlock();
+                PlacedNormalWestComponent.PreventFuse = true;
                 PlacedRainbowChestComponent.ForceUnlock();
                 PlacedRainbowChestComponent.PreventFuse = true;
-                m_ParentRoom.RegisterInteractable(PlacedBlackChestComponent);
+                m_ParentRoom.RegisterInteractable(PlacedNormalWestComponent);
                 m_ParentRoom.RegisterInteractable(PlacedRainbowChestComponent);
 
                 Vector3 SpecialLockedDoorPosition = (new Vector3(9, 52.25f) + m_ParentRoom.area.basePosition.ToVector3());
@@ -191,37 +183,37 @@ namespace ExpandTheGungeon.ExpandComponents {
                 tk2dBaseSprite RainbowLockSprite = SpecialLockedDoorComponent.GetComponentInChildren<tk2dBaseSprite>();
                 if (RainbowLockSprite != null) { ExpandShaders.Instance.ApplyRainbowShader(RainbowLockSprite); }
                 
-                IntVector2 PuzzleChestPosition1 = new IntVector2(4, 19);
-                IntVector2 PuzzleChestPosition2 = new IntVector2(12, 19);
-                IntVector2 PuzzleChestPosition3 = new IntVector2(4, 40);
-                IntVector2 PuzzleChestPosition4 = new IntVector2(12, 40);
-                IntVector2 PuzzleChestPosition5 = new IntVector2(4, 50);
-                IntVector2 PuzzleChestPosition6 = new IntVector2(12, 50);
-                IntVector2 PuzzleChestCarpetPosition1 = (PuzzleChestPosition1 - new IntVector2(0, 1));
-                IntVector2 PuzzleChestCarpetPosition2 = (PuzzleChestPosition2 - new IntVector2(0, 1));
-                IntVector2 PuzzleChestCarpetPosition3 = (PuzzleChestPosition3 - new IntVector2(0, 1));
-                IntVector2 PuzzleChestCarpetPosition4 = (PuzzleChestPosition4 - new IntVector2(0, 1));
-                IntVector2 PuzzleChestCarpetPosition5 = (PuzzleChestPosition5 - new IntVector2(0, 1));
-                IntVector2 PuzzleChestCarpetPosition6 = (PuzzleChestPosition6 - new IntVector2(0, 1));
+                IntVector2 PuzzleChestPosition1 = new IntVector2(5, 20);
+                IntVector2 PuzzleChestPosition2 = new IntVector2(13, 20);
+                IntVector2 PuzzleChestPosition3 = new IntVector2(5, 41);
+                IntVector2 PuzzleChestPosition4 = new IntVector2(13, 41);
+                IntVector2 PuzzleChestPosition5 = new IntVector2(5, 51);
+                IntVector2 PuzzleChestPosition6 = new IntVector2(13, 51);
+                IntVector2 PuzzleChestCarpetPosition1 = (PuzzleChestPosition1 - new IntVector2(1, 2));
+                IntVector2 PuzzleChestCarpetPosition2 = (PuzzleChestPosition2 - new IntVector2(1, 2));
+                IntVector2 PuzzleChestCarpetPosition3 = (PuzzleChestPosition3 - new IntVector2(1, 2));
+                IntVector2 PuzzleChestCarpetPosition4 = (PuzzleChestPosition4 - new IntVector2(1, 2));
+                IntVector2 PuzzleChestCarpetPosition5 = (PuzzleChestPosition5 - new IntVector2(1, 2));
+                IntVector2 PuzzleChestCarpetPosition6 = (PuzzleChestPosition6 - new IntVector2(1, 2));
 
-                GameObject PlacedPuzzleRatChest1 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition1, false, true);
-                GameObject PlacedPuzzleRatChest2 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition2, false, true);
-                GameObject PlacedPuzzleRatChest3 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition3, false, true);
-                GameObject PlacedPuzzleRatChest4 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition4, false, true);
-                GameObject PlacedPuzzleRatChest5 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition5, false, true);
-                GameObject PlacedPuzzleRatChest6 = ExpandUtility.GenerateDungeonPlacable(Chest_Rat, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition6, false, true);
+                GameObject PlacedPuzzleWestChest1 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition1, false, true);
+                GameObject PlacedPuzzleWestChest2 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition2, false, true);
+                GameObject PlacedPuzzleWestChest3 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition3, false, true);
+                GameObject PlacedPuzzleWestChest4 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition4, false, true);
+                GameObject PlacedPuzzleWestChest5 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition5, false, true);
+                GameObject PlacedPuzzleWestChest6 = ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EX_Chest_West, false, true).InstantiateObject(m_ParentRoom, PuzzleChestPosition6, false, true);
                 GameObject PuzzleChestStoneCarpet1 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition1);
                 GameObject PuzzleChestStoneCarpet2 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition2);
                 GameObject PuzzleChestStoneCarpet3 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition3);
                 GameObject PuzzleChestStoneCarpet4 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition4);
                 GameObject PuzzleChestStoneCarpet5 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition5);
                 GameObject PuzzleChestStoneCarpet6 = ChestPlatform.InstantiateObject(m_ParentRoom, PuzzleChestCarpetPosition6);
-                PlacedPuzzleRatChest1.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-                PlacedPuzzleRatChest2.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-                PlacedPuzzleRatChest3.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-                PlacedPuzzleRatChest4.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-                PlacedPuzzleRatChest5.transform.SetParent(m_ParentRoom.hierarchyParent, true);
-                PlacedPuzzleRatChest6.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest1.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest2.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest3.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest4.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest5.transform.SetParent(m_ParentRoom.hierarchyParent, true);
+                PlacedPuzzleWestChest6.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 PuzzleChestStoneCarpet1.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 PuzzleChestStoneCarpet2.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 PuzzleChestStoneCarpet3.transform.SetParent(m_ParentRoom.hierarchyParent, true);
@@ -229,61 +221,65 @@ namespace ExpandTheGungeon.ExpandComponents {
                 PuzzleChestStoneCarpet5.transform.SetParent(m_ParentRoom.hierarchyParent, true);
                 PuzzleChestStoneCarpet6.transform.SetParent(m_ParentRoom.hierarchyParent, true);
 
-                Chest PuzzleRatChest1Component = PlacedPuzzleRatChest1.GetComponent<Chest>();
-                Chest PuzzleRatChest2Component = PlacedPuzzleRatChest2.GetComponent<Chest>();
-                Chest PuzzleRatChest3Component = PlacedPuzzleRatChest3.GetComponent<Chest>();
-                Chest PuzzleRatChest4Component = PlacedPuzzleRatChest4.GetComponent<Chest>();
-                Chest PuzzleRatChest5Component = PlacedPuzzleRatChest5.GetComponent<Chest>();
-                Chest PuzzleRatChest6Component = PlacedPuzzleRatChest6.GetComponent<Chest>();
-                PuzzleRatChest1Component.PreventFuse = true;
-                PuzzleRatChest2Component.PreventFuse = true;
-                PuzzleRatChest3Component.PreventFuse = true;
-                PuzzleRatChest4Component.PreventFuse = true;
-                PuzzleRatChest5Component.PreventFuse = true;
-                PuzzleRatChest6Component.PreventFuse = true;
-                PuzzleRatChest1Component.overrideMimicChance = 0f;
-                PuzzleRatChest2Component.overrideMimicChance = 0f;
-                PuzzleRatChest3Component.overrideMimicChance = 0f;
-                PuzzleRatChest4Component.overrideMimicChance = 0f;
-                PuzzleRatChest5Component.overrideMimicChance = 0f;
-                PuzzleRatChest6Component.overrideMimicChance = 0f;
+                Chest PuzzleWestChest1Component = PlacedPuzzleWestChest1.GetComponent<Chest>();
+                Chest PuzzleWestChest2Component = PlacedPuzzleWestChest2.GetComponent<Chest>();
+                Chest PuzzleWestChest3Component = PlacedPuzzleWestChest3.GetComponent<Chest>();
+                Chest PuzzleWestChest4Component = PlacedPuzzleWestChest4.GetComponent<Chest>();
+                Chest PuzzleWestChest5Component = PlacedPuzzleWestChest5.GetComponent<Chest>();
+                Chest PuzzleWestChest6Component = PlacedPuzzleWestChest6.GetComponent<Chest>();
+                PuzzleWestChest1Component.PreventFuse = true;
+                PuzzleWestChest1Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
+                PuzzleWestChest1Component.IsLocked = true;
+                PuzzleWestChest2Component.PreventFuse = true;
+                PuzzleWestChest2Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
+                PuzzleWestChest2Component.IsLocked = true;
+                PuzzleWestChest3Component.PreventFuse = true;
+                PuzzleWestChest3Component.IsLocked = true;
+                PuzzleWestChest3Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
+                PuzzleWestChest4Component.PreventFuse = true;
+                PuzzleWestChest4Component.IsLocked = true;
+                PuzzleWestChest4Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
+                PuzzleWestChest5Component.PreventFuse = true;
+                PuzzleWestChest5Component.IsLocked = true;
+                PuzzleWestChest5Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
+                PuzzleWestChest6Component.PreventFuse = true;
+                PuzzleWestChest6Component.IsLocked = true;
+                PuzzleWestChest6Component.ChestIdentifier = Chest.SpecialChestIdentifier.RAT;
 
-                float Seed = UnityEngine.Random.value;
-
-                if (Seed <= 0.5f) {
-                    PuzzleRatChest1Component.forceContentIds = new List<int> { 68 };
-                    PuzzleRatChest2Component.forceContentIds = new List<int> { 727, 727 };
+                if (UnityEngine.Random.value < 0.5f) {
+                    PuzzleWestChest1Component.forceContentIds = new List<int> { 68 };
+                    PuzzleWestChest2Component.forceContentIds = new List<int> { 727, 727 };
                 } else {
-                    PuzzleRatChest1Component.forceContentIds = new List<int> { 727, 727 };
-                    PuzzleRatChest2Component.forceContentIds = new List<int> { 68 };
+                    PuzzleWestChest1Component.forceContentIds = new List<int> { 727, 727 };
+                    PuzzleWestChest2Component.forceContentIds = new List<int> { 68 };
                 }
-                if (BraveUtility.RandomBool()) {
-                    PuzzleRatChest3Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
-                    PuzzleRatChest4Component.forceContentIds = new List<int> { 727, 727 };
+                if (UnityEngine.Random.value < 0.5f) {
+                    PuzzleWestChest3Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
+                    PuzzleWestChest4Component.forceContentIds = new List<int> { 727, 727 };
                 } else {
-                    PuzzleRatChest3Component.forceContentIds = new List<int> { 727, 727 };
-                    PuzzleRatChest4Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
+                    PuzzleWestChest3Component.forceContentIds = new List<int> { 727, 727 };
+                    PuzzleWestChest4Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
                 }
-                if (BraveUtility.RandomBool()) {
-                    PuzzleRatChest5Component.forceContentIds = new List<int> { 74 };
-                    PuzzleRatChest6Component.forceContentIds = new List<int> { 316 };
+                if (UnityEngine.Random.value < 0.5f) {
+                    PuzzleWestChest5Component.forceContentIds = new List<int> { 74 };
+                    PuzzleWestChest6Component.forceContentIds = new List<int> { 316 };
                 } else {
-                    PuzzleRatChest5Component.forceContentIds = new List<int> { 316 };
-                    PuzzleRatChest6Component.forceContentIds = new List<int> { 74 };
+                    PuzzleWestChest5Component.forceContentIds = new List<int> { 316 };
+                    PuzzleWestChest6Component.forceContentIds = new List<int> { 74 };
                 }
 
-                PuzzleRatChest1Component.ConfigureOnPlacement(m_ParentRoom);
-                PuzzleRatChest2Component.ConfigureOnPlacement(m_ParentRoom);
-                PuzzleRatChest3Component.ConfigureOnPlacement(m_ParentRoom);
-                PuzzleRatChest4Component.ConfigureOnPlacement(m_ParentRoom);
-                PuzzleRatChest5Component.ConfigureOnPlacement(m_ParentRoom);
-                PuzzleRatChest6Component.ConfigureOnPlacement(m_ParentRoom);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest1Component);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest2Component);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest3Component);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest4Component);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest5Component);
-                m_ParentRoom.RegisterInteractable(PuzzleRatChest6Component);
+                PuzzleWestChest1Component.ConfigureOnPlacement(m_ParentRoom);
+                PuzzleWestChest2Component.ConfigureOnPlacement(m_ParentRoom);
+                PuzzleWestChest3Component.ConfigureOnPlacement(m_ParentRoom);
+                PuzzleWestChest4Component.ConfigureOnPlacement(m_ParentRoom);
+                PuzzleWestChest5Component.ConfigureOnPlacement(m_ParentRoom);
+                PuzzleWestChest6Component.ConfigureOnPlacement(m_ParentRoom);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest1Component);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest2Component);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest3Component);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest4Component);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest5Component);
+                m_ParentRoom.RegisterInteractable(PuzzleWestChest6Component);
 
                 Vector3 InfoSignPosition = (new Vector3(6, 4) + m_ParentRoom.area.basePosition.ToVector3());
 
@@ -301,8 +297,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     Debug.LogException(ex);
                 }
             }
-            sharedAssets1 = null;
-            sharedAssets2 = null;
         }
 
         private void HandleWinchesterRoomSetup() {

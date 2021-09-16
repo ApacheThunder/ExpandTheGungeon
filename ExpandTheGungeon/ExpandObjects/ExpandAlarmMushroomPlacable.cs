@@ -3,6 +3,7 @@ using System.Collections;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
+using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandObjects {
 
@@ -34,6 +35,8 @@ namespace ExpandTheGungeon.ExpandObjects {
         private bool m_triggered;
         private RoomHandler m_room;
 
+        private GameObject m_TriggerVFX;
+
         private void Start() {
             if (m_room == null) { m_room = GetAbsoluteParentRoom(); }
             if (m_room != null) {
@@ -57,37 +60,44 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_triggered = true;
             Vector2 SpawnOffset = Vector2.zero;
             if (EnemySpawnOffset.HasValue) { SpawnOffset = EnemySpawnOffset.Value; }
-            if (TriggerVFX) { SpawnManager.SpawnVFX(TriggerVFX, specRigidbody.UnitCenter + SpawnOffset, Quaternion.identity); }
-            if (useAirDropSpawn) {
-                EmergencyCrateController spawnedEnemyCrate = null;
-                if (!EnemySpawnPlacableOverride) {
-                    RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
-                    GameObject eCrateInstance = ExpandUtility.SpawnAirDrop(m_room, sprite.WorldCenter, null, targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)], 0.2f);
-                    if (eCrateInstance) { spawnedEnemyCrate = eCrateInstance.GetComponent<EmergencyCrateController>(); }
-                    // spawnedEnemyCrate = EnemyAirDrop(m_room, sprite.WorldCenter, targetIdea.ValidEasyEnemyPlaceables[UnityEngine.Random.Range(0, targetIdea.ValidEasyEnemyPlaceables.Length)]);
+            if (TriggerVFX) {
+                if (useAirDropSpawn) {
+                    m_TriggerVFX = SpawnManager.SpawnVFX(TriggerVFX, specRigidbody.UnitBottomCenter - new Vector2(0, 0.25f), Quaternion.identity);
                 } else {
-                    // spawnedEnemyCrate = EnemyAirDrop(m_room, sprite.WorldCenter, EnemySpawnPlacableOverride);
-                    GameObject eCrateInstance = ExpandUtility.SpawnAirDrop(m_room, sprite.WorldCenter, null, EnemySpawnPlacableOverride, 0.2f);
-                    if (eCrateInstance) { spawnedEnemyCrate = eCrateInstance.GetComponent<EmergencyCrateController>(); }
-                }                
-                if (!m_room.IsSealed && spawnedEnemyCrate) {
-                    m_room.npcSealState = RoomHandler.NPCSealState.SealAll;
-                    m_room.SealRoom();
+                    m_TriggerVFX = SpawnManager.SpawnVFX(TriggerVFX, specRigidbody.UnitBottomCenter + SpawnOffset, Quaternion.identity);
                 }
-                yield return new WaitForSeconds(2.25f);
-                DestroyMushroom(false);
-                if (spawnedEnemyCrate) {
-                    while (ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", spawnedEnemyCrate).HasValue && ReflectionHelpers.ReflectGetField<bool?>(typeof(EmergencyCrateController), "m_hasBeenTriggered", spawnedEnemyCrate).Value) {
-                        if (!spawnedEnemyCrate) { break; }
-                        yield return null;
+            }
+            if (useAirDropSpawn) {
+                Vector2 SpawnPosition = transform.position;
+
+                DungeonPlaceable selectedPlacable = null;
+                bool isExplodyBarrel = false;
+                if (EnemySpawnPlacableOverride) {
+                    selectedPlacable = EnemySpawnPlacableOverride;
+                } else {
+                    RobotDaveIdea targetIdea = (!GameManager.Instance.Dungeon.UsesCustomFloorIdea) ? GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultProceduralIdea : GameManager.Instance.Dungeon.FloorIdea;
+                    selectedPlacable = BraveUtility.RandomElement(targetIdea.ValidEasyEnemyPlaceables);
+                }
+                DungeonPlaceableVariant selectedVarient = BraveUtility.RandomElement(selectedPlacable.variantTiers);
+                if (selectedVarient != null && UnityEngine.Random.value > 0.2f) {
+                    if (!string.IsNullOrEmpty(selectedVarient.enemyPlaceableGuid)) {
+                        GameObject enemyObject = Instantiate(EnemyDatabase.GetOrLoadByGuid(selectedVarient.enemyPlaceableGuid).gameObject, SpawnPosition, Quaternion.identity);
+                        enemyObject.GetComponent<AIActor>().ConfigureOnPlacement(m_room);
+                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, enemyObject, DropHorizontalOffset: 10, useLandingVFX: false);
+                    } else if (selectedVarient.nonDatabasePlaceable) {
+                        GameObject ParaDroppedObject = Instantiate(selectedVarient.nonDatabasePlaceable, SpawnPosition, Quaternion.identity);
+                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, ParaDroppedObject, DropHorizontalOffset: 10, useLandingVFX: false);
+                    } else {
+                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                        isExplodyBarrel = true;
                     }
+                } else {
+                    ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                    isExplodyBarrel = true;
                 }
-                yield return new WaitForSeconds(1f);
-                m_room.npcSealState = RoomHandler.NPCSealState.SealNone;
-                if (spriteAnimator.IsPlaying(BreakAnimation)) {
-                    while (spriteAnimator.IsPlaying(BreakAnimation)) { yield return null; }
-                }
-                Destroy(gameObject);
+                if (!m_room.IsSealed && !isExplodyBarrel) { m_room.SealRoom(); }
+                yield return null;
+                DestroyMushroom();
             } else {
                 AIActor selectedEnemy = null;
                 if (EnemySpawnPlacableOverride) {
@@ -110,37 +120,29 @@ namespace ExpandTheGungeon.ExpandObjects {
             yield break;
         }
 
-        private void DestroyMushroom(bool DestroyAfterAnimation = true) {
+        private void DestroyMushroom(float additionalDelay = 0) { StartCoroutine(DelayedDestroy(additionalDelay)); }
+
+        private IEnumerator DelayedDestroy(float additionalDelay) {
+            spriteAnimator.Play(TriggerAnimation);
+            float elapsed = 0;
+            float delay = (2.5f + additionalDelay);
+            while (elapsed < delay) {
+                elapsed += BraveTime.DeltaTime;
+                yield return null;
+            }
+            spriteAnimator.Play(BreakAnimation);
             if (DestroyVFX) {
                 SpawnManager.SpawnVFX(DestroyVFX, specRigidbody.UnitCenter, Quaternion.identity);
             } else {
                 LootEngine.DoDefaultItemPoof(specRigidbody.UnitCenter, false, false);
             }
-            if (!string.IsNullOrEmpty(BreakAnimation)) {
-                if (DestroyAfterAnimation) {
-                    spriteAnimator.PlayAndDestroyObject(BreakAnimation, null);
-                } else {
-                    spriteAnimator.PlayAndDisableRenderer(BreakAnimation);
-                }
-            } else {
-                if (DestroyAfterAnimation) { Destroy(gameObject); }
-            }
+            yield return null;
+            if (m_TriggerVFX) { Destroy(m_TriggerVFX); }
+            spriteAnimator.PlayAndDestroyObject(BreakAnimation);
+            yield break;
         }
-
-        /*private EmergencyCrateController EnemyAirDrop(RoomHandler currentRoom, Vector3 landingPosition, DungeonPlaceable EnemyPlacable) {
-            EmergencyCrateController lootCrate = Instantiate(BraveResources.Load<GameObject>("EmergencyCrate")).GetComponent<EmergencyCrateController>();
-            if (lootCrate == null) { return null; }
-
-            lootCrate.ChanceToExplode = 0.2f;
-            lootCrate.ChanceToSpawnEnemy = 1;
-            lootCrate.EnemyPlaceable = EnemyPlacable;
-            
-            lootCrate.Trigger(new Vector3(-5f, -5f, -5f), (landingPosition + new Vector3(15f, 15f, 15f)), currentRoom, true);
-            currentRoom.ExtantEmergencyCrate = lootCrate.gameObject;
-            return lootCrate;
-        }*/
-
-        public void ConfigureOnPlacement(RoomHandler room) { m_room = room; /*enabled = true;*/ }
+        
+        public void ConfigureOnPlacement(RoomHandler room) { m_room = room; }
 
         protected override void OnDestroy() { base.OnDestroy(); }
     }

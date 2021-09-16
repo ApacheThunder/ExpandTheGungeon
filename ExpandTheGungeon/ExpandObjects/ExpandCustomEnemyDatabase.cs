@@ -32,6 +32,10 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject AggressiveCronenbergPrefab;
         public static GameObject CorruptedEnemyPrefab;
 
+        // Dummy Explody Barrel Enemy for use with paradrop. (for some reason I get broken behavior on regular objects. 
+        // Can't resolve yet so just make this a full on AIActor since they all work properly on it for reasons I don't understand yet.
+        public static GameObject ExplodyBoyPrefab;
+
         // Custom/Modified bosses
         // public static GameObject KillStumpsDummy;
         public static GameObject MonsterParasitePrefab;
@@ -57,6 +61,7 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static Texture2D[] RatGrenadeTextures;
 
         // Saved GUIDs for use in things like room prefabs
+        public static string ExplodyBoyGUID;
         public static string RatGrenadeGUID;
         public static string HammerCompanionGUID;
         public static string BootlegBullatGUID;
@@ -96,6 +101,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BuildBootlegBulletManBandanaPrefab(expandSharedAssets1, out BootlegBulletManBandanaPrefab);
             BuildBootlegShotgunManRedPrefab(expandSharedAssets1, out BootlegShotgunManRedPrefab);
             BuildBootlegShotgunManBluePrefab(expandSharedAssets1, out BootlegShotgunManBluePrefab);
+            BuildDummyExplodyBarrelGuyPrefab(expandSharedAssets1, out ExplodyBoyPrefab);
             BuildCronenbergPrefab(expandSharedAssets1, out CronenbergPrefab);
             BuildAggressiveCronenbergPrefab(expandSharedAssets1, out AggressiveCronenbergPrefab);
             BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
@@ -278,12 +284,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_AIAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>(0);
                         
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = m_CachedTargetObject.GetComponent<BehaviorSpeculator>();
-            if (m_TargetBehaviorSpeculatorSeralized != null) {
-                m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = m_CachedTargetObject.GetComponent<BehaviorSpeculator>();
+            if (m_TargetBehaviorSpeculatorSerialized != null) {
+                m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+                m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
                 // Loading a custom script from text file in place of one from an existing prefab..
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+                m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                     "[]",
                     "[]",
                     "[{\"PathInterval\":0.25,\"PointReachedPauseTime\":3.0,\"PreventFiringWhileMoving\":false,\"InitialDelay\":1.0,\"StayOnScreen\":false,\"AvoidTarget\":false,\"UseTargetsRoom\":false,\"$type\":\"MoveErraticallyBehavior\"}]",
@@ -481,11 +487,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
@@ -674,11 +680,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -1126,11 +1132,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -1557,11 +1563,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":false,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -1922,11 +1928,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"$type\":\"RideInCartsBehavior\"},{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -2287,11 +2293,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"$type\":\"RideInCartsBehavior\"},{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -2574,11 +2580,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[]",
                 "[{\"AllowFearState\":false,\"PathInterval\":0.5,\"InitialDelay\":1.0,\"PointReachedPauseTime\":0.0,\"PathingTime\":6.0,\"$type\":\"ExpandSimpleMoveErraticallyBehavior\"}]",
@@ -2927,11 +2933,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":false,\"CustomRange\":6.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.5,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -2989,6 +2995,174 @@ namespace ExpandTheGungeon.ExpandObjects {
             FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
             DontDestroyOnLoad(m_CachedTargetObject);
         }
+
+        public static void BuildDummyExplodyBarrelGuyPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("EX_ExplodyBoy");
+            
+            List<string> SpriteList = new List<string>() {
+                "EX_ExplodyBarrel",
+                "EX_ExplodyBarrel_Explode"
+            };
+
+            List<string> IdleSpriteList = new List<string>() {
+                "EX_ExplodyBarrel",
+                "EX_ExplodyBarrel",
+            };
+                        
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"), false, false);
+
+            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
+
+            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel_Explode"), m_CachedSprite.Collection);
+
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
+
+            tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "move", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            
+            
+            ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
+            m_Exploder.shardClusters = new ShardCluster[0];
+            m_Exploder.spawnShardsOnDeath = false;
+            m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
+            
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Explody_Boy", "27638478e52e4785925b578b52bf79d3", null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+                        
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            m_CachedAIActor.HasShadow = false;
+            m_CachedAIActor.MovementSpeed = 2f;
+            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            m_CachedAIActor.procedurallyOutlined = false;
+            m_CachedAIActor.EnemySwitchState = string.Empty;
+            m_CachedAIActor.PreventFallingInPitsEver = true;
+            m_CachedAIActor.IgnoreForRoomClear = true;
+            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.CanTargetEnemies = false;
+            m_CachedAIActor.CanTargetPlayers = true;
+            m_CachedAIActor.DiesOnCollison = true;
+            m_CachedAIActor.healthHaver.SetHealthMaximum(25);
+            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(15);
+
+            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyCollider,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 6,
+                    ManualOffsetY = 1,
+                    ManualWidth = 14,
+                    ManualHeight = 16,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyHitBox,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 6,
+                    ManualOffsetY = 1,
+                    ManualWidth = 14,
+                    ManualHeight = 20,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+                        
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "idle",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "move",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "hit",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "die",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.Single,
+                            Prefix = "die",
+                            AnimNames = new string[1],
+                            Flipped = new DirectionalAnimation.FlipType[1]
+                        }
+                    }
+                };
+            }
+            
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>(0);
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>(0);
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() { new ExpandSimpleMoveErraticallyBehavior() };
+            
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 1f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
+                "[]",
+                "[]",
+                "[{\"AllowFearState\":false,\"PathInterval\":0.5,\"InitialDelay\":1.0,\"PointReachedPauseTime\":0.0,\"PathingTime\":6.0,\"$type\":\"ExpandSimpleMoveErraticallyBehavior\"}]",
+                "[]",
+                "[]"
+            };
+            
+            ExplodyBoyGUID = m_CachedAIActor.EnemyGuid;
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+            return;
+        }
+
 
         public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
@@ -3067,9 +3241,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             bossBehaviorSpeculator.AttackBehaviors.Remove(m_PortalBehavior);
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = bossBehaviorSpeculator;
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":100.0,\"LineOfSight\":false,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":true,\"CustomRange\":8.0,\"LineOfSight\":false,\"ReturnToSpawn\":false,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -3147,9 +3321,9 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
             
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = bossBehaviorSpeculator;
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = bossBehaviorSpeculator;
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":true,\"CustomRange\":6.0,\"LineOfSight\":false,\"ReturnToSpawn\":false,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"}]",
@@ -3218,11 +3392,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             customBehaviorSpeculator.SkipTimingDifferentiator = false;
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]"};
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]"};
             
             m_CachedTargetObject.AddComponent<ExpandCorruptedEnemyEngageDoer>();
 
@@ -3368,11 +3542,11 @@ namespace ExpandTheGungeon.ExpandObjects {
             }
 
             // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
-            ISerializedObject m_TargetBehaviorSpeculatorSeralized = behaviorSpeculator;
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = behaviorSpeculator;
             // ExpandUtility.DuplicateComponent(m_TargetBehaviorSpeculatorSeralized, (CachedEnemyActor.behaviorSpeculator as ISerializedObject));
-            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>();
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = (CachedEnemyActor.behaviorSpeculator as ISerializedObject).SerializedStateKeys;
-            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>();
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = (CachedEnemyActor.behaviorSpeculator as ISerializedObject).SerializedStateKeys;
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>() {
                 "[{\"AvoidRedBarrels\":true,\"ShootRedBarrels\":true,\"PushRedBarrels\":true,\"$type\":\"RedBarrelAwareness\"}]",
                 "[{\"Radius\":35.0,\"LineOfSight\":true,\"ObjectPermanence\":true,\"SearchInterval\":0.25,\"PauseOnTargetSwitch\":false,\"PauseTime\":0.25,\"$type\":\"TargetPlayerBehavior\"}]",
                 "[{\"StopWhenInRange\":true,\"CustomRange\":7.0,\"LineOfSight\":true,\"ReturnToSpawn\":true,\"SpawnTetherDistance\":0.0,\"PathInterval\":0.25,\"SpecifyRange\":false,\"MinActiveRange\":0.0,\"MaxActiveRange\":0.0,\"$type\":\"SeekTargetBehavior\"},{\"PathInterval\":0.25,\"DisableInCombat\":true,\"IdealRadius\":3.0,\"CatchUpRadius\":6.0,\"CatchUpAccelTime\":5.0,\"CatchUpSpeed\":6.0,\"CatchUpMaxSpeed\":10.0,\"CatchUpAnimation\":\"dodge\",\"CatchUpOutAnimation\":\"\",\"IdleAnimations\":[\"idle\"],\"CanRollOverPits\":true,\"RollAnimation\":\"dodge\",\"$type\":\"CompanionFollowPlayerBehavior\"}]",

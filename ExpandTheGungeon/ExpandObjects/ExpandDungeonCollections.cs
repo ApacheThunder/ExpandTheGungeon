@@ -24,7 +24,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_UnlitCutout.mainTexture = tileSetTexture;
             m_UnlitCutout.SetFloat("_Cutoff", 0.5f);
             m_UnlitCutout.SetFloat("_Perpendicular", 1);
-
+            
             JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "BellyAssets/ENV_Tileset_Belly"), m_NewDungeonCollection);
 
             string[] m_BellyMaterialTable = ExpandUtility.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandPrefabs/SerializedData/BellyAssets/ENV_Tileset_Belly_MaterialTable");
@@ -45,7 +45,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                         
             m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_UnlitCutout };
             m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
-
+            
             sharedAssets = null;
 
             return m_NewDungeonCollection;
@@ -100,10 +100,10 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             Material m_LitBlend = new Material(sharedAssets.LoadAsset<Material>("lit blend"));
             m_LitBlend.mainTexture = tileSetTexture;
-            
+
             Material m_Unlit = new Material(Shader.Find("Brave/Unity Transparent Cutout"));
             m_Unlit.mainTexture = tileSetTexture;
-
+            
             string[] m_WestMaterialTable = ExpandUtility.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandPrefabs/SerializedData/PhobosAssets/ENV_Tileset_Phobos_MaterialTable");
 
             for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
@@ -119,8 +119,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 }
             }
 
-            m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_Unlit };
-
+            m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_Unlit};
             m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
             
             sharedAssets = null;

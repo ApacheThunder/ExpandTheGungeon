@@ -277,7 +277,6 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject WestLight;
         // Phobos Light
         public static GameObject PhobosLight;
-        public static GameObject PhobosLight2;
 
         // Cactus Objects for West
         public static GameObject Cactus_A;
@@ -289,8 +288,17 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static GameObject BlankRewardPedestal;
         public static GameObject RatKeyRewardPedestal;
 
-        //
+        // Glitch Portal Object
         public static GameObject EX_GlitchPortal;
+        // Copy of portals seen in Blacksmith on Forge
+        public static GameObject EX_RainbowRoomFloor;
+
+        // ParaDrop animation assets
+        public static GameObject EX_Parachute;
+        public static GameObject EX_ExplodyBarrelDummy;
+
+        // Custom Chest used on West for secret puzzle
+        public static GameObject EX_Chest_West;
 
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
@@ -949,7 +957,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 percentChance = 0.1f,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                nonDatabasePlaceable = ElevatorArrival.variantTiers[0].nonDatabasePlaceable,
+                nonDatabasePlaceable = ElevatorArrival.variantTiers[5].nonDatabasePlaceable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
                 forceBlackPhantom = false,
@@ -979,7 +987,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                 percentChance = 0.1f,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                nonDatabasePlaceable = ElevatorDeparture.variantTiers[8].nonDatabasePlaceable,
+                nonDatabasePlaceable = ElevatorDeparture.variantTiers[5].nonDatabasePlaceable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
                 forceBlackPhantom = false,
@@ -1004,9 +1012,7 @@ namespace ExpandTheGungeon.ExpandObjects {
                     }
                 }
             };
-
-
-
+            
 
             // Build Room table with Castle and Gungeon room tables merged
             CastleGungeonMergedTable.name = "CastleGungeonMergedTable";
@@ -1569,6 +1575,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             SpeculativeRigidbody m_EXAlarmMushroomRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EXAlarmMushroom, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(7, 10), offset: new IntVector2(2, 7));
 
             ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = EXAlarmMushroom.AddComponent<ExpandAlarmMushroomPlacable>();
+            m_AlarmMushRoomPlacable.TriggerVFX = braveResources.LoadAsset<GameObject>("EmergencyCrate").GetComponent<EmergencyCrateController>().landingTargetSprite;
+            
             m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride = ScriptableObject.CreateInstance<DungeonPlaceable>();
             m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.width = 1;
             m_AlarmMushRoomPlacable.EnemySpawnPlacableOverride.height = 1;
@@ -1717,6 +1725,14 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             m_ParadoxPortal = null;
 
+            EX_RainbowRoomFloor = expandSharedAssets1.LoadAsset<GameObject>("EX_RainbowRoomFloor");
+
+            GameObject m_VFXRainbowFloor = EX_RainbowRoomFloor.transform.Find("VFX_Floor").gameObject;
+            m_VFXRainbowFloor.GetComponent<MeshRenderer>().material = braveResources.LoadAsset<Material>("DarkPortalMaterial");
+            // m_VFXRainbowFloor.AddComponent<NebulaRegisterer>();
+            // ExpandEnableSpacePitOnEnterComponent m_VFXRainbowFloorController = m_VFXRainbowFloor.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
+            // m_VFXRainbowFloorController.AssignParentRendererToNebula = true;
+
 
             tk2dSprite RickRollChestSprite = RickRollChestObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(RickRollChestSprite, m_RedChestReference.GetComponent<tk2dSprite>());
@@ -1753,7 +1769,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RickRollChestBreakable.maxShardPercentSpeed = 0.3f;
             RickRollChestBreakable.shardBreakStyle = MinorBreakable.BreakStyle.CONE;
             RickRollChestBreakable.usesTemporaryZeroHitPointsState = true;
-            RickRollChestBreakable.overrideSpriteNameToUseAtZeroHP = "chest_redgold_break_001";
+            RickRollChestBreakable.spriteNameToUseAtZeroHP= "chest_redgold_break_001";
             RickRollChestBreakable.destroyedOnBreak = false;
             RickRollChestBreakable.childrenToDestroy = new List<GameObject>(0);
             RickRollChestBreakable.playsAnimationOnNotBroken = false;
@@ -2405,7 +2421,7 @@ namespace ExpandTheGungeon.ExpandObjects {
 
             ExpandUtility.GenerateSpriteAnimator(Sarco_MonsterObject);
             ExpandUtility.AddAnimation(Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>(), Sarco_MonsterSprite.Collection, BellyMonsterAnimationFrames, "MonsterChase", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-
+            // 
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
@@ -2556,36 +2572,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             PhobosLight.SetActive(false);
             FakePrefab.MarkAsFakePrefab(PhobosLight);
             UnityEngine.Object.DontDestroyOnLoad(PhobosLight);
-
-
-            PhobosLight2 = UnityEngine.Object.Instantiate(ratDungeon.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject);
-            PhobosLight2.name = "Cathedral Light (Stained Glass)";
-            GameObject PhobosShadowSettingsObject2 = PhobosLight2.transform.Find("Shadow Render Settings").gameObject;
-            GameObject PhobosLightSettingsObject2 = PhobosLight2.transform.Find("Point light").gameObject;
-
-            Light PhobosLightComponent2 = PhobosLightSettingsObject2.GetComponent<Light>();
-            PhobosLightComponent2.type = LightType.Point;
-            PhobosLightComponent2.color = new Color(0.941176f, 0.429066f, 0.736332f, 1);
-            PhobosLightComponent2.intensity = 3.68f;
-            PhobosLightComponent2.range = 11;
-            PhobosLightComponent2.spotAngle = 30;            
-            PhobosLightComponent2.cookieSize = 10;
-            PhobosLightComponent2.shadowResolution = UnityEngine.Rendering.LightShadowResolution.FromQualitySettings;
-            PhobosLightComponent2.shadowCustomResolution = -1;
-            PhobosLightComponent2.shadowStrength = 1;
-            PhobosLightComponent2.shadowBias = 0.05f;
-            PhobosLightComponent2.shadowNormalBias = 0.4f;
-            PhobosLightComponent2.shadowNearPlane = 0.2f;
-            PhobosLightComponent2.renderMode = LightRenderMode.Auto;
-            PhobosLightComponent2.bounceIntensity = 1;
-
-            SceneLightManager PhobosSceneLightManager2 = PhobosShadowSettingsObject2.GetComponent<SceneLightManager>();
-            PhobosSceneLightManager2.validColors = new Color[] { Color.white };
-
-            PhobosLight2.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(PhobosLight2);
-            UnityEngine.Object.DontDestroyOnLoad(PhobosLight2);
-
+            
             // Reconstruct unused West Cactus destructibles. (the sprites and animation data still exist!)
 
             CactusShard1 = expandSharedAssets1.LoadAsset<GameObject>("ExpandCactus_Shard_001");
@@ -2855,7 +2842,381 @@ namespace ExpandTheGungeon.ExpandObjects {
             EXSpaceFloor_50x50.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
             EXSpaceFloorPitBorder_50x50.GetComponent<tk2dSprite>().HeightOffGround = -195;
 
+
+
+            EX_Parachute = expandSharedAssets1.LoadAsset<GameObject>("EX_Parachute");
+            SpriteBuilder.SpriteFromTexture(ExpandAssets.LoadAsset<Texture2D>("EX_Parachute"), EX_Parachute, false);
+            tk2dSprite m_EXParachuteSprite = EX_Parachute.GetComponent<tk2dSprite>();
+
+            List<string> EXParachute_OpenFrames = new List<string>() {
+                "EX_Parachute_Open_01",
+                "EX_Parachute_Open_02",
+                "EX_Parachute_Open_03",
+                "EX_Parachute_Open_04",
+                "EX_Parachute_Open_05"
+            };
+
+            List<string> EXParachute_LandedFrames = new List<string>() { "EX_Parachute_Land", "EX_Parachute_Land_Blank" };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, EXParachute_OpenFrames, m_EXParachuteSprite.Collection);
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, EXParachute_LandedFrames, m_EXParachuteSprite.Collection);
+
+            EXParachute_OpenFrames.Add("EX_Parachute");
+
+            EXParachute_LandedFrames = new List<string>() {
+                "EX_Parachute_Land",
+                "EX_Parachute_Land_Blank",
+                "EX_Parachute_Land",
+                "EX_Parachute_Land_Blank",
+                "EX_Parachute_Land",
+                "EX_Parachute_Land_Blank"
+            };
+
+            ExpandUtility.GenerateSpriteAnimator(EX_Parachute);
+            ExpandUtility.AddAnimation(EX_Parachute.GetComponent<tk2dSpriteAnimator>(), m_EXParachuteSprite.Collection, EXParachute_OpenFrames, "ParachuteDeploy", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(EX_Parachute.GetComponent<tk2dSpriteAnimator>(), m_EXParachuteSprite.Collection, EXParachute_LandedFrames, "ParachuteLanded", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+
+
+            EX_ExplodyBarrelDummy = expandSharedAssets1.LoadAsset<GameObject>("EX_ExplodyBarrelDummy");
+            ItemBuilder.AddSpriteToObject(EX_ExplodyBarrelDummy, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"), false, false);
+            tk2dSprite m_ExplodyBarrelDummySprite = EX_ExplodyBarrelDummy.GetComponent<tk2dSprite>();
+            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel_Explode"), m_ExplodyBarrelDummySprite.Collection);
             
+            ExpandUtility.GenerateSpriteAnimator(EX_ExplodyBarrelDummy, ClipFps: 5);
+            ExpandUtility.AddAnimation(EX_ExplodyBarrelDummy.GetComponent<tk2dSpriteAnimator>(), m_ExplodyBarrelDummySprite.Collection, new List<string>() { "EX_ExplodyBarrel", "EX_ExplodyBarrel_Explode" }, "explode", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+
+            SpeculativeRigidbody m_ExplodyBarrelDummyRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EX_ExplodyBarrelDummy, CollisionLayer.EnemyCollider);
+
+            m_ExplodyBarrelDummyRigidBody.PixelColliders.Clear();
+            m_ExplodyBarrelDummyRigidBody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyCollider,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 6,
+                    ManualOffsetY = 1,
+                    ManualWidth = 14,
+                    ManualHeight = 16,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+            m_ExplodyBarrelDummyRigidBody.PixelColliders.Add(
+                new PixelCollider() {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyHitBox,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 6,
+                    ManualOffsetY = 1,
+                    ManualWidth = 14,
+                    ManualHeight = 20,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+
+
+            EX_Chest_West = expandSharedAssets1.LoadAsset<GameObject>("EX_Chest_West");
+            ItemBuilder.AddSpriteToObject(EX_Chest_West, expandSharedAssets1.LoadAsset<Texture2D>("chest_west_idle_001"), false, false);
+                        
+            tk2dSprite ChestWestSprite = EX_Chest_West.GetComponent<tk2dSprite>();
+
+            ChestWestSprite.HeightOffGround = -1;
+
+            List<string> chestWestSprites = new List<string>() {
+                "chest_west_appear_001",
+                "chest_west_appear_002",
+                "chest_west_appear_003",
+                "chest_west_appear_004",
+                "chest_west_appear_005",
+                "chest_west_appear_006",
+                "chest_west_open_001",
+                "chest_west_open_002",
+                "chest_west_open_003",
+                "chest_west_open_004",
+                "chest_west_open_005",
+                "chest_west_open_006",
+                "chest_west_open_007",
+                "chest_west_open_008",
+                "chest_west_open_009",
+                "chest_west_open_010",
+                "chest_west_break_001",
+                "chest_west_break_002",
+                "chest_west_break_003",
+                "chest_west_break_004"
+            };
+
+            List<string> chestWestOpen = new List<string>() {
+                "chest_west_open_001",
+                "chest_west_open_002",
+                "chest_west_open_003",
+                "chest_west_open_004",
+                "chest_west_open_005",
+                "chest_west_open_006",
+                "chest_west_open_007",
+                "chest_west_open_008",
+                "chest_west_open_009",
+                "chest_west_open_010"
+            };
+
+            List<string> chestWestAppear = new List<string>() {
+                "chest_west_appear_001",
+                "chest_west_appear_002",
+                "chest_west_appear_003",
+                "chest_west_appear_004",
+                "chest_west_appear_004",
+                "chest_west_appear_004",
+                "chest_west_appear_004",
+                "chest_west_appear_005",
+                "chest_west_appear_006"
+            };
+                        
+            List<string> chestWestBreak = new List<string>() {
+                "chest_west_break_001",
+                "chest_west_break_002",
+                "chest_west_break_003",
+                "chest_west_break_004"
+            };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, chestWestSprites, ChestWestSprite.Collection);
+            
+            ExpandUtility.GenerateSpriteAnimator(EX_Chest_West);
+            
+            tk2dSpriteAnimator ChestWestAnimator = EX_Chest_West.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(ChestWestAnimator, ChestWestSprite.Collection, chestWestAppear, "west_chest_appear", tk2dSpriteAnimationClip.WrapMode.Once, 9);
+            ChestWestAnimator.Library.clips[0].frames[0].eventAudio = "Play_OBJ_smallchest_spawn_01";
+            ChestWestAnimator.Library.clips[0].frames[0].triggerEvent = true;
+            ExpandUtility.AddAnimation(ChestWestAnimator, ChestWestSprite.Collection, chestWestOpen, "west_chest_open", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ExpandUtility.AddAnimation(ChestWestAnimator, ChestWestSprite.Collection, chestWestBreak, "west_chest_break", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ChestWestAnimator.Library.clips[2].frames[0].eventAudio = "Play_OBJ_barrel_break_01";
+            ChestWestAnimator.Library.clips[2].frames[0].triggerEvent = true;
+                        
+            ExpandUtility.GenerateOrAddToRigidBody(EX_Chest_West, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, collideWithTileMap: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 16), offset: new IntVector2(2, 2));
+            
+            // Note Brown Chest's child object PoofCloud and Groundhit sprites use same collection asset as parent brown chest as well as the sprite animation clip library.
+            GameObject m_ChestWestPoofCloudChild = EX_Chest_West.transform.Find("PoofCloud").gameObject;
+            tk2dSprite m_ChestWestPoofCloudSprite = m_ChestWestPoofCloudChild.AddComponent<tk2dSprite>();
+            m_ChestWestPoofCloudSprite.SetSprite(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection, "cloud_woodchest_appear_001");
+            m_ChestWestPoofCloudSprite.attachParent = ChestWestSprite;
+            m_ChestWestPoofCloudSprite.HeightOffGround = 1;
+
+            tk2dSpriteAnimator m_ChestWestPoofCloudAnimator = ExpandUtility.DuplicateSpriteAnimator(m_ChestWestPoofCloudChild, ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSpriteAnimator>());
+            m_ChestWestPoofCloudAnimator.DefaultClipId = 15;
+            m_ChestWestPoofCloudAnimator.playAutomatically = true;
+
+
+            SpriteAnimatorKiller m_ChestWestPoofCloudChildAnimatorKiller = m_ChestWestPoofCloudChild.AddComponent<SpriteAnimatorKiller>();
+            m_ChestWestPoofCloudChildAnimatorKiller.onlyDisable = true;
+            m_ChestWestPoofCloudChildAnimatorKiller.deparentOnStart = false;
+            m_ChestWestPoofCloudChildAnimatorKiller.childObjectToDisable = new List<GameObject>(0);
+            m_ChestWestPoofCloudChildAnimatorKiller.hasChildAnimators = false;
+            m_ChestWestPoofCloudChildAnimatorKiller.deparentAllChildren = false;
+            m_ChestWestPoofCloudChildAnimatorKiller.disableRendererOnDelay = false;
+            m_ChestWestPoofCloudChildAnimatorKiller.delayDestructionTime = 0;
+            m_ChestWestPoofCloudChildAnimatorKiller.fadeTime = 0;
+            
+            TimedObjectKiller m_ChestWestPoofCloudChildTimedKiller = m_ChestWestPoofCloudChild.AddComponent<TimedObjectKiller>();
+            m_ChestWestPoofCloudChildTimedKiller.lifeTime = 1;
+            m_ChestWestPoofCloudChildTimedKiller.m_poolType = TimedObjectKiller.PoolType.Pooled;
+                        
+
+            GameObject m_ChestWestGroundHitChild = EX_Chest_West.transform.Find("GroundHit").gameObject;
+            tk2dSprite m_ChestWestGroundHitSprite = m_ChestWestGroundHitChild.AddComponent<tk2dSprite>();
+            m_ChestWestGroundHitSprite.SetSprite(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection, "low_chest_dustland_001");
+            m_ChestWestGroundHitSprite.attachParent = ChestWestSprite;
+            m_ChestWestGroundHitSprite.HeightOffGround = 1;
+
+            tk2dSpriteAnimator m_ChestWestGroundHitAnimator = ExpandUtility.DuplicateSpriteAnimator(m_ChestWestGroundHitChild, ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSpriteAnimator>());
+            m_ChestWestGroundHitAnimator.DefaultClipId = 20;
+            m_ChestWestGroundHitAnimator.playAutomatically = true;
+
+            SpriteAnimatorKiller m_ChestWestGroundHitChildAnimatorKiller = m_ChestWestGroundHitChild.AddComponent<SpriteAnimatorKiller>();
+            m_ChestWestGroundHitChildAnimatorKiller.onlyDisable = false;
+            m_ChestWestGroundHitChildAnimatorKiller.deparentOnStart = false;
+            m_ChestWestGroundHitChildAnimatorKiller.childObjectToDisable = new List<GameObject>(0);
+            m_ChestWestGroundHitChildAnimatorKiller.hasChildAnimators = false;
+            m_ChestWestGroundHitChildAnimatorKiller.deparentAllChildren = false;
+            m_ChestWestGroundHitChildAnimatorKiller.disableRendererOnDelay = false;
+            m_ChestWestGroundHitChildAnimatorKiller.delayDestructionTime = 0;
+            m_ChestWestGroundHitChildAnimatorKiller.fadeTime = 0;
+
+
+            
+            SimpleLightIntensityCurve m_ChestWest_LightCurve = m_ChestWestPoofCloudChild.transform.Find("Point Light").gameObject.AddComponent<SimpleLightIntensityCurve>();
+            m_ChestWest_LightCurve.Duration = 1;
+            m_ChestWest_LightCurve.MinIntensity = 0;
+            m_ChestWest_LightCurve.MaxIntensity = 1.1f;
+            m_ChestWest_LightCurve.Curve = new AnimationCurve() {
+                preWrapMode = WrapMode.Default,
+                postWrapMode = WrapMode.Default,
+                keys = new Keyframe[] {
+                    new Keyframe() {
+                        time = 0,
+                        value = 0,
+                        inTangent = 0,
+                        outTangent = 0
+                    },
+                    new Keyframe() {
+                        time = 0.119112f,
+                        value = 1,
+                        inTangent = 15.147778f,
+                        outTangent = -0.6802f
+                    },
+                    new Keyframe() {
+                        time = 1,
+                        value = 0,
+                        inTangent = 0,
+                        outTangent = 0
+                    },
+                }
+
+            };
+
+            GameObject ChestWestShadow = EX_Chest_West.transform.Find("Shadow").gameObject;
+            tk2dSprite ChestWestShadowSprite = ChestWestShadow.AddComponent<tk2dSprite>();
+            ChestWestShadowSprite.SetSprite(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection, "low_chest_shadow_001");
+            ChestWestShadowSprite.HeightOffGround = -2;
+            
+            GameObject ChestWestLock = EX_Chest_West.transform.Find("Lock").gameObject;
+            ItemBuilder.AddSpriteToObject(ChestWestLock, expandSharedAssets1.LoadAsset<Texture2D>("west_lock_idle_001"), false, false);
+
+            tk2dSprite ChestWestLockSprite = ChestWestLock.GetComponent<tk2dSprite>();
+            ChestWestLockSprite.HeightOffGround = -0.5f;
+
+            List<string> ChestWestLockSprites = new List<string>() {
+                "west_lock_nokey_001",
+                "west_lock_nokey_002",
+                "west_lock_broke_001",
+                "west_lock_open_001",
+                "west_lock_open_002",
+                "west_lock_open_003",
+                "west_lock_open_004",
+                "west_lock_open_005",
+                "west_lock_open_006",
+                "west_lock_open_007"
+            };
+
+            List<string> ChestWestLockOpen = new List<string>() {
+                "west_lock_idle_001",
+                "west_lock_open_001",
+                "west_lock_open_002",
+                "west_lock_open_003",
+                "west_lock_open_004",
+                "west_lock_open_005",
+                "west_lock_open_006",
+                "west_lock_open_007"
+            };
+
+            List<string> ChestWestLockNoKey = new List<string>() {
+                "west_lock_idle_001",
+                "west_lock_nokey_001",
+                "west_lock_idle_001",
+                "west_lock_nokey_002",
+                "west_lock_idle_001",
+                "west_lock_nokey_001",
+                "west_lock_idle_001",
+                "west_lock_nokey_002",
+                "west_lock_idle_001",
+                "west_lock_nokey_001",
+                "west_lock_idle_001"
+            };
+
+            List<string> ChestWestLockBreak = new List<string>() { "west_lock_broke_001", };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, ChestWestLockSprites, ChestWestLockSprite.Collection);
+
+            ExpandUtility.GenerateSpriteAnimator(ChestWestLock);
+
+            tk2dSpriteAnimator ChestWestLockAnimator = ChestWestLock.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(ChestWestLockAnimator, ChestWestLockSprite.Collection, ChestWestLockOpen, "west_lock_open", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ChestWestLockAnimator.Library.clips[0].frames[0].eventAudio = "Play_OBJ_chest_unlock_01";
+            ChestWestLockAnimator.Library.clips[0].frames[0].triggerEvent = true;
+            ExpandUtility.AddAnimation(ChestWestLockAnimator, ChestWestLockSprite.Collection, ChestWestLockNoKey, "west_lock_nokey", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ChestWestLockAnimator.Library.clips[1].frames[0].eventAudio = "Play_OBJ_lock_jiggle_01";
+            ChestWestLockAnimator.Library.clips[1].frames[0].triggerEvent = true;
+            ExpandUtility.AddAnimation(ChestWestLockAnimator, ChestWestLockSprite.Collection, ChestWestLockBreak, "west_lock_break", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ChestWestLockAnimator.Library.clips[2].frames[0].eventAudio = "Play_WPN_gun_empty_01";
+            ChestWestLockAnimator.Library.clips[2].frames[0].triggerEvent = true;
+            
+
+            Chest m_chestWest = EX_Chest_West.AddComponent<Chest>();
+            m_chestWest.placeableWidth = 3;
+            m_chestWest.placeableHeight = 1;
+            m_chestWest.difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
+            m_chestWest.isPassable = true;
+            m_chestWest.ChestIdentifier = Chest.SpecialChestIdentifier.NORMAL;
+            m_chestWest.ChestType = Chest.GeneralChestType.ITEM;
+            m_chestWest.forceContentIds = new List<int>(0);
+            m_chestWest.lootTable = ExpandObjectDatabase.ChestRed.GetComponent<Chest>().lootTable;
+            m_chestWest.breakertronNothingChance = 0.1f;
+            m_chestWest.breakertronLootTable = ExpandObjectDatabase.ChestRed.GetComponent<Chest>().breakertronLootTable;
+            m_chestWest.prefersDungeonProcContents = true;
+            m_chestWest.pickedUp = false;
+            m_chestWest.spawnAnimName = "west_chest_appear"; // VFXPrespawn and VFX_GroundHit can't be null because spawn behaviour doesn't null check them. Leave string empty if VFX objects not setup yet.
+            m_chestWest.openAnimName = "west_chest_open";
+            m_chestWest.breakAnimName = "west_chest_break";
+            m_chestWest.overrideJunkId = -1;
+            m_chestWest.VFX_PreSpawn = m_ChestWestPoofCloudChild; // Must be as child object. (PoofCloud child)
+            m_chestWest.VFX_GroundHit = m_ChestWestGroundHitChild; // Must be as child object. (GroundHit child)
+            m_chestWest.groundHitDelay = 0.73f;
+            m_chestWest.spawnTransform = EX_Chest_West.transform.Find("SpawnTransform");
+            m_chestWest.spawnCurve = new AnimationCurve() {
+                keys = new Keyframe[] {
+                    new Keyframe() {
+                        time = 0,
+                        value = 0,
+                        inTangent = 3.562501f,
+                        outTangent = 3.562501f,                        
+                    },
+                    new Keyframe() {
+                        time = 1,
+                        value = 1.0125f,
+                        inTangent = 0.09381f,
+                        outTangent = 0.09381f
+                    }
+
+                },
+                preWrapMode = WrapMode.Default,
+                postWrapMode = WrapMode.Default
+            };
+            m_chestWest.LockAnimator = ChestWestLockAnimator; // This must be child object of Chest            
+            m_chestWest.LockOpenAnim = "west_lock_open";
+            m_chestWest.LockBreakAnim = "west_lock_break";
+            m_chestWest.LockNoKeyAnim = "west_lock_nokey";
+            m_chestWest.SubAnimators = new tk2dSpriteAnimator[0];
+            m_chestWest.IsLocked = true;
+            m_chestWest.IsSealed = false;
+            m_chestWest.IsOpen = false;
+            m_chestWest.IsBroken = false;
+            m_chestWest.AlwaysBroadcastsOpenEvent = false;
+            m_chestWest.IsRainbowChest = false;
+            m_chestWest.IsMirrorChest = false;
+            m_chestWest.MimicGuid = string.Empty;
+            m_chestWest.mimicOffset = IntVector2.Zero;
+            m_chestWest.preMimicIdleAnim = string.Empty;
+            m_chestWest.preMimicIdleAnimDelay = 3;
+            m_chestWest.overrideMimicChance = 0;
+            m_chestWest.MinimapIconPrefab = ExpandObjectDatabase.ChestRed.GetComponent<Chest>().MinimapIconPrefab;
+
+            MajorBreakable chestWestBreakable = EX_Chest_West.AddComponent<MajorBreakable>();
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<MajorBreakable>()), chestWestBreakable);
+            chestWestBreakable.spriteNameToUseAtZeroHP = "chest_west_break_001";
+            
+
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

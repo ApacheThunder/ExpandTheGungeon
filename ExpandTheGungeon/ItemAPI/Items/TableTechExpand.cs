@@ -1,5 +1,4 @@
 ﻿using Dungeonator;
-using ExpandTheGungeon.ExpandUtilities;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -10,11 +9,11 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init() {
             string itemName = "Table Tech Expand";
-            string resourceName = "ExpandTheGungeon/Textures/Items/tabletech_assassin";            
+            string resourceName = "ExpandTheGungeon/Textures/Items/tabletech_assassin";
             GameObject itemObj = new GameObject(itemName);
             TableTechExpand item = itemObj.AddComponent<TableTechExpand>();
-            ItemBuilder.AddSpriteToObject(itemName, resourceName, itemObj);
-                        
+            ItemBuilder.AddSpriteToObject(itemObj, ExpandAssets.LoadAsset<Texture2D>(resourceName), false, false);
+
             string shortDesc = "Expand The Table";
             string longDesc = "This forbidden technique causes flipped tables to increase exponentially in size.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "ex");

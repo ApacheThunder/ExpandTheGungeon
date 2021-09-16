@@ -320,7 +320,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            if (ExpandStats.debugMode) { ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand); }
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -494,7 +494,7 @@ namespace ExpandTheGungeon {
                 File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
             }
             
-            ExpandUtilities.ResourceExtractor.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ModSettingsFileName);
+            ExpandAssets.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ModSettingsFileName);
 
             ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
 
@@ -520,8 +520,38 @@ namespace ExpandTheGungeon {
         
         private void ExpandTestCommand(string[] consoleText) {
             
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-                        
+            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+
+
+
+            // ExpandUtilities.ResourceExtractor.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Phobos.GetComponent<tk2dSpriteCollectionData>());            
+
+            /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
+            SupriseChest.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
+            CurrentPlayer.CurrentRoom.RegisterInteractable(SupriseChest);*/
+
+            // ExpandUtility.SpawnParaDrop(CurrentPlayer.CurrentRoom, CurrentPlayer.specRigidbody.GetUnitCenter(ColliderType.HitBox), DropHorizontalOffset: 0);
+
+            // GameObject AlarmMushRoomTest = UnityEngine.Object.Instantiate(ExpandPrefabs.EXAlarmMushroom, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity);
+
+            // AlarmMushRoomTest.GetComponent<ExpandAlarmMushroomPlacable>().ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
+
+            /*GameObject TestPortal = UnityEngine.Object.Instantiate(ExpandPrefabs.EX_RainbowRoomFloor, CurrentPlayer.transform.position, Quaternion.identity);
+
+            if (consoleText.Length > 1) {
+                float X = float.Parse(consoleText[0]);
+                float Y = float.Parse(consoleText[1]);
+                TestPortal.transform.localScale = new Vector3(X, Y);
+                // ExpandPrefabs.EX_Chest_West.gameObject.transform.Find("Shadow").localPosition = new Vector3(X, Y);
+            }
+
+            TestPortal.transform.position -= new Vector3(0, 0, -50);*/
+
+
+            // Chest TestWestChest = Chest.Spawn(ExpandPrefabs.EX_Chest_West.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
+            // TestWestChest.spawnCurve.keys[1].value = float.Parse(consoleText[0]);
+
+
             // GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
             // EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
             // ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();

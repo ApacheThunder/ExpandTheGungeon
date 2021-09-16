@@ -17,37 +17,23 @@ namespace ExpandTheGungeon.ItemAPI {
             None
         }
 
+        private static Assembly baseAssembly;
+
+        public static void SetAssembly(Type t) { baseAssembly = t.Assembly; }
+        
         public static void Init() {
 			FakePrefabHooks.Init();
 			// CompanionBuilder.Init();
 			try {
 				MethodBase method = new StackFrame(1, false).GetMethod();
 				Type declaringType = method.DeclaringType;
-				ResourceExtractor.SetAssembly(declaringType);
+				SetAssembly(declaringType);
 			} catch (Exception ex) {
 				ETGModConsole.Log(ex.Message, false);
 				ETGModConsole.Log(ex.StackTrace, false);
 			}
 		}
-
-		public static GameObject AddSpriteToObject(string name, string resourcePath, GameObject obj = null, bool copyFromExisting = true, bool isFakePrefab = true) {
-			GameObject gameObject = SpriteBuilder.SpriteFromResource(resourcePath, obj, copyFromExisting);
-            if (isFakePrefab) {
-                FakePrefab.MarkAsFakePrefab(gameObject);
-                obj.SetActive(false);
-            }
-			gameObject.name = name;
-			return gameObject;
-		}
         
-        public static void AddSpriteToObject(GameObject targetObject, string resourcePath, bool copyFromExisting = true, bool isFakePrefab = true) {
-            SpriteBuilder.SpriteFromResource(resourcePath, targetObject, copyFromExisting);
-            if (isFakePrefab) {
-                FakePrefab.MarkAsFakePrefab(targetObject);
-                targetObject.SetActive(false);
-            }
-		}
-
         public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture, bool copyFromExisting = true, bool isFakePrefab = true) {
             SpriteBuilder.SpriteFromTexture(sourceTexture, targetObject, copyFromExisting);
             if (isFakePrefab) {

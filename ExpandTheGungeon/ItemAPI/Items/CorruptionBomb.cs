@@ -745,6 +745,8 @@ namespace ExpandTheGungeon.ItemAPI {
                                             enemy.healthHaver.ForceSetCurrentHealth(15);
                                         }
 
+                                        if (enemy.gameObject.GetComponent<UnearthController>()) { Destroy(enemy.GetComponent<UnearthController>()); }
+
                                         if (enemy.behaviorSpeculator) {
                                             enemy.behaviorSpeculator.InterruptAndDisable();
                                             Destroy(enemy.behaviorSpeculator);

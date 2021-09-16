@@ -39,7 +39,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (string.IsNullOrEmpty(JsonUtility.ToJson(source))) { return; }
             if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(JsonUtility.ToJson(source), OutputFilepath); }
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(source), target);
-            
         }
 
         public static void ReflectionShallowCopyFields<T>(T target, T source, BindingFlags flags) {
@@ -317,24 +316,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_NewBreakable;
         }
 
-        public static PrototypeDungeonRoom[] BuildRoomArrayFromTextFile(AssetBundle[] bundles, string textFilePath, bool AllowSetRoomCategory = true, bool AllowSetFloorTarget = false) {
-            List<PrototypeDungeonRoom> m_CachedRoomList = new List<PrototypeDungeonRoom>();
-            List<string> m_CachedStringList = ResourceExtractor.BuildStringListFromEmbeddedResource(textFilePath);
-
-            if (m_CachedStringList == null | m_CachedStringList.Count <= 0) { return null; }
-            
-            foreach (string roomEntry in m_CachedStringList) {
-                m_CachedRoomList.Add(RoomFactory.BuildFromResource(bundles, roomEntry, AllowSetRoomCategory, AllowSetFloorTarget));
-            }
-
-            PrototypeDungeonRoom[] m_CachedRoomArray = new PrototypeDungeonRoom[0];
-
-            m_CachedRoomArray = m_CachedRoomList.ToArray();
-
-            return m_CachedRoomArray;
-        }
-
-        public static tk2dSpriteCollectionData ReplaceDungeonCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<string> spriteList = null) {
+        /*public static tk2dSpriteCollectionData ReplaceDungeonCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<string> spriteList = null) {
             if (sourceCollection == null) { return null; }
             tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
             tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
@@ -361,7 +343,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             } else if (spriteList != null) {
                 RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
                 for (int i = 0; i < spriteList.Count; i++) {
-                    Texture2D texture2D = ResourceExtractor.GetTextureFromResource(spriteList[i]);
+                    Texture2D texture2D = ExpandAssets.LoadAsset<Texture2D>(spriteList[i]);
                     if (!texture2D) {
                         Debug.Log("[BuildDungeonCollection] Null Texture found at index: " + i);
                         goto IL_EXIT;
@@ -408,6 +390,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             return collectionData;
         }
+        */
 
         public static tk2dSpriteCollectionData DuplicateDungeonCollection(GameObject TargetObject, tk2dSpriteCollectionData sourceCollection, string Name) {
 
@@ -600,6 +583,41 @@ namespace ExpandTheGungeon.ExpandUtilities {
             lootCrate.Trigger(new Vector3(-5f, -5f, -5f), (landingPosition + new Vector3(15f, 15f, 15f)), currentRoom, true);
             currentRoom.ExtantEmergencyCrate = eCrateInstance;
             return eCrateInstance;
+        }
+
+        // if ObjectDrop and Enemydrop are left null this will spawn a explosive barrel paradrop.
+        public static GameObject SpawnParaDrop(RoomHandler currentRoom, Vector3 landingPosition, GameObject ObjectDrop = null, string EnemyDrop = "NULL", Vector2? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false) {
+            GameObject m_CachedObject = null;
+            bool isExplodyBarrel = false;
+
+            if (!string.IsNullOrEmpty(EnemyDrop) && EnemyDrop != "NULL" && EnemyDatabase.GetOrLoadByGuid(EnemyDrop)) {
+                m_CachedObject = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(EnemyDrop), landingPosition, currentRoom, false, AIActor.AwakenAnimationType.Spawn, true).gameObject;
+                if (!m_CachedObject) { isExplodyBarrel = true; }
+            } else if (ObjectDrop) {
+                m_CachedObject = ObjectDrop;
+            } else {                
+                isExplodyBarrel = true;
+            }
+
+            if (isExplodyBarrel) {
+                m_CachedObject = Instantiate(ExpandPrefabs.EX_ExplodyBarrelDummy, landingPosition, Quaternion.identity);
+                // if (m_CachedObject.GetComponent<SpeculativeRigidbody>()) { m_CachedObject.GetComponent<SpeculativeRigidbody>().Reinitialize(); }
+            }
+
+            ExpandParadropController paraDropController = m_CachedObject.AddComponent<ExpandParadropController>();
+            if (CustomObjectSize.HasValue) {
+                paraDropController.UseObjectSizeOverride = true;
+                paraDropController.OverrideObjectSize = CustomObjectSize.Value;
+            }
+            paraDropController.ParentObjectExplodyBarrel = isExplodyBarrel;
+            paraDropController.UseLandingVFX = useLandingVFX;
+            paraDropController.LandingPositionOffset = LandingPositionOffset;
+            paraDropController.DropSpeed = DropSpeed;
+            paraDropController.DropHeightHorizontalOffset = DropHorizontalOffset;
+            paraDropController.StartHeight = DropHeight;
+            paraDropController.StartsIntheAir = true;
+            if (!DeferParaDropStart) { paraDropController.Configured = true; }
+            return m_CachedObject;
         }
 
         public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false, PlayerHandController overrideHandObject = null) {
@@ -1478,9 +1496,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static IntVector2 GetRandomAvailableCellSmart(RoomHandler CurrentRoom, PlayerController PrimaryPlayer, int MinClearence = 2, bool usePlayerVectorAsFallback = false) {
-            Vector2 PlayerVector2 = PrimaryPlayer.CenterPosition;
-            IntVector2 PlayerIntVector2 = PlayerVector2.ToIntVector2(VectorConversions.Floor);
+            Vector2 PlayerVector2 = Vector2.zero;
+            IntVector2 PlayerIntVector2 = IntVector2.Zero;
             
+            if (PrimaryPlayer) {
+                PlayerVector2 = PrimaryPlayer.CenterPosition;
+                PlayerIntVector2 = PlayerVector2.ToIntVector2(VectorConversions.Floor);
+            }
+
             CellValidator cellValidator = delegate (IntVector2 c) {
                 for (int l = 0; l < MinClearence; l++) {
                     for (int m = 0; m < MinClearence; m++) {
@@ -1497,7 +1520,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             };
 
             IntVector2? randomAvailableCell = CurrentRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(MinClearence, MinClearence)), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
-            // IntVector2? randomAvailableCell = CurrentRoom.GetRandomAvailableCell(new IntVector2?(IntVector2.One * MinClearence), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
             IntVector2 SelectedVector;
             if (randomAvailableCell.HasValue) {
                 SelectedVector = randomAvailableCell.Value;
@@ -2907,12 +2929,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static ExplosionData GenerateExplosionData(GameObject DefaultVFX = null, GameObject overrideRangeIndicatorEffect = null, List<SpeculativeRigidbody> ignoreList = null, GameActorFreezeEffect freezeEffect = null, bool useDefaultExplosion = false, bool doDamage = true, bool forceUseThisRadius = true, float damageRadius = 3, bool DamagesPlayer = true, float damage = 40, bool breakSecretWalls = false, float secretWallsRadius = 4.5f, bool forcePreventSecretWallDamage = false, bool doDestroyProjectiles = true, bool doForce = true, float pushRadius = 5, float force = 100, float debrisForce = 50, bool preventPlayerForce = false, float explosionDelay = 0.1f, bool usesComprehensiveDelay = false, float comprehensiveDelay = 0, bool doScreenShake = true, bool doStickyFriction = true, bool doExplosionRing = true, bool isFreezeExplosion = false, float freezeRadius = 5, bool playDefaultSFX = true, bool IsChandelierExplosion = false, bool rotateEffectToNormal = false) {
             
-            if (DefaultVFX == null) {
-                AssetBundle m_sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-                DefaultVFX = m_sharedAssets.LoadAsset<GameObject>("VFX_Ring_Explosion_001");
-                m_sharedAssets = null;
+            if (!DefaultVFX) {
+                DefaultVFX = ExpandAssets.LoadOfficialAsset<GameObject>("VFX_Ring_Explosion_001", ExpandAssets.AssetSource.SharedAuto1);
             }
-            if (DefaultVFX == null) { return null; }
+
+            if (!DefaultVFX) { return null; }
             if (isFreezeExplosion && freezeEffect == null) { isFreezeExplosion = false; }
 
             if (ignoreList == null) { ignoreList = new List<SpeculativeRigidbody>(0); }
@@ -3829,7 +3850,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-
+        public static Texture2D BytesToTexture(byte[] bytes, string resourceName) {
+            Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            ImageConversion.LoadImage(texture2D, bytes);
+            texture2D.filterMode = FilterMode.Point;
+            texture2D.name = resourceName;
+            texture2D.Apply();
+            return texture2D;
+        }
     }
 
     public static class ExpandExtensions {

@@ -86,54 +86,57 @@ namespace ExpandTheGungeon.ExpandObjects {
         public static void ReInitFloorDefinitions(GameManager gameManager) {
             if (gameManager) {
                 bool SpaceEntryExists = false;
-                foreach (GameLevelDefinition definition in gameManager.customFloors) {
-                    switch (definition.dungeonSceneName.ToLower()) {
-                        case "tt_jungle":
-                            definition.priceMultiplier = 1.20000005f;
-                            definition.secretDoorHealthMultiplier = 1;
-                            definition.enemyHealthMultiplier = 1.33329999f;
-                            definition.damageCap = 300;
-                            definition.bossDpsCap = 42;
-                            definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            definition.predefinedSeeds = new List<int>(0);
-                            break;
-                        case "tt_belly":
-                            definition.priceMultiplier = 1.39999998f;
-                            definition.secretDoorHealthMultiplier = 1;
-                            definition.enemyHealthMultiplier = 1.66659999f;
-                            definition.damageCap = 300;
-                            definition.bossDpsCap = 60;
-                            definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            definition.predefinedSeeds = new List<int>(0);
-                            break;
-                        case "tt_west":
-                            definition.priceMultiplier = 2;
-                            definition.secretDoorHealthMultiplier = 1;
-                            definition.enemyHealthMultiplier = 2.1f;
-                            definition.damageCap = 300;
-                            definition.bossDpsCap = 78;
-                            definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
-                            definition.predefinedSeeds = new List<int>(0);
-                            break;
-                        case "tt_space":
-                            SpaceEntryExists = true;
-                            break;
-                    }
-                }
-                if (!SpaceEntryExists) {
-                    gameManager.customFloors.Add(
-                        new GameLevelDefinition() {
-                            dungeonSceneName = "tt_space",
-                            dungeonPrefabPath = "Base_Space",
-                            priceMultiplier = 2,
-                            secretDoorHealthMultiplier = 1,
-                            enemyHealthMultiplier = 2.1f,
-                            damageCap = 300,
-                            bossDpsCap = 78,
-                            flowEntries = new List<DungeonFlowLevelEntry>(0),
-                            predefinedSeeds = new List<int>(0)
+                if (gameManager.customFloors != null) {
+                    foreach (GameLevelDefinition definition in gameManager.customFloors) {
+                        if (!gameManager) { return; }
+                        switch (definition.dungeonSceneName.ToLower()) {
+                            case "tt_jungle":
+                                definition.priceMultiplier = 1.20000005f;
+                                definition.secretDoorHealthMultiplier = 1;
+                                definition.enemyHealthMultiplier = 1.33329999f;
+                                definition.damageCap = 300;
+                                definition.bossDpsCap = 42;
+                                definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                                definition.predefinedSeeds = new List<int>(0);
+                                break;
+                            case "tt_belly":
+                                definition.priceMultiplier = 1.39999998f;
+                                definition.secretDoorHealthMultiplier = 1;
+                                definition.enemyHealthMultiplier = 1.66659999f;
+                                definition.damageCap = 300;
+                                definition.bossDpsCap = 60;
+                                definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                                definition.predefinedSeeds = new List<int>(0);
+                                break;
+                            case "tt_west":
+                                definition.priceMultiplier = 2;
+                                definition.secretDoorHealthMultiplier = 1;
+                                definition.enemyHealthMultiplier = 2.1f;
+                                definition.damageCap = 300;
+                                definition.bossDpsCap = 78;
+                                definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                                definition.predefinedSeeds = new List<int>(0);
+                                break;
+                            case "tt_space":
+                                SpaceEntryExists = true;
+                                break;
                         }
-                    );
+                    }
+                    if (!SpaceEntryExists) {
+                        gameManager.customFloors.Add(
+                            new GameLevelDefinition() {
+                                dungeonSceneName = "tt_space",
+                                dungeonPrefabPath = "Base_Space",
+                                priceMultiplier = 2,
+                                secretDoorHealthMultiplier = 1,
+                                enemyHealthMultiplier = 2.1f,
+                                damageCap = 300,
+                                bossDpsCap = 78,
+                                flowEntries = new List<DungeonFlowLevelEntry>(0),
+                                predefinedSeeds = new List<int>(0)
+                            }
+                        );
+                    }
                 }
             }
         }
@@ -893,7 +896,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             BellyMaterial.bigWallShardDamageThreshold = 10;
             BellyMaterial.fallbackVerticalTileMapEffects = GungeonPrefab.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
             BellyMaterial.fallbackHorizontalTileMapEffects = GungeonPrefab.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
-            BellyMaterial.pitfallVFXPrefab = null;
+            BellyMaterial.pitfallVFXPrefab = SewersPrefab.roomMaterialDefinitions[0].pitfallVFXPrefab;
             BellyMaterial.UsePitAmbientVFX = false;
             BellyMaterial.AmbientPitVFX = new List<GameObject>(0);
             BellyMaterial.PitVFXMinCooldown = 5;
@@ -989,7 +992,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_BellyStampData.tileStampWeight = 1;
             m_BellyStampData.spriteStampWeight = 0;
             m_BellyStampData.objectStampWeight = 1;
-            m_BellyStampData.stamps = new TileStampData[0];
             m_BellyStampData.spriteStamps = new SpriteStampData[0];
             m_BellyStampData.objectStamps = new ObjectStampData[] {
                 new ObjectStampData() {
@@ -1093,7 +1095,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             // 
             m_BellyStampData.SymmetricFrameChance = 0.1f;
             m_BellyStampData.SymmetricCompleteChance = 0.1f;
-
             dungeon.gameObject.name = "Base_Belly";
             dungeon.contentSource = ContentSource.CONTENT_UPDATE_03;
             dungeon.DungeonSeed = 0;
@@ -1187,7 +1188,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.BELLYGEON,
-                // dungeonCollection = ExpandDungeonCollections.ENV_Tileset_Belly(dungeon.gameObject),
                 dungeonCollection = ExpandPrefabs.ENV_Tileset_Belly.GetComponent<tk2dSpriteCollectionData>(),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
@@ -1878,6 +1878,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_PhobosGrey.iceGrids = new TileIndexGrid[0];
             m_PhobosGrey.roomFloorBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/roomFloorBorderGrid");
             m_PhobosGrey.roomCeilingBorderGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/roomCeilingBorderGrid");
+
             m_PhobosGrey.pitLayoutGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/pitLayoutGrid");
             m_PhobosGrey.pitBorderFlatGrid = ExpandUtility.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "PhobosAssets/Phobos_Grey/pitBorderFlatGrid");
             m_PhobosGrey.pitBorderRaisedGrid = null;
@@ -2337,7 +2338,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             dungeon.PlayerLightColor = new Color(0.985294f, 0.719884f, 0.383975f, 1);
             dungeon.PlayerLightIntensity = 3.8f;
             dungeon.PlayerLightRadius = 4.5f;
-            dungeon.musicEventName = "Play_MUS_Mines_Theme_01";
+            dungeon.musicEventName = "Play_MUS_sewer_theme_01";
 
             sharedAssets2 = null;
             expandSharedAuto1 = null;

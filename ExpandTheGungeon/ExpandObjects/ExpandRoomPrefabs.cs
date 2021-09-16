@@ -458,425 +458,425 @@ namespace ExpandTheGungeon.ExpandObjects {
             AssetBundle[] AssetBundles = new AssetBundle[] { sharedAssets, sharedAssets2, braveResources, EnemiesBundle };
 
             Expand_Jungle_RoomList = new List<string>() {
-                "Expand_Forest_ZookieShroom.room",
-                "Expand_Forest_AnimalEnclosed.room",
-                "Expand_Forest_AnimalHunter1.room",
-                "Expand_Forest_Animals1.room",
-                "Expand_Forest_Animals2.room",
-                "Expand_Forest_AnimalsArrows.room",
-                "Expand_Forest_AnimalsFairy.room",
-                "Expand_Forest_AnimalsHunters1.room",
-                "Expand_Forest_AnimalSpider.room",
-                "Expand_Forest_AnimalsTribal.room",
-                "Expand_Forest_ArrowCat.room",
-                "Expand_Forest_ArrowSpent.room",
-                "Expand_Forest_BandanaSnake.room",
-                "Expand_Forest_BIRDS.room",
-                "Expand_Forest_BullatFairy.room",
-                "Expand_Forest_Bush.room",
-                "Expand_Forest_ConfirmedSnakes.room",
-                "Expand_Forest_Extra1.room",
-                "Expand_Forest_FishBats.room",
-                "Expand_Forest_FungunTribal.room",
-                "Expand_Forest_GummyBullatPit.room",
-                "Expand_Forest_GunFairy.room",
-                "Expand_Forest_Hunter1.room",
-                "Expand_Forest_Hunter2.room",
-                "Expand_Forest_HunterSporge.room",
-                "Expand_Forest_HunterVets.room",
-                "Expand_Forest_MushFairy.room",
-                "Expand_Forest_Mushroom.room",
-                "Expand_Forest_MushZookie.room",
-                "Expand_Forest_ParrotShroom.room",
-                "Expand_Forest_Professionals.room",
-                "Expand_Forest_RegularSnakeParrot.room",
-                "Expand_Forest_ShamblingArrows.room",
-                "Expand_Forest_SniperTotemBuff.room",
-                "Expand_Forest_SpendRush.room",
-                "Expand_Forest_SpiderSnakesArrow.room",
-                "Expand_Forest_TotemBuff.room",
-                "Expand_Forest_Tree.room",
-                "Expand_Forest_Tribal1.room",
-                "Expand_Forest_Tribal2.room",
-                "Expand_Forest_Tribal3.room",
-                "Expand_Forest_Tribal4.room",
-                "Expand_Forest_Tribal5.room",
-                "Expand_Forest_Tribal6.room",
-                "Expand_Forest_TribalBirds.room",
-                "Expand_Forest_TribalC.room",
-                "Expand_Forest_TribalNugget.room",
-                "Expand_Forest_TribalSummon.room",
-                "Expand_Forest_Trunk.room",
-                "Expand_Forest_Trunk2.room",
-                "Expand_Forest_Tribal31.room",
-                "Expand_Forest_Tribal32.room",
-                "Expand_Forest_Animals3.room",
-                "Expand_Forest_Animals4.room",
-                "Expand_Forest_Animals5.room",
-                "Expand_Forest_Animals6.room",
-                "Expand_Forest_Animals7.room",
-                "Expand_Forest_Animals8.room",
-                "Expand_Forest_Animals9.room",
-                "Expand_Forest_Animals10.room",
-                "Expand_Forest_Animals11.room",
-                "Expand_Forest_Animals12.room",
-                "Expand_Forest_Animals13.room",
-                "Expand_Forest_Animals14.room",
-                "Expand_Forest_Animals15.room",
-                "Expand_Forest_Animals16.room",
-                "Expand_Forest_Animals17.room",
-                "Expand_Forest_Animals18.room",
-                "Expand_Forest_Animals19.room",
-                "Expand_Forest_Animals20.room",
-                "Expand_Forest_Animals21.room",
-                "Expand_Forest_Animals22.room",
-                "Expand_Forest_Animals23.room",
-                "Expand_Forest_Animals24.room",
-                "Expand_Forest_Animals25.room",
-                "Expand_Forest_Animals26.room",
-                "Expand_Forest_Animals27.room",
-                "Expand_Forest_Hunter3.room",
-                "Expand_Forest_Hunter4.room",
-                "Expand_Forest_Hunter5.room",
-                "Expand_Forest_Hunter6.room",
-                "Expand_Forest_Hunter7.room",
-                "Expand_Forest_Hunter8.room",
-                "Expand_Forest_Hunter9.room",
-                "Expand_Forest_Hunter10.room",
-                "Expand_Forest_Hunter11.room",
-                "Expand_Forest_Hunter12.room",
-                "Expand_Forest_Hunter13.room",
-                "Expand_Forest_Hunter14.room",
-                "Expand_Forest_Hunter15.room",
-                "Expand_Forest_Hunter16.room",
-                "Expand_Forest_Hunter17.room",
-                "Expand_Forest_Hunter18.room",
-                "Expand_Forest_Hunter19.room",
-                "Expand_Forest_Hunter20.room",
-                "Expand_Forest_Hunter21.room",
-                "Expand_Forest_Hunter22.room",
-                "Expand_Forest_Hunter23.room",
-                "Expand_Forest_Hunter24.room",
-                "Expand_Forest_Hunter25.room",
-                "Expand_Forest_Hunter26.room",
-                "Expand_Forest_Hunter27.room",
-                "Expand_Forest_Mixed1.room",
-                "Expand_Forest_Mixed2.room",
-                "Expand_Forest_Mixed3.room",
-                "Expand_Forest_Mixed4.room",
-                "Expand_Forest_Mixed5.room",
-                "Expand_Forest_Mixed6.room",
-                "Expand_Forest_Mixed7.room",
-                "Expand_Forest_Mixed8.room",
-                "Expand_Forest_Mixed9.room",
-                "Expand_Forest_Mixed10.room",
-                "Expand_Forest_Mixed11.room",
-                "Expand_Forest_Mixed12.room",
-                "Expand_Forest_Mixed13.room",
-                "Expand_Forest_Mixed14.room",
-                "Expand_Forest_Mixed15.room",
-                "Expand_Forest_Mixed16.room",
-                "Expand_Forest_Mixed17.room",
-                "Expand_Forest_Mixed18.room",
-                "Expand_Forest_Mixed19.room",
-                "Expand_Forest_Mixed20.room",
-                "Expand_Forest_Mixed21.room",
-                "Expand_Forest_Mixed22.room",
-                "Expand_Forest_Mixed23.room",
-                "Expand_Forest_Mixed24.room",
-                "Expand_Forest_Mixed25.room",
-                "Expand_Forest_Tribal7.room",
-                "Expand_Forest_Tribal8.room",
-                "Expand_Forest_Tribal9.room",
-                "Expand_Forest_Tribal10.room",
-                "Expand_Forest_Tribal11.room",
-                "Expand_Forest_Tribal12.room",
-                "Expand_Forest_Tribal13.room",
-                "Expand_Forest_Tribal14.room",
-                "Expand_Forest_Tribal15.room",
-                "Expand_Forest_Tribal16.room",
-                "Expand_Forest_Tribal17.room",
-                "Expand_Forest_Tribal18.room",
-                "Expand_Forest_Tribal19.room",
-                "Expand_Forest_Tribal20.room",
-                "Expand_Forest_Tribal21.room",
-                "Expand_Forest_Tribal22.room",
-                "Expand_Forest_Tribal23.room",
-                "Expand_Forest_Tribal24.room",
-                "Expand_Forest_Tribal25.room",
-                "Expand_Forest_Tribal27.room",
-                "Expand_Forest_Tribal28.room",
-                "Expand_Forest_Tribal29.room",
-                "Expand_Forest_Tribal30.room"
+                "Expand_Forest_ZookieShroom",
+                "Expand_Forest_AnimalEnclosed",
+                "Expand_Forest_AnimalHunter1",
+                "Expand_Forest_Animals1",
+                "Expand_Forest_Animals2",
+                "Expand_Forest_AnimalsArrows",
+                "Expand_Forest_AnimalsFairy",
+                "Expand_Forest_AnimalsHunters1",
+                "Expand_Forest_AnimalSpider",
+                "Expand_Forest_AnimalsTribal",
+                "Expand_Forest_ArrowCat",
+                "Expand_Forest_ArrowSpent",
+                "Expand_Forest_BandanaSnake",
+                "Expand_Forest_BIRDS",
+                "Expand_Forest_BullatFairy",
+                "Expand_Forest_Bush",
+                "Expand_Forest_ConfirmedSnakes",
+                "Expand_Forest_Extra1",
+                "Expand_Forest_FishBats",
+                "Expand_Forest_FungunTribal",
+                "Expand_Forest_GummyBullatPit",
+                "Expand_Forest_GunFairy",
+                "Expand_Forest_Hunter1",
+                "Expand_Forest_Hunter2",
+                "Expand_Forest_HunterSporge",
+                "Expand_Forest_HunterVets",
+                "Expand_Forest_MushFairy",
+                "Expand_Forest_Mushroom",
+                "Expand_Forest_MushZookie",
+                "Expand_Forest_ParrotShroom",
+                "Expand_Forest_Professionals",
+                "Expand_Forest_RegularSnakeParrot",
+                "Expand_Forest_ShamblingArrows",
+                "Expand_Forest_SniperTotemBuff",
+                "Expand_Forest_SpendRush",
+                "Expand_Forest_SpiderSnakesArrow",
+                "Expand_Forest_TotemBuff",
+                "Expand_Forest_Tree",
+                "Expand_Forest_Tribal1",
+                "Expand_Forest_Tribal2",
+                "Expand_Forest_Tribal3",
+                "Expand_Forest_Tribal4",
+                "Expand_Forest_Tribal5",
+                "Expand_Forest_Tribal6",
+                "Expand_Forest_TribalBirds",
+                "Expand_Forest_TribalC",
+                "Expand_Forest_TribalNugget",
+                "Expand_Forest_TribalSummon",
+                "Expand_Forest_Trunk",
+                "Expand_Forest_Trunk2",
+                "Expand_Forest_Tribal31",
+                "Expand_Forest_Tribal32",
+                "Expand_Forest_Animals3",
+                "Expand_Forest_Animals4",
+                "Expand_Forest_Animals5",
+                "Expand_Forest_Animals6",
+                "Expand_Forest_Animals7",
+                "Expand_Forest_Animals8",
+                "Expand_Forest_Animals9",
+                "Expand_Forest_Animals10",
+                "Expand_Forest_Animals11",
+                "Expand_Forest_Animals12",
+                "Expand_Forest_Animals13",
+                "Expand_Forest_Animals14",
+                "Expand_Forest_Animals15",
+                "Expand_Forest_Animals16",
+                "Expand_Forest_Animals17",
+                "Expand_Forest_Animals18",
+                "Expand_Forest_Animals19",
+                "Expand_Forest_Animals20",
+                "Expand_Forest_Animals21",
+                "Expand_Forest_Animals22",
+                "Expand_Forest_Animals23",
+                "Expand_Forest_Animals24",
+                "Expand_Forest_Animals25",
+                "Expand_Forest_Animals26",
+                "Expand_Forest_Animals27",
+                "Expand_Forest_Hunter3",
+                "Expand_Forest_Hunter4",
+                "Expand_Forest_Hunter5",
+                "Expand_Forest_Hunter6",
+                "Expand_Forest_Hunter7",
+                "Expand_Forest_Hunter8",
+                "Expand_Forest_Hunter9",
+                "Expand_Forest_Hunter10",
+                "Expand_Forest_Hunter11",
+                "Expand_Forest_Hunter12",
+                "Expand_Forest_Hunter13",
+                "Expand_Forest_Hunter14",
+                "Expand_Forest_Hunter15",
+                "Expand_Forest_Hunter16",
+                "Expand_Forest_Hunter17",
+                "Expand_Forest_Hunter18",
+                "Expand_Forest_Hunter19",
+                "Expand_Forest_Hunter20",
+                "Expand_Forest_Hunter21",
+                "Expand_Forest_Hunter22",
+                "Expand_Forest_Hunter23",
+                "Expand_Forest_Hunter24",
+                "Expand_Forest_Hunter25",
+                "Expand_Forest_Hunter26",
+                "Expand_Forest_Hunter27",
+                "Expand_Forest_Mixed1",
+                "Expand_Forest_Mixed2",
+                "Expand_Forest_Mixed3",
+                "Expand_Forest_Mixed4",
+                "Expand_Forest_Mixed5",
+                "Expand_Forest_Mixed6",
+                "Expand_Forest_Mixed7",
+                "Expand_Forest_Mixed8",
+                "Expand_Forest_Mixed9",
+                "Expand_Forest_Mixed10",
+                "Expand_Forest_Mixed11",
+                "Expand_Forest_Mixed12",
+                "Expand_Forest_Mixed13",
+                "Expand_Forest_Mixed14",
+                "Expand_Forest_Mixed15",
+                "Expand_Forest_Mixed16",
+                "Expand_Forest_Mixed17",
+                "Expand_Forest_Mixed18",
+                "Expand_Forest_Mixed19",
+                "Expand_Forest_Mixed20",
+                "Expand_Forest_Mixed21",
+                "Expand_Forest_Mixed22",
+                "Expand_Forest_Mixed23",
+                "Expand_Forest_Mixed24",
+                "Expand_Forest_Mixed25",
+                "Expand_Forest_Tribal7",
+                "Expand_Forest_Tribal8",
+                "Expand_Forest_Tribal9",
+                "Expand_Forest_Tribal10",
+                "Expand_Forest_Tribal11",
+                "Expand_Forest_Tribal12",
+                "Expand_Forest_Tribal13",
+                "Expand_Forest_Tribal14",
+                "Expand_Forest_Tribal15",
+                "Expand_Forest_Tribal16",
+                "Expand_Forest_Tribal17",
+                "Expand_Forest_Tribal18",
+                "Expand_Forest_Tribal19",
+                "Expand_Forest_Tribal20",
+                "Expand_Forest_Tribal21",
+                "Expand_Forest_Tribal22",
+                "Expand_Forest_Tribal23",
+                "Expand_Forest_Tribal24",
+                "Expand_Forest_Tribal25",
+                "Expand_Forest_Tribal27",
+                "Expand_Forest_Tribal28",
+                "Expand_Forest_Tribal29",
+                "Expand_Forest_Tribal30"
             };
 
             Expand_Belly_RoomList = new List<string>() {
-                "Expand_Belly_Mixed3.room",
-                "Expand_Belly_Mixed4.room",
-                "Expand_Belly_Mixed5.room",
-                "Expand_Belly_Mixed6.room",
-                "Expand_Belly_Mixed7.room",
-                "Expand_Belly_Mixed8.room",
-                "Expand_Belly_Mixed9.room",
-                "Expand_Belly_Mixed10.room",
-                "Expand_Belly_Mixed11.room",
-                "Expand_Belly_Mixed12.room",
-                "Expand_Belly_Mixed13.room",
-                "Expand_Belly_Mixed14.room",
-                "Expand_Belly_Mixed15.room",
-                "Expand_Belly_Mixed16.room",
-                "Expand_Belly_Mixed17.room",
-                "Expand_Belly_Mixed18.room",
-                "Expand_Belly_Mixed19.room",
-                "Expand_Belly_Mixed20.room",
-                "Expand_Belly_Pirate1.room",
-                "Expand_Belly_Pirate2.room",
-                "Expand_Belly_Pirate3.room",
-                "Expand_Belly_Pirate4.room",
-                "Expand_Belly_Pirate5.room",
-                "Expand_Belly_Pirate6.room",
-                "Expand_Belly_Pirate7.room",
-                "Expand_Belly_Pirate8.room",
-                "Expand_Belly_Pirate9.room",
-                "Expand_Belly_Pirate10.room",
-                "Expand_Belly_Skeletal1.room",
-                "Expand_Belly_Skeletal2.room",
-                "Expand_Belly_Skeletal3.room",
-                "Expand_Belly_Skeletal4.room",
-                "Expand_Belly_Skeletal5.room",
-                "Expand_Belly_Skeletal6.room",
-                "Expand_Belly_Skeletal7.room",
-                "Expand_Belly_Skeletal8.room",
-                "Expand_Belly_Skeletal9.room",
-                "Expand_Belly_Skeletal10.room",
-                "Expand_Belly_Viscera1.room",
-                "Expand_Belly_Viscera2.room",
-                "Expand_Belly_Viscera3.room",
-                "Expand_Belly_Viscera4.room",
-                "Expand_Belly_Viscera5.room",
-                "Expand_Belly_Viscera6.room",
-                "Expand_Belly_Viscera7.room",
-                "Expand_Belly_Viscera8.room",
-                "Expand_Belly_Viscera9.room",
-                "Expand_Belly_Viscera10.room",
-                "Expand_Belly_Mixed1.room",
-                "Expand_Belly_Mixed2.room",
-                "Expand_Belly_Pirate17.room",
-                "Expand_Belly_Pirate18.room",
-                "Expand_Belly_Pirate19.room",
-                "Expand_Belly_Pirate20.room",
-                "Expand_Belly_Pirate21.room",
-                "Expand_Belly_Pirate22.room",
-                "Expand_Belly_Pirate23.room",
-                "Expand_Belly_Pirate24.room",
-                "Expand_Belly_Pirate25.room",
-                "Expand_Belly_Pirate26.room",
-                "Expand_Belly_Pirate27.room",
-                "Expand_Belly_Pirate28.room",
-                "Expand_Belly_Pirate29.room",
-                "Expand_Belly_Pirate30.room",
-                "Expand_Belly_Skeletal_RupturousClot.room",
-                "Expand_Belly_Skeletal11.room",
-                "Expand_Belly_Skeletal12.room",
-                "Expand_Belly_Skeletal13.room",
-                "Expand_Belly_Skeletal14.room",
-                "Expand_Belly_Skeletal15.room",
-                "Expand_Belly_Skeletal16.room",
-                "Expand_Belly_Skeletal17.room",
-                "Expand_Belly_Skeletal18.room",
-                "Expand_Belly_Skeletal19.room",
-                "Expand_Belly_Skeletal20.room",
-                "Expand_Belly_Skeletal21.room",
-                "Expand_Belly_Skeletal22.room",
-                "Expand_Belly_Skeletal23.room",
-                "Expand_Belly_Skeletal24.room",
-                "Expand_Belly_Skeletal25.room",
-                "Expand_Belly_Skeletal26.room",
-                "Expand_Belly_Skeletal27.room",
-                "Expand_Belly_Skeletal28.room",
-                "Expand_Belly_Skeletal29.room",
-                "Expand_Belly_Skeletal30.room",
-                "Expand_Belly_Viscera_EyeDiagram.room",
-                "Expand_Belly_Viscera_FloppyKnobs.room",
-                "Expand_Belly_Viscera_Globulate.room",
-                "Expand_Belly_Viscera_GutsyBulges.room",
-                "Expand_Belly_Viscera_HeartAttack.room",
-                "Expand_Belly_Viscera_NubblyBubbly.room",
-                "Expand_Belly_Viscera_Shitfactory.room",
-                "Expand_Belly_Viscera11.room",
-                "Expand_Belly_Pirate_CellStronghold.room",
-                "Expand_Belly_Pirate_DanglyBits.room",
-                "Expand_Belly_Pirate_FishInTheEar.room",
-                "Expand_Belly_Pirate11.room",
-                "Expand_Belly_Pirate12.room",
-                "Expand_Belly_Pirate13.room",
-                "Expand_Belly_Pirate14.room",
-                "Expand_Belly_Pirate15.room",
-                "Expand_Belly_Pirate16.room",
-                "Expand_Belly_Viscera30.room",
-                "Expand_Belly_Viscera12.room",
-                "Expand_Belly_Viscera13.room",
-                "Expand_Belly_Viscera14.room",
-                "Expand_Belly_Viscera15.room",
-                "Expand_Belly_Viscera16.room",
-                "Expand_Belly_Viscera17.room",
-                "Expand_Belly_Viscera18.room",
-                "Expand_Belly_Viscera19.room",
-                "Expand_Belly_Viscera20.room",
-                "Expand_Belly_Viscera21.room",
-                "Expand_Belly_Viscera22.room",
-                "Expand_Belly_Viscera23.room",
-                "Expand_Belly_Viscera24.room",
-                "Expand_Belly_Viscera25.room",
-                "Expand_Belly_Viscera26.room",
-                "Expand_Belly_Viscera27.room",
-                "Expand_Belly_Viscera28.room",
-                "Expand_Belly_Viscera29.room"
+                "Expand_Belly_Mixed3",
+                "Expand_Belly_Mixed4",
+                "Expand_Belly_Mixed5",
+                "Expand_Belly_Mixed6",
+                "Expand_Belly_Mixed7",
+                "Expand_Belly_Mixed8",
+                "Expand_Belly_Mixed9",
+                "Expand_Belly_Mixed10",
+                "Expand_Belly_Mixed11",
+                "Expand_Belly_Mixed12",
+                "Expand_Belly_Mixed13",
+                "Expand_Belly_Mixed14",
+                "Expand_Belly_Mixed15",
+                "Expand_Belly_Mixed16",
+                "Expand_Belly_Mixed17",
+                "Expand_Belly_Mixed18",
+                "Expand_Belly_Mixed19",
+                "Expand_Belly_Mixed20",
+                "Expand_Belly_Pirate1",
+                "Expand_Belly_Pirate2",
+                "Expand_Belly_Pirate3",
+                "Expand_Belly_Pirate4",
+                "Expand_Belly_Pirate5",
+                "Expand_Belly_Pirate6",
+                "Expand_Belly_Pirate7",
+                "Expand_Belly_Pirate8",
+                "Expand_Belly_Pirate9",
+                "Expand_Belly_Pirate10",
+                "Expand_Belly_Skeletal1",
+                "Expand_Belly_Skeletal2",
+                "Expand_Belly_Skeletal3",
+                "Expand_Belly_Skeletal4",
+                "Expand_Belly_Skeletal5",
+                "Expand_Belly_Skeletal6",
+                "Expand_Belly_Skeletal7",
+                "Expand_Belly_Skeletal8",
+                "Expand_Belly_Skeletal9",
+                "Expand_Belly_Skeletal10",
+                "Expand_Belly_Viscera1",
+                "Expand_Belly_Viscera2",
+                "Expand_Belly_Viscera3",
+                "Expand_Belly_Viscera4",
+                "Expand_Belly_Viscera5",
+                "Expand_Belly_Viscera6",
+                "Expand_Belly_Viscera7",
+                "Expand_Belly_Viscera8",
+                "Expand_Belly_Viscera9",
+                "Expand_Belly_Viscera10",
+                "Expand_Belly_Mixed1",
+                "Expand_Belly_Mixed2",
+                "Expand_Belly_Pirate17",
+                "Expand_Belly_Pirate18",
+                "Expand_Belly_Pirate19",
+                "Expand_Belly_Pirate20",
+                "Expand_Belly_Pirate21",
+                "Expand_Belly_Pirate22",
+                "Expand_Belly_Pirate23",
+                "Expand_Belly_Pirate24",
+                "Expand_Belly_Pirate25",
+                "Expand_Belly_Pirate26",
+                "Expand_Belly_Pirate27",
+                "Expand_Belly_Pirate28",
+                "Expand_Belly_Pirate29",
+                "Expand_Belly_Pirate30",
+                "Expand_Belly_Skeletal_RupturousClot",
+                "Expand_Belly_Skeletal11",
+                "Expand_Belly_Skeletal12",
+                "Expand_Belly_Skeletal13",
+                "Expand_Belly_Skeletal14",
+                "Expand_Belly_Skeletal15",
+                "Expand_Belly_Skeletal16",
+                "Expand_Belly_Skeletal17",
+                "Expand_Belly_Skeletal18",
+                "Expand_Belly_Skeletal19",
+                "Expand_Belly_Skeletal20",
+                "Expand_Belly_Skeletal21",
+                "Expand_Belly_Skeletal22",
+                "Expand_Belly_Skeletal23",
+                "Expand_Belly_Skeletal24",
+                "Expand_Belly_Skeletal25",
+                "Expand_Belly_Skeletal26",
+                "Expand_Belly_Skeletal27",
+                "Expand_Belly_Skeletal28",
+                "Expand_Belly_Skeletal29",
+                "Expand_Belly_Skeletal30",
+                "Expand_Belly_Viscera_EyeDiagram",
+                "Expand_Belly_Viscera_FloppyKnobs",
+                "Expand_Belly_Viscera_Globulate",
+                "Expand_Belly_Viscera_GutsyBulges",
+                "Expand_Belly_Viscera_HeartAttack",
+                "Expand_Belly_Viscera_NubblyBubbly",
+                "Expand_Belly_Viscera_Shitfactory",
+                "Expand_Belly_Viscera11",
+                "Expand_Belly_Pirate_CellStronghold",
+                "Expand_Belly_Pirate_DanglyBits",
+                "Expand_Belly_Pirate_FishInTheEar",
+                "Expand_Belly_Pirate11",
+                "Expand_Belly_Pirate12",
+                "Expand_Belly_Pirate13",
+                "Expand_Belly_Pirate14",
+                "Expand_Belly_Pirate15",
+                "Expand_Belly_Pirate16",
+                "Expand_Belly_Viscera30",
+                "Expand_Belly_Viscera12",
+                "Expand_Belly_Viscera13",
+                "Expand_Belly_Viscera14",
+                "Expand_Belly_Viscera15",
+                "Expand_Belly_Viscera16",
+                "Expand_Belly_Viscera17",
+                "Expand_Belly_Viscera18",
+                "Expand_Belly_Viscera19",
+                "Expand_Belly_Viscera20",
+                "Expand_Belly_Viscera21",
+                "Expand_Belly_Viscera22",
+                "Expand_Belly_Viscera23",
+                "Expand_Belly_Viscera24",
+                "Expand_Belly_Viscera25",
+                "Expand_Belly_Viscera26",
+                "Expand_Belly_Viscera27",
+                "Expand_Belly_Viscera28",
+                "Expand_Belly_Viscera29"
             };
 
             Expand_West_CanyonRoomList = new List<string>() {
-                "Expand_West_Canyon_Yshape4.room",
-                "Expand_West_Canyon_AP_Passage.room",
-                "Expand_West_Canyon_Arm1.room",
-                "Expand_West_Canyon_Arm2.room",
-                "Expand_West_Canyon_BigGap1.room",
-                "Expand_West_Canyon_BigGap2.room",
-                "Expand_West_Canyon_BigGap3.room",
-                "Expand_West_Canyon_Circleish1.room",
-                "Expand_West_Canyon_Circleish2.room",
-                "Expand_West_Canyon_Circleish3.room",
-                "Expand_West_Canyon_Circleish4.room",
-                "Expand_West_Canyon_CornerBomb1.room",
-                "Expand_West_Canyon_CornerBomb2.room",
-                "Expand_West_Canyon_CornerBomb3.room",
-                "Expand_West_Canyon_CornerBomb4.room",
-                "Expand_West_Canyon_Fight1.room",
-                "Expand_West_Canyon_Fight2.room",
-                "Expand_West_Canyon_Fight3.room",
-                "Expand_West_Canyon_Fight4.room",
-                "Expand_West_Canyon_Fight5.room",
-                "Expand_West_Canyon_LongOdd1.room",
-                "Expand_West_Canyon_LongOdd2.room",
-                "Expand_West_Canyon_LongOdd3.room",
-                "Expand_West_Canyon_Odd1.room",
-                "Expand_West_Canyon_Odd2.room",
-                "Expand_West_Canyon_Odd3.room",
-                "Expand_West_Canyon_Odd4.room",
-                "Expand_West_Canyon_OddShape1.room",
-                "Expand_West_Canyon_OddShape2.room",
-                "Expand_West_Canyon_OddShape3.room",
-                "Expand_West_Canyon_OddShape4.room",
-                "Expand_West_Canyon_OddSquare1.room",
-                "Expand_West_Canyon_OddSquare2.room",
-                "Expand_West_Canyon_OddSquare3.room",
-                "Expand_West_Canyon_OddSquare4.room",
-                "Expand_West_Canyon_smol1.room",
-                "Expand_West_Canyon_smol2.room",
-                "Expand_West_Canyon_smol3.room",
-                "Expand_West_Canyon_smol4.room",
-                "Expand_West_Canyon_smol5.room",
-                "Expand_West_Canyon_tight1.room",
-                "Expand_West_Canyon_tight2.room",
-                "Expand_West_Canyon_tight3.room",
-                "Expand_West_Canyon_tight4.room",
-                "Expand_West_Canyon_Weird1.room",
-                "Expand_West_Canyon_Weird2.room",
-                "Expand_West_Canyon_Weird3.room",
-                "Expand_West_Canyon_Weird4.room",
-                "Expand_West_Canyon_Yshape1.room",
-                "Expand_West_Canyon_Yshape2.room",
-                "Expand_West_Canyon_Yshape3.room"
+                "Expand_West_Canyon_Yshape4",
+                "Expand_West_Canyon_AP_Passage",
+                "Expand_West_Canyon_Arm1",
+                "Expand_West_Canyon_Arm2",
+                "Expand_West_Canyon_BigGap1",
+                "Expand_West_Canyon_BigGap2",
+                "Expand_West_Canyon_BigGap3",
+                "Expand_West_Canyon_Circleish1",
+                "Expand_West_Canyon_Circleish2",
+                "Expand_West_Canyon_Circleish3",
+                "Expand_West_Canyon_Circleish4",
+                "Expand_West_Canyon_CornerBomb1",
+                "Expand_West_Canyon_CornerBomb2",
+                "Expand_West_Canyon_CornerBomb3",
+                "Expand_West_Canyon_CornerBomb4",
+                "Expand_West_Canyon_Fight1",
+                "Expand_West_Canyon_Fight2",
+                "Expand_West_Canyon_Fight3",
+                "Expand_West_Canyon_Fight4",
+                "Expand_West_Canyon_Fight5",
+                "Expand_West_Canyon_LongOdd1",
+                "Expand_West_Canyon_LongOdd2",
+                "Expand_West_Canyon_LongOdd3",
+                "Expand_West_Canyon_Odd1",
+                "Expand_West_Canyon_Odd2",
+                "Expand_West_Canyon_Odd3",
+                "Expand_West_Canyon_Odd4",
+                "Expand_West_Canyon_OddShape1",
+                "Expand_West_Canyon_OddShape2",
+                "Expand_West_Canyon_OddShape3",
+                "Expand_West_Canyon_OddShape4",
+                "Expand_West_Canyon_OddSquare1",
+                "Expand_West_Canyon_OddSquare2",
+                "Expand_West_Canyon_OddSquare3",
+                "Expand_West_Canyon_OddSquare4",
+                "Expand_West_Canyon_smol1",
+                "Expand_West_Canyon_smol2",
+                "Expand_West_Canyon_smol3",
+                "Expand_West_Canyon_smol4",
+                "Expand_West_Canyon_smol5",
+                "Expand_West_Canyon_tight1",
+                "Expand_West_Canyon_tight2",
+                "Expand_West_Canyon_tight3",
+                "Expand_West_Canyon_tight4",
+                "Expand_West_Canyon_Weird1",
+                "Expand_West_Canyon_Weird2",
+                "Expand_West_Canyon_Weird3",
+                "Expand_West_Canyon_Weird4",
+                "Expand_West_Canyon_Yshape1",
+                "Expand_West_Canyon_Yshape2",
+                "Expand_West_Canyon_Yshape3"
             };
 
             Expand_West_TinyCanyonRoomList = new List<string>() {
-                "Expand_West_Canyon1_Straight1.room",
-                "Expand_West_Canyon1_Straight2.room",
-                "Expand_West_Canyon1_Straight3.room",
-                "Expand_West_Canyon1_Tiny1.room",
-                "Expand_West_Canyon1_Tiny2.room",
-                "Expand_West_Canyon1_Tiny3.room",
-                "Expand_West_Canyon1_Tiny4.room",
-                "Expand_West_Canyon1_Tiny5.room",
-                "Expand_West_Canyon1_Tiny6.room",
-                "Expand_West_Canyon1_Tiny7.room",
-                "Expand_West_Canyon1_Tiny8.room",
-                "Expand_West_Canyon1_Tiny9.room",
-                "Expand_West_Canyon1_Tiny10.room",
-                "Expand_West_Canyon1_Tiny11.room",
-                "Expand_West_Canyon1_Tiny12.room",
-                "Expand_West_Canyon1_Tiny13.room",
-                "Expand_West_Canyon1_Tiny14.room",
-                "Expand_West_Canyon1_Tiny15.room",
-                "Expand_West_Canyon1_Tiny16.room",
-                "Expand_West_Canyon1_Tiny17.room",
-                "Expand_West_Canyon1_Tiny18.room",
-                "Expand_West_Canyon1_Tiny19.room",
-                "Expand_West_Canyon1_Tiny20.room",
-                "Expand_West_Canyon1_TinyPassage1.room",
-                "Expand_West_Canyon1_TinyPassage2.room",
-                "Expand_West_Canyon1_TinyPassage3.room",
-                "Expand_West_Canyon1_TinyPassage4.room",
-                "Expand_West_Canyon1_TinyPassage5.room"
+                "Expand_West_Canyon1_Straight1",
+                "Expand_West_Canyon1_Straight2",
+                "Expand_West_Canyon1_Straight3",
+                "Expand_West_Canyon1_Tiny1",
+                "Expand_West_Canyon1_Tiny2",
+                "Expand_West_Canyon1_Tiny3",
+                "Expand_West_Canyon1_Tiny4",
+                "Expand_West_Canyon1_Tiny5",
+                "Expand_West_Canyon1_Tiny6",
+                "Expand_West_Canyon1_Tiny7",
+                "Expand_West_Canyon1_Tiny8",
+                "Expand_West_Canyon1_Tiny9",
+                "Expand_West_Canyon1_Tiny10",
+                "Expand_West_Canyon1_Tiny11",
+                "Expand_West_Canyon1_Tiny12",
+                "Expand_West_Canyon1_Tiny13",
+                "Expand_West_Canyon1_Tiny14",
+                "Expand_West_Canyon1_Tiny15",
+                "Expand_West_Canyon1_Tiny16",
+                "Expand_West_Canyon1_Tiny17",
+                "Expand_West_Canyon1_Tiny18",
+                "Expand_West_Canyon1_Tiny19",
+                "Expand_West_Canyon1_Tiny20",
+                "Expand_West_Canyon1_TinyPassage1",
+                "Expand_West_Canyon1_TinyPassage2",
+                "Expand_West_Canyon1_TinyPassage3",
+                "Expand_West_Canyon1_TinyPassage4",
+                "Expand_West_Canyon1_TinyPassage5"
             };
 
             Expand_West_Interior1RoomList = new List<string>() {
-                "Expand_West_Interior1_Tabled1.room",
-                "Expand_West_Interior1_Tabled2.room",
-                "Expand_West_Interior1_Tabled3.room",
-                "Expand_West_Interior1_Teleport1.room",
-                "Expand_West_Interior1_Teleport2.room",
-                "Expand_West_Interior1_Teleport2_1.room",
-                "Expand_West_Interior1_Teleport2_2.room",
-                "Expand_West_Interior1_Teleport2_3.room",
-                "Expand_West_Interior1_Teleport2_4.room",
-                "Expand_West_Interior1_Teleport2_5.room",
-                "Expand_West_Interior1_Teleport3.room",
-                "Expand_West_Interior1_Thin1.room",
-                "Expand_West_Interior1_Thin2.room",
-                "Expand_West_Interior1_Thin3.room",
-                "Expand_West_Interior1_Thin4.room",
-                "Expand_West_Interior1_Thin5.room",
-                "Expand_West_Interior1_Trapped1.room",
-                "Expand_West_Interior1_Trapped2.room",
-                "Expand_West_Interior1_AP_HTrap.room",
-                "Expand_West_Interior1_AP_West.room",
-                "Expand_West_Interior1_Bar1.room",
-                "Expand_West_Interior1_Bar2.room",
-                "Expand_West_Interior1_BoomLine1.room",
-                "Expand_West_Interior1_BoomLine2.room",
-                "Expand_West_Interior1_BoomLine3.room",
-                "Expand_West_Interior1_Boxes1.room",
-                "Expand_West_Interior1_Boxes2.room",
-                "Expand_West_Interior1_Boxes3.room",
-                "Expand_West_Interior1_Boxes4.room",
-                "Expand_West_Interior1_Boxes5.room",
-                "Expand_West_Interior1_ImportantBusiness.room",
-                "Expand_West_Interior1_Square1.room",
-                "Expand_West_Interior1_Square2.room",
-                "Expand_West_Interior1_Square3.room",
-                "Expand_West_Interior1_Square4.room",
-                "Expand_West_Interior1_Square5.room",
-                "Expand_West_Interior1_Square6.room",
-                "Expand_West_Interior1_Squareish1.room",
-                "Expand_West_Interior1_Squareish2.room",
-                "Expand_West_Interior1_Squareish3.room",
-                "Expand_West_Interior1_Squareish4.room",
-                "Expand_West_Interior1_Squareish5.room",
-                "Expand_West_Interior1_Squareish6.room",
-                "Expand_West_Interior1_Squareish7.room",
-                "Expand_West_Interior1_Squareish8.room",
-                "Expand_West_Interior1_Steps1.room",
-                "Expand_West_Interior1_Steps2.room",
-                "Expand_West_Interior1_Steps3.room",
-                "Expand_West_Interior1_Steps4.room"
+                "Expand_West_Interior1_Tabled1",
+                "Expand_West_Interior1_Tabled2",
+                "Expand_West_Interior1_Tabled3",
+                "Expand_West_Interior1_Teleport1",
+                "Expand_West_Interior1_Teleport2",
+                "Expand_West_Interior1_Teleport2_1",
+                "Expand_West_Interior1_Teleport2_2",
+                "Expand_West_Interior1_Teleport2_3",
+                "Expand_West_Interior1_Teleport2_4",
+                "Expand_West_Interior1_Teleport2_5",
+                "Expand_West_Interior1_Teleport3",
+                "Expand_West_Interior1_Thin1",
+                "Expand_West_Interior1_Thin2",
+                "Expand_West_Interior1_Thin3",
+                "Expand_West_Interior1_Thin4",
+                "Expand_West_Interior1_Thin5",
+                "Expand_West_Interior1_Trapped1",
+                "Expand_West_Interior1_Trapped2",
+                "Expand_West_Interior1_AP_HTrap",
+                "Expand_West_Interior1_AP_West",
+                "Expand_West_Interior1_Bar1",
+                "Expand_West_Interior1_Bar2",
+                "Expand_West_Interior1_BoomLine1",
+                "Expand_West_Interior1_BoomLine2",
+                "Expand_West_Interior1_BoomLine3",
+                "Expand_West_Interior1_Boxes1",
+                "Expand_West_Interior1_Boxes2",
+                "Expand_West_Interior1_Boxes3",
+                "Expand_West_Interior1_Boxes4",
+                "Expand_West_Interior1_Boxes5",
+                "Expand_West_Interior1_ImportantBusiness",
+                "Expand_West_Interior1_Square1",
+                "Expand_West_Interior1_Square2",
+                "Expand_West_Interior1_Square3",
+                "Expand_West_Interior1_Square4",
+                "Expand_West_Interior1_Square5",
+                "Expand_West_Interior1_Square6",
+                "Expand_West_Interior1_Squareish1",
+                "Expand_West_Interior1_Squareish2",
+                "Expand_West_Interior1_Squareish3",
+                "Expand_West_Interior1_Squareish4",
+                "Expand_West_Interior1_Squareish5",
+                "Expand_West_Interior1_Squareish6",
+                "Expand_West_Interior1_Squareish7",
+                "Expand_West_Interior1_Squareish8",
+                "Expand_West_Interior1_Steps1",
+                "Expand_West_Interior1_Steps2",
+                "Expand_West_Interior1_Steps3",
+                "Expand_West_Interior1_Steps4"
             };
                         
-            Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion.room" };
+            Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion" };
 
             List<PrototypeDungeonRoom> m_BulletHellRoomList = new List<PrototypeDungeonRoom>() { };
 
             foreach (string roomName in Expand_BulletHell_RoomList) {
-                m_BulletHellRoomList.Add(RoomFactory.BuildFromResource(AssetBundles, "BulletHell/" + roomName, true, true));
+                m_BulletHellRoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, true));
             }
 
             List<PrototypeDungeonRoom> m_West_Canyon_RoomList = new List<PrototypeDungeonRoom>();
@@ -884,15 +884,15 @@ namespace ExpandTheGungeon.ExpandObjects {
             List<PrototypeDungeonRoom> m_West_Interior1_RoomList = new List<PrototypeDungeonRoom>();
 
             foreach (string roomName in Expand_West_CanyonRoomList) {
-                m_West_Canyon_RoomList.Add(RoomFactory.BuildFromResource(AssetBundles, "West/" + roomName, true, false));
+                m_West_Canyon_RoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
             }
 
             foreach (string roomName in Expand_West_TinyCanyonRoomList) {
-                m_West_TinyCanyon_RoomList.Add(RoomFactory.BuildFromResource(AssetBundles, "West/" + roomName, true, false));
+                m_West_TinyCanyon_RoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
             }
 
             foreach (string roomName in Expand_West_Interior1RoomList) {
-                m_West_Interior1_RoomList.Add(RoomFactory.BuildFromResource(AssetBundles, "West/" + roomName, true, false));
+                m_West_Interior1_RoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
             }
 
             foreach (PrototypeDungeonRoom room in m_West_Canyon_RoomList) { room.overrideRoomVisualType = 0; }
@@ -902,26 +902,26 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_West_CanyonRooms = m_West_Canyon_RoomList.ToArray();
             Expand_West_TinyCanyonRooms = m_West_TinyCanyon_RoomList.ToArray();
             Expand_West_Interior1Rooms = m_West_Interior1_RoomList.ToArray();
-
-            Expand_Jungle_Entrance = RoomFactory.BuildFromResource(AssetBundles, "Jungle/Expand_Jungle_Entrance.room", true);
+            
+            Expand_Jungle_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_Entrance", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Entrance, new Vector2(4, 5), ExpandObjectDatabase.GodRays);
             Expand_Jungle_Entrance.associatedMinimapIcon = ExpandPrefabs.elevator_entrance.associatedMinimapIcon;
-            Expand_Jungle_OldCrest = RoomFactory.BuildFromResource(AssetBundles, "Jungle/Expand_Jungle_OldCrest.room", true);
+            Expand_Jungle_OldCrest = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_OldCrest", true);
             Expand_Jungle_OldCrest.associatedMinimapIcon = ExpandPrefabs.EXJungleCrest_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(5, 7), ExpandObjectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
 
 
-            Expand_Jungle_Exit = RoomFactory.BuildFromResource(AssetBundles, "Jungle/Expand_Jungle_Exit.room", true);
+            Expand_Jungle_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_Exit", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(4, 7), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ExitLadder, useExternalPrefab: true), xOffset: 8, yOffset: 13);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Exit, new Vector2(2, 5), ExpandObjectDatabase.GodRays);
 
-            Expand_Jungle_SecretDragun = RoomFactory.BuildFromResource(AssetBundles, "Jungle/Expand_Jungle_SecretDragun.room", true);
+            Expand_Jungle_SecretDragun = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_SecretDragun", true);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(4, 5), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GatlingGullNest, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Jungle_SecretDragun, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.BabyDragunNPC, useExternalPrefab: true));
 
-            Expand_Jungle_Boss = RoomFactory.BuildFromResource(AssetBundles, "Jungle/Expand_Jungle_Boss.room");
+            Expand_Jungle_Boss = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_Boss");
             Expand_Jungle_Boss.category = PrototypeDungeonRoom.RoomCategory.BOSS;
             Expand_Jungle_Boss.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
             Expand_Jungle_Boss.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
@@ -959,10 +959,10 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.com4nd0GUID);
 
 
-            Expand_Belly_Entrance = RoomFactory.BuildFromResource(AssetBundles, "Belly/Expand_Belly_Entrance.room", true);
+            Expand_Belly_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Entrance", true);
 
 
-            Expand_Gungeon_BellyEntranceRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_Gungeon_BellyEntranceRoom.room", true);
+            Expand_Gungeon_BellyEntranceRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Gungeon_BellyEntranceRoom", true);
             Expand_Gungeon_BellyEntranceRoom.usesProceduralLighting = false;
             Expand_Gungeon_BellyEntranceRoom.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(6, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Sarco_Door, useExternalPrefab: true), xOffset: 7, yOffset: -3);
@@ -979,7 +979,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Gungeon_BellyEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Gungeon_BellyEntranceRoom_ext"), DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
 
 
-            Expand_Belly_BossRoom = RoomFactory.BuildFromResource(AssetBundles, "Belly/Expand_Belly_BossRoom.room");
+            Expand_Belly_BossRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_BossRoom");
             Expand_Belly_BossRoom.category = PrototypeDungeonRoom.RoomCategory.BOSS;
             Expand_Belly_BossRoom.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
             Expand_Belly_BossRoom.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
@@ -1085,7 +1085,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(26, 31), ExpandPrefabs.Belly_Shipwreck_Right);
 
 
-            Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_Gungeon_HiddenMonsterRoom.room", true);
+            Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Gungeon_HiddenMonsterRoom", true);
             Expand_Gungeon_HiddenMonsterRoom.roomEvents = new List<RoomEventDefinition>() {
                 new RoomEventDefinition(RoomEventTriggerCondition.NPC_TRIGGER_A, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.NPC_TRIGGER_C, RoomEventTriggerAction.UNSEAL_ROOM),
@@ -1109,18 +1109,18 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Gungeon_HiddenMonsterRoom.precludeAllTilemapDrawing = true;
 
 
-            Expand_Belly_Connector_01 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_01.room", true);
-            Expand_Belly_Connector_02 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_02.room", true);
-            Expand_Belly_Connector_03 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_03.room", true);
-            Expand_Belly_Connector_04 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_04.room", true);
-            Expand_Belly_Connector_05 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_05.room", true);
-            Expand_Belly_Connector_06 = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Connector_06.room", true);
+            Expand_Belly_Connector_01 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_01", true);
+            Expand_Belly_Connector_02 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_02", true);
+            Expand_Belly_Connector_03 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_03", true);
+            Expand_Belly_Connector_04 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_04", true);
+            Expand_Belly_Connector_05 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_05", true);
+            Expand_Belly_Connector_06 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_06", true);
 
-            Expand_Belly_Reward = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Reward.room", true);
-            Expand_Belly_Shrine = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_Shrine.room", true);
-            Expand_Belly_ExitHub = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_ExitHub.room", true);
+            Expand_Belly_Reward = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Reward", true);
+            Expand_Belly_Shrine = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Shrine", true);
+            Expand_Belly_ExitHub = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_ExitHub", true);
 
-            Expand_Belly_RealExit = RoomFactory.BuildFromResource(AssetBundles, "Belly\\Expand_Belly_RealExit.room", true);
+            Expand_Belly_RealExit = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_RealExit", true);
             Expand_Belly_RealExit.associatedMinimapIcon = ExpandPrefabs.Belly_ExitRoomIcon;
             Expand_Belly_RealExit.usesProceduralDecoration = false;
             Expand_Belly_RealExit.usesProceduralLighting = false;
@@ -1130,7 +1130,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(6, 7), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightStone, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Belly_RealExit, new Vector2(9, 24), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightStone, useExternalPrefab: true));
 
-            Expand_West_Entrance = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_Entrance.room", true);
+            Expand_West_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_Entrance", true);
             Expand_West_Entrance.roomEvents = new List<RoomEventDefinition>() {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
@@ -1147,24 +1147,24 @@ namespace ExpandTheGungeon.ExpandObjects {
 
 
 
-            Expand_West_SecretWarp = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_SecretWarp.room", true);
+            Expand_West_SecretWarp = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretWarp", true);
             Expand_West_SecretWarp.usesProceduralDecoration = false;
             Expand_West_SecretWarp.overrideRoomVisualType = 1;
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretWarp1, new Vector2(4, 9), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
-            Expand_West_SecretHub = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_SecretHub.room", true);
+            Expand_West_SecretHub = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
             Expand_West_SecretHub.overrideRoomVisualType = 1;
             Expand_West_SecretHub.usesProceduralDecoration = false;
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub, new Vector2(10, 19), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
-            Expand_West_SecretHub2 = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_SecretHub.room", true);
+            Expand_West_SecretHub2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
             Expand_West_SecretHub2.name = "Expand_West_SecretHub2";
             Expand_West_SecretHub2.overrideRoomVisualType = 2;
             Expand_West_SecretHub2.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, new Vector2(10, 19), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
-            Expand_West_SecretShopWarp = RoomFactory.BuildFromResource(AssetBundles, "West\\Expand_West_SecretShopWarp.room", true);
+            Expand_West_SecretShopWarp = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretShopWarp", true);
             Expand_West_SecretShopWarp.overrideRoomVisualType = 2;
             Expand_West_SecretShopWarp.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 4), ExpandPrefabs.RatJailDoor);
@@ -1287,7 +1287,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RickRollChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_SurpriseChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
-            Expand_Apache_RainbowRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_RainbowRoom.room", true, false, assignDecorationSettings: true);
+            Expand_Apache_RainbowRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_RainbowRoom", true, false, assignDecorationSettings: true);
             Expand_Apache_RainbowRoom.preventAddedDecoLayering = true;
             Expand_Apache_RainbowRoom.precludeAllTilemapDrawing = true;
             Expand_Apache_RainbowRoom.UseCustomMusic = true;
@@ -1304,7 +1304,6 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_Apache_RainbowRoom.drawPrecludedCeilingTiles = false;
             RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandPrefabs.EXSpaceFloor_50x50);
             RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandPrefabs.EXSpaceFloorPitBorder_50x50);
-            RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, Vector2.zero, ExpandObjectDatabase.EndTimes);
             if (ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>()) {
                 RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(19, 47), null, ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>(), PathID: 0, PathStartNode: 0);
                 RoomBuilder.AddObjectToRoom(Expand_Apache_RainbowRoom, new Vector2(5, 2), null, ExpandPrefabs.EXTrap_Apache.GetComponent<DungeonPlaceableBehaviour>(), PathID: 0, PathStartNode: 2);
@@ -1353,12 +1352,12 @@ namespace ExpandTheGungeon.ExpandObjects {
             Expand_RickRollSecret = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             
-            Bunny_Special4ShrineRoom = RoomFactory.BuildFromResource(AssetBundles, "Bunny_Special4ShrineRoom.room", true, true);
+            Bunny_Special4ShrineRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Bunny_Special4ShrineRoom", true, true);
             foreach (PrototypeRoomExit exit in Bunny_Special4ShrineRoom.exitData.exits) {
                 exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY;
             }
 
-            Expand_Keep_TreeRoom = RoomFactory.BuildFromResource(AssetBundles, "Keep_TreeRoom.room", true, false);
+            Expand_Keep_TreeRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_TreeRoom", true, false);
             Expand_Keep_TreeRoom.overrideRoomVisualType = 6;
             Expand_Keep_TreeRoom.allowFloorDecoration = false;
             Expand_Keep_TreeRoom.roomEvents = new List<RoomEventDefinition>() {
@@ -1370,7 +1369,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(10, 7), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.LockedDoor, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom, new Vector2(5, 12), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
-            Expand_Keep_TreeRoom2 = RoomFactory.BuildFromResource(AssetBundles, "Keep_TreeRoom2.room", true, false);
+            Expand_Keep_TreeRoom2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_TreeRoom2", true, false);
             Expand_Keep_TreeRoom2.roomEvents = new List<RoomEventDefinition>() {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
@@ -2132,7 +2131,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretRewardRoom.overrideRoomVisualTypeForSecretRooms = false;
             SecretRewardRoom.rewardChestSpawnPosition = new IntVector2(8, 2);
             SecretRewardRoom.Width = 20;
-            SecretRewardRoom.Height = 64;
+            SecretRewardRoom.Height = 66;
             SecretRewardRoom.usesProceduralDecoration = false;
             SecretRewardRoom.overrideRoomVisualType = 2;
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
@@ -2142,7 +2141,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 31), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 60), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 60), DungeonData.Direction.EAST);
-            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 65), DungeonData.Direction.NORTH);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 67), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), ExpandPrefabs.RatJailDoor);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), ExpandPrefabs.RatJailDoor);
@@ -8534,276 +8533,276 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_TableRoomAgain, new Vector2(17, 15), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.GenerateBasicRoomLayout(Expand_TableRoomAgain);
 
-            Expand_Agony = RoomFactory.BuildFromResource(AssetBundles, "Expand_Agony.room");
-            Expand_ice1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_ice1.room");
-            Expand_Ice2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Ice2.room");
-            Expand_Ice3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Ice3.room");
-            Expand_Ice4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Ice4.room");
-            Expand_LargeMany = RoomFactory.BuildFromResource(AssetBundles, "Expand_LargeMany.room");
-            Expand_Roundabout = RoomFactory.BuildFromResource(AssetBundles, "Expand_Roundabout.room");
-            Expand_Shells = RoomFactory.BuildFromResource(AssetBundles, "Expand_Shells.room");
-            Expand_Spooky = RoomFactory.BuildFromResource(AssetBundles, "Expand_Spooky.room");
-            Expand_Undead1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Undead1.room");
-            Expand_Undead2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Undead2.room");
-            Expand_Undead3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Undead3.room");
-            Expand_Undead4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Undead4.room");
+            Expand_Agony = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Agony");
+            Expand_ice1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_ice1");
+            Expand_Ice2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Ice2");
+            Expand_Ice3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Ice3");
+            Expand_Ice4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Ice4");
+            Expand_LargeMany = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_LargeMany");
+            Expand_Roundabout = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Roundabout");
+            Expand_Shells = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Shells");
+            Expand_Spooky = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Spooky");
+            Expand_Undead1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Undead1");
+            Expand_Undead2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Undead2");
+            Expand_Undead3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Undead3");
+            Expand_Undead4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Undead4");
 
 
-            Expand_4wave = RoomFactory.BuildFromResource(AssetBundles, "Expand_4wave.room");
-            Expand_Bat = RoomFactory.BuildFromResource(AssetBundles, "Expand_Bat.room");
-            Expand_Spiralbomb = RoomFactory.BuildFromResource(AssetBundles, "Expand_Spiralbomb.room");
-            Expand_Bat = RoomFactory.BuildFromResource(AssetBundles, "Expand_Bat.room");
-            Expand_Batsmall = RoomFactory.BuildFromResource(AssetBundles, "Expand_Batsmall.room");
-            Expand_BIRDS = RoomFactory.BuildFromResource(AssetBundles, "Expand_BIRDS.room");
-            Expand_Blobs = RoomFactory.BuildFromResource(AssetBundles, "Expand_Blobs.room");
-            Expand_BoogalooFailure2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_BoogalooFailure2.room");
-            Expand_Chess = RoomFactory.BuildFromResource(AssetBundles, "Expand_Chess.room");
-            Expand_Cornerpits = RoomFactory.BuildFromResource(AssetBundles, "Expand_Cornerpits.room");
-            Expand_Enclosed = RoomFactory.BuildFromResource(AssetBundles, "Expand_Enclosed.room");
-            Expand_Funky = RoomFactory.BuildFromResource(AssetBundles, "Expand_Funky.room");
-            Expand_Gapsniper = RoomFactory.BuildFromResource(AssetBundles, "Expand_Gapsniper.room");
-            Expand_Hallway = RoomFactory.BuildFromResource(AssetBundles, "Expand_Hallway.room");
+            Expand_4wave = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_4wave");
+            Expand_Bat = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Bat");
+            Expand_Spiralbomb = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Spiralbomb");
+            Expand_Bat = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Bat");
+            Expand_Batsmall = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Batsmall");
+            Expand_BIRDS = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_BIRDS");
+            Expand_Blobs = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Blobs");
+            Expand_BoogalooFailure2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_BoogalooFailure2");
+            Expand_Chess = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Chess");
+            Expand_Cornerpits = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Cornerpits");
+            Expand_Enclosed = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Enclosed");
+            Expand_Funky = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Funky");
+            Expand_Gapsniper = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Gapsniper");
+            Expand_Hallway = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Hallway");
 
-            Expand_HUB_1wave = RoomFactory.BuildFromResource(AssetBundles, "Expand_HUB_1wave.room");
+            Expand_HUB_1wave = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_HUB_1wave");
             Expand_HUB_1wave.category = PrototypeDungeonRoom.RoomCategory.HUB;
             RoomBuilder.AddObjectToRoom(Expand_HUB_1wave, new Vector2(19, 14), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
 
-            Expand_Islands = RoomFactory.BuildFromResource(AssetBundles, "Expand_Islands.room");
-            Expand_Long = RoomFactory.BuildFromResource(AssetBundles, "Expand_Long.room");
-            Expand_Mushroom = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mushroom.room");
-            Expand_Mutant = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mutant.room");
-            Expand_Oddshroom = RoomFactory.BuildFromResource(AssetBundles, "Expand_Oddshroom.room");
-            Expand_Pitzag = RoomFactory.BuildFromResource(AssetBundles, "Expand_Pitzag.room");
-            Expand_Shotgun = RoomFactory.BuildFromResource(AssetBundles, "Expand_Shotgun.room");
-            Expand_Smallcentral = RoomFactory.BuildFromResource(AssetBundles, "Expand_Smallcentral.room");
+            Expand_Islands = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Islands");
+            Expand_Long = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Long");
+            Expand_Mushroom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mushroom");
+            Expand_Mutant = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mutant");
+            Expand_Oddshroom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Oddshroom");
+            Expand_Pitzag = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Pitzag");
+            Expand_Shotgun = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Shotgun");
+            Expand_Smallcentral = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Smallcentral");
 
-            Expand_Secret_Falsechest = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Falsechest.room");
+            Expand_Secret_Falsechest = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Falsechest");
             Expand_Secret_Falsechest.category = PrototypeDungeonRoom.RoomCategory.SECRET;
             Expand_Secret_Falsechest.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
 
-            Expand_Secret_Brother10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother10.room", true);
-            Expand_Secret_Brother9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother9.room", true);
-            Expand_Secret_Brother8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother8.room", true);
-            Expand_Secret_Brother7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother7.room", true);
-            Expand_Secret_Brother6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother6.room", true);
-            Expand_Secret_Brother5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother5.room", true);
-            Expand_Secret_Brother4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother4.room", true);
-            Expand_Secret_Brother3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother3.room", true);
-            Expand_Secret_Brother2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother2.room", true);
-            Expand_Secret_Brother1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Brother1.room", true);
-            Expand_Secret_Witch10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch10.room", true, true);
-            Expand_Secret_Witch9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch9.room", true, true);
-            Expand_Secret_Witch8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch8.room", true, true);
-            Expand_Secret_Witch7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch7.room", true, true);
-            Expand_Secret_Witch6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch6.room", true, true);
-            Expand_Secret_Witch5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch5.room", true, true);
-            Expand_Secret_Witch4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch4.room", true, true);
-            Expand_Secret_Witch3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch3.room", true, true);
-            Expand_Secret_Witch2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch2.room", true, true);
-            Expand_Secret_Witch1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Witch1.room", true, true);
-            Expand_Secret_Pickups = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Pickups.room", true, true);
-            Expand_Secret_Owl10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl10.room", true, true);
-            Expand_Secret_Owl9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl9.room", true, true);
-            Expand_Secret_Owl8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl8.room", true, true);
-            Expand_Secret_Owl7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl7.room", true, true);
-            Expand_Secret_Owl6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl6.room", true, true);
-            Expand_Secret_Owl5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl5.room", true, true);
-            Expand_Secret_Owl4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl4.room", true, true);
-            Expand_Secret_Owl3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl3.room", true, true);
-            Expand_Secret_Owl2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl2.room", true, true);
-            Expand_Secret_Owl1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Owl1.room", true, true);
-            Expand_Secret_Oldman10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman10.room", true, true);
-            Expand_Secret_Oldman9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman9.room", true, true);
-            Expand_Secret_Oldman8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman8.room", true, true);
-            Expand_Secret_Oldman7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman7.room", true, true);
-            Expand_Secret_Oldman6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman6.room", true, true);
-            Expand_Secret_Oldman5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman5.room", true, true);
-            Expand_Secret_Oldman4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman4.room", true, true);
-            Expand_Secret_Oldman3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman3.room", true, true);
-            Expand_Secret_Oldman2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman2.room", true, true);
-            Expand_Secret_Oldman1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Secret_Oldman1.room", true, true);
-            Secret_Expand_reto = RoomFactory.BuildFromResource(AssetBundles, "Secret_Expand_reto.room", true, true);
-            /*Secret_Expand_logo = RoomFactory.BuildFromResource(AssetBundles, "Secret_Expand_logo.room", true, true);
+            Expand_Secret_Brother10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother10", true);
+            Expand_Secret_Brother9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother9", true);
+            Expand_Secret_Brother8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother8", true);
+            Expand_Secret_Brother7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother7", true);
+            Expand_Secret_Brother6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother6", true);
+            Expand_Secret_Brother5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother5", true);
+            Expand_Secret_Brother4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother4", true);
+            Expand_Secret_Brother3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother3", true);
+            Expand_Secret_Brother2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother2", true);
+            Expand_Secret_Brother1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother1", true);
+            Expand_Secret_Witch10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch10", true, true);
+            Expand_Secret_Witch9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch9", true, true);
+            Expand_Secret_Witch8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch8", true, true);
+            Expand_Secret_Witch7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch7", true, true);
+            Expand_Secret_Witch6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch6", true, true);
+            Expand_Secret_Witch5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch5", true, true);
+            Expand_Secret_Witch4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch4", true, true);
+            Expand_Secret_Witch3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch3", true, true);
+            Expand_Secret_Witch2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch2", true, true);
+            Expand_Secret_Witch1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Witch1", true, true);
+            Expand_Secret_Pickups = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Pickups", true, true);
+            Expand_Secret_Owl10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl10", true, true);
+            Expand_Secret_Owl9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl9", true, true);
+            Expand_Secret_Owl8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl8", true, true);
+            Expand_Secret_Owl7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl7", true, true);
+            Expand_Secret_Owl6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl6", true, true);
+            Expand_Secret_Owl5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl5", true, true);
+            Expand_Secret_Owl4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl4", true, true);
+            Expand_Secret_Owl3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl3", true, true);
+            Expand_Secret_Owl2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl2", true, true);
+            Expand_Secret_Owl1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Owl1", true, true);
+            Expand_Secret_Oldman10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman10", true, true);
+            Expand_Secret_Oldman9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman9", true, true);
+            Expand_Secret_Oldman8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman8", true, true);
+            Expand_Secret_Oldman7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman7", true, true);
+            Expand_Secret_Oldman6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman6", true, true);
+            Expand_Secret_Oldman5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman5", true, true);
+            Expand_Secret_Oldman4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman4", true, true);
+            Expand_Secret_Oldman3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman3", true, true);
+            Expand_Secret_Oldman2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman2", true, true);
+            Expand_Secret_Oldman1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Oldman1", true, true);
+            Secret_Expand_reto = RoomFactory.BuildFromAssetBundle(AssetBundles, "Secret_Expand_reto", true, true);
+            /*Secret_Expand_logo = RoomFactory.BuildFromAssetBundle(AssetBundles, "Secret_Expand_logo", true, true);
             Secret_Expand_logo.roomEvents = new List<RoomEventDefinition>() {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };*/
 
-            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromResource(AssetBundles, "Secret_Expand_Achievement_The_Password.room", true, ExpandStats.RestoreOldRooms);
-            B_Expand_demon_onehand = RoomFactory.BuildFromResource(AssetBundles, "B_Expand_demon_onehand.room", true, ExpandStats.RestoreOldRooms);
-            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromResource(AssetBundles, "B_Expand_Achievement_Rage_Mode.room", true, ExpandStats.RestoreOldRooms);
-            B_Expand_Achievement_Jammed = RoomFactory.BuildFromResource(AssetBundles, "B_Expand_Achievement_Jammed.room", true, ExpandStats.RestoreOldRooms);
-            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromResource(AssetBundles, "PMO_Expand_Achievement_Demolition_Man.room", true, ExpandStats.RestoreOldRooms);
-            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromResource(AssetBundles, "PMO_Expand_Achievement_Beep.room", true, ExpandStats.RestoreOldRooms);
-            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromResource(AssetBundles, "PMHFOA_Expand_Achievement_Gun_Game.room", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Kyle = RoomFactory.BuildFromResource(AssetBundles, "PMH_Expand_Kyle.room", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromResource(AssetBundles, "PMH_Expand_Achievement_ReArmed.room", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromResource(AssetBundles, "PMH_Expand_Achievement_Dat_Plat.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_bubblebuddy = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_bubblebuddy.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_Achievement_Squad_Captain.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_Achievement_Reverence_for_the_Dead.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Patron = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_Achievement_Patron.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_Achievement_Castle_Crasher.room", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromResource(AssetBundles, "PM_Expand_Achievement_Case_Closed.room", true, ExpandStats.RestoreOldRooms);
-            P_Expand_MasterRound2 = RoomFactory.BuildFromResource(AssetBundles, "P_Expand_MasterRound2.room", true, ExpandStats.RestoreOldRooms);
-            P_Expand_beholdter = RoomFactory.BuildFromResource(AssetBundles, "P_Expand_beholdter.room", true, ExpandStats.RestoreOldRooms);
-            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromResource(AssetBundles, "O_Expand_Achievement_Sworn_Gun.room", true, ExpandStats.RestoreOldRooms);
-            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromResource(AssetBundles, "O_Expand_Achievement_Pit_Lord.room", true, ExpandStats.RestoreOldRooms);
-            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromResource(AssetBundles, "MHF_Expand_Achievement_Great_Hall.room", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_TheSellCreep = RoomFactory.BuildFromResource(AssetBundles, "MH_Expand_TheSellCreep.room", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromResource(AssetBundles, "MH_Expand_Achievement_Trickshot.room", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromResource(AssetBundles, "MH_Expand_Achievement_Lead_God.room", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromResource(AssetBundles, "MH_Expand_Achievement_Going_Down.room", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromResource(AssetBundles, "MH_Expand_Achievement_Challenger.room", true, ExpandStats.RestoreOldRooms);
-            MFA_Expand_bigshotgun = RoomFactory.BuildFromResource(AssetBundles, "MFA_Expand_bigshotgun.room", true, ExpandStats.RestoreOldRooms);
-            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromResource(AssetBundles, "MA_Expand_Achievement_Dungeon_Diver.room", true, ExpandStats.RestoreOldRooms);
-            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromResource(AssetBundles, "MA_Expand_Achievement_Double_Jeopardy.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Retrashed = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_Retrashed.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_ratkey = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_ratkey.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_MasterRound3 = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_MasterRound3.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_ArcaneGunpowder.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_AK = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_AK.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Rider = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_Achievement_Rider.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_Achievement_Resourceful.room", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromResource(AssetBundles, "M_Expand_Achievement_Mine_Master.room", true, ExpandStats.RestoreOldRooms);
-            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromResource(AssetBundles, "KPMHFAO_Expand_Achievement_Woodsie_Lord.room", true, ExpandStats.RestoreOldRooms);
-            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromResource(AssetBundles, "KPMHFAO_Expand_Achievement_Wingman.room", true, ExpandStats.RestoreOldRooms);
-            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromResource(AssetBundles, "KPM_Expand_Achievement_Last_Stop.room", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_hegemony = RoomFactory.BuildFromResource(AssetBundles, "KP_Expand_hegemony.room", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromResource(AssetBundles, "KP_Expand_Achievement_Not_Just_A_Box.room", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_Achievement_Historian = RoomFactory.BuildFromResource(AssetBundles, "KP_Expand_Achievement_Historian.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Prime_Primer = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_Prime_Primer.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_MasterRound1 = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_MasterRound1.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_bonk = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_bonk.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_BigBird = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_BigBird.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_Achievement_Money_Pit.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_Achievement_Hedge_Slinger.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_Achievement_Gungeon_Acolyte.room", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromResource(AssetBundles, "K_Expand_Achievement_Biggest_Wallet.room", true, ExpandStats.RestoreOldRooms);
-            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromResource(AssetBundles, "HFAB_Expand_Achievement_Forger.room", true, ExpandStats.RestoreOldRooms);
-            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromResource(AssetBundles, "HF_Expand_Achievement_Weird_Tale.room", true, ExpandStats.RestoreOldRooms);
-            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromResource(AssetBundles, "HF_Expand_Achievement_Cartographers_Assistant.room", true, ExpandStats.RestoreOldRooms);
-            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromResource(AssetBundles, "HB_Expand_Achievement_Hollowed_Out.room", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Planar_Lead = RoomFactory.BuildFromResource(AssetBundles, "H_Expand_Planar_Lead.room", true, ExpandStats.RestoreOldRooms);
-            H_Expand_MasterRound4 = RoomFactory.BuildFromResource(AssetBundles, "H_Expand_MasterRound4.room", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Highpriest = RoomFactory.BuildFromResource(AssetBundles, "H_Expand_Highpriest.room", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromResource(AssetBundles, "H_Expand_Achievement_SledgeDog.room", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromResource(AssetBundles, "H_Expand_Achievement_Exorcist.room", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromResource(AssetBundles, "FB_Expand_Achievement_Time_Paradox.room", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromResource(AssetBundles, "FB_Expand_Achievement_Lion_Leap.room", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromResource(AssetBundles, "FB_Expand_Achievement_Gunsmith.room", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromResource(AssetBundles, "FB_Expand_Achievement_Gungeon_Master.room", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromResource(AssetBundles, "FB_Expand_Achievement_Day_Ruiner.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_Obsidian_Shell_Casing.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_MasterRound5 = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_MasterRound5.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_dragun = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_dragun.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Terminated = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_Achievement_Terminated.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Slayer = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_Achievement_Slayer.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_Achievement_I_Knew_Someone_Would_Do_It.room", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromResource(AssetBundles, "F_Expand_Achievement_Advanced_Slayer.room", true, ExpandStats.RestoreOldRooms);
-            Expand_Proper_Regular1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular1.room", true, true);
-            Expand_Proper_Regular2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular2.room", true, true);
-            Expand_Proper_Regular3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular3.room", true, true);
-            Expand_Proper_Regular4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular4.room", true, true);
-            Expand_Proper_Regular5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular5.room", true, true);
-            Expand_Proper_Regular6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular6.room", true, true);
-            Expand_Proper_Regular7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular7.room", true, true);
-            Expand_Proper_Regular8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular8.room", true, true);
-            Expand_Proper_Regular9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular9.room", true, true);
-            Expand_Proper_Regular10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular10.room", true, true);
-            Expand_Proper_Regular11 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular11.room", true, true);
-            Expand_Proper_Regular12 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular12.room", true, true);
-            Expand_Proper_Regular13 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular13.room", true, true);
-            Expand_Proper_Regular14 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular14.room", true, true);
-            Expand_Proper_Regular15 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular15.room", true, true);
-            Expand_Proper_Regular16 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular16.room", true, true);
-            Expand_Proper_Regular17 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular17.room", true, true);
-            Expand_Proper_Regular18 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular18.room", true, true);
-            Expand_Proper_Regular19 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular19.room", true, true);
-            Expand_Proper_Regular20 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular20.room", true, true);
-            Expand_Proper_Regular21 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular21.room", true, true);
-            Expand_Proper_Regular22 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular22.room", true, true);
-            Expand_Proper_Regular23 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular23.room", true, true);
-            Expand_Proper_Regular24 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular24.room", true, true);
-            Expand_Proper_Regular25 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular25.room", true, true);
-            Expand_Proper_Regular26 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular26.room", true, true);
-            Expand_Proper_Regular27 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular27.room", true, true);
-            Expand_Proper_Regular28 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular28.room", true, true);
-            Expand_Proper_Regular29 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular29.room", true, true);
-            Expand_Proper_Regular31 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular31.room", true, true);
-            Expand_Proper_Regular32 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular32.room", true, true);
-            Expand_Proper_Regular33 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular33.room", true, true);
-            Expand_Proper_Regular34 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular34.room", true, true);
-            Expand_Proper_Regular35 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular35.room", true, true);
-            Expand_Proper_Regular36 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular36.room", true, true);
-            Expand_Proper_Regular37 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular37.room", true, true);
-            Expand_Proper_Regular38 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular38.room", true, true);
-            Expand_Proper_Regular39 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular39.room", true, true);
-            Expand_Proper_Regular40 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular40.room", true, true);
-            Expand_Proper_Regular41 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular41.room", true, true);
-            Expand_Proper_Regular42 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular42.room", true, true);
-            Expand_Proper_Regular43 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular43.room", true, true);
-            Expand_Proper_Regular44 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular44.room", true, true);
-            Expand_Proper_Regular45 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular45.room", true, true);
-            Expand_Proper_Regular46 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular46.room", true, true);
-            Expand_Proper_Regular47 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular47.room", true, true);
-            Expand_Proper_Regular48 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular48.room", true, true);
-            Expand_Proper_Regular49 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular49.room", true, true);
-            Expand_Proper_Regular50 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Regular50.room", true, true);
-            Expand_Proper_Speshul_Regular30 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Proper_Speshul_Regular30.room", true, true);
-            Expand_Mines_Regular1 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular1.room", true, true);
-            Expand_Mines_Regular2 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular2.room", true, true);
-            Expand_Mines_Regular3 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular3.room", true, true);
-            Expand_Mines_Regular4 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular4.room", true, true);
-            Expand_Mines_Regular5 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular5.room", true, true);
-            Expand_Mines_Regular6 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular6.room", true, true);
-            Expand_Mines_Regular7 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular7.room", true, true);
-            Expand_Mines_Regular8 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular8.room", true, true);
-            Expand_Mines_Regular9 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular9.room", true, true);
-            Expand_Mines_Regular10 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular10.room", true, true);
-            Expand_Mines_Regular11 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular11.room", true, true);
-            Expand_Mines_Regular12 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular12.room", true, true);
-            Expand_Mines_Regular13 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular13.room", true, true);
-            Expand_Mines_Regular14 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular14.room", true, true);
-            Expand_Mines_Regular15 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular15.room", true, true);
-            Expand_Mines_Regular16 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular16.room", true, true);
-            Expand_Mines_Regular17 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular17.room", true, true);
-            Expand_Mines_Regular18 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular18.room", true, true);
-            Expand_Mines_Regular19 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular19.room", true, true);
-            Expand_Mines_Regular20 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular20.room", true, true);
-            Expand_Mines_Regular21 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular21.room", true, true);
-            Expand_Mines_Regular22 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular22.room", true, true);
-            Expand_Mines_Regular23 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular23.room", true, true);
-            Expand_Mines_Regular24 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular24.room", true, true);
-            Expand_Mines_Regular25 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular25.room", true, true);
-            Expand_Mines_Regular26 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular26.room", true, true);
-            Expand_Mines_Regular27 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular27.room", true, true);
-            Expand_Mines_Regular28 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular28.room", true, true);
-            Expand_Mines_Regular29 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular29.room", true, true);
-            Expand_Mines_Regular30 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular30.room", true, true);
-            Expand_Mines_Regular31 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular31.room", true, true);
-            Expand_Mines_Regular32 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular32.room", true, true);
-            Expand_Mines_Regular33 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular33.room", true, true);
-            Expand_Mines_Regular34 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular34.room", true, true);
-            Expand_Mines_Regular35 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular35.room", true, true);
-            Expand_Mines_Regular36 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular36.room", true, true);
-            Expand_Mines_Regular37 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular37.room", true, true);
-            Expand_Mines_Regular38 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular38.room", true, true);
-            Expand_Mines_Regular39 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular39.room", true, true);
-            Expand_Mines_Regular40 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular40.room", true, true);
-            Expand_Mines_Regular41 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular41.room", true, true);
-            Expand_Mines_Regular42 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular42.room", true, true);
-            Expand_Mines_Regular43 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular43.room", true, true);
-            Expand_Mines_Regular44 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular44.room", true, true);
-            Expand_Mines_Regular45 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular45.room", true, true);
-            Expand_Mines_Regular46 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular46.room", true, true);
-            Expand_Mines_Regular47 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular47.room", true, true);
-            Expand_Mines_Regular48 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular48.room", true, true);
-            Expand_Mines_Regular49 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular49.room", true, true);
-            Expand_Mines_Regular50 = RoomFactory.BuildFromResource(AssetBundles, "Expand_Mines_Regular50.room", true, true);
-            Expand_Keep_Spiral = RoomFactory.BuildFromResource(AssetBundles, "Expand_Keep_Spiral.room", true, ExpandStats.RestoreOldRooms);
+            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromAssetBundle(AssetBundles, "Secret_Expand_Achievement_The_Password", true, ExpandStats.RestoreOldRooms);
+            B_Expand_demon_onehand = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_demon_onehand", true, ExpandStats.RestoreOldRooms);
+            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Rage_Mode", true, ExpandStats.RestoreOldRooms);
+            B_Expand_Achievement_Jammed = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Jammed", true, ExpandStats.RestoreOldRooms);
+            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Demolition_Man", true, ExpandStats.RestoreOldRooms);
+            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Beep", true, ExpandStats.RestoreOldRooms);
+            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMHFOA_Expand_Achievement_Gun_Game", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Kyle = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Kyle", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_ReArmed", true, ExpandStats.RestoreOldRooms);
+            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_Dat_Plat", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_bubblebuddy = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_bubblebuddy", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Squad_Captain", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Reverence_for_the_Dead", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Patron = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Patron", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Castle_Crasher", true, ExpandStats.RestoreOldRooms);
+            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Case_Closed", true, ExpandStats.RestoreOldRooms);
+            P_Expand_MasterRound2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_MasterRound2", true, ExpandStats.RestoreOldRooms);
+            P_Expand_beholdter = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_beholdter", true, ExpandStats.RestoreOldRooms);
+            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Sworn_Gun", true, ExpandStats.RestoreOldRooms);
+            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Pit_Lord", true, ExpandStats.RestoreOldRooms);
+            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromAssetBundle(AssetBundles, "MHF_Expand_Achievement_Great_Hall", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_TheSellCreep = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_TheSellCreep", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Trickshot", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Lead_God", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Going_Down", true, ExpandStats.RestoreOldRooms);
+            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Challenger", true, ExpandStats.RestoreOldRooms);
+            MFA_Expand_bigshotgun = RoomFactory.BuildFromAssetBundle(AssetBundles, "MFA_Expand_bigshotgun", true, ExpandStats.RestoreOldRooms);
+            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Dungeon_Diver", true, ExpandStats.RestoreOldRooms);
+            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Double_Jeopardy", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Retrashed = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Retrashed", true, ExpandStats.RestoreOldRooms);
+            M_Expand_ratkey = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ratkey", true, ExpandStats.RestoreOldRooms);
+            M_Expand_MasterRound3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_MasterRound3", true, ExpandStats.RestoreOldRooms);
+            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ArcaneGunpowder", true, ExpandStats.RestoreOldRooms);
+            M_Expand_AK = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_AK", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Rider = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Rider", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Resourceful", true, ExpandStats.RestoreOldRooms);
+            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Mine_Master", true, ExpandStats.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Woodsie_Lord", true, ExpandStats.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Wingman", true, ExpandStats.RestoreOldRooms);
+            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPM_Expand_Achievement_Last_Stop", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_hegemony = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_hegemony", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Not_Just_A_Box", true, ExpandStats.RestoreOldRooms);
+            KP_Expand_Achievement_Historian = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Historian", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Prime_Primer = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Prime_Primer", true, ExpandStats.RestoreOldRooms);
+            K_Expand_MasterRound1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_MasterRound1", true, ExpandStats.RestoreOldRooms);
+            K_Expand_bonk = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_bonk", true, ExpandStats.RestoreOldRooms);
+            K_Expand_BigBird = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_BigBird", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Money_Pit", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Hedge_Slinger", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Gungeon_Acolyte", true, ExpandStats.RestoreOldRooms);
+            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Biggest_Wallet", true, ExpandStats.RestoreOldRooms);
+            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromAssetBundle(AssetBundles, "HFAB_Expand_Achievement_Forger", true, ExpandStats.RestoreOldRooms);
+            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Weird_Tale", true, ExpandStats.RestoreOldRooms);
+            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Cartographers_Assistant", true, ExpandStats.RestoreOldRooms);
+            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromAssetBundle(AssetBundles, "HB_Expand_Achievement_Hollowed_Out", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Planar_Lead = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Planar_Lead", true, ExpandStats.RestoreOldRooms);
+            H_Expand_MasterRound4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_MasterRound4", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Highpriest = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Highpriest", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_SledgeDog", true, ExpandStats.RestoreOldRooms);
+            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_Exorcist", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Time_Paradox", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Lion_Leap", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gunsmith", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gungeon_Master", true, ExpandStats.RestoreOldRooms);
+            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Day_Ruiner", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Obsidian_Shell_Casing", true, ExpandStats.RestoreOldRooms);
+            F_Expand_MasterRound5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_MasterRound5", true, ExpandStats.RestoreOldRooms);
+            F_Expand_dragun = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_dragun", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Terminated = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Terminated", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Slayer", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_I_Knew_Someone_Would_Do_It", true, ExpandStats.RestoreOldRooms);
+            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Advanced_Slayer", true, ExpandStats.RestoreOldRooms);
+            Expand_Proper_Regular1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular1", true, true);
+            Expand_Proper_Regular2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular2", true, true);
+            Expand_Proper_Regular3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular3", true, true);
+            Expand_Proper_Regular4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular4", true, true);
+            Expand_Proper_Regular5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular5", true, true);
+            Expand_Proper_Regular6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular6", true, true);
+            Expand_Proper_Regular7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular7", true, true);
+            Expand_Proper_Regular8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular8", true, true);
+            Expand_Proper_Regular9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular9", true, true);
+            Expand_Proper_Regular10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular10", true, true);
+            Expand_Proper_Regular11 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular11", true, true);
+            Expand_Proper_Regular12 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular12", true, true);
+            Expand_Proper_Regular13 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular13", true, true);
+            Expand_Proper_Regular14 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular14", true, true);
+            Expand_Proper_Regular15 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular15", true, true);
+            Expand_Proper_Regular16 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular16", true, true);
+            Expand_Proper_Regular17 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular17", true, true);
+            Expand_Proper_Regular18 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular18", true, true);
+            Expand_Proper_Regular19 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular19", true, true);
+            Expand_Proper_Regular20 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular20", true, true);
+            Expand_Proper_Regular21 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular21", true, true);
+            Expand_Proper_Regular22 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular22", true, true);
+            Expand_Proper_Regular23 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular23", true, true);
+            Expand_Proper_Regular24 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular24", true, true);
+            Expand_Proper_Regular25 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular25", true, true);
+            Expand_Proper_Regular26 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular26", true, true);
+            Expand_Proper_Regular27 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular27", true, true);
+            Expand_Proper_Regular28 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular28", true, true);
+            Expand_Proper_Regular29 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular29", true, true);
+            Expand_Proper_Regular31 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular31", true, true);
+            Expand_Proper_Regular32 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular32", true, true);
+            Expand_Proper_Regular33 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular33", true, true);
+            Expand_Proper_Regular34 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular34", true, true);
+            Expand_Proper_Regular35 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular35", true, true);
+            Expand_Proper_Regular36 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular36", true, true);
+            Expand_Proper_Regular37 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular37", true, true);
+            Expand_Proper_Regular38 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular38", true, true);
+            Expand_Proper_Regular39 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular39", true, true);
+            Expand_Proper_Regular40 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular40", true, true);
+            Expand_Proper_Regular41 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular41", true, true);
+            Expand_Proper_Regular42 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular42", true, true);
+            Expand_Proper_Regular43 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular43", true, true);
+            Expand_Proper_Regular44 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular44", true, true);
+            Expand_Proper_Regular45 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular45", true, true);
+            Expand_Proper_Regular46 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular46", true, true);
+            Expand_Proper_Regular47 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular47", true, true);
+            Expand_Proper_Regular48 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular48", true, true);
+            Expand_Proper_Regular49 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular49", true, true);
+            Expand_Proper_Regular50 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular50", true, true);
+            Expand_Proper_Speshul_Regular30 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Speshul_Regular30", true, true);
+            Expand_Mines_Regular1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular1", true, true);
+            Expand_Mines_Regular2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular2", true, true);
+            Expand_Mines_Regular3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular3", true, true);
+            Expand_Mines_Regular4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular4", true, true);
+            Expand_Mines_Regular5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular5", true, true);
+            Expand_Mines_Regular6 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular6", true, true);
+            Expand_Mines_Regular7 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular7", true, true);
+            Expand_Mines_Regular8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular8", true, true);
+            Expand_Mines_Regular9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular9", true, true);
+            Expand_Mines_Regular10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular10", true, true);
+            Expand_Mines_Regular11 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular11", true, true);
+            Expand_Mines_Regular12 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular12", true, true);
+            Expand_Mines_Regular13 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular13", true, true);
+            Expand_Mines_Regular14 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular14", true, true);
+            Expand_Mines_Regular15 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular15", true, true);
+            Expand_Mines_Regular16 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular16", true, true);
+            Expand_Mines_Regular17 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular17", true, true);
+            Expand_Mines_Regular18 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular18", true, true);
+            Expand_Mines_Regular19 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular19", true, true);
+            Expand_Mines_Regular20 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular20", true, true);
+            Expand_Mines_Regular21 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular21", true, true);
+            Expand_Mines_Regular22 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular22", true, true);
+            Expand_Mines_Regular23 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular23", true, true);
+            Expand_Mines_Regular24 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular24", true, true);
+            Expand_Mines_Regular25 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular25", true, true);
+            Expand_Mines_Regular26 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular26", true, true);
+            Expand_Mines_Regular27 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular27", true, true);
+            Expand_Mines_Regular28 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular28", true, true);
+            Expand_Mines_Regular29 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular29", true, true);
+            Expand_Mines_Regular30 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular30", true, true);
+            Expand_Mines_Regular31 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular31", true, true);
+            Expand_Mines_Regular32 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular32", true, true);
+            Expand_Mines_Regular33 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular33", true, true);
+            Expand_Mines_Regular34 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular34", true, true);
+            Expand_Mines_Regular35 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular35", true, true);
+            Expand_Mines_Regular36 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular36", true, true);
+            Expand_Mines_Regular37 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular37", true, true);
+            Expand_Mines_Regular38 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular38", true, true);
+            Expand_Mines_Regular39 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular39", true, true);
+            Expand_Mines_Regular40 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular40", true, true);
+            Expand_Mines_Regular41 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular41", true, true);
+            Expand_Mines_Regular42 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular42", true, true);
+            Expand_Mines_Regular43 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular43", true, true);
+            Expand_Mines_Regular44 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular44", true, true);
+            Expand_Mines_Regular45 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular45", true, true);
+            Expand_Mines_Regular46 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular46", true, true);
+            Expand_Mines_Regular47 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular47", true, true);
+            Expand_Mines_Regular48 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular48", true, true);
+            Expand_Mines_Regular49 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular49", true, true);
+            Expand_Mines_Regular50 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular50", true, true);
+            Expand_Keep_Spiral = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Keep_Spiral", true, ExpandStats.RestoreOldRooms);
 
-            // Trap_Expand_Turtlemelon = RoomFactory.BuildFromResource(AssetBundles, "Trap_Expand_Turtlemelon.room", true);
+            // Trap_Expand_Turtlemelon = RoomFactory.BuildFromAssetBundle(AssetBundles, "Trap_Expand_Turtlemelon", true);
 
             Expand_Apache_FieldOfSaws.name = "Apache Field of Saws";
             Expand_Apache_FieldOfSaws.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -10006,7 +10005,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             RoomBuilder.AddObjectToRoom(Expand_RickRollSecret, new Vector2(6, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
             RoomBuilder.GenerateBasicRoomLayout(Expand_RickRollSecret);
 
-            Expand_BootlegRoom = RoomFactory.BuildFromResource(AssetBundles, "Expand_BootlegRoom.room", true, false);
+            Expand_BootlegRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_BootlegRoom", true, false);
             Expand_BootlegRoom.name = "Expand Apache Bootleg";
             Expand_BootlegRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_BootlegRoom.GUID = Guid.NewGuid().ToString();
@@ -10119,8 +10118,8 @@ namespace ExpandTheGungeon.ExpandObjects {
             List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();
 
             foreach (string name in Expand_Jungle_RoomList) {
-                PrototypeDungeonRoom m_room = RoomFactory.BuildFromResource(AssetBundles, "Jungle\\" + name, true);
-                if (name == "Expand_Forest_Mixed22.room" && m_room != null) {
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, name, true);
+                if (name == "Expand_Forest_Mixed22" && m_room != null) {
                     RoomBuilder.AddObjectToRoom(m_room, new Vector2(15, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_BlobLostSign, useExternalPrefab: true));
                 }
                 m_JungleRooms.Add(m_room);
@@ -10137,7 +10136,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             List<PrototypeDungeonRoom> m_BellyRooms = new List<PrototypeDungeonRoom>();
 
             foreach (string name in Expand_Belly_RoomList) {
-                PrototypeDungeonRoom m_room = RoomFactory.BuildFromResource(AssetBundles, "Belly\\" + name, true);
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, name, true);
                 m_BellyRooms.Add(m_room);
             }
 

@@ -12,15 +12,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
     public static class RoomFactory {
 
         public static readonly string dataHeader = "***DATA***";
-
-        public static string TextureBasePath = "SerializedData\\RoomFactoryRooms\\";
-        private static string nameSpace = "ExpandTheGungeon";
-        
+                
         private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
         private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
-
-        // private static string [] m_AssetBundleNames = new string[] { "shared_auto_001", "shared_auto_002", "brave_resources_001" };
-
+        
         public struct RoomData {
             public string category;
             public string normalSubCategory;
@@ -40,16 +35,19 @@ namespace ExpandTheGungeon.ExpandUtilities {
             [NonSerialized]
             public PrototypeDungeonRoom room;
         }
-
-
-        public static PrototypeDungeonRoom BuildFromResource(AssetBundle[] Bundles, string roomPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool defineFullPath = false, bool assignDecorationSettings = false) {
-            string RoomPath = (TextureBasePath + roomPath);
-            if (defineFullPath) { RoomPath = roomPath; }
-            Texture2D texture = ResourceExtractor.GetTextureFromResource(RoomPath);
-            RoomData roomData = ExtractRoomDataFromResource(RoomPath);
-            return Build(Bundles, texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
-        }
         
+        public static PrototypeDungeonRoom BuildFromAssetBundle(AssetBundle[] Bundles, string assetPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool assignDecorationSettings = false) {
+            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath);
+            if (m_Asset) {
+                Texture2D texture = ExpandUtility.BytesToTexture(m_Asset.bytes, m_Asset.name);
+                RoomData roomData = ExtractRoomDataFromTextAssetBytes(m_Asset);
+                return Build(Bundles, texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: RoomFactory asset: " + assetPath + " was not found!");
+                return null;
+            }
+        }
+
         public static PrototypeDungeonRoom Build(AssetBundle[] Bundles, Texture2D texture, RoomData roomData, bool SetRoomCategory, bool AutoAssignToFloor, bool AssignDecorationProperties, float? Weight) {
             try {
                 PrototypeDungeonRoom room = CreateRoomFromTexture(texture);
@@ -170,17 +168,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static RoomData ExtractRoomDataFromFile(string path) {
-            string data = ResourceExtractor.BytesToString(File.ReadAllBytes(path));
+            string data = ExpandAssets.BytesToString(File.ReadAllBytes(path));
             return ExtractRoomData(data);
         }
 
-        public static RoomData ExtractRoomDataFromResource(string path) {
-            path = path.Replace("/", ".");
-            path = path.Replace("\\", ".");
-            string data = ResourceExtractor.BytesToString(ResourceExtractor.ExtractEmbeddedResource(($"{nameSpace}." + path)));
-            return ExtractRoomData(data);
+        public static RoomData ExtractRoomDataFromTextAssetBytes(TextAsset textAsset) {
+            return ExtractRoomData(ExpandAssets.BytesToString(textAsset.bytes));
         }
-
+                
         public static RoomData ExtractRoomData(string data) {
             int num = (data.Length - dataHeader.Length - 1);
             for (int i = num; i > 0; i--) {
