@@ -2,6 +2,7 @@
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -10,8 +11,10 @@ namespace ExpandTheGungeon.ExpandMain {
         private static int RandomObjectsPlaced = 0;
         private static int RandomObjectsSkipped = 0;
 
-        public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
+        private static readonly bool DebugMode = true;
 
+        public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
+            
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {
                 GlobalDungeonData.ValidTilesets.BELLYGEON,
                 GlobalDungeonData.ValidTilesets.WESTGEON,
@@ -25,32 +28,34 @@ namespace ExpandTheGungeon.ExpandMain {
             List<RoomHandler> DungeonRooms = dungeon.data.rooms;
 
             if (roomListOverride != null) { DungeonRooms = roomListOverride; }
-            
+
             foreach (RoomHandler currentRoom in DungeonRooms) {                 
                 try {
-                    if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                        PlaceRandomCacti(dungeon, currentRoom);
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                        PlaceRandomCorpses(dungeon, currentRoom);
-                    } else if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.MINEGEON) {
-                        PlaceRandomAlarmMushrooms(dungeon, currentRoom);
+                    switch (dungeon.tileIndices.tilesetId) {
+                        case GlobalDungeonData.ValidTilesets.WESTGEON:
+                            PlaceRandomCacti(dungeon, currentRoom);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                            PlaceRandomCorpses(dungeon, currentRoom);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.MINEGEON:
+                            PlaceRandomAlarmMushrooms(dungeon, currentRoom);
+                            break;
                     }
                 } catch (System.Exception ex) {                    
                     if (ExpandStats.debugMode && currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName())) {
-                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for room: " + currentRoom.GetRoomName(), false);
+                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for room: " + currentRoom.GetRoomName(), DebugMode);
                     } else if (ExpandStats.debugMode) {
-                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for current room", false);
+                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for current room", DebugMode);
                     }
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
-                    if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
-                    RandomObjectsPlaced = 0;
-                    RandomObjectsSkipped = 0;
+                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", DebugMode);
+                    if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, DebugMode); }
                 }
             }
             if (ExpandStats.debugMode) {
-                ETGModConsole.Log("[DEBUG] Number of floor decoration objects placed: " + RandomObjectsPlaced, false);
-                ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, false);
-                if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", false); }
+                ETGModConsole.Log("[DEBUG] Number of floor decoration objects placed: " + RandomObjectsPlaced, DebugMode);
+                ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, DebugMode);
+                if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", DebugMode); }
             }
             RandomObjectsPlaced = 0;
             RandomObjectsSkipped = 0;
@@ -63,7 +68,7 @@ namespace ExpandTheGungeon.ExpandMain {
             int MaxObjectsPerRoom = 12;
 
             if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && !currentRoom.IsMaintenanceRoom() &&
-                !currentRoom.GetRoomName().StartsWith("Boss Foyer"))
+                !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !currentRoom.PrecludeTilemapDrawing)
             {
                 if (Random.value <= 0.6f && roomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE && roomCategory != PrototypeDungeonRoom.RoomCategory.REWARD) {
             
@@ -107,13 +112,13 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | currentRoom.IsMaintenanceRoom() |
                string.IsNullOrEmpty(currentRoom.GetRoomName()) | currentRoom.GetRoomName().StartsWith("Boss Foyer") |
-               currentRoom.RoomVisualSubtype != 0 | !currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear))
+               currentRoom.RoomVisualSubtype != 0 | !currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) |
+               currentRoom.PrecludeTilemapDrawing)
             {
                 return;
             }
             
             if (Random.value <= 0.8f) {
-            
                 List<IntVector2> m_CachedPositions = new List<IntVector2>();
                 int MaxCactiCount = 12;
                 int MinCactiCount = 6;
@@ -165,7 +170,7 @@ namespace ExpandTheGungeon.ExpandMain {
             {
                 return;
             }
-
+            if (DebugMode) { Debug.Log("[ExpandTheGungeon] Checking room for valid Mushroom locations... "); }
             if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && !currentRoom.IsMaintenanceRoom() &&
                 !currentRoom.GetRoomName().StartsWith("Boss Foyer"))
             {
@@ -190,24 +195,46 @@ namespace ExpandTheGungeon.ExpandMain {
                     int MushroomCount = Random.Range(MinMushroomCount, MaxMushroomCount);
                     
                     for (int i = 0; i < MushroomCount; i++) {
-                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 4, 3, avoidExits: true, PositionRelativeToRoom: true);
-                        
+                        if (DebugMode) { Debug.Log("[ExpandTheGungeon] Test Mushroom Iteration: " + i.ToString()); }
+                        if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { ETGModConsole.Log("[ExpandTheGungeon] On Room: " + currentRoom.GetRoomName()); }
+
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 1, 2, avoidExits: true, PositionRelativeToRoom: true);
+
                         if (RandomVector.HasValue) {
-                            GameObject alarmMushroomObject = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().InstantiateObject(currentRoom, RandomVector.Value, true);
-                            alarmMushroomObject.transform.parent = currentRoom.hierarchyParent;
-                            ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>();
-                            m_AlarmMushRoomPlacable.ConfigureOnPlacement(currentRoom);
+                            if (DebugMode) { ETGModConsole.Log("[ExpandTheGungeon] Valid Location found. Placing Mushroom..."); }
+                            try {
+                                GameObject alarmMushroomObject = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().InstantiateObject(currentRoom, RandomVector.Value, true);
+                                alarmMushroomObject.transform.parent = currentRoom.hierarchyParent;
+                                ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>();
+                                m_AlarmMushRoomPlacable.ConfigureOnPlacement(currentRoom);
+                                /*for (int posX = (0 + currentRoom.area.basePosition.x); posX < (1 + currentRoom.area.basePosition.x); posX++) {
+                                    for (int posY = (0 + currentRoom.area.basePosition.y); posY < (1 + currentRoom.area.basePosition.y); posY++) {
+                                        if (dungeon.data.CheckInBoundsAndValid(new IntVector2(posX, posY))) {
+                                            dungeon.data[new IntVector2(posX, posY)].cellVisualData.floorTileOverridden = true;
+                                        }
+                                    }
+                                }*/
+                                // ExpandClearanceManager clearancChecker = alarmMushroomObject.AddComponent<ExpandClearanceManager>();
+                                // clearancChecker.Configured = true;
+                            } catch (System.Exception ex) {
+                                if (DebugMode) {
+                                    ETGModConsole.Log("[ExpandTheGungeon] Exception While placing/configuring mushroom!", DebugMode);
+                                    Debug.LogException(ex);
+                                }
+                            }
                             RandomObjectsPlaced++;
+                            if (DebugMode) { Debug.Log("[ExpandTheGungeon] Mushroom successfully placed!"); }
                             if (m_CachedPositions.Count <= 0) { break; }
                         } else {
+                            if (DebugMode) { Debug.Log("[ExpandTheGungeon] No valid cells found. Mushroom skipped!"); }
                             RandomObjectsSkipped++;
                         }
                     }
                 }
             }
         }
-
-        private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
+        
+        private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 1, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }
             try { 
                 if (validCellsCached.Count == 0) {
@@ -215,60 +242,43 @@ namespace ExpandTheGungeon.ExpandMain {
                         for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
                             bool isInvalid = false;
                             IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
-
-                            if (!dungeon.data.CheckInBoundsAndValid(TargetPosition)) { isInvalid = true; break; }
-
-                            // Try and detect those pesky untrimmed rooms. :P
-                            RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
-                            if (ActualRoom == null | ActualRoom != currentRoom) { isInvalid = true; break; }
-                            // if (dungeon.data[TargetPosition].parentRoom != currentRoom) { isInvalid = true; break; }
-
-                            if (isCactusDecoration) { if (!dungeon.data.isPlainEmptyCell(TargetPosition.X, TargetPosition.Y)) { isInvalid = true; break; } }
-
-                            if (avoidExits && ExitClearence > 0) {
-                                for(int x = (0 - ExitClearence); x <= ExitClearence; x++) {
-                                    for(int y = (0 - ExitClearence); y <= ExitClearence; y++) {
-                                        IntVector2 targetArea1 = (TargetPosition + new IntVector2(x,  y));
-                                        if (dungeon.data.CheckInBoundsAndValid(targetArea1)) {
-                                            CellData cellData = dungeon.data[targetArea1];
-                                            if (cellData.isExitCell | cellData.isDoorFrameCell) { isInvalid = true; break; }
+                            if (!validCellsCached.Contains(TargetPosition)) {
+                                RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
+                                for (int x = 0; x < Clearence; x++) {
+                                    for (int y = 0; y < Clearence; y++) {
+                                        IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
+                                        if (dungeon.data.CheckInBoundsAndValid(intVector)) {
+                                            CellData cellData = dungeon.data[intVector];
+                                            if (cellData.parentRoom == null | cellData.type != CellType.FLOOR | cellData.isOccupied | !cellData.IsPassable ) { isInvalid = true; }
+                                            if (ActualRoom != currentRoom | cellData.HasPitNeighbor(dungeon.data)) { isInvalid = true; }
+                                            if (cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Water/*| cellData.cellVisualData.floorTileOverridden*/) { isInvalid = true; }
+                                            if (cellData.HasWallNeighbor()) { isInvalid = true; }
+                                        } else {
+                                            isInvalid = true;
                                         }
                                     }
-                                    if (isInvalid) { break; }
                                 }
-                            }
-
-                            if (Clearence > 0) { 
-                                for(int x = (0 - Clearence); x <= Clearence; x++) {
-                                    for(int y = (0 - Clearence); y <= Clearence; y++) {
-                                        IntVector2 targetArea1 = (TargetPosition + new IntVector2(x, y));
-                                        if (dungeon.data.CheckInBoundsAndValid(targetArea1) && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
-                                            CellData cellData = dungeon.data[targetArea1];
-                                            if (avoidPits && dungeon.data.isPit(targetArea1.x, targetArea1.y)) { isInvalid = true; break; }
-                                            if (cellData.isWallMimicHideout | cellData.IsAnyFaceWall() | cellData.IsFireplaceCell |
-                                                cellData.IsTopWall() | cellData.isOccludedByTopWall | cellData.IsUpperFacewall() | 
-                                                cellData.isWallMimicHideout | dungeon.data.isWall(targetArea1.x, targetArea1.y) | 
-                                                dungeon.data[targetArea1.x, targetArea1.y].isOccupied)
-                                            {
-                                                isInvalid = true;
-                                                break;
-                                            }
+                                for (int x = 0; x < ExitClearence; x++) {
+                                    for (int y = 0; y < ExitClearence; y++) {
+                                        IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
+                                        if (dungeon.data.CheckInBoundsAndValid(intVector)) {
+                                            CellData cellData = dungeon.data[intVector];
+                                            if (cellData.isExitCell) { isInvalid = true; }
+                                        } else {
+                                            isInvalid = true;
                                         }
                                     }
-                                    if (isInvalid) { break; }
                                 }
+                                if (!isInvalid) { validCellsCached.Add(TargetPosition); }
                             }
-                            if (!isInvalid && !validCellsCached.Contains(TargetPosition)) { validCellsCached.Add(TargetPosition); }
                         }
                     }
                 }
             } catch (System.Exception){
-
+                if (DebugMode) { Debug.Log("GetRandomAvailableCell Exception while looking for valid cells in current room."); }
             }
             if (validCellsCached.Count > 0) {
                 IntVector2 SelectedCell = BraveUtility.RandomElement(validCellsCached);
-                IntVector2 RegisteredCell = (SelectedCell);
-                dungeon.data[RegisteredCell].isOccupied = true;
                 validCellsCached.Remove(SelectedCell);
                 if (PositionRelativeToRoom) { SelectedCell -= currentRoom.area.basePosition; }
                 return SelectedCell;

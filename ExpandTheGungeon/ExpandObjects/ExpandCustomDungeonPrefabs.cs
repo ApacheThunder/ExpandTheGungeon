@@ -117,6 +117,15 @@ namespace ExpandTheGungeon.ExpandObjects {
                                 definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
                                 definition.predefinedSeeds = new List<int>(0);
                                 break;
+                            case "tt_phobos":
+                                definition.priceMultiplier = 1.4f;
+                                definition.secretDoorHealthMultiplier = 1;
+                                definition.enemyHealthMultiplier = 1.7f;
+                                definition.damageCap = 300;
+                                definition.bossDpsCap = 60;
+                                definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                                definition.predefinedSeeds = new List<int>(0);
+                                break;
                             case "tt_space":
                                 SpaceEntryExists = true;
                                 break;
@@ -992,6 +1001,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             m_BellyStampData.tileStampWeight = 1;
             m_BellyStampData.spriteStampWeight = 0;
             m_BellyStampData.objectStampWeight = 1;
+            m_BellyStampData.stamps = new TileStampData[0];
             m_BellyStampData.spriteStamps = new SpriteStampData[0];
             m_BellyStampData.objectStamps = new ObjectStampData[] {
                 new ObjectStampData() {

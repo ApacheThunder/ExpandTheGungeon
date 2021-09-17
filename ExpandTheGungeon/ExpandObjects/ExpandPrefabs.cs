@@ -290,8 +290,6 @@ namespace ExpandTheGungeon.ExpandObjects {
 
         // Glitch Portal Object
         public static GameObject EX_GlitchPortal;
-        // Copy of portals seen in Blacksmith on Forge
-        public static GameObject EX_RainbowRoomFloor;
 
         // ParaDrop animation assets
         public static GameObject EX_Parachute;
@@ -1710,29 +1708,21 @@ namespace ExpandTheGungeon.ExpandObjects {
             GameObject m_ParadoxPortal = BraveResources.Load<GameObject>("Global Prefabs/VFX_ParadoxPortal");
             if (m_ParadoxPortal) {
                 MeshRenderer m_EXGlitchPortalRenderer = EX_GlitchPortal.GetComponent<MeshRenderer>();
-                m_EXGlitchPortalRenderer.materials = new Material[] { new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().materials[0]) };
                 if (m_ParadoxPortal?.GetComponent<MeshRenderer>()?.material) {
-                    m_ParadoxPortal.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", new Color(1, 1, 1, 1));
+                    // m_EXGlitchPortalRenderer.materials = new Material[] { new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().materials[0]) };
                     m_EXGlitchPortalRenderer.material = new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().material);
+                    m_EXGlitchPortalRenderer.material.SetColor("_EmissionColor", new Color(1, 1, 1, 1));
+                    m_EXGlitchPortalRenderer.material.SetTexture("_PortalTex", expandSharedAssets1.LoadAsset<Texture2D>("EX_GlitchPortalDefaultTexture"));
                 }
             }
 
             ForceToSortingLayer m_EXGlitchPortalSortingLayer = m_ParadoxPortal.AddComponent<ForceToSortingLayer>();
             m_EXGlitchPortalSortingLayer.sortingLayer = DepthLookupManager.GungeonSortingLayer.PLAYFIELD;
             m_EXGlitchPortalSortingLayer.targetSortingOrder = -1;
-
             EX_GlitchPortal.AddComponent<ExpandGlitchPortalController>();
 
             m_ParadoxPortal = null;
-
-            EX_RainbowRoomFloor = expandSharedAssets1.LoadAsset<GameObject>("EX_RainbowRoomFloor");
-
-            GameObject m_VFXRainbowFloor = EX_RainbowRoomFloor.transform.Find("VFX_Floor").gameObject;
-            m_VFXRainbowFloor.GetComponent<MeshRenderer>().material = braveResources.LoadAsset<Material>("DarkPortalMaterial");
-            // m_VFXRainbowFloor.AddComponent<NebulaRegisterer>();
-            // ExpandEnableSpacePitOnEnterComponent m_VFXRainbowFloorController = m_VFXRainbowFloor.AddComponent<ExpandEnableSpacePitOnEnterComponent>();
-            // m_VFXRainbowFloorController.AssignParentRendererToNebula = true;
-
+            
 
             tk2dSprite RickRollChestSprite = RickRollChestObject.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(RickRollChestSprite, m_RedChestReference.GetComponent<tk2dSprite>());

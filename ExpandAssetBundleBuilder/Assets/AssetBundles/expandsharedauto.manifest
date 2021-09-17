@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3451444768
+CRC: 1463237383
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3322418d8cd5c5fea80104498395b78e
+    Hash: ac3a8eb882f144eb274f818ee721d471
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -146,7 +146,6 @@ Assets:
 - Assets/ExpandPrefabs/EXSecretDoor_MinimapIcon.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal20.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport1.bytes
-- Assets/ExpandPrefabs/EX_RainbowRoomFloor.prefab
 - Assets/ExpandPrefabs/AIActors/DopplegunnerHand.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed17.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal22.bytes
@@ -1442,6 +1441,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/M_Expand_ratkey.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal28.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Yshape1.bytes
+- Assets/ExpandTextures/Misc/EX_GlitchPortalDefaultTexture.png
 - Assets/ExpandTextures/WestAssets/WestChest/west_lock_open_005.png
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_TurtleMelon_Passage_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals13.bytes

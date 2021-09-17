@@ -10,56 +10,90 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
     public ExpandGlitchPortalController() {
         CachedPosition = Vector3.zero;
         Configured = false;
-        InitialSize = 0.13f;
-        MinSize = 0.05f;
-        MaxInteractionRange = 1f;
+        ActivationDelay = 1;
+        ExpandedSize = 0.09f;
+        ShrunkSize = 0.04f;
+        MaxInteractionRange = 1.5f;
         DestroyAfterUse = true;
 
+        EdgeColor = new Color(0.7f, 0, 0.4f, 1);
+        BorderColor = new Color(0.3f, 0, 0, 1);
+
+        ExpandedHoleDepth = 2;
+        ShrunkHoleDepth = 12;
+        SizeChangeSpeed = 1;
+
+        m_IsActive = false;
         m_Shrunk = false;
         m_IsMoving = false;
         m_used = false;
+        m_PositionIsValid = false;
     }
     
     public Vector3 CachedPosition;
     public bool Configured;
     public bool DestroyAfterUse;
 
-    public float InitialSize;
-    public float MinSize;
+    public float ActivationDelay;
+    public float ShrunkSize;
+    public float ExpandedSize;
+    public float ExpandedHoleDepth;
+    public float ShrunkHoleDepth;
     public float MaxInteractionRange;
+    public float SizeChangeSpeed;
 
+    public Color EdgeColor;
+    public Color BorderColor;
 
+    private bool m_IsActive;
     private bool m_IsMoving;
     private bool m_Shrunk;
     private bool m_used;
+    private bool m_PositionIsValid;
 
     public RoomHandler ParentRoom;
 
 
     public float GetDistanceToPoint(Vector2 point) { return Vector2.Distance(point, transform.position.XY()) / 1.5f; }
     public float GetOverrideMaxDistance() { return MaxInteractionRange; }
+    
+    private void Awake() {        
+        renderer.material.SetColor("_EdgeColor", EdgeColor);
+        renderer.material.SetColor("_BorderColor", BorderColor);
+        renderer.material.SetFloat("_UVDistCutoff", ExpandedSize);
+        renderer.material.SetFloat("_HoleEdgeDepth", ExpandedHoleDepth);
+        StartCoroutine(HandleDelayedActivation(ActivationDelay));
+    }
 
-    private void Awake() { renderer.material.SetFloat("_UVDistCutoff", InitialSize); }
-
-    public void OnEnteredRange(PlayerController interactor) {
-        if(!Configured) { return; }
-        if (m_used || !interactor.IsPrimaryPlayer) { return; }
-        if (CachedPosition == Vector3.zero | ParentRoom == null | ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-            return;
+    private void Update() {
+        if (!Configured | ParentRoom == null | !m_IsActive) { return; }
+        if (!m_used && !m_PositionIsValid) {
+            Dungeon dungeon = GameManager.Instance.Dungeon;
+            if (!dungeon.data.CheckInBoundsAndValid(transform.PositionVector2().ToIntVector2().x, transform.PositionVector2().ToIntVector2().y) | dungeon.data.isWall(transform.PositionVector2().ToIntVector2().x, transform.PositionVector2().ToIntVector2().y)) {
+                m_used = true;
+                if (ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) || !ParentRoom.EverHadEnemies) {
+                    ParentRoom.ResetPredefinedRoomLikeDarkSouls();
+                }
+                DestroyAfterUse = true;
+                ParentRoom.DeregisterInteractable(this);
+                StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
+            } else {
+                m_PositionIsValid = true;
+            }
         }
-        if (m_Shrunk && !m_IsMoving && ParentRoom != null && !ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-            m_Shrunk = false;
-            StartCoroutine(HandleExpand());
+        if (m_IsActive && m_PositionIsValid && !m_used && !m_IsMoving) {
+            if (!ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && m_Shrunk) {
+                m_Shrunk = false;
+                StartCoroutine(HandleExpand());
+            } else if (ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !m_Shrunk) {
+                m_Shrunk = true;
+                StartCoroutine(HandleShrink());
+            }
         }
     }
 
-    public void OnExitRange(PlayerController interactor) {
-        if (!Configured) { return; }        
-        if (!m_Shrunk) {
-            m_Shrunk = true;
-            StartCoroutine(HandleShrink());
-        }
-    }
+    public void OnEnteredRange(PlayerController interactor) { }
+    public void OnExitRange(PlayerController interactor) { }
 
     public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
         shouldBeFlipped = false;
@@ -67,11 +101,9 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
     }
 
     public void Interact(PlayerController interactor) {
-        if (!Configured) { return; }
+        if (!Configured | !m_IsActive) { return; }
         if (m_used || !interactor.IsPrimaryPlayer) { return; }
-        if (m_IsMoving | CachedPosition == Vector3.zero | ParentRoom == null | ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-            return;
-        }
+        if (CachedPosition == Vector3.zero | ParentRoom == null | ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { return; }
         m_used = true;
         if (DestroyAfterUse) { ParentRoom.DeregisterInteractable(this); }
         StartCoroutine(HandleTeleport(interactor, CachedPosition));
@@ -88,8 +120,15 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
         }
     }
 
-    private IEnumerator HandleTeleport(PlayerController targetPlayer, Vector2 targetPoint) {
+    private IEnumerator HandleDelayedActivation(float delay) {
+        yield return new WaitForSeconds(delay);
+        m_IsActive = true;
+        yield break;
+    }
+
+    private IEnumerator HandleTeleport(PlayerController targetPlayer, Vector2 targetPoint, float delay = -1) {
         TogglePlayerInput(targetPlayer, true);
+        if (delay != -1) { yield return new WaitForSeconds(delay); }
         ExpandShaders.Instance.GlitchScreenForDuration(1, 1.4f, 0.1f);
         Dungeon dungeon = GameManager.Instance.Dungeon;
         GameObject TempFXObject = new GameObject("EXScreenFXTemp") { layer = 0 };
@@ -143,10 +182,10 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
         while(m_IsMoving) { yield return null; }
         m_IsMoving = true;
         float elapsed = 0f;
-        float duration = 1f;
-        while (elapsed < duration) {
+        while (elapsed < SizeChangeSpeed) {
             elapsed += (BraveTime.DeltaTime * 1f);
-            renderer.material.SetFloat("_UVDistCutoff", Mathf.Lerp(InitialSize, MinSize, elapsed / duration));
+            renderer.material.SetFloat("_UVDistCutoff", Mathf.Lerp(ExpandedSize, ShrunkSize, elapsed / SizeChangeSpeed));
+            renderer.material.SetFloat("_HoleEdgeDepth", Mathf.Lerp(ExpandedHoleDepth, ShrunkHoleDepth, elapsed / SizeChangeSpeed));
             yield return null;
         }
         m_IsMoving = false;
@@ -157,10 +196,10 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
         while (m_IsMoving) { yield return null; }
         m_IsMoving = true;
         float elapsed = 0f;
-        float duration = 1f;
-        while (elapsed < duration) {
+        while (elapsed < SizeChangeSpeed) {
             elapsed += (BraveTime.DeltaTime * 1f);
-            renderer.material.SetFloat("_UVDistCutoff", Mathf.Lerp(MinSize, InitialSize, elapsed / duration));
+            renderer.material.SetFloat("_UVDistCutoff", Mathf.Lerp(ShrunkSize, ExpandedSize, elapsed / SizeChangeSpeed));
+            renderer.material.SetFloat("_HoleEdgeDepth", Mathf.Lerp(ShrunkHoleDepth, ExpandedHoleDepth, elapsed / SizeChangeSpeed));
             yield return null;
         }
         m_IsMoving = false;

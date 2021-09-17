@@ -37,7 +37,7 @@ Transform:
   m_GameObject: {fileID: 1370555509019234}
   m_LocalRotation: {x: 0.382683, y: 0, z: 0, w: 0.92388}
   m_LocalPosition: {x: 0, y: 4.25, z: 4.24}
-  m_LocalScale: {x: 10, y: 15, z: 1}
+  m_LocalScale: {x: 12, y: 18, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +74,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1981987969
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33825449929592402
 MeshFilter:

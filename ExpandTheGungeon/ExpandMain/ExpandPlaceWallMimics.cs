@@ -24,7 +24,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static bool PlayerHasWallMimicItem = false;
         public static bool PlayerHasCorruptedJunk = false;
 
-        public void PlaceWallMimics(Dungeon dungeon, RoomHandler roomHandler) {
+        public void PlaceWallMimics(Action<Dungeon, RoomHandler>orig, Dungeon dungeon, RoomHandler roomHandler) {
             int WallMimicsPlaced = 0;
             int WallMimicsPerRoom = 1;
             int numWallMimicsForFloor = MetaInjectionData.GetNumWallMimicsForFloor(dungeon.tileIndices.tilesetId);
@@ -33,8 +33,12 @@ namespace ExpandTheGungeon.ExpandMain {
             if (roomHandler != null) { goto IL_SKIP; }
             
             if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
-            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) { ExpandStats.elevatorHasBeenUsed = false; }
                         
+            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {
+                ExpandStats.phobosElevatorHasBeenUsed = false;
+                ExpandStats.elevatorHasBeenUsed = false;
+            }
+
             ExpandStaticReferenceManager.PopulateLists();
 
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;

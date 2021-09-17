@@ -521,9 +521,7 @@ namespace ExpandTheGungeon {
         private void ExpandTestCommand(string[] consoleText) {
             
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-
-
-
+            
             // ExpandUtilities.ResourceExtractor.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Phobos.GetComponent<tk2dSpriteCollectionData>());            
 
             /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();

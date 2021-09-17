@@ -16,7 +16,7 @@ namespace ExpandTheGungeon {
             ExpandStats.randomSeed = Random.value;
 
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
-
+            
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
                 List<AGDEnemyReplacementTier> m_cachedReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
                 // Removes special enemies added after the secret floor
@@ -37,8 +37,7 @@ namespace ExpandTheGungeon {
         private static void InitObjectMods(Dungeon dungeon) {
 
             if (!GameManager.Instance | !dungeon) { return; }
-
-
+            
             if (ExpandStats.EnableJungleRain && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
                 JungleRainPlacable.transform.parent = dungeon.gameObject.transform;

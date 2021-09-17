@@ -27,6 +27,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             m_ParadropStarted = false;
             m_Initialized = false;
+            m_IsDestroyed = false;
             switchState = State.Wait;
             m_startScale = 0.25f;
         }
@@ -48,6 +49,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private bool m_ParadropStarted;
         private bool m_Initialized;
+        private bool m_IsDestroyed;
         private enum State { Wait, PopIntoAir, ParaDrop, End };
         private State switchState;
         private float m_CachedSpriteZDepth;
@@ -82,11 +84,35 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void Start() {
             m_ParentEnemy = aiActor;
-            
+            m_CachedRotation = transform.rotation;
+            m_cachedPosition = transform.position;
+            m_CachedLayer = gameObject.layer;
+            m_CachedSpriteZDepth = sprite.HeightOffGround;
+            m_maxSway = MaxSwayAngle;
+
+            if (knockbackDoer) { knockbackDoer.SetImmobile(true, "Paradrop Protection"); }
+
+            if (m_ParentEnemy) { m_cachedScale = m_ParentEnemy.EnemyScale; } else { m_cachedScale = Vector2.one; }
+
             if (m_ParentEnemy && m_ParentEnemy.HasShadow && m_ParentEnemy.ShadowObject) {
                 m_ParentEnemy.ShadowObject.GetComponent<tk2dSprite>().renderer.enabled = false;
             }
             
+            if (m_ParentEnemy) {
+                m_ParentEnemy.behaviorSpeculator.enabled = false;
+                if (m_ParentEnemy.aiAnimator) { m_ParentEnemy.aiAnimator.FacingDirection = -90; }
+                if (m_ParentEnemy.aiShooter) {
+                    m_ParentEnemy.aiShooter.AimAtPoint(m_ParentEnemy.CenterPosition - new Vector2(0, 2));
+                    m_ParentEnemy.aiShooter.ToggleGunAndHandRenderers(false, "ParaDrop");
+                }
+            }
+
+            if (specRigidbody) { specRigidbody.CollideWithOthers = false; }
+            if (healthHaver) {
+                healthHaver.PreventAllDamage = true;
+                healthHaver.IsVulnerable = false;
+            }
+
             if (ParentObjectExplodyBarrel) { m_CachedExplosionData = ExpandUtility.GenerateExplosionData(); }
 
             sprite.renderer.enabled = false;
@@ -99,10 +125,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             // Despite my absolute shit math skills I somehow got this right. :P
             // (this correctly sets the parachute above the host object's sprite)
             float ParachuteXSize = (m_ParachuteSprite.GetBounds().size.x / 2);
-            /*float ObjectUnitCenterX = (transform.position.x + (sprite.GetBounds().size.x / 2));
-            float ObjectUnitCenterY = (transform.position.y + sprite.GetBounds().size.y);*/
-            float ObjectUnitCenterX = transform.position.x;
-            float ObjectUnitCenterY = transform.position.y;
+            float ObjectUnitCenterX = m_cachedPosition.x;
+            float ObjectUnitCenterY = m_cachedPosition.y;
 
             if (UseObjectSizeOverride) {
                 ObjectUnitCenterX += OverrideObjectSize.x;
@@ -118,34 +142,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_Parachute.layer = gameObject.layer;
 
             gameObject.transform.SetParent(m_Parachute.transform);
-            m_maxSway = MaxSwayAngle;
-
+            
             m_Anchor = Instantiate(ExpandAssets.LoadAsset<GameObject>("EX_ParadropAnchor"), m_ParachuteSprite.WorldBottomCenter, Quaternion.identity).transform;
             m_Parachute.transform.SetParent(m_Anchor);
             
-            m_CachedPositionOffset = (m_Anchor.position - gameObject.transform.position);
-            
-            if (m_ParentEnemy) {
-                m_ParentEnemy.behaviorSpeculator.enabled = false;
-                if (m_ParentEnemy.aiAnimator) { m_ParentEnemy.aiAnimator.FacingDirection = -90; }
-                if (m_ParentEnemy.aiShooter) {
-                    m_ParentEnemy.aiShooter.AimAtPoint(m_ParentEnemy.CenterPosition - new Vector2(0, 2));
-                    m_ParentEnemy.aiShooter.ToggleGunAndHandRenderers(false, "ParaDrop");
-                }
-            }
-
-            if (specRigidbody) { specRigidbody.CollideWithOthers = false; }
-            if (healthHaver) { healthHaver.IsVulnerable = false; }
-            
-            m_CachedSpriteZDepth = sprite.HeightOffGround;
-            if (m_ParentEnemy) {
-                m_cachedScale = m_ParentEnemy.EnemyScale;
-            } else {
-                m_cachedScale = Vector2.one;
-            }
-            m_CachedRotation = transform.rotation;
-            m_cachedPosition = transform.position;
-            m_CachedLayer = gameObject.layer;
+            m_CachedPositionOffset = (m_Anchor.position - m_cachedPosition.ToVector3ZUp());
+                       
             switchState = State.PopIntoAir;
             m_Initialized = true;
         }
@@ -155,7 +157,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (m_Initialized && healthHaver && healthHaver.IsDead) {
                 StopAllCoroutines();
                 if (m_LandingVFX) { Destroy(m_LandingVFX); }
-                switchState = State.End;
+                m_Anchor.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
+                m_Anchor.gameObject.SetLayerRecursively(m_CachedLayer);
+                m_Parachute.transform.DetachChildren();
+                m_Anchor.DetachChildren();
+                sprite.DetachRenderer(m_ParachuteSprite);
+                m_ParachuteSpriteAnimator.PlayAndDestroyObject("ParachuteLanded");
+                Destroy(m_Anchor.gameObject);
+                m_IsDestroyed = true;
+                switchState = State.Wait;
             }
             switch (switchState) {
                 case State.Wait:
@@ -176,11 +186,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return;
                 case State.ParaDrop:
                     if (!m_ParadropStarted) {
+                        m_ParadropStarted = true;
                         m_ParachuteSprite.SetSprite("EX_Parachute_Open_01");
                         m_ParachuteSpriteAnimator.Play("ParachuteDeploy");
                         m_ParachuteSprite.renderer.enabled = true;
                         StartCoroutine(HandleDrop());
-                        m_ParadropStarted = true;
                     }
                     Quaternion Clockwise = Quaternion.Euler(new Vector3(0, 0, m_maxSway));
                     Quaternion CounterClockwise = Quaternion.Euler(new Vector3(0, 0, -m_maxSway));
@@ -188,6 +198,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_Anchor.localRotation = Quaternion.Lerp(Clockwise, CounterClockwise, Lerp);
                     return;
                 case State.End:
+                    if (knockbackDoer) { knockbackDoer.SetImmobile(false, "Paradrop Protection"); }
                     m_Anchor.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
                     m_Anchor.gameObject.SetLayerRecursively(m_CachedLayer);
                     m_Parachute.transform.DetachChildren();
@@ -210,7 +221,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
                         m_ParentEnemy.behaviorSpeculator.RemoveDelayOnReinforce = true;
                     }
-                    if (healthHaver) { healthHaver.IsVulnerable = true; }
+                    if (healthHaver) {
+                        healthHaver.PreventAllDamage = false;
+                        healthHaver.IsVulnerable = true;
+                    }
                     switchState = State.Wait;
                     Destroy(m_Anchor.gameObject);
                     if (ParentObjectExplodyBarrel) {
@@ -219,7 +233,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                             Exploder.Explode(sprite.WorldCenter, m_CachedExplosionData, Vector2.zero, null, true, CoreDamageTypes.None, false);
                         }
                     }
-                    if (!ParentObjectExplodyBarrel) { Destroy(this); }
+                    if (!ParentObjectExplodyBarrel) {
+                        m_IsDestroyed = true;
+                        Destroy(this);
+                    }
                     return;
             }
         }

@@ -9480,7 +9480,7 @@ namespace ExpandTheGungeon.ExpandObjects {
             SecretExitRoom2.allowFloorDecoration = false;
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 7), ExpandPrefabs.ElevatorDeparture);
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsVertical_Catacombs, useExternalPrefab: true));
             RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretExitRoom2, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Elevator_Exit_Layout"));
 
 

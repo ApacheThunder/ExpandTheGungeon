@@ -26,7 +26,9 @@ namespace ExpandTheGungeon {
         public static bool allowGlitchFloor = false;
         public static bool elevatorHasBeenUsed = false;
         public static bool HasSpawnedSecretBoss = false;
+        public static bool phobosElevatorHasBeenUsed = false;
         public static float randomSeed = 0.5f;
+        
         
         public static void OverwriteUserSettings(ExpandCachedStats stats) {
             EnableTestDungeonFlow = stats.EnableTestDungeonFlow;

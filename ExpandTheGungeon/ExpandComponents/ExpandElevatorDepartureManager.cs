@@ -34,6 +34,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public GlobalDungeonData.ValidTilesets OverrideTargetFloor;
         public bool IsGlitchElevator;
         public string OverrideExactLevelName;
+        public string OverrideTargetFlorDungeonFlow;
 
         public const bool c_savingEnabled = true;
 
@@ -47,6 +48,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UsesOverrideTargetFloor = true;
             IsGlitchElevator = false;
             OverrideExactLevelName = "tt_tutorial";
+            OverrideTargetFlorDungeonFlow = string.Empty;
             OverrideTargetFloor = GlobalDungeonData.ValidTilesets.WESTGEON;
         }
 
@@ -207,6 +209,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                         GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
                     } else if (UsesOverrideTargetFloor) {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;
+                        if (!string.IsNullOrEmpty(OverrideTargetFlorDungeonFlow)) {
+                            GameManager.Instance.InjectedFlowPath = OverrideTargetFlorDungeonFlow;
+                        }
                         switch (overrideTargetFloor) {
                             case GlobalDungeonData.ValidTilesets.CASTLEGEON:
                                 GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_castle");

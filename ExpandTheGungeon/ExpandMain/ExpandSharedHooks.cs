@@ -116,8 +116,8 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
                 typeof(Dungeon).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandPlaceWallMimic).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
-                GameManager.Instance.Dungeon
+                typeof(ExpandPlaceWallMimic).GetMethod(nameof(ExpandPlaceWallMimic.PlaceWallMimics), BindingFlags.Public | BindingFlags.Instance),
+                typeof(Dungeon)
             );
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetEnemiesString Hook...."); }
