@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Dungeonator;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using UnityEngine;
+using System;
 
 namespace ExpandTheGungeon.ExpandComponents {
 

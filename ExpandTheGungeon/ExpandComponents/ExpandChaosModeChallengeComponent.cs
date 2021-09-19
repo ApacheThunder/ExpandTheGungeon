@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using Pathfinding;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -458,7 +458,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             
             PlayerController player = GameManager.Instance.BestActivePlayer;
             Dungeon dungeon = GameManager.Instance.Dungeon;
-
+            
             if (dungeon.IsGlitchDungeon) { return; }
             if (currentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return; }
             if (currentRoom.GetRoomName() == null) { return; }
@@ -845,7 +845,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             InteractableNPCs.Clear();
             NonInteractableObjects.Clear();
         }
-        
+
         private void MakeTinyOrBig(AIActor aiActor, bool delayed = false) {
             if (string.IsNullOrEmpty(aiActor.EnemyGuid)) { return; }
             if (aiActor.name.ToLower().StartsWith("glitched") | aiActor.name.ToLower().EndsWith("(clone)(clone)")) { return; }

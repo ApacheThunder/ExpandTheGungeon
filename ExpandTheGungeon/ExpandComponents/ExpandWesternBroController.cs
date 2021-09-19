@@ -1,5 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using System;
 using System.Collections;
 using System.Collections.Generic;

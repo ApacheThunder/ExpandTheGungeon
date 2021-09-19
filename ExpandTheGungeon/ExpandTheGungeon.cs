@@ -5,18 +5,20 @@ using UnityEngine;
 using Dungeonator;
 using MonoMod.RuntimeDetour;
 using ExpandTheGungeon.ItemAPI;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.IO;
 using System.Collections;
+// using System.Runtime;
+// using System.Runtime.InteropServices;
+
+
 
 namespace ExpandTheGungeon {
 
     public class ExpandTheGungeon : ETGModule {
-
-        public static string ConsoleCommandName;
         
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
@@ -32,7 +34,10 @@ namespace ExpandTheGungeon {
         public static string ExceptionText2;
 
         public static readonly string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
-        
+        public static readonly string ModAssetBundleName = "ExpandSharedAuto";
+        public static readonly string ModSoundBankName = "EX_SFX";
+        public static readonly string ConsoleCommandName = "expand";
+
         private static List<string> itemList;
 
         private static bool m_ShotGunSecretWasActive = false;
@@ -58,12 +63,10 @@ namespace ExpandTheGungeon {
         
 
         public override void Init() {
-
+            
             ExceptionText = string.Empty;
             ExceptionText2 = string.Empty;
-
-            ConsoleCommandName = "expand";
-
+            
             ZipFilePath = Metadata.Archive;
             FilePath = Metadata.Directory;
 
@@ -89,8 +92,7 @@ namespace ExpandTheGungeon {
                 "Cursed Brick"
                 // "Table Tech Expand"
             };
-            
-            ExpandAssets.InitAudio(ZipFilePath, FilePath);
+                        
             ExpandAssets.InitCustomAssetBundle();
 
             ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo");
@@ -113,7 +115,7 @@ namespace ExpandTheGungeon {
 
 
         public override void Start() {
-
+            
             if (!string.IsNullOrEmpty(ExceptionText) | !string.IsNullOrEmpty(ExceptionText2)) {
                 if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
                 if (!string.IsNullOrEmpty(ExceptionText2)) { ETGModConsole.Log(ExceptionText2); }
@@ -122,11 +124,16 @@ namespace ExpandTheGungeon {
             
             ExpandSharedHooks.InstallRequiredHooks();
             
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
+
+            ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
+
+            ExpandObjectDatabase.BuildDatabase();
+
 
             // Init Custom GameLevelDefinitions
             ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
@@ -198,17 +205,11 @@ namespace ExpandTheGungeon {
             sharedAssets2 = null;
             braveResources = null;
             enemiesBase = null;
+            // HUDGC.ShowGcData = true;
         }
 
 
-        public override void Exit() {
-            /*if (GameManagerHook != null) {
-                ETGModConsole.Log("[ExpandTheGungeon] Uninstalling GameManager.Awake hook", true);
-                GameManagerHook.Dispose();
-                GameManagerHook = null;
-                GameManager.Instance.OnNewLevelFullyLoaded -= ExpandObjectMods.Instance.InitSpecialMods;
-            }*/
-        }
+        public override void Exit() {  }
 
 
 
@@ -521,7 +522,21 @@ namespace ExpandTheGungeon {
         private void ExpandTestCommand(string[] consoleText) {
             
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+
+            // UnityEngine.Object.Instantiate(ExpandPrefabs.EX_ItemDropper, CurrentPlayer.transform.position, Quaternion.identity);
+
+            ExpandAssets.SaveStringToFile(JsonUtility.ToJson(ExpandCustomEnemyDatabase.BootlegBulletManPrefab.GetComponent<BehaviorSpeculator>().TargetBehaviors), FilePath, "EXBootlegBulletMand_TargetBehaviors.txt");
             
+
+            /*GameObject AlarmMushroom = UnityEngine.Object.Instantiate(ExpandPrefabs.EXAlarmMushroom, CurrentPlayer.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
+            AlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
+
+            if (consoleText.Length > 1) {
+                float X = float.Parse(consoleText[0]);
+                float Y = float.Parse(consoleText[1]);
+                AlarmMushroom.transform.Find("Shadow").localPosition = new Vector3(X, Y);
+            }*/
+
             // ExpandUtilities.ResourceExtractor.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Phobos.GetComponent<tk2dSpriteCollectionData>());            
 
             /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
@@ -592,7 +607,7 @@ namespace ExpandTheGungeon {
             GameObject GuidePastRoomObject = GuidePastRoom.placedObjects[0].nonenemyBehaviour.gameObject;
             GameObject m_RainPrefab = GuidePastRoomObject.transform.Find("Rain").gameObject;
             
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle("ExpandSharedAuto");
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
             AssetBundle SharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
 
             GameObject TestObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandDustStormFX");

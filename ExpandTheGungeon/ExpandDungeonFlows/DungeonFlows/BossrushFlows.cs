@@ -2,7 +2,7 @@ using Dungeonator;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
+using System;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -49,7 +50,12 @@ namespace ExpandTheGungeon.ItemAPI {
         public RockSlide() {
             m_PickedUp = false;
             m_Ready = true;
+            GameObject EXObjectDatabase = new GameObject("EX Object Database Instance", new Type[] { typeof(ExpandObjectDatabase) }) { layer = 0 };
+            m_MinesCageInObject = ExpandObjectDatabase.Mines_Cave_In;
+            Destroy(EXObjectDatabase);
         }
+
+        private GameObject m_MinesCageInObject;
 
         private bool m_PickedUp;
         private bool m_Ready;
@@ -66,12 +72,12 @@ namespace ExpandTheGungeon.ItemAPI {
         public void SpawnRockslides(PlayerController user) {
             spriteAnimator.Play("Activate");
             if (user.CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
-                int EnemyCount = Random.Range(1, user.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count);
+                int EnemyCount = UnityEngine.Random.Range(1, user.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count);
                 // Set a cap incase there's an insane amount of enemies in the room and it chose a very large value.
 
-                if (Random.value <= 0.35f) {
+                if (UnityEngine.Random.value <= 0.35f) {
                     EnemyCount = user.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count;
-                } else if (EnemyCount > 3 && Random.value <= 0.5f) {
+                } else if (EnemyCount > 3 && UnityEngine.Random.value <= 0.5f) {
                     EnemyCount = 3;
                 }
 
@@ -88,7 +94,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
                     if (TargetEnemy && !TargetEnemy.healthHaver.IsDead) {
                         Vector2 SelectedEnemyPosition = TargetEnemy.specRigidbody.GetUnitCenter(ColliderType.Ground);
-                        StartCoroutine(HandleTriggerRockSlide(user, ExpandObjectDatabase.Mines_Cave_In, SelectedEnemyPosition));
+                        StartCoroutine(HandleTriggerRockSlide(user, m_MinesCageInObject, SelectedEnemyPosition));
                         SelectedEnemies.Remove(TargetEnemy);
                     }
                 }

@@ -7,13 +7,10 @@ namespace ExpandTheGungeon {
     public static class Tools {
 
         public static bool verbose = false;
-
-        private static string defaultLog = Path.Combine(ETGMod.ResourcesDirectory, "customItemsLog.txt");
-
-        // public static AssetBundle sharedAuto1 = ResourceManager.LoadAssetBundle("shared_auto_001");
-        // public static AssetBundle sharedAuto2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-
+        
         public static string modID = "EX";
+
+        private static string defaultLog = Path.Combine(ETGMod.ResourcesDirectory, modID + "_customItemsLog.txt");
 
         public static void Init() {
 			bool flag = File.Exists(defaultLog);

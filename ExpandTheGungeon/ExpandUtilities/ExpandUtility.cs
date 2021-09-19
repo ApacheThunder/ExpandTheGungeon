@@ -7,7 +7,7 @@ using UnityEngine;
 using Dungeonator;
 using Pathfinding;
 using tk2dRuntime.TileMap;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandDungeonFlows;
@@ -31,12 +31,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
         // Quick and dirty way to clone any (non engine) component.
         // Can't be used to clone things like Texture2D/Materials. But useful for most other things things like components and scriptable objects like DungeonFlows.
         public static void DuplicateComponent(object target, object source, bool SaveOutputToFile = false, string OutputFilepath = null) {
-            /*string m_CachedSerializedComponent = JsonUtility.ToJson(source);
-            if (m_CachedSerializedComponent != null) {
-                if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(m_CachedSerializedComponent, OutputFilepath); }
-                JsonUtility.FromJsonOverwrite(m_CachedSerializedComponent, target);
-            }*/
-            if (string.IsNullOrEmpty(JsonUtility.ToJson(source))) { return; }
+            if (string.IsNullOrEmpty(JsonUtility.ToJson(source))) {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: ExpandUtility.DuplicateComponent returned null due to null source on target: " + target.ToString(), true);
+                return;
+            }
             if (SaveOutputToFile && !string.IsNullOrEmpty(OutputFilepath)) { Tools.LogStringToFile(JsonUtility.ToJson(source), OutputFilepath); }
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(source), target);
         }

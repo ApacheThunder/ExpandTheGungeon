@@ -4,7 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using System;
 
@@ -12,8 +12,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
 	public class BabyGoodHammer : PlayerItem {
 
-        private static GameObject hammerSpawnFX;
-        private static GameObject hammerItemObject;
+        public static GameObject hammerSpawnFX;
+        public static GameObject hammerItemObject;
 
         public static string CompanionGuid;
         public static int HammerPickupID;

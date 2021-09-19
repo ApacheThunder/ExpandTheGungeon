@@ -6,7 +6,7 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    class ExpandAssemblerHook : MonoBehaviour {
+    public class ExpandAssemblerHook : MonoBehaviour {
 
         public IEnumerator ConstructTK2DDungeonHook(Action<TK2DDungeonAssembler, Dungeon, tk2dTileMap>orig, TK2DDungeonAssembler self, Dungeon d, tk2dTileMap map) {
             for (int j = 0; j < d.data.Width; j++) {

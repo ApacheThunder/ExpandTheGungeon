@@ -1,7 +1,7 @@
 ﻿using Gungeon;
 using System.Collections.Generic;
 using ExpandTheGungeon.ExpandComponents;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ItemAPI {
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandMain {
 

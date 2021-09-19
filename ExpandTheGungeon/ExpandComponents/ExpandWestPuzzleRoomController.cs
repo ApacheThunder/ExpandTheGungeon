@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using System.Collections;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -135,7 +135,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void HandleChestRoomSetup() {
-            try { 
+            try {
                 DungeonPlaceable ChestPlatform = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("Treasure_Dais_Stone_Carpet", ExpandAssets.AssetSource.SharedAuto2);
                 GameObject Chest_Rainbow = ExpandAssets.LoadOfficialAsset<GameObject>("Chest_Rainbow", ExpandAssets.AssetSource.SharedAuto1);
 
@@ -328,6 +328,13 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 Vector3 InfoSignPosition = (new Vector3(3, 3) + WinchesterRoom.area.basePosition.ToVector3());
 
+                try {
+                    if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_005")) {
+                        IntVector2? NewPosition = WinchesterRoom.GetRandomAvailableCell((IntVector2.One * 2), CellTypes.FLOOR, false, null);
+                        if (NewPosition.HasValue) { InfoSignPosition = NewPosition.Value.ToVector3(); }
+                    }
+                } catch (Exception) { }
+                 
                 GameObject PlacedWinchesterNote = Instantiate(ExpandPrefabs.Jungle_BlobLostSign, InfoSignPosition, Quaternion.identity);
                 PlacedWinchesterNote.name = "Winchester's Sign";
                 PlacedWinchesterNote.GetComponent<ExpandNoteDoer>().stringKey = "Notice: Anti-Flight Pits have been installed.\n I know you've been using fancy wings or that jetpack to cheat at my game!\n I'd like to see you try that again! [Winchester].";

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandComponents {
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandUtilities;
 
@@ -26,7 +26,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_TargetAnimatorObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
             m_ShadowObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
             m_ShootPointObject.transform.parent = ExpandPrefabs.EXFriendlyForgeHammer.transform;
-            
+
             ExpandPrefabs.EXFriendlyForgeHammer.SetActive(false);
 
             m_ShadowObject.GetComponent<tk2dSpriteAnimator>().playAutomatically = false;

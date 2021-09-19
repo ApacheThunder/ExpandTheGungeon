@@ -3,7 +3,7 @@ using UnityEngine;
 using Dungeonator;
 using System.Reflection;
 using System.Collections.Generic;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandComponents {

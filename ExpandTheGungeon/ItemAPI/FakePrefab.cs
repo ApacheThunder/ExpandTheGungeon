@@ -36,9 +36,9 @@ namespace ExpandTheGungeon.ItemAPI {
 			return gameObject;
 		}
 
-		public static UnityEngine.Object Instantiate(UnityEngine.Object o, UnityEngine.Object new_o) {
-            try { 
-			    bool flag = o is GameObject && ExistingFakePrefabs.Contains((GameObject)o);
+		public static UnityEngine.Object InstantiateFakePrefab(UnityEngine.Object o, UnityEngine.Object new_o) {
+            try {
+                bool flag = o is GameObject && ExistingFakePrefabs.Contains((GameObject)o);
                 if (flag) {
                     if (ExpandStats.debugMode) { Tools.Print("Activating fake prefab: " + o.name, "FFFFFF", false); }
 			    	((GameObject)new_o).SetActive(true);

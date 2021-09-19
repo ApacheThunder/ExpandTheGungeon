@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using HutongGames.PlayMaker.Actions;
 using System.Collections;
 using HutongGames.PlayMaker;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections.ObjectModel;

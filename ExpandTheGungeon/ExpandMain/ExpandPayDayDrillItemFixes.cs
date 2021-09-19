@@ -6,7 +6,7 @@ using Pathfinding;
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandMain {
 

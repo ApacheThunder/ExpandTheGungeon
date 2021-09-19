@@ -13,23 +13,33 @@ namespace ExpandTheGungeon.ItemAPI {
                 typeof(PlayerController).GetMethod("AcquirePassiveItemPrefabDirectly"),
                 typeof(FakePrefabHooks).GetMethod("AcquirePassiveItemPrefabDirectly")
             );
-			Hook hook2 = new Hook(typeof(PlayerItem).GetMethod("Pickup"), 
+			Hook hook2 = new Hook(
+                typeof(PlayerItem).GetMethod("Pickup"), 
                 typeof(FakePrefabHooks).GetMethod("ActivePickup")
             );
-			Hook hook3 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] {
-				typeof(UnityEngine.Object),
-				typeof(Transform),
-				typeof(bool)
-			}), typeof(FakePrefabHooks).GetMethod("InstantiateOPI"));
+			Hook hook3 = new Hook(
+                typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Transform), typeof(bool) }),
+                typeof(FakePrefabHooks).GetMethod("InstantiateOPI")
+            );
 
 			Hook hook4 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] {
-				typeof(UnityEngine.Object),
-				typeof(Transform)
-			}), typeof(FakePrefabHooks).GetMethod("InstantiateOP"));
+				typeof(UnityEngine.Object), typeof(Transform) }),
+                typeof(FakePrefabHooks).GetMethod("InstantiateOP")
+            );
 
-			Hook hook5 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object) }), typeof(FakePrefabHooks).GetMethod("InstantiateO"));
-			Hook hook6 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion) }), typeof(FakePrefabHooks).GetMethod("InstantiateOPR"));
-			Hook hook7 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion), typeof(Transform) }), typeof(FakePrefabHooks).GetMethod("InstantiateOPRP"));
+			Hook hook5 = new Hook(
+                typeof(UnityEngine.Object).GetMethod("Instantiate", 
+                new Type[] { typeof(UnityEngine.Object) }),  typeof(FakePrefabHooks).GetMethod("InstantiateO")
+            );
+			Hook hook6 = new Hook(
+                typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion) }),
+                typeof(FakePrefabHooks).GetMethod("InstantiateOPR")
+            );
+			Hook hook7 = new Hook(
+                typeof(UnityEngine.Object).GetMethod("Instantiate",
+                new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion), typeof(Transform) }),
+                typeof(FakePrefabHooks).GetMethod("InstantiateOPRP")
+            );
 		}
 
 		public static void AcquirePassiveItemPrefabDirectly(Action<PlayerController, PassiveItem> orig, PlayerController self, PassiveItem item) {
@@ -59,23 +69,23 @@ namespace ExpandTheGungeon.ItemAPI {
 		}
 
 		public static UnityEngine.Object InstantiateOPI(Func<UnityEngine.Object, Transform, bool, UnityEngine.Object> orig, UnityEngine.Object original, Transform parent, bool instantiateInWorldSpace) {
-			return FakePrefab.Instantiate(original, orig(original, parent, instantiateInWorldSpace));
+			return FakePrefab.InstantiateFakePrefab(original, orig(original, parent, instantiateInWorldSpace));
 		}
 
 		public static UnityEngine.Object InstantiateOP(Func<UnityEngine.Object, Transform, UnityEngine.Object> orig, UnityEngine.Object original, Transform parent) {
-			return FakePrefab.Instantiate(original, orig(original, parent));
+			return FakePrefab.InstantiateFakePrefab(original, orig(original, parent));
 		}
 
 		public static UnityEngine.Object InstantiateO(Func<UnityEngine.Object, UnityEngine.Object> orig, UnityEngine.Object original) {
-			return FakePrefab.Instantiate(original, orig(original));
+			return FakePrefab.InstantiateFakePrefab(original, orig(original));
         }
 
 		public static UnityEngine.Object InstantiateOPR(Func<UnityEngine.Object, Vector3, Quaternion, UnityEngine.Object> orig, UnityEngine.Object original, Vector3 position, Quaternion rotation) {
-			return FakePrefab.Instantiate(original, orig(original, position, rotation));
+			return FakePrefab.InstantiateFakePrefab(original, orig(original, position, rotation));
 		}
 
 		public static UnityEngine.Object InstantiateOPRP(Func<UnityEngine.Object, Vector3, Quaternion, Transform, UnityEngine.Object> orig, UnityEngine.Object original, Vector3 position, Quaternion rotation, Transform parent) {
-			return FakePrefab.Instantiate(original, orig(original, position, rotation, parent));
+			return FakePrefab.InstantiateFakePrefab(original, orig(original, position, rotation, parent));
 		}
 	}
 }

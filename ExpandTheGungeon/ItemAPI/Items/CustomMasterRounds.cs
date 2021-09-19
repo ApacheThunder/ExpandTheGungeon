@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 
 
@@ -10,7 +10,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
     public class CustomMasterRounds : MonoBehaviour {
 
-        public static int CanyonMasterRoundID = -1;
+        public static int GtlichFloorMasterRoundID = -1;
 
         public static GameObject CanyonMasterRound;
 
@@ -61,7 +61,7 @@ namespace ExpandTheGungeon.ItemAPI {
             CanyonMasterRoundItem.GivesCurrency = false;
             CanyonMasterRoundItem.CurrencyToGive = 0;
             CanyonMasterRoundItem.IsMasteryToken = true;
-            CanyonMasterRoundID = CanyonMasterRoundItem.PickupObjectId;
+            GtlichFloorMasterRoundID = CanyonMasterRoundItem.PickupObjectId;
 
             ExpandShaders.Instance.ApplyGlitchShader(CanyonMasterRoundItem.sprite);
             CanyonMasterRoundItem.sprite.usesOverrideMaterial = true;

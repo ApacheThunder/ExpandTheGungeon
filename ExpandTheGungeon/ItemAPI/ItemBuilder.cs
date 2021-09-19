@@ -23,7 +23,6 @@ namespace ExpandTheGungeon.ItemAPI {
         
         public static void Init() {
 			FakePrefabHooks.Init();
-			// CompanionBuilder.Init();
 			try {
 				MethodBase method = new StackFrame(1, false).GetMethod();
 				Type declaringType = method.DeclaringType;

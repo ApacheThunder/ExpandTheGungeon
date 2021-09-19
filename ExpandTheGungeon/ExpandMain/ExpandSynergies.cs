@@ -48,7 +48,7 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "Master Chambers",
-                    MandatoryItemIDs = new List<int>() { 647, CustomMasterRounds.CanyonMasterRoundID }, // Synergy Notification for Chamber Gun and custom master round for Base_Canyon
+                    MandatoryItemIDs = new List<int>() { 647, CustomMasterRounds.GtlichFloorMasterRoundID }, // Synergy Notification for Chamber Gun and custom master round for Base_Canyon
                     IgnoreLichEyeBullets = true,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,

@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 1779918689
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: expandsharedauto
+      Dependencies: {}

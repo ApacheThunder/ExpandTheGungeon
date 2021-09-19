@@ -82,7 +82,6 @@
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
       <HintPath>..\Dependencies\UnityEngine.JSONSerializeModule.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>..\Dependencies\UnityEngine.ParticleSystemModule.dll</HintPath>
@@ -151,15 +150,15 @@
     <Compile Include="ExpandMain\ExpandFloorDecorator.cs" />
     <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ExpandMain\ExpandSynergies.cs" />
-    <Compile Include="ExpandObjects\ExpandAlarmMushroomPlacable.cs" />
-    <Compile Include="ExpandObjects\ExpandBootlegRoomPlaceable.cs" />
-    <Compile Include="ExpandObjects\ExpandCustomEnemyDatabase.cs" />
-    <Compile Include="ExpandObjects\ExpandCustomDungeonPrefabs.cs" />
-    <Compile Include="ExpandObjects\ExpandDungeonCollections.cs" />
-    <Compile Include="ExpandObjects\ExpandGungeoneerMimicBossPlacable.cs" />
-    <Compile Include="ExpandObjects\ExpandSawBladeTrapPlaceable.cs" />
-    <Compile Include="ExpandObjects\ExpandSecretDoorPlacable.cs" />
-    <Compile Include="ExpandObjects\ExpandWesternBrosPrefabBuilder.cs" />
+    <Compile Include="ExpandPrefab\ExpandAlarmMushroomPlacable.cs" />
+    <Compile Include="ExpandPrefab\ExpandBootlegRoomPlaceable.cs" />
+    <Compile Include="ExpandPrefab\ExpandCustomEnemyDatabase.cs" />
+    <Compile Include="ExpandPrefab\ExpandCustomDungeonPrefabs.cs" />
+    <Compile Include="ExpandPrefab\ExpandDungeonCollections.cs" />
+    <Compile Include="ExpandPrefab\ExpandGungeoneerMimicBossPlacable.cs" />
+    <Compile Include="ExpandPrefab\ExpandSawBladeTrapPlaceable.cs" />
+    <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
+    <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
@@ -170,7 +169,7 @@
     <Compile Include="ItemAPI\Items\CustomMasterRounds.cs" />
     <Compile Include="ExpandMain\ExpandPayDayDrillItemFixes.cs" />
     <Compile Include="ItemAPI\Items\ExpandRedScarf.cs" />
-    <Compile Include="ExpandObjects\ExpandCorruptedRoomAmbiencePlacable.cs" />
+    <Compile Include="ExpandPrefab\ExpandCorruptedRoomAmbiencePlacable.cs" />
     <Compile Include="ExpandComponents\ExpandElevatorDepartureManager.cs" />
     <Compile Include="ExpandComponents\ExpandForgeHammerComponent.cs" />
     <Compile Include="ExpandComponents\ExpandThwompManager.cs" />
@@ -178,7 +177,6 @@
     <Compile Include="ExpandComponents\ExpandTripleTroubleChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandZoneControlChallengeComponent.cs" />
     <Compile Include="ExpandMain\ExpandPlaceCorruptTiles.cs" />
-    <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="ItemAPI\FakePrefab.cs" />
     <Compile Include="ItemAPI\FakePrefabHooks.cs" />
     <Compile Include="ItemAPI\ItemBuilder.cs" />
@@ -200,20 +198,20 @@
     <Compile Include="ExpandObjectMods.cs" />
     <Compile Include="ExpandDungeonFlows\ExpandDungeonFlows.cs" />
     <Compile Include="ExpandMain\ExpandEnemyReplacements.cs" />
-    <Compile Include="ExpandObjects\ExpandPrefabs.cs" />
+    <Compile Include="ExpandPrefab\ExpandPrefabs.cs" />
     <Compile Include="ExpandUtilities\ExpandShaders.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnGlitchedEnemyOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnGlitchedObjectOnDeath.cs" />
     <Compile Include="ExpandMain\ExpandStringTableManager.cs" />
     <Compile Include="ExpandComponents\ExpandWeatherController.cs" />
     <Compile Include="ExpandComponents\ExpandExplodeOnDeath.cs" />
-    <Compile Include="ExpandObjects\ExpandGlitchedEnemies.cs" />
+    <Compile Include="ExpandPrefab\ExpandGlitchedEnemies.cs" />
     <Compile Include="ExpandMain\ExpandPlaceGlitchedEnemies.cs" />
     <Compile Include="ExpandStats.cs" />
-    <Compile Include="ExpandObjects\ExpandLists.cs" />
+    <Compile Include="ExpandPrefab\ExpandLists.cs" />
     <Compile Include="DungeonFlowModule.cs" />
     <Compile Include="ExpandTheGungeon.cs" />
-    <Compile Include="ExpandObjects\ExpandObjectDatabase.cs" />
+    <Compile Include="ExpandPrefab\ExpandObjectDatabase.cs" />
     <Compile Include="ExpandComponents\ExpandKickableObject.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\BossrushFlows.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\complex_flow_test.cs" />
@@ -232,7 +230,7 @@
     <Compile Include="ExpandUtilities\ExpandUtility.cs" />
     <Compile Include="ExpandMain\ExpandPlaceWallMimics.cs" />
     <Compile Include="ExpandUtilities\RoomBuilder.cs" />
-    <Compile Include="ExpandObjects\ExpandRoomPrefabs.cs" />
+    <Compile Include="ExpandPrefab\ExpandRoomPrefabs.cs" />
     <Compile Include="ExpandAssets.cs" />
   </ItemGroup>
   <ItemGroup />

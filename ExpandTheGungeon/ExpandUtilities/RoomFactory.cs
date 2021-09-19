@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using Dungeonator;
 using FloorType = Dungeonator.CellVisualData.CellFloorType;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 
 
 namespace ExpandTheGungeon.ExpandUtilities {
@@ -182,7 +182,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 string text = data.Substring(i, dataHeader.Length);
                 if (text.Equals(dataHeader)) { return JsonUtility.FromJson<RoomData>(data.Substring(i + dataHeader.Length)); }
             }
-            Tools.Log("No room data found at " + data);
+            ETGModConsole.Log("No room data found at " + data, true);
             return default(RoomData);
         }
 

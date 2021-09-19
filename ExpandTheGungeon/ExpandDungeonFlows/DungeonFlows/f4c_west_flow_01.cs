@@ -1,4 +1,4 @@
-﻿using ExpandTheGungeon.ExpandObjects;
+﻿using ExpandTheGungeon.ExpandPrefab;
 using Dungeonator;
 using System.Collections.Generic;
 using UnityEngine;

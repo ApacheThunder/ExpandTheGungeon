@@ -14,7 +14,7 @@ namespace ExpandTheGungeon {
         public enum AssetSource { BraveResources, SharedAuto1, SharedAuto2, EnemiesBase, FlowBase }
 
         public static T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
-            return ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<T>(assetPath);
+            return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<T>(assetPath);
         }
 
         public static T LoadOfficialAsset<T>(string assetPath, AssetSource assetType) where T : UnityEngine.Object {
@@ -83,118 +83,24 @@ namespace ExpandTheGungeon {
             if (m_CachedBundle) { return m_CachedBundle; } else { return null; }
         }
         
-        public static void InitAudio(string zippath, string filepath) {
-            int FilesLoaded = 0;
-            if (File.Exists(zippath)) {
-                Debug.Log("Zip Found");
-                using (ZipFile ModZIP = ZipFile.Read(zippath)) {
-                    if (ModZIP != null && ModZIP.Entries.Count > 0) {
-                        foreach (ZipEntry entry in ModZIP.Entries) {
-                            if (entry.FileName.EndsWith(".bnk")) {
-                                using (MemoryStream ms = new MemoryStream()) {
-                                    entry.Extract(ms);
-                                    ms.Seek(0, SeekOrigin.Begin);
-                                    LoadSoundbankFromStream(ms, entry.FileName.ToLower().Replace(".bnk", string.Empty));
-                                    FilesLoaded++;
-                                }
-                            }
-                        }
-                        if (FilesLoaded > 0) { return; }
+        public static void InitAudio (AssetBundle expandSharedAssets1, string assetPath) {
+            TextAsset SoundBankBinary = expandSharedAssets1.LoadAsset<TextAsset>(assetPath);
+            if (SoundBankBinary) {
+                byte[] array = SoundBankBinary.bytes;
+			    IntPtr intPtr = Marshal.AllocHGlobal(array.Length);
+			    try {
+			    	Marshal.Copy(array, 0, intPtr, array.Length);
+			    	uint num;
+			    	AKRESULT akresult = AkSoundEngine.LoadAndDecodeBankFromMemory(intPtr, (uint)array.Length, false, SoundBankBinary.name, false, out num);
+                    if (ExpandStats.debugMode) {
+                        Console.WriteLine(string.Format("Result of soundbank load: {0}.", akresult));
                     }
+			    } finally {
+                    Marshal.FreeHGlobal(intPtr);
                 }
             }
-            // Zip file wasn't found. Try to load from Mod folder instead.
-            AutoloadFromPath(filepath, "ExpandTheGungeon");
         }
-
-        public static void AutoloadFromModPath(string path, string prefix) {
-			if (string.IsNullOrEmpty(path)) { throw new ArgumentNullException("path", "Path cannot be null."); }			
-			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentNullException("prefix", "Prefix name cannot be null."); }
-			prefix = prefix.Trim();
-			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentException("Prefix name cannot be an empty (or whitespace only) string.", "prefix"); }
-			path = path.Replace('/', Path.DirectorySeparatorChar);
-			path = path.Replace('\\', Path.DirectorySeparatorChar);
-			if (!Directory.Exists(path)) {
-                if (ExpandStats.debugMode) {
-                    Console.WriteLine(string.Format("{0}: No autoload directory in path, not autoloading anything. Path='{1}'.", typeof(ExpandAssets), path));
-                }
-			} else {
-				List<string> list = new List<string>(Directory.GetFiles(path, "*.bnk", SearchOption.AllDirectories));
-				for (int i = 0; i < list.Count; i++) {
-					string text = list[i];
-					string text2 = text;
-					text2 = text2.Replace('/', Path.DirectorySeparatorChar);
-					text2 = text2.Replace('\\', Path.DirectorySeparatorChar);
-					text2 = text2.Substring(text2.IndexOf(path) + path.Length);
-					text2 = text2.Substring(0, text2.Length - ".bnk".Length);
-					bool flag5 = text2.IndexOf(Path.DirectorySeparatorChar) == 0;
-					if (flag5) { text2 = text2.Substring(1); }
-					text2 = prefix + ":" + text2;
-                    if (ExpandStats.debugMode) {
-                        Console.WriteLine(string.Format("{0}: Soundbank found, attempting to autoload: name='{1}' file='{2}'", typeof(ExpandAssets), text2, text));
-                    }
-					using (FileStream fileStream = File.OpenRead(text)) { LoadSoundbankFromStream(fileStream, text2); }
-				}
-			}
-		}
-        
-		public static void AutoloadFromPath(string path, string prefix) {
-			if (string.IsNullOrEmpty(path)) { throw new ArgumentNullException("path", "Path cannot be null."); }			
-			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentNullException("prefix", "Prefix name cannot be null."); }
-			prefix = prefix.Trim();
-			if (string.IsNullOrEmpty(prefix)) { throw new ArgumentException("Prefix name cannot be an empty (or whitespace only) string.", "prefix"); }
-			path = path.Replace('/', Path.DirectorySeparatorChar);
-			path = path.Replace('\\', Path.DirectorySeparatorChar);
-			if (!Directory.Exists(path)) {
-                if (ExpandStats.debugMode) {
-                    Console.WriteLine(string.Format("{0}: No autoload directory in path, not autoloading anything. Path='{1}'.", typeof(ExpandAssets), path));
-                }
-			} else {
-				List<string> list = new List<string>(Directory.GetFiles(path, "*.bnk", SearchOption.AllDirectories));
-				for (int i = 0; i < list.Count; i++) {
-					string text = list[i];
-					string text2 = text;
-					text2 = text2.Replace('/', Path.DirectorySeparatorChar);
-					text2 = text2.Replace('\\', Path.DirectorySeparatorChar);
-					text2 = text2.Substring(text2.IndexOf(path) + path.Length);
-					text2 = text2.Substring(0, text2.Length - ".bnk".Length);
-					bool flag5 = text2.IndexOf(Path.DirectorySeparatorChar) == 0;
-					if (flag5) { text2 = text2.Substring(1); }
-					text2 = prefix + ":" + text2;
-                    if (ExpandStats.debugMode) {
-                        Console.WriteLine(string.Format("{0}: Soundbank found, attempting to autoload: name='{1}' file='{2}'", typeof(ExpandAssets), text2, text));
-                    }
-					using (FileStream fileStream = File.OpenRead(text)) { LoadSoundbankFromStream(fileStream, text2); }
-				}
-			}
-		}
-        
-		private static void LoadSoundbankFromStream(Stream stream, string name) {
-			byte[] array = StreamToByteArray(stream);
-			IntPtr intPtr = Marshal.AllocHGlobal(array.Length);
-			try {
-				Marshal.Copy(array, 0, intPtr, array.Length);
-				uint num;
-				AKRESULT akresult = AkSoundEngine.LoadAndDecodeBankFromMemory(intPtr, (uint)array.Length, false, name, false, out num);
-                if (ExpandStats.debugMode) {
-                    Console.WriteLine(string.Format("Result of soundbank load: {0}.", akresult));
-                }
-			} finally {
-                Marshal.FreeHGlobal(intPtr);
-            }
-		}
-
-        public static byte[] StreamToByteArray(Stream input) {
-			byte[] array = new byte[16384];
-			byte[] result;
-			using (MemoryStream memoryStream = new MemoryStream()) {
-				int count;
-				while ((count = input.Read(array, 0, array.Length)) > 0) { memoryStream.Write(array, 0, count); }
-				result = memoryStream.ToArray();
-			}
-			return result;
-		}
-
+                
         public static void DumpTexture2DToFile(Texture2D target, bool useRandomFilenames = false) {
             if (target == null) { return; }
             string text = "DUMPsprites/" + "DUMP" + target.name;
@@ -312,14 +218,14 @@ namespace ExpandTheGungeon {
         public static List<string> BuildStringListFromAssetBundle(string assetPath) {
             if(string.IsNullOrEmpty(assetPath)) { return new List<string>(); }
 
-            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath);
+            TextAsset m_Asset = LoadAsset<TextAsset>(assetPath);
 
             if (!m_Asset) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: TextAsset: " + assetPath +" was not found!");
                 return new List<string>(0);
             }
 
-            string text = BytesToString(ExpandAssets.LoadAsset<TextAsset>(assetPath).bytes);
+            string text = BytesToString(LoadAsset<TextAsset>(assetPath).bytes);
             
             if (string.IsNullOrEmpty(text)) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: TextAsset: " + m_Asset.name + " contains no strings!");

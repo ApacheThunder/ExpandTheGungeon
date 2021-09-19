@@ -77,9 +77,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void Start() {
             switch (shaderType) {
                 case ShaderType.VHS:
-                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
-                    VHSClip = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<VideoClip>("VHSAnimation");
+                    VHSClip = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<VideoClip>("VHSAnimation");
                     m_colorBleedToggle = 1;
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
@@ -89,9 +89,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                     TexturePlayer.clip = VHSClip;
                     break;
                 case ShaderType.VHSOldFilm:
-                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
-                    OldFilmClip = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<VideoClip>("OldFilm");
+                    OldFilmClip = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<VideoClip>("OldFilm");
                     m_colorBleedToggle = 0;
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
@@ -102,15 +102,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                     Pixelator.Instance.SetSaturationColorPower(Color.white, 1);
                     break;
                 case ShaderType.VHSBasic:
-                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
-                    VHSClip_Empty = ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>("EmptyVHSTexture");
+                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    VHSClip_Empty = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Texture2D>("EmptyVHSTexture");
                     ScreenMaterial.SetTexture("_VHSTex", VHSClip_Empty);
                     if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
                     m_colorBleedToggle = 0;
                     break;
                 case ShaderType.Glitch:
-                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Shader>("ExpandGlitchScreen"));
-                    ScreenMaterial.SetTexture("_GlitchMap", ResourceManager.LoadAssetBundle("ExpandSharedAuto").LoadAsset<Texture2D>(GlitchMapTexture));
+                    ScreenMaterial = new Material(ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchScreen"));
+                    ScreenMaterial.SetTexture("_GlitchMap", ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Texture2D>(GlitchMapTexture));
                     GlitchRandom = Random.Range(-1.0f, 1.0f);
                     ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(GlitchAmount, 0f, 1f));
                     ScreenMaterial.SetFloat("_GlitchRandom", GlitchRandom);

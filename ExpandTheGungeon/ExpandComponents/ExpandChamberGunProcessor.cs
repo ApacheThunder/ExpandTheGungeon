@@ -90,18 +90,18 @@ namespace ExpandTheGungeon.ExpandComponents {
             PlayerController playerController = m_gun.CurrentOwner as PlayerController;
             if (playerController) {
                 // Getting this master round will unlock all forms.
-                if (playerController.HasPassiveItem(CustomMasterRounds.CanyonMasterRoundID)) { return true; }
+                if (playerController.HasPassiveItem(CustomMasterRounds.GtlichFloorMasterRoundID)) { return true; }
                 switch (t) {
                     case GlobalDungeonData.ValidTilesets.CASTLEGEON:
-                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Castle)) { return true; } else { return false; }
+                        return playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Castle);
                     case GlobalDungeonData.ValidTilesets.GUNGEON:
-                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Gungeon)) { return true; } else { return false; }
+                        return playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Gungeon);
                     case GlobalDungeonData.ValidTilesets.MINEGEON:
-                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Mines)) { return true; } else { return false; }
+                        return playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Mines);
                     case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
-                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Catacombs)) { return true; } else { return false; }
+                        return playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Catacombs);
                     case GlobalDungeonData.ValidTilesets.FORGEGEON:
-                        if (playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Forge)) { return true; } else { return false; }
+                        return playerController.HasPassiveItem(GlobalItemIds.MasteryToken_Forge);
                     default:
                         return false;
                 }

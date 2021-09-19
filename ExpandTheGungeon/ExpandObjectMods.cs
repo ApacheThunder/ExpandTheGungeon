@@ -4,7 +4,7 @@ using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using ExpandTheGungeon.ExpandComponents;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 
@@ -107,7 +107,7 @@ namespace ExpandTheGungeon {
                 }
 
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
-                    dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.CanyonMasterRoundID;
+                    dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
 
                     if (ExpandStats.EnableGlitchFloorScreenShader) {
                         GameObject EXGlitchFloorScreenFX = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);

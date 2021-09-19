@@ -5,7 +5,7 @@ using Dungeonator;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Collections.Generic;
 using System.Collections;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandMain;
 using System.Collections.ObjectModel;
 using tk2dRuntime.TileMap;

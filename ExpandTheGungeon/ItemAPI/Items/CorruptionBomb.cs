@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandComponents;
 
@@ -353,7 +353,8 @@ namespace ExpandTheGungeon.ItemAPI {
                             if (StaticReferenceManager.AllChests[i] != null && unitCenter.GetAbsoluteRoom() != null && unitCenter.GetAbsoluteRoom() == m_targetRoom) {
                                 if (!modified && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
                                     modified = true;
-                                    if (StaticReferenceManager.AllChests[i].IsLocked && !StaticReferenceManager.AllChests[i].IsRainbowChest && !StaticReferenceManager.AllChests[i].gameObject.name.ToLower().StartsWith("chest_rat")) {
+                                    if (!StaticReferenceManager.AllChests[i].pickedUp && StaticReferenceManager.AllChests[i].IsLocked && !StaticReferenceManager.AllChests[i].IsRainbowChest && StaticReferenceManager.AllChests[i].ChestIdentifier != Chest.SpecialChestIdentifier.RAT)
+                                    {
                                         LootEngine.DoDefaultItemPoof(unitCenter, false, true);
                                         AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", StaticReferenceManager.AllChests[i].gameObject);
                                         StaticReferenceManager.AllChests[i].ForceUnlock();

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using Dungeonator;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using System.IO;
 using System.Collections.Generic;
@@ -149,6 +149,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     majorBreakable.OnBreak = (Action)Delegate.Remove(majorBreakable.OnBreak, new Action(OnBroken));
                     majorBreakable.SpawnItemOnBreak = false;
                 }
+                if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) { StartCoroutine(SpwanEnemyAirDrop()); }
                 StartCoroutine(DoRickRoll());
             }
         }
@@ -218,17 +219,12 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator DoRickRoll() {
             yield return new WaitForSeconds(0.1f);
-            if (!m_room.IsSealed) {
-                m_room.npcSealState = RoomHandler.NPCSealState.SealAll;
-                m_room.SealRoom();
-            }
             GameObject m_RickRollInstance = Instantiate(RickRollAnimationObject, (transform.position + new Vector3(0.1f, 0.5f, 0)), Quaternion.identity);
             Vector3 RickScale = new Vector2(0.2f, 0.2f).ToVector3ZUp(1f);
             m_RickRollInstance.layer = LayerMask.NameToLayer("Unpixelated");
             m_RickRollInstance.transform.localScale = RickScale;
             if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = true; }
             if (sprite) { sprite.HeightOffGround = -2f; sprite.UpdateZDepth(); }
-            if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) { GameManager.Instance.StartCoroutine(SpwanEnemyAirDrop()); }
             tk2dSpriteAnimator m_RickRollAnimator = m_RickRollInstance.GetComponent<tk2dSpriteAnimator>();
             m_RickRollAnimator.Play("RickRollAnimation_Rise");
             while (m_RickRollAnimator.IsPlaying("RickRollAnimation_Rise")) { yield return null; }
@@ -317,7 +313,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
 
-        private IEnumerator SpwanEnemyAirDrop(float delay = 0.4f) {
+        private IEnumerator SpwanEnemyAirDrop(float delay = 0.05f) {
             Vector3 RoomOffset = m_room.area.basePosition.ToVector3();
             string EnemyGUID1 = "88b6b6a93d4b4234a67844ef4728382c"; // bandana_bullet_kin
             string EnemyGUID2 = "4d37ce3d666b4ddda8039929225b7ede"; // grenade_kin
@@ -328,13 +324,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (UnityEngine.Random.value <= 0.1f) { EnemyGUID2 = ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID; }
             if (UnityEngine.Random.value <= 0.5f) { EnemyGUID3 = ExpandCustomEnemyDatabase.BootlegBulletManGUID; }
             if (UnityEngine.Random.value <= 0.5f) { EnemyGUID4 = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID; }
-
-            yield return new WaitForSeconds(delay);
             
             ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 3, 0)), null, EnemyGUID1);
             ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 9, 0)), null, EnemyGUID2);
             ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 3, 0)), null, EnemyGUID3);
             ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 9, 0)), null, EnemyGUID4);
+
+            yield return new WaitForSeconds(delay);
+
+            if (!m_room.IsSealed) { m_room.SealRoom(); }
+
             yield break;
         }
 

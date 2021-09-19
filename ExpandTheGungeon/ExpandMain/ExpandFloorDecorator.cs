@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Dungeonator;
-using ExpandTheGungeon.ExpandObjects;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -11,7 +11,7 @@ namespace ExpandTheGungeon.ExpandMain {
         private static int RandomObjectsPlaced = 0;
         private static int RandomObjectsSkipped = 0;
 
-        private static readonly bool DebugMode = true;
+        private static readonly bool DebugMode = false;
 
         public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
             
@@ -24,7 +24,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (!ignoreTilesetType && !ValidTilesets.Contains(dungeon.tileIndices.tilesetId)) { return; }
             
             if ((dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) && roomListOverride == null) { return; }
-
+            
             List<RoomHandler> DungeonRooms = dungeon.data.rooms;
 
             if (roomListOverride != null) { DungeonRooms = roomListOverride; }
@@ -57,6 +57,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, DebugMode);
                 if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", DebugMode); }
             }
+            
             RandomObjectsPlaced = 0;
             RandomObjectsSkipped = 0;
             return;
@@ -196,9 +197,9 @@ namespace ExpandTheGungeon.ExpandMain {
                     
                     for (int i = 0; i < MushroomCount; i++) {
                         if (DebugMode) { Debug.Log("[ExpandTheGungeon] Test Mushroom Iteration: " + i.ToString()); }
-                        if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { ETGModConsole.Log("[ExpandTheGungeon] On Room: " + currentRoom.GetRoomName()); }
+                        if (DebugMode) { if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { ETGModConsole.Log("[ExpandTheGungeon] On Room: " + currentRoom.GetRoomName()); } }
 
-                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 1, 2, avoidExits: true, PositionRelativeToRoom: true);
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 1, 4, avoidExits: true, PositionRelativeToRoom: true);
 
                         if (RandomVector.HasValue) {
                             if (DebugMode) { ETGModConsole.Log("[ExpandTheGungeon] Valid Location found. Placing Mushroom..."); }
@@ -207,15 +208,6 @@ namespace ExpandTheGungeon.ExpandMain {
                                 alarmMushroomObject.transform.parent = currentRoom.hierarchyParent;
                                 ExpandAlarmMushroomPlacable m_AlarmMushRoomPlacable = ExpandPrefabs.EXAlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>();
                                 m_AlarmMushRoomPlacable.ConfigureOnPlacement(currentRoom);
-                                /*for (int posX = (0 + currentRoom.area.basePosition.x); posX < (1 + currentRoom.area.basePosition.x); posX++) {
-                                    for (int posY = (0 + currentRoom.area.basePosition.y); posY < (1 + currentRoom.area.basePosition.y); posY++) {
-                                        if (dungeon.data.CheckInBoundsAndValid(new IntVector2(posX, posY))) {
-                                            dungeon.data[new IntVector2(posX, posY)].cellVisualData.floorTileOverridden = true;
-                                        }
-                                    }
-                                }*/
-                                // ExpandClearanceManager clearancChecker = alarmMushroomObject.AddComponent<ExpandClearanceManager>();
-                                // clearancChecker.Configured = true;
                             } catch (System.Exception ex) {
                                 if (DebugMode) {
                                     ETGModConsole.Log("[ExpandTheGungeon] Exception While placing/configuring mushroom!", DebugMode);
