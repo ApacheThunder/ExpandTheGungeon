@@ -6,11 +6,17 @@ namespace ExpandTheGungeon.ItemAPI
 {
     public class WestBrosRevolverGenerator
     {
+        public static int WestBrosAngelGunID = -1;
+        public static int WestBrosNomeGunID = -1;
+        public static int WestBrosTucGunID = -1;
+
         public static void Init()
         {
             Generate(WestBros.Angel);
             Generate(WestBros.Nome);
             Generate(WestBros.Tuc);
+
+            BlackAndGoldenRevolver.AddBothVariants();
         }
 
         public static void Generate(WestBros whichBro)
@@ -74,7 +80,7 @@ namespace ExpandTheGungeon.ItemAPI
             gun.DefaultModule.cooldownTime = 0.07f;
             gun.DefaultModule.numberOfShotsInClip = 6;
             gun.DefaultModule.angleVariance = 4;
-            gun.DefaultModule.ammoCost = 1;
+            gun.DefaultModule.ammoCost = 0;
 
             gun.reloadTime = 1f;
             gun.gunClass = GunClass.PISTOL;
@@ -89,23 +95,45 @@ namespace ExpandTheGungeon.ItemAPI
 
             gun.DefaultModule.projectiles[0] = projectile;
 
+            projectile.baseData.damage = 6f;
             projectile.transform.parent = gun.barrelOffset;
+
+            var comp = projectile.gameObject.AddComponent<SkullRevolverBullet>();
+            comp.jamsEnemies = false;
 
             ETGMod.Databases.Items.Add(gun, null, "ANY");
 
             switch (whichBro)
             {
                 case WestBros.Angel:
-                    ExpandWesternBrosPrefabBuilder.WestBrosAngelGunID = gun.PickupObjectId;
+                    WestBrosAngelGunID = gun.PickupObjectId;
                     break;
 
                 case WestBros.Nome:
-                    ExpandWesternBrosPrefabBuilder.WestBrosNomeGunID = gun.PickupObjectId;
+                    WestBrosNomeGunID = gun.PickupObjectId;
                     break;
 
                 case WestBros.Tuc:
-                    ExpandWesternBrosPrefabBuilder.WestBrosTucGunID = gun.PickupObjectId;
+                    WestBrosTucGunID = gun.PickupObjectId;
                     break;
+            }
+        }
+
+        public static int GetWestBrosRevolverID(WestBros whichBro)
+        {
+            switch (whichBro)
+            {
+                case WestBros.Angel:
+                    return WestBrosAngelGunID;
+
+                case WestBros.Nome:
+                    return WestBrosNomeGunID;
+
+                case WestBros.Tuc:
+                    return WestBrosTucGunID;
+
+                default:
+                    throw new System.Exception("Invalid enum value");
             }
         }
     }

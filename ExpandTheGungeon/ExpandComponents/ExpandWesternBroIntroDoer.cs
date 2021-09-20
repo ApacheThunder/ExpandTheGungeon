@@ -14,7 +14,7 @@ namespace ExpandTheGungeon.ExpandComponents
         private bool initialized;
 
         private bool finished;
-        
+
         private GameObject m_ScreenFXObject;
 
         private AIAnimator thisWesternBro;
@@ -64,7 +64,7 @@ namespace ExpandTheGungeon.ExpandComponents
                 this.thisWesternBro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
                 this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
                 this.thisWesternBro.FacingDirection = facingDirection;
-                
+
                 foreach (var bro in otherWesternBros)
                 {
                     bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
@@ -74,7 +74,6 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 this.initialized = true;
             }
-
         }
 
         private void AnimationEventTriggered(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip, int frame)
@@ -91,7 +90,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators)
         {
-            if (gameObject.GetComponent<AIActor>() && !m_ScreenFXObject) 
+            if (gameObject.GetComponent<AIActor>() && !m_ScreenFXObject)
             {
                 RoomHandler parentRoom = this.gameObject.GetComponent<AIActor>().GetAbsoluteParentRoom();
                 m_ScreenFXObject = Instantiate(ExpandPrefabs.EXWestFloorBossIntroScreenFX, parentRoom.area.UnitCenter, Quaternion.identity);
@@ -104,7 +103,7 @@ namespace ExpandTheGungeon.ExpandComponents
                 {
                     animators.Add(bro.spriteAnimator);
                 }
-                
+
                 this.thisWesternBro.aiAnimator.enabled = false;
                 this.thisWesternBro.spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
 
@@ -173,7 +172,7 @@ namespace ExpandTheGungeon.ExpandComponents
             {
                 bro.aiShooter.ToggleGunAndHandRenderers(false, rendererReason);
             }
-            
+
             while (this.thisWesternBro.spriteAnimator.IsPlaying("intro"))
             {
                 yield return null;
@@ -190,7 +189,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
             this.thisWesternBro.aiShooter.AimAtPoint(this.thisWesternBro.aiActor.CenterPosition + negativeGunOffset);
             this.thisWesternBro.FacingDirection = facingDirection;
-            
+
             float elapsed = 0f;
             float duration = 1f;
 
