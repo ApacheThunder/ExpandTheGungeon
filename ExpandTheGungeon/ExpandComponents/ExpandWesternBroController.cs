@@ -1,6 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace ExpandTheGungeon.ExpandComponents
         public float postSecondEnrageMoveSpeed;
 
         public float enrageHealToPercent;
-                
+
         public static List<ExpandWesternBroController> GetOtherWesternBros(AIActor me)
         {
             return GetOtherWesternBros(me.gameObject);
@@ -132,7 +131,7 @@ namespace ExpandTheGungeon.ExpandComponents
 
                 timer += BraveTime.DeltaTime;
 
-                if (!this.m_isEnraged && timer / this.enrageAnimTime >= 0.5f)
+                if (!this.m_isEnraged && timer / this.enrageAnimTime >= 0.25f)
                 {
                     if (this.overheadVfx)
                     {
