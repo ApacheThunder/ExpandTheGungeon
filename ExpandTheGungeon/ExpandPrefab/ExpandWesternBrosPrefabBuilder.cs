@@ -32,10 +32,6 @@ namespace ExpandTheGungeon.ExpandPrefab
         public static string WestBrosNomeGUID;
         public static string WestBrosTucGUID;
 
-        public static int WestBrosAngelGunID = -1;
-        public static int WestBrosNomeGunID = -1;
-        public static int WestBrosTucGunID = -1;
-
         // saving these as static references probably doesn't matter, but I'm not risking it to remove them and get crashes again
 
         public static PickupObject WestBrosGun;
@@ -439,25 +435,24 @@ namespace ExpandTheGungeon.ExpandPrefab
                 {
                     case WestBros.Angel:
                         shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
-                        shooter.equippedGunId = WestBrosAngelGunID;
                         WestBrosAngelGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosAngelHatPrefab.GetComponent<DebrisObject>();
                         break;
 
                     case WestBros.Nome:
                         shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.4f);
-                        shooter.equippedGunId = WestBrosNomeGunID;
                         WestBrosNomeGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosNomeHatPrefab.GetComponent<DebrisObject>();
                         break;
 
                     case WestBros.Tuc:
                         shooter.gunAttachPoint.position = new Vector3(-1.05f, 0.5f);
-                        shooter.equippedGunId = WestBrosTucGunID;
                         WestBrosTucGUID = actor.EnemyGuid;
                         hatPrefab = WestBrosTucHatPrefab.GetComponent<DebrisObject>();
                         break;
                 }
+
+                shooter.equippedGunId = WestBrosRevolverGenerator.GetWestBrosRevolverID(whichBro);
 
                 if (shooter.equippedGunId == -1)
                 {
