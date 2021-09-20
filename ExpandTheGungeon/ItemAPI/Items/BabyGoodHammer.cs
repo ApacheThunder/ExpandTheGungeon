@@ -27,6 +27,7 @@ namespace ExpandTheGungeon.ItemAPI {
 			ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(babyGoodHammer, ItemBuilder.CooldownType.Damage, 350f);
             babyGoodHammer.quality = ItemQuality.B;
+            if (!ExpandStats.EnableEXItems) { babyGoodHammer.quality = ItemQuality.EXCLUDED; }
 
             // Hammer Spawn FX Object
             hammerSpawnFX = expandSharedAssets1.LoadAsset<GameObject>("HammerSpawningFX");

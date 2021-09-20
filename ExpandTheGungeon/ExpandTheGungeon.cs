@@ -211,8 +211,7 @@ namespace ExpandTheGungeon {
 
         public override void Exit() {  }
 
-
-
+        
         private void ImportSettings() {
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
                 string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
@@ -298,6 +297,7 @@ namespace ExpandTheGungeon {
 
         private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
+            
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
             if ((m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) | ExpandStats.EnableTestDungeonFlow) {
@@ -321,7 +321,8 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("toggleheapchange", ExpandToggleHeapSetting);
+            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -518,15 +519,24 @@ namespace ExpandTheGungeon {
 
             ExpandExportSettings(consoleText);
         }
-        
+
+        private void ExpandToggleHeapSetting(string[] consoleText) {
+            if (!ExpandStats.UseExpandedHeap) {
+                ExpandStats.UseExpandedHeap = true;
+                ETGModConsole.Log("Memory heap for GC incrased. It is recommended you restart your game after changing this setting!");
+                ExpandExportSettings(consoleText);
+            } else {
+                ExpandStats.UseExpandedHeap = false;
+                ETGModConsole.Log("Memory heap changes as been allowed to use defaults. It is recommended you restart your game after changing this setting!");
+                ExpandExportSettings(consoleText);
+            }
+        }
+
         private void ExpandTestCommand(string[] consoleText) {
-            
-            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            // UnityEngine.Object.Instantiate(ExpandPrefabs.EX_ItemDropper, CurrentPlayer.transform.position, Quaternion.identity);
-
-            ExpandAssets.SaveStringToFile(JsonUtility.ToJson(ExpandCustomEnemyDatabase.BootlegBulletManPrefab.GetComponent<BehaviorSpeculator>().TargetBehaviors), FilePath, "EXBootlegBulletMand_TargetBehaviors.txt");
-            
+            ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
+            // BraveMemory.EnsureHeapSize(204800);
+            // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
             /*GameObject AlarmMushroom = UnityEngine.Object.Instantiate(ExpandPrefabs.EXAlarmMushroom, CurrentPlayer.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
             AlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
@@ -606,7 +616,7 @@ namespace ExpandTheGungeon {
             PrototypeDungeonRoom GuidePastRoom = dungeonFlowPrefab.AllNodes[0].overrideExactRoom;
             GameObject GuidePastRoomObject = GuidePastRoom.placedObjects[0].nonenemyBehaviour.gameObject;
             GameObject m_RainPrefab = GuidePastRoomObject.transform.Find("Rain").gameObject;
-            
+
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
             AssetBundle SharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
 

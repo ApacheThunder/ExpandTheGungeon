@@ -28,6 +28,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(theleadkey, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(theleadkey, ItemBuilder.CooldownType.Damage, 450f);
             theleadkey.quality = ItemQuality.B;
+            if (!ExpandStats.EnableEXItems) { theleadkey.quality = ItemQuality.EXCLUDED; }
 
             theleadkey.passiveStatModifiers = new StatModifier[] {
                 new StatModifier() {

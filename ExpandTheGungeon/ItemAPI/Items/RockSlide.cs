@@ -24,7 +24,8 @@ namespace ExpandTheGungeon.ItemAPI {
 			ItemBuilder.SetupItem(rockslide, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(rockslide, ItemBuilder.CooldownType.Damage, 275f);
             rockslide.quality = ItemQuality.B;
-            
+            if (!ExpandStats.EnableEXItems) { rockslide.quality = ItemQuality.EXCLUDED; }
+
             List<string> spritePaths = new List<string>() {
                 "plunger_fire_001",
                 "plunger_fire_002",

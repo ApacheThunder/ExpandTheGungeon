@@ -11,7 +11,9 @@ using ExpandTheGungeon.ExpandMain;
 namespace ExpandTheGungeon {
 
     public class ExpandObjectMods : MonoBehaviour {
-                
+
+        public static object[] HeapArray;
+
         public static void InitSpecialMods() {
             ExpandStats.randomSeed = Random.value;
 
@@ -155,6 +157,12 @@ namespace ExpandTheGungeon {
                     // Destroy(m_GlitchEnemyRandomizer);
                     MaybeSetupGlitchEnemyStun(dungeon);
                 }
+            }
+            if (ExpandStats.UseExpandedHeap) {
+                HeapArray = new object[204800];
+                for (int i = 0; i < 204800; i++) { HeapArray[i] = new byte[2048]; }
+                System.GC.KeepAlive(HeapArray);
+                System.GC.Collect();
             }
         }
 

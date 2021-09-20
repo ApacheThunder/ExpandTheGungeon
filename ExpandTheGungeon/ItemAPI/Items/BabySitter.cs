@@ -29,6 +29,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             ItemBuilder.SetupItem(babysitItem, shortDesc, longDesc, "ex");
             babysitItem.quality = ItemQuality.B;
+            if (!ExpandStats.EnableEXItems) { babysitItem.quality = ItemQuality.EXCLUDED; }
             babysitItem.CompanionGuid = "1d1e1070617842f09e6f45df3cb223f6";
             babysitItem.DeathStatModifier = new StatModifier() {
                 amount = 1.8f,

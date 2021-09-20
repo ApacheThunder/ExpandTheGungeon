@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ItemAPI {
             string longDesc = "A forbidden technique thought lost was recovered in the Gungeon.\n\nAll that was written was this: \n\n 'Do upon the flipper that which the flipper had done to you'";
             ItemBuilder.SetupItem(tableTechAssassin, shortDesc, longDesc, "ex");
             tableTechAssassin.quality = ItemQuality.D;
+            if (!ExpandStats.EnableEXItems) { tableTechAssassin.quality = ItemQuality.EXCLUDED; }
             TableTechAssasinID = tableTechAssassin.PickupObjectId;
         }
 

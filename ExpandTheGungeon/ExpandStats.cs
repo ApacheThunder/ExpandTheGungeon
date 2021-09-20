@@ -18,6 +18,8 @@ namespace ExpandTheGungeon {
         public static bool EnableLanguageFix = false;
         public static bool EnableExpandedGlitchFloors = true;
         public static bool EnableGlitchFloorScreenShader = true;
+        public static bool EnableEXItems = true;
+        public static bool UseExpandedHeap = false;
         public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         public static int GameLanguage = 0;
@@ -44,6 +46,8 @@ namespace ExpandTheGungeon {
             GameLanguage = stats.GameLanguage;
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
+            EnableEXItems = stats.EnableEXItems;
+            UseExpandedHeap = stats.UseExpandedHeap;
             JungleRainIntensity = stats.JungleRainIntensity;
         }
     }
@@ -62,6 +66,8 @@ namespace ExpandTheGungeon {
         public bool EnableLanguageFix;
         public bool EnableExpandedGlitchFloors;
         public bool EnableGlitchFloorScreenShader;
+        public bool EnableEXItems;
+        public bool UseExpandedHeap;
         public float JungleRainIntensity;
         public int GameLanguage;
         
@@ -79,6 +85,8 @@ namespace ExpandTheGungeon {
             EnableLanguageFix = ExpandStats.EnableLanguageFix;
             EnableExpandedGlitchFloors = ExpandStats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = ExpandStats.EnableGlitchFloorScreenShader;
+            EnableEXItems = ExpandStats.EnableEXItems;
+            UseExpandedHeap = ExpandStats.UseExpandedHeap;
             JungleRainIntensity = ExpandStats.JungleRainIntensity;
             GameLanguage = ExpandStats.GameLanguage;
         }

@@ -33,6 +33,7 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.ammo = 140;
             pistol.SetBaseMaxAmmo(140);
             pistol.quality = ItemQuality.D;
+            if (!ExpandStats.EnableEXItems) { pistol.quality = ItemQuality.EXCLUDED; }
             pistol.UsesCustomCost = true;
             pistol.CustomCost = 10;
             pistol.encounterTrackable.EncounterGuid = "baad9dd6d005458daf02933f6a1ba926";            
@@ -59,6 +60,7 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.ammo = 600;
             machinepistol.SetBaseMaxAmmo(600);
             machinepistol.quality = ItemQuality.D;
+            if (!ExpandStats.EnableEXItems) { machinepistol.quality = ItemQuality.EXCLUDED; }
             machinepistol.gunSwitchGroup = "Uzi";
             machinepistol.UsesCustomCost = true;
             machinepistol.CustomCost = 15;
@@ -87,6 +89,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.ammo = 150;
             shotgun.SetBaseMaxAmmo(150);
             shotgun.quality = ItemQuality.D;
+            if (!ExpandStats.EnableEXItems) { shotgun.quality = ItemQuality.EXCLUDED; }
             shotgun.gunSwitchGroup = "Shotgun";
             shotgun.UsesCustomCost = true;
             shotgun.CustomCost = 18;

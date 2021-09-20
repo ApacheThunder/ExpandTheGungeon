@@ -23,7 +23,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(powBlock, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(powBlock, ItemBuilder.CooldownType.Damage, 380f);
             powBlock.quality = ItemQuality.C;
-
+            if (!ExpandStats.EnableEXItems) { powBlock.quality = ItemQuality.EXCLUDED; }
 
 
             PowBlockPickupID = powBlock.PickupObjectId;

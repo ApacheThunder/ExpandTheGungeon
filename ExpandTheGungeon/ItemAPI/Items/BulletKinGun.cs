@@ -30,6 +30,7 @@ namespace ExpandTheGungeon.ItemAPI {
             bulletkinGun.ammo = 140;
             bulletkinGun.SetBaseMaxAmmo(140);
             bulletkinGun.quality = ItemQuality.C;
+            if (!ExpandStats.EnableEXItems) { bulletkinGun.quality = ItemQuality.EXCLUDED; }
             bulletkinGun.alternateSwitchGroup = (PickupObjectDatabase.GetById(150) as Gun).gunSwitchGroup;
             bulletkinGun.gunSwitchGroup = (PickupObjectDatabase.GetById(150) as Gun).gunSwitchGroup;
             bulletkinGun.encounterTrackable.EncounterGuid = "43a080b46fa448ef8d2be35f93ab6e64";

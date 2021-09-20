@@ -10,7 +10,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPaydayDrillItemFixes : ExpandSharedHooks {
+    public class ExpandPaydayDrillItemFixes {
                
         private IEnumerator HandleCombatWavesHook(Action<PaydayDrillItem, Dungeon, RoomHandler, Chest>orig, PaydayDrillItem self, Dungeon d, RoomHandler newRoom, Chest sourceChest) {
             DrillWaveDefinition[] wavesToUse = self.D_Quality_Waves;

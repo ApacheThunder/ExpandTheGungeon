@@ -18,6 +18,7 @@ namespace ExpandTheGungeon.ItemAPI {
             string longDesc = "Legends say a mad scientist tried to experiment on the gundead to create monsters to do his bidding.\n\nHe ultimiately parished by the hands of his own abominations. The item he crafted was thought to be lost to the Gungeon...Until some lucky (or unlucky?) Gungeoneers found it.";
             ItemBuilder.SetupItem(chronenbergBullets, shortDesc, longDesc, "ex");
             chronenbergBullets.quality = ItemQuality.B;
+            if (!ExpandStats.EnableEXItems) { chronenbergBullets.quality = ItemQuality.EXCLUDED; }
 
             chronenbergBullets.CustomCost = 50;
             chronenbergBullets.chanceOfActivating = 0.055f;

@@ -716,14 +716,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ISerializedObject m_TargetBehaviorSpeculatorSeralized = EXTrap_ApacheBehavior;
                 m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>() { EXTrap_Apache.transform.Find("shoot point").gameObject };
                 m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
-                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() {
-                    "[]",
-                    "[]",
-                    "[]",
-                    "[]",
-                    "[{\"ShootPoint\":0,\"BulletScript\":{\"scriptTypeName\":\"CircleBurst12\"},\"BulletName\":null,\"LeadAmount\":0.0,\"StopDuring\":\"None\",\"ImmobileDuringStop\":false,\"MoveSpeedModifier\":1.0,\"LockFacingDirection\":false,\"ContinueAimingDuringTell\":false,\"ReaimOnFire\":false,\"MultipleFireEvents\":false,\"RequiresTarget\":false,\"PreventTargetSwitching\":false,\"Uninterruptible\":false,\"ClearGoop\":false,\"ClearGoopRadius\":2.0,\"ShouldOverrideFireDirection\":false,\"OverrideFireDirection\":-1.0,\"SpecifyAiAnimator\":null,\"ChargeAnimation\":null,\"ChargeTime\":0.0,\"TellAnimation\":null,\"FireAnimation\":null,\"PostFireAnimation\":null,\"HideGun\":true,\"OverrideBaseAnims\":false,\"OverrideIdleAnim\":null,\"OverrideMoveAnim\":null,\"UseVfx\":false,\"ChargeVfx\":null,\"TellVfx\":null,\"FireVfx\":null,\"Vfx\":null,\"EnabledDuringAttack\":[],\"Cooldown\":4.0,\"CooldownVariance\":0.0,\"AttackCooldown\":0.0,\"GlobalCooldown\":0.0,\"InitialCooldown\":0.0,\"InitialCooldownVariance\":0.0,\"GroupName\":null,\"GroupCooldown\":0.0,\"MinRange\":0.0,\"Range\":0.0,\"MinWallDistance\":0.0,\"MaxEnemiesInRoom\":0.0,\"MinHealthThreshold\":0.0,\"MaxHealthThreshold\":1.0,\"HealthThresholds\":[],\"AccumulateHealthThresholds\":true,\"targetAreaStyle\":null,\"IsBlackPhantom\":false,\"resetCooldownOnDamage\":null,\"RequiresLineOfSight\":false,\"MaxUsages\":0,\"$type\":\"ShootBehavior\"}]"
-                };
-
+                m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>(0);
                 EXTrap_Apache.AddComponent<TrapEnemyConfigurator>();
             }
 
