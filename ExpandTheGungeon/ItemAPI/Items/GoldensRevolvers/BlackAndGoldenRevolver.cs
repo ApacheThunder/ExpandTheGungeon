@@ -18,7 +18,11 @@ namespace ExpandTheGungeon.ItemAPI
             Add(true);
             Add(false);
 
+            Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
+
             ProjectileHookClass.AddHook();
+
+            Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
 
             foreach (var item in EnemyDatabase.Instance.Entries)
             {
@@ -42,6 +46,7 @@ namespace ExpandTheGungeon.ItemAPI
                     }
                 }
             }
+            Debug.Log("[ExpandTheGungeon] Done setting up black and golden revolver");
         }
 
         private static void Add(bool isGoldenVersion)

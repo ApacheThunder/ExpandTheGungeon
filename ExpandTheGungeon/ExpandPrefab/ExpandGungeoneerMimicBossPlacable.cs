@@ -276,7 +276,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
             MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
             MimicMirrorObject.transform.parent = gameObject.transform;
-            ItemBuilder.AddSpriteToObject(MimicMirrorObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_Base"), false, false);
+            ItemBuilder.AddSpriteToObject(MimicMirrorObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_Base"));
 
             tk2dSprite MirrorBaseSprite = MimicMirrorObject.GetComponent<tk2dSprite>();
 
@@ -298,7 +298,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject MimicMirrorFXObject = new GameObject("MirrorShatterFX");
             MimicMirrorFXObject.transform.position = (MimicMirrorObject.transform.position - Vector3.one);
             MimicMirrorFXObject.transform.parent = gameObject.transform.parent;
-            ItemBuilder.AddSpriteToObject(MimicMirrorFXObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_ShatterDebris_01"), false, false);
+            ItemBuilder.AddSpriteToObject(MimicMirrorFXObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_ShatterDebris_01"));
             foreach (string SpriteName in m_MirrorShatterFXSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(SpriteName), MimicMirrorFXObject.GetComponent<tk2dSprite>().Collection); }
             ExpandUtility.GenerateSpriteAnimator(MimicMirrorFXObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
             ExpandUtility.AddAnimation(MimicMirrorFXObject.GetComponent<tk2dSpriteAnimator>(), MimicMirrorFXObject.GetComponent<tk2dSprite>().Collection, m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);

@@ -328,7 +328,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "babygoodhammer_move_right_02"
             };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_idle_down_01"), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_idle_down_01"));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -534,7 +534,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "bullat_die_004"
             };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleSpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleSpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -837,7 +837,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             List<string> DeathSpriteList = new List<string>() { "bulletman_corpse", "bulletman_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -1281,7 +1281,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             List<string> DeathSpriteList = new List<string>() { "bulletmanbandana_corpse", "bulletmanbandana_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -1664,7 +1664,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_red_corpse", "shotgunman_red_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -2023,7 +2023,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_blue_corpse", "shotgunman_blue_corpse" };
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -2326,7 +2326,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             List<string> DeathSpriteList = new List<string>() { "Cronenberg_Die_001", "Cronenberg_Die_002", "Cronenberg_Die_003" };
             
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -2390,10 +2390,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 CronenbergCorpseDebrisObject2 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_02");
                 CronenbergCorpseDebrisObject3 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_03");
                 CronenbergCorpseDebrisObject4 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_04");
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject1, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_01"), false, false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject2, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_02"), false, false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject3, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_03"), false, false);
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject4, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"), false, false);
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject1, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_01"));
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject2, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_02"));
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject3, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_03"));
+                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject4, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"));
 
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject1);
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject2);
@@ -2664,7 +2664,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             List<string> DeathSpriteList = new List<string>() { "berg_tall_burst_001", "berg_tall_burst_002", "berg_tall_burst_003" };
             
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 
@@ -2727,7 +2727,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 m_BloodGoopDoer.DispersalMaxCoherency = 1;
 
                 AggressiveCronenbergCorpseDebrisObject = expandSharedAssets1.LoadAsset<GameObject>("AngryCronenbergCorpseFragment");
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"), false, false);
+                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"));
 
                 ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject);
                 ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
@@ -2960,7 +2960,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "EX_ExplodyBarrel",
             };
                         
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"), false, false);
+            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"));
 
             tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
 

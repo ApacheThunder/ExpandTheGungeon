@@ -9,11 +9,15 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Reflection;
 using FullInspector;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
     public class ExpandPrefabs {
      
+        // Custom Sprite Collections (this gets setup before ItemAPI
+        public static GameObject EXItemCollection;
+
         // Materials
         public static Material SpaceFog;        
 
@@ -178,7 +182,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static GameObject NPCBabyDragunChaos;
 
-        // DungeonPlacables        
+        // DungeonPlacables
         public static DungeonPlaceable ElevatorDeparture;
         public static DungeonPlaceable ElevatorArrival;
 
@@ -267,6 +271,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXGlitchFloorScreenFX;
         public static GameObject EXWestFloorBossIntroScreenFX;
 
+        // Belly Pit VFX to account for non functional pit bubble animations. (tileset sprites seems to suggets it has one but the animations don't work?)
+        public static GameObject Belly_PitVFX1;
+        public static GameObject Belly_PitVFX2;
+        public static GameObject Belly_PitVFX3;
+
         // Modified Nakatomi Light to match the one Jungle used
         public static GameObject JungleLight;
         // Belly Light prefabs for Belly DungeonMaterial
@@ -311,6 +320,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         // Modified Items
         public static GameObject ChamberGun;
+
+        public static void InitCustomSpriteCollections(AssetBundle expandSharedAssets1) {
+            EXItemCollection = expandSharedAssets1.LoadAsset<GameObject>("EXItemCollection");
+            SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(EXItemCollection, expandSharedAssets1, expandSharedAssets1.LoadAsset<Texture2D>("EXItem_Collection"), "EXItemCollection");
+
+        }
 
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
@@ -561,7 +576,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             // Custom Trap Object for Rainbow room
             EXTrap_Apache = expandSharedAssets1.LoadAsset<GameObject>("EX_Trap_Apache");
-            ItemBuilder.AddSpriteToObject(EXTrap_Apache, expandSharedAssets1.LoadAsset<Texture2D>("EX_Trap_Apache_01"), false, false);
+            ItemBuilder.AddSpriteToObject(EXTrap_Apache, expandSharedAssets1.LoadAsset<Texture2D>("EX_Trap_Apache_01"));
             SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_Trap_Apache_02"), EXTrap_Apache.GetComponent<tk2dSprite>().Collection);
             EXTrap_Apache.GetComponent<tk2dSprite>().HeightOffGround = 2;
 
@@ -1543,7 +1558,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "alarm_mushroom2_break_004"
             };
 
-            ItemBuilder.AddSpriteToObject(EXAlarmMushroom, expandSharedAssets1.LoadAsset<Texture2D>(m_AlarmMushroom_idleSprites[0]), false, false);
+            ItemBuilder.AddSpriteToObject(EXAlarmMushroom, expandSharedAssets1.LoadAsset<Texture2D>(m_AlarmMushroom_idleSprites[0]));
             tk2dSprite m_AlarmMushroomSprite = EXAlarmMushroom.GetComponent<tk2dSprite>();
 
             foreach (string spriteName in m_AlarmMushroom_idleSprites) {
@@ -1847,7 +1862,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             RickRollAnimationObject = expandSharedAssets1.LoadAsset<GameObject>("Expand_RickRollAnimation");
-            ItemBuilder.AddSpriteToObject(RickRollAnimationObject, expandSharedAssets1.LoadAsset<Texture2D>("RickRoll_RiseUp_01"), false, false);
+            ItemBuilder.AddSpriteToObject(RickRollAnimationObject, expandSharedAssets1.LoadAsset<Texture2D>("RickRoll_RiseUp_01"));
 
             tk2dBaseSprite m_RickRollBaseSprite = RickRollAnimationObject.GetComponent<tk2dBaseSprite>();
 
@@ -1872,7 +1887,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             RickRollMusicSwitchObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandRickRoll_MusicSwitch");
             RickRollMusicSwitchObject.layer = LayerMask.NameToLayer("FG_Critical");
-            ItemBuilder.AddSpriteToObject(RickRollMusicSwitchObject, expandSharedAssets1.LoadAsset<Texture2D>("music_switch_idle_on_001"), false, false);
+            ItemBuilder.AddSpriteToObject(RickRollMusicSwitchObject, expandSharedAssets1.LoadAsset<Texture2D>("music_switch_idle_on_001"));
             tk2dSprite RickRollSwitchSprite = RickRollMusicSwitchObject.GetComponent<tk2dSprite>();
             SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("music_switch_idle_off_001"), RickRollSwitchSprite.Collection);
 
@@ -2013,13 +2028,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             Jungle_LargeTree = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_Tree");
             GameObject Jungle_Large_Tree_Shadow = Jungle_LargeTree.transform.Find("shadow").gameObject;
-            ItemBuilder.AddSpriteToObject(Jungle_Large_Tree_Shadow, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large_Shadow"), false, false);
+            ItemBuilder.AddSpriteToObject(Jungle_Large_Tree_Shadow, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large_Shadow"));
             tk2dSprite TreeShadowSprite = Jungle_Large_Tree_Shadow.GetComponent<tk2dSprite>();
             TreeShadowSprite.usesOverrideMaterial = true;
             TreeShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
             TreeShadowSprite.HeightOffGround = -18;
 
-            ItemBuilder.AddSpriteToObject(Jungle_LargeTree, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large"), false, false);
+            ItemBuilder.AddSpriteToObject(Jungle_LargeTree, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large"));
 
             SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large_Open"), Jungle_LargeTree.GetComponent<tk2dSprite>().Collection);
 
@@ -2036,25 +2051,25 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandJungleTreeController JungleTreeController = Jungle_LargeTree.AddComponent<ExpandJungleTreeController>();
             
             Jungle_LargeTreeTopFrame = expandSharedAssets1.LoadAsset<GameObject>("Jungle Tree Frame");
-            ItemBuilder.AddSpriteToObject(Jungle_LargeTreeTopFrame, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large_Frame"), false, false);
+            ItemBuilder.AddSpriteToObject(Jungle_LargeTreeTopFrame, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_Tree_Large_Frame"));
             Jungle_LargeTreeTopFrame.GetComponent<tk2dSprite>().HeightOffGround = 3;
             JungleTreeController.JungleTreeTopFrame = Jungle_LargeTreeTopFrame;
 
             EXJungleTree_MinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXJungleTree_MinimapIcon");
-            ItemBuilder.AddSpriteToObject(EXJungleTree_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("JungleTree_MinimapIcon"), false, false);
+            ItemBuilder.AddSpriteToObject(EXJungleTree_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("JungleTree_MinimapIcon"));
 
             EXJungleCrest_MinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXJungleCrest_MinimapIcon");
-            ItemBuilder.AddSpriteToObject(EXJungleCrest_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest_minimapicon"), false, false);
+            ItemBuilder.AddSpriteToObject(EXJungleCrest_MinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest_minimapicon"));
             
             Jungle_ExitLadder = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ExitLadder");
-            ItemBuilder.AddSpriteToObject(Jungle_ExitLadder, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_ExitLadder"), false, false);
+            ItemBuilder.AddSpriteToObject(Jungle_ExitLadder, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_ExitLadder"));
             Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
             
             Jungle_BlobLostSign = expandSharedAssets1.LoadAsset<GameObject>("Expand_JungleSign");
             ExpandUtility.BuildNewCustomSign(Jungle_BlobLostSign, Teleporter_Info_Sign, "Lost Blob Note", "This poor fella got lost on his way home.");
             
             Jungle_ItemStump = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ItemStump");
-            ItemBuilder.AddSpriteToObject(Jungle_ItemStump, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_TreeStump"), false, false);
+            ItemBuilder.AddSpriteToObject(Jungle_ItemStump, expandSharedAssets1.LoadAsset<Texture2D>("Jungle_TreeStump"));
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
             ExpandJungleTreeStumpItemPedestal StumpPedestal = Jungle_ItemStump.AddComponent<ExpandJungleTreeStumpItemPedestal>();
@@ -2094,8 +2109,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             Belly_Shipwreck_Left = expandSharedAssets1.LoadAsset<GameObject>("EXShipwreck_Left");
             Belly_Shipwreck_Right = expandSharedAssets1.LoadAsset<GameObject>("EXShipwreck_Right");
-            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Left, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Left"), false, false);
-            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Right, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Right"), false, false);
+            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Left, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Left"));
+            ItemBuilder.AddSpriteToObject(Belly_Shipwreck_Right, expandSharedAssets1.LoadAsset<Texture2D>("Shipwreck_Right"));
             Belly_Shipwreck_Left.GetComponent<tk2dSprite>().HeightOffGround = -8;
             Belly_Shipwreck_Right.GetComponent<tk2dSprite>().HeightOffGround = -8;
 
@@ -2368,7 +2383,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             Sarco_WoodShieldPedestal = expandSharedAssets1.LoadAsset<GameObject>("ExpandSarco_Pedestal");
-            ItemBuilder.AddSpriteToObject(Sarco_WoodShieldPedestal, expandSharedAssets1.LoadAsset<Texture2D>("PedestalRuins"), false, false);
+            ItemBuilder.AddSpriteToObject(Sarco_WoodShieldPedestal, expandSharedAssets1.LoadAsset<Texture2D>("PedestalRuins"));
 
             SpeculativeRigidbody Sarco_WoodShieldPedestalRigidBody = ExpandUtility.GenerateOrAddToRigidBody(Sarco_WoodShieldPedestal, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(26, 23));
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_WoodShieldPedestal,  CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(0, 3), dimensions: new IntVector2(26, 23));
@@ -2411,7 +2426,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             Sarco_Floor = expandSharedAssets1.LoadAsset<GameObject>("ExpandSarco_Floor");
-            ItemBuilder.AddSpriteToObject(Sarco_Floor, expandSharedAssets1.LoadAsset<Texture2D>("Belly_GungeonMonsterRoomFloor"), false, false);
+            ItemBuilder.AddSpriteToObject(Sarco_Floor, expandSharedAssets1.LoadAsset<Texture2D>("Belly_GungeonMonsterRoomFloor"));
             Sarco_Floor.GetComponent<tk2dSprite>().HeightOffGround = -1.5f;
             Sarco_Floor.GetComponent<tk2dSprite>().UpdateZDepth();
                                     
@@ -2446,7 +2461,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             Sarco_MonsterObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandSarco_Monster");
                         
-            ItemBuilder.AddSpriteToObject(Sarco_MonsterObject, expandSharedAssets1.LoadAsset<Texture2D>("Belly_Monster_Move_001"), false, false);
+            ItemBuilder.AddSpriteToObject(Sarco_MonsterObject, expandSharedAssets1.LoadAsset<Texture2D>("Belly_Monster_Move_001"));
 
             tk2dSprite Sarco_MonsterSprite = Sarco_MonsterObject.GetComponent<tk2dSprite>();
 
@@ -2494,13 +2509,146 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Belly_ExitWarp = expandSharedAssets1.LoadAsset<GameObject>("ExpandBelly_ExitWarp");
             Belly_ExitWarp.layer = LayerMask.NameToLayer("FG_Critical");
 
-            ItemBuilder.AddSpriteToObject(Belly_ExitWarp, Voidtexture, false, false);
+            ItemBuilder.AddSpriteToObject(Belly_ExitWarp, Voidtexture);
             ExpandUtility.GenerateOrAddToRigidBody(Belly_ExitWarp, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(2, 2));
             ExpandBellyWarpWingDoor Belly_ExitWarpController = Belly_ExitWarp.AddComponent<ExpandBellyWarpWingDoor>();
             Belly_ExitWarpController.IsBellyExitDoor = true;
                         
             Belly_ExitRoomIcon = expandSharedAssets1.LoadAsset<GameObject>("BellyExitRoomIcon");
-            ItemBuilder.AddSpriteToObject(Belly_ExitRoomIcon, expandSharedAssets1.LoadAsset<Texture2D>("Belly_ExitRoomIcon"), false, false);
+            ItemBuilder.AddSpriteToObject(Belly_ExitRoomIcon, expandSharedAssets1.LoadAsset<Texture2D>("Belly_ExitRoomIcon"));
+
+
+            Belly_PitVFX1 = expandSharedAssets1.LoadAsset<GameObject>("Belly_PitVFX1");
+            ItemBuilder.AddSpriteToObject(Belly_PitVFX1, expandSharedAssets1.LoadAsset<Texture2D>("Belly_PitVFX1_01"));
+
+            tk2dSprite m_Belly_PitVFX1Sprite = Belly_PitVFX1.GetComponent<tk2dSprite>();
+            m_Belly_PitVFX1Sprite.HeightOffGround = -4;
+
+            List<string> m_BellyPitVFX1Sprites = new List<string>() {
+                "Belly_PitVFX1_02",
+                "Belly_PitVFX1_03",
+                "Belly_PitVFX1_04",
+                "Belly_PitVFX1_05",
+                "Belly_PitVFX1_06",
+                "Belly_PitVFX1_07",
+            };
+
+            List<string> m_BellyPitVFX1AnimationSprites = new List<string>() {
+                "Belly_PitVFX1_01",
+                "Belly_PitVFX1_02",
+                "Belly_PitVFX1_03",
+                "Belly_PitVFX1_04",
+                "Belly_PitVFX1_05",
+                "Belly_PitVFX1_06",
+                "Belly_PitVFX1_07",
+            };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, m_BellyPitVFX1Sprites, m_Belly_PitVFX1Sprite.Collection);
+
+            ExpandUtility.GenerateSpriteAnimator(Belly_PitVFX1, playAutomatically: true);
+
+            tk2dSpriteAnimator BellyPitVFX1Animator = Belly_PitVFX1.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(BellyPitVFX1Animator, m_Belly_PitVFX1Sprite.Collection, m_BellyPitVFX1AnimationSprites, "bubbleup", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+
+            SpriteAnimatorKiller BellyPitVFX1AnimatorKiller = Belly_PitVFX1.AddComponent<SpriteAnimatorKiller>();
+            BellyPitVFX1AnimatorKiller.onlyDisable = true;
+            BellyPitVFX1AnimatorKiller.deparentOnStart = false;
+            BellyPitVFX1AnimatorKiller.childObjectToDisable = new List<GameObject>(0);
+            BellyPitVFX1AnimatorKiller.hasChildAnimators = false;
+            BellyPitVFX1AnimatorKiller.deparentAllChildren = false;
+            BellyPitVFX1AnimatorKiller.delayDestructionTime = 0;
+            BellyPitVFX1AnimatorKiller.fadeTime = 0;
+
+
+            Belly_PitVFX2 = expandSharedAssets1.LoadAsset<GameObject>("Belly_PitVFX2");
+            ItemBuilder.AddSpriteToObject(Belly_PitVFX2, expandSharedAssets1.LoadAsset<Texture2D>("Belly_PitVFX2_01"));
+
+            tk2dSprite m_Belly_PitVFX2Sprite = Belly_PitVFX2.GetComponent<tk2dSprite>();
+            m_Belly_PitVFX2Sprite.HeightOffGround = -4;
+
+            List<string> m_BellyPitVFX2Sprites = new List<string>() {
+                "Belly_PitVFX2_02",
+                "Belly_PitVFX2_03",
+                "Belly_PitVFX2_04",
+                "Belly_PitVFX2_05",
+                "Belly_PitVFX2_06"
+            };
+
+            List<string> m_BellyPitVFX2AnimationSprites = new List<string>() {
+                "Belly_PitVFX2_01",
+                "Belly_PitVFX2_02",
+                "Belly_PitVFX2_03",
+                "Belly_PitVFX2_04",
+                "Belly_PitVFX2_05",
+                "Belly_PitVFX2_06"
+            };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, m_BellyPitVFX2Sprites, m_Belly_PitVFX2Sprite.Collection);
+
+            ExpandUtility.GenerateSpriteAnimator(Belly_PitVFX2, playAutomatically: true);
+
+            tk2dSpriteAnimator BellyPitVFX2Animator = Belly_PitVFX2.GetComponent<tk2dSpriteAnimator>();
+            ExpandUtility.AddAnimation(BellyPitVFX2Animator, m_Belly_PitVFX2Sprite.Collection, m_BellyPitVFX2AnimationSprites, "splash", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            BellyPitVFX2Animator.Library.clips[0].frames[0].eventInfo = "splash";
+            BellyPitVFX2Animator.Library.clips[0].frames[0].triggerEvent = true;
+
+
+            SpriteAnimatorKiller BellyPitVFX2AnimatorKiller = Belly_PitVFX2.AddComponent<SpriteAnimatorKiller>();
+            BellyPitVFX2AnimatorKiller.onlyDisable = true;
+            BellyPitVFX2AnimatorKiller.deparentOnStart = false;
+            BellyPitVFX2AnimatorKiller.childObjectToDisable = new List<GameObject>(0);
+            BellyPitVFX2AnimatorKiller.hasChildAnimators = false;
+            BellyPitVFX2AnimatorKiller.deparentAllChildren = false;
+            BellyPitVFX2AnimatorKiller.delayDestructionTime = 0;
+            BellyPitVFX2AnimatorKiller.fadeTime = 0;
+
+            AudioAnimatorListener BellyPitVFX2AudioListener = Belly_PitVFX2.AddComponent<AudioAnimatorListener>();
+            BellyPitVFX2AudioListener.animationAudioEvents = new ActorAudioEvent[] {
+                new ActorAudioEvent() { eventTag = "splash", eventName = "Play_ENV_water_splash_01" }
+            };
+
+            Belly_PitVFX3 = expandSharedAssets1.LoadAsset<GameObject>("Belly_PitVFX3");
+            ItemBuilder.AddSpriteToObject(Belly_PitVFX3, expandSharedAssets1.LoadAsset<Texture2D>("Belly_PitVFX3_01"));
+
+            tk2dSprite m_Belly_PitVFX3Sprite = Belly_PitVFX3.GetComponent<tk2dSprite>();
+            m_Belly_PitVFX3Sprite.HeightOffGround = -4;
+
+            List<string> m_BellyPitVFX3Sprites = new List<string>() {
+                "Belly_PitVFX3_02",
+                "Belly_PitVFX3_03",
+                "Belly_PitVFX3_04",
+                "Belly_PitVFX3_05",
+                "Belly_PitVFX3_06",
+                "Belly_PitVFX3_07"
+            };
+
+            List<string> m_BellyPitVFX3AnimationSprites = new List<string>() {
+                "Belly_PitVFX3_01",
+                "Belly_PitVFX3_02",
+                "Belly_PitVFX3_03",
+                "Belly_PitVFX3_04",
+                "Belly_PitVFX3_05",
+                "Belly_PitVFX3_06",
+                "Belly_PitVFX3_07"
+            };
+
+            SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, m_BellyPitVFX3Sprites, m_Belly_PitVFX3Sprite.Collection);
+
+            ExpandUtility.GenerateSpriteAnimator(Belly_PitVFX3, playAutomatically: true);
+
+            tk2dSpriteAnimator BellyPitVFX3Animator = Belly_PitVFX3.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(BellyPitVFX3Animator, m_Belly_PitVFX3Sprite.Collection, m_BellyPitVFX3AnimationSprites, "bubbleup", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+
+            SpriteAnimatorKiller BellyPitVFX3AnimatorKiller = Belly_PitVFX3.AddComponent<SpriteAnimatorKiller>();
+            BellyPitVFX3AnimatorKiller.onlyDisable = true;
+            BellyPitVFX3AnimatorKiller.deparentOnStart = false;
+            BellyPitVFX3AnimatorKiller.childObjectToDisable = new List<GameObject>(0);
+            BellyPitVFX3AnimatorKiller.hasChildAnimators = false;
+            BellyPitVFX3AnimatorKiller.deparentAllChildren = false;
+            BellyPitVFX3AnimatorKiller.delayDestructionTime = 0;
+            BellyPitVFX3AnimatorKiller.fadeTime = 0;
 
 
             JungleLight = UnityEngine.Object.Instantiate(sharedAssets.LoadAsset<GameObject>("Castle Light"));
@@ -2883,8 +3031,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSpaceFloorPitBorder_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloorPitBorder_50x50");
 
 
-            ItemBuilder.AddSpriteToObject(EXSpaceFloor_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad"), false, false);
-            ItemBuilder.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad_PitBorders"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSpaceFloor_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad"));
+            ItemBuilder.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad_PitBorders"));
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().HeightOffGround = -200;
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
             EXSpaceFloor_50x50.GetComponent<tk2dSprite>().renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
@@ -2895,7 +3043,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             EX_Parachute = expandSharedAssets1.LoadAsset<GameObject>("EX_Parachute");
-            SpriteBuilder.SpriteFromTexture(ExpandAssets.LoadAsset<Texture2D>("EX_Parachute"), EX_Parachute, false);
+            ItemBuilder.AddSpriteToObject(EX_Parachute, expandSharedAssets1.LoadAsset<Texture2D>("EX_Parachute"));
             tk2dSprite m_EXParachuteSprite = EX_Parachute.GetComponent<tk2dSprite>();
 
             List<string> EXParachute_OpenFrames = new List<string>() {
@@ -2929,7 +3077,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EX_ParadropAnchor = ExpandAssets.LoadAsset<GameObject>("EX_ParadropAnchor");
 
             EX_ExplodyBarrelDummy = expandSharedAssets1.LoadAsset<GameObject>("EX_ExplodyBarrelDummy");
-            ItemBuilder.AddSpriteToObject(EX_ExplodyBarrelDummy, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"), false, false);
+            ItemBuilder.AddSpriteToObject(EX_ExplodyBarrelDummy, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"));
             tk2dSprite m_ExplodyBarrelDummySprite = EX_ExplodyBarrelDummy.GetComponent<tk2dSprite>();
             SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel_Explode"), m_ExplodyBarrelDummySprite.Collection);
             
@@ -2980,7 +3128,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             EX_ItemDropper = expandSharedAssets1.LoadAsset<GameObject>("EX_ItemParadrop");
-            ItemBuilder.AddSpriteToObject(EX_ItemDropper, expandSharedAssets1.LoadAsset<Texture2D>("EX_Paradrop_Crate_Idle"), false, false);
+            ItemBuilder.AddSpriteToObject(EX_ItemDropper, expandSharedAssets1.LoadAsset<Texture2D>("EX_Paradrop_Crate_Idle"));
 
             tk2dSprite EX_ItemDropperSprite = EX_ItemDropper.GetComponent<tk2dSprite>();
             EX_ItemDropperSprite.HeightOffGround = -1;
@@ -3046,7 +3194,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             EX_Chest_West = expandSharedAssets1.LoadAsset<GameObject>("EX_Chest_West");
-            ItemBuilder.AddSpriteToObject(EX_Chest_West, expandSharedAssets1.LoadAsset<Texture2D>("chest_west_idle_001"), false, false);
+            ItemBuilder.AddSpriteToObject(EX_Chest_West, expandSharedAssets1.LoadAsset<Texture2D>("chest_west_idle_001"));
             tk2dSprite ChestWestSprite = EX_Chest_West.GetComponent<tk2dSprite>();
             ChestWestSprite.HeightOffGround = -1;
 
@@ -3206,7 +3354,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ChestWestShadowSprite.HeightOffGround = -2;
             
             GameObject ChestWestLock = EX_Chest_West.transform.Find("Lock").gameObject;
-            ItemBuilder.AddSpriteToObject(ChestWestLock, expandSharedAssets1.LoadAsset<Texture2D>("west_lock_idle_001"), false, false);
+            ItemBuilder.AddSpriteToObject(ChestWestLock, expandSharedAssets1.LoadAsset<Texture2D>("west_lock_idle_001"));
 
             tk2dSprite ChestWestLockSprite = ChestWestLock.GetComponent<tk2dSprite>();
             ChestWestLockSprite.HeightOffGround = -0.5f;

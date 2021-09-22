@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using UnityEngine;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -11,7 +12,9 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void Init(AssetBundle expandSharedAssets1) {
             
             WoodCrestObject = expandSharedAssets1.LoadAsset<GameObject>("Wooden Crest");
-            ItemBuilder.AddSpriteToObject(WoodCrestObject, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest"), false, false);
+            tk2dSprite WoodCrestItemSprite = WoodCrestObject.AddComponent<tk2dSprite>();
+            WoodCrestItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "junglecrest");
+            // ItemBuilder.AddSpriteToObject(WoodCrestObject, expandSharedAssets1.LoadAsset<Texture2D>("junglecrest"));
 
             WoodenCrest woodenCrest = WoodCrestObject.AddComponent<WoodenCrest>();
             

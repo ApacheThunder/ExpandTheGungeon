@@ -1,4 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandPrefab;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ItemAPI {
@@ -12,7 +13,9 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void Init(AssetBundle expandSharedAssets1) {
 
             CursedBrickObject = expandSharedAssets1.LoadAsset<GameObject>("Cursed Brick");
-            ItemBuilder.AddSpriteToObject(CursedBrickObject, expandSharedAssets1.LoadAsset<Texture2D>("cursedbrick"), false, false);
+            tk2dSprite CursedBrickItemSprite = CursedBrickObject.AddComponent<tk2dSprite>();
+            CursedBrickItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "cursedbrick");
+            // ItemBuilder.AddSpriteToObject(CursedBrickObject, expandSharedAssets1.LoadAsset<Texture2D>("cursedbrick"));
 
             CursedBrick cursedBrick = CursedBrickObject.AddComponent<CursedBrick>();
             

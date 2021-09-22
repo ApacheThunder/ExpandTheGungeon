@@ -20,10 +20,12 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void Init(AssetBundle expandSharedAssets1) {
 
             BabySitterobject = expandSharedAssets1.LoadAsset<GameObject>("Baby Sitter");
+            tk2dSprite BabySitterSprite = BabySitterobject.AddComponent<tk2dSprite>();
+            BabySitterSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babysitter");
 
             BabySitter babysitItem = BabySitterobject.AddComponent<BabySitter>();
-            ItemBuilder.AddSpriteToObject(BabySitterobject, expandSharedAssets1.LoadAsset<Texture2D>("babysitter"), false, false);
-
+            // ItemBuilder.AddSpriteToObject(BabySitterobject, expandSharedAssets1.LoadAsset<Texture2D>("babysitter"));
+            
             string shortDesc = "You've got a friend in me...";
             string longDesc = "Looks like you're stuck baby sitting him today.\n\nHe'll try his best to be useful.\nTry not to get him killed.";
 

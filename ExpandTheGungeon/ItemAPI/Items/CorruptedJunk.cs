@@ -26,7 +26,10 @@ namespace ExpandTheGungeon.ItemAPI {
             CorruptedJunkObject = expandSharedAssets1.LoadAsset<GameObject>("Corrupted Junk");
 
             CorruptedJunk poopSack = CorruptedJunkObject.AddComponent<CorruptedJunk>();
-            ItemBuilder.AddSpriteToObject(CorruptedJunkObject, expandSharedAssets1.LoadAsset<Texture2D>("corrupted_poopsack_09"), false, false);
+            tk2dSprite PoopSackgItemSprite = CorruptedJunkObject.AddComponent<tk2dSprite>();
+            PoopSackgItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "corrupted_poopsack_09");
+
+            // ItemBuilder.AddSpriteToObject(CorruptedJunkObject, expandSharedAssets1.LoadAsset<Texture2D>("corrupted_poopsack_09"));
 
             string shortDesc = "Next Time... What even is this!?";
             string longDesc = "Just some corrupted junk.\n\nCarrying this around makes you question your sanity...";
@@ -50,14 +53,14 @@ namespace ExpandTheGungeon.ItemAPI {
                 "corrupted_poopsack_10"
             };
 
-            foreach (string spritePath in m_SpriteNames) {
+            /*foreach (string spritePath in m_SpriteNames) {
                 if (spritePath != "corrupted_poopsack_09") {
                     SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spritePath), CorruptedJunkObject.GetComponent<tk2dSprite>().Collection);
                 }
-            }
+            }*/
 
             ExpandUtility.GenerateSpriteAnimator(CorruptedJunkObject, playAutomatically: true);
-            ExpandUtility.AddAnimation(CorruptedJunkObject.GetComponent<tk2dSpriteAnimator>(), CorruptedJunkObject.GetComponent<tk2dSprite>().Collection, m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
+            ExpandUtility.AddAnimation(CorruptedJunkObject.GetComponent<tk2dSpriteAnimator>(), ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), m_SpriteNames, "idle", tk2dSpriteAnimationClip.WrapMode.RandomLoop, 20);
         }
         
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -14,8 +15,11 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             PowBlockObject = expandSharedAssets1.LoadAsset<GameObject>("Pow Block");
-            ItemBuilder.AddSpriteToObject(PowBlockObject, expandSharedAssets1.LoadAsset<Texture2D>("PowBlock"), false, false);
-            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("PowBlock_Used"), PowBlockObject.GetComponent<tk2dSprite>().Collection);
+            tk2dSprite PowBlockObjectItemSprite = PowBlockObject.AddComponent<tk2dSprite>();
+            PowBlockObjectItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "PowBlock");
+
+            // ItemBuilder.AddSpriteToObject(PowBlockObject, expandSharedAssets1.LoadAsset<Texture2D>("PowBlock"));
+            // SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("PowBlock_Used"), PowBlockObject.GetComponent<tk2dSprite>().Collection);
 
             PowBlock powBlock = PowBlockObject.AddComponent<PowBlock>();
             string shortDesc = "Shaken not stirred...";

@@ -16,7 +16,9 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             RockslideObject = expandSharedAssets1.LoadAsset<GameObject>("Rock Slide");
-			ItemBuilder.AddSpriteToObject(RockslideObject, expandSharedAssets1.LoadAsset<Texture2D>("rockslide"), false, false);
+            tk2dSprite RockslideItemSprite = RockslideObject.AddComponent<tk2dSprite>();
+            RockslideItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "rockslide");
+            // ItemBuilder.AddSpriteToObject(RockslideObject, expandSharedAssets1.LoadAsset<Texture2D>("rockslide"));
 
             RockSlide rockslide = RockslideObject.AddComponent<RockSlide>();
             string shortDesc = "Crushing Defeat";
@@ -35,14 +37,14 @@ namespace ExpandTheGungeon.ItemAPI {
                 "plunger_fire_006"
             };
 
-            tk2dSprite rockslidesprite = RockslideObject.GetComponent<tk2dSprite>();
-            foreach (string sprite in spritePaths) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(sprite), rockslidesprite.Collection); }
+            /*tk2dSprite rockslidesprite = RockslideObject.GetComponent<tk2dSprite>();
+            foreach (string sprite in spritePaths) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(sprite), rockslidesprite.Collection); }*/
 
             ExpandUtility.GenerateSpriteAnimator(RockslideObject);
 
             tk2dSpriteAnimator rockslideAnimator = RockslideObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(rockslideAnimator, rockslidesprite.Collection, spritePaths, "Activate", frameRate: 8);
+            ExpandUtility.AddAnimation(rockslideAnimator, ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths, "Activate", frameRate: 8);
 
             RockSlidePickupID = rockslide.PickupObjectId;
         }
@@ -51,9 +53,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public RockSlide() {
             m_PickedUp = false;
             m_Ready = true;
-            GameObject EXObjectDatabase = new GameObject("EX Object Database Instance", new Type[] { typeof(ExpandObjectDatabase) }) { layer = 0 };
             m_MinesCageInObject = ExpandObjectDatabase.Mines_Cave_In;
-            Destroy(EXObjectDatabase);
         }
 
         private GameObject m_MinesCageInObject;

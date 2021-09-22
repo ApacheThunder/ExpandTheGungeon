@@ -23,9 +23,10 @@ namespace ExpandTheGungeon {
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
-        
+
         public static string ZipFilePath;
         public static string FilePath;
+        public static string ResourcesPath;
         
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
@@ -60,7 +61,6 @@ namespace ExpandTheGungeon {
             }
             return true;
         }
-        
 
         public override void Init() {
             
@@ -69,6 +69,7 @@ namespace ExpandTheGungeon {
             
             ZipFilePath = Metadata.Archive;
             FilePath = Metadata.Directory;
+            ResourcesPath = ETGMod.ResourcesDirectory;
 
             try { ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
             
@@ -89,8 +90,9 @@ namespace ExpandTheGungeon {
                 "Bulletkin Gun",
                 "Baby Sitter",
                 "Pow Block",
-                "Cursed Brick"
-                // "Table Tech Expand"
+                "Cursed Brick",
+                "Black Revolver",
+                "Golden Revolver"
             };
                         
             ExpandAssets.InitCustomAssetBundle();
@@ -101,9 +103,10 @@ namespace ExpandTheGungeon {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
                 MainMenuFoyerUpdateHook = new Hook(
                     typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
-                    typeof(ExpandTheGungeon).GetMethod("MainMenuUpdateHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(ExpandTheGungeon).GetMethod(nameof(MainMenuUpdateHook), BindingFlags.NonPublic | BindingFlags.Instance),
                     typeof(MainMenuFoyerController)
                 );
+                
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
@@ -112,7 +115,6 @@ namespace ExpandTheGungeon {
                 return;
             }
         }
-
 
         public override void Start() {
             
@@ -137,6 +139,9 @@ namespace ExpandTheGungeon {
 
             // Init Custom GameLevelDefinitions
             ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
+
+            // Init Custom Sprite Collections
+            ExpandPrefabs.InitCustomSpriteCollections(expandSharedAssets1);
 
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
@@ -205,7 +210,6 @@ namespace ExpandTheGungeon {
             sharedAssets2 = null;
             braveResources = null;
             enemiesBase = null;
-            // HUDGC.ShowGcData = true;
         }
 
 
@@ -282,7 +286,6 @@ namespace ExpandTheGungeon {
                     BabySitter.Init(expandSharedAssets1);
                     PowBlock.Init(expandSharedAssets1);
                     CursedBrick.Init(expandSharedAssets1);
-
                     WestBrosRevolverGenerator.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
@@ -321,8 +324,9 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("toggleheapchange", ExpandToggleHeapSetting);
-            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("toggleheapsize", ExpandToggleHeapSetting);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegcstats", ExpandToggleGCStats);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -520,21 +524,102 @@ namespace ExpandTheGungeon {
             ExpandExportSettings(consoleText);
         }
 
+        private void ExpandToggleGCStats(string[] consoleText) {
+            if (!HUDGC.ShowGcData) {
+                HUDGC.ShowGcData = true;
+                ETGModConsole.Log("[ExpandTheGungeon] GC Stats enabled!");
+            } else {
+                HUDGC.ShowGcData = false;
+                ETGModConsole.Log("[ExpandTheGungeon] GC Stats disabled!");
+            }
+        }
+
+
         private void ExpandToggleHeapSetting(string[] consoleText) {
             if (!ExpandStats.UseExpandedHeap) {
                 ExpandStats.UseExpandedHeap = true;
-                ETGModConsole.Log("Memory heap for GC incrased. It is recommended you restart your game after changing this setting!");
+                ETGModConsole.Log("[ExpandTheGungeon] Memory heap for GC incrased. It is recommended you restart your game after changing this setting!");
                 ExpandExportSettings(consoleText);
             } else {
                 ExpandStats.UseExpandedHeap = false;
-                ETGModConsole.Log("Memory heap changes as been allowed to use defaults. It is recommended you restart your game after changing this setting!");
+                ETGModConsole.Log("[ExpandTheGungeon] Memory heap changes as been allowed to use defaults. It is recommended you restart your game after changing this setting!");
                 ExpandExportSettings(consoleText);
             }
         }
 
         private void ExpandTestCommand(string[] consoleText) {
 
-            ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
+            List<string> spritePaths = new List<string>() {
+                "babygoodhammer",
+                "babygoodhammer_spawn_00",
+                "babygoodhammer_spawn_01",
+                "babygoodhammer_spawn_02",
+                "babygoodhammer_spawn_03",
+                "babygoodhammer_spawn_04",
+                "babygoodhammer_spawn_05",
+                "babygoodhammer_spawn_06",
+                "babygoodhammer_spawn_07",
+                "babygoodhammer_spawn_08",
+                "babygoodhammer_spawn_09",
+                "babygoodhammer_spawn_10",
+                "babygoodhammer_spawn_11",
+                "babygoodhammer_spawn_12",
+                "babygoodhammer_spawn_13",
+                "babygoodhammer_spawn_14",
+                "babygoodhammer_spawn_15",
+                "babygoodhammer_spawn_16",
+                "babygoodhammer_spawn_17",
+                "babygoodhammer_spawn_18",
+                "babygoodhammer_spawn_19",
+                "babygoodhammer_spawn_20",
+                "babygoodhammer_spawn_21",
+                "babygoodhammer_spawn_22",
+                "babygoodhammer_spawn_23",
+                "babygoodhammer_spawn_24",
+                "babygoodhammer_spawn_25",
+                "babysitter",
+                "cronenbergbullets",
+                "corrupted_poopsack_01",
+                "corrupted_poopsack_02",
+                "corrupted_poopsack_03",
+                "corrupted_poopsack_04",
+                "corrupted_poopsack_05",
+                "corrupted_poopsack_06",
+                "corrupted_poopsack_07",
+                "corrupted_poopsack_08",
+                "corrupted_poopsack_09",
+                "corrupted_poopsack_10",
+                "corruptionbomb",
+                "corruptionbomb_minimapicon",
+                "corruptionbomb_spin_01",
+                "corruptionbomb_spin_02",
+                "corruptionbomb_spin_03",
+                "corruptionbomb_spin_04",
+                "corruptionbomb_spin_05",
+                "corruptionbomb_spin_06",
+                "corruptionbomb_spin_07",
+                "corruptionbomb_spin_08",
+                "corruptionbomb_spin_09",
+                "corruptionbomb_spin_10",
+                "cursedbrick",
+                "glitchround",
+                "ex_mimiclay",
+                "PowBlock",
+                "PowBlock_Used",
+                "rockslide",
+                "plunger_fire_001",
+                "plunger_fire_002",
+                "plunger_fire_003",
+                "plunger_fire_004",
+                "plunger_fire_005",
+                "plunger_fire_006",
+                "tabletech_assassin",
+                "theleadkey",
+                "junglecrest"
+            };
+
+            SpriteAPI.SpriteSerializer.SerializeSpriteCollection("EXItemCollection", spritePaths, 256, 256, 256);
+
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
@@ -547,7 +632,7 @@ namespace ExpandTheGungeon {
                 AlarmMushroom.transform.Find("Shadow").localPosition = new Vector3(X, Y);
             }*/
 
-            // ExpandUtilities.ResourceExtractor.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Phobos.GetComponent<tk2dSpriteCollectionData>());            
+            // ExpandAssets.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Belly.GetComponent<tk2dSpriteCollectionData>());            
 
             /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
             SupriseChest.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);

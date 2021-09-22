@@ -1,4 +1,3 @@
-using ExpandTheGungeon.ExpandUtilities;
 using UnityEngine;
 
 namespace ExpandTheGungeon {
@@ -42,7 +41,7 @@ namespace ExpandTheGungeon {
             EnableLanguageFix = stats.EnableLanguageFix;
             EnableJungleRain = stats.EnableJungleRain;
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
-            ShotgunKinSecret = stats.ShotgunKinSecret;
+            // ShotgunKinSecret = stats.ShotgunKinSecret;
             GameLanguage = stats.GameLanguage;
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;

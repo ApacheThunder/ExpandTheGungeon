@@ -38,9 +38,9 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandStats.phobosElevatorHasBeenUsed = false;
                 ExpandStats.elevatorHasBeenUsed = false;
             }
-
+            
             ExpandStaticReferenceManager.PopulateLists();
-
+            
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
             if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }

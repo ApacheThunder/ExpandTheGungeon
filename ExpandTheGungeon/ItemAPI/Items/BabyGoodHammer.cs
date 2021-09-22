@@ -19,20 +19,29 @@ namespace ExpandTheGungeon.ItemAPI {
         public static int HammerPickupID;
 
         public static void Init(AssetBundle expandSharedAssets1) {
+            
+            
             hammerItemObject = expandSharedAssets1.LoadAsset<GameObject>("Baby Good Hammer");
             BabyGoodHammer babyGoodHammer = hammerItemObject.AddComponent<BabyGoodHammer>();
-			ItemBuilder.AddSpriteToObject(hammerItemObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer"), false, false);
-			string shortDesc = "It's Hammer Time!";
+            tk2dSprite babyGoodHammerSprite = hammerItemObject.AddComponent<tk2dSprite>();
+            babyGoodHammerSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babygoodhammer");
+            // ItemBuilder.AddSpriteToObject(hammerItemObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer"));
+            
+
+            string shortDesc = "It's Hammer Time!";
 			string longDesc = "Summons a Dead Blow Hammer.\n\nIt's cry sounds a lot like a whistle.\n\nThe closer you are to the Forge, the more powerful the hammers will be.";
-			ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
+            // ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
+            ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(babyGoodHammer, ItemBuilder.CooldownType.Damage, 350f);
             babyGoodHammer.quality = ItemQuality.B;
             if (!ExpandStats.EnableEXItems) { babyGoodHammer.quality = ItemQuality.EXCLUDED; }
 
             // Hammer Spawn FX Object
             hammerSpawnFX = expandSharedAssets1.LoadAsset<GameObject>("HammerSpawningFX");
-            ItemBuilder.AddSpriteToObject(hammerSpawnFX, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_spawn_00"), false, false);
-            tk2dBaseSprite spriteComponent = hammerSpawnFX.GetComponent<tk2dBaseSprite>();
+            tk2dSprite hammerSpawnFXSprite = hammerSpawnFX.AddComponent<tk2dSprite>();
+            hammerSpawnFXSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babygoodhammer_spawn_00");
+            // ItemBuilder.AddSpriteToObject(hammerSpawnFX, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_spawn_00"));
+            // tk2dBaseSprite spriteComponent = hammerSpawnFX.GetComponent<tk2dBaseSprite>();
             
             List<string> spritePaths = new List<string>() {
                 "babygoodhammer_spawn_00",
@@ -67,11 +76,11 @@ namespace ExpandTheGungeon.ItemAPI {
                 "babygoodhammer_spawn_25"
             };
 
-            foreach (string spriteName in spritePaths) {
+            /*foreach (string spriteName in spritePaths) {
                 if (spriteName != "babygoodhammer_spawn_00") {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), spriteComponent.Collection);
+                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), hammerSpawnFXSprite.Collection);
                 }
-            }
+            }*/
 
             ExpandUtility.GenerateSpriteAnimator(hammerSpawnFX);
             tk2dSpriteAnimator hammerAnimator = hammerSpawnFX.GetComponent<tk2dSpriteAnimator>();
@@ -109,8 +118,8 @@ namespace ExpandTheGungeon.ItemAPI {
             };
 
 
-            ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths, "HammerSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
-            ExpandUtility.AddAnimation(hammerAnimator, spriteComponent.Collection, spritePaths_reversed, "HammerReturnSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
+            ExpandUtility.AddAnimation(hammerAnimator, ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths, "HammerSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
+            ExpandUtility.AddAnimation(hammerAnimator, ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths_reversed, "HammerReturnSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
 
             HammerPickupID = babyGoodHammer.PickupObjectId;
         }
@@ -253,7 +262,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public static IEnumerator SpawnHammer(PlayerController user, float spawnDelay = 0) {
             if (spawnDelay > 0) { yield return new WaitForSeconds(spawnDelay); }
 
-			Tools.Print("Spawning A Friendly Hammer!", "FFFFFF", false);
+			// Tools.Print("Spawning A Friendly Hammer!", "FFFFFF", false);
 			RoomHandler room = user.CurrentRoom;
             IntVector2? spawnPosition = room.GetRandomVisibleClearSpot(2, 2);
             yield return new WaitForSeconds(1f);

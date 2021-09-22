@@ -3819,7 +3819,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (!string.IsNullOrEmpty(m_ResultAsset)) {
                 return m_ResultAsset;
             } else {
-                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath +" returned null! Ensure asset exists in asset bundle!", true);
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
                 return string.Empty;
             }
         }
@@ -3859,7 +3859,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
     }
 
     public static class ExpandExtensions {
-        
+
+        public static bool IsActuallyWildWestEntrance(this RoomHandler room){
+            if (room?.GetRoomName() != null && ExpandRoomPrefabs.Expand_West_Entrance?.name != null) {
+                return room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_Entrance.name.ToLower());
+            } else {
+                return false;
+            }
+        }
+
         public static Material Copy(this Material orig, Texture2D textureOverride = null, Shader shaderOverride = null) {
             Material m_NewMaterial = new Material(orig.shader) {
                 name = orig.name,

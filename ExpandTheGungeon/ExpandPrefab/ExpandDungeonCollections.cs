@@ -45,7 +45,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         
             m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_UnlitCutout };
             m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
-            
+
             sharedAssets = null;
 
             return m_NewDungeonCollection;

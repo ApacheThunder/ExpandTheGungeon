@@ -10,20 +10,13 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private static tk2dSpriteCollectionData itemCollection = PickupObjectDatabase.GetByEncounterName("singularity").sprite.Collection;
 
-        private static tk2dSpriteCollectionData ammonomiconCollection = AmmonomiconController.ForceInstance.EncounterIconCollection;
-
-        private static tk2dSprite baseSprite = PickupObjectDatabase.GetByEncounterName("singularity").GetComponent<tk2dSprite>();
+        public static tk2dSpriteCollectionData ammonomiconCollection = AmmonomiconController.ForceInstance.EncounterIconCollection;
         
-        public static GameObject SpriteFromTexture(Texture2D existingTexture, GameObject obj = null, bool copyFromExisting = true) {
+        public static GameObject SpriteFromTexture(Texture2D existingTexture, GameObject obj = null) {
 			bool flag = obj == null;
 			if (flag) { obj = new GameObject(); }
-			tk2dSprite tk2dSprite;
-			if (copyFromExisting) {
-				tk2dSprite = obj.AddComponent(baseSprite);
-			} else {
-				tk2dSprite = obj.AddComponent<tk2dSprite>();
-			}
-			int num = AddSpriteToCollection(existingTexture, itemCollection);
+			tk2dSprite tk2dSprite = obj.AddComponent<tk2dSprite>();
+            int num = AddSpriteToCollection(existingTexture, itemCollection);
 			tk2dSprite.SetSprite(itemCollection, num);
 			tk2dSprite.SortingOrder = 0;
 			obj.GetComponent<BraveBehaviour>().sprite = tk2dSprite;
@@ -63,7 +56,13 @@ namespace ExpandTheGungeon.ItemAPI {
 			return AddSpriteToCollection(spriteDefinition, ammonomiconCollection);
 		}
 
-		public static tk2dSpriteAnimationClip AddAnimation(tk2dSpriteAnimator animator, tk2dSpriteCollectionData collection, List<int> spriteIDs, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Loop, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+        public static int AddToAmmonomicon(tk2dSpriteDefinition spriteDefinition, Material overrideMaterial) {
+            int m_spriteDefinition = AddSpriteToCollection(spriteDefinition, ammonomiconCollection);
+            ammonomiconCollection.GetSpriteDefinition(spriteDefinition.name).material = overrideMaterial;
+            return AddSpriteToCollection(spriteDefinition, ammonomiconCollection);
+        }
+
+        public static tk2dSpriteAnimationClip AddAnimation(tk2dSpriteAnimator animator, tk2dSpriteCollectionData collection, List<int> spriteIDs, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Loop, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
 			if (animator.Library == null) {
                 animator.Library = animator.gameObject.AddComponent<tk2dSpriteAnimation>();                
 				animator.Library.clips = new tk2dSpriteAnimationClip[0];

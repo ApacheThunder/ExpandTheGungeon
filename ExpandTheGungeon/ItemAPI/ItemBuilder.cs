@@ -33,24 +33,30 @@ namespace ExpandTheGungeon.ItemAPI {
 			}
 		}
         
-        public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture, bool copyFromExisting = true, bool isFakePrefab = true) {
-            SpriteBuilder.SpriteFromTexture(sourceTexture, targetObject, copyFromExisting);
-            if (isFakePrefab) {
-                FakePrefab.MarkAsFakePrefab(targetObject);
-                targetObject.SetActive(false);
-            }
-		}
-
-        public static GameObject AddSpriteToObject(Texture2D texture, string objectName, GameObject obj = null, bool copyFromExisting = true, bool isFakePrefab = true) {
-            GameObject gameObject = SpriteBuilder.SpriteFromTexture(texture, obj, copyFromExisting);
-            if (isFakePrefab) {
-                FakePrefab.MarkAsFakePrefab(gameObject);
-                obj.SetActive(false);
-            }
-            gameObject.name = objectName;
-            return gameObject;
+        public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture) {
+            SpriteBuilder.SpriteFromTexture(sourceTexture, targetObject);
         }
 
+        public static void SetupItem(PickupObject item, string shortDesc, string longDesc, string AmmonomiconSpriteName, string idPool = "expandItems") {
+			try {
+				item.encounterTrackable = null;
+				ETGMod.Databases.Items.SetupItem(item, item.name);
+				SpriteBuilder.AddToAmmonomicon(item.sprite.Collection.GetSpriteDefinition(AmmonomiconSpriteName), item.sprite.Collection.GetSpriteDefinition(AmmonomiconSpriteName).material);
+                item.encounterTrackable.journalData.AmmonomiconSprite = AmmonomiconSpriteName;
+				GunExt.SetName(item, item.name);
+				GunExt.SetShortDescription(item, shortDesc);
+				GunExt.SetLongDescription(item, longDesc);
+				bool flag = item is PlayerItem;
+				if (flag) { (item as PlayerItem).consumable = false; }
+				Game.Items.Add(idPool + ":" + item.name.ToLower().Replace(" ", "_"), item);
+				ETGMod.Databases.Items.Add(item, false, "ANY");
+			} catch (Exception ex) {
+                UnityEngine.Debug.LogException(ex);
+				ETGModConsole.Log(ex.Message, false);
+				ETGModConsole.Log(ex.StackTrace, false);
+			}
+		}
+        
         public static void SetupItem(PickupObject item, string shortDesc, string longDesc, string idPool = "expandItems") {
 			try {
 				item.encounterTrackable = null;

@@ -10,9 +10,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 	public class ExpandSpawnGlitchObjectOnDeath : OnDeathBehavior {
         
         public ExpandSpawnGlitchObjectOnDeath() {
-            GameObject EXObjectDatabase = new GameObject("EX Object Database Instance", new Type[] { typeof(ExpandObjectDatabase) }) { layer = 0 };
-            ExpandObjectDatabase objectDatabase = EXObjectDatabase.GetComponent<ExpandObjectDatabase>();
-
             deathType = DeathType.Death;
             preDeathDelay = 0f;
             chanceToSpawn = 1f;
@@ -72,8 +69,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 ExpandObjectDatabase.CultistHoodBowLeft,
                 ExpandObjectDatabase.CultistHoodBowRight
             };
-            Destroy(EXObjectDatabase);
-            objectDatabase = null;
         }
 
         public GameObject[] objectsToSpawn;

@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
       <HintPath>..\Dependencies\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>..\Dependencies\UnityEngine.ParticleSystemModule.dll</HintPath>
@@ -188,7 +189,6 @@
     <Compile Include="ItemAPI\Items\GoldensRevolvers\WestBrosRevolverGenerator.cs" />
     <Compile Include="ItemAPI\Items\PowBlock.cs" />
     <Compile Include="ItemAPI\Items\RockSlide.cs" />
-    <Compile Include="ItemAPI\Items\TableTechExpand.cs" />
     <Compile Include="ItemAPI\Items\TheLeadKey.cs" />
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
@@ -235,6 +235,7 @@
     <Compile Include="ExpandUtilities\RoomBuilder.cs" />
     <Compile Include="ExpandPrefab\ExpandRoomPrefabs.cs" />
     <Compile Include="ExpandAssets.cs" />
+    <Compile Include="SpriteAPI\SpriteAPI.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

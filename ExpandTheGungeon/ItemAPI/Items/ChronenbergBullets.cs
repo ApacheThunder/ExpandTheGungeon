@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using UnityEngine;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -10,7 +11,9 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             CronebergItemObject = expandSharedAssets1.LoadAsset<GameObject>("Cronenberg Bullets");
-            ItemBuilder.AddSpriteToObject(CronebergItemObject, expandSharedAssets1.LoadAsset<Texture2D>("cronenbergbullets"), false, false);
+            tk2dSprite CronebergItemSprite = CronebergItemObject.AddComponent<tk2dSprite>();
+            CronebergItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "cronenbergbullets");
+            // ItemBuilder.AddSpriteToObject(CronebergItemObject, expandSharedAssets1.LoadAsset<Texture2D>("cronenbergbullets"));
 
             CronenbergBullets chronenbergBullets = CronebergItemObject.AddComponent<CronenbergBullets>();
             

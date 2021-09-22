@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ExpandTheGungeon {
 	
-	public static class ExpandAssets {
+	public class ExpandAssets {
         
         public enum AssetSource { BraveResources, SharedAuto1, SharedAuto2, EnemiesBase, FlowBase }
 
@@ -38,9 +38,9 @@ namespace ExpandTheGungeon {
             
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
             Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
-
+            
             AssetBundle m_ExpandSharedAssets1 = null;
-
+            
             try {
                 m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder();
                 if (m_ExpandSharedAssets1 != null) {

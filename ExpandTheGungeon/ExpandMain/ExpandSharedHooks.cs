@@ -19,7 +19,8 @@ namespace ExpandTheGungeon.ExpandMain {
     public class ExpandSharedHooks {
         public static Hook cellhook;
         public static Hook enterRoomHook;
-
+        
+        public static Hook escapeRopeCanBeUsedHook;
         public static Hook clearPerLevelDataHook;
         public static Hook clearActiveGameDataHook;
         public static Hook wallmimichook;
@@ -53,6 +54,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook throwGunHook;
         public static Hook onContinueGameSelectedHook;
         public static Hook getNextTilesetHook;
+
         
         public static bool IsHooksInstalled = false;
         
@@ -98,6 +100,13 @@ namespace ExpandTheGungeon.ExpandMain {
 
         
         public static void InstallRequiredHooks() {
+            
+            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EscapeRopeItem.CanBeUsed Hook..."); }
+            escapeRopeCanBeUsedHook = new Hook(
+                typeof(EscapeRopeItem).GetMethod("CanBeUsed", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(EscapeRopCanBeUsedHook), BindingFlags.Public | BindingFlags.Instance),
+                typeof(EscapeRopeItem)
+            );
 
             if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearPerLevelData Hook...."); }
             clearPerLevelDataHook = new Hook(
@@ -329,12 +338,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("ThrowGunHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Gun)
             );
-            
+                    
             return;
         }
-
-
-
+        
+        public bool EscapeRopCanBeUsedHook(Func<EscapeRopeItem, PlayerController, bool> orig, EscapeRopeItem self, PlayerController user) {
+            return orig(self, user) && user?.CurrentRoom != null && !user.CurrentRoom.IsActuallyWildWestEntrance();
+        }
+        
         private void ClearPerLevelData(Action<GameManager> orig, GameManager self)
         {
             ExpandStaticReferenceManager.ClearStaticPerLevelData();
@@ -857,12 +868,14 @@ namespace ExpandTheGungeon.ExpandMain {
 
         // These hooks ensure our custom music/audio gets stopped properly.
         private void FlushMusicAudioHook(Action<GameManager>orig, GameManager self) {
-            orig(self);
+            AkSoundEngine.PostEvent("Stop_EX_MUS_BootlegMusic_01", self.gameObject);
             AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
+            orig(self);
         }
 
         private void SwitchToStateHook(Action<DungeonFloorMusicController, DungeonFloorMusicController.DungeonMusicState> orig, DungeonFloorMusicController self, DungeonFloorMusicController.DungeonMusicState targetState) {
             AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
+            AkSoundEngine.PostEvent("Stop_EX_MUS_BootlegMusic_01", self.gameObject);
             orig(self, targetState);
         }
 
@@ -1470,6 +1483,15 @@ namespace ExpandTheGungeon.ExpandMain {
                     return 5;
             }
         }
+
+        public bool IsWildWestEntranceHook(Func<RoomHandler, bool> orig, RoomHandler self) {
+            if (self?.GetRoomName() != null && ExpandRoomPrefabs.Expand_West_Entrance?.name != null) {
+                return self.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_Entrance.name.ToLower()) || orig(self);
+            } else {
+                return orig(self);
+            }
+        }
+
     }
 }
 

@@ -48,7 +48,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             EXSecretDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretDoor_MinimapIcon");
-            ItemBuilder.AddSpriteToObject(EXSecretDoorMinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_MinimapIcon"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoorMinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_MinimapIcon"));
 
             EXSecretDoor = expandSharedAssets1.LoadAsset<GameObject>("EX Secret Door Entrance");            
             EXSecretDoor_Frame_Top = EXSecretDoor.transform.Find("EX Secret Door Top").gameObject;
@@ -64,11 +64,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSecretDoor_Background.transform.parent = EXSecretDoor.transform;
             EXSecretDoor_Light.transform.parent = EXSecretDoor.transform;
 
-            ItemBuilder.AddSpriteToObject(EXSecretDoor, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Open_00"), false, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Top, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Top"), false, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Bottom, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Bottom"), false, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Background, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Background"), false, false);
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Light, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Red"), false, false);
+            ItemBuilder.AddSpriteToObject(EXSecretDoor, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Open_00"));
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Top, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Top"));
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Bottom, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Bottom"));
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Background, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Background"));
+            ItemBuilder.AddSpriteToObject(EXSecretDoor_Light, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Red"));
 
 
             tk2dSprite m_DoorBorderTopSprite = EXSecretDoor_Frame_Top.GetComponent<tk2dSprite>();

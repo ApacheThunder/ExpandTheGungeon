@@ -12,14 +12,17 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static int GtlichFloorMasterRoundID = -1;
 
-        public static GameObject CanyonMasterRound;
+        public static GameObject GlitchFloorMasterRound;
 
         public static void Init(AssetBundle expandSharedAssets1) {
 
             // Master round for Custom Secret Floor via Hollow
-            CanyonMasterRound = expandSharedAssets1.LoadAsset<GameObject>("Corrupted Master Round");
-            BasicStatPickup CanyonMasterRoundItem = CanyonMasterRound.AddComponent<BasicStatPickup>();
-            ItemBuilder.AddSpriteToObject(CanyonMasterRound, expandSharedAssets1.LoadAsset<Texture2D>("glitchround"), false, false);
+            GlitchFloorMasterRound = expandSharedAssets1.LoadAsset<GameObject>("Corrupted Master Round");
+            tk2dSprite GlitchFloorMasterRoundItemSprite = GlitchFloorMasterRound.AddComponent<tk2dSprite>();
+            GlitchFloorMasterRoundItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "glitchround");
+
+            BasicStatPickup CanyonMasterRoundItem = GlitchFloorMasterRound.AddComponent<BasicStatPickup>();
+            // ItemBuilder.AddSpriteToObject(CanyonMasterRound, expandSharedAssets1.LoadAsset<Texture2D>("glitchround"));
             string shortDesc = "Corrupted Chamber";
             string longDesc = "This weird artifact indicates mastery of... somewhere";
             ItemBuilder.SetupItem(CanyonMasterRoundItem, shortDesc, longDesc, "ex");

@@ -10,25 +10,37 @@ using ExpandTheGungeon.ExpandMain;
 
 namespace ExpandTheGungeon {
 
-    public class ExpandObjectMods : MonoBehaviour {
+    public class ExpandObjectMods {
 
-        public static object[] HeapArray;
+        private static object[] Heap;
+
+        public static void ExpandHeapSize(int megabytes) {
+            if (Heap != null) { Heap = null; }
+            Heap = new object[megabytes];
+            for (int i = 0; i < megabytes; i++) { Heap[i] = new byte[102400]; }
+            System.GC.KeepAlive(Heap);
+            System.GC.Collect();
+        }
 
         public static void InitSpecialMods() {
             ExpandStats.randomSeed = Random.value;
+
+            if (ExpandStats.UseExpandedHeap) {
+                if (SystemInfo.systemMemorySize > 10240) {
+                    ExpandHeapSize(8096);
+                } else if (SystemInfo.systemMemorySize > 8192) {
+                    ExpandHeapSize(6144);
+                } else if (SystemInfo.systemMemorySize > 6144) {
+                    ExpandHeapSize(4096);
+                }
+            }
 
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
             
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
                 List<AGDEnemyReplacementTier> m_cachedReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
-                // Removes special enemies added after the secret floor
-                for (int i = 0; i < m_cachedReplacementTiers.Count; i++) {
-                    if (m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_forge") | m_cachedReplacementTiers[i].Name.ToLower().EndsWith("_hell")) {
-                        m_cachedReplacementTiers.Remove(m_cachedReplacementTiers[i]);
-                    }
-                }
                 // Add some of the new FTA enemies to the old secret floors
-                ExpandEnemyReplacements.Init(m_cachedReplacementTiers);
+                if (m_cachedReplacementTiers != null) { ExpandEnemyReplacements.Init(m_cachedReplacementTiers); }
             }
 
             InitObjectMods(GameManager.Instance.Dungeon);
@@ -89,8 +101,8 @@ namespace ExpandTheGungeon {
             if (ExpandStats.EnableExpandedGlitchFloors && (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk)) {
                 
                 if (!dungeon.IsGlitchDungeon && !ExpandDungeonFlow.isGlitchFlow && playerHasCorruptedJunk) {
-                    if (FindObjectsOfType<AIActor>() != null && FindObjectsOfType<AIActor>().Length > 0) {
-                        foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
+                    if (Object.FindObjectsOfType<AIActor>() != null && UnityEngine.Object.FindObjectsOfType<AIActor>().Length > 0) {
+                        foreach (AIActor enemy in Object.FindObjectsOfType<AIActor>()) {
                             if (!enemy.IsBlackPhantom && !enemy.healthHaver.IsBoss && !string.IsNullOrEmpty(enemy.EnemyGuid) && enemy.optionalPalette == null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted"))) {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid) && enemy.GetAbsoluteParentRoom() != null && !string.IsNullOrEmpty(enemy.GetAbsoluteParentRoom().GetRoomName()) && enemy.GetAbsoluteParentRoom().GetRoomName().ToLower().StartsWith("corrupted")) {
                                     if (Random.value <= 0.6f) {
@@ -112,12 +124,12 @@ namespace ExpandTheGungeon {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
 
                     if (ExpandStats.EnableGlitchFloorScreenShader) {
-                        GameObject EXGlitchFloorScreenFX = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+                        GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
                         EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
                     }
                     
-                    if (FindObjectsOfType<AIActor>() != null && FindObjectsOfType<AIActor>().Length > 0) {
-                        foreach (AIActor enemy in FindObjectsOfType<AIActor>()) {
+                    if (Object.FindObjectsOfType<AIActor>() != null && Object.FindObjectsOfType<AIActor>().Length > 0) {
+                        foreach (AIActor enemy in Object.FindObjectsOfType<AIActor>()) {
                             float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
                             float RandomDispFloat = Random.Range(0.06f, 0.08f);
                             float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
@@ -138,8 +150,8 @@ namespace ExpandTheGungeon {
                         }
                     }
                     
-                    if (FindObjectsOfType<BraveBehaviour>() != null && FindObjectsOfType<BraveBehaviour>().Length > 0) {
-                        foreach (BraveBehaviour targetObject in FindObjectsOfType<BraveBehaviour>()) {
+                    if (Object.FindObjectsOfType<BraveBehaviour>() != null && Object.FindObjectsOfType<BraveBehaviour>().Length > 0) {
+                        foreach (BraveBehaviour targetObject in Object.FindObjectsOfType<BraveBehaviour>()) {
                             if (Random.value <= 0.05f && targetObject.gameObject && !targetObject.gameObject.GetComponent<AIActor>() && !targetObject.gameObject.GetComponent<Chest>()) {
                                 if (string.IsNullOrEmpty(targetObject.gameObject.name) | (!targetObject.gameObject.name.ToLower().StartsWith("glitchtile") && !targetObject.gameObject.name.ToLower().StartsWith("ex secret door") && !targetObject.gameObject.name.ToLower().StartsWith("lock") && !targetObject.gameObject.name.ToLower().StartsWith("chest"))) {
                                     float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
@@ -157,12 +169,6 @@ namespace ExpandTheGungeon {
                     // Destroy(m_GlitchEnemyRandomizer);
                     MaybeSetupGlitchEnemyStun(dungeon);
                 }
-            }
-            if (ExpandStats.UseExpandedHeap) {
-                HeapArray = new object[204800];
-                for (int i = 0; i < 204800; i++) { HeapArray[i] = new byte[2048]; }
-                System.GC.KeepAlive(HeapArray);
-                System.GC.Collect();
             }
         }
 
