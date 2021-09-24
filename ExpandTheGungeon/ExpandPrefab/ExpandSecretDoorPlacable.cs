@@ -6,6 +6,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 using UnityEngine;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -48,7 +49,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             EXSecretDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretDoor_MinimapIcon");
-            ItemBuilder.AddSpriteToObject(EXSecretDoorMinimapIcon, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_MinimapIcon"));
+            SpriteSerializer.AddSpriteToObject(EXSecretDoorMinimapIcon, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_MinimapIcon");
 
             EXSecretDoor = expandSharedAssets1.LoadAsset<GameObject>("EX Secret Door Entrance");            
             EXSecretDoor_Frame_Top = EXSecretDoor.transform.Find("EX Secret Door Top").gameObject;
@@ -64,43 +65,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSecretDoor_Background.transform.parent = EXSecretDoor.transform;
             EXSecretDoor_Light.transform.parent = EXSecretDoor.transform;
 
-            ItemBuilder.AddSpriteToObject(EXSecretDoor, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Open_00"));
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Top, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Top"));
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Frame_Bottom, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_Bottom"));
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Background, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Background"));
-            ItemBuilder.AddSpriteToObject(EXSecretDoor_Light, expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Red"));
-
-
-            tk2dSprite m_DoorBorderTopSprite = EXSecretDoor_Frame_Top.GetComponent<tk2dSprite>();
+            tk2dSprite m_DoorSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Open_00");
+            tk2dSprite m_DoorBorderTopSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor_Frame_Top, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Frame_Top");
+            tk2dSprite m_DoorBorderBottomSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor_Frame_Bottom, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Frame_Bottom");
+            tk2dSprite m_DoorBackgroundSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor_Background, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Background");
+            tk2dSprite m_DoorLightSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor_Light, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Light_Red");
             m_DoorBorderTopSprite.HeightOffGround = 3;
-            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Frame_NoDecal_Top"), m_DoorBorderTopSprite.Collection);
-
-            tk2dSprite m_DoorBorderBottomSprite = EXSecretDoor_Frame_Bottom.GetComponent<tk2dSprite>();
             m_DoorBorderBottomSprite.HeightOffGround = -0.5f;
-            
-            tk2dSprite m_DoorSprite = EXSecretDoor.GetComponent<tk2dSprite>();
             m_DoorSprite.HeightOffGround = -1.5f;
-
-            tk2dSprite m_DoorBackgroundSprite = EXSecretDoor_Background.GetComponent<tk2dSprite>();
             m_DoorBackgroundSprite.HeightOffGround = -2f;
-
-            tk2dSprite m_DoorLightSprite = EXSecretDoor_Light.GetComponent<tk2dSprite>();
             m_DoorLightSprite.HeightOffGround = 3.5f;
-               
-            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EXSecretDoor_Light_Green"), m_DoorLightSprite.Collection);
             
-            foreach (string spriteName in m_DoorOpenSprites) {
-                if (spriteName != "EXSecretDoor_Open_00") {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_DoorSprite.Collection);
-                }
-            }
-            foreach (string spriteName in m_DoorCloseSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_DoorSprite.Collection); }
-
             ExpandUtility.GenerateSpriteAnimator(EXSecretDoor, ClipFps: 10);
 
             tk2dSpriteAnimator m_DoorAnimator = EXSecretDoor.GetComponent<tk2dSpriteAnimator>();
-            ExpandUtility.AddAnimation(m_DoorAnimator, m_DoorSprite.Collection, m_DoorOpenSprites, "door_open", frameRate: 10);
-            ExpandUtility.AddAnimation(m_DoorAnimator, m_DoorSprite.Collection, m_DoorCloseSprites, "door_close", frameRate: 10);
+            ExpandUtility.AddAnimation(m_DoorAnimator, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorOpenSprites, "door_open", frameRate: 10);
+            ExpandUtility.AddAnimation(m_DoorAnimator, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorCloseSprites, "door_close", frameRate: 10);
 
             ExpandUtility.GenerateOrAddToRigidBody(EXSecretDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 64), offset: new IntVector2(16, 0));
             ExpandUtility.GenerateOrAddToRigidBody(EXSecretDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(16, 14));
@@ -164,15 +144,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_LockObject2.gameObject.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
             m_LockObject2.GetComponent<InteractableLock>().sprite.HeightOffGround = 1.7f;
             m_LockObject2.GetComponent<InteractableLock>().sprite.UpdateZDepth();
-            // m_LockObject2.SetActive(false);
             m_LockObject2.transform.SetParent(EXSecretDoor_Normal.transform, true);
             m_SecretDoor2Component.Lock = m_LockObject2.GetComponent<InteractableLock>();
-
-
-            /*m_ExitDoorComponent.DoorBackgroundObject.SetActive(false);
-            m_ExitDoorComponent.DoorBottomBorderObject.SetActive(false);
-            m_ExitDoorComponent.DoorLightObject.SetActive(false);
-            m_ExitDoorComponent.DoorTopBorderObject.SetActive(false);*/
+            
             EXSecretDoor_Normal.SetActive(false);
             EXSecretDoorDestination.SetActive(false);
             FakePrefab.MarkAsFakePrefab(EXSecretDoor_Normal);
@@ -248,19 +222,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
             
             m_parentRoom.RegisterInteractable(Lock);
-
-            /*if (isHollowsElevator) {
-                List<IntVector2> CachedPositions = new List<IntVector2>();
-                IntVector2 RandomGlitchEnemyPosition1 = ExpandObjectDatabase.GetRandomAvailableCellForPlacable(GameManager.Instance.Dungeon, m_parentRoom, CachedPositions, false, true);
-                IntVector2 RandomGlitchEnemyPosition2 = ExpandObjectDatabase.GetRandomAvailableCellForPlacable(GameManager.Instance.Dungeon, m_parentRoom, CachedPositions, false, true);
-                IntVector2 RandomGlitchEnemyPosition3 = ExpandObjectDatabase.GetRandomAvailableCellForPlacable(GameManager.Instance.Dungeon, m_parentRoom, CachedPositions, false, true);
-                ExpandGlitchedEnemies m_GlitchEnemyDatabase = new ExpandGlitchedEnemies();
-                m_GlitchEnemyDatabase.SpawnGlitchedRat(m_parentRoom, RandomGlitchEnemyPosition1);
-                m_GlitchEnemyDatabase.SpawnGlitchedRat(m_parentRoom, RandomGlitchEnemyPosition2);
-                m_GlitchEnemyDatabase.SpawnGlitchedRat(m_parentRoom, RandomGlitchEnemyPosition3);
-                m_GlitchEnemyDatabase = null;
-                CachedPositions.Clear();
-            }*/
             
             if (MinimapIcon) {
                 Minimap.Instance.RegisterRoomIcon(m_parentRoom, MinimapIcon, false);

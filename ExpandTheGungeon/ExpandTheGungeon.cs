@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using Dungeonator;
 using MonoMod.RuntimeDetour;
+using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
@@ -40,9 +41,7 @@ namespace ExpandTheGungeon {
         public static readonly string ConsoleCommandName = "expand";
 
         private static List<string> itemList;
-
-        private static bool m_ShotGunSecretWasActive = false;
-
+        
         private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
 
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
@@ -141,7 +140,8 @@ namespace ExpandTheGungeon {
             ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
 
             // Init Custom Sprite Collections
-            ExpandPrefabs.InitCustomSpriteCollections(expandSharedAssets1);
+            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1);
+            ExpandCustomEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
 
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
@@ -189,9 +189,7 @@ namespace ExpandTheGungeon {
 
             InitConsoleCommands(ConsoleCommandName);
 
-            if (ExpandStats.ShotgunKinSecret | ExpandStats.EnableTestDungeonFlow | ExpandStats.EnableLanguageFix) {
-                GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
-            }
+            if (ExpandStats.EnableTestDungeonFlow | ExpandStats.EnableLanguageFix) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
 
             if (ExpandStats.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
@@ -234,29 +232,6 @@ namespace ExpandTheGungeon {
             if (ExpandStats.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
                 StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-            }
-            if (ExpandStats.ShotgunKinSecret) {
-                CharacterCostumeSwapper[] m_Characters = UnityEngine.Object.FindObjectsOfType<CharacterCostumeSwapper>();
-                if (m_Characters != null && m_Characters.Length > 0) {
-                    CharacterCostumeSwapper BulletManSelector = null;
-                    foreach (CharacterCostumeSwapper m_Character in m_Characters) {
-                        if (m_Character?.TargetLibrary?.name == "Playable_Shotgun_Man_Swap_Animation") {
-                            BulletManSelector = m_Character;
-                            break;
-                        }
-                    }
-                    yield return null;
-                    if (BulletManSelector) {
-                        bool Allow = (GameStatsManager.Instance.GetFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05) && GameStatsManager.Instance.GetCharacterSpecificFlag(BulletManSelector.TargetCharacter, CharacterSpecificGungeonFlags.KILLED_PAST));
-                        if (Allow) {
-                            FieldInfo m_active = typeof(CharacterCostumeSwapper).GetField("m_active", BindingFlags.Instance | BindingFlags.NonPublic);
-                            m_active.SetValue(BulletManSelector, true);
-                            BulletManSelector.AlternateCostumeSprite.renderer.enabled = true;
-                            BulletManSelector.CostumeSprite.renderer.enabled = false;
-                            m_ShotGunSecretWasActive = true;
-                        }
-                    }
-                }
             }
             if (ExpandStats.EnableTestDungeonFlow) {
                 GameManager.Instance.InjectedFlowPath = ExpandStats.TestFlow;
@@ -303,9 +278,7 @@ namespace ExpandTheGungeon {
             
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
-            if ((m_ShotGunSecretWasActive && ExpandStats.ShotgunKinSecret) | ExpandStats.EnableTestDungeonFlow) {
-                GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
-            }
+            if (ExpandStats.EnableTestDungeonFlow) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
@@ -318,6 +291,7 @@ namespace ExpandTheGungeon {
 
         private void InitConsoleCommands(string MainCommandName) {
             ETGModConsole.Commands.AddGroup(MainCommandName, ExpandConsoleInfo);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("createSpriteCollection", ExpandSerializeCollection);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("dump_layout", ExpandDumpLayout);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("debug", ExpandDebug);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
@@ -325,7 +299,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("toggleheapsize", ExpandToggleHeapSetting);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegcstats", ExpandToggleGCStats);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegcstats", ExpandToggleGCStats);            
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
@@ -548,78 +522,7 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandTestCommand(string[] consoleText) {
-
-            List<string> spritePaths = new List<string>() {
-                "babygoodhammer",
-                "babygoodhammer_spawn_00",
-                "babygoodhammer_spawn_01",
-                "babygoodhammer_spawn_02",
-                "babygoodhammer_spawn_03",
-                "babygoodhammer_spawn_04",
-                "babygoodhammer_spawn_05",
-                "babygoodhammer_spawn_06",
-                "babygoodhammer_spawn_07",
-                "babygoodhammer_spawn_08",
-                "babygoodhammer_spawn_09",
-                "babygoodhammer_spawn_10",
-                "babygoodhammer_spawn_11",
-                "babygoodhammer_spawn_12",
-                "babygoodhammer_spawn_13",
-                "babygoodhammer_spawn_14",
-                "babygoodhammer_spawn_15",
-                "babygoodhammer_spawn_16",
-                "babygoodhammer_spawn_17",
-                "babygoodhammer_spawn_18",
-                "babygoodhammer_spawn_19",
-                "babygoodhammer_spawn_20",
-                "babygoodhammer_spawn_21",
-                "babygoodhammer_spawn_22",
-                "babygoodhammer_spawn_23",
-                "babygoodhammer_spawn_24",
-                "babygoodhammer_spawn_25",
-                "babysitter",
-                "cronenbergbullets",
-                "corrupted_poopsack_01",
-                "corrupted_poopsack_02",
-                "corrupted_poopsack_03",
-                "corrupted_poopsack_04",
-                "corrupted_poopsack_05",
-                "corrupted_poopsack_06",
-                "corrupted_poopsack_07",
-                "corrupted_poopsack_08",
-                "corrupted_poopsack_09",
-                "corrupted_poopsack_10",
-                "corruptionbomb",
-                "corruptionbomb_minimapicon",
-                "corruptionbomb_spin_01",
-                "corruptionbomb_spin_02",
-                "corruptionbomb_spin_03",
-                "corruptionbomb_spin_04",
-                "corruptionbomb_spin_05",
-                "corruptionbomb_spin_06",
-                "corruptionbomb_spin_07",
-                "corruptionbomb_spin_08",
-                "corruptionbomb_spin_09",
-                "corruptionbomb_spin_10",
-                "cursedbrick",
-                "glitchround",
-                "ex_mimiclay",
-                "PowBlock",
-                "PowBlock_Used",
-                "rockslide",
-                "plunger_fire_001",
-                "plunger_fire_002",
-                "plunger_fire_003",
-                "plunger_fire_004",
-                "plunger_fire_005",
-                "plunger_fire_006",
-                "tabletech_assassin",
-                "theleadkey",
-                "junglecrest"
-            };
-
-            SpriteAPI.SpriteSerializer.SerializeSpriteCollection("EXItemCollection", spritePaths, 256, 256, 256);
-
+            
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
@@ -740,6 +643,90 @@ namespace ExpandTheGungeon {
 
             // 
             return;
+        }
+
+        private void ExpandSerializeCollection(string[] consoleText) {
+            if (consoleText.Length == 3) {
+                List<string> spritePaths = new List<string>() {
+                    "Western_Bros_Hand",
+                    "gr_angel_rev_fire_001",
+                    "gr_angel_rev_fire_002",
+                    "gr_angel_rev_fire_003",
+                    "gr_angel_rev_fire_004",
+                    "gr_angel_rev_idle_001",
+                    "gr_angel_rev_reload_001",
+                    "gr_angel_rev_reload_002",
+                    "gr_angel_rev_reload_003",
+                    "gr_angel_rev_reload_004",
+                    "gr_black_revolver_fire_001",
+                    "gr_black_revolver_fire_002",
+                    "gr_black_revolver_fire_003",
+                    "gr_black_revolver_fire_004",
+                    "gr_black_revolver_idle_001",
+                    "gr_black_revolver_idle_002",
+                    "gr_black_revolver_idle_003",
+                    "gr_black_revolver_idle_004",
+                    "gr_black_revolver_projectile_001",
+                    "gr_black_revolver_projectile_002",
+                    "gr_black_revolver_projectile_003",
+                    "gr_black_revolver_projectile_004",
+                    "gr_black_revolver_projectile_005",
+                    "gr_black_revolver_projectile_006",
+                    "gr_black_revolver_reload_001",
+                    "gr_black_revolver_reload_002",
+                    "gr_black_revolver_reload_003",
+                    "gr_black_revolver_reload_004",
+                    "gr_black_revolver_reload_005",
+                    "gr_black_revolver_reload_006",
+                    "gr_golden_revolver_fire_001",
+                    "gr_golden_revolver_fire_002",
+                    "gr_golden_revolver_fire_003",
+                    "gr_golden_revolver_fire_004",
+                    "gr_golden_revolver_idle_001",
+                    "gr_golden_revolver_idle_002",
+                    "gr_golden_revolver_idle_003",
+                    "gr_golden_revolver_idle_004",
+                    "gr_golden_revolver_reload_001",
+                    "gr_golden_revolver_reload_002",
+                    "gr_golden_revolver_reload_003",
+                    "gr_golden_revolver_reload_004",
+                    "gr_golden_revolver_reload_005",
+                    "gr_golden_revolver_reload_006",
+                    "gr_nome_rev_enemy_pre_fire_001",
+                    "gr_nome_rev_enemy_pre_fire_002",
+                    "gr_nome_rev_enemy_pre_fire_003",
+                    "gr_nome_rev_fire_001",
+                    "gr_nome_rev_fire_002",
+                    "gr_nome_rev_fire_003",
+                    "gr_nome_rev_fire_004",
+                    "gr_nome_rev_idle_001",
+                    "gr_nome_rev_reload_001",
+                    "gr_nome_rev_reload_002",
+                    "gr_nome_rev_reload_003",
+                    "gr_nome_rev_reload_004",
+                    "gr_tuc_rev_enemy_pre_fire_001",
+                    "gr_tuc_rev_enemy_pre_fire_002",
+                    "gr_tuc_rev_enemy_pre_fire_003",
+                    "gr_tuc_rev_fire_001",
+                    "gr_tuc_rev_fire_002",
+                    "gr_tuc_rev_fire_003",
+                    "gr_tuc_rev_fire_004",
+                    "gr_tuc_rev_idle_001",
+                    "gr_tuc_rev_reload_001",
+                    "gr_tuc_rev_reload_002",
+                    "gr_tuc_rev_reload_003",
+                    "gr_tuc_rev_reload_004",
+                    "gr_angel_rev_enemy_pre_fire_001",
+                    "gr_angel_rev_enemy_pre_fire_002",
+                    "gr_angel_rev_enemy_pre_fire_003"
+                };
+
+                int X = int.Parse(consoleText[1]);
+                int Y = int.Parse(consoleText[2]);
+                SpriteSerializer.SerializeSpriteCollection(consoleText[0], spritePaths, X, Y);
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.SpriteAPI;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ItemAPI {
@@ -13,10 +14,8 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void Init(AssetBundle expandSharedAssets1) {
 
             CursedBrickObject = expandSharedAssets1.LoadAsset<GameObject>("Cursed Brick");
-            tk2dSprite CursedBrickItemSprite = CursedBrickObject.AddComponent<tk2dSprite>();
-            CursedBrickItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "cursedbrick");
-            // ItemBuilder.AddSpriteToObject(CursedBrickObject, expandSharedAssets1.LoadAsset<Texture2D>("cursedbrick"));
-
+            SpriteSerializer.AddSpriteToObject(CursedBrickObject, ExpandPrefabs.EXItemCollection, "cursedbrick");
+            
             CursedBrick cursedBrick = CursedBrickObject.AddComponent<CursedBrick>();
             
             string shortDesc = "Fragment of a living wall...";

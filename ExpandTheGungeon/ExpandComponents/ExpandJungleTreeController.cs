@@ -152,7 +152,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void ConfigureOnPlacement(RoomHandler room) {
             m_ParentRoom = room;
 
-            Minimap.Instance.RegisterRoomIcon(m_ParentRoom, ExpandPrefabs.EXJungleTree_MinimapIcon, false);
+            // Minimap.Instance.RegisterRoomIcon(m_ParentRoom, ExpandPrefabs.EXJungleTree_MinimapIcon, false);
 
             IntVector2 basePosition = (transform.position.IntXY(VectorConversions.Floor) + PitOffset);
             IntVector2 cellPos = basePosition;

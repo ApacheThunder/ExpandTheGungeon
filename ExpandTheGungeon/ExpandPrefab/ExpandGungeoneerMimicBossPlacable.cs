@@ -6,6 +6,7 @@ using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Reflection;
 using FullInspector;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -276,18 +277,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
             MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
             MimicMirrorObject.transform.parent = gameObject.transform;
-            ItemBuilder.AddSpriteToObject(MimicMirrorObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_Base"));
-
-            tk2dSprite MirrorBaseSprite = MimicMirrorObject.GetComponent<tk2dSprite>();
-
-            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_Broken"), MirrorBaseSprite.Collection);
             
-            foreach (string SpriteName in m_MirrorMimicFadeInSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(SpriteName), MirrorBaseSprite.Collection); }
-            foreach (string SpriteName in m_MirrorCrackSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(SpriteName), MirrorBaseSprite.Collection); }
+            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Broken");
             
             ExpandUtility.GenerateSpriteAnimator(MimicMirrorObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), MirrorBaseSprite.Collection, m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), MirrorBaseSprite.Collection, m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             
             ExpandGungeoneerMimicIntroDoer playerMimicBossIntroDoer = SpawnedBossObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
             playerMimicBossIntroDoer.MirrorBase = MimicMirrorObject;
@@ -298,12 +293,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject MimicMirrorFXObject = new GameObject("MirrorShatterFX");
             MimicMirrorFXObject.transform.position = (MimicMirrorObject.transform.position - Vector3.one);
             MimicMirrorFXObject.transform.parent = gameObject.transform.parent;
-            ItemBuilder.AddSpriteToObject(MimicMirrorFXObject, expandSharedAssets1.LoadAsset<Texture2D>("PlayerMimicMirror_ShatterDebris_01"));
-            foreach (string SpriteName in m_MirrorShatterFXSprites) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(SpriteName), MimicMirrorFXObject.GetComponent<tk2dSprite>().Collection); }
+
+            tk2dSprite MimicMirrorFXSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorFXObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_ShatterDebris_01");
+            MimicMirrorFXSprite.HeightOffGround = 3.5f;
+            MimicMirrorFXSprite.UpdateZDepth();
+            
             ExpandUtility.GenerateSpriteAnimator(MimicMirrorFXObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(MimicMirrorFXObject.GetComponent<tk2dSpriteAnimator>(), MimicMirrorFXObject.GetComponent<tk2dSprite>().Collection, m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
-            MimicMirrorFXObject.GetComponent<tk2dSprite>().HeightOffGround = 3.5f;
-            MimicMirrorFXObject.GetComponent<tk2dSprite>().UpdateZDepth();
+            ExpandUtility.AddAnimation(MimicMirrorFXObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            
             playerMimicBossIntroDoer.MirrorShatterFX = MimicMirrorFXObject;
             MimicMirrorFXObject.SetActive(false);
 

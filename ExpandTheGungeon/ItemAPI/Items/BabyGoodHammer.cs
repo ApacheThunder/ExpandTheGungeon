@@ -7,6 +7,7 @@ using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using System;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -23,11 +24,8 @@ namespace ExpandTheGungeon.ItemAPI {
             
             hammerItemObject = expandSharedAssets1.LoadAsset<GameObject>("Baby Good Hammer");
             BabyGoodHammer babyGoodHammer = hammerItemObject.AddComponent<BabyGoodHammer>();
-            tk2dSprite babyGoodHammerSprite = hammerItemObject.AddComponent<tk2dSprite>();
-            babyGoodHammerSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babygoodhammer");
-            // ItemBuilder.AddSpriteToObject(hammerItemObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer"));
+            SpriteSerializer.AddSpriteToObject(hammerItemObject, ExpandPrefabs.EXItemCollection, "babygoodhammer");
             
-
             string shortDesc = "It's Hammer Time!";
 			string longDesc = "Summons a Dead Blow Hammer.\n\nIt's cry sounds a lot like a whistle.\n\nThe closer you are to the Forge, the more powerful the hammers will be.";
             // ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
@@ -38,10 +36,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             // Hammer Spawn FX Object
             hammerSpawnFX = expandSharedAssets1.LoadAsset<GameObject>("HammerSpawningFX");
-            tk2dSprite hammerSpawnFXSprite = hammerSpawnFX.AddComponent<tk2dSprite>();
-            hammerSpawnFXSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babygoodhammer_spawn_00");
-            // ItemBuilder.AddSpriteToObject(hammerSpawnFX, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_spawn_00"));
-            // tk2dBaseSprite spriteComponent = hammerSpawnFX.GetComponent<tk2dBaseSprite>();
+            tk2dSprite hammerSpawnFXSprite = SpriteSerializer.AddSpriteToObject(hammerSpawnFX, ExpandPrefabs.EXItemCollection, "babygoodhammer_spawn_00");
             
             List<string> spritePaths = new List<string>() {
                 "babygoodhammer_spawn_00",

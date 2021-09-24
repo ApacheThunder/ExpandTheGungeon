@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandComponents;
-
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -28,10 +28,8 @@ namespace ExpandTheGungeon.ItemAPI {
             string name = "Corruption Bomb";
             corruptionbomb = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb");
             corruptionbomb.name = name;
-            tk2dSprite CorruptionbombItemSprite = corruptionbomb.AddComponent<tk2dSprite>();
-            CorruptionbombItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "corruptionbomb");
-            // ItemBuilder.AddSpriteToObject(corruptionbomb, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb"));
-
+            SpriteSerializer.AddSpriteToObject(corruptionbomb, ExpandPrefabs.EXItemCollection, "corruptionbomb");
+            
             CorruptionBomb corruptionBombComponent = corruptionbomb.AddComponent<CorruptionBomb>();
             
             string shortDesc = "Causes widespread corruption.";
@@ -51,11 +49,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
             // Bomb Minimap Icon Object
             glitchBombMinimapObject = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb_MinimapIcon");
-            tk2dSprite CorruptionbombMinimapSprite = glitchBombMinimapObject.AddComponent<tk2dSprite>();
-            CorruptionbombMinimapSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "corruptionbomb_minimapicon");
-            // ItemBuilder.AddSpriteToObject(glitchBombMinimapObject, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb_minimapicon"));
-
-            // DontDestroyOnLoad(glitchBombMinimapObject);
+            SpriteSerializer.AddSpriteToObject(glitchBombMinimapObject, ExpandPrefabs.EXItemCollection, "corruptionbomb_minimapicon");
+            
             corruptionBombComponent.minimapIcon = glitchBombMinimapObject;
 
             List<string> spritePaths = new List<string>() {
@@ -73,16 +68,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             // Bomb Spawn FX Object
             glitchBombSpawnObject = expandSharedAssets1.LoadAsset<GameObject>("EXCorruptionBomb_Projectile");
-            tk2dSprite GlitchBombSpawnObjectSprite = glitchBombSpawnObject.AddComponent<tk2dSprite>();
-            GlitchBombSpawnObjectSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "corruptionbomb_spin_01");
-            // ItemBuilder.AddSpriteToObject(glitchBombSpawnObject, expandSharedAssets1.LoadAsset<Texture2D>("corruptionbomb_spin_01"));
-            // tk2dBaseSprite spriteComponent = glitchBombSpawnObject.GetComponent<tk2dBaseSprite>();
-
-            /*foreach (string spriteName in spritePaths) {
-                if (spriteName != "corruptionbomb_spin_01") {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), spriteComponent.Collection);
-                }
-            }*/
+            SpriteSerializer.AddSpriteToObject(glitchBombSpawnObject, ExpandPrefabs.EXItemCollection, "corruptionbomb_spin_01");
 
             ExpandUtility.GenerateSpriteAnimator(glitchBombSpawnObject, AlwaysIgnoreTimeScale: true);
             ExpandUtility.AddAnimation(glitchBombSpawnObject.GetComponent<tk2dSpriteAnimator>(), ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths, "CorruptionSpawn", frameRate: 7);

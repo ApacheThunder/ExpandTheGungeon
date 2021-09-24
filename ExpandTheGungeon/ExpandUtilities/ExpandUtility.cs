@@ -660,7 +660,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
 
             if (!targetObject.GetComponent<tk2dSprite>() && spriteSource) {
-                // ItemBuilder.AddSpriteToObject(targetObject, spriteResourcePath, false, isFakePrefab);
                 tk2dSprite newSprite = targetObject.AddComponent<tk2dSprite>();
                 DuplicateSprite(newSprite, spriteSource);
             }
@@ -994,9 +993,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static void GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
-            
             if (targetObject.GetComponent<tk2dSpriteAnimator>()) { Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
-
             tk2dSpriteAnimator newAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
             newAnimator.Library = library;
             newAnimator.DefaultClipId = DefaultClipId;
@@ -4089,6 +4086,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 IL_14D:;
             }
             return list.ToArray();
+        }
+
+        public static T InvokeMethod<T>(Type type, string methodName, object typeInstance = null, object[] methodParams = null) {
+            BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Public | (typeInstance == null ? BindingFlags.Static : BindingFlags.Instance);
+            return (T)type.GetMethod(methodName, bindingFlags).Invoke(typeInstance, methodParams);
         }
 
         public static object InvokeRefs<T0>(MethodInfo methodInfo, object o, T0 p0) {

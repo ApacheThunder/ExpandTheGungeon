@@ -1,4 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.SpriteAPI;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ItemAPI {
@@ -11,10 +12,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             MimiclayObject = expandSharedAssets1.LoadAsset<GameObject>("Mimiclay");
-            tk2dSprite MimiclayObjectItemSprite = MimiclayObject.AddComponent<tk2dSprite>();
-            MimiclayObjectItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "ex_mimiclay");
-            // ItemBuilder.AddSpriteToObject(MimiclayObject, expandSharedAssets1.LoadAsset<Texture2D>("ex_mimiclay"));
-
+            SpriteSerializer.AddSpriteToObject(MimiclayObject, ExpandPrefabs.EXItemCollection, "ex_mimiclay");
+            
             Mimiclay mimiClay = MimiclayObject.AddComponent<Mimiclay>();
             
             string shortDesc = "The Highest Form Of Flattery";

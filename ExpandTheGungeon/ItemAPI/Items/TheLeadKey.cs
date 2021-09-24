@@ -9,6 +9,7 @@ using ExpandTheGungeon.ExpandMain;
 using Pathfinding;
 using tk2dRuntime.TileMap;
 using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -20,10 +21,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             TheLeadKeyObject = expandSharedAssets1.LoadAsset<GameObject>("The Lead Key");
-            tk2dSprite TheLeadKeyItemSprite = TheLeadKeyObject.AddComponent<tk2dSprite>();
-            TheLeadKeyItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "theleadkey");
-            // ItemBuilder.AddSpriteToObject(TheLeadKeyObject, expandSharedAssets1.LoadAsset<Texture2D>("theleadkey"));
-
+            SpriteSerializer.AddSpriteToObject(TheLeadKeyObject, ExpandPrefabs.EXItemCollection, "theleadkey");
+            
             TheLeadKey theleadkey = TheLeadKeyObject.AddComponent<TheLeadKey>();
             string shortDesc = "Ancient Dungeons Beyond Space";
             string longDesc = "Takes you to a space that only exists in dreams, spitting you back out into the real world somewhere... else.";

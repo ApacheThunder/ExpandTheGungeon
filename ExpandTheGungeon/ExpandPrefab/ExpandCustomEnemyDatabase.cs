@@ -8,6 +8,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandComponents;
 using Gungeon;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
     
@@ -15,6 +16,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static Hook loadEnemyGUIDHook;
         public static Dictionary<string, GameObject> enemyPrefabDictionary = new Dictionary<string, GameObject>();
+
+        // SpriteCollections
+        public static GameObject BabyGoodHammerCollection;
+        public static GameObject BootlegBullatCollection;
+        public static GameObject BootlegBulletManCollection;
+        public static GameObject BootlegBulletManBandanaCollection;
+        public static GameObject BootlegShotgunManBlueCollection;
+        public static GameObject BootlegShotgunManRedCollection;
+        public static GameObject CronenbergCollection;
+        public static GameObject CronenbergTallCollection;
+        public static GameObject GungeoneerMimicCollection;
+        public static GameObject WestBrosCollection;
 
         // Companions
         public static GameObject HammerCompanionPrefab;
@@ -72,11 +85,23 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static string CronenbergGUID;
         public static string AggressiveCronenbergGUID;
         public static string MetalCubeGuyWestGUID;
-        // public static string KillStumpsGUID;
         public static string ParasiteBossGUID;
         public static string com4nd0GUID;
         public static string FriendlyCultistGUID;
         public static string corruptedEnemyGUID;
+
+        public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
+            BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
+            BootlegBullatCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BootlegBullatCollection", "BootlegBullat_Collection", "BootlegBullatCollection");
+            BootlegBulletManCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BootlegBulletManCollection", "BootlegBulletMan_Collection", "BootlegBulletManCollection");
+            BootlegBulletManBandanaCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BootlegBulletManBandanaCollection", "BootlegBulletManBandana_Collection", "BootlegBulletManBandanaCollection");
+            BootlegShotgunManBlueCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BootlegShotgunManBlueCollection", "BootlegShotgunManBlue_Collection", "BootlegShotgunManBlueCollection");
+            BootlegShotgunManRedCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BootlegShotgunManRedCollection", "BootlegShotgunManRed_Collection", "BootlegShotgunManRedCollection");
+            CronenbergCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "CronenbergCollection", "Cronenberg_Collection", "CronenbergCollection");
+            CronenbergTallCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "CronenbergTallCollection", "Cronenberg_Tall_Collection", "CronenbergTallCollection");
+            GungeoneerMimicCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "GungeoneerMimicCollection", "GungeoneerMimic_Collection", "GungeoneerMimicCollection");
+            WestBrosCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "WestBrosCollection", "WestBros_Collection", "WestBrosCollection");
+        }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {
             // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
@@ -327,31 +352,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "babygoodhammer_move_right_02",
                 "babygoodhammer_move_right_02"
             };
+            
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("babygoodhammer_idle_down_01"));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in IdleSpriteList) {
-                if (spriteName != "babygoodhammer_idle_down_01") {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
-            foreach (string spriteName in MoveLeftSpriteList) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection); }
-            foreach (string spriteName in MoveRightSpriteList) { SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection); }
-
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BabyGoodHammerCollection, "babygoodhammer_idle_down_01");
+                        
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, false, false, false, true, ClipFps: 6);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "Hammer_Idle_Down", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveLeftSpriteList, "Hammer_Move_Left", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveRightSpriteList, "Hammer_Move_Right", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-
-            // tk2dSprite newSprite = m_CachedTargetObject.AddComponent<tk2dSprite>();
-            // ExpandUtility.DuplicateSprite(newSprite, (m_SelectedPlayer.sprite as tk2dSprite));
-
-
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BabyGoodHammerCollection.GetComponent<tk2dSpriteCollectionData>(), IdleSpriteList, "Hammer_Idle_Down", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BabyGoodHammerCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "Hammer_Move_Left", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BabyGoodHammerCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "Hammer_Move_Right", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            
             ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "05145e1a-1a10-4797-b37e-a15bb26d7641", null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
@@ -533,23 +545,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "bullat_die_003",
                 "bullat_die_004"
             };
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleSpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != IdleSpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
             
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BootlegBullatCollection, "bullat_idle_001");
+
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);                                    
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DieSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBullatCollection.GetComponent<tk2dSpriteCollectionData>(), IdleSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);                                    
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBullatCollection.GetComponent<tk2dSpriteCollectionData>(), DieSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
             ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, "7ef020b9-11fb-4a24-a818-60581e6d3105", null, instantiateCorpseObject: false, EnemyHasNoShooter: true, EnemyHasNoCorpse: true);
 
@@ -836,55 +840,45 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             List<string> DeathSpriteList = new List<string>() { "bulletman_corpse", "bulletman_corpse" };
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != IdleDownSpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
-
-            // BootlegBulletManCorpse.GetComponent<tk2dSprite>().Collection = m_CachedSprite.Collection;
-
+                        
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BootlegBulletManCollection, IdleDownSpriteList[0]);
+            
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveLeftSpriteList, "run_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveRightSpriteList, "run_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveDownSpriteList, "run_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveUpSpriteList, "run_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "run_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "run_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), MoveDownSpriteList, "run_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), MoveUpSpriteList, "run_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleLeftSpriteList, "cover_idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleRightSpriteList, "cover_idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleLeftSpriteList, "cover_idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleRightSpriteList, "cover_idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleLeftSpriteList, "cover_idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleRightSpriteList, "cover_idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleLeftSpriteList, "cover_idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleRightSpriteList, "cover_idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepLeftSpriteList, "cover_leep_west", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepRightSpriteList, "cover_leep_east", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepLeftSpriteList, "cover_leep_north", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepRightSpriteList, "cover_leep_south", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepLeftSpriteList, "cover_leep_west", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepRightSpriteList, "cover_leep_east", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepLeftSpriteList, "cover_leep_north", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepRightSpriteList, "cover_leep_south", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "awaken", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "awaken", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
 
 
             GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
@@ -1280,53 +1274,45 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             List<string> DeathSpriteList = new List<string>() { "bulletmanbandana_corpse", "bulletmanbandana_corpse" };
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != IdleDownSpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
+                        
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BootlegBulletManBandanaCollection, IdleDownSpriteList[0]);
             
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveLeftSpriteList, "run_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveRightSpriteList, "run_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveDownSpriteList, "run_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveUpSpriteList, "run_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "run_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "run_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), MoveDownSpriteList, "run_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), MoveUpSpriteList, "run_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleLeftSpriteList, "cover_idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleRightSpriteList, "cover_idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleLeftSpriteList, "cover_idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverIdleRightSpriteList, "cover_idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleLeftSpriteList, "cover_idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleRightSpriteList, "cover_idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleLeftSpriteList, "cover_idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverIdleRightSpriteList, "cover_idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepLeftSpriteList, "cover_leep_west", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepRightSpriteList, "cover_leep_east", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepLeftSpriteList, "cover_leep_north", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, CoverLeepRightSpriteList, "cover_leep_south", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepLeftSpriteList, "cover_leep_west", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepRightSpriteList, "cover_leep_east", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepLeftSpriteList, "cover_leep_north", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), CoverLeepRightSpriteList, "cover_leep_south", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "awaken", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "awaken", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegBulletManBandanaCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
 
             GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
                         
@@ -1663,42 +1649,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_red_corpse", "shotgunman_red_corpse" };
+            
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BootlegShotgunManRedCollection, IdleDownSpriteList[0]);
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != IdleDownSpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
-                        
+            
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveLeftSpriteList, "move_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveRightSpriteList, "move_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveDownSpriteList, "move_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveUpSpriteList, "move_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "move_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "move_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), MoveDownSpriteList, "move_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), MoveUpSpriteList, "move_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 4);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManRedCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
             GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
             
@@ -2022,42 +2001,34 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             
             List<string> DeathSpriteList = new List<string>() { "shotgunman_blue_corpse", "shotgunman_blue_corpse" };
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(IdleDownSpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != IdleDownSpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
-
+                        
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, BootlegShotgunManBlueCollection, IdleDownSpriteList[0]);
+            
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), IdleLeftSpriteList, "idle_west", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), IdleRightSpriteList, "idle_east", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), IdleDownSpriteList, "idle_south", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), IdleUpSpriteList, "idle_north", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveLeftSpriteList, "move_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveRightSpriteList, "move_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveDownSpriteList, "move_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveUpSpriteList, "move_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "move_west", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "move_east", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), MoveDownSpriteList, "move_south", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), MoveUpSpriteList, "move_north", tk2dSpriteAnimationClip.WrapMode.Loop, 24);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 4);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_west", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_east", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), HitLeftSpriteList, "hit_north", tk2dSpriteAnimationClip.WrapMode.Once, 4);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), HitRightSpriteList, "hit_south", tk2dSpriteAnimationClip.WrapMode.Once, 4);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), PitfallSpriteList, "pitfall_right", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "death", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BootlegShotgunManBlueCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             
             GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
             
@@ -2324,17 +2295,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             
             List<string> DeathSpriteList = new List<string>() { "Cronenberg_Die_001", "Cronenberg_Die_002", "Cronenberg_Die_003" };
-            
+                        
 
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != SpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, CronenbergCollection, SpriteList[0]);
                         
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
@@ -2344,9 +2307,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveSpriteList, "move", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
             
-            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             
             if (m_SpawnAnimation != null && m_DeathAnimation != null && m_HitAnimation != null) {
                 m_SpawnAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Spawn_01";
@@ -2390,19 +2353,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 CronenbergCorpseDebrisObject2 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_02");
                 CronenbergCorpseDebrisObject3 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_03");
                 CronenbergCorpseDebrisObject4 = expandSharedAssets1.LoadAsset<GameObject>("CronenbergCorpseFragment_04");
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject1, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_01"));
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject2, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_02"));
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject3, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_03"));
-                ItemBuilder.AddSpriteToObject(CronenbergCorpseDebrisObject4, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"));
+                SpriteSerializer.AddSpriteToObject(CronenbergCorpseDebrisObject1, CronenbergCollection, "Cronenberg_Fragment_01");
+                SpriteSerializer.AddSpriteToObject(CronenbergCorpseDebrisObject2, CronenbergCollection, "Cronenberg_Fragment_02");
+                SpriteSerializer.AddSpriteToObject(CronenbergCorpseDebrisObject3, CronenbergCollection, "Cronenberg_Fragment_03");
+                SpriteSerializer.AddSpriteToObject(CronenbergCorpseDebrisObject4, CronenbergCollection, "Cronenberg_Fragment_04");
 
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject1);
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject2);
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject3);
                 ExpandUtility.GenerateSpriteAnimator(CronenbergCorpseDebrisObject4);
-                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject1.GetComponent<tk2dSpriteAnimator>(), CronenbergCorpseDebrisObject1.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
-                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject2.GetComponent<tk2dSpriteAnimator>(), CronenbergCorpseDebrisObject2.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_02" }, "default");
-                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject3.GetComponent<tk2dSpriteAnimator>(), CronenbergCorpseDebrisObject3.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_03" }, "default");
-                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject4.GetComponent<tk2dSpriteAnimator>(), CronenbergCorpseDebrisObject4.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_04" }, "default");
+                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject1.GetComponent<tk2dSpriteAnimator>(), CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), new List<string>() { "Cronenberg_Fragment_01" }, "default");
+                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject2.GetComponent<tk2dSpriteAnimator>(), CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), new List<string>() { "Cronenberg_Fragment_02" }, "default");
+                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject3.GetComponent<tk2dSpriteAnimator>(), CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), new List<string>() { "Cronenberg_Fragment_03" }, "default");
+                ExpandUtility.AddAnimation(CronenbergCorpseDebrisObject4.GetComponent<tk2dSpriteAnimator>(), CronenbergCollection.GetComponent<tk2dSpriteCollectionData>(), new List<string>() { "Cronenberg_Fragment_04" }, "default");
 
                 m_GenerateCronenbergDebris(CronenbergCorpseDebrisObject1, m_BloodGoopDoer.goopDefinition);
                 m_GenerateCronenbergDebris(CronenbergCorpseDebrisObject2, m_BloodGoopDoer.goopDefinition);
@@ -2662,33 +2625,24 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             
             List<string> DeathSpriteList = new List<string>() { "berg_tall_burst_001", "berg_tall_burst_002", "berg_tall_burst_003" };
-            
-
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>(SpriteList[0]));
-
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            foreach (string spriteName in SpriteList) {
-                if (spriteName != SpriteList[0]) {
-                    SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>(spriteName), m_CachedSprite.Collection);
-                }
-            }
                         
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, CronenbergTallCollection, SpriteList[0]);
+                                    
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
             tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
             
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "idle_front", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "idle_back", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "idle_front", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "idle_back", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
 
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveFrontLeftSpriteList, "move_front_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveFrontRightSpriteList, "move_front_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveBackLeftSpriteList, "move_back_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, MoveBackRightSpriteList, "move_back_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), MoveFrontLeftSpriteList, "move_front_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), MoveFrontRightSpriteList, "move_front_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackLeftSpriteList, "move_back_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackRightSpriteList, "move_back_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
 
-            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleFrontSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, CronenbergTallCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             
             if (m_SpawnAnimation != null && m_DeathAnimation != null && m_HitAnimation != null) {
                 m_DeathAnimation.frames[0].eventAudio = "Play_EX_Cronenberg_Die_01";
@@ -2727,7 +2681,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 m_BloodGoopDoer.DispersalMaxCoherency = 1;
 
                 AggressiveCronenbergCorpseDebrisObject = expandSharedAssets1.LoadAsset<GameObject>("AngryCronenbergCorpseFragment");
-                ItemBuilder.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject, expandSharedAssets1.LoadAsset<Texture2D>("Cronenberg_Fragment_04"));
+                SpriteSerializer.AddSpriteToObject(AggressiveCronenbergCorpseDebrisObject, CronenbergCollection, "Cronenberg_Fragment_04");
 
                 ExpandUtility.GenerateSpriteAnimator(AggressiveCronenbergCorpseDebrisObject);
                 ExpandUtility.AddAnimation(AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSpriteAnimator>(), AggressiveCronenbergCorpseDebrisObject.GetComponent<tk2dSprite>().Collection, new List<string>() { "Cronenberg_Fragment_01" }, "default");
@@ -2959,12 +2913,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "EX_ExplodyBarrel",
                 "EX_ExplodyBarrel",
             };
-                        
-            ItemBuilder.AddSpriteToObject(m_CachedTargetObject, expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel"));
 
-            tk2dSprite m_CachedSprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
-
-            SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("EX_ExplodyBarrel_Explode"), m_CachedSprite.Collection);
+            tk2dSprite m_CachedSprite = m_CachedTargetObject.AddComponent<tk2dSprite>();
+            m_CachedSprite.SetSprite(ExpandPrefabs.EXParadropCollection.GetComponent<tk2dSpriteCollectionData>(), "EX_ExplodyBarrel");
 
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
 
@@ -2974,9 +2925,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "move", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
             
-            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, m_CachedSprite.Collection, SpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, ExpandPrefabs.EXParadropCollection.GetComponent<tk2dSpriteCollectionData>(), IdleSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, ExpandPrefabs.EXParadropCollection.GetComponent<tk2dSpriteCollectionData>(), IdleSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, ExpandPrefabs.EXParadropCollection.GetComponent<tk2dSpriteCollectionData>(), SpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             
             
             ExpandExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();

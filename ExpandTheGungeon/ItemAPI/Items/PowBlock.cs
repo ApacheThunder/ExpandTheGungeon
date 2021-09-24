@@ -4,6 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -15,12 +16,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             PowBlockObject = expandSharedAssets1.LoadAsset<GameObject>("Pow Block");
-            tk2dSprite PowBlockObjectItemSprite = PowBlockObject.AddComponent<tk2dSprite>();
-            PowBlockObjectItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "PowBlock");
-
-            // ItemBuilder.AddSpriteToObject(PowBlockObject, expandSharedAssets1.LoadAsset<Texture2D>("PowBlock"));
-            // SpriteBuilder.AddSpriteToCollection(expandSharedAssets1.LoadAsset<Texture2D>("PowBlock_Used"), PowBlockObject.GetComponent<tk2dSprite>().Collection);
-
+            SpriteSerializer.AddSpriteToObject(PowBlockObject, ExpandPrefabs.EXItemCollection, "PowBlock");
+            
             PowBlock powBlock = PowBlockObject.AddComponent<PowBlock>();
             string shortDesc = "Shaken not stirred...";
             string longDesc = "A special block that when stomped on causes a violent shaking.\n\nEnemies shall lose their footing.";

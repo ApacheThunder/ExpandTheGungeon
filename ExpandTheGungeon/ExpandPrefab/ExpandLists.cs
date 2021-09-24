@@ -12,7 +12,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             663, // resourceful_sack
             667 // rat_boots
         };
-        
+
+
         public static readonly List<string> OverrideFallIntoPitsList = new List<string>() {
             "ed37fa13e0fa4fcf8239643957c51293", // gigi
             "6b7ef9e5d05b4f96b04f05ef4a0d1b18", // rubber_kin

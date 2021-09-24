@@ -1,15 +1,8 @@
-﻿using System.Reflection;
-using System;
+﻿using System;
 using UnityEngine;
-using Dungeonator;
-using ExpandTheGungeon.ExpandUtilities;
 using System.Collections.Generic;
-using System.Collections;
 using ExpandTheGungeon.ExpandPrefab;
-using ExpandTheGungeon.ExpandMain;
-using System.Collections.ObjectModel;
-using tk2dRuntime.TileMap;
-using Pathfinding;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
     
@@ -20,11 +13,9 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void Init(AssetBundle expandSharedAssets1) {
 
             BabySitterobject = expandSharedAssets1.LoadAsset<GameObject>("Baby Sitter");
-            tk2dSprite BabySitterSprite = BabySitterobject.AddComponent<tk2dSprite>();
-            BabySitterSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "babysitter");
+            SpriteSerializer.AddSpriteToObject(BabySitterobject, ExpandPrefabs.EXItemCollection, "babysitter");
 
             BabySitter babysitItem = BabySitterobject.AddComponent<BabySitter>();
-            // ItemBuilder.AddSpriteToObject(BabySitterobject, expandSharedAssets1.LoadAsset<Texture2D>("babysitter"));
             
             string shortDesc = "You've got a friend in me...";
             string longDesc = "Looks like you're stuck baby sitting him today.\n\nHe'll try his best to be useful.\nTry not to get him killed.";

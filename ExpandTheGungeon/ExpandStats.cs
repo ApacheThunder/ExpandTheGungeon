@@ -13,7 +13,6 @@ namespace ExpandTheGungeon {
         public static bool RestoreOldRooms = false;
         public static bool EnableJungleRain = true;
         public static bool EnableBloodiedScarfFix = true;
-        public static bool ShotgunKinSecret = false;
         public static bool EnableLanguageFix = false;
         public static bool EnableExpandedGlitchFloors = true;
         public static bool EnableGlitchFloorScreenShader = true;
@@ -41,7 +40,6 @@ namespace ExpandTheGungeon {
             EnableLanguageFix = stats.EnableLanguageFix;
             EnableJungleRain = stats.EnableJungleRain;
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
-            // ShotgunKinSecret = stats.ShotgunKinSecret;
             GameLanguage = stats.GameLanguage;
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
@@ -61,7 +59,6 @@ namespace ExpandTheGungeon {
         public bool RestoreOldRooms;
         public bool EnableJungleRain;
         public bool EnableBloodiedScarfFix;
-        public bool ShotgunKinSecret;
         public bool EnableLanguageFix;
         public bool EnableExpandedGlitchFloors;
         public bool EnableGlitchFloorScreenShader;
@@ -80,7 +77,6 @@ namespace ExpandTheGungeon {
             RestoreOldRooms = ExpandStats.RestoreOldRooms;
             EnableJungleRain = ExpandStats.EnableJungleRain;
             EnableBloodiedScarfFix = ExpandStats.EnableBloodiedScarfFix;
-            ShotgunKinSecret = ExpandStats.ShotgunKinSecret;
             EnableLanguageFix = ExpandStats.EnableLanguageFix;
             EnableExpandedGlitchFloors = ExpandStats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = ExpandStats.EnableGlitchFloorScreenShader;

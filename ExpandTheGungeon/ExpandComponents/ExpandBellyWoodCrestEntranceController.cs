@@ -112,7 +112,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             GameObject m_NewWarpWing = new GameObject("Belly Warp Wing Thing") { layer = 0 };
             m_NewWarpWing.transform.position = m_TargetDoor.transform.position;
             ExpandUtility.GenerateOrAddToRigidBody(m_NewWarpWing, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, offset: new IntVector2(7, 12), dimensions: new IntVector2(38, 16));
-            ExpandBellyWarpWingDoor WarpWingDoor = m_NewWarpWing.AddComponent<ExpandBellyWarpWingDoor>();
+            ExpandWarpWingDoor WarpWingDoor = m_NewWarpWing.AddComponent<ExpandWarpWingDoor>();
             WarpWingDoor.TargetRoom = m_TargetRoom;
             WarpWingDoor.IsOpenForTeleport = true;
             yield return null;

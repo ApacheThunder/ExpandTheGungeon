@@ -42,7 +42,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
                 }
             }
-                        
+            
             m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_UnlitCutout };
             m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
 

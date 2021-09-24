@@ -144,11 +144,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ParentRoom.CompletelyPreventLeaving = true;
                 m_ParentRoom.npcSealState = RoomHandler.NPCSealState.SealAll;
                 m_ParentRoom.SealRoom();
-                // Minimap.Instance.PreventAllTeleports = true;
-                /*GameObject m_BackSpriteObject = new GameObject("Worm BackSprite") { layer = LayerMask.NameToLayer("FG_Critical") };
-                ItemBuilder.AddSpriteToObject(m_BackSpriteObject, "Belly_Monster_BackEnd", false, false);
-                m_BackSpriteObject.transform.position = transform.position;
-                m_BackSpriteObject.transform.parent = transform;*/
 
                 GameManager.Instance.MainCameraController.SetManualControl(true, true);
                 spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));

@@ -1,6 +1,7 @@
 ﻿using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.SpriteAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace ExpandTheGungeon.ExpandPrefab
             Shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
-            SetupHand(assetBundle, out WestBrosHandPrefab, Collection);
+            SetupHand(assetBundle, out WestBrosHandPrefab, ExpandCustomEnemyDatabase.WestBrosCollection.GetComponent<tk2dSpriteCollectionData>());
 
             BuildWestBrosHatPrefab(assetBundle, out WestBrosAngelHatPrefab, WestBros.Angel, Collection, ShadesDebris);
             BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, Collection, ShadesDebris);
@@ -67,10 +68,7 @@ namespace ExpandTheGungeon.ExpandPrefab
 
         private static void SetupHand(AssetBundle assetBundle, out GameObject handPrefab, tk2dSpriteCollectionData collection)
         {
-            var texture = assetBundle.LoadAsset<Texture2D>("Western_Bros_Hand");
-
-            tk2dSpriteDefinition spriteDefinition = SpriteBuilder.ConstructDefinition(texture);
-            spriteDefinition.name = texture.name;
+            var spriteDefinition = collection.GetSpriteDefinition("Western_Bros_Hand");
 
             // change the sprite definition so the sprite is centered, so it can be flipped without offsets
             spriteDefinition.boundsDataCenter = Vector3.zero;
@@ -86,13 +84,9 @@ namespace ExpandTheGungeon.ExpandPrefab
             spriteDefinition.position2 = new Vector3(-val, val, 0);
             spriteDefinition.position3 = new Vector3(val, val, 0);
 
-            SpriteBuilder.AddSpriteToCollection(spriteDefinition, collection);
-
             handPrefab = assetBundle.LoadAsset<GameObject>("WestBroHandObject");
 
-            var sprite = handPrefab.AddComponent<tk2dSprite>();
-            sprite.SetSprite(collection, texture.name);
-
+            var sprite = SpriteSerializer.AddSpriteToObject(handPrefab, ExpandCustomEnemyDatabase.WestBrosCollection, spriteDefinition.name);
             handPrefab.AddComponent<PlayerHandController>();
         }
 

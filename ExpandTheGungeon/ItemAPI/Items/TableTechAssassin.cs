@@ -5,6 +5,7 @@ using MonoMod.RuntimeDetour;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
     
@@ -17,12 +18,10 @@ namespace ExpandTheGungeon.ItemAPI {
             TableTechAssassinHook.TableExplosionData = ExpandUtility.GenerateExplosionData(damage: 60);
                     
             TableTechAssasinObject = expandSharedAssets1.LoadAsset<GameObject>("Table Tech Assassin");
-            tk2dSprite TableTechAssasinItemSprite = TableTechAssasinObject.AddComponent<tk2dSprite>();
-            TableTechAssasinItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "tabletech_assassin");
+            SpriteSerializer.AddSpriteToObject(TableTechAssasinObject, ExpandPrefabs.EXItemCollection, "tabletech_assassin");
 
             TableTechAssassin tableTechAssassin = TableTechAssasinObject.AddComponent<TableTechAssassin>();
-            // ItemBuilder.AddSpriteToObject(TableTechAssasinObject, expandSharedAssets1.LoadAsset<Texture2D>("tabletech_assassin"));
-                        
+
             string shortDesc = "Betray the Flipper";
             string longDesc = "A forbidden technique thought lost was recovered in the Gungeon.\n\nAll that was written was this: \n\n 'Do upon the flipper that which the flipper had done to you'";
             ItemBuilder.SetupItem(tableTechAssassin, shortDesc, longDesc, "ex");

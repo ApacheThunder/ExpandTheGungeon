@@ -4,7 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
-using System;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -16,9 +16,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static void Init(AssetBundle expandSharedAssets1) {
             RockslideObject = expandSharedAssets1.LoadAsset<GameObject>("Rock Slide");
-            tk2dSprite RockslideItemSprite = RockslideObject.AddComponent<tk2dSprite>();
-            RockslideItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "rockslide");
-            // ItemBuilder.AddSpriteToObject(RockslideObject, expandSharedAssets1.LoadAsset<Texture2D>("rockslide"));
+            SpriteSerializer.AddSpriteToObject(RockslideObject, ExpandPrefabs.EXItemCollection, "rockslide");
 
             RockSlide rockslide = RockslideObject.AddComponent<RockSlide>();
             string shortDesc = "Crushing Defeat";

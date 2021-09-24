@@ -4,7 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
-
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -18,11 +18,9 @@ namespace ExpandTheGungeon.ItemAPI {
 
             // Master round for Custom Secret Floor via Hollow
             GlitchFloorMasterRound = expandSharedAssets1.LoadAsset<GameObject>("Corrupted Master Round");
-            tk2dSprite GlitchFloorMasterRoundItemSprite = GlitchFloorMasterRound.AddComponent<tk2dSprite>();
-            GlitchFloorMasterRoundItemSprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "glitchround");
-
+            SpriteSerializer.AddSpriteToObject(GlitchFloorMasterRound, ExpandPrefabs.EXItemCollection, "glitchround");
+            
             BasicStatPickup CanyonMasterRoundItem = GlitchFloorMasterRound.AddComponent<BasicStatPickup>();
-            // ItemBuilder.AddSpriteToObject(CanyonMasterRound, expandSharedAssets1.LoadAsset<Texture2D>("glitchround"));
             string shortDesc = "Corrupted Chamber";
             string longDesc = "This weird artifact indicates mastery of... somewhere";
             ItemBuilder.SetupItem(CanyonMasterRoundItem, shortDesc, longDesc, "ex");

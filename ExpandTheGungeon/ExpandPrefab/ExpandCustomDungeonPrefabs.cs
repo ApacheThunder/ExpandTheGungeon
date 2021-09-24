@@ -905,7 +905,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BellyMaterial.bigWallShardDamageThreshold = 10;
             BellyMaterial.fallbackVerticalTileMapEffects = GungeonPrefab.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
             BellyMaterial.fallbackHorizontalTileMapEffects = GungeonPrefab.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
-            // BellyMaterial.pitfallVFXPrefab = SewersPrefab.roomMaterialDefinitions[0].pitfallVFXPrefab;
             BellyMaterial.pitfallVFXPrefab = ExpandPrefabs.Belly_PitVFX2;
             BellyMaterial.UsePitAmbientVFX = true;
             BellyMaterial.AmbientPitVFX = new List<GameObject>() { ExpandPrefabs.Belly_PitVFX1, ExpandPrefabs.Belly_PitVFX3, };

@@ -3,6 +3,7 @@ using UnityEngine;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandUtilities;
 using System;
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -37,46 +38,24 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_DoorBlockObject_South.transform.SetParent(ExpandPrefabs.EXBootlegRoomDoorTriggers.transform);
             m_DoorBlockObject_North.transform.SetParent(ExpandPrefabs.EXBootlegRoomDoorTriggers.transform);
 
-            // ExpandPrefab.EXBootlegRoomObject.SetActive(false);
-            // ExpandPrefab.EXBootlegRoomDoorTriggers.SetActive(false);
-
-            ItemBuilder.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_BottomLayer"));
-            ItemBuilder.AddSpriteToObject(m_BorderObject_West, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_West.png"));
-            ItemBuilder.AddSpriteToObject(m_BorderObject_East, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_East.png"));
-            ItemBuilder.AddSpriteToObject(m_BorderObject_North, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_North.png"));
-            ItemBuilder.AddSpriteToObject(m_BorderObject_South, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_ExitTiles_South.png"));
-            ItemBuilder.AddSpriteToObject(m_DoorFrameObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_TopLayer"));
-            ItemBuilder.AddSpriteToObject(m_DoorObject, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_Doors"));
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_West, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_West"));
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_East, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_East"));
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_South, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_South"));
-            ItemBuilder.AddSpriteToObject(m_DoorBlockObject_North, expandSharedAssets1.LoadAsset<Texture2D>("BootlegRoom_DoorBlock_North"));
-
-
+            SpriteSerializer.AddSpriteToObject(m_DoorFrameObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_TopLayer");
+            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_West");
+            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_East");
+            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_South");
+            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_North");
             
-            tk2dSprite m_BootlegRoomSprite = ExpandPrefabs.EXBootlegRoomObject.GetComponent<tk2dSprite>();
+            tk2dSprite m_BootlegRoomSprite = SpriteSerializer.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_BottomLayer");
             m_BootlegRoomSprite.HeightOffGround = -3f;
-            m_BootlegRoomSprite.UpdateZDepth();
-                        
-            tk2dSprite m_BorderSprite_West = m_BorderObject_West.GetComponent<tk2dSprite>();
+            tk2dSprite m_BorderSprite_West = SpriteSerializer.AddSpriteToObject(m_BorderObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_West");
             m_BorderSprite_West.HeightOffGround = -3f;
-            m_BorderSprite_West.UpdateZDepth();
-
-            tk2dSprite m_BorderSprite_East = m_BorderObject_East.GetComponent<tk2dSprite>();
+            tk2dSprite m_BorderSprite_East = SpriteSerializer.AddSpriteToObject(m_BorderObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_East");
             m_BorderSprite_East.HeightOffGround = -3f;
-            m_BorderSprite_East.UpdateZDepth();
-
-            tk2dSprite m_BorderSprite_North = m_BorderObject_North.GetComponent<tk2dSprite>();
+            tk2dSprite m_BorderSprite_North = SpriteSerializer.AddSpriteToObject(m_BorderObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_North");
             m_BorderSprite_North.HeightOffGround = -3f;
-            m_BorderSprite_North.UpdateZDepth();
-
-            tk2dSprite m_BorderSprite_South = m_BorderObject_South.GetComponent<tk2dSprite>();
+            tk2dSprite m_BorderSprite_South = SpriteSerializer.AddSpriteToObject(m_BorderObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_South");
             m_BorderSprite_South.HeightOffGround = -3f;
-            m_BorderSprite_South.UpdateZDepth();
-
-            tk2dSprite m_DoorSprites = m_DoorObject.GetComponent<tk2dSprite>();
+            tk2dSprite m_DoorSprites = SpriteSerializer.AddSpriteToObject(m_DoorObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_Doors");
             m_DoorSprites.HeightOffGround = -2.5f;
-            m_DoorSprites.UpdateZDepth();
 
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: new IntVector2(1, 6));            
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: new IntVector2(1, 6), offset: new IntVector2(0, 8));
@@ -94,15 +73,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(176, 16));
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(24, 200));
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(176, 200));
-            /*ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 80), offset: new IntVector2(16, 16));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 80), offset: new IntVector2(16, 128));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 80), offset: new IntVector2(296, 16));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 80), offset: new IntVector2(296, 128));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(24, 16));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(176, 16));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(24, 200));
-            ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefab.EXBootlegRoomObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(120, 8), offset: new IntVector2(176, 200));*/
-
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomDoorTriggers, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(16, 10), offset: new IntVector2(2, 2));
 
             ExpandBootlegRoomPlaceable m_BootlegRoomPlacable = ExpandPrefabs.EXBootlegRoomObject.AddComponent<ExpandBootlegRoomPlaceable>();
@@ -118,13 +88,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_BootlegDoorBlockersPlacable.DoorBlocker_East = m_DoorBlockObject_East;
             m_BootlegDoorBlockersPlacable.DoorBlocker_South = m_DoorBlockObject_South;
             m_BootlegDoorBlockersPlacable.DoorBlocker_North = m_DoorBlockObject_North;
-
-
-
-            /*FakePrefab.MarkAsFakePrefab(ExpandPrefab.EXBootlegRoomObject);
-            FakePrefab.MarkAsFakePrefab(ExpandPrefab.EXBootlegRoomDoorTriggers);
-            DontDestroyOnLoad(ExpandPrefab.EXBootlegRoomObject);
-            DontDestroyOnLoad(ExpandPrefab.EXBootlegRoomDoorTriggers);*/
         }
 
 
@@ -169,7 +132,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             }
 
-            //specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
+            specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
         }
 
         protected override void OnDestroy() { base.OnDestroy(); }

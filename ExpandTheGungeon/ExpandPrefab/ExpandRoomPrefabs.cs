@@ -9536,6 +9536,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandSecretDoorPrefabs.EXSecretDoor);
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(7, 5), EnemyBehaviourGuid: "5861e5a077244905a8c25c2b7b4d6ebb"); // bullet kin cowboy
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(5, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(10, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
             RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretRatEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Rat_MiniElevator_Room_Layout"));
 
 
