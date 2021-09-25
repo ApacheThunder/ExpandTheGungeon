@@ -119,7 +119,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 return;
             }
             
-            if (Random.value <= 0.8f) {
+
+            if (Random.value <= 0.8f | currentRoom.GetRoomName().ToLower().StartsWith("expand_west_entrance")) {
                 List<IntVector2> m_CachedPositions = new List<IntVector2>();
                 int MaxCactiCount = 12;
                 int MinCactiCount = 6;
@@ -144,19 +145,62 @@ namespace ExpandTheGungeon.ExpandMain {
                 
                 int CactusCount = Random.Range(MinCactiCount, MaxCactiCount);
 
-                for (int i = 0; i < CactusCount; i++) {
-                    IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 3, avoidExits: true);
+                if (!currentRoom.GetRoomName().ToLower().StartsWith("expand_west_entrance")) {
+                    for (int i = 0; i < CactusCount; i++) {
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 3, avoidExits: true);
 
+                        List<GameObject> CactiList = new List<GameObject>() { ExpandPrefabs.Cactus_A, ExpandPrefabs.Cactus_B };
+                        CactiList = CactiList.Shuffle();
+
+                        if (RandomVector.HasValue) {
+                            GameObject Cactus = Object.Instantiate(BraveUtility.RandomElement(CactiList), RandomVector.Value.ToVector3(), Quaternion.identity);
+                            Cactus.transform.parent = currentRoom.hierarchyParent;
+                            RandomObjectsPlaced++;
+                            if (m_CachedPositions.Count <= 0) { break; }
+                        } else {
+                            RandomObjectsSkipped++;
+                        }
+                    }
+                } else {
                     List<GameObject> CactiList = new List<GameObject>() { ExpandPrefabs.Cactus_A, ExpandPrefabs.Cactus_B };
                     CactiList = CactiList.Shuffle();
 
-                    if (RandomVector.HasValue) {
-                        GameObject Cactus = Object.Instantiate(BraveUtility.RandomElement(CactiList), RandomVector.Value.ToVector3(), Quaternion.identity);
-                        Cactus.transform.parent = currentRoom.hierarchyParent;
+                    m_CachedPositions = new List<IntVector2>() {
+                        new IntVector2(34, 49),
+                        new IntVector2(29, 43),
+                        new IntVector2(16, 43),
+                        new IntVector2(2, 19),
+                        new IntVector2(49, 17),
+                        new IntVector2(9, 23),
+                        new IntVector2(40, 23),
+                        new IntVector2(30, 20),
+                        new IntVector2(22, 29),
+                        new IntVector2(31, 31),
+                        new IntVector2(14, 14),
+                        new IntVector2(14, 37),
+                        new IntVector2(37, 14),
+                        new IntVector2(37, 37),
+                        new IntVector2(33, 2),
+                        new IntVector2(33, 10),
+                        new IntVector2(3, 17),
+                        new IntVector2(2, 34),
+                        new IntVector2(14, 20),
+                        new IntVector2(16, 39),
+                        new IntVector2(31, 38),
+                        new IntVector2(49, 34),
+                        new IntVector2(38, 29),
+                        new IntVector2(21, 21),
+                        new IntVector2(20, 32),
+                        new IntVector2(31, 22),
+                    };
+                    m_CachedPositions = m_CachedPositions.Shuffle();
+                    for (int i = 0; i < 14; i++) {
+                        IntVector2 selectedPosition = BraveUtility.RandomElement(m_CachedPositions);
+                        m_CachedPositions.Remove(selectedPosition);
+                        m_CachedPositions = m_CachedPositions.Shuffle();
+                        GameObject Cactus = Object.Instantiate(BraveUtility.RandomElement(CactiList), (selectedPosition + currentRoom.area.basePosition).ToVector3(), Quaternion.identity);
+                        Cactus.transform.SetParent(currentRoom.hierarchyParent);
                         RandomObjectsPlaced++;
-                        if (m_CachedPositions.Count <= 0) { break; }
-                    } else {
-                        RandomObjectsSkipped++;
                     }
                 }
             }

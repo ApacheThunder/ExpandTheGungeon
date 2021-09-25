@@ -2513,7 +2513,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(0, 13), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(27, 13), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(13, 1), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), EnemyBehaviourGuid: "5f0fa34b5a2e44cdab4a06f89bb5c442");
+            // RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             // RoomFromText.AddObjectToRoom(CreepyGlitchRoom, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefab.RoomCorruptionAmbience, useExternalPrefab: true));
             // RoomBuilder.GenerateRoomLayoutFromTexture2D(CreepyGlitchRoom, expandSharedAssets1.LoadAsset<Texture2D>("CreepyGlitchRoom_Layout"));
             RoomBuilder.GenerateRoomLayoutFromTexture2D(CreepyGlitchRoom, expandSharedAssets1.LoadAsset<Texture2D>("Creepy_Glitched_Room_Layout"));
@@ -2607,7 +2608,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 33), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
-            RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
+            // RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), EnemyBehaviourGuid: "5f0fa34b5a2e44cdab4a06f89bb5c442");
             RoomBuilder.GenerateRoomLayoutFromTexture2D(GungeoneerMimicBossRoom, expandSharedAssets1.LoadAsset<Texture2D>("Creepy_MirrorBoss_Room_Layout"));
 
             // Castle Custom Rooms

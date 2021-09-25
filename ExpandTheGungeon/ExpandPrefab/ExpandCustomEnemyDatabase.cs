@@ -53,6 +53,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // public static GameObject KillStumpsDummy;
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
+        public static GameObject DoppelGunnerPrefab;
 
         // Enemies with pallete system disabled
         public static GameObject RedShotGunMan;
@@ -70,6 +71,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject CronenbergCorpseDebrisObject4;
         public static GameObject AggressiveCronenbergCorpseDebrisObject;
         public static GameObject StoneCubeCollection_West;
+        public static GameObject DopplegunnerHand;
 
         public static Texture2D[] RatGrenadeTextures;
 
@@ -89,6 +91,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static string com4nd0GUID;
         public static string FriendlyCultistGUID;
         public static string corruptedEnemyGUID;
+        public static string doppelgunnerbossEnemyGUID;
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
@@ -132,8 +135,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
             BuildCorruptedEnemyPrefab(expandSharedAssets1, out CorruptedEnemyPrefab);
 
-            ExpandWesternBrosPrefabBuilder.BuildWestBrosBossPrefabs(expandSharedAssets1);
+            BuildDoppelGunnerBossPrefab(expandSharedAssets1, out DoppelGunnerPrefab);
 
+            ExpandWesternBrosPrefabBuilder.BuildWestBrosBossPrefabs(expandSharedAssets1);
+            
             // Fake Prefabs
             BuildRatGrenadePrefab(out RatGrenadePrefab);
             BuildMetalCubeGuyWestPrefab(expandSharedAssets1, out MetalCubeGuyWestPrefab);
@@ -3291,9 +3296,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         public static void BuildCultistCompanionPrefab(AssetBundle expandSharedAssets1, out GameObject CachedTargetEnemyObject) {
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-
-            GameObject m_SelectedPlayer = braveResources.LoadAsset<GameObject>("PlayerCoopCultist").transform.Find("PlayerSprite").gameObject;
+            GameObject m_SelectedPlayer = ExpandAssets.LoadOfficialAsset<GameObject>("PlayerCoopCultist", ExpandAssets.AssetSource.BraveResources).transform.Find("PlayerSprite").gameObject;
                         
             AIActor CachedEnemyActor = GetOrLoadByGuid_Orig("57255ed50ee24794b7aac1ac3cfb8a95");
             AIActor CachedSpaceTurtle = GetOrLoadByGuid_Orig("9216803e9c894002a4b931d7ea9c6bdf");
@@ -3437,9 +3440,204 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AddEnemyToDatabase(CachedTargetEnemyObject, CachedGlitchEnemyActor.EnemyGuid, false);
 
             FriendlyCultistGUID = CachedGlitchEnemyActor.EnemyGuid;
-            braveResources = null;
         }
         
+        public static void BuildDoppelGunnerBossPrefab(AssetBundle expandSharedAssets1, out GameObject CachedTargetEnemyObject) {
+            GameObject m_SelectedPlayer = ExpandAssets.LoadOfficialAsset<GameObject>("PlayerCoopCultist", ExpandAssets.AssetSource.BraveResources).transform.Find("PlayerSprite").gameObject;
+            
+            AIActor CachedEnemyActor = GetOrLoadByGuid_Orig("57255ed50ee24794b7aac1ac3cfb8a95");
+            AIActor CachedSpaceTurtle = GetOrLoadByGuid_Orig("9216803e9c894002a4b931d7ea9c6bdf");
+            GameObject m_DummyCorpseObject = null;
+
+            CachedTargetEnemyObject = expandSharedAssets1.LoadAsset<GameObject>("Doppelgunner");
+            
+            tk2dSprite newSprite = CachedTargetEnemyObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(newSprite, m_SelectedPlayer.GetComponent<tk2dSprite>());
+
+            // If Player sprite was flipped (aka, player aiming/facing towards the left), then this could cause sprite being shifted left on AIActor.
+            // Always set false to ensure this doesn't happen.
+            newSprite.FlipX = false;
+
+            GameObject m_CachedGunAttachPoint = CachedTargetEnemyObject.transform.Find("GunAttachPoint").gameObject;
+
+            ExpandUtility.DuplicateAIShooterAndAIBulletBank(CachedTargetEnemyObject, CachedSpaceTurtle.aiShooter, CachedSpaceTurtle.GetComponent<AIBulletBank>(), 24, m_CachedGunAttachPoint.transform);
+
+            ExpandUtility.GenerateAIActorTemplate(CachedTargetEnemyObject, out m_DummyCorpseObject, "Doppelgunner", "5f0fa34b5a2e44cdab4a06f89bb5c442", null, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+
+            AIActor CachedDoppelGunnerBoss = CachedTargetEnemyObject.GetComponent<AIActor>();
+
+            DopplegunnerHand = expandSharedAssets1.LoadAsset<GameObject>("DopplegunnerHand");
+            tk2dSprite newHandSprite = DopplegunnerHand.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(newHandSprite, CachedSpaceTurtle.aiShooter.handObject.sprite);
+            PlayerHandController m_HandController = DopplegunnerHand.AddComponent<PlayerHandController>();
+            CachedDoppelGunnerBoss.aiShooter.handObject = m_HandController;
+            
+
+            CachedDoppelGunnerBoss.DoDustUps = true;
+            CachedDoppelGunnerBoss.DustUpInterval = 0.4f;
+            CachedDoppelGunnerBoss.MovementSpeed = 3.5f;
+            CachedDoppelGunnerBoss.EnemySwitchState = "Gun Cultist";
+            
+
+            List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
+            foreach (tk2dSpriteAnimationClip clip in m_SelectedPlayer.GetComponent<tk2dSpriteAnimator>().Library.clips) {
+                if (clip != null && !string.IsNullOrEmpty(clip.name)) {
+                    if (clip.name.ToLower() == "idle") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "idle_backward") {
+                        m_AnimationClips.Add(clip);
+                    }  else if (clip.name.ToLower() == "dodge") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "dodge_bw") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "run_down") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "run_up") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "death") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "death_bw") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "pitfall") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "pitfall_down") {
+                        m_AnimationClips.Add(clip);
+                    }  
+                }
+            }
+            if (!CachedDoppelGunnerBoss.spriteAnimator.Library) { CachedDoppelGunnerBoss.spriteAnimator.Library = CachedTargetEnemyObject.AddComponent<tk2dSpriteAnimation>(); }
+            if (m_AnimationClips.Count > 0) { CachedDoppelGunnerBoss.spriteAnimator.Library.clips = m_AnimationClips.ToArray(); }
+            CachedDoppelGunnerBoss.spriteAnimator.DefaultClipId = 0;
+            CachedDoppelGunnerBoss.spriteAnimator.playAutomatically = true;
+
+            if (CachedDoppelGunnerBoss.aiAnimator) {
+                CachedDoppelGunnerBoss.aiAnimator.facingType = AIAnimator.FacingType.Movement;
+                CachedDoppelGunnerBoss.aiAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
+                CachedDoppelGunnerBoss.aiAnimator.faceSouthWhenStopped = false;
+                CachedDoppelGunnerBoss.aiAnimator.faceTargetWhenStopped = false;
+                CachedDoppelGunnerBoss.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                CachedDoppelGunnerBoss.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "idle",
+                    AnimNames = new string[] { "idle_backward", "idle" },
+                    Flipped = new DirectionalAnimation.FlipType[2],                    
+                };
+                CachedDoppelGunnerBoss.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "run",
+                    AnimNames = new string[] { "run_up", "run_down" },
+                    Flipped = new DirectionalAnimation.FlipType[2],                    
+                };
+                CachedDoppelGunnerBoss.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "dodgeroll",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                            Prefix = "dodge",
+                            AnimNames = new string[] { "dodge_bw", "dodge" },
+                            Flipped = new DirectionalAnimation.FlipType[2]
+                        }
+                    },
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "pitfall",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                            Prefix = "pitfall",
+                            AnimNames = new string[] { "pitfall", "pitfall_down" },
+                            Flipped = new DirectionalAnimation.FlipType[2]
+                        }
+                    }
+                };
+            }
+            
+            ExpandUtility.DuplicateComponent(CachedDoppelGunnerBoss.healthHaver, GetOrLoadByGuid_Orig("705e9081261446039e1ed9ff16905d04").healthHaver);
+
+            string bossName = "Doppelgunner";
+            GenericIntroDoer miniBossIntroDoer = CachedTargetEnemyObject.AddComponent<GenericIntroDoer>();
+            CachedTargetEnemyObject.AddComponent<ExpandGungeoneerMimicIntroDoer>();
+            miniBossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
+            miniBossIntroDoer.initialDelay = 0.15f;
+            miniBossIntroDoer.cameraMoveSpeed = 14;
+            miniBossIntroDoer.specifyIntroAiAnimator = null;
+            miniBossIntroDoer.BossMusicEvent = "Play_MUS_Boss_Theme_Beholster";
+            miniBossIntroDoer.PreventBossMusic = false;
+            miniBossIntroDoer.InvisibleBeforeIntroAnim = false;
+            miniBossIntroDoer.preIntroAnim = string.Empty;
+            miniBossIntroDoer.preIntroDirectionalAnim = string.Empty;
+            miniBossIntroDoer.introAnim = "idle";
+            miniBossIntroDoer.introDirectionalAnim = string.Empty;
+            miniBossIntroDoer.continueAnimDuringOutro = false;
+            miniBossIntroDoer.cameraFocus = null;
+            miniBossIntroDoer.roomPositionCameraFocus = Vector2.zero;
+            miniBossIntroDoer.restrictPlayerMotionToRoom = false;
+            miniBossIntroDoer.fusebombLock = false;
+            miniBossIntroDoer.AdditionalHeightOffset = 0;
+            miniBossIntroDoer.SkipBossCard = false;
+            miniBossIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
+                bossArtSprite = ExpandAssets.LoadAsset<Texture2D>("MimicInMirror_BossCardBackground"),
+                bossNameString = bossName,
+                bossSubtitleString = "Imposter!",
+                bossQuoteString = "Clone gone rogue...",
+                bossSpritePxOffset = IntVector2.Zero,
+                topLeftTextPxOffset = IntVector2.Zero,
+                bottomRightTextPxOffset = IntVector2.Zero,
+                bgColor = new Color(0, 0, 1, 1)
+            };
+            CachedDoppelGunnerBoss.healthHaver.bossHealthBar = HealthHaver.BossBarType.MainBar;
+
+            miniBossIntroDoer.HideGunAndHand = true;
+            miniBossIntroDoer.SkipFinalizeAnimation = true;
+
+            CachedDoppelGunnerBoss.BaseMovementSpeed = 8f;
+            CachedDoppelGunnerBoss.MovementSpeed = 8f;
+
+            CachedDoppelGunnerBoss.healthHaver.SetHealthMaximum(1000);
+            CachedDoppelGunnerBoss.healthHaver.ForceSetCurrentHealth(1000);
+            CachedDoppelGunnerBoss.healthHaver.overrideBossName = bossName;
+            CachedDoppelGunnerBoss.OverrideDisplayName = bossName;
+            CachedDoppelGunnerBoss.ActorName = bossName;
+            CachedDoppelGunnerBoss.name = bossName;
+
+            CachedDoppelGunnerBoss.CanTargetEnemies = false;
+            CachedDoppelGunnerBoss.CanTargetPlayers = true;
+            CachedDoppelGunnerBoss.spriteAnimator.DefaultClipId = 0;
+            CachedDoppelGunnerBoss.spriteAnimator.playAutomatically = false;
+
+            CachedTargetEnemyObject.AddComponent<ExpandGungeoneerMimicBossController>();
+            CachedTargetEnemyObject.AddComponent<ExpandGungeoneerMimicDeathController>();
+
+            if (CachedDoppelGunnerBoss.GetComponent<ExpandGungeoneerMimicIntroDoer>()) {                
+                FieldInfo field = typeof(GenericIntroDoer).GetField("m_specificIntroDoer", BindingFlags.Instance | BindingFlags.NonPublic);
+                field.SetValue(miniBossIntroDoer, CachedDoppelGunnerBoss.GetComponent<ExpandGungeoneerMimicIntroDoer>());
+            }
+
+            CachedDoppelGunnerBoss.aiAnimator.enabled = false;
+
+            BehaviorSpeculator customBehaviorSpeculator = CachedTargetEnemyObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>(0);
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>(0);
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90f;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+            customBehaviorSpeculator.RegenerateCache();
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSeralized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSeralized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>() { "[]", "[]", "[]", "[]", "[]" };
+
+            AddEnemyToDatabase(CachedTargetEnemyObject, CachedDoppelGunnerBoss.EnemyGuid, false);
+
+            doppelgunnerbossEnemyGUID = CachedDoppelGunnerBoss.EnemyGuid;
+        }
 
         private static void m_GenerateCronenbergDebris(GameObject targetObject, GoopDefinition goopSource) {
             DebrisObject m_CachedDebrisObject = targetObject.AddComponent<DebrisObject>();

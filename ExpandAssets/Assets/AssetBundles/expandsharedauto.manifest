@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1731042630
+CRC: 2951340542
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cc0ef4cf6f1ac3d38b8dbb1fd1a123cb
+    Hash: b34b39f374548cb1f85d5c7a019ef5c2
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -105,7 +105,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal20.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport1.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandSarco_Pedestal.prefab
-- Assets/ExpandPrefabs/AIActors/DopplegunnerHand.prefab
+- Assets/ExpandPrefabs/AIActors/DoppelGunner/DopplegunnerHand.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed17.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal22.bytes
 - Assets/ExpandTextures/RoomBuilderAssets/TrapRooms/Expand_Thwomp_Crossing_Vertical_Layout.png
@@ -228,6 +228,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Jungle_Boss.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals26.bytes
 - Assets/ExpandPrefabs/Misc/EX_GlitchPortal.prefab
+- Assets/ExpandPrefabs/Misc/DoppelgunnerMirrorFX.prefab
 - Assets/ExpandPrefabs/SerializedData/WestAssets/RedInterior/lavaGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal32.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Owl5.bytes
@@ -582,6 +583,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/TrapRooms/Expand_Apache_SpikeAndPits_Layout.png
 - Assets/ExpandPrefabs/SerializedData/BootlegBulletManBandanaCollection.txt
 - Assets/ExpandPrefabs/SerializedData/EXBootlegRoomCollection.txt
+- Assets/ExpandPrefabs/Misc/DoppelgunnerMirrorFX 1.prefab
 - Assets/ExpandTextures/Items/BootlegPistol/bootleg_pistol.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular5.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Fight3.bytes
@@ -682,6 +684,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular23.bytes
 - Assets/ExpandPrefabs/Misc/BootlegRoomBorder_North.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_CornerBomb1.bytes
+- Assets/ExpandPrefabs/Misc/DoppelgunnerMirror.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular13.bytes
 - Assets/ExpandTextures/SpriteCollections/WestBros_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_tight4.bytes
@@ -851,6 +854,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/EXCorruptionBomb_MinimapIcon.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera30.bytes
 - Assets/ExpandPrefabs/Misc/BulletManEyepatchCollection.prefab
+- Assets/ExpandPrefabs/AIActors/DoppelGunner/Doppelgunner.prefab
 - Assets/ExpandPrefabs/SerializedData/JungleAssets/outerCeilingBorderGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera10.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Oldman2.bytes

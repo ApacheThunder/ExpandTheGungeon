@@ -532,8 +532,9 @@ namespace ExpandTheGungeon.ExpandMain {
             }
 		}
 
-        public DungeonFlow GetRandomFlowHook(Action<SemioticDungeonGenSettings>orig, SemioticDungeonGenSettings self) { try { 
-                float num = 0f;
+        public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
+            try {
+                /*float num = 0f;
                 List<DungeonFlow> list = new List<DungeonFlow>();
                 float num2 = 0f;
                 List<DungeonFlow> list2 = new List<DungeonFlow>();
@@ -554,7 +555,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     num4 += 1f;
                     if (num4 >= num3) { return list2[j]; }
                 }
-                return self.flows[BraveRandom.GenerationRandomRange(0, self.flows.Count)];
+                return self.flows[BraveRandom.GenerationRandomRange(0, self.flows.Count)];*/
+                return orig(self);
             } catch (Exception ex) {
                 if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!"); }
                 Debug.Log("WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!");
@@ -564,56 +566,57 @@ namespace ExpandTheGungeon.ExpandMain {
                     return ExpandDungeonFlow.Foyer_Flow;
                 } else {
                     Dungeon dungeon = GameManager.Instance.Dungeon;
+                    if (!dungeon) { return FlowDatabase.GetOrLoadByName("Complex_Flow_Test"); }
                     List<DungeonFlow> m_fallbacklist = new List<DungeonFlow>();
                     switch (dungeon.tileIndices.tilesetId) {
                         case GlobalDungeonData.ValidTilesets.CASTLEGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f1_castle_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f1_castle_flow")) { m_fallbacklist.Add(flow); }
                             }                            
                             break;
                         case GlobalDungeonData.ValidTilesets.SEWERGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f1a_sewers_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f1a_sewers_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.GUNGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f2_gungeon_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f2_gungeon_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f2a_cathedral_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f2a_cathedral_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.MINEGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f3_mines_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f3_mines_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.RATGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("resourcefulratlair_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("resourcefulratlair_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f4_catacomb_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f4_catacomb_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.OFFICEGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("fs4_nakatomi_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("fs4_nakatomi_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.FORGEGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f5_forge_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f5_forge_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                         case GlobalDungeonData.ValidTilesets.HELLGEON:
                             foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                                if (flow.name.ToLower().StartsWith("f6_bullethell_flow")) { m_fallbacklist.Add(flow); }
+                                if (!string.IsNullOrEmpty(flow?.name) && flow.name.ToLower().StartsWith("f6_bullethell_flow")) { m_fallbacklist.Add(flow); }
                             }
                             break;
                     }
@@ -628,8 +631,8 @@ namespace ExpandTheGungeon.ExpandMain {
                         ETGModConsole.Log("[DEBUG] WARNING: Could not determine a proper fallback flow! Using a default flow instead!");
                     }
                     Debug.Log("WARNING: Could not determine a proper fallback flow! Using a default flow instead!");
-                    return complex_flow_test.Complex_Flow_Test();
-                }                
+                    return FlowDatabase.GetOrLoadByName("Complex_Flow_Test");
+                }
             }            
         }
         

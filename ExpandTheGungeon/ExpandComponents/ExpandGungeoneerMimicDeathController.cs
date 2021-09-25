@@ -155,6 +155,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             GameManager.Instance.MainCameraController.SetManualControl(false, true);
             Destroy(clockhairObject);
             healthHaver.DeathAnimationComplete(null, null);
+            if (gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>()) {
+                Destroy(gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>().MirrorBase);
+                Destroy(gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>().MirrorShatterFX);
+            }
             yield break;
         }
         

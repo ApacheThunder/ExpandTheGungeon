@@ -17,6 +17,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UsesRotationInsteadOfInversion = false;
             UseGlitchShader = false;
             EnableFallBackAttacks = true;
+            IsConfigured = false;
 
             m_SpecialChargeWeapons = new List<int>() {
                 332, 393, 541, 719, 393, 8, 37, 200, 210,
@@ -52,6 +53,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool UsesRotationInsteadOfInversion;
         public bool UseGlitchShader;
         public bool EnableFallBackAttacks;
+        public bool IsConfigured;
 
         public float RotationAngle;
         
@@ -95,14 +97,14 @@ namespace ExpandTheGungeon.ExpandComponents {
             return m_AIActor.aiShooter.CurrentGun.HasShootStyle(ShootStyle);
         }
         
-        public void Start() {
+        public void Init() {
 
             if (!m_Player) { m_Player = GameManager.Instance.PrimaryPlayer; }
            
             m_AIActor = aiActor;
             m_IntroDoer = gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
 
-            if (!m_AIActor | !m_Player) {
+            if (!m_AIActor) {
                 Destroy(gameObject);
                 return;
             }
@@ -116,9 +118,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
 
             if (UseGlitchShader) { SetupPlayerGlitchShader(); };
-        }
 
-        private void SetupPlayerGlitchShader() {
+            IsConfigured = true;
+        }
+        
+        public void SetupPlayerGlitchShader() {
             float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
             float RandomDispFloat = Random.Range(0.06f, 0.08f);
             float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
@@ -129,170 +133,178 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void Update() {
+            try { 
+                if (!IsConfigured) { return; }
 
-            if (!m_HasBeenActivated && m_Player && m_Player.GetAbsoluteParentRoom() != null && transform.position.GetAbsoluteRoom() != null && m_Player.GetAbsoluteParentRoom() == transform.position.GetAbsoluteRoom()) {
-                m_Player.PostProcessBeam += HandleBeam;
-                m_AIActor.specRigidbody.CollideWithTileMap = true;
-                m_AIActor.BehaviorOverridesVelocity = true;
-                m_HasBeenActivated = true;                
-                StartCoroutine(DelayedActivate());
-            }
+                if (!m_HasBeenActivated && m_Player && m_Player.GetAbsoluteParentRoom() != null && transform.position.GetAbsoluteRoom() != null && m_Player.GetAbsoluteParentRoom() == transform.position.GetAbsoluteRoom()) {
+                    m_Player.PostProcessBeam += HandleBeam;
+                    m_AIActor.specRigidbody.CollideWithTileMap = true;
+                    m_AIActor.BehaviorOverridesVelocity = true;
+                    m_HasBeenActivated = true;                
+                    StartCoroutine(DelayedActivate());
+                }
 
-            if (m_HasBeenActivated && m_Player == null) { m_Player = GameManager.Instance.BestActivePlayer; }
+                if (m_HasBeenActivated && m_Player == null) { m_Player = GameManager.Instance.BestActivePlayer; }
 
-            if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead | m_Player.spriteAnimator.IsPlaying("death_shot") | m_Player.spriteAnimator.IsPlaying("death_shot_armorless")) { return; }
+                if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead | m_Player.spriteAnimator.IsPlaying("death_shot") | m_Player.spriteAnimator.IsPlaying("death_shot_armorless")) { return; }
 
-            if (!MovedToCenter) {
-                m_IsPathfindingToCenter = true;
-                MovedToCenter = true;
-                StartCoroutine(PathBackToCenter(m_AIActor, m_ParentRoom.area.UnitCenter));
-            }
+                if (!MovedToCenter) {
+                    m_IsPathfindingToCenter = true;
+                    MovedToCenter = true;
+                    StartCoroutine(PathBackToCenter(m_AIActor, m_ParentRoom.area.UnitCenter));
+                }
            
-            if (m_DelayedActive && (m_AIActor.PlayerTarget == null | m_AIActor.TargetRigidbody == null)) { m_AIActor.PlayerTarget = m_Player; }
+                if (m_DelayedActive && (m_AIActor.PlayerTarget == null | m_AIActor.TargetRigidbody == null)) { m_AIActor.PlayerTarget = m_Player; }
 
-            if (m_DelayedActive && m_Player && m_AIActor) {
-                UpdateSprites();
-                if (m_AIActor.spriteAnimator.IsPlaying("run_down")) { m_AIActor.spriteAnimator.Stop(); }
-            }
+                if (m_DelayedActive && m_Player && m_AIActor) {
+                    UpdateSprites();
+                    if (m_AIActor.spriteAnimator.IsPlaying("run_down")) { m_AIActor.spriteAnimator.Stop(); }
+                }
 
-            if (m_DelayedActive && m_MirrorGunToggle) {
-                
-                if (m_AIActor.aiShooter.EquippedGun.PickupObjectId != m_Player.CurrentGun.PickupObjectId && ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
-                    ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_Player.CurrentGun.PickupObjectId);
-                } else if (!ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
-                    if (m_AIActor.aiShooter.CurrentGun.PickupObjectId != m_StartingGuns[0]) {
-                        ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_StartingGuns[0]);
+                if (m_DelayedActive && m_MirrorGunToggle) {
+                    
+                    if (m_AIActor.aiShooter.EquippedGun.PickupObjectId != m_Player.CurrentGun.PickupObjectId && ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
+                        ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_Player.CurrentGun.PickupObjectId);
+                    } else if (!ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
+                        if (m_AIActor.aiShooter.CurrentGun.PickupObjectId != m_StartingGuns[0]) {
+                            ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_StartingGuns[0]);
+                        }
                     }
-                }
 
-                if (m_AIActor.aiShooter.CurrentGun.PickupObjectId == m_Player.CurrentGun.PickupObjectId) {
-                    if (m_AIActor.aiShooter.CurrentGun.spriteAnimator.enabled) { m_AIActor.aiShooter.CurrentGun.spriteAnimator.enabled = false; }
-                    if (m_AIActor.aiShooter.CurrentGun.sprite.spriteId != m_Player.CurrentGun.sprite.spriteId) {
-                        m_AIActor.aiShooter.CurrentGun.sprite.SetSprite(m_Player.CurrentGun.sprite.spriteId);
+                    if (m_AIActor.aiShooter.CurrentGun.PickupObjectId == m_Player.CurrentGun.PickupObjectId) {
+                        if (m_AIActor.aiShooter.CurrentGun.spriteAnimator.enabled) { m_AIActor.aiShooter.CurrentGun.spriteAnimator.enabled = false; }
+                        if (m_AIActor.aiShooter.CurrentGun.sprite.spriteId != m_Player.CurrentGun.sprite.spriteId) {
+                            m_AIActor.aiShooter.CurrentGun.sprite.SetSprite(m_Player.CurrentGun.sprite.spriteId);
+                        }
                     }
-                }
-                
-                if ((!m_IsFiring && m_CanAttack && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId))) && (m_Player.CurrentGun.IsFiring | m_Player.CurrentGun.IsCharging)) {
-                    m_IsFiring = true;
-                    StartCoroutine(HandleFireGun());
-                } else if ((m_Player.IsFiring | m_Player.CurrentGun.IsCharging) && !m_IsFiring && m_CanAttack && !m_AIActor.aiShooter.CurrentGun.IsHeroSword) {
-                    m_AIActor.aiShooter.CurrentGun.Attack();
-                    m_AIActor.aiShooter.CurrentGun.ClearReloadData();
-                    m_IsFiring = false;
-                }
-            } else if (m_DelayedActive && !m_MirrorGunToggle) {
-                if (!m_StartingGuns.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId)) {
-                    ChangeOrAddGun(m_AIActor.aiShooter.Inventory, BraveUtility.RandomElement(m_StartingGuns));
-                }
-
-                if (m_AIActor.aiShooter.CurrentGun.PickupObjectId != 15 | m_PauseAutoFire) {
-                    m_RandomFireRate -= BraveTime.DeltaTime;
-                } else {
-                    m_RandomFireRate += BraveTime.DeltaTime;
-                }
-
-                if (m_PauseAutoFire && m_RandomFireRate <= 0) { m_PauseAutoFire = false; }
-
-                if (m_RandomFireRate <= 0 && m_AIActor.aiShooter.CurrentGun.PickupObjectId != 15) {
-                    if (!m_AIActor.aiShooter.CurrentGun.IsFiring) { FireStartingGun(m_AIActor.aiShooter.CurrentGun, true); }
-                    m_RandomFireRate = Random.Range(0.6f, 0.85f);
-                } else if (!m_PauseAutoFire && m_AIActor.aiShooter.CurrentGun.PickupObjectId == 15) {
-                    if (m_AIActor.aiShooter.CurrentGun.PickupObjectId == 15) { FireStartingGun(m_AIActor.aiShooter.CurrentGun, false); }
-                    if (m_RandomFireRate > 4) {
-                        m_RandomFireRate = 2;
-                        m_PauseAutoFire = true;
+                    
+                    if ((!m_IsFiring && m_CanAttack && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId))) && (m_Player.CurrentGun.IsFiring | m_Player.CurrentGun.IsCharging)) {
+                        m_IsFiring = true;
+                        StartCoroutine(HandleFireGun());
+                    } else if ((m_Player.IsFiring | m_Player.CurrentGun.IsCharging) && !m_IsFiring && m_CanAttack && !m_AIActor.aiShooter.CurrentGun.IsHeroSword) {
+                        m_AIActor.aiShooter.CurrentGun.Attack();
+                        m_AIActor.aiShooter.CurrentGun.ClearReloadData();
+                        m_IsFiring = false;
                     }
-                } else {
-                    if (m_AIActor.aiShooter.CurrentGun.IsFiring) { m_AIActor.aiShooter.CurrentGun.CeaseAttack(); }
+                } else if (m_DelayedActive && !m_MirrorGunToggle) {
+                    if (!m_StartingGuns.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId)) {
+                        ChangeOrAddGun(m_AIActor.aiShooter.Inventory, BraveUtility.RandomElement(m_StartingGuns));
+                    }
+
+                    if (m_AIActor.aiShooter.CurrentGun.PickupObjectId != 15 | m_PauseAutoFire) {
+                        m_RandomFireRate -= BraveTime.DeltaTime;
+                    } else {
+                        m_RandomFireRate += BraveTime.DeltaTime;
+                    }
+
+                    if (m_PauseAutoFire && m_RandomFireRate <= 0) { m_PauseAutoFire = false; }
+
+                    if (m_RandomFireRate <= 0 && m_AIActor.aiShooter.CurrentGun.PickupObjectId != 15) {
+                        if (!m_AIActor.aiShooter.CurrentGun.IsFiring) { FireStartingGun(m_AIActor.aiShooter.CurrentGun, true); }
+                        m_RandomFireRate = Random.Range(0.6f, 0.85f);
+                    } else if (!m_PauseAutoFire && m_AIActor.aiShooter.CurrentGun.PickupObjectId == 15) {
+                        if (m_AIActor.aiShooter.CurrentGun.PickupObjectId == 15) { FireStartingGun(m_AIActor.aiShooter.CurrentGun, false); }
+                        if (m_RandomFireRate > 4) {
+                            m_RandomFireRate = 2;
+                            m_PauseAutoFire = true;
+                        }
+                    } else {
+                        if (m_AIActor.aiShooter.CurrentGun.IsFiring) { m_AIActor.aiShooter.CurrentGun.CeaseAttack(); }
+                    }
+                    
                 }
-                
+            } catch (System.Exception ex) {
+                if (ExpandStats.debugMode) { Debug.LogException(ex); }
             }
         }
         
         private void LateUpdate() {
+            try { 
+                if (m_IsDisconnected | !IsConfigured) { return; }
 
-            if (m_IsDisconnected) { return; }
+                if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead) { return; }
 
-            if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead) { return; }
+                m_RandomRefresh -= BraveTime.DeltaTime;
 
-            m_RandomRefresh -= BraveTime.DeltaTime;
+                if (m_DelayedActive && !m_IsPathfindingToCenter) {
+                    if (m_ParentRoom != null) {
+                        Vector2 RoomCenterPosition = m_ParentRoom.area.UnitCenter;
+                        float MaxDistanceFromCenterX = (m_ParentRoom.area.dimensions.x / 2f);
+                        float MaxDistanceFromCenterY = (m_ParentRoom.area.dimensions.y / 2f);
 
-            if (m_DelayedActive && !m_IsPathfindingToCenter) {
-                if (m_ParentRoom != null) {
-                    Vector2 RoomCenterPosition = m_ParentRoom.area.UnitCenter;
-                    float MaxDistanceFromCenterX = (m_ParentRoom.area.dimensions.x / 2f);
-                    float MaxDistanceFromCenterY = (m_ParentRoom.area.dimensions.y / 2f);
-
-                    Vector2 CurrentPosition = m_AIActor.gameObject.transform.position;
-                    if (Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterX | Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterY) {
-                        m_IsPathfindingToCenter = true;
-                        StartCoroutine(PathBackToCenter(m_AIActor, RoomCenterPosition));
+                        Vector2 CurrentPosition = m_AIActor.gameObject.transform.position;
+                        if (Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterX | Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterY) {
+                            m_IsPathfindingToCenter = true;
+                            StartCoroutine(PathBackToCenter(m_AIActor, RoomCenterPosition));
+                        }
                     }
                 }
-            }
 
-            if (m_DelayedActive) {
+                if (m_DelayedActive) {
 
-                if (EnableFallBackAttacks && m_RandomRefresh <= 0) {
-                    if (m_MirrorGunToggle) {
-                        m_MirrorGunToggle = false;
-                        m_RandomRefresh = Random.Range(15, 30);
+                    if (EnableFallBackAttacks && m_RandomRefresh <= 0) {
+                        if (m_MirrorGunToggle) {
+                            m_MirrorGunToggle = false;
+                            m_RandomRefresh = Random.Range(15, 30);
+                        } else {
+                            m_MirrorGunToggle = true;
+                            m_RandomRefresh = Random.Range(10, 18);
+                        }
+                    }
+
+                    if (m_BeamSweepingBack) {
+                        m_BeamSweepAngle -= (BraveTime.DeltaTime * 30);
+                        if (m_BeamSweepAngle <= 0) {
+                            m_BeamSweepingBack = false;
+                            if (!m_InvertSweepAngle) {
+                                m_InvertSweepAngle = true;
+                            } else if (m_InvertSweepAngle) {
+                                m_InvertSweepAngle = false;
+                            }
+                        }
                     } else {
-                        m_MirrorGunToggle = true;
-                        m_RandomRefresh = Random.Range(10, 18);
+                        m_BeamSweepAngle += (BraveTime.DeltaTime * 30);
+                        if (m_BeamSweepAngle >= 15) {
+                            m_BeamSweepingBack = true;
+                        }
                     }
                 }
 
-                if (m_BeamSweepingBack) {
-                    m_BeamSweepAngle -= (BraveTime.DeltaTime * 30);
-                    if (m_BeamSweepAngle <= 0) {
-                        m_BeamSweepingBack = false;
-                        if (!m_InvertSweepAngle) {
-                            m_InvertSweepAngle = true;
-                        } else if (m_InvertSweepAngle) {
-                            m_InvertSweepAngle = false;
+                if (m_DelayedActive && m_Player && m_Player.GetAbsoluteParentRoom() != null && m_AIActor.GetAbsoluteParentRoom() != null && m_Player.GetAbsoluteParentRoom() == m_AIActor.GetAbsoluteParentRoom()) {
+                    bool m_MovementStutter = false;
+                    if (!m_AIActor.BehaviorOverridesVelocity && !m_IsPathfindingToCenter) { m_AIActor.BehaviorOverridesVelocity = true; }
+                    if (!m_IsPathfindingToCenter && UsesRotationInsteadOfInversion) {
+                        if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
+                        if (!m_MovementStutter) {
+                            if (m_MirrorGunToggle) {
+                                m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
+                            } else {
+                                Vector2 m_CurrentVector = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
+                                float Div = 1.1f;
+                                if (GameManager.IsTurboMode) { Div = 1.25f; }
+                                float X = (m_CurrentVector.x / Div);
+                                float Y = (m_CurrentVector.y / Div);
+                                m_AIActor.BehaviorVelocity = new Vector2(X, Y);
+                            }
                         }
-                    }
-                } else {
-                    m_BeamSweepAngle += (BraveTime.DeltaTime * 30);
-                    if (m_BeamSweepAngle >= 15) {
-                        m_BeamSweepingBack = true;
-                    }
-                }
-            }
-
-            if (m_DelayedActive && m_Player && m_Player.GetAbsoluteParentRoom() != null && m_AIActor.GetAbsoluteParentRoom() != null && m_Player.GetAbsoluteParentRoom() == m_AIActor.GetAbsoluteParentRoom()) {
-                bool m_MovementStutter = false;
-                if (!m_AIActor.BehaviorOverridesVelocity && !m_IsPathfindingToCenter) { m_AIActor.BehaviorOverridesVelocity = true; }
-                if (!m_IsPathfindingToCenter && UsesRotationInsteadOfInversion) {
-                    if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                    if (!m_MovementStutter) {
-                        if (m_MirrorGunToggle) {
-                            m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
-                        } else {
-                            Vector2 m_CurrentVector = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
-                            float Div = 1.1f;
-                            if (GameManager.IsTurboMode) { Div = 1.25f; }
-                            float X = (m_CurrentVector.x / Div);
-                            float Y = (m_CurrentVector.y / Div);
-                            m_AIActor.BehaviorVelocity = new Vector2(X, Y);
-                        }
-                    }
-                } else if (!m_IsPathfindingToCenter) {
-                    if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                    if (!m_MovementStutter) {
-                        if (m_MirrorGunToggle) {
-                            m_AIActor.BehaviorVelocity = (m_AIActor.TargetRigidbody.Velocity * -1f);
-                        } else {
-                            Vector2 m_CurrentVector = (m_AIActor.TargetRigidbody.Velocity * -1f);
-                            float Div = 1.1f;
-                            if (GameManager.IsTurboMode) { Div = 1.25f; }
-                            float X = (m_CurrentVector.x / Div);
-                            float Y = (m_CurrentVector.y / Div);
-                            m_AIActor.BehaviorVelocity = m_CurrentVector;
+                    } else if (!m_IsPathfindingToCenter) {
+                        if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
+                        if (!m_MovementStutter) {
+                            if (m_MirrorGunToggle) {
+                                m_AIActor.BehaviorVelocity = (m_AIActor.TargetRigidbody.Velocity * -1f);
+                            } else {
+                                Vector2 m_CurrentVector = (m_AIActor.TargetRigidbody.Velocity * -1f);
+                                float Div = 1.1f;
+                                if (GameManager.IsTurboMode) { Div = 1.25f; }
+                                float X = (m_CurrentVector.x / Div);
+                                float Y = (m_CurrentVector.y / Div);
+                                m_AIActor.BehaviorVelocity = m_CurrentVector;
+                            }
                         }
                     }
                 }
+            } catch (System.Exception ex) {
+                if (ExpandStats.debugMode) { Debug.LogException(ex); }
             }
         }
         
@@ -690,10 +702,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_MirrorGunToggle = true;
             if (m_Player) { m_Player.PostProcessBeam -= HandleBeam; }
             if (m_AIActor) {
-                if (m_AIActor.aiShooter && m_AIActor.aiShooter.CurrentGun && m_AIActor.aiShooter.CurrentGun.IsFiring) {
+                /*if (m_AIActor.aiShooter && m_AIActor.aiShooter.CurrentGun && m_AIActor.aiShooter.CurrentGun.IsFiring) {
                     m_AIActor.aiShooter.CurrentGun.CeaseAttack(false);
                     m_AIActor.aiShooter.CurrentGun.PostProcessProjectile -= PostProcessEnemyProjectile;
-                }
+                }*/
                 m_AIActor.BehaviorVelocity = Vector2.zero;
                 m_AIActor.BehaviorOverridesVelocity = false;
             }

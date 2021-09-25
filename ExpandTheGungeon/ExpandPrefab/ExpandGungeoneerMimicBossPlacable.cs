@@ -256,7 +256,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             IntVector2 SpawnPosition = (gameObject.transform.PositionVector2().ToIntVector2() - room.area.basePosition);
 
-            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            /*PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
             GameObject m_CachedNewObject = new GameObject("Gungeoneer Mimic") { layer = 28 };
 
@@ -270,12 +270,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (MimiclayItem) {
                 SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(MimiclayItem);
-            }
-
+            }*/
+            /*
             MirrorController mirror = ExpandPrefabs.CurrsedMirror.GetComponent<MirrorController>();
 
             GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
-            MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
+            // MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
+            MimicMirrorObject.transform.position = (SpawnPosition.ToVector3() - new Vector3(0.25f, 1));
+
             MimicMirrorObject.transform.parent = gameObject.transform;
             
             tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
@@ -302,7 +304,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(MimicMirrorFXObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
             
             playerMimicBossIntroDoer.MirrorShatterFX = MimicMirrorFXObject;
-            MimicMirrorFXObject.SetActive(false);
+            MimicMirrorFXObject.SetActive(false);*/
 
             expandSharedAssets1 = null;
         }

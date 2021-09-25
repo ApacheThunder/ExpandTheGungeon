@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.SpriteAPI;
+using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -15,45 +19,126 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         // private bool m_initialized;        
         private bool m_MirrorHasShattered;
-        private bool m_MirrorDepthUpdated;
 
         private ExpandGungeoneerMimicBossController m_GungeoneerMimicController;
 
         private AIActor m_AIActor;
 
-        public void Update() {
-            /*if (!m_initialized) {
-                m_AIActor = aiActor;                
-                m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
-                if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
-                    MirrorBase.GetComponent<tk2dSprite>().HeightOffGround += 2f;
-                    MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
-                }
-                m_MirrorDepthUpdated = false;
-                m_MirrorHasShattered = false;
-                m_initialized = true;
-            }*/
+        public void Start() {
+            m_AIActor = aiActor;
+            m_AIActor.AdditionalSafeItemDrops = new List<PickupObject>() { Mimiclay.MimiclayObject.GetComponent<Mimiclay>() };
+            m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
         }
 
-        public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators) {
+         private void DoInitialConfiguration(PlayerController player) {
+
+            m_AIActor.sprite.SetSprite(player.sprite.Collection, player.sprite.GetCurrentSpriteDef().name);
+
+            tk2dSprite m_HandSprite = m_AIActor.aiShooter.handObject.gameObject.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateSprite(m_HandSprite, player.primaryHand.gameObject.GetComponent<tk2dSprite>());
+            m_AIActor.aiShooter.handObject.sprite.SetSprite(player.primaryHand.sprite.Collection, player.primaryHand.sprite.GetCurrentSpriteDef().name);
             
-            if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
-                MirrorBase.GetComponent<tk2dSprite>().HeightOffGround += 2f;
-                MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
+            // Generate BossCard based on current Player.
+            Texture2D BossCardForeground = ExpandUtility.FlipTexture(Instantiate(player.BosscardSprites[0]));
+            // Mirror thing will be used as static background. (will be the same for all possible boss cards)
+            Texture2D BossCardBackground = ExpandAssets.LoadAsset<Texture2D>("MimicInMirror_BossCardBackground");
+            // Combine foreground boss card generated from PlayerController onto the static background image loased in earlier. Resolutions must match!
+            Texture2D BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
+
+            GenericIntroDoer miniBossIntroDoer = gameObject.GetComponent<GenericIntroDoer>();
+            if (BossCardTexture) { miniBossIntroDoer.portraitSlideSettings.bossArtSprite = BossCardTexture; }
+
+            if (player.characterIdentity == PlayableCharacters.Bullet) {
+                m_AIActor.EnemySwitchState = "Metal_Bullet_Man";
+            } else if (player.characterIdentity == PlayableCharacters.Convict) {
+                m_AIActor.EnemySwitchState = "Convict";
+            } else if (player.characterIdentity == PlayableCharacters.CoopCultist) {
+                m_AIActor.EnemySwitchState = "Cultist";
+            } else if (player.characterIdentity == PlayableCharacters.Cosmonaut) {
+                m_AIActor.EnemySwitchState = "Cosmonaut";
+            } else if (player.characterIdentity == PlayableCharacters.Guide) {
+                m_AIActor.EnemySwitchState = "Guide";
+            } else if (player.characterIdentity == PlayableCharacters.Gunslinger) {
+                m_AIActor.EnemySwitchState = "Gunslinger";
+            } else if (player.characterIdentity == PlayableCharacters.Ninja) {
+                m_AIActor.EnemySwitchState = "Ninja";
+            } else if (player.characterIdentity == PlayableCharacters.Pilot) {
+                m_AIActor.EnemySwitchState = "Rogue";
+            } else if (player.characterIdentity == PlayableCharacters.Robot) {
+                m_AIActor.EnemySwitchState = "Robot";
+            } else if (player.characterIdentity == PlayableCharacters.Soldier) {
+                m_AIActor.EnemySwitchState = "Marine";
+            } else if (player.characterIdentity == PlayableCharacters.Eevee) {
+                m_AIActor.EnemySwitchState = "Convict";
+                ExpandShaders.ApplyParadoxPlayerShader(m_AIActor.sprite);
+            } else {
+                m_AIActor.EnemySwitchState = "Gun Cultist";
+            }
+            List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
+            
+            foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips) {
+                if (!string.IsNullOrEmpty(clip.name)) {
+                    if (clip.name.ToLower() == "dodge") {
+                        m_AnimationClips.Add(clip);
+                        if (clip.frames != null && clip.frames.Length > 0) {
+                            if (!player.UseArmorlessAnim) { m_AIActor.sprite.SetSprite(clip.frames[0].spriteId); }
+                        }
+                    } else if (clip.name.ToLower() == "dodge_armorless") {
+                        m_AnimationClips.Add(clip);
+                        if (clip.frames != null && clip.frames.Length > 0) {
+                            if (player.UseArmorlessAnim) { m_AIActor.sprite.SetSprite(clip.frames[0].spriteId); }
+                        }
+                    } else if (clip.name.ToLower() == "run_down") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "run_down_armorless") {
+                        m_AnimationClips.Add(clip);
+                    } else if(clip.name.ToLower() == "death_shot") {
+                        m_AnimationClips.Add(clip);
+                    } else if (clip.name.ToLower() == "death_shot_armorless") {
+                        m_AnimationClips.Add(clip);
+                    }
+                }
             }
 
-            m_MirrorDepthUpdated = false;
-            m_MirrorHasShattered = false;
+            if (m_AnimationClips.Count > 0) {
+                if (!m_AIActor.spriteAnimator.Library) { m_AIActor.spriteAnimator.Library = m_AIActor.gameObject.AddComponent<tk2dSpriteAnimation>(); }
+                m_AIActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray();
+            }
 
-            m_AIActor = aiActor;
+            MirrorController mirror = ExpandPrefabs.CurrsedMirror.GetComponent<MirrorController>();
+                                                
+            MirrorBase = Instantiate(ExpandPrefabs.DoppelgunnerMirror, gameObject.transform.position - new Vector3(0.25f, 1), Quaternion.identity);
+            ShatterSystem = Instantiate(mirror.ShatterSystem, MirrorBase.transform.position, Quaternion.identity);
+            ShatterSystem.SetActive(false);
+            ShatterSystem.transform.parent = MirrorBase.transform;
 
+            MirrorShatterFX = Instantiate(ExpandPrefabs.DoppelgunnerMirrorFX, (MirrorBase.transform.position - Vector3.one), Quaternion.identity);
+            MirrorShatterFX.SetActive(false);
+        }
+
+        public void Update() { }
+
+        public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators) {
             if (m_AIActor) {
-                m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
+                if (m_GungeoneerMimicController) {
+                    m_GungeoneerMimicController.m_Player = player;
+                    m_GungeoneerMimicController.Init();
+                }
                 m_AIActor.GetAbsoluteParentRoom().CompletelyPreventLeaving = true;
                 m_AIActor.ToggleRenderers(false);
                 m_AIActor.IsGone = true;
                 m_AIActor.State = AIActor.ActorState.Inactive;
             }
+
+            DoInitialConfiguration(player);
+
+
+            if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
+                MirrorBase.GetComponent<tk2dSprite>().HeightOffGround += 2f;
+                MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
+            }
+            
+            m_MirrorHasShattered = false;            
         }
 
         public override void StartIntro(List<tk2dSpriteAnimator> animators) { StartCoroutine(DoIntro()); }
@@ -159,7 +244,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
-                m_MirrorDepthUpdated = true;
             }
             if (m_GungeoneerMimicController.m_Player.UseArmorlessAnim) {
                 m_AIActor.spriteAnimator.Play("dodge_armorless");
@@ -202,11 +286,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.ToggleRenderers(true);
             m_AIActor.specRigidbody.CollideWithOthers = true;
             m_AIActor.IsGone = false;
-            // m_AIActor.State = AIActor.ActorState.Normal;
-            m_AIActor.State = AIActor.ActorState.Awakening;
+            m_AIActor.State = AIActor.ActorState.Normal;
+            // m_AIActor.State = AIActor.ActorState.Awakening;
             m_AIActor.aiShooter.AimAtPoint(m_AIActor.CenterPosition - new Vector2(0, -2));
             m_AIActor.aiShooter.gunAttachPoint.gameObject.SetActive(true);
-            if (!m_MirrorDepthUpdated && MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
+            if (MirrorBase && MirrorBase.GetComponent<tk2dSprite>()) {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
             }

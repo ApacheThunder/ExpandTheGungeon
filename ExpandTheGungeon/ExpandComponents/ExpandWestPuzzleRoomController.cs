@@ -319,7 +319,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 if (m_NPCs != null && m_NPCs.Length > 0) {
                     foreach (TalkDoerLite npc in m_NPCs) {
-                        if (npc.gameObject.transform.parent == WinchesterRoom.hierarchyParent) {
+                        if (npc.GetAbsoluteParentRoom() == WinchesterRoom) {
                             WinchesterNotePosition = (npc.transform.PositionVector2().ToIntVector2() - WinchesterRoom.area.basePosition - new IntVector2(1, 0));
                             break;
                         }
@@ -330,7 +330,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 try {
                     if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_005")) {
-                        IntVector2? NewPosition = WinchesterRoom.GetRandomAvailableCell((IntVector2.One * 2), CellTypes.FLOOR, false, null);
+                        IntVector2? NewPosition = WinchesterRoom.GetRandomAvailableCell(IntVector2.One, CellTypes.FLOOR, false, null);
                         if (NewPosition.HasValue) { InfoSignPosition = NewPosition.Value.ToVector3(); }
                     }
                 } catch (Exception) { }

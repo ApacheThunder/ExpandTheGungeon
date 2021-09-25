@@ -225,9 +225,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Challenge_ZoneControl;
 
         // Custom Objects
+        public static GameObject DoppelgunnerMirror;
+        public static GameObject DoppelgunnerMirrorFX;
         public static GameObject RoomCorruptionAmbience;
         public static GameObject EXAlarmMushroom;
-        public static GameObject EXPlayerMimicBoss;
         public static GameObject EXSawBladeTrap_4x4Zone;
         public static GameObject EXFriendlyForgeHammer;
         public static GameObject EXFriendlyForgeHammerBullet;
@@ -1537,10 +1538,60 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 },
             };
 
+            DoppelgunnerMirror = expandSharedAssets1.LoadAsset<GameObject>("DoppelgunnerMirror");
+            
+            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirror, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
+
+            List<string> m_MirrorMimicFadeInSprites = new List<string>() {
+                "PlayerMimicMirror_MimicFadeIn_01",
+                "PlayerMimicMirror_MimicFadeIn_02",
+                "PlayerMimicMirror_MimicFadeIn_03",
+                "PlayerMimicMirror_MimicFadeIn_04",
+                "PlayerMimicMirror_MimicFadeIn_05",
+                "PlayerMimicMirror_MimicFadeIn_06",
+                "PlayerMimicMirror_MimicFadeIn_07",
+                "PlayerMimicMirror_MimicFadeIn_08",
+                "PlayerMimicMirror_MimicFadeIn_09",
+                "PlayerMimicMirror_MimicFadeIn_10"
+            };
+
+            List<string> m_MirrorCrackSprites = new List<string>() {
+                "PlayerMimicMirror_MimicCrack_01",
+                "PlayerMimicMirror_MimicCrack_02",
+                "PlayerMimicMirror_MimicCrack_03",
+                "PlayerMimicMirror_MimicCrack_04",
+                "PlayerMimicMirror_MimicCrack_05"
+            };
+
+            List<string> m_MirrorShatterFXSprites = new List<string>() {
+                "PlayerMimicMirror_ShatterDebris_01",
+                "PlayerMimicMirror_ShatterDebris_02",
+                "PlayerMimicMirror_ShatterDebris_03",
+                "PlayerMimicMirror_ShatterDebris_04",
+                "PlayerMimicMirror_ShatterDebris_05",
+                "PlayerMimicMirror_ShatterDebris_06",
+                "PlayerMimicMirror_ShatterDebris_07",
+                "PlayerMimicMirror_ShatterDebris_08",
+                "PlayerMimicMirror_ShatterDebris_09",
+                "PlayerMimicMirror_ShatterDebris_10"
+            };
+
+            ExpandUtility.GenerateSpriteAnimator(DoppelgunnerMirror, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
+            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+
+
+            DoppelgunnerMirrorFX = expandSharedAssets1.LoadAsset<GameObject>("DoppelgunnerMirrorFX");
+
+            tk2dSprite MimicMirrorFXSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirrorFX, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_ShatterDebris_01");
+            MimicMirrorFXSprite.HeightOffGround = 3.5f;
+
+            ExpandUtility.GenerateSpriteAnimator(DoppelgunnerMirrorFX, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
+            ExpandUtility.AddAnimation(DoppelgunnerMirrorFX.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+
 
             RoomCorruptionAmbience = expandSharedAssets1.LoadAsset<GameObject>("RoomCorruptionAmbience_Placable");
-
-
+            
             RoomCorruptionAmbience.AddComponent<ExpandCorruptedRoomAmbiencePlacable>();
             
             EXAlarmMushroom = expandSharedAssets1.LoadAsset<GameObject>("EX Alarm Mushroom");
@@ -1693,10 +1744,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
                 }
             };
-
-            EXPlayerMimicBoss = expandSharedAssets1.LoadAsset<GameObject>("Expand Gungeoneer Mimic Boss Placable");
-            EXPlayerMimicBoss.AddComponent<ExpandGungeoneerMimicBossPlacable>();
-
+            
             EXSawBladeTrap_4x4Zone = expandSharedAssets1.LoadAsset<GameObject>("EX SawBlade PlacableObject");
             EXSawBladeTrap_4x4Zone.AddComponent<ExpandSawBladeTrapPlaceable>();
 
