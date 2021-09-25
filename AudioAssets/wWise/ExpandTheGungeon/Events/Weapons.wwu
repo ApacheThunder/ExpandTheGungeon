@@ -611,6 +611,20 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_TrashMan_01" ID="{201CD732-D33A-4AD9-9733-F4C145C2FDE0}">
+					<ChildrenList>
+						<Action Name="" ID="{126CCD4C-79E0-41DF-B21A-1F618E677B47}" ShortID="295776275">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="DeVito_TrashMan" ID="{F42151AE-6971-4A32-BB0A-64335BB856C1}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

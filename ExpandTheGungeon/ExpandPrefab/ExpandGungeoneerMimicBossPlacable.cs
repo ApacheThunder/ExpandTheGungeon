@@ -278,7 +278,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
             MimicMirrorObject.transform.parent = gameObject.transform;
             
-            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Broken");
+            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
             
             ExpandUtility.GenerateSpriteAnimator(MimicMirrorObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
             ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);

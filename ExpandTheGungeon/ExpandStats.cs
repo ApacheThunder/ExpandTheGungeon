@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 namespace ExpandTheGungeon {
@@ -17,7 +18,8 @@ namespace ExpandTheGungeon {
         public static bool EnableExpandedGlitchFloors = true;
         public static bool EnableGlitchFloorScreenShader = true;
         public static bool EnableEXItems = true;
-        public static bool UseExpandedHeap = false;
+        public static bool DisableGC = false;
+        public static bool TrashManSoundFXForCollection = true;
         public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         public static int GameLanguage = 0;
@@ -28,7 +30,36 @@ namespace ExpandTheGungeon {
         public static bool HasSpawnedSecretBoss = false;
         public static bool phobosElevatorHasBeenUsed = false;
         public static float randomSeed = 0.5f;
-        
+
+
+
+        public static void ImportSettings() {
+            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
+                string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));
+                ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
+                JsonUtility.FromJsonOverwrite(CachedJSONText, cachedStats);
+                OverwriteUserSettings(cachedStats);
+            } else {
+                SaveSettings();
+                return;
+            }
+        }
+
+        public static void SaveSettings() {
+
+            string CachedJSONText = string.Empty;
+
+            ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
+
+            CachedJSONText = JsonUtility.ToJson(cachedStats);
+
+            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
+                File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));
+            }
+
+            ExpandAssets.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName);
+            return;
+        }
         
         public static void OverwriteUserSettings(ExpandCachedStats stats) {
             EnableTestDungeonFlow = stats.EnableTestDungeonFlow;
@@ -44,7 +75,8 @@ namespace ExpandTheGungeon {
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             EnableEXItems = stats.EnableEXItems;
-            UseExpandedHeap = stats.UseExpandedHeap;
+            DisableGC = stats.DisableGC;
+            TrashManSoundFXForCollection = stats.TrashManSoundFXForCollection;
             JungleRainIntensity = stats.JungleRainIntensity;
         }
     }
@@ -63,7 +95,8 @@ namespace ExpandTheGungeon {
         public bool EnableExpandedGlitchFloors;
         public bool EnableGlitchFloorScreenShader;
         public bool EnableEXItems;
-        public bool UseExpandedHeap;
+        public bool DisableGC;
+        public bool TrashManSoundFXForCollection;
         public float JungleRainIntensity;
         public int GameLanguage;
         
@@ -81,7 +114,8 @@ namespace ExpandTheGungeon {
             EnableExpandedGlitchFloors = ExpandStats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = ExpandStats.EnableGlitchFloorScreenShader;
             EnableEXItems = ExpandStats.EnableEXItems;
-            UseExpandedHeap = ExpandStats.UseExpandedHeap;
+            DisableGC = ExpandStats.DisableGC;
+            TrashManSoundFXForCollection = ExpandStats.TrashManSoundFXForCollection;
             JungleRainIntensity = ExpandStats.JungleRainIntensity;
             GameLanguage = ExpandStats.GameLanguage;
         }

@@ -37,6 +37,7 @@
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
+				<Event Id="3751824788" Name="Play_EX_TrashMan_01" ObjectPath="\Events\Weapons\Play_EX_TrashMan_01"/>
 				<Event Id="3935194361" Name="Play_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Play_EX_UnicornMusic_01"/>
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
 				<Event Id="582460727" Name="Stop_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Close"/>
@@ -116,6 +117,10 @@
 				<File Id="661097150" Language="SFX">
 					<ShortName>BreachTransitionFast.wav</ShortName>
 					<Path>SFX\BreachTransitionFast_255C9D35.wem</Path>
+				</File>
+				<File Id="666310335" Language="SFX">
+					<ShortName>EX_DeVito_TrashMan.wav</ShortName>
+					<Path>SFX\EX_DeVito_TrashMan_255C9D35.wem</Path>
 				</File>
 				<File Id="719081646" Language="SFX">
 					<ShortName>CorruptionAmbience.wav</ShortName>

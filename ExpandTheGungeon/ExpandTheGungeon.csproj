@@ -161,6 +161,7 @@
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
+    <Compile Include="GC_Manager.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
     <Compile Include="ItemAPI\Items\BulletKinGun.cs" />
@@ -237,7 +238,9 @@
     <Compile Include="ExpandAssets.cs" />
     <Compile Include="SpriteAPI\SpriteAPI.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

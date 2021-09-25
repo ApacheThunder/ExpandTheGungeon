@@ -12,29 +12,9 @@ namespace ExpandTheGungeon {
 
     public class ExpandObjectMods {
 
-        private static object[] Heap;
-
-        public static void ExpandHeapSize(int megabytes) {
-            if (Heap != null) { Heap = null; }
-            Heap = new object[megabytes];
-            for (int i = 0; i < megabytes; i++) { Heap[i] = new byte[102400]; }
-            System.GC.KeepAlive(Heap);
-            System.GC.Collect();
-        }
-
         public static void InitSpecialMods() {
             ExpandStats.randomSeed = Random.value;
-
-            if (ExpandStats.UseExpandedHeap) {
-                if (SystemInfo.systemMemorySize > 10240) {
-                    ExpandHeapSize(8096);
-                } else if (SystemInfo.systemMemorySize > 8192) {
-                    ExpandHeapSize(6144);
-                } else if (SystemInfo.systemMemorySize > 6144) {
-                    ExpandHeapSize(4096);
-                }
-            }
-
+                        
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
             
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {

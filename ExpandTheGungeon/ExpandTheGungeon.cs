@@ -70,8 +70,8 @@ namespace ExpandTheGungeon {
             FilePath = Metadata.Directory;
             ResourcesPath = ETGMod.ResourcesDirectory;
 
-            try { ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
-            
+            try { ExpandStats.ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
+           
             itemList = new List<string>() {
                 "Baby Good Hammer",
                 "Corruption Bomb",
@@ -208,24 +208,16 @@ namespace ExpandTheGungeon {
             sharedAssets2 = null;
             braveResources = null;
             enemiesBase = null;
+
+            if (ExpandStats.DisableGC) {
+                GC_Manager.Instance.Init();
+                GC_Manager.Instance.ToggleHookAndGC();
+            }
         }
 
 
         public override void Exit() {  }
-
         
-        private void ImportSettings() {
-            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
-                string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
-                ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
-                JsonUtility.FromJsonOverwrite(CachedJSONText, cachedStats);
-                ExpandStats.OverwriteUserSettings(cachedStats);
-            } else {
-                ExpandExportSettings(null);
-                return;
-            }
-        }
-
 
         private static IEnumerator WaitForFoyerLoad() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
@@ -298,7 +290,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("toggleheapsize", ExpandToggleHeapSetting);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegc", ExpandToggleGCSetting);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegcstats", ExpandToggleGCStats);            
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
@@ -463,21 +455,8 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandExportSettings(string[] consoleText) {
-
-            string CachedJSONText = string.Empty;
-
-            ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
-            
-            CachedJSONText = JsonUtility.ToJson(cachedStats);
-
-            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName))) {
-                File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ModSettingsFileName));
-            }
-            
-            ExpandAssets.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ModSettingsFileName);
-
+            ExpandStats.SaveSettings();
             ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
-
             return;
         }
 
@@ -509,14 +488,25 @@ namespace ExpandTheGungeon {
         }
 
 
-        private void ExpandToggleHeapSetting(string[] consoleText) {
-            if (!ExpandStats.UseExpandedHeap) {
-                ExpandStats.UseExpandedHeap = true;
-                ETGModConsole.Log("[ExpandTheGungeon] Memory heap for GC incrased. It is recommended you restart your game after changing this setting!");
+        private void ExpandToggleGCSetting(string[] consoleText) {
+            if (consoleText.Length == 1) {
+                if (consoleText[0].ToLower() == "disablesound") {
+                    ExpandStats.TrashManSoundFXForCollection = false;
+                } else if (consoleText[0].ToLower() == "enablesound") {
+                    ExpandStats.TrashManSoundFXForCollection = true;
+                    AkSoundEngine.PostEvent("Play_EX_TrashMan_01", ETGModMainBehaviour.Instance.gameObject);
+                }
+            }
+            if (!ExpandStats.DisableGC) {
+                ExpandStats.DisableGC = true;
+                GC_Manager.Instance.ToggleHookAndGC(true);
+                if (SystemInfo.systemMemorySize < 8196) { ETGModConsole.Log("[ExpandTheGungeon] Warning: Your computer was detected as having 8GB or less ram. It is recommended only to use this feature on machines with more then 8GB of ram!"); }
+                ETGModConsole.Log("[ExpandTheGungeon] GC disabled. GC will now only do collection during floor loads!");
                 ExpandExportSettings(consoleText);
             } else {
-                ExpandStats.UseExpandedHeap = false;
-                ETGModConsole.Log("[ExpandTheGungeon] Memory heap changes as been allowed to use defaults. It is recommended you restart your game after changing this setting!");
+                ExpandStats.DisableGC = false;
+                GC_Manager.Instance.ToggleHookAndGC(false);
+                ETGModConsole.Log("[ExpandTheGungeon] GC enabled. GC will now run normally!");
                 ExpandExportSettings(consoleText);
             }
         }

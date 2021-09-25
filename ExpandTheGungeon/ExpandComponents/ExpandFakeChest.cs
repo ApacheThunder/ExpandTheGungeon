@@ -289,29 +289,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             m_room.RegisterInteractable(this);
             m_Opened = false;
-            ExportSettings();
+            ExpandStats.SaveSettings();
             yield break;
         }
-
-        private void ExportSettings() {
-
-            string CachedJSONText = string.Empty;
-
-            ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
-            
-            CachedJSONText = JsonUtility.ToJson(cachedStats);
-
-            if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
-                File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));
-            }
-            
-            ExpandAssets.SaveStringToFile(CachedJSONText, ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName);
-
-            ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
-
-            return;
-        }
-
+        
 
         private IEnumerator SpwanEnemyAirDrop(float delay = 0.05f) {
             Vector3 RoomOffset = m_room.area.basePosition.ToVector3();

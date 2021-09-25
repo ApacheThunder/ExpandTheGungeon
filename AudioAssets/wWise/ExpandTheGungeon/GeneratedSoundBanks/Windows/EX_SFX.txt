@@ -37,6 +37,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	3570814999	Stop_EX_MUS_All			\Weapons\Stop_EX_MUS_All	
 	3586982857	Stop_EX_CorruptionAmbience_01			\Weapons\Stop_EX_CorruptionAmbience_01	
 	3586982858	Stop_EX_CorruptionAmbience_02			\Weapons\Stop_EX_CorruptionAmbience_02	
+	3751824788	Play_EX_TrashMan_01			\Weapons\Play_EX_TrashMan_01	
 	3822868090	Play_EX_PowBlock_EnemyDeath			\Weapons\Play_EX_PowBlock_EnemyDeath	
 	3935194361	Play_EX_UnicornMusic_01			\Weapons\Play_EX_UnicornMusic_01	
 	3971937637	Play_EX_Cronenberg_Damage_01			\Weapons\Play_EX_Cronenberg_Damage_01	
@@ -70,6 +71,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	603781093	Abomination_Spawn	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Abomination_Spawn_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Spawn		112316
 	632808090	GlitchBombFire	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombFire_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombFire		228896
 	661097150	BreachTransitionFast	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransitionFast_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransitionFast		542596
+	666310335	DeVito_TrashMan	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\EX_DeVito_TrashMan_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\DeVito_TrashMan		286174
 	719081646	CorruptionAmbience_02	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_02		254016
 	737519471	Belly_Door_Unlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Unlock_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Unlock		13150
 	861146735	BreachTransition	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransition_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransition		705304
