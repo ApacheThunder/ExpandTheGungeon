@@ -211,7 +211,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             while (!hasBeenSetup) { yield return null; }
             
             if (!m_Destination.HasValue) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] [" + gameObject.name + "] ERROR: Destination Door was not found!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] [" + gameObject.name + "] ERROR: Destination Door was not found!"); }
                 m_Disabled = true;
             }
 
@@ -455,7 +455,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             while (!hasBeenSetup) { yield return null; }
             
             if (!m_Destination.HasValue) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] [" + gameObject.name + "] ERROR: Destination Door was not found!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] [" + gameObject.name + "] ERROR: Destination Door was not found!"); }
                 m_Disabled = true;
             }
 

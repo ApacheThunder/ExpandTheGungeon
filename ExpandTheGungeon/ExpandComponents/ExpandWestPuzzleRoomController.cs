@@ -10,16 +10,15 @@ namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandWestPuzzleRoomController : BraveBehaviour, IPlaceConfigurable {
 
-        public ExpandWestPuzzleRoomController() { }
+        public ExpandWestPuzzleRoomController() { m_SelectedType = PuzzleType.None; }
 
         private enum PuzzleType {
             None,
             BuildFakeWall,
             HideKeyOnRandomEnemy,
             HideKeyOnTable,
-            PlaceWinchesterSign,
             PlaceChestPuzzle,
-            SetupRatBoss,
+            PlaceWinchesterSign,
             PlaceHubSign
         }
 
@@ -28,21 +27,29 @@ namespace ExpandTheGungeon.ExpandComponents {
         private RoomHandler m_ParentRoom;
 
         private void Start() {
-            if (m_SelectedType == PuzzleType.BuildFakeWall) {
-                HandleBuildFakeWall();
-            } else if (m_SelectedType == PuzzleType.HideKeyOnRandomEnemy) {
-                HandleHideKeyOnEnemy();
-            } else if (m_SelectedType == PuzzleType.HideKeyOnTable) {
-                HandleHideKeyOnTable();
-            } else if (m_SelectedType == PuzzleType.PlaceWinchesterSign) {
-                HandleWinchesterRoomSetup();
-            } else if (m_SelectedType == PuzzleType.PlaceChestPuzzle) {
-                HandleChestRoomSetup();
-            } else if (m_SelectedType == PuzzleType.SetupRatBoss) {
-                HandleRatBossSetup();
-            } else if (m_SelectedType == PuzzleType.PlaceHubSign) {
-                HandlePlaceHubSign();
-            }
+            switch (m_SelectedType) {
+                case PuzzleType.BuildFakeWall:
+                    HandleBuildFakeWall();
+                    break;
+                case PuzzleType.HideKeyOnRandomEnemy:
+                    HandleHideKeyOnEnemy();
+                    break;
+                case PuzzleType.HideKeyOnTable:
+                    HandleHideKeyOnTable();
+                    break;
+                case PuzzleType.PlaceChestPuzzle:
+                    HandleChestRoomSetup();
+                    break;
+                case PuzzleType.PlaceWinchesterSign:
+                    HandleWinchesterRoomSetup();
+                    break;
+                case PuzzleType.PlaceHubSign:
+                    HandlePlaceHubSign();
+                    break;
+                case PuzzleType.None:
+                    Destroy(gameObject);
+                    return;
+            }            
             Destroy(gameObject);
             return;
         }
@@ -290,7 +297,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Destroy(ChestPuzzleInfoSign.GetComponent<MajorBreakable>());
                 m_ParentRoom.RegisterInteractable(ChestPuzzleInfoSign.GetComponent<ExpandNoteDoer>());
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     string Message = "[ExpandTheGungeon] Warning: Exception caught in ExpandWestPuzzleRoomController.HandleChestRoomSetup!";
                     ETGModConsole.Log(Message);
                     Debug.Log(Message);
@@ -298,12 +305,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
         }
-
-        private void HandleWinchesterRoomSetup() {
+        
+        // This will be manually called externally from now on since this doen't seem to work as intended during floor generation
+        // (aka Winchester NPC likely not placed at the time this code runs so this always places sign at default value)
+        public void HandleWinchesterRoomSetup() {
             RoomHandler WinchesterRoom = null;
 
             foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
-                if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().StartsWith("WinchesterRoom")) {
+                if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().ToLower().StartsWith("winchesterroom")) {
                     WinchesterRoom = room;
                     break;
                 }
@@ -314,6 +323,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 WinchesterRoom.TargetPitfallRoom = WinchesterRoom;
 
                 IntVector2 WinchesterNotePosition = new IntVector2(3, 3);
+                Vector3 NPCOffset = new Vector3(1, 0, 0);
 
                 TalkDoerLite[] m_NPCs = FindObjectsOfType<TalkDoerLite>();
 
@@ -327,13 +337,38 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
 
                 Vector3 InfoSignPosition = (new Vector3(3, 3) + WinchesterRoom.area.basePosition.ToVector3());
-
-                try {
-                    if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_005")) {
-                        IntVector2? NewPosition = WinchesterRoom.GetRandomAvailableCell(IntVector2.One, CellTypes.FLOOR, false, null);
-                        if (NewPosition.HasValue) { InfoSignPosition = NewPosition.Value.ToVector3(); }
-                    }
-                } catch (Exception) { }
+                
+                if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_001")) {
+                    InfoSignPosition = (new Vector3(14, 5) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_002")) {
+                    InfoSignPosition = (new Vector3(14, 5) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_003")) {
+                    InfoSignPosition = (new Vector3(12, 5) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_004")) {
+                    InfoSignPosition = (new Vector3(10, 4) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_005")) {
+                    InfoSignPosition = (new Vector3(10, 4) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_ag&d_001")) {
+                    InfoSignPosition = (new Vector3(4, 15) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_ag&d_002")) {
+                    InfoSignPosition = (new Vector3(23, 5) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_ag&d_003")) {
+                    InfoSignPosition = (new Vector3(10, 18) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_ag&d_004")) {
+                    InfoSignPosition = (new Vector3(12, 5) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_ag&d_005")) {
+                    InfoSignPosition = (new Vector3(6, 11) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_001")) {
+                    InfoSignPosition = (new Vector3(6, 2) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_002")) {
+                    InfoSignPosition = (new Vector3(6, 2) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_003")) {
+                    InfoSignPosition = (new Vector3(5, 11) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_004")) {
+                    InfoSignPosition = (new Vector3(7, 2) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                } else if (WinchesterRoom.GetRoomName().ToLower().StartsWith("winchesterroom_joe_005")) {
+                    InfoSignPosition = (new Vector3(20, 11) + WinchesterRoom.area.basePosition.ToVector3() - NPCOffset);
+                }
                  
                 GameObject PlacedWinchesterNote = Instantiate(ExpandPrefabs.Jungle_BlobLostSign, InfoSignPosition, Quaternion.identity);
                 PlacedWinchesterNote.name = "Winchester's Sign";
@@ -394,19 +429,17 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             m_ParentRoom = room;
 
-            if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom1.name.ToLower())) {
+            if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom1.name.ToLower())) {
                 m_SelectedType = PuzzleType.HideKeyOnRandomEnemy;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom2.name.ToLower())) {
+            } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom2.name.ToLower())) {
                 m_SelectedType = PuzzleType.HideKeyOnTable;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom3.name.ToLower())) {
+            } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom3.name.ToLower())) {
                 m_SelectedType = PuzzleType.BuildFakeWall;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.SecretRewardRoom.name.ToLower())) {
+            } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.SecretRewardRoom.name.ToLower())) {
                 m_SelectedType = PuzzleType.PlaceChestPuzzle;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.SecretBossRoom.name.ToLower())) {
-                m_SelectedType = PuzzleType.SetupRatBoss;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_Entrance.name.ToLower())) {
+            } else if (m_ParentRoom.IsActuallyWildWestEntrance()) {
                 m_SelectedType = PuzzleType.PlaceWinchesterSign;
-            } else if (room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_SecretHub2.name.ToLower())) {
+            } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_SecretHub2.name.ToLower())) {
                 m_SelectedType = PuzzleType.PlaceHubSign;
             } else {
                 m_SelectedType = PuzzleType.None;

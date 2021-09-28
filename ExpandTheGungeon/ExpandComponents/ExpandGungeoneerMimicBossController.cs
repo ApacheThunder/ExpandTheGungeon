@@ -214,7 +214,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     
                 }
             } catch (System.Exception ex) {
-                if (ExpandStats.debugMode) { Debug.LogException(ex); }
+                if (ExpandSettings.debugMode) { Debug.LogException(ex); }
             }
         }
         
@@ -304,7 +304,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
             } catch (System.Exception ex) {
-                if (ExpandStats.debugMode) { Debug.LogException(ex); }
+                if (ExpandSettings.debugMode) { Debug.LogException(ex); }
             }
         }
         

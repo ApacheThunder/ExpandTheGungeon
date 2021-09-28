@@ -62,14 +62,14 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                     iterations++;
                 } catch (System.Exception ex) {
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up or placing enemy for current room" /*+ currentRoom.GetRoomName()*/, false);
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
-                    if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
+                    if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up or placing enemy for current room" /*+ currentRoom.GetRoomName()*/, false);
+                    if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
                     if (RandomEnemiesPlaced >= MaxEnemies) { break; }
                     iterations++;
                 }
             }
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("[DEBUG] Max Number of Junk Enemies assigned to floor: " + MaxEnemies, false);
                 ETGModConsole.Log("[DEBUG] Number of Junk Enemies placed: " + RandomEnemiesPlaced, false);
                 ETGModConsole.Log("[DEBUG] Number of Junk Enemies skipped: " + RandomEnemiesSkipped, false);

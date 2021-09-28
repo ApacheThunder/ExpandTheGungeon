@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
+using UnityEngine;
+using ExpandTheGungeon.SpriteAPI;
+using System.Reflection;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -15,13 +19,15 @@ namespace ExpandTheGungeon.ItemAPI {
         public static Gun BootlegMachinePistol;
         public static Gun BootlegShotgun;
         
-        public static void Init() {
+        public static void Init(AssetBundle expandSharedAssets1) {
+
             Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "bootleg_pistol");
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);            
             pistol.AddProjectileModuleFrom("Magnum", true, false);
+            pistol.barrelOffset.transform.localPosition -= new Vector3(0.3f, 0.3f, 0);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
             pistol.Volley = (PickupObjectDatabase.GetById(38) as Gun).Volley;
@@ -33,15 +39,15 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.ammo = 140;
             pistol.SetBaseMaxAmmo(140);
             pistol.quality = ItemQuality.D;
-            if (!ExpandStats.EnableEXItems) { pistol.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { pistol.quality = ItemQuality.EXCLUDED; }
             pistol.UsesCustomCost = true;
             pistol.CustomCost = 10;
             pistol.encounterTrackable.EncounterGuid = "baad9dd6d005458daf02933f6a1ba926";            
             pistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
             ETGMod.Databases.Items.Add(pistol);
-
             BootlegPistolID = pistol.PickupObjectId;
+            
 
 
             Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "bootleg_machinepistol");
@@ -60,17 +66,16 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.ammo = 600;
             machinepistol.SetBaseMaxAmmo(600);
             machinepistol.quality = ItemQuality.D;
-            if (!ExpandStats.EnableEXItems) { machinepistol.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { machinepistol.quality = ItemQuality.EXCLUDED; }
             machinepistol.gunSwitchGroup = "Uzi";
             machinepistol.UsesCustomCost = true;
             machinepistol.CustomCost = 15;
             machinepistol.encounterTrackable.EncounterGuid = "e56adda5081347e5b9e0cf2556689b0e";
             machinepistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
-
             ETGMod.Databases.Items.Add(machinepistol);
-
             BootlegMachinePistolID = machinepistol.PickupObjectId;
+            
 
 
             Gun shotgun = ETGMod.Databases.Items.NewGun("Bootleg Shotgun", "bootleg_shotgun");
@@ -89,16 +94,14 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.ammo = 150;
             shotgun.SetBaseMaxAmmo(150);
             shotgun.quality = ItemQuality.D;
-            if (!ExpandStats.EnableEXItems) { shotgun.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { shotgun.quality = ItemQuality.EXCLUDED; }
             shotgun.gunSwitchGroup = "Shotgun";
             shotgun.UsesCustomCost = true;
             shotgun.CustomCost = 18;
             shotgun.encounterTrackable.EncounterGuid = "fa0575b4cf0140ddb6b0ed6d962bff47";
             shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
-
             ETGMod.Databases.Items.Add(shotgun);
-
             BootlegShotgunID = shotgun.PickupObjectId;
 
 

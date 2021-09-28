@@ -118,7 +118,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 		private void SpawnObjects(GameObject[] selectedObjects) {
             ObjectPrefabSpawnCount = selectedObjects.Length;
             if (ObjectPrefabSpawnCount < 0 | selectedObjects == null) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] ERROR: Object array is empty or null! Nothing to spawn!");
                 }
                 return;
@@ -158,7 +158,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 if (SpawnedObject == null) { return; }
                 
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("About to Spawn an object after death.");
                     ETGModConsole.Log("Object: " + SpawnedObject.name);
                     ETGModConsole.Log("AIActor:" + aiActor.GetActorName());
@@ -267,7 +267,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         objectSpecRigidBody.Reinitialize();
                         list.Add(objectSpecRigidBody);
                     } catch (Exception ex) {
-                        if (ExpandStats.debugMode) {
+                        if (ExpandSettings.debugMode) {
                             ETGModConsole.Log("[DEBUG]: Warning: Exception caught while setting up rigid body settings in ChaosSpawnGlitchedObjectONDeath!");
                             Debug.Log("Warning: Exception caught while setting up rigid body settings in ChaosSpawnGlitchedObjectONDeath!");
                             Debug.LogException(ex);

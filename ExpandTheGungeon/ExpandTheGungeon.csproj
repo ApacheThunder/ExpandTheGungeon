@@ -107,7 +107,7 @@
     <Compile Include="ExpandComponents\ExpandWesternBroController.cs" />
     <Compile Include="ExpandComponents\ExpandBabyDragunComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBellyMonsterController.cs" />
-    <Compile Include="ExpandComponents\ExpandWarpWingDoor.cs" />
+    <Compile Include="ExpandComponents\ExpandWarpManager.cs" />
     <Compile Include="ExpandComponents\ExpandBellyWoodCrestEntranceController.cs" />
     <Compile Include="ExpandComponents\ExpandBlobulinRancherChallengeComponent.cs" />
     <Compile Include="ExpandComponents\ExpandBooChallengeComponent.cs" />
@@ -161,7 +161,6 @@
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
-    <Compile Include="GC_Manager.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
     <Compile Include="ItemAPI\Items\BulletKinGun.cs" />
@@ -195,7 +194,6 @@
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
     <Compile Include="ItemAPI\Items\WoodenCrest.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
-    <Compile Include="ExpandMain\ExpandAssemblerHook.cs" />
     <Compile Include="ExpandMain\ExpandJunkEnemySpawner.cs" />
     <Compile Include="ExpandUtilities\RoomDebug.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\test_customroom_flow.cs" />
@@ -206,12 +204,11 @@
     <Compile Include="ExpandUtilities\ExpandShaders.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnGlitchedEnemyOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnGlitchedObjectOnDeath.cs" />
-    <Compile Include="ExpandMain\ExpandStringTableManager.cs" />
     <Compile Include="ExpandComponents\ExpandWeatherController.cs" />
     <Compile Include="ExpandComponents\ExpandExplodeOnDeath.cs" />
     <Compile Include="ExpandPrefab\ExpandGlitchedEnemies.cs" />
     <Compile Include="ExpandMain\ExpandPlaceGlitchedEnemies.cs" />
-    <Compile Include="ExpandStats.cs" />
+    <Compile Include="ExpandSettings.cs" />
     <Compile Include="ExpandPrefab\ExpandLists.cs" />
     <Compile Include="DungeonFlowModule.cs" />
     <Compile Include="ExpandTheGungeon.cs" />

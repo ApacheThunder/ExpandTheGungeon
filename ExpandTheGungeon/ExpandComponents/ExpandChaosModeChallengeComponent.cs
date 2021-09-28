@@ -823,13 +823,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             } catch (Exception ex) {
                 if (debugMode)ETGModConsole.Log("[DEBUG] Exception while setting up or placing objects for current room: " + currentRoom.GetRoomName(), true);
                 if (debugMode)ETGModConsole.Log("[DEBUG] Skipping current room...", true);
-                if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, debugMode); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, debugMode); }
                 return;
             }
 
             
             if (debugMode)ETGModConsole.Log("[DEBUG] Finished placing objects. Preparing to exit...", true);
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("[DEBUG] Max Number of Objects assigned to room: " + MaxRandomObjectsForRoom, false);
                 ETGModConsole.Log("[DEBUG] Number of Objects placed: " + RandomObjectsPlaced, false);
                 ETGModConsole.Log("[DEBUG] Number of Objects skipped: " + RandomObjectsSkipped, false);
@@ -940,7 +940,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeHologram] in ExpandChaosModeChallengeComponent!", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);
@@ -992,7 +992,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeHologram] in ExpandChaosModeChallengeComponent!", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);

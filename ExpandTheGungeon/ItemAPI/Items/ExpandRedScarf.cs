@@ -32,7 +32,7 @@ namespace ExpandTheGungeon.ItemAPI {
             redScarf.itemName = "Red Bandana";
             redScarf.PickupObjectId = 436;
             redScarf.quality = m_BlinkPassive.quality;
-            if (!ExpandStats.EnableEXItems) { redScarf.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { redScarf.quality = ItemQuality.EXCLUDED; }
             redScarf.additionalMagnificenceModifier = m_BlinkPassive.additionalMagnificenceModifier;
             redScarf.ItemSpansBaseQualityTiers = m_BlinkPassive.ItemSpansBaseQualityTiers;
             redScarf.ItemRespectsHeartMagnificence = m_BlinkPassive.ItemRespectsHeartMagnificence;
@@ -61,7 +61,7 @@ namespace ExpandTheGungeon.ItemAPI {
             redScarf.BlinkpoofVfx = m_BlinkPassive.BlinkpoofVfx;
 
             // Try to prevent original item from showing up. (can still be accessed via MTG console's give command however)
-            if (ExpandStats.EnableEXItems) { m_BlinkPassive.quality = ItemQuality.EXCLUDED; }
+            if (ExpandSettings.EnableEXItems) { m_BlinkPassive.quality = ItemQuality.EXCLUDED; }
         }
         
         public float DodgeRollTimeMultiplier;        

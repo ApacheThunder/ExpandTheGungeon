@@ -1288,6 +1288,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Apache_SurpriseChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_Apache_RainbowRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_RainbowRoom", true, false, assignDecorationSettings: true);
+            Expand_Apache_RainbowRoom.overrideRoomVisualType = 0;
             Expand_Apache_RainbowRoom.preventAddedDecoLayering = true;
             Expand_Apache_RainbowRoom.precludeAllTilemapDrawing = true;
             Expand_Apache_RainbowRoom.UseCustomMusic = true;
@@ -8630,78 +8631,78 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };*/
 
-            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromAssetBundle(AssetBundles, "Secret_Expand_Achievement_The_Password", true, ExpandStats.RestoreOldRooms);
-            B_Expand_demon_onehand = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_demon_onehand", true, ExpandStats.RestoreOldRooms);
-            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Rage_Mode", true, ExpandStats.RestoreOldRooms);
-            B_Expand_Achievement_Jammed = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Jammed", true, ExpandStats.RestoreOldRooms);
-            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Demolition_Man", true, ExpandStats.RestoreOldRooms);
-            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Beep", true, ExpandStats.RestoreOldRooms);
-            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMHFOA_Expand_Achievement_Gun_Game", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Kyle = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Kyle", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_ReArmed", true, ExpandStats.RestoreOldRooms);
-            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_Dat_Plat", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_bubblebuddy = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_bubblebuddy", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Squad_Captain", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Reverence_for_the_Dead", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Patron = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Patron", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Castle_Crasher", true, ExpandStats.RestoreOldRooms);
-            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Case_Closed", true, ExpandStats.RestoreOldRooms);
-            P_Expand_MasterRound2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_MasterRound2", true, ExpandStats.RestoreOldRooms);
-            P_Expand_beholdter = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_beholdter", true, ExpandStats.RestoreOldRooms);
-            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Sworn_Gun", true, ExpandStats.RestoreOldRooms);
-            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Pit_Lord", true, ExpandStats.RestoreOldRooms);
-            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromAssetBundle(AssetBundles, "MHF_Expand_Achievement_Great_Hall", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_TheSellCreep = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_TheSellCreep", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Trickshot", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Lead_God", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Going_Down", true, ExpandStats.RestoreOldRooms);
-            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Challenger", true, ExpandStats.RestoreOldRooms);
-            MFA_Expand_bigshotgun = RoomFactory.BuildFromAssetBundle(AssetBundles, "MFA_Expand_bigshotgun", true, ExpandStats.RestoreOldRooms);
-            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Dungeon_Diver", true, ExpandStats.RestoreOldRooms);
-            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Double_Jeopardy", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Retrashed = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Retrashed", true, ExpandStats.RestoreOldRooms);
-            M_Expand_ratkey = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ratkey", true, ExpandStats.RestoreOldRooms);
-            M_Expand_MasterRound3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_MasterRound3", true, ExpandStats.RestoreOldRooms);
-            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ArcaneGunpowder", true, ExpandStats.RestoreOldRooms);
-            M_Expand_AK = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_AK", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Rider = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Rider", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Resourceful", true, ExpandStats.RestoreOldRooms);
-            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Mine_Master", true, ExpandStats.RestoreOldRooms);
-            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Woodsie_Lord", true, ExpandStats.RestoreOldRooms);
-            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Wingman", true, ExpandStats.RestoreOldRooms);
-            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPM_Expand_Achievement_Last_Stop", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_hegemony = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_hegemony", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Not_Just_A_Box", true, ExpandStats.RestoreOldRooms);
-            KP_Expand_Achievement_Historian = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Historian", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Prime_Primer = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Prime_Primer", true, ExpandStats.RestoreOldRooms);
-            K_Expand_MasterRound1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_MasterRound1", true, ExpandStats.RestoreOldRooms);
-            K_Expand_bonk = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_bonk", true, ExpandStats.RestoreOldRooms);
-            K_Expand_BigBird = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_BigBird", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Money_Pit", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Hedge_Slinger", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Gungeon_Acolyte", true, ExpandStats.RestoreOldRooms);
-            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Biggest_Wallet", true, ExpandStats.RestoreOldRooms);
-            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromAssetBundle(AssetBundles, "HFAB_Expand_Achievement_Forger", true, ExpandStats.RestoreOldRooms);
-            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Weird_Tale", true, ExpandStats.RestoreOldRooms);
-            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Cartographers_Assistant", true, ExpandStats.RestoreOldRooms);
-            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromAssetBundle(AssetBundles, "HB_Expand_Achievement_Hollowed_Out", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Planar_Lead = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Planar_Lead", true, ExpandStats.RestoreOldRooms);
-            H_Expand_MasterRound4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_MasterRound4", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Highpriest = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Highpriest", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_SledgeDog", true, ExpandStats.RestoreOldRooms);
-            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_Exorcist", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Time_Paradox", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Lion_Leap", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gunsmith", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gungeon_Master", true, ExpandStats.RestoreOldRooms);
-            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Day_Ruiner", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Obsidian_Shell_Casing", true, ExpandStats.RestoreOldRooms);
-            F_Expand_MasterRound5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_MasterRound5", true, ExpandStats.RestoreOldRooms);
-            F_Expand_dragun = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_dragun", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Terminated = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Terminated", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Slayer", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_I_Knew_Someone_Would_Do_It", true, ExpandStats.RestoreOldRooms);
-            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Advanced_Slayer", true, ExpandStats.RestoreOldRooms);
+            Secret_Expand_Achievement_The_Password = RoomFactory.BuildFromAssetBundle(AssetBundles, "Secret_Expand_Achievement_The_Password", true, ExpandSettings.RestoreOldRooms);
+            B_Expand_demon_onehand = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_demon_onehand", true, ExpandSettings.RestoreOldRooms);
+            B_Expand_Achievement_Rage_Mode = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Rage_Mode", true, ExpandSettings.RestoreOldRooms);
+            B_Expand_Achievement_Jammed = RoomFactory.BuildFromAssetBundle(AssetBundles, "B_Expand_Achievement_Jammed", true, ExpandSettings.RestoreOldRooms);
+            PMO_Expand_Achievement_Demolition_Man = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Demolition_Man", true, ExpandSettings.RestoreOldRooms);
+            PMO_Expand_Achievement_Beep = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMO_Expand_Achievement_Beep", true, ExpandSettings.RestoreOldRooms);
+            PMHFOA_Expand_Achievement_Gun_Game = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMHFOA_Expand_Achievement_Gun_Game", true, ExpandSettings.RestoreOldRooms);
+            PMH_Expand_Kyle = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Kyle", true, ExpandSettings.RestoreOldRooms);
+            PMH_Expand_Achievement_ReArmed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_ReArmed", true, ExpandSettings.RestoreOldRooms);
+            PMH_Expand_Achievement_Dat_Plat = RoomFactory.BuildFromAssetBundle(AssetBundles, "PMH_Expand_Achievement_Dat_Plat", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_bubblebuddy = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_bubblebuddy", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_Achievement_Squad_Captain = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Squad_Captain", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_Achievement_Reverence_for_the_Dead = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Reverence_for_the_Dead", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_Achievement_Patron = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Patron", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_Achievement_Castle_Crasher = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Castle_Crasher", true, ExpandSettings.RestoreOldRooms);
+            PM_Expand_Achievement_Case_Closed = RoomFactory.BuildFromAssetBundle(AssetBundles, "PM_Expand_Achievement_Case_Closed", true, ExpandSettings.RestoreOldRooms);
+            P_Expand_MasterRound2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_MasterRound2", true, ExpandSettings.RestoreOldRooms);
+            P_Expand_beholdter = RoomFactory.BuildFromAssetBundle(AssetBundles, "P_Expand_beholdter", true, ExpandSettings.RestoreOldRooms);
+            O_Expand_Achievement_Sworn_Gun = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Sworn_Gun", true, ExpandSettings.RestoreOldRooms);
+            O_Expand_Achievement_Pit_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "O_Expand_Achievement_Pit_Lord", true, ExpandSettings.RestoreOldRooms);
+            MHF_Expand_Achievement_Great_Hall = RoomFactory.BuildFromAssetBundle(AssetBundles, "MHF_Expand_Achievement_Great_Hall", true, ExpandSettings.RestoreOldRooms);
+            MH_Expand_TheSellCreep = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_TheSellCreep", true, ExpandSettings.RestoreOldRooms);
+            MH_Expand_Achievement_Trickshot = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Trickshot", true, ExpandSettings.RestoreOldRooms);
+            MH_Expand_Achievement_Lead_God = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Lead_God", true, ExpandSettings.RestoreOldRooms);
+            MH_Expand_Achievement_Going_Down = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Going_Down", true, ExpandSettings.RestoreOldRooms);
+            MH_Expand_Achievement_Challenger = RoomFactory.BuildFromAssetBundle(AssetBundles, "MH_Expand_Achievement_Challenger", true, ExpandSettings.RestoreOldRooms);
+            MFA_Expand_bigshotgun = RoomFactory.BuildFromAssetBundle(AssetBundles, "MFA_Expand_bigshotgun", true, ExpandSettings.RestoreOldRooms);
+            MA_Expand_Achievement_Dungeon_Diver = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Dungeon_Diver", true, ExpandSettings.RestoreOldRooms);
+            MA_Expand_Achievement_Double_Jeopardy = RoomFactory.BuildFromAssetBundle(AssetBundles, "MA_Expand_Achievement_Double_Jeopardy", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_Retrashed = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Retrashed", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_ratkey = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ratkey", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_MasterRound3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_MasterRound3", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_ArcaneGunpowder = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_ArcaneGunpowder", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_AK = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_AK", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_Achievement_Rider = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Rider", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_Achievement_Resourceful = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Resourceful", true, ExpandSettings.RestoreOldRooms);
+            M_Expand_Achievement_Mine_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "M_Expand_Achievement_Mine_Master", true, ExpandSettings.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Woodsie_Lord = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Woodsie_Lord", true, ExpandSettings.RestoreOldRooms);
+            KPMHFAO_Expand_Achievement_Wingman = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPMHFAO_Expand_Achievement_Wingman", true, ExpandSettings.RestoreOldRooms);
+            KPM_Expand_Achievement_Last_Stop = RoomFactory.BuildFromAssetBundle(AssetBundles, "KPM_Expand_Achievement_Last_Stop", true, ExpandSettings.RestoreOldRooms);
+            KP_Expand_hegemony = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_hegemony", true, ExpandSettings.RestoreOldRooms);
+            KP_Expand_Achievement_Not_Just_A_Box = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Not_Just_A_Box", true, ExpandSettings.RestoreOldRooms);
+            KP_Expand_Achievement_Historian = RoomFactory.BuildFromAssetBundle(AssetBundles, "KP_Expand_Achievement_Historian", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_Prime_Primer = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Prime_Primer", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_MasterRound1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_MasterRound1", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_bonk = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_bonk", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_BigBird = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_BigBird", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_Achievement_Money_Pit = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Money_Pit", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_Achievement_Hedge_Slinger = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Hedge_Slinger", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_Achievement_Gungeon_Acolyte = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Gungeon_Acolyte", true, ExpandSettings.RestoreOldRooms);
+            K_Expand_Achievement_Biggest_Wallet = RoomFactory.BuildFromAssetBundle(AssetBundles, "K_Expand_Achievement_Biggest_Wallet", true, ExpandSettings.RestoreOldRooms);
+            HFAB_Expand_Achievement_Forger = RoomFactory.BuildFromAssetBundle(AssetBundles, "HFAB_Expand_Achievement_Forger", true, ExpandSettings.RestoreOldRooms);
+            HF_Expand_Achievement_Weird_Tale = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Weird_Tale", true, ExpandSettings.RestoreOldRooms);
+            HF_Expand_Achievement_Cartographers_Assistant = RoomFactory.BuildFromAssetBundle(AssetBundles, "HF_Expand_Achievement_Cartographers_Assistant", true, ExpandSettings.RestoreOldRooms);
+            HB_Expand_Achievement_Hollowed_Out = RoomFactory.BuildFromAssetBundle(AssetBundles, "HB_Expand_Achievement_Hollowed_Out", true, ExpandSettings.RestoreOldRooms);
+            H_Expand_Planar_Lead = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Planar_Lead", true, ExpandSettings.RestoreOldRooms);
+            H_Expand_MasterRound4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_MasterRound4", true, ExpandSettings.RestoreOldRooms);
+            H_Expand_Highpriest = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Highpriest", true, ExpandSettings.RestoreOldRooms);
+            H_Expand_Achievement_SledgeDog = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_SledgeDog", true, ExpandSettings.RestoreOldRooms);
+            H_Expand_Achievement_Exorcist = RoomFactory.BuildFromAssetBundle(AssetBundles, "H_Expand_Achievement_Exorcist", true, ExpandSettings.RestoreOldRooms);
+            FB_Expand_Achievement_Time_Paradox = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Time_Paradox", true, ExpandSettings.RestoreOldRooms);
+            FB_Expand_Achievement_Lion_Leap = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Lion_Leap", true, ExpandSettings.RestoreOldRooms);
+            FB_Expand_Achievement_Gunsmith = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gunsmith", true, ExpandSettings.RestoreOldRooms);
+            FB_Expand_Achievement_Gungeon_Master = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Gungeon_Master", true, ExpandSettings.RestoreOldRooms);
+            FB_Expand_Achievement_Day_Ruiner = RoomFactory.BuildFromAssetBundle(AssetBundles, "FB_Expand_Achievement_Day_Ruiner", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_Obsidian_Shell_Casing = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Obsidian_Shell_Casing", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_MasterRound5 = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_MasterRound5", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_dragun = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_dragun", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_Achievement_Terminated = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Terminated", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_Achievement_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Slayer", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_Achievement_I_Knew_Someone_Would_Do_It = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_I_Knew_Someone_Would_Do_It", true, ExpandSettings.RestoreOldRooms);
+            F_Expand_Achievement_Advanced_Slayer = RoomFactory.BuildFromAssetBundle(AssetBundles, "F_Expand_Achievement_Advanced_Slayer", true, ExpandSettings.RestoreOldRooms);
             Expand_Proper_Regular1 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular1", true, true);
             Expand_Proper_Regular2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular2", true, true);
             Expand_Proper_Regular3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Proper_Regular3", true, true);
@@ -8802,7 +8803,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Mines_Regular48 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular48", true, true);
             Expand_Mines_Regular49 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular49", true, true);
             Expand_Mines_Regular50 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Mines_Regular50", true, true);
-            Expand_Keep_Spiral = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Keep_Spiral", true, ExpandStats.RestoreOldRooms);
+            Expand_Keep_Spiral = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Keep_Spiral", true, ExpandSettings.RestoreOldRooms);
 
             // Trap_Expand_Turtlemelon = RoomFactory.BuildFromAssetBundle(AssetBundles, "Trap_Expand_Turtlemelon", true);
 
@@ -9457,12 +9458,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretExitRoom2.InvalidInCoop = false;
             SecretExitRoom2.cullProceduralDecorationOnWeakPlatforms = false;
             SecretExitRoom2.preventAddedDecoLayering = false;
-            SecretExitRoom2.precludeAllTilemapDrawing = false;
+            SecretExitRoom2.precludeAllTilemapDrawing = true;
             SecretExitRoom2.drawPrecludedCeilingTiles = false;
             SecretExitRoom2.preventBorders = false;
             SecretExitRoom2.preventFacewallAO = false;
-            SecretExitRoom2.usesCustomAmbientLight = false;
-            SecretExitRoom2.customAmbientLight = Color.white;
+            SecretExitRoom2.usesCustomAmbientLight = true;
+            SecretExitRoom2.customAmbientLight = new Color(0.875462f, 0.882353f, 0.810986f, 1);
             SecretExitRoom2.ForceAllowDuplicates = false;
             SecretExitRoom2.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
             SecretExitRoom2.IsLostWoodsRoom = false;
@@ -9473,16 +9474,51 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretExitRoom2.CustomMusicSwitch = string.Empty;
             SecretExitRoom2.overrideRoomVisualTypeForSecretRooms = false;
             SecretExitRoom2.rewardChestSpawnPosition = IntVector2.One;
-            SecretExitRoom2.Width = 16;
-            SecretExitRoom2.Height = 12;
+            SecretExitRoom2.Width = 32;
+            SecretExitRoom2.Height = 58;
             SecretExitRoom2.associatedMinimapIcon = ExpandPrefabs.elevator_maintenance_room.associatedMinimapIcon;
             SecretExitRoom2.overrideRoomVisualType = 0;
-            SecretExitRoom2.usesProceduralDecoration = true;
-            SecretExitRoom2.usesProceduralLighting = true;
+            SecretExitRoom2.usesProceduralDecoration = false;
             SecretExitRoom2.allowFloorDecoration = false;
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(1, 7), ExpandPrefabs.ElevatorDeparture);
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 4), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 2), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsHorizontal_Catacombs, useExternalPrefab: true));
+            SecretExitRoom2.usesProceduralLighting = false;
+            // RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(13, 9), ExpandPrefabs.ElevatorDeparture);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, Vector2.zero, ExpandPrefabs.SecretElevatorExitTileset);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(23, 6), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(21, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Door_Horizontal_West, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(0, 32), ExpandPrefabs.EXOldWestWarp);
+            // RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(16, 2), ExpandPrefabs.WestLight);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(14, 4), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(15, 12), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(13, 8), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(2, 19), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(26, 19), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(18, 22), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 26), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(22, 29), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(21, 34), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(27, 35), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(4, 32), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(16, 30), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(14, 32), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(15, 37), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(15, 39), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(27, 35), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(2, 57), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(3, 39), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(28, 42), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(26, 27), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(2, 24), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(8, 36), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(22, 43), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(9, 45), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(2, 46), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(6, 51), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(22, 52), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(29, 51), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(11, 56), ExpandPrefabs.Cactus_A);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(27, 35), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(19, 57), ExpandPrefabs.Cactus_B);
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(28, 57), ExpandPrefabs.Cactus_B);
             RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretExitRoom2, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Elevator_Exit_Layout"));
 
 
@@ -10209,7 +10245,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             foreach (WeightedRoom room in CustomMiscRooms) {
                 ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);
-                if (!ExpandStats.IsHardModeBuild) {
+                if (!ExpandSettings.IsHardModeBuild) {
                     ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
                 }
                 ExpandPrefabs.Gungeon_RoomTable.includedRooms.elements.Add(room);
@@ -10362,7 +10398,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             }
 
-            if (!ExpandStats.IsHardModeBuild) {
+            if (!ExpandSettings.IsHardModeBuild) {
                 foreach (WeightedRoom room in CustomSewersRooms) {
                     ExpandPrefabs.SewersRoomTable.includedRooms.elements.Add(room);
                     ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);

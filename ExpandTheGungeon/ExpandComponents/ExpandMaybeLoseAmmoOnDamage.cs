@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
-
+using ExpandTheGungeon.SpriteAPI;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandMaybeLoseAmmoOnDamage : MonoBehaviour, IGunInheritable {
 
         public ExpandMaybeLoseAmmoOnDamage() {
+            IsABootlegWeapon = true;
             DepleteAmmoOnDamage = true;
             DepleteAmmoOnDamageOdds = 0.2f;
             HasBootlegTransmorgify = true;
@@ -16,7 +17,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             TransfmorgifyTargetGUIDs = new List<string>();
             m_gunBroken = false;
         }
-        
+
+        public bool IsABootlegWeapon;
         public bool DepleteAmmoOnDamage;
         public bool HasBootlegTransmorgify;
         public bool IsBootlegShotgun;        
@@ -65,6 +67,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_playerOwner = (actor as PlayerController);
                 m_playerOwner.OnReceivedDamage += OnReceivedDamage;
                 m_gun.PostProcessProjectile += TransmorgifyPostProcess;
+            }
+
+            if (IsABootlegWeapon) { m_gun.PostProcessProjectile += SpriteChangePostProcess; }
+        }
+
+        public void SpriteChangePostProcess(Projectile projectile) {
+            if (!projectile.Owner?.gameObject?.GetComponent<AIActor>()) {
+                projectile.GetAnySprite().SetSprite(ExpandPrefabs.EXGunCollection.GetComponent<tk2dSpriteCollectionData>(), "bootleg_pistol_projectile_001");
+                projectile.specRigidbody.RegenerateColliders = true;
             }
         }
 

@@ -112,7 +112,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             _LockedNamespaces.Remove("gungeon");
 
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
             loadEnemyGUIDHook = new Hook(
                 typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
@@ -374,7 +374,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
             if (!m_CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
                 return;
             }
 
@@ -895,7 +895,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
             if (!m_CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
                 return;
             }
 
@@ -1328,7 +1328,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
             if (!m_CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
                 return;
             }
 
@@ -1693,7 +1693,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
             if (!m_CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
                 return;
             }
 
@@ -2044,7 +2044,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
             if (!m_CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
                 return;
             }
 
@@ -2874,7 +2874,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             StoneCubeCollection_West = expandSharedAssets1.LoadAsset<GameObject>("StoneCubeCollection_West");
             tk2dSpriteCollectionData StoneCubeCollection_WestCollection = StoneCubeCollection_West.AddComponent<tk2dSpriteCollectionData>();
 
-            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "MiscAssets/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
+            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "SpriteCOllections/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
 
             Material m_NewMaterial = new Material(GetOrLoadByGuid_Orig("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection.materials[0]);
             m_NewMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
@@ -2952,12 +2952,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.EnemySwitchState = string.Empty;
             m_CachedAIActor.PreventFallingInPitsEver = true;
             m_CachedAIActor.IgnoreForRoomClear = true;
-            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.HitByEnemyBullets = true;
             m_CachedAIActor.CanTargetEnemies = false;
             m_CachedAIActor.CanTargetPlayers = true;
             m_CachedAIActor.DiesOnCollison = true;
-            m_CachedAIActor.healthHaver.SetHealthMaximum(25);
-            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(15);
+            m_CachedAIActor.healthHaver.SetHealthMaximum(1);
+            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(1);
 
             m_CachedAIActor.specRigidbody.PixelColliders.Clear();
             m_CachedAIActor.specRigidbody.PixelColliders.Add(
@@ -3260,7 +3260,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_CachedAIActor = ExpandUtility.BuildNewAIActor(m_CachedTargetObject, "Corrupted Enemy", "182c39c4d904493283f75ab29775d9c6", EnemyHasNoShooter: true);
 
             if (!m_CachedAIActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[ExpandTheGungeon] [BuildCorruptedEnemyPrefab] ERROR: New AIActor component returned null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[ExpandTheGungeon] [BuildCorruptedEnemyPrefab] ERROR: New AIActor component returned null!", false);
                 return;
             }
 

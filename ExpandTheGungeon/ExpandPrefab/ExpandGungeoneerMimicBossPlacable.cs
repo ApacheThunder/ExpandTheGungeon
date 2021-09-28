@@ -38,7 +38,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (!aiActorObject | !CachedEnemyActor) { return; }
             
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
             }
 

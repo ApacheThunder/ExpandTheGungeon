@@ -43,16 +43,16 @@ namespace ExpandTheGungeon.ExpandMain {
                             break;
                     }
                 } catch (System.Exception ex) {                    
-                    if (ExpandStats.debugMode && currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName())) {
-                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for room: " + currentRoom.GetRoomName(), DebugMode);
-                    } else if (ExpandStats.debugMode) {
-                        if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for current room", DebugMode);
+                    if (ExpandSettings.debugMode && currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName())) {
+                        if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for room: " + currentRoom.GetRoomName(), DebugMode);
+                    } else if (ExpandSettings.debugMode) {
+                        if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up objects for current room", DebugMode);
                     }
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", DebugMode);
-                    if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, DebugMode); }
+                    if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", DebugMode);
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, DebugMode); }
                 }
             }
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects placed: " + RandomObjectsPlaced, DebugMode);
                 ETGModConsole.Log("[DEBUG] Number of floor decoration objects skipped: " + RandomObjectsSkipped, DebugMode);
                 if (RandomObjectsPlaced <= 0) { ETGModConsole.Log("[DEBUG] Warning: No decoration objects have been placed!", DebugMode); }

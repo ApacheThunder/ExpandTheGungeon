@@ -12,6 +12,7 @@ using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.IO;
 using System.Collections;
+using System.Runtime.InteropServices;
 // using System.Runtime;
 // using System.Runtime.InteropServices;
 
@@ -60,7 +61,7 @@ namespace ExpandTheGungeon {
             }
             return true;
         }
-
+        
         public override void Init() {
             
             ExceptionText = string.Empty;
@@ -70,7 +71,7 @@ namespace ExpandTheGungeon {
             FilePath = Metadata.Directory;
             ResourcesPath = ETGMod.ResourcesDirectory;
 
-            try { ExpandStats.ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
+            try { ExpandSettings.ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
            
             itemList = new List<string>() {
                 "Baby Good Hammer",
@@ -189,9 +190,9 @@ namespace ExpandTheGungeon {
 
             InitConsoleCommands(ConsoleCommandName);
 
-            if (ExpandStats.EnableTestDungeonFlow | ExpandStats.EnableLanguageFix) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+            if (ExpandSettings.EnableTestDungeonFlow | ExpandSettings.EnableLanguageFix) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
 
-            if (ExpandStats.EnableLanguageFix) {
+            if (ExpandSettings.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
             }
@@ -208,11 +209,6 @@ namespace ExpandTheGungeon {
             sharedAssets2 = null;
             braveResources = null;
             enemiesBase = null;
-
-            if (ExpandStats.DisableGC) {
-                GC_Manager.Instance.Init();
-                GC_Manager.Instance.ToggleHookAndGC();
-            }
         }
 
 
@@ -221,13 +217,13 @@ namespace ExpandTheGungeon {
 
         private static IEnumerator WaitForFoyerLoad() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
-            if (ExpandStats.EnableLanguageFix) {
-                GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
-                StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandStats.GameLanguage);
+            if (ExpandSettings.EnableLanguageFix) {
+                GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
+                StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
             }
-            if (ExpandStats.EnableTestDungeonFlow) {
-                GameManager.Instance.InjectedFlowPath = ExpandStats.TestFlow;
-                GameManager.Instance.InjectedLevelName = ExpandStats.TestFloor;
+            if (ExpandSettings.EnableTestDungeonFlow) {
+                GameManager.Instance.InjectedFlowPath = ExpandSettings.TestFlow;
+                GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
             }
             yield break;
         }
@@ -239,10 +235,10 @@ namespace ExpandTheGungeon {
                     ItemBuilder.Init();
                     BabyGoodHammer.Init(expandSharedAssets1);
                     CorruptionBomb.Init(expandSharedAssets1);
-                    if (ExpandStats.EnableBloodiedScarfFix) { ExpandRedScarf.Init(expandSharedAssets1); }
+                    if (ExpandSettings.EnableBloodiedScarfFix) { ExpandRedScarf.Init(expandSharedAssets1); }
                     TableTechAssassin.Init(expandSharedAssets1);
                     CorruptedJunk.Init(expandSharedAssets1);
-                    BootlegGuns.Init();
+                    BootlegGuns.Init(expandSharedAssets1);
                     CronenbergBullets.Init(expandSharedAssets1);
                     Mimiclay.Init(expandSharedAssets1);
                     TheLeadKey.Init(expandSharedAssets1);
@@ -270,7 +266,7 @@ namespace ExpandTheGungeon {
             
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
-            if (ExpandStats.EnableTestDungeonFlow) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+            if (ExpandSettings.EnableTestDungeonFlow) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
@@ -290,8 +286,6 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegc", ExpandToggleGCSetting);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglegcstats", ExpandToggleGCStats);            
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
@@ -327,8 +321,8 @@ namespace ExpandTheGungeon {
 
             switch (consoleText[0].ToLower()) {
                 case "toggledebugstats":
-                    if (!ExpandStats.debugMode) {
-                        ExpandStats.debugMode = true;
+                    if (!ExpandSettings.debugMode) {
+                        ExpandSettings.debugMode = true;
                         ETGModConsole.Log("[ExpandTheGungeon] Installing RoomHandler.OnEntered Hook....");
                         ExpandSharedHooks.enterRoomHook = new Hook(
                             typeof(RoomHandler).GetMethod("OnEntered", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -336,8 +330,8 @@ namespace ExpandTheGungeon {
                             typeof(RoomHandler)
                         );
                     } else {
-                        if (ExpandStats.debugMode) {
-                            ExpandStats.debugMode = false;
+                        if (ExpandSettings.debugMode) {
+                            ExpandSettings.debugMode = false;
                             if (ExpandSharedHooks.enterRoomHook != null) {
                                 ETGModConsole.Log("[ExpandTheGungeon] Uninstalling RoomHandler.OnEntered Hook....");
                                 ExpandSharedHooks.enterRoomHook.Dispose();
@@ -346,8 +340,8 @@ namespace ExpandTheGungeon {
                         }
                     }                
                     ETGModConsole.Log("[ExpandTheGungeon] Debug Stats: ", false);
-                    ETGModConsole.Log("Debug Stats: " + ExpandStats.debugMode.ToString(), false);
-                    ETGModConsole.Log("Debug Exceptions: " + ExpandStats.debugMode.ToString(), false);
+                    ETGModConsole.Log("Debug Stats: " + ExpandSettings.debugMode.ToString(), false);
+                    ETGModConsole.Log("Debug Exceptions: " + ExpandSettings.debugMode.ToString(), false);
                     break;
                 case "clearroom":
                     if (currentRoom != null) {
@@ -445,70 +439,52 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandYouTubeSafeCommand(string[] consoleTest) {
-            if (ExpandStats.youtubeSafeMode) {
+            if (ExpandSettings.youtubeSafeMode) {
                 ETGModConsole.Log("No longer YouTube safe.", false);
-                ExpandStats.youtubeSafeMode = false;
+                ExpandSettings.youtubeSafeMode = false;
             } else {
                 ETGModConsole.Log("Now YouTube Safe.", false);
-                ExpandStats.youtubeSafeMode = true;
+                ExpandSettings.youtubeSafeMode = true;
             }
         }
         
         private void ExpandExportSettings(string[] consoleText) {
-            ExpandStats.SaveSettings();
+            ExpandSettings.SaveSettings();
             ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
             return;
         }
 
         private void ExpandToggleLanguageFix(string[] consoleText) {
-            if (ExpandStats.EnableLanguageFix) {
-                ExpandStats.EnableLanguageFix = false;
+            if (ExpandSettings.EnableLanguageFix) {
+                ExpandSettings.EnableLanguageFix = false;
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 ETGModConsole.Log("[ExpandTheGungeon] Language override disabled!");
                 ETGModConsole.Log("[ExpandTheGungeon] Game Language set back to English!\n\nSet game language back to your desired language before re-enabling this feature!");
             } else {
-                ExpandStats.EnableLanguageFix = true;
+                ExpandSettings.EnableLanguageFix = true;
                 ETGModConsole.Log("[ExpandTheGungeon] Language override enabled!");
             }
 
-            ExpandStats.GameLanguage = ExpandUtility.LanguageToInt(GameManager.Options.CurrentLanguage);
+            ExpandSettings.GameLanguage = ExpandUtility.LanguageToInt(GameManager.Options.CurrentLanguage);
 
             ExpandExportSettings(consoleText);
         }
+        
+        private void ExpandSerializeCollection(string[] consoleText) {
+            if (consoleText.Length == 3) {
+                List<string> spritePaths = new List<string>() {
+                    "SecretElevatorExitTileset_Floor",
+                    "SecretElevatorExitTileset_Roof"
+                };
 
-        private void ExpandToggleGCStats(string[] consoleText) {
-            if (!HUDGC.ShowGcData) {
-                HUDGC.ShowGcData = true;
-                ETGModConsole.Log("[ExpandTheGungeon] GC Stats enabled!");
+                int X = int.Parse(consoleText[1]);
+                int Y = int.Parse(consoleText[2]);
+                SpriteSerializer.SerializeSpriteCollection(consoleText[0], spritePaths, X, Y);
             } else {
-                HUDGC.ShowGcData = false;
-                ETGModConsole.Log("[ExpandTheGungeon] GC Stats disabled!");
+                ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
-        }
-
-
-        private void ExpandToggleGCSetting(string[] consoleText) {
-            if (consoleText.Length == 1) {
-                if (consoleText[0].ToLower() == "disablesound") {
-                    ExpandStats.TrashManSoundFXForCollection = false;
-                } else if (consoleText[0].ToLower() == "enablesound") {
-                    ExpandStats.TrashManSoundFXForCollection = true;
-                    AkSoundEngine.PostEvent("Play_EX_TrashMan_01", ETGModMainBehaviour.Instance.gameObject);
-                }
-            }
-            if (!ExpandStats.DisableGC) {
-                ExpandStats.DisableGC = true;
-                GC_Manager.Instance.ToggleHookAndGC(true);
-                if (SystemInfo.systemMemorySize < 8196) { ETGModConsole.Log("[ExpandTheGungeon] Warning: Your computer was detected as having 8GB or less ram. It is recommended only to use this feature on machines with more then 8GB of ram!"); }
-                ETGModConsole.Log("[ExpandTheGungeon] GC disabled. GC will now only do collection during floor loads!");
-                ExpandExportSettings(consoleText);
-            } else {
-                ExpandStats.DisableGC = false;
-                GC_Manager.Instance.ToggleHookAndGC(false);
-                ETGModConsole.Log("[ExpandTheGungeon] GC enabled. GC will now run normally!");
-                ExpandExportSettings(consoleText);
-            }
+            
         }
 
         private void ExpandTestCommand(string[] consoleText) {
@@ -634,90 +610,7 @@ namespace ExpandTheGungeon {
             // 
             return;
         }
-
-        private void ExpandSerializeCollection(string[] consoleText) {
-            if (consoleText.Length == 3) {
-                List<string> spritePaths = new List<string>() {
-                    "Western_Bros_Hand",
-                    "gr_angel_rev_fire_001",
-                    "gr_angel_rev_fire_002",
-                    "gr_angel_rev_fire_003",
-                    "gr_angel_rev_fire_004",
-                    "gr_angel_rev_idle_001",
-                    "gr_angel_rev_reload_001",
-                    "gr_angel_rev_reload_002",
-                    "gr_angel_rev_reload_003",
-                    "gr_angel_rev_reload_004",
-                    "gr_black_revolver_fire_001",
-                    "gr_black_revolver_fire_002",
-                    "gr_black_revolver_fire_003",
-                    "gr_black_revolver_fire_004",
-                    "gr_black_revolver_idle_001",
-                    "gr_black_revolver_idle_002",
-                    "gr_black_revolver_idle_003",
-                    "gr_black_revolver_idle_004",
-                    "gr_black_revolver_projectile_001",
-                    "gr_black_revolver_projectile_002",
-                    "gr_black_revolver_projectile_003",
-                    "gr_black_revolver_projectile_004",
-                    "gr_black_revolver_projectile_005",
-                    "gr_black_revolver_projectile_006",
-                    "gr_black_revolver_reload_001",
-                    "gr_black_revolver_reload_002",
-                    "gr_black_revolver_reload_003",
-                    "gr_black_revolver_reload_004",
-                    "gr_black_revolver_reload_005",
-                    "gr_black_revolver_reload_006",
-                    "gr_golden_revolver_fire_001",
-                    "gr_golden_revolver_fire_002",
-                    "gr_golden_revolver_fire_003",
-                    "gr_golden_revolver_fire_004",
-                    "gr_golden_revolver_idle_001",
-                    "gr_golden_revolver_idle_002",
-                    "gr_golden_revolver_idle_003",
-                    "gr_golden_revolver_idle_004",
-                    "gr_golden_revolver_reload_001",
-                    "gr_golden_revolver_reload_002",
-                    "gr_golden_revolver_reload_003",
-                    "gr_golden_revolver_reload_004",
-                    "gr_golden_revolver_reload_005",
-                    "gr_golden_revolver_reload_006",
-                    "gr_nome_rev_enemy_pre_fire_001",
-                    "gr_nome_rev_enemy_pre_fire_002",
-                    "gr_nome_rev_enemy_pre_fire_003",
-                    "gr_nome_rev_fire_001",
-                    "gr_nome_rev_fire_002",
-                    "gr_nome_rev_fire_003",
-                    "gr_nome_rev_fire_004",
-                    "gr_nome_rev_idle_001",
-                    "gr_nome_rev_reload_001",
-                    "gr_nome_rev_reload_002",
-                    "gr_nome_rev_reload_003",
-                    "gr_nome_rev_reload_004",
-                    "gr_tuc_rev_enemy_pre_fire_001",
-                    "gr_tuc_rev_enemy_pre_fire_002",
-                    "gr_tuc_rev_enemy_pre_fire_003",
-                    "gr_tuc_rev_fire_001",
-                    "gr_tuc_rev_fire_002",
-                    "gr_tuc_rev_fire_003",
-                    "gr_tuc_rev_fire_004",
-                    "gr_tuc_rev_idle_001",
-                    "gr_tuc_rev_reload_001",
-                    "gr_tuc_rev_reload_002",
-                    "gr_tuc_rev_reload_003",
-                    "gr_tuc_rev_reload_004",
-                    "gr_angel_rev_enemy_pre_fire_001",
-                    "gr_angel_rev_enemy_pre_fire_002",
-                    "gr_angel_rev_enemy_pre_fire_003"
-                };
-
-                int X = int.Parse(consoleText[1]);
-                int Y = int.Parse(consoleText[2]);
-                SpriteSerializer.SerializeSpriteCollection(consoleText[0], spritePaths, X, Y);
-            } else {
-                ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
-            }
-        }
+        
     }
 }
 

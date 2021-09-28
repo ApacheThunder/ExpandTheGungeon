@@ -43,7 +43,7 @@ namespace ExpandTheGungeon.ItemAPI {
             corruptionBombComponent.m_cachedNumberOfUses = 3;
             corruptionBombComponent.UsesNumberOfUsesBeforeCooldown = true;
             corruptionBombComponent.quality = ItemQuality.S;
-            if (!ExpandStats.EnableEXItems) { corruptionBombComponent.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { corruptionBombComponent.quality = ItemQuality.EXCLUDED; }
             CorruptionBombPickupID = corruptionBombComponent.PickupObjectId;
 
 

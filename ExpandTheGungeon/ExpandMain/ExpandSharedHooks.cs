@@ -62,7 +62,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (InstallHooks) {
                     
                 if (cellhook == null) {
-                    if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlagCells Hook...."); }
+                    if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlagCells Hook...."); }
                     cellhook = new Hook(
                         typeof(OccupiedCells).GetMethod("FlagCells", BindingFlags.Public | BindingFlags.Instance),
                         typeof(ExpandSharedHooks).GetMethod("FlagCellsHook", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -71,26 +71,26 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 
                 IsHooksInstalled = true;
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Primary hooks installed...", false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Primary hooks installed...", false); }
                 return;
             } else {
                 if (cellhook != null) { cellhook.Dispose(); cellhook = null; }
                 IsHooksInstalled = false;
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Primary hooks removed...", false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Primary hooks removed...", false); }
                 return;
             }
         }
 
         public static void InstallMidGameSaveHooks() {
             // Fix MidGame save stuff involving custom floors.
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing MainMenuFoyerController.OnContinueGameSelected Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing MainMenuFoyerController.OnContinueGameSelected Hook...."); }
             onContinueGameSelectedHook = new Hook(
                 typeof(MainMenuFoyerController).GetMethod("OnContinueGameSelected", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("OnContinueGameSelected", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(MainMenuFoyerController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.GetNextTileset Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.GetNextTileset Hook...."); }
             generateRoomDoorMeshHook = new Hook(
                 typeof(GameManager).GetMethod("GetNextTileset", new Type[] { typeof(GlobalDungeonData.ValidTilesets) }),
                 typeof(ExpandSharedHooks).GetMethod("GetNextTileset", BindingFlags.Public | BindingFlags.Instance),
@@ -101,149 +101,150 @@ namespace ExpandTheGungeon.ExpandMain {
         
         public static void InstallRequiredHooks() {
             
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EscapeRopeItem.CanBeUsed Hook..."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EscapeRopeItem.CanBeUsed Hook..."); }
             escapeRopeCanBeUsedHook = new Hook(
                 typeof(EscapeRopeItem).GetMethod("CanBeUsed", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod(nameof(EscapeRopCanBeUsedHook), BindingFlags.Public | BindingFlags.Instance),
                 typeof(EscapeRopeItem)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearPerLevelData Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearPerLevelData Hook...."); }
             clearPerLevelDataHook = new Hook(
                 typeof(GameManager).GetMethod(nameof(GameManager.ClearPerLevelData), BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod(nameof(ClearPerLevelData), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(GameManager)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearActiveGameData Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ClearActiveGameData Hook...."); }
             clearActiveGameDataHook = new Hook(
                 typeof(GameManager).GetMethod(nameof(GameManager.ClearActiveGameData), BindingFlags.Public | BindingFlags.Instance), 
                 typeof(ExpandSharedHooks).GetMethod(nameof(ClearActiveGameData), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(GameManager)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
                 typeof(Dungeon).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandPlaceWallMimic).GetMethod(nameof(ExpandPlaceWallMimic.PlaceWallMimics), BindingFlags.Public | BindingFlags.Instance),
                 typeof(Dungeon)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetEnemiesString Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetEnemiesString Hook...."); }
             Stringhook = new Hook(
                 typeof(StringTableManager).GetMethod("GetEnemiesString", BindingFlags.Public | BindingFlags.Static),
-                typeof(ExpandStringTableManager).GetMethod("GetEnemiesString", BindingFlags.Public | BindingFlags.Static)
+                typeof(ExpandSharedHooks).GetMethod("GetEnemiesString", BindingFlags.Public | BindingFlags.Static)
+                // typeof(ExpandStringTableManager).GetMethod("GetEnemiesString", BindingFlags.Public | BindingFlags.Static)
             );
             
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlowDatabase.GetOrLoadByName Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlowDatabase.GetOrLoadByName Hook...."); }
             flowhook = new Hook(
                 typeof(FlowDatabase).GetMethod("GetOrLoadByName", BindingFlags.Public | BindingFlags.Static),
                 typeof(ExpandDungeonFlow).GetMethod("LoadCustomFlow", BindingFlags.Public | BindingFlags.Static)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ApplyObjectStamp Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ApplyObjectStamp Hook...."); }
             objectstamphook = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("ApplyObjectStamp", BindingFlags.Public | BindingFlags.Static),
                 typeof(ExpandSharedHooks).GetMethod("ApplyObjectStampHook", BindingFlags.Public | BindingFlags.Static)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing LoopBuilderComposite.PlaceRoom Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing LoopBuilderComposite.PlaceRoom Hook...."); }
             placeRoomHook = new Hook(
                 typeof(LoopBuilderComposite).GetMethod("PlaceRoom", BindingFlags.Public | BindingFlags.Static),
                 typeof(ExpandSharedHooks).GetMethod("PlaceRoomHook", BindingFlags.Public | BindingFlags.Static)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SemioticDungeonGenSettings.GetRandomFlow Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SemioticDungeonGenSettings.GetRandomFlow Hook...."); }
             getRandomFlowHook = new Hook(
                 typeof(SemioticDungeonGenSettings).GetMethod("GetRandomFlow", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("GetRandomFlowHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(SemioticDungeonGenSettings)
             );
             
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetKicked.HandlePitfall Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetKicked.HandlePitfall Hook...."); }
             handlePitfallHook = new Hook(
                 typeof(GetKicked).GetMethod("HandlePitfall", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("HandlePitfallHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(GetKicked)
             );
             
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ElevatorArrivalController.Update Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ElevatorArrivalController.Update Hook...."); }
             arrivalElevatorUpdateHook = new Hook(
                 typeof(ElevatorArrivalController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("ArrivalElevatorUpdateHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ElevatorArrivalController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.ConstructTK2DDungeon Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.ConstructTK2DDungeon Hook...."); }
             constructTK2DDungeonHook = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("ConstructTK2DDungeon", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandAssemblerHook).GetMethod("ConstructTK2DDungeonHook", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod("ConstructTK2DDungeonHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(TK2DDungeonAssembler)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing HellDragZoneController.HandleGrabbyGrab Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing HellDragZoneController.HandleGrabbyGrab Hook...."); }
             handleGrabbyGrabHook = new Hook(
                 typeof(HellDragZoneController).GetMethod("HandleGrabbyGrab", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("HandleGrabbyGrabHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(HellDragZoneController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ItemDB.DungeonStart Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ItemDB.DungeonStart Hook...."); }
             dungeonStartHook = new Hook(
                 typeof(ItemDB).GetMethod("DungeonStart", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("DungeonStartHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ItemDB)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SellCellController.ConfigureOnPlacement Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SellCellController.ConfigureOnPlacement Hook...."); }
             sellPitConfigureOnPlacementHook = new Hook(
                 typeof(SellCellController).GetMethod("ConfigureOnPlacement", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("SellPitConfigureOnPlacementHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(SellCellController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing BaseShopController.PlayerFired Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing BaseShopController.PlayerFired Hook...."); }
             playerFiredHook = new Hook(
                typeof(BaseShopController).GetMethod("PlayerFired", BindingFlags.NonPublic | BindingFlags.Instance),
                typeof(ExpandSharedHooks).GetMethod("PlayerFiredHook", BindingFlags.NonPublic | BindingFlags.Instance),
                typeof(BaseShopController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing OccupiedCells.FlagCells Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing OccupiedCells.FlagCells Hook...."); }
             flagCellsHook  = new Hook(
                 typeof(OccupiedCells).GetMethod("FlagCells", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("FlagCellsHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(OccupiedCells)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SecretRoomBuilder.GenerateRoomDoorMesh Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SecretRoomBuilder.GenerateRoomDoorMesh Hook...."); }
             generateRoomDoorMeshHook = new Hook(
                 typeof(SecretRoomBuilder).GetMethod("GenerateRoomDoorMesh", BindingFlags.NonPublic | BindingFlags.Static),
                 typeof(ExpandSharedHooks).GetMethod("GenerateRoomDoorMeshHook", BindingFlags.NonPublic | BindingFlags.Static)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AIAnimator.AnimationCompleted Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AIAnimator.AnimationCompleted Hook...."); }
             animationCompletedHook = new Hook(
                 typeof(AIAnimator).GetMethod("AnimationCompleted", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("AnimationCompletedHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(AIAnimator)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
             flushMusicAudioHook = new Hook(
                 typeof(GameManager).GetMethod("FlushMusicAudio", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("FlushMusicAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(GameManager)
             );
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToState Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToState Hook...."); }
             switchToStateHook = new Hook(
                 typeof(DungeonFloorMusicController).GetMethod("SwitchToState", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("SwitchToStateHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonFloorMusicController)
             );
             
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
             flushAudioHook = new Hook(
                 typeof(GameManager).GetMethod("FlushAudio", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("FlushAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -251,34 +252,35 @@ namespace ExpandTheGungeon.ExpandMain {
             );
 
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PunchoutController.TeardownPunchout Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PunchoutController.TeardownPunchout Hook...."); }
             teardownPunchoutHook = new Hook(
                 typeof(PunchoutController).GetMethod("TeardownPunchout", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("TeardownPunchout_Hook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PunchoutController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing StringTableManager.GetSynergyString Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing StringTableManager.GetSynergyString Hook...."); }
             GetSynergyStringHook = new Hook(
-                typeof(StringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public), 
-                typeof(ExpandStringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public)
+                typeof(StringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public),
+                typeof(ExpandSharedHooks).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public)
+                // typeof(ExpandStringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildBorderLayerCenterJungle Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildBorderLayerCenterJungle Hook...."); }
             buildorderLayerCenterJungleHook = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("BuildBorderLayerCenterJungle", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("BuildBorderLayerCenterJungleHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(TK2DDungeonAssembler)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildOcclusionLayerCenterJungle Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.BuildOcclusionLayerCenterJungle Hook...."); }
             buildOcclusionLayerCenterJungle = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("BuildOcclusionLayerCenterJungle", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("BuildBorderLayerCenterJungleHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(TK2DDungeonAssembler)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.GetTypeBorderGridForBorderIndex Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.GetTypeBorderGridForBorderIndex Hook...."); }
             getTypeBorderGridForBorderIndexHook = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("GetTypeBorderGridForBorderIndex", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("GetTypeBorderGridForBorderIndexHook", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -291,35 +293,35 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("PostEventHook", BindingFlags.Public | BindingFlags.Static)
             );*/
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleCombatWaves Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleCombatWaves Hook...."); }
             paydayDrillCombatWaveHook = new Hook(
                 typeof(PaydayDrillItem).GetMethod("HandleCombatWaves", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandPaydayDrillItemFixes).GetMethod("HandleCombatWavesHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PaydayDrillItem)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleSeamlessTransitionToCombatRoom Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PaydayDrillItem.HandleSeamlessTransitionToCombatRoom Hook...."); }
             Hook handleSeamlessTransitionToCombatRoomHook = new Hook(
                 typeof(PaydayDrillItem).GetMethod("HandleSeamlessTransitionToCombatRoom", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandPaydayDrillItemFixes).GetMethod("ExpandHandleSeamlessTransitionToCombatRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PaydayDrillItem)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.PostGenerationCleanup Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.PostGenerationCleanup Hook...."); }
             postGenerationCleanupHook = new Hook(
                 typeof(DungeonData).GetMethod("PostGenerationCleanup", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("PostGenerationCleanupHook", BindingFlags.Public | BindingFlags.Instance),
                 typeof(DungeonData)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.CheckForPlayerCollision Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.CheckForPlayerCollision Hook...."); }
             checkforPlayerCollisionHook = new Hook(
                 typeof(DungeonDoorController).GetMethod("CheckForPlayerCollision", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandDungeonDoorManager).GetMethod("CheckForPlayerCollisionHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonDoorController)
             );
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.Open Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDoorController.Open Hook...."); }
             doorOpenHook = new Hook(
                 typeof(DungeonDoorController).GetMethod("Open", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandDungeonDoorManager).GetMethod("Expand_Open", BindingFlags.Public | BindingFlags.Instance),
@@ -332,7 +334,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(Exploder)
             );*/
 
-            if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Gun.ThrowGun Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Gun.ThrowGun Hook...."); }
             throwGunHook = new Hook(
                 typeof(Gun).GetMethod("ThrowGun", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("ThrowGunHook", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -346,21 +348,19 @@ namespace ExpandTheGungeon.ExpandMain {
             return orig(self, user) && user?.CurrentRoom != null && !user.CurrentRoom.IsActuallyWildWestEntrance();
         }
         
-        private void ClearPerLevelData(Action<GameManager> orig, GameManager self)
-        {
+        private void ClearPerLevelData(Action<GameManager> orig, GameManager self) {
             ExpandStaticReferenceManager.ClearStaticPerLevelData();
             orig(self);
         }
 
-        private void ClearActiveGameData(Action<GameManager, bool, bool> orig, GameManager self, bool destroyGameManager, bool endSession)
-        {
+        private void ClearActiveGameData(Action<GameManager, bool, bool> orig, GameManager self, bool destroyGameManager, bool endSession) {
             ExpandStaticReferenceManager.ClearStaticPerLevelData();
             orig(self, destroyGameManager, endSession);
         }
 
         private void FlagCellsHook(Action<OccupiedCells> orig, OccupiedCells self) {
             try { orig(self); } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] Warning: Exception caught in OccupiedCells.FlagCells!");
                     Debug.Log("Warning: Exception caught in OccupiedCells.FlagCells!");
                     Debug.LogException(ex);
@@ -379,6 +379,63 @@ namespace ExpandTheGungeon.ExpandMain {
 
             ETGModConsole.Log("[DEBUG] Player entered room with name '" + self.GetRoomName() + "' .", false);
             
+        }
+        
+        public static string GetEnemiesString(Func<string, int, string> orig, string key, int index = -1) {
+            string m_EnemyString = orig(key, index);
+            if (m_EnemyString != "ENEMIES_STRING_NOT_FOUND") { return m_EnemyString; } else { return key; }
+            /*Dictionary<string, StringTableManager.StringCollection> m_enemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_enemiesTable");
+            Dictionary<string, StringTableManager.StringCollection> m_backupEnemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_backupEnemiesTable");
+            string m_currentSubDirectory = ReflectionHelpers.ReflectGetField<string>(typeof(StringTableManager), "m_currentSubDirectory");
+            FieldInfo m_enemiesTableField = typeof(StringTableManager).GetField("m_enemiesTable", BindingFlags.Static | BindingFlags.NonPublic);
+            FieldInfo m_backupEnemiesTableField = typeof(StringTableManager).GetField("m_backupEnemiesTable", BindingFlags.Static | BindingFlags.NonPublic);
+            if (m_enemiesTable == null) {                
+                m_enemiesTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadEnemiesTable", null, new object[] { m_currentSubDirectory }));
+            }
+            if (m_backupEnemiesTable == null) {
+                m_backupEnemiesTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadEnemiesTable", null, new object[] { "english_items" }));
+            }
+            // This table was updated so I need to reacquire it?
+            m_enemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_enemiesTable");
+            if (m_enemiesTable.ContainsKey(key)) {
+                if (index == -1) {
+                    string weightedString = m_enemiesTable[key].GetWeightedString();
+                    return StringTableManager.PostprocessString(weightedString);
+                }
+                return StringTableManager.PostprocessString(m_enemiesTable[key].GetExactString(index));
+            } else {
+                // if (!m_backupEnemiesTable.ContainsKey(key)) { return "ENEMIES_STRING_NOT_FOUND"; }
+                if (!m_backupEnemiesTable.ContainsKey(key)) { return key; }
+                if (index == -1) {
+                    string weightedString2 = m_backupEnemiesTable[key].GetWeightedString();
+                    return StringTableManager.PostprocessString(weightedString2);
+                }
+                return StringTableManager.PostprocessString(m_backupEnemiesTable[key].GetExactString(index));
+            }*/
+        }
+
+        public static string GetSynergyString(Func<string, int, string> orig, string key, int index = -1) {
+            string m_Text = orig(key, index);
+            if (!string.IsNullOrEmpty(m_Text)) { return orig(key, index); } else { return key; }
+            /*Dictionary<string, StringTableManager.StringCollection> m_synergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_synergyTable");
+            Dictionary<string, StringTableManager.StringCollection> m_backupSynergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_backupSynergyTable");
+            string m_currentSubDirectory = ReflectionHelpers.ReflectGetField<string>(typeof(StringTableManager), "m_currentSubDirectory");
+            FieldInfo m_synergyTableField = typeof(StringTableManager).GetField("m_synergyTable", BindingFlags.Static | BindingFlags.NonPublic);
+            FieldInfo m_backupSynergyTableField = typeof(StringTableManager).GetField("m_backupSynergyTable", BindingFlags.Static | BindingFlags.NonPublic);            
+            if (m_synergyTable == null) {
+                m_synergyTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadSynergyTable", null, new object[] { m_currentSubDirectory }));
+            }
+            if (m_backupSynergyTable == null) {
+                m_backupSynergyTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadSynergyTable", null, new object[] { "english_items" }));
+            }
+            m_synergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_synergyTable");
+            // if (!m_synergyTable.ContainsKey(key)) { return string.Empty; }
+            if (!m_synergyTable.ContainsKey(key)) { return key; }
+            if (index == -1) {
+                string weightedString = m_synergyTable[key].GetWeightedString();
+                return StringTableManager.PostprocessString(weightedString);
+            }
+            return StringTableManager.PostprocessString(m_synergyTable[key].GetExactString(index));*/
         }
 
         public static GameObject ApplyObjectStampHook(int ix, int iy, ObjectStampData osd, Dungeon d, tk2dTileMap map, bool flipX = false, bool isLightStamp = false) {
@@ -464,7 +521,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 return gameObject;
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Warning: Exception caught during ApplyObjectStamp method during Dungeon generation!");
                     Debug.Log("Warning: Exception caught during ApplyObjectStamp method during Dungeon generation!");
                     Debug.LogException(ex);
@@ -484,7 +541,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     dungeon = GameManager.Instance.Dungeon;
                 }
                 if (current.assignedPrototypeRoom.overrideRoomVisualType >= dungeon.roomMaterialDefinitions.Length) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         string Message1 = "[ExpandTheGungeon] WARNING: Exception prevented during LoopBuilderComposite.PlaceRoom!";
                         string Message2 = "Room visual subtype isn't supported by current tileset! Default visual style will be used to prevent exceptions/softlock!";
                         ETGModConsole.Log(Message1);
@@ -558,7 +615,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 return self.flows[BraveRandom.GenerationRandomRange(0, self.flows.Count)];*/
                 return orig(self);
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!"); }
                 Debug.Log("WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!");
                 Debug.LogException(ex);
                 // Falling back to mod's compiled list of Flows                
@@ -627,7 +684,7 @@ namespace ExpandTheGungeon.ExpandMain {
                             return m_fallbacklist[BraveRandom.GenerationRandomRange(0, m_fallbacklist.Count)];
                         }
                     }
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[DEBUG] WARNING: Could not determine a proper fallback flow! Using a default flow instead!");
                     }
                     Debug.Log("WARNING: Could not determine a proper fallback flow! Using a default flow instead!");
@@ -664,7 +721,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     RoomHandler.unassignedInteractableObjects.Add(talkdoer);
                     yield break;
                 } else {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[DEBUG] Destination room does not have an Arrival object! Using a random location for the landing spot.");
                     }
                     Debug.Log("[HutongGames.PlayMaker.Actions.GetKicked] Destination room does not have an Arrival object! Using a random location for the landing spot.");
@@ -683,7 +740,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }                
             } else {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] Rat corpse fell into a pit that belonged to a room that didn't have TargetPitFallRoom setup! Using fall back method.");
                 }
                 Debug.Log("[HutongGames.PlayMaker.Actions.GetKicked] Rat corpse fell into a pit that belonged to a room that didn't have TargetPitFallRoom setup! Using fall back method instead.");
@@ -737,6 +794,61 @@ namespace ExpandTheGungeon.ExpandMain {
             if (!self.gameObject.transform.position.GetAbsoluteRoom().HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { orig(self); }
         }
         
+        public IEnumerator ConstructTK2DDungeonHook(Action<TK2DDungeonAssembler, Dungeon, tk2dTileMap>orig, TK2DDungeonAssembler self, Dungeon d, tk2dTileMap map) {
+            for (int j = 0; j < d.data.Width; j++) {
+                for (int k = 0; k < d.data.Height; k++) {
+                    try {
+                        self.BuildTileIndicesForCell(d, map, j, k);
+                    } catch (Exception ex) {
+                        if (ExpandSettings.debugMode) {
+                            ETGModConsole.Log("[DEBUG] Exception caught in TK2DDungeonAssembler.ConstructTK2DDungeonHook at TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                        }
+                        Debug.Log("Exception caught in TK2DDungeonAssembler.ConstructTK2DDungeonHook at TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                        Debug.LogException(ex);
+                    }
+                }
+            }
+
+            yield return null;
+
+            TileIndices tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+
+            if (d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON || d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FINALGEON) {
+                for (int l = 0; l < d.data.Width; l++) {
+                    for (int m = 0; m < d.data.Height; m++) {
+                        CellData cellData = d.data.cellData[l][m];
+                        tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+                        if (cellData != null) {
+                            if (cellData.type == CellType.FLOOR) {
+                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildShadowIndex", self, new object[] { cellData, d, map, l, m });                                
+                            } else if (cellData.type == CellType.PIT) {
+                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildPitShadowIndex", self, new object[] { cellData, d, map, l, m });
+                            }
+                        }
+                    }
+                }
+            }
+            TK2DInteriorDecorator decorator = new TK2DInteriorDecorator(self);
+            decorator.PlaceLightDecoration(d, map);
+            for (int i = 0; i < d.data.rooms.Count; i++) {
+                if (d.data.rooms[i].area.prototypeRoom == null || d.data.rooms[i].area.prototypeRoom.usesProceduralDecoration) {
+                    decorator.HandleRoomDecoration(d.data.rooms[i], d, map);
+                } else {
+                    decorator.HandleRoomDecorationMinimal(d.data.rooms[i], d, map);
+                }
+                if (i % 5 == 0) { yield return null; }
+            }
+            if ((d.data.rooms.Count - 1) % 5 != 0) { yield return null; }
+            tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+            map.Editor__SpriteCollection = tileIndices.dungeonCollection;
+            if (d.ActuallyGenerateTilemap) {
+                IEnumerator BuildTracker = map.DeferredBuild(tk2dTileMap.BuildFlags.Default);
+                while (BuildTracker.MoveNext()) { yield return null; }
+            }
+            yield break;
+        }
+
+
         // Make the HellDragZone thing actually take player to direct to bullet hell instead of using normal DelayedLoadNextLevel().
         // Since if the EndTimes room is loaded from a different level other then Forge, this could cause issues. :P
         private IEnumerator HandleGrabbyGrabHook(Action<HellDragZoneController, PlayerController>orig, HellDragZoneController self, PlayerController grabbedPlayer) {
@@ -771,7 +883,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 key = dungeonFloorName.Substring(1, dungeonFloorName.IndexOf('_') - 1);
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!"); }
                 Debug.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!");
                 Debug.LogException(ex);
                 if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) { key = "TEST"; } else { key = "???"; }
@@ -848,7 +960,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     return SecretRoomBuilder.GenerateWallMesh(exitDirection, exitBasePosition, "secret room door object", dungeonData, false);
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in SecretRoomBuilder.GenerateRoomDoorMesh!");
                     Debug.Log(ex);
                 }
@@ -860,7 +972,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 orig(self, animator, clip);
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in AIAnimator.AnimationCompleted on object '" + self.gameObject.name + "'!");
                     Debug.Log("[ExpandTheGungeon] Warning: Exception caught in AIAnimator.AnimationCompleted on object '" + self.gameObject.name + "'!");
                     Debug.LogException(ex);
@@ -1096,7 +1208,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 isValid = !current.cellVisualData.ceilingHasBeenProcessed && !IsCardinalBorder(current, d, ix, iy) && current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy);
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsValidJungleBorderCell!");
                     Debug.LogException(ex);
                 }
@@ -1110,7 +1222,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 isValid = assembler.BCheck(d, ix, iy, 1) && (!current.cellVisualData.ceilingHasBeenProcessed && !current.cellVisualData.occlusionHasBeenProcessed) && (current.type != CellType.WALL || IsCardinalBorder(current, d, ix, iy) || (iy > 2 && (d.data.isFaceWallLower(ix, iy) || d.data.isFaceWallHigher(ix, iy))));
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsValidJungleOcclusionCell!");
                     Debug.LogException(ex);
                 }
@@ -1137,7 +1249,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 roomCeilingBorderGrid = d.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     Debug.Log("[ExpandTheGungeon] [WARNING] Exception caught in TK2DDungeonAssembler.GetTypeBorderGridForBorderIndex !");
                     Debug.LogException(ex);
                 }
@@ -1188,7 +1300,7 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 orig(self);
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] [Warning] Exception caught at DungeonData.PostGenerationCleanup!");
                     Debug.Log("[ExpandTheGungeon] [Warning] Exception caught at DungeonData.PostGenerationCleanup!");
                     Debug.LogException(ex);

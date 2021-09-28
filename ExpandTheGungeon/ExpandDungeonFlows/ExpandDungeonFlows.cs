@@ -65,7 +65,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
-            if (flowName.ToLower().EndsWith("secret_doublebeholster_flow") && ExpandStats.EnableExpandedGlitchFloors) {
+            if (flowName.ToLower().EndsWith("secret_doublebeholster_flow") && ExpandSettings.EnableExpandedGlitchFloors) {
                 DungeonFlow m_Flow = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
                 DebugTime.RecordStartTime();
                 DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { m_Flow.name });

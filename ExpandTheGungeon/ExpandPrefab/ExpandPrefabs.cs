@@ -16,6 +16,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
      
         // Custom Sprite Collections (this gets setup before ItemAPI
         public static GameObject EXItemCollection;
+        public static GameObject EXGunCollection;
         public static GameObject EXChestCollection;
         public static GameObject EXTrapCollection;
         public static GameObject EXJungleCollection;
@@ -24,6 +25,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXMonsterCollection;
         public static GameObject EXSecretDoorCollection;
         public static GameObject EXBootlegRoomCollection;
+        public static GameObject SecretElevatorExitTilesetCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -175,6 +177,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXTrap_Apache;
 
 
+        // Room Tileset sprite object for Exit room that leads to Old West
+        public static GameObject SecretElevatorExitTileset;
+
         public static GameObject Teleporter_Gungeon_01;
         public static GameObject ElevatorMaintanenceRoomIcon;
         public static GameObject Teleporter_Info_Sign;
@@ -258,6 +263,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Door_Horizontal_West;
         public static GameObject Door_Vertical_West;
         public static GameObject West_PuzzleSetupPlacable;
+        public static GameObject EXOldWestWarp;
         public static GameObject EXSpaceFloor_50x50;
         public static GameObject EXSpaceFloorPitBorder_50x50;
 
@@ -331,6 +337,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             EXItemCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXItemCollection", "EXItem_Collection", "EXItemCollection");
+            EXGunCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXGunCollection", "EXGun_Collection", "EXGunCollection");
             EXChestCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXChestCollection", "EXChest_Collection", "EXChestCollection");
             EXTrapCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXTrapCollection", "EXTrap_Collection", "EXTrapCollection");
             EXJungleCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXJungleCollection", "EXJungle_Collection", "EXJungleCollection");
@@ -339,6 +346,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXMonsterCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXMonsterCollection", "EXMonster_Collection", "EXMonsterCollection");
             EXSecretDoorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSecretDoorCollection", "EXSecretDoor_Collection", "EXSecretDoorCollection");
             EXBootlegRoomCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBootlegRoomCollection", "EXBootlegRoom_Collection", "EXBootlegRoomCollection");
+            SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
+
+            EXGunCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8);
         }
 
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
@@ -587,6 +597,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MouseTrap1 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[0];
             MouseTrap2 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[1];
             MouseTrap3 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[2];
+
+            SecretElevatorExitTileset = expandSharedAssets1.LoadAsset<GameObject>("SecretElevatorExitTileset");
+            GameObject SecretElevatorExitTileset_Floor = SecretElevatorExitTileset.transform.Find("Floor").gameObject;
+            GameObject SecretElevatorExitTileset_Roof = SecretElevatorExitTileset.transform.Find("Roof").gameObject;
+            // SecretElevatorExitTileset_Roof.layer = LayerMask.NameToLayer("FG_Critical");
+
+            tk2dSprite m_SecretElevatorExitTilesetFloorSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Floor, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Floor");
+            m_SecretElevatorExitTilesetFloorSprite.HeightOffGround = -5;
+
+            tk2dSprite m_SecretElevatorExitTilesetRoofSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Roof, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Roof");
+            m_SecretElevatorExitTilesetRoofSprite.HeightOffGround = 6f;
+            
 
             // Custom Trap Object for Rainbow room
             EXTrap_Apache = expandSharedAssets1.LoadAsset<GameObject>("EX_Trap_Apache");
@@ -2228,6 +2250,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             West_PuzzleSetupPlacable = expandSharedAssets1.LoadAsset<GameObject>("EXWest_PuzzleSetupPlacable");
             West_PuzzleSetupPlacable.AddComponent<ExpandWestPuzzleRoomController>();
 
+            EXOldWestWarp = expandSharedAssets1.LoadAsset<GameObject>("EXOldWestWarp");
+            ExpandUtility.GenerateOrAddToRigidBody(EXOldWestWarp, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(32, 28));
+
+            ExpandWarpManager m_oldWestWarp = EXOldWestWarp.AddComponent<ExpandWarpManager>();
+            m_oldWestWarp.warpType = ExpandWarpManager.WarpType.OldWestFloorWarp;
+
 
             Door_Horizontal_West = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
             Door_Vertical_West = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[1].nonDatabasePlaceable);
@@ -2504,8 +2532,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite Belly_ExitSprite = SpriteSerializer.AddSpriteToObject(Belly_ExitWarp, EXMonsterCollection, "Belly_Void");
             
             ExpandUtility.GenerateOrAddToRigidBody(Belly_ExitWarp, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(2, 2));
-            ExpandWarpWingDoor Belly_ExitWarpController = Belly_ExitWarp.AddComponent<ExpandWarpWingDoor>();
-            Belly_ExitWarpController.IsBellyExitDoor = true;
+            ExpandWarpManager Belly_ExitWarpController = Belly_ExitWarp.AddComponent<ExpandWarpManager>();
+            Belly_ExitWarpController.warpType = ExpandWarpManager.WarpType.FloorWarp;
                         
             Belly_ExitRoomIcon = expandSharedAssets1.LoadAsset<GameObject>("BellyExitRoomIcon");
             tk2dSprite Belly_ExitRoomIconSprite = SpriteSerializer.AddSpriteToObject(Belly_ExitRoomIcon, EXMonsterCollection, "Belly_ExitRoomIcon");
@@ -2999,6 +3027,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             EXSpaceFloor50x50Sprite.HeightOffGround = -200;
             EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -195;
+            // EXSpaceFloor50x50Sprite.HeightOffGround = -5;
+            // EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -3;
             EXSpaceFloor50x50Sprite.renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
             EXSpaceFloor50x50Sprite.renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
             EXSpaceFloor50x50Sprite.usesOverrideMaterial = true;            
@@ -3548,14 +3578,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_gungeon_rewardroom_1 = null;
 
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
+            TutorialDungeonPrefab = null;
             SewerDungeonPrefab = null;
             MinesDungeonPrefab = null;
+            ratDungeon = null;
             CathedralDungeonPrefab = null;
             BulletHellDungeonPrefab = null;
             ForgeDungeonPrefab = null;
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
-            ratDungeon = null;
         }
     }
 }

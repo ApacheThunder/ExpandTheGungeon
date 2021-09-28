@@ -35,19 +35,19 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
                         
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {
-                ExpandStats.phobosElevatorHasBeenUsed = false;
-                ExpandStats.elevatorHasBeenUsed = false;
+                ExpandSettings.phobosElevatorHasBeenUsed = false;
+                ExpandSettings.elevatorHasBeenUsed = false;
             }
             
             ExpandStaticReferenceManager.PopulateLists();
             
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
-            if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }
+            if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }
 
             try {
                 if (ExpandTheGungeon.GameManagerHook == null) {
-                    if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
+                    if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                     ExpandTheGungeon.GameManagerHook = new Hook(
                         typeof(GameManager).GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance),
                         typeof(ExpandTheGungeon).GetMethod("GameManager_Awake", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -55,16 +55,16 @@ namespace ExpandTheGungeon.ExpandMain {
                     );
                 }
 
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Number of Wall Mimics RewardManager wants to spawn: " + numWallMimicsForFloor, false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Number of Wall Mimics RewardManager wants to spawn: " + numWallMimicsForFloor, false); }
                 
                 if (levelOverrideState != GameManager.LevelOverrideState.NONE | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL | levelOverrideState == GameManager.LevelOverrideState.FOYER | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
-                    if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] This floor has been excluded from having Wall Mimics", false); }
-                    if (ExpandStats.debugMode && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { ETGModConsole.Log("[DEBUG] The Resourceful Rat Maze/tileset has been excluded from having wall mimics and other floor mods!", false); }
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] This floor has been excluded from having Wall Mimics", false); }
+                    if (ExpandSettings.debugMode && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { ETGModConsole.Log("[DEBUG] The Resourceful Rat Maze/tileset has been excluded from having wall mimics and other floor mods!", false); }
                     return;
                 }
 
                 if (dungeon.data == null | dungeon.data.rooms.Count <= 0) {
-                    if (ExpandStats.debugMode) { ETGModConsole.Log("Dungeon has no rooms or Dungeon.data is null! This is super abnormal!", false); }
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log("Dungeon has no rooms or Dungeon.data is null! This is super abnormal!", false); }
                     return;
                 }
 
@@ -74,7 +74,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
 
-                if (ExpandStats.EnableExpandedGlitchFloors) {
+                if (ExpandSettings.EnableExpandedGlitchFloors) {
                     if (dungeon.IsGlitchDungeon) {
                         ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
                     } else {
@@ -88,13 +88,13 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 if (PlayerHasCorruptedJunk) { CorruptRandomRooms(dungeon, currentFloor); }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!"); }
                 Debug.Log("Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!");
                 Debug.LogException(ex);
             }
             
             if (numWallMimicsForFloor <= 0 && !PlayerHasWallMimicItem) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] There will be no Wall Mimics for this floor.", false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] There will be no Wall Mimics for this floor.", false); }
                 PhysicsEngine.Instance.ClearAllCachedTiles();
                 return;
             }
@@ -102,9 +102,9 @@ namespace ExpandTheGungeon.ExpandMain {
             IL_SKIP:
             
             if (roomHandler != null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Wall Mimics Assigned to specific room: " + numWallMimicsForFloor, false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Wall Mimics Assigned to specific room: " + numWallMimicsForFloor, false); }
                 if(SpawnWallMimic(dungeon, roomHandler) == 0) {
-                    if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Failed to find valid locations for a Wall Mimic in room: " + numWallMimicsForFloor + "!", false); }
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Failed to find valid locations for a Wall Mimic in room: " + numWallMimicsForFloor + "!", false); }
                 }
             } else {
                 List<RoomHandler> RoomList = new List<RoomHandler>();
@@ -150,11 +150,11 @@ namespace ExpandTheGungeon.ExpandMain {
                             break;
                     }
                     numWallMimicsForFloor = (ValidRooms * WallMimicsPerRoom);
-                    if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Wall Mimics assigned by Cursed Bricks: " + (ValidRooms * WallMimicsPerRoom), false); }
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Wall Mimics assigned by Cursed Bricks: " + (ValidRooms * WallMimicsPerRoom), false); }
                 }
                 IL_CHECKNEXTROOM:
                 if (WallMimicsPlaced >= numWallMimicsForFloor | RoomList.Count <= 0 | RoomsChecked >= ValidRooms) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[DEBUG] All valid rooms for Wall Mimics have been checked. Placement complete.");
                         ETGModConsole.Log("[DEBUG] Wall Mimics Succewsfully Placed: " + WallMimicsPlaced);
                     }
@@ -168,7 +168,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 WallMimicsPlaced += SpawnWallMimic(dungeon, CurrentRoom, WallMimicsPerRoom);
                 if (RoomsChecked < ValidRooms && WallMimicsPlaced < numWallMimicsForFloor) { goto IL_CHECKNEXTROOM; }
             }
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("[DEBUG] All valid rooms for Wall Mimics have been checked. Placement complete.");
                 ETGModConsole.Log("[DEBUG] Wall Mimics Succewsfully Placed: " + WallMimicsPlaced);
             }
@@ -299,7 +299,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 	}
                 }
                 if (validWalls.Count <= 0) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[DEBUG] No valid locations found for room: " + currentRoom.GetRoomName() + " while attempting Wall Mimic placement!", false);
                     }
                     return 0;
@@ -330,14 +330,14 @@ namespace ExpandTheGungeon.ExpandMain {
                     loopCount++;
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] Exception while trying to place WallMimic(s) in room: " + currentRoom.GetRoomName(), false);
                     Debug.LogException(ex);
                 }
                 return WallMimicsPlaced;
             }
             if (WallMimicsPlaced > 0) {            	
-            	if (ExpandStats.debugMode) {
+            	if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] Wall Mimic(s) succesfully placed in room: " + currentRoom.GetRoomName(), false);
                     ETGModConsole.Log("[DEBUG] Number of Valid North Wall Mimics locations: " + NorthWallCount, false);
             		ETGModConsole.Log("[DEBUG] Number of Valid South Wall Mimics locations: " + SouthWallCount, false);
@@ -354,20 +354,20 @@ namespace ExpandTheGungeon.ExpandMain {
                 
         private void PlaceGlitchElevator(Dungeon dungeon, int CurrentFloor) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
-            if (dungeon.IsGlitchDungeon | ExpandStats.elevatorHasBeenUsed | CurrentFloor > 4) { return; }
+            if (dungeon.IsGlitchDungeon | ExpandSettings.elevatorHasBeenUsed | CurrentFloor > 4) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
-                ExpandStats.elevatorHasBeenUsed = false;
+                ExpandSettings.elevatorHasBeenUsed = false;
                 return;
             }
             if (levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST) {
-                ExpandStats.elevatorHasBeenUsed = false;
+                ExpandSettings.elevatorHasBeenUsed = false;
                 return;
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
             if (UnityEngine.Random.value > 0.003f) { return; }
-            if (ExpandStats.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
+            if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
             foreach (RoomHandler room in dungeon.data.rooms) {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsShop && !room.IsMaintenanceRoom() && !room.GetRoomName().ToLower().StartsWith("exit") &&
@@ -382,7 +382,7 @@ namespace ExpandTheGungeon.ExpandMain {
             int SpawnAttempts = 0;
             IL_RETRY:
             if (Rooms.Count <= 0) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] No rooms that are allowed to contain a Glitch Elevator or have valid locations for one are present on this floor!", false);
                 }
                 return;
@@ -458,13 +458,13 @@ namespace ExpandTheGungeon.ExpandMain {
                         ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
                     }
                 }
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] Number of Valid Glitch Elevator locations found: " + validWalls.Count, false);
                     ETGModConsole.Log("[DEBUG] Glitch Elevator Successfully placed in room: " + currentRoom.GetRoomName(), false);
                 }
                 return true;
             } else {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] No valid locations found for room: " + currentRoom.GetRoomName() + ".  This room was skipped!", false);
                 }
                 return false;
@@ -560,7 +560,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
 
-            if (ExpandStats.debugMode && LoggedExceptions.Count > 0) {
+            if (ExpandSettings.debugMode && LoggedExceptions.Count > 0) {
                 foreach (string exception in LoggedExceptions) { ETGModConsole.Log(exception, false); }
             }
         }

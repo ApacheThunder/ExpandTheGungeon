@@ -29,7 +29,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(theleadkey, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(theleadkey, ItemBuilder.CooldownType.Damage, 450f);
             theleadkey.quality = ItemQuality.B;
-            if (!ExpandStats.EnableEXItems) { theleadkey.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { theleadkey.quality = ItemQuality.EXCLUDED; }
 
             theleadkey.passiveStatModifiers = new StatModifier[] {
                 new StatModifier() {
@@ -220,7 +220,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             bool m_CopyCurrentRoom = false;
 
-            if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { m_CopyCurrentRoom = (UnityEngine.Random.value < 0.1f); }
+            if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { m_CopyCurrentRoom = (UnityEngine.Random.value < 0.05f); }
 
             PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
@@ -230,7 +230,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 try {
                     SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
                 } catch (Exception ex) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
                         Debug.LogException(ex);
                     }
@@ -245,8 +245,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 if (RoomSelectionSeed <= 0.01f) { GoingToSecretBoss = true; }
 
-                if (!GoingToSecretBoss | ExpandStats.HasSpawnedSecretBoss) {
-                    if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6 && GameManager.Instance.CurrentFloor != 5 && !ExpandStats.phobosElevatorHasBeenUsed) {
+                if (!GoingToSecretBoss | ExpandSettings.HasSpawnedSecretBoss) {
+                    if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6 && GameManager.Instance.CurrentFloor != 5 && !ExpandSettings.phobosElevatorHasBeenUsed) {
                         SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
                         IsExitElevatorRoom = true;
                     } else if (RoomSelectionSeed <= 0.25f) {
@@ -263,7 +263,7 @@ namespace ExpandTheGungeon.ItemAPI {
                         SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(MainRoomlist);
                     }
                 } else {
-                    ExpandStats.HasSpawnedSecretBoss = true;
+                    ExpandSettings.HasSpawnedSecretBoss = true;
 
                     RoomHandler[] SecretBossRoomCluster = null;
 
@@ -271,7 +271,7 @@ namespace ExpandTheGungeon.ItemAPI {
                         SecretBossRoomCluster = GenerateCorruptedBossRoomCluster();
                     } catch (Exception ex) {
                         ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
-                        if (ExpandStats.debugMode) { Debug.LogException(ex); }
+                        if (ExpandSettings.debugMode) { Debug.LogException(ex); }
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
                         TogglePlayerInput(user, false);
                         ClearCooldowns();
@@ -340,7 +340,7 @@ namespace ExpandTheGungeon.ItemAPI {
             }
             
             if (m_CopyCurrentRoom) {
-                if (ExpandStats.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
+                if (ExpandSettings.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
                     GameObject GlitchShaderObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, GlitchRoom.area.UnitCenter, Quaternion.identity);
                     ExpandGlitchScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandGlitchScreenFXController>();
                     FXController.isRoomSpecific = true;
@@ -391,7 +391,7 @@ namespace ExpandTheGungeon.ItemAPI {
                         }                    
                     }
                 } catch (Exception ex) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while duplicating objects for new room!", true);
                         Debug.LogException(ex);
                     }
@@ -582,7 +582,7 @@ namespace ExpandTheGungeon.ItemAPI {
             tk2dTileMap m_tilemap = tileMapObject.GetComponent<tk2dTileMap>();
 
             if (m_tilemap == null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("ERROR: TileMap object is null! Something seriously went wrong!"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("ERROR: TileMap object is null! Something seriously went wrong!"); }
                 return null;
             }
 
@@ -643,11 +643,11 @@ namespace ExpandTheGungeon.ItemAPI {
                     try {
                         RoomClusterArray[n].WriteRoomData(dungeon.data);
                     } catch (Exception) {
-                        if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + RoomClusterArray[n].GetRoomName()); }
+                        if (ExpandSettings.debugMode) { ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + RoomClusterArray[n].GetRoomName()); }
                     } try {
                         dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, RoomClusterArray[n], GameObject.Find("_Lights").transform, lightStyle);
                     } catch (Exception) {
-                        if (ExpandStats.debugMode) { ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + RoomClusterArray[n].GetRoomName()); }
+                        if (ExpandSettings.debugMode) { ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + RoomClusterArray[n].GetRoomName()); }
                     }
                     postProcessCellData?.Invoke(RoomClusterArray[n]);
                     if (RoomClusterArray[n].area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) {
@@ -671,7 +671,7 @@ namespace ExpandTheGungeon.ItemAPI {
                             try {
                                 assembler.BuildTileIndicesForCell(dungeon, component, intVector6.x + num4, intVector6.y + num5);
                             } catch (Exception ex) {
-                                if (ExpandStats.debugMode) {
+                                if (ExpandSettings.debugMode) {
                                     ETGModConsole.Log("WARNING: Exception caused during BuildTileIndicesForCell step on room: " + RoomArray[num3].name);
                                     Debug.Log("WARNING: Exception caused during BuildTileIndicesForCell step on room: " + RoomArray[num3].name);
                                     Debug.LogException(ex);

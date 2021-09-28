@@ -1698,7 +1698,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 try {
                     decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
                 } catch (Exception ex) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("WARNING: Exception occured during HandleRoomDecoration steps!");
                         Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
                         Debug.LogException(ex);
@@ -1738,7 +1738,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinitions[i] = collectionData.spriteDefinitions[i].Copy(); }
             collectionData.spriteDefinitions = spriteDefinitions;
             if (newTexture != null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetActor.GetActorName(), false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetActor.GetActorName(), false); }
                 Material[] materials = targetActor.sprite.Collection.materials;
                 Material[] newMaterials = new Material[materials.Length];
                 // collectionData.materials = new Material[materials.Length];
@@ -1776,9 +1776,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
                 }*/
                 
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Step 3"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Step 3"); }
             } else if (spriteList != null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetActor.GetActorName(), false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetActor.GetActorName(), false); }
 
                 RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
                 for (int m = 0; m < spriteList.Count; m++) {
@@ -1861,7 +1861,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_CollectionData.spriteDefinitions = spriteDefinitions;*/
            
             if (newTexture != null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetObject.name, false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Using sprite sheet replacement on " + targetObject.name, false); }
                 Material[] materials = m_CollectionData.materials;
                 Material[] newMaterials = new Material[materials.Length];
                 if (materials != null) {
@@ -1883,7 +1883,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         }
                     }
                 }                
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Step 3"); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Step 3"); }
 
                 m_Sprite.Collection = m_CollectionData;
                 m_Sprite.SetSprite(m_SpriteAnimator.DefaultClip.frames[0].spriteId);
@@ -1892,7 +1892,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
                 return;
             } else if (spriteList != null) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetObject.name); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Using individual sprite replacement on " + targetObject.name); }
                 RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
                 foreach (Texture2D texture in spriteList) {
                     float Width = (texture.width / 16f);
@@ -2688,7 +2688,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             assembler.ClearTileIndicesForCell(dungeon, tk2dTileMap, cellData.position.x, cellData.position.y);
                             assembler.BuildTileIndicesForCell(dungeon, tk2dTileMap, cellData.position.x, cellData.position.y);
                         } catch (Exception ex) {
-                            if (ExpandStats.debugMode) {
+                            if (ExpandSettings.debugMode) {
                                 ETGModConsole.Log("[DEBUG] Warning: Exception caught in TK2DDungeonAssembler.ClearTileIndicesForCell and/or TK2DDungeonAssembler.BuildTileIndicesForCell!");
                                 Debug.Log("Warning: Exception caught in TK2DDungeonAssembler.ClearTileIndicesForCell and/or TK2DDungeonAssembler.BuildTileIndicesForCell!");
                                 Debug.LogException(ex);
@@ -3767,7 +3767,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static void TryDestroyWallTileAtPosition(Dungeon dungeon, RoomHandler room, IntVector2 position, bool UseFX = false) {
             if (UseFX) { AkSoundEngine.PostEvent("Play_OBJ_stone_crumble_01", GameManager.Instance.gameObject); }
-            if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Attempting to destroy wall tile at position: " + position.ToString());
+            if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Attempting to destroy wall tile at position: " + position.ToString());
             tk2dTileMap tk2dTileMap = null;
             bool m_WasSuccessful = false;
             CellData cellData = (!dungeon.data.CheckInBoundsAndValid(position)) ? null : dungeon.data[position];
@@ -3789,7 +3789,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 dungeon.data.ClearCachedCellData();
             }
             if (m_WasSuccessful) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Succesfully destroyed wall tile at position: " + position.ToString());
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Succesfully destroyed wall tile at position: " + position.ToString());
                 Pixelator.Instance.MarkOcclusionDirty();
                 Pixelator.Instance.ProcessOcclusionChange(room.Epicenter, 1f, room, false);
                 if (tk2dTileMap) {
@@ -3810,7 +3810,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return tex;
         }
 
-        public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandPrefabs/SerializedData/", string fileExtension = ".txt") {
+        public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/", string fileExtension = ".txt") {
             string m_ResultAsset = string.Empty;
             try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
             if (!string.IsNullOrEmpty(m_ResultAsset)) {
@@ -3832,7 +3832,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-        public static TileIndexGrid DeserializeTileIndexGridFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandPrefabs/SerializedData/", string fileExtension = ".txt") {
+        public static TileIndexGrid DeserializeTileIndexGridFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/TilesetData/", string fileExtension = ".txt") {
             string serializedData = string.Empty;
             try { serializedData = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
             if (!string.IsNullOrEmpty(serializedData)) {
@@ -3864,6 +3864,36 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 return false;
             }
         }
+
+        public static void DefineProjectileCollision(this tk2dSpriteCollectionData spriteCollection, string name, int pixelWidth, int pixelHeight, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null) {
+            try {
+                if (!overrideColliderPixelWidth.HasValue) { overrideColliderPixelWidth = new int?(pixelWidth); }
+                if (!overrideColliderPixelHeight.HasValue) { overrideColliderPixelHeight = new int?(pixelHeight); }
+                float num = pixelWidth / 16f;
+                float num2 = pixelHeight / 16f;
+                float x = overrideColliderPixelWidth.Value / 16f;
+                float y = overrideColliderPixelHeight.Value / 16f;
+                tk2dSpriteDefinition spriteDefinition = spriteCollection.GetSpriteDefinition(name);
+                spriteDefinition.colliderType = tk2dSpriteDefinition.ColliderType.Box;
+                spriteDefinition.collisionLayer = CollisionLayer.Projectile;
+                spriteDefinition.physicsEngine = tk2dSpriteDefinition.PhysicsEngine.Physics3D;
+                spriteDefinition.boundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);
+                spriteDefinition.boundsDataExtents = new Vector3(num, num2, 0f);
+                spriteDefinition.untrimmedBoundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);
+                spriteDefinition.untrimmedBoundsDataExtents = new Vector3(num, num2, 0f);
+                spriteDefinition.position0 = new Vector3(0f, 0f, 0f);
+                spriteDefinition.position1 = new Vector3(0f + num, 0f, 0f);
+                spriteDefinition.position2 = new Vector3(0f, 0f + num2, 0f);
+                spriteDefinition.position3 = new Vector3(0f + num, 0f + num2, 0f);
+                spriteDefinition.colliderVertices = new Vector3[] { Vector3.zero, new Vector3(x, y, 0.1f) };
+                spriteDefinition.colliderVertices[1].x = x;
+                spriteDefinition.colliderVertices[1].y = y;
+            } catch (Exception ex) {
+                ETGModConsole.Log("Ooops! Seems like something got very, Very, VERY wrong. Here's the exception:", false);
+                ETGModConsole.Log(ex.ToString(), true);
+            }
+        }
+
 
         public static Material Copy(this Material orig, Texture2D textureOverride = null, Shader shaderOverride = null) {
             Material m_NewMaterial = new Material(orig.shader) {
@@ -4091,6 +4121,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static T InvokeMethod<T>(Type type, string methodName, object typeInstance = null, object[] methodParams = null) {
             BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Public | (typeInstance == null ? BindingFlags.Static : BindingFlags.Instance);
             return (T)type.GetMethod(methodName, bindingFlags).Invoke(typeInstance, methodParams);
+        }
+
+        public static void InvokeMethod(Type type, string methodName, object typeInstance = null, object[] methodParams = null) {
+            BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Public | (typeInstance == null ? BindingFlags.Static : BindingFlags.Instance);
+            type.GetMethod(methodName, bindingFlags).Invoke(typeInstance, methodParams);
         }
 
         public static object InvokeRefs<T0>(MethodInfo methodInfo, object o, T0 p0) {

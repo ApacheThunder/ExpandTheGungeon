@@ -51,7 +51,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 bool flag3 = flag;
                 if (flag3) { item.gameObject.SetActive(false); }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { Debug.Log(ex); }
+                if (ExpandSettings.debugMode) { Debug.Log(ex); }
             }
 		}
 
@@ -64,7 +64,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 bool flag3 = flag;
                 if (flag3) { self.gameObject.SetActive(false); }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { Debug.Log(ex); }
+                if (ExpandSettings.debugMode) { Debug.Log(ex); }
             }
 		}
 

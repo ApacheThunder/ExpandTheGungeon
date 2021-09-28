@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ExpandTheGungeon {
 
-    public static class ExpandStats {
+    public static class ExpandSettings {
 
         public static bool EnableTestDungeonFlow = false;
         public static string TestFlow = "Test_CustomRoom_Flow";
@@ -18,8 +18,6 @@ namespace ExpandTheGungeon {
         public static bool EnableExpandedGlitchFloors = true;
         public static bool EnableGlitchFloorScreenShader = true;
         public static bool EnableEXItems = true;
-        public static bool DisableGC = false;
-        public static bool TrashManSoundFXForCollection = true;
         public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         public static int GameLanguage = 0;
@@ -75,8 +73,6 @@ namespace ExpandTheGungeon {
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             EnableEXItems = stats.EnableEXItems;
-            DisableGC = stats.DisableGC;
-            TrashManSoundFXForCollection = stats.TrashManSoundFXForCollection;
             JungleRainIntensity = stats.JungleRainIntensity;
         }
     }
@@ -95,29 +91,25 @@ namespace ExpandTheGungeon {
         public bool EnableExpandedGlitchFloors;
         public bool EnableGlitchFloorScreenShader;
         public bool EnableEXItems;
-        public bool DisableGC;
-        public bool TrashManSoundFXForCollection;
         public float JungleRainIntensity;
         public int GameLanguage;
         
         public ExpandCachedStats() {
-            EnableTestDungeonFlow = ExpandStats.EnableTestDungeonFlow;
-            TestFlow = ExpandStats.TestFlow;
-            TestFloor = ExpandStats.TestFloor;
-            debugMode = ExpandStats.debugMode;
-            youtubeSafeMode = ExpandStats.youtubeSafeMode;
-            IsHardModeBuild = ExpandStats.IsHardModeBuild;
-            RestoreOldRooms = ExpandStats.RestoreOldRooms;
-            EnableJungleRain = ExpandStats.EnableJungleRain;
-            EnableBloodiedScarfFix = ExpandStats.EnableBloodiedScarfFix;
-            EnableLanguageFix = ExpandStats.EnableLanguageFix;
-            EnableExpandedGlitchFloors = ExpandStats.EnableExpandedGlitchFloors;
-            EnableGlitchFloorScreenShader = ExpandStats.EnableGlitchFloorScreenShader;
-            EnableEXItems = ExpandStats.EnableEXItems;
-            DisableGC = ExpandStats.DisableGC;
-            TrashManSoundFXForCollection = ExpandStats.TrashManSoundFXForCollection;
-            JungleRainIntensity = ExpandStats.JungleRainIntensity;
-            GameLanguage = ExpandStats.GameLanguage;
+            EnableTestDungeonFlow = ExpandSettings.EnableTestDungeonFlow;
+            TestFlow = ExpandSettings.TestFlow;
+            TestFloor = ExpandSettings.TestFloor;
+            debugMode = ExpandSettings.debugMode;
+            youtubeSafeMode = ExpandSettings.youtubeSafeMode;
+            IsHardModeBuild = ExpandSettings.IsHardModeBuild;
+            RestoreOldRooms = ExpandSettings.RestoreOldRooms;
+            EnableJungleRain = ExpandSettings.EnableJungleRain;
+            EnableBloodiedScarfFix = ExpandSettings.EnableBloodiedScarfFix;
+            EnableLanguageFix = ExpandSettings.EnableLanguageFix;
+            EnableExpandedGlitchFloors = ExpandSettings.EnableExpandedGlitchFloors;
+            EnableGlitchFloorScreenShader = ExpandSettings.EnableGlitchFloorScreenShader;
+            EnableEXItems = ExpandSettings.EnableEXItems;
+            JungleRainIntensity = ExpandSettings.JungleRainIntensity;
+            GameLanguage = ExpandSettings.GameLanguage;
         }
     }
 }

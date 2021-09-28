@@ -85,7 +85,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(OnPlayerCollision));
                 }                
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { 
+                if (ExpandSettings.debugMode) { 
                     ETGModConsole.Log("Exception Caught at [GetDistanceToPoint] in ExpandKickableObject class.", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);
@@ -186,7 +186,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 float num2 = Mathf.Max(Mathf.Min(point.y, bounds.max.y), bounds.min.y);
                 return Mathf.Sqrt((point.x - num) * (point.x - num) + (point.y - num2) * (point.y - num2));
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Exception Caught at [GetDistanceToPoint] in ExpandKickableObject class." + ex.Message + ex.Source + ex.InnerException + ex.StackTrace + ex.TargetSite, false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Exception Caught at [GetDistanceToPoint] in ExpandKickableObject class." + ex.Message + ex.Source + ex.InnerException + ex.StackTrace + ex.TargetSite, false); }
                 ForceDeregister();
                 float defaultFloat = 0f;                
                 Destroy(this);
@@ -238,7 +238,7 @@ namespace ExpandTheGungeon.ExpandComponents {
     		    }
     		    if (!validLocation) { StopRolling(true); }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Exception Caught at [NoPits] in ExpandKickableObject class." + ex.Message + ex.Source + ex.InnerException + ex.StackTrace + ex.TargetSite, false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Exception Caught at [NoPits] in ExpandKickableObject class." + ex.Message + ex.Source + ex.InnerException + ex.StackTrace + ex.TargetSite, false); }
                 return;
             }
         }
@@ -285,7 +285,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return false;
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [IsRollAnimation] in ExpandKickableObject class.", false);
                     ETGModConsole.Log(ex.Message, false);
                     ETGModConsole.Log(ex.StackTrace + ex.Source, false);
@@ -385,7 +385,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         Invoke("SelfDestructOnKick", UnityEngine.Random.Range(0.25f, 3f));
                     }
                 } catch (Exception ex) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         ETGModConsole.Log("Exception Caught at [SelfDestructOnKick] in ExpandKickableObject class.", false);
                         ETGModConsole.Log(ex.Message + ex.Source + ex.StackTrace, false);
                     }
@@ -449,7 +449,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_lastDirectionKicked = new IntVector2?(flipDirection);
     
             } catch (Exception) {
-                if (ExpandStats.debugMode) { ETGModConsole.Log("Exception Caught at [Kick] in ExpandKickableObject class.", false); }
+                if (ExpandSettings.debugMode) { ETGModConsole.Log("Exception Caught at [Kick] in ExpandKickableObject class.", false); }
                 return;
             }
     	}

@@ -27,7 +27,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             ItemBuilder.SetupItem(poopSack, shortDesc, longDesc, "ex");
             poopSack.quality = ItemQuality.A;
-            if (!ExpandStats.EnableEXItems) { poopSack.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { poopSack.quality = ItemQuality.EXCLUDED; }
             poopSack.CanBeDropped = false;
             CorruptedJunkID = poopSack.PickupObjectId;
 

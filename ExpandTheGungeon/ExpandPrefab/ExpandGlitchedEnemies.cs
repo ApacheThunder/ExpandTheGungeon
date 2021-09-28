@@ -247,18 +247,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public AIActor GenerateGlitchedActorPrefab(GameObject TargetEnemyObject, GameObject SourceEnemy, bool ExplodesOnDeath = false, bool spawnsGlitchedObjectOnDeath = false, Action<AIActor> SpecificEnemyMods = null) {            
             if (TargetEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Target Actor Prefab to spawn is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Target Actor Prefab to spawn is null!", false);
                 return null;
             }           
             if (SourceEnemy == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source Actor Prefab is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source Actor Prefab is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = SourceEnemy.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = TargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
             }
@@ -557,7 +557,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     try {
                         targetObject = SpawnGlitchedBigEnemy(CurrentRoom, position, autoEngage, awakenAnimType);
                     } catch (Exception ex) {
-                        if (ExpandStats.debugMode) {
+                        if (ExpandSettings.debugMode) {
                             ETGModConsole.Log("[DEBUG] WARNING: Exception while attempting to spawn glitched big enemy!");
                         }
                         Debug.Log("WARNING: Exception while attempting to spawn glitched big enemy!");
@@ -565,7 +565,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     }
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] WARNING: Exception while attempting to spawn glitched enemy with ID: " + GlitchEnemyNumber.ToString());
                 }
                 Debug.Log("WARNING: Exception while attempting to spawn glitched enemy with ID: " + GlitchEnemyNumber.ToString());
@@ -840,14 +840,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -980,14 +980,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1117,14 +1117,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1254,14 +1254,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1383,14 +1383,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1520,14 +1520,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1655,14 +1655,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1791,14 +1791,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -1926,14 +1926,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2061,14 +2061,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2195,14 +2195,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2325,14 +2325,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2458,14 +2458,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2592,14 +2592,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2727,14 +2727,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2861,14 +2861,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -2980,14 +2980,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3101,14 +3101,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3212,14 +3212,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3333,14 +3333,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3454,14 +3454,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3575,14 +3575,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3694,14 +3694,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3813,14 +3813,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -3933,14 +3933,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4054,14 +4054,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4194,14 +4194,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4331,14 +4331,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4470,14 +4470,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4595,14 +4595,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4723,14 +4723,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -4846,14 +4846,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5003,14 +5003,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies);
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5126,14 +5126,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5251,14 +5251,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5378,14 +5378,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
             
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5538,14 +5538,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5671,14 +5671,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5829,14 +5829,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -5991,14 +5991,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6158,14 +6158,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6322,14 +6322,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6480,14 +6480,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6627,14 +6627,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6777,14 +6777,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -6930,14 +6930,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7083,14 +7083,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7239,7 +7239,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
             
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
@@ -7259,7 +7259,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             } catch (Exception) { }
 
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7520,14 +7520,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
             
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7684,14 +7684,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7836,14 +7836,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -7986,14 +7986,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8129,14 +8129,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8306,14 +8306,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8443,14 +8443,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8578,14 +8578,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (CachedTargetEnemyObject == null) { return null; }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8696,14 +8696,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8805,14 +8805,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -8931,7 +8931,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (CachedTargetEnemyObject == null) { return null; }
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
@@ -8944,7 +8944,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BossStatuesIntroDoer>(true));
             Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<GenericIntroDoer>(true));*/
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -9071,14 +9071,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             if (CachedSourceEnemyObject == null) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);
@@ -9235,11 +9235,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
 
             if (!CachedEnemyActor) {
-                if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for random donor enemy is null!", false);
                 return null;
             }
 
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy spawned has it's behaviors replaced with the enemy: '" + CachedEnemyActor.ActorName + "' with GUID: " + CachedEnemyActor.EnemyGuid + " .", false);
                 ETGModConsole.Log("The enemy was spawned in the following room: '" + CurrentRoom.GetRoomName(), false);

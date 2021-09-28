@@ -107,7 +107,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 ToggleSprites(true);
             } else {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[DEBUG] ERROR: ElevatorDepatureComponent is null!");
                     Destroy(this);
                 }
@@ -205,7 +205,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         GameManager.DoMidgameSave(nextTileset);
                     }
                     if (IsGlitchElevator) {
-                        ExpandStats.elevatorHasBeenUsed = true;
+                        ExpandSettings.elevatorHasBeenUsed = true;
                         GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
                     } else if (UsesOverrideTargetFloor) {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;

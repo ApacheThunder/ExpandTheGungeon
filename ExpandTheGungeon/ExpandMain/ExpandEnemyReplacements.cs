@@ -15,7 +15,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         m_cachedReplacementTiers.Remove(m_cachedReplacementTiers[i]);
                     }
                 }
-                if (!ExpandStats.IsHardModeBuild) {
+                if (!ExpandSettings.IsHardModeBuild) {
                     InitReplacementEnemiesForSewers(m_cachedReplacementTiers);
                     InitReplacementEnemiesForAbbey(m_cachedReplacementTiers);
                 }

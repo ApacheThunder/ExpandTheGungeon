@@ -134,7 +134,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             try {
                 GameManager.Instance.StartCoroutine(ToggleRainFX(player, RainIntensity));
             } catch (System.Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     Debug.Log("[WARNING] Exception caught while checking room for WeatherFX toggle!...");
                     Debug.LogException(ex);                    
                     ETGModConsole.Log("[WARNING] Exception caught while checking room for WeatherFX toggle!...");

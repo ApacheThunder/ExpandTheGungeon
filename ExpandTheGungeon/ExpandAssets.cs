@@ -63,7 +63,7 @@ namespace ExpandTheGungeon {
         public static AssetBundle LoadFromModZIPOrModFolder(string AssetBundleName = "expandsharedauto") {
             AssetBundle m_CachedBundle = null;
             if (File.Exists(ExpandTheGungeon.ZipFilePath)) {
-                if (ExpandStats.debugMode) { Debug.Log("Zip Found"); }
+                if (ExpandSettings.debugMode) { Debug.Log("Zip Found"); }
                 ZipFile ModZIP = ZipFile.Read(ExpandTheGungeon.ZipFilePath);
                 if (ModZIP != null && ModZIP.Entries.Count > 0) {                    
                     foreach (ZipEntry entry in ModZIP.Entries) {
@@ -92,7 +92,7 @@ namespace ExpandTheGungeon {
 			    	Marshal.Copy(array, 0, intPtr, array.Length);
 			    	uint num;
 			    	AKRESULT akresult = AkSoundEngine.LoadAndDecodeBankFromMemory(intPtr, (uint)array.Length, false, SoundBankBinary.name, false, out num);
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         Console.WriteLine(string.Format("Result of soundbank load: {0}.", akresult));
                     }
 			    } finally {

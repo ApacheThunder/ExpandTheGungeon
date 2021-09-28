@@ -40,14 +40,14 @@ namespace ExpandTheGungeon.ItemAPI {
             try {
                 bool flag = o is GameObject && ExistingFakePrefabs.Contains((GameObject)o);
                 if (flag) {
-                    if (ExpandStats.debugMode) { Tools.Print("Activating fake prefab: " + o.name, "FFFFFF", false); }
+                    if (ExpandSettings.debugMode) { Tools.Print("Activating fake prefab: " + o.name, "FFFFFF", false); }
 			    	((GameObject)new_o).SetActive(true);
 			    } else {
 			    	bool flag2 = o is Component && ExistingFakePrefabs.Contains(((Component)o).gameObject);
 			    	if (flag2) { ((Component)new_o).gameObject.SetActive(true); }
 			    }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) { Debug.Log(ex); }
+                if (ExpandSettings.debugMode) { Debug.Log(ex); }
             }
 			return new_o;
 		}

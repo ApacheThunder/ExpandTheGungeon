@@ -22,7 +22,7 @@ namespace ExpandTheGungeon.ItemAPI {
             string longDesc = "There seems to be sounds emanating from the walls around you!\n\nThis item can't be dropped.";
             ItemBuilder.SetupItem(cursedBrick, shortDesc, longDesc, "ex");
             cursedBrick.quality = ItemQuality.D;
-            if (!ExpandStats.EnableEXItems) { cursedBrick.quality = ItemQuality.EXCLUDED; }
+            if (!ExpandSettings.EnableEXItems) { cursedBrick.quality = ItemQuality.EXCLUDED; }
             cursedBrick.CanBeDropped = false;
             cursedBrick.passiveStatModifiers = new StatModifier[] {
                 new StatModifier() {

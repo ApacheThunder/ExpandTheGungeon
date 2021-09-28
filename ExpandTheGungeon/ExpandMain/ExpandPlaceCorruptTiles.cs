@@ -409,7 +409,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                     iterations++;
                 } catch (Exception ex) {
-                    if (ExpandStats.debugMode) {
+                    if (ExpandSettings.debugMode) {
                         if (RoomBeingWorkedOn != null && !string.IsNullOrEmpty(RoomBeingWorkedOn.GetRoomName())) {
                             ETGModConsole.Log("[DEBUG] Exception occured in Dungeon.PlaceWallMimics with room: " + RoomBeingWorkedOn.GetRoomName());
                             Debug.Log("Exception caught in Dungeon.PlaceWallMimics with room: " + RoomBeingWorkedOn.GetRoomName());
@@ -420,7 +420,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         Debug.LogException(ex);
                     }
                     if (CorruptWallTilesPlaced > 0) {
-                        if (ExpandStats.debugMode) {
+                        if (ExpandSettings.debugMode) {
                             ETGModConsole.Log("[DEBUG] Number of corrupted wall tiles succesfully placed: " + CorruptWallTilesPlaced, false);
                             ETGModConsole.Log("[DEBUG] Number of corrupted ppen area tiles succesfully placed: " + CorruptOpenAreaTilesPlaced, false);
                         }
@@ -430,7 +430,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
             if (CorruptWallTilesPlaced > 0) {
-            	if (ExpandStats.debugMode) {
+            	if (ExpandSettings.debugMode) {
             		ETGModConsole.Log("[DEBUG] Number of Valid Corrupted Wall Tile locations: " + CorruptWallTilesPlaced, false);
             		ETGModConsole.Log("[DEBUG] Number of Valid Corrupted locations: " + CorruptOpenAreaTilesPlaced, false);
             	}

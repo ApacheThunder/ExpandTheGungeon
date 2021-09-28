@@ -229,7 +229,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_RickRollAnimator.Play("RickRollAnimation_Rise");
             while (m_RickRollAnimator.IsPlaying("RickRollAnimation_Rise")) { yield return null; }
             m_RickRollAnimator.Play("RickRollAnimation");
-            if (!ExpandStats.youtubeSafeMode) {
+            if (!ExpandSettings.youtubeSafeMode) {
                 AkSoundEngine.PostEvent("Play_EX_RickRollMusic_01", gameObject);
             } else {
                 GameManager.Instance.StartCoroutine(DoYouTubeSafeAnnouncement(new Vector3(1.5f, 3.5f)));
@@ -277,19 +277,19 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private IEnumerator DoToggleSwitch() {
-            if (ExpandStats.youtubeSafeMode) {
+            if (ExpandSettings.youtubeSafeMode) {
                 m_room.DeregisterInteractable(this);
                 spriteAnimator.Play(switchOnAnimName);
-                ExpandStats.youtubeSafeMode = false;
+                ExpandSettings.youtubeSafeMode = false;
                 yield return new WaitForSeconds(2f);
-            } else if (!ExpandStats.youtubeSafeMode) {
+            } else if (!ExpandSettings.youtubeSafeMode) {
                 spriteAnimator.Play(switchOffAnimName);
-                ExpandStats.youtubeSafeMode = true;
+                ExpandSettings.youtubeSafeMode = true;
                 yield return new WaitForSeconds(2f);
             }
             m_room.RegisterInteractable(this);
             m_Opened = false;
-            ExpandStats.SaveSettings();
+            ExpandSettings.SaveSettings();
             yield break;
         }
         
@@ -352,7 +352,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             
             switch (chestType) {
                 case ChestType.MusicSwitch:
-                    if (ExpandStats.youtubeSafeMode) {
+                    if (ExpandSettings.youtubeSafeMode) {
                         sprite.SetSprite("music_switch_idle_off_001");
                     } else {
                         sprite.SetSprite("music_switch_idle_on_001");

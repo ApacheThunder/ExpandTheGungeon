@@ -13,7 +13,7 @@ namespace ExpandTheGungeon {
     public class ExpandObjectMods {
 
         public static void InitSpecialMods() {
-            ExpandStats.randomSeed = Random.value;
+            ExpandSettings.randomSeed = Random.value;
                         
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
             
@@ -22,7 +22,7 @@ namespace ExpandTheGungeon {
                 // Add some of the new FTA enemies to the old secret floors
                 if (m_cachedReplacementTiers != null) { ExpandEnemyReplacements.Init(m_cachedReplacementTiers); }
             }
-
+            
             InitObjectMods(GameManager.Instance.Dungeon);
 
             ExpandDungeonFlow.isGlitchFlow = false;
@@ -32,18 +32,18 @@ namespace ExpandTheGungeon {
 
             if (!GameManager.Instance | !dungeon) { return; }
             
-            if (ExpandStats.EnableJungleRain && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
+            if (ExpandSettings.EnableJungleRain && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
                 JungleRainPlacable.transform.parent = dungeon.gameObject.transform;
                 ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
                 ThunderstormPlacable.useCustomIntensity = true;
-                ThunderstormPlacable.RainIntensity = ExpandStats.JungleRainIntensity;
+                ThunderstormPlacable.RainIntensity = ExpandSettings.JungleRainIntensity;
                 ThunderstormPlacable.enableLightning = true;
                 ThunderstormPlacable.isSecretFloor = false;
                 ThunderstormPlacable.ConfigureOnPlacement(null);
             }
 
-            if (GameManager.Instance.CurrentFloor == 1) { ExpandStats.HasSpawnedSecretBoss = false; }
+            if (GameManager.Instance.CurrentFloor == 1) { ExpandSettings.HasSpawnedSecretBoss = false; }
                         
             // Disable victory music for Ser Manuel if not on tutorial floor. (it can cause double music bug if you kill him on other floors)
             if (dungeon.LevelOverrideType != GameManager.LevelOverrideState.TUTORIAL) {
@@ -78,7 +78,7 @@ namespace ExpandTheGungeon {
             if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
             if (player2) { if (player2.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
 
-            if (ExpandStats.EnableExpandedGlitchFloors && (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk)) {
+            if (ExpandSettings.EnableExpandedGlitchFloors && (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk)) {
                 
                 if (!dungeon.IsGlitchDungeon && !ExpandDungeonFlow.isGlitchFlow && playerHasCorruptedJunk) {
                     if (Object.FindObjectsOfType<AIActor>() != null && UnityEngine.Object.FindObjectsOfType<AIActor>().Length > 0) {
@@ -103,7 +103,7 @@ namespace ExpandTheGungeon {
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
 
-                    if (ExpandStats.EnableGlitchFloorScreenShader) {
+                    if (ExpandSettings.EnableGlitchFloorScreenShader) {
                         GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
                         EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
                     }

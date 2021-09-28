@@ -86,9 +86,9 @@ namespace ExpandTheGungeon.ExpandMain {
                         }
                     }
                 } catch (System.Exception ex) {
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up or placing enemy for current room" /*+ currentRoom.GetRoomName()*/, false);
-                    if (ExpandStats.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
-                    if (ExpandStats.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
+                    if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Exception while setting up or placing enemy for current room" /*+ currentRoom.GetRoomName()*/, false);
+                    if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] Skipping current room...", false);
+                    if (ExpandSettings.debugMode) { ETGModConsole.Log(ex.Message + ex.StackTrace + ex.Source, false); }
                     continue;
                 }
                 AIActor[] allAIActors = Object.FindObjectsOfType<AIActor>();
@@ -103,7 +103,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }
             }            
-            if (ExpandStats.debugMode) {
+            if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("[DEBUG] Max Number of Glitched Enemies assigned to floor: " + MaxEnemies, false);
                 ETGModConsole.Log("[DEBUG] Number of Glitched Enemies placed: " + RandomEnemiesPlaced, false);
                 ETGModConsole.Log("[DEBUG] Number of Glitched Enemies skipped: " + RandomEnemiesSkipped, false);

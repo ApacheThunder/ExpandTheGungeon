@@ -143,7 +143,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeHologram] in ChaosShaders class.", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);
@@ -201,7 +201,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeHologram] in ChaosShaders class.", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);
@@ -281,7 +281,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ApplyGlitchShader(sprite, true, GlitchInterval, DispProbability, DispIntensity, ColorProbability, ColorIntensity);
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeGlitched] in ChaosShaders class.", false);
                     Debug.Log("Exception Caught at[BecomeGlitched] in ChaosShaders class");
                     Debug.LogException(ex);
@@ -340,7 +340,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ApplyGlitchShader(sprite, true, GlitchInterval, DispProbability, DispIntensity, ColorProbability, ColorIntensity);
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeGlitched] in ChaosShaders class.", false);
                     Debug.Log("Exception Caught at[BecomeGlitched] in ChaosShaders class");
                     Debug.LogException(ex);
@@ -391,7 +391,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ApplyGlitchShader(aiActor.sprite, true, GlitchInterval, DispProbability, DispIntensity, ColorProbability, ColorIntensity);
 
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeGlitched] in ChaosShaders class.", false);
                     Debug.Log("Exception Caught at[BecomeGlitched] in ChaosShaders class");
                     Debug.LogException(ex);
@@ -442,7 +442,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     ApplyRainbowShader(aiActor, aiActor.sprite);
                 }
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("Exception Caught at [BecomeRainbow] in ChaosShaders class.", false);
                     ETGModConsole.Log(ex.Message + ex.Source, false);
                     ETGModConsole.Log(ex.StackTrace, false);
@@ -522,7 +522,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 spriteComponent.sharedMaterials = sharedMaterials;
                 sprite.usesOverrideMaterial = usesOverrideMaterial;
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.LogException(ex);
@@ -553,7 +553,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 sharedMaterials[sharedMaterials.Length - 1] = m_cachedMaterial;
                 spriteComponent.sharedMaterials = sharedMaterials;
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.LogException(ex);
@@ -580,7 +580,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 sharedMaterials[sharedMaterials.Length - 1] = m_cachedMaterial;
                 spriteComponent.sharedMaterials = sharedMaterials;
             } catch (Exception ex) {
-                if (ExpandStats.debugMode) {
+                if (ExpandSettings.debugMode) {
                     ETGModConsole.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.Log("[ExpandTheGungeon] Warning: Caught exception in ExpandShaders.ApplyGlitchShader!");
                     Debug.LogException(ex);

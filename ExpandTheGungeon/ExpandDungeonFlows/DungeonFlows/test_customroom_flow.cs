@@ -43,6 +43,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
             m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>(0);
             m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>(0);
+            m_CachedFlow.sharedInjectionData.Add(HollowsInjectionData);
+
             m_CachedFlow.Initialize();
 
             m_CachedFlow.AddNodeToFlow(entranceNode, null);            
