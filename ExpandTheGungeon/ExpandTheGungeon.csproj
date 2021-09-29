@@ -183,7 +183,7 @@
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Items\BabyGoodHammer.cs" />
     <Compile Include="ItemAPI\Items\CorruptionBomb.cs" />
-    <Compile Include="ItemAPI\Items\GoldensRevolvers\AnimateProjectileTools.cs" />
+    <Compile Include="ItemAPI\AnimateProjectileTools.cs" />
     <Compile Include="ItemAPI\Items\GoldensRevolvers\BlackAndGoldenRevolver.cs" />
     <Compile Include="ItemAPI\Items\GoldensRevolvers\CustomHoveringGunSynergyProcessor.cs" />
     <Compile Include="ItemAPI\Items\GoldensRevolvers\WestBrosRevolverGenerator.cs" />

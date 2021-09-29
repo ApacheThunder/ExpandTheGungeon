@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 510519599
+CRC: 757225496
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cfd67fcae58620c16aed44c8026b3557
+    Hash: 6593aa1897e3e57e9ee578ab6ca8f14b
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -453,6 +453,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Circleish1.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular30.bytes
+- Assets/ExpandPrefabs/Items/Projectiles/WestBrosBlackRevolverProjectile.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Squareish3.bytes
 - Assets/ExpandPrefabs/Items/Cronenberg Bullets.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Arm2.bytes
@@ -523,6 +524,7 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Belly/roomCeilingBorderGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Mixed16.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/HB_Expand_Achievement_Hollowed_Out.bytes
+- Assets/ExpandPrefabs/Items/Projectiles/EXBootlegMachinePistolProjectile.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular14.bytes
 - Assets/ExpandSerializedData/TilesetData/West/Canyon/floorGrid1.txt
@@ -563,6 +565,7 @@ Assets:
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_Shard_002.prefab
 - Assets/ExpandSerializedData/TilesetData/West/WoodInterior/facadeTopGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_SniperTotemBuff.bytes
+- Assets/ExpandPrefabs/Items/Projectiles/WestBrosGoldenRevolverProjectile.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/MHF_Expand_Achievement_Great_Hall.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Oldman7.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed9.bytes
@@ -874,6 +877,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed7.bytes
 - Assets/ExpandTextures/Misc/ExpandDustFXSprite_001.png
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed24.bytes
+- Assets/ExpandPrefabs/Items/Projectiles/EXBootlegShotgunProjectile.prefab
 - Assets/ExpandPrefabs/SpriteCollections/BootlegBulletManCollection.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera28.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera18.bytes

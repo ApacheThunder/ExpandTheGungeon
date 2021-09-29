@@ -18,7 +18,12 @@ namespace ExpandTheGungeon.ItemAPI {
         public static Gun BootlegPistol;
         public static Gun BootlegMachinePistol;
         public static Gun BootlegShotgun;
+
+        public static GameObject PistolProjectile;
+        public static GameObject MachinePistolProjectile;
+        public static GameObject ShotgunProjectile;
         
+
         public static void Init(AssetBundle expandSharedAssets1) {
 
             Gun pistol = ETGMod.Databases.Items.NewGun("Bootleg Pistol", "bootleg_pistol");
@@ -27,13 +32,9 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);            
             pistol.AddProjectileModuleFrom("Magnum", true, false);
-            pistol.barrelOffset.transform.localPosition -= new Vector3(0.3f, 0.3f, 0);
+            pistol.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
-            pistol.Volley = (PickupObjectDatabase.GetById(38) as Gun).Volley;
-            pistol.singleModule = (PickupObjectDatabase.GetById(38) as Gun).singleModule;
-            pistol.RawSourceVolley = (PickupObjectDatabase.GetById(38) as Gun).RawSourceVolley;
-            pistol.alternateVolley = (PickupObjectDatabase.GetById(38) as Gun).alternateVolley;
             pistol.reloadTime = 1;
             pistol.gunClass = GunClass.PISTOL;
             pistol.ammo = 140;
@@ -47,7 +48,15 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
             ETGMod.Databases.Items.Add(pistol);
             BootlegPistolID = pistol.PickupObjectId;
-            
+
+            PistolProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegPistolProjectile");
+            tk2dSprite PistolProjectileSprite = SpriteSerializer.AddSpriteToObject(PistolProjectile.transform.Find("Sprite").gameObject, ExpandPrefabs.EXGunCollection, "bootleg_pistol_projectile_001");
+            SpeculativeRigidbody pistolProjectileRigidBody = PistolProjectile.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(pistolProjectileRigidBody, pistol.DefaultModule.projectiles[0].specRigidbody);
+            Projectile PistolProjectileComponent = PistolProjectile.AddComponent<Projectile>();
+            ExpandUtility.DuplicateComponent(PistolProjectileComponent, pistol.DefaultModule.projectiles[0]);
+            pistol.DefaultModule.projectiles[0] = PistolProjectileComponent;
+            PistolProjectile.gameObject.transform.localPosition = pistol.barrelOffset.localPosition;
 
 
             Gun machinepistol = ETGMod.Databases.Items.NewGun("Bootleg Machine Pistol", "bootleg_machinepistol");
@@ -55,11 +64,8 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.SetShortDescription("Of questionable quality...");
             machinepistol.SetLongDescription("It's a counterfeit machine gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(machinepistol, null, "bootleg_machinepistol_idle_001", 30);
-            machinepistol.AddProjectileModuleFrom("Magnum", true, false);
-            machinepistol.Volley = (PickupObjectDatabase.GetById(43) as Gun).Volley;
-            machinepistol.singleModule = (PickupObjectDatabase.GetById(43) as Gun).singleModule;
-            machinepistol.RawSourceVolley = (PickupObjectDatabase.GetById(43) as Gun).RawSourceVolley;
-            machinepistol.alternateVolley = (PickupObjectDatabase.GetById(43) as Gun).alternateVolley;
+            machinepistol.AddProjectileModuleFrom(PickupObjectDatabase.GetById(43).name, true, false);
+            machinepistol.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             machinepistol.PreventOutlines = true;
             machinepistol.reloadTime = 1.2f;
             machinepistol.gunClass = GunClass.FULLAUTO;
@@ -75,7 +81,15 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
             ETGMod.Databases.Items.Add(machinepistol);
             BootlegMachinePistolID = machinepistol.PickupObjectId;
-            
+
+            MachinePistolProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegMachinePistolProjectile");
+            tk2dSprite MachinePistolProjectileSprite = SpriteSerializer.AddSpriteToObject(MachinePistolProjectile.transform.Find("Sprite").gameObject, ExpandPrefabs.EXGunCollection, "bootleg_pistol_projectile_001");
+            SpeculativeRigidbody machinePistolProjectileRigidBody = MachinePistolProjectile.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(machinePistolProjectileRigidBody, machinepistol.DefaultModule.projectiles[0].specRigidbody);
+            Projectile MachinePistolProjectileComponent = MachinePistolProjectile.AddComponent<Projectile>();
+            ExpandUtility.DuplicateComponent(MachinePistolProjectileComponent, machinepistol.DefaultModule.projectiles[0]);
+            machinepistol.DefaultModule.projectiles[0] = MachinePistolProjectileComponent;
+            MachinePistolProjectile.gameObject.transform.localPosition = machinepistol.barrelOffset.localPosition;
 
 
             Gun shotgun = ETGMod.Databases.Items.NewGun("Bootleg Shotgun", "bootleg_shotgun");
@@ -83,11 +97,8 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.SetShortDescription("Of questionable quality...");
             shotgun.SetLongDescription("It's a counterfeit shotgun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(shotgun, null, "bootleg_shotgun_idle_001", 18);
-            shotgun.AddProjectileModuleFrom("AK-47", true, false);
-            shotgun.Volley = (PickupObjectDatabase.GetById(51) as Gun).Volley;
-            shotgun.singleModule = (PickupObjectDatabase.GetById(51) as Gun).singleModule;
-            shotgun.RawSourceVolley = (PickupObjectDatabase.GetById(51) as Gun).RawSourceVolley;
-            shotgun.alternateVolley = (PickupObjectDatabase.GetById(51) as Gun).alternateVolley;
+            shotgun.AddProjectileModuleFrom(PickupObjectDatabase.GetById(51).name, true, false);
+            shotgun.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             shotgun.PreventOutlines = true;
             shotgun.reloadTime = 1.8f;
             shotgun.gunClass = GunClass.SHOTGUN;
@@ -103,6 +114,42 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
             ETGMod.Databases.Items.Add(shotgun);
             BootlegShotgunID = shotgun.PickupObjectId;
+
+            ShotgunProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegShotgunProjectile");
+            tk2dSprite ShotgunProjectileSprite = SpriteSerializer.AddSpriteToObject(ShotgunProjectile.transform.Find("Sprite").gameObject, ExpandPrefabs.EXGunCollection, "bootleg_pistol_projectile_001");
+            SpeculativeRigidbody ShotgunProjectileRigidBody = ShotgunProjectile.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(ShotgunProjectileRigidBody, shotgun.DefaultModule.projectiles[0].specRigidbody);
+            Projectile ShotgunProjectileComponent = ShotgunProjectile.AddComponent<Projectile>();
+            ExpandUtility.DuplicateComponent(ShotgunProjectileComponent, shotgun.DefaultModule.projectiles[0]);
+            shotgun.DefaultModule.projectiles[0] = ShotgunProjectileComponent;
+            ProjectileVolleyData shotgunVollyData = new ProjectileVolleyData() {
+                projectiles = new List<ProjectileModule>() {
+                    shotgun.DefaultModule,
+                    new ProjectileModule(),
+                    new ProjectileModule(),
+                    new ProjectileModule(),
+                    new ProjectileModule(),
+                    new ProjectileModule(),
+                },
+                UsesBeamRotationLimiter = false,
+                BeamRotationDegreesPerSecond = 30,
+                ModulesAreTiers = false,
+                UsesShotgunStyleVelocityRandomizer = true,
+                DecreaseFinalSpeedPercentMin = -15,
+                IncreaseFinalSpeedPercentMax = 15
+            };
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[1]);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[2]);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[3]);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[4]);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[5]);
+            shotgunVollyData.projectiles[1].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+            shotgunVollyData.projectiles[2].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+            shotgunVollyData.projectiles[3].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+            shotgunVollyData.projectiles[4].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+            shotgunVollyData.projectiles[5].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+            shotgun.Volley = shotgunVollyData;
+            ShotgunProjectileComponent.gameObject.transform.localPosition = shotgun.barrelOffset.localPosition;
 
 
             BootlegPistol = pistol;

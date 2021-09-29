@@ -348,7 +348,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXBootlegRoomCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBootlegRoomCollection", "EXBootlegRoom_Collection", "EXBootlegRoomCollection");
             SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
 
-            EXGunCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8);
+            EXGunCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
         }
 
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
@@ -3027,8 +3027,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             EXSpaceFloor50x50Sprite.HeightOffGround = -200;
             EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -195;
-            // EXSpaceFloor50x50Sprite.HeightOffGround = -5;
-            // EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -3;
             EXSpaceFloor50x50Sprite.renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
             EXSpaceFloor50x50Sprite.renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
             EXSpaceFloor50x50Sprite.usesOverrideMaterial = true;            

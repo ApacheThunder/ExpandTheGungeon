@@ -68,17 +68,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_playerOwner.OnReceivedDamage += OnReceivedDamage;
                 m_gun.PostProcessProjectile += TransmorgifyPostProcess;
             }
-
-            if (IsABootlegWeapon) { m_gun.PostProcessProjectile += SpriteChangePostProcess; }
         }
-
-        public void SpriteChangePostProcess(Projectile projectile) {
-            if (!projectile.Owner?.gameObject?.GetComponent<AIActor>()) {
-                projectile.GetAnySprite().SetSprite(ExpandPrefabs.EXGunCollection.GetComponent<tk2dSpriteCollectionData>(), "bootleg_pistol_projectile_001");
-                projectile.specRigidbody.RegenerateColliders = true;
-            }
-        }
-
+        
         public void TransmorgifyPostProcess(Projectile projectile) {
             projectile.CanTransmogrify = HasBootlegTransmorgify;
             if (HasBootlegTransmorgify) {

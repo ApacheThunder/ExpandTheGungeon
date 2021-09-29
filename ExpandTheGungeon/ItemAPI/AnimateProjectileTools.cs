@@ -163,22 +163,22 @@ namespace ExpandTheGungeon.ItemAPI
 
         public static tk2dSpriteDefinition SetupDefinitionForProjectileSprite(string name, int id, int pixelWidth, int pixelHeight, bool lightened = true, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null, int? overrideColliderOffsetX = null, int? overrideColliderOffsetY = null, Projectile overrideProjectileToCopyFrom = null)
         {
-            if (overrideColliderPixelWidth == null)
+            if (!overrideColliderPixelWidth.HasValue)
             {
                 overrideColliderPixelWidth = pixelWidth;
             }
 
-            if (overrideColliderPixelHeight == null)
+            if (!overrideColliderPixelHeight.HasValue)
             {
                 overrideColliderPixelHeight = pixelHeight;
             }
 
-            if (overrideColliderOffsetX == null)
+            if (!overrideColliderOffsetX.HasValue)
             {
                 overrideColliderOffsetX = 0;
             }
 
-            if (overrideColliderOffsetY == null)
+            if (!overrideColliderOffsetY.HasValue)
             {
                 overrideColliderOffsetY = 0;
             }

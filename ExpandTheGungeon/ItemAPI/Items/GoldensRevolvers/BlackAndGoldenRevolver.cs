@@ -1,4 +1,7 @@
-﻿using Gungeon;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.SpriteAPI;
+using Gungeon;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
@@ -13,8 +16,35 @@ namespace ExpandTheGungeon.ItemAPI
         public static int BlackRevolverID = -1;
         public static Dictionary<string, float> exceptionEnemies = new Dictionary<string, float>();
 
-        public static void AddBothVariants()
-        {
+        public static GameObject WestBrosBlackRevolverProjectile;
+        public static GameObject WestBrosGoldenRevolverProjectile;
+
+        public static void AddBothVariants() {
+
+            WestBrosBlackRevolverProjectile = ExpandAssets.LoadAsset<GameObject>("WestBrosBlackRevolverProjectile");
+            WestBrosGoldenRevolverProjectile = ExpandAssets.LoadAsset<GameObject>("WestBrosGoldenRevolverProjectile");
+            GameObject WestBrosBlackRevolverProjectileChild = WestBrosBlackRevolverProjectile.transform.Find("Sprite").gameObject;
+            GameObject WestBrosGoldenRevolverProjectileChild = WestBrosGoldenRevolverProjectile.transform.Find("Sprite").gameObject;
+            
+            // Sprite Definitions have already got the collider settings setup. ;)
+            tk2dSprite WestBrosBlackRevolverProjectileSprite = SpriteSerializer.AddSpriteToObject(WestBrosBlackRevolverProjectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
+            tk2dSprite WestBrosGoldenRevolverProjectileSprite = SpriteSerializer.AddSpriteToObject(WestBrosGoldenRevolverProjectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
+            // Will set the animations up here.
+            ExpandUtility.GenerateSpriteAnimator(WestBrosBlackRevolverProjectileChild, playAutomatically: true);
+            ExpandUtility.GenerateSpriteAnimator(WestBrosGoldenRevolverProjectileChild, playAutomatically: true);
+            List<string> ProjectileSpriteList = new List<string>()
+            {
+                "gr_black_revolver_projectile_001",
+                "gr_black_revolver_projectile_002",
+                "gr_black_revolver_projectile_003",
+                "gr_black_revolver_projectile_004",
+                "gr_black_revolver_projectile_005",
+                "gr_black_revolver_projectile_006"
+            };
+            ExpandUtility.AddAnimation(WestBrosBlackRevolverProjectileChild.GetComponent<tk2dSpriteAnimator>(), WestBrosBlackRevolverProjectileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
+            ExpandUtility.AddAnimation(WestBrosGoldenRevolverProjectileChild.GetComponent<tk2dSpriteAnimator>(), WestBrosGoldenRevolverProjectileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
+            // The Projectile and rigid body component will be setup in Add()
+
             Add(true);
             Add(false);
 
@@ -51,16 +81,17 @@ namespace ExpandTheGungeon.ItemAPI
 
         private static void Add(bool isGoldenVersion)
         {
+
             string upperColor = isGoldenVersion ? "Golden" : "Black";
             string lowerColor = isGoldenVersion ? "golden" : "black";
 
             Gun gun = ETGMod.Databases.Items.NewGun($"{upperColor} Revolver", $"gr_{lowerColor}_revolver");
-
+            
             Game.Items.Rename($"outdated_gun_mods:{lowerColor}_revolver", $"ex:{lowerColor}_revolver");
-
+            
             gun.gameObject.AddComponent<BlackAndGoldenRevolver>();
             gun.SetShortDescription("Six Deep");
-
+            
             string longDescription = "Bullets fired from this cursed revolver jam enemies on hit, but also completely ignore their increased strength, damaging them as if they were unjammed.";
 
             if (isGoldenVersion)
@@ -71,114 +102,91 @@ namespace ExpandTheGungeon.ItemAPI
             {
                 longDescription += "\n\nThis revolver was once carried by the bearer of a terrible curse. It is cold to the touch. A dark wind blows.";
             }
-
+            
             gun.SetLongDescription(longDescription);
-
+            
             // frame rate can be adjusted if we don't like the current idle animation speed
             gun.SetupSprite(null, $"gr_{lowerColor}_revolver_idle_001", 5);
-
+            
             var idleAnimation = gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.idleAnimation);
-
+            
             var list = idleAnimation.frames.ToList();
-
+            
             // manually add the reversal of the animation so we don't load the same sprite multiple times for no reason (these frames don't really need to be duplicated)
             list.Add(list[2]);
             list.Add(list[1]);
-
+            
             // add a few more frames of the idle frame so the animation has a slight pause before looping
             for (int i = 0; i < 5; i++)
             {
                 list.Add(list[0]);
             }
-
+            
             idleAnimation.frames = list.ToArray();
-
+            
             gun.SetAnimationFPS(gun.shootAnimation, 12);
             gun.SetAnimationFPS(gun.reloadAnimation, 14);
-
+            
             // Every modded gun has base projectile it works with that is borrowed from other guns in the game.
             // The gun names are the names from the JSON dump! While most are the same, some guns named completely different things. If you need help finding gun names, ask a modder on the Gungeon discord.
             // which means its the ETGMod.Databases.Items / PickupObjectDatabase.Instance.InternalGetByName name, aka the pickupobject.name
 
             var defaultGun = PickupObjectDatabase.GetById(22) as Gun;
-
+            
             gun.AddProjectileModuleFrom(defaultGun, true, false);
-
+            
             // move the gun up with the hand in the second frame of the shooting animation (hand movement was done in GAE with a y offset of 1)
             //gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames[1].FrameToDefinition().MakeOffset(new Vector2(0, 1));
 
             gun.gunSwitchGroup = defaultGun.gunSwitchGroup;
             gun.muzzleFlashEffects = defaultGun.muzzleFlashEffects;
-
+            
             gun.AddMuzzle();
             gun.muzzleOffset.localPosition = new Vector3(1.2f, 0.8f, 0f);
             gun.barrelOffset.localPosition = new Vector3(1.4f, 0.8f, 0f);
-
+            
             gun.DefaultModule.shootStyle = ProjectileModule.ShootStyle.SemiAutomatic;
             gun.DefaultModule.sequenceStyle = ProjectileModule.ProjectileSequenceStyle.Random;
             gun.DefaultModule.cooldownTime = 0.07f;
             gun.DefaultModule.numberOfShotsInClip = 6;
             gun.DefaultModule.angleVariance = 0;
             gun.DefaultModule.ammoCost = 1;
-
+            
             var curseWhileHeld = new StatModifier
             {
                 amount = 2,
                 statToBoost = PlayerStats.StatType.Curse,
                 modifyType = StatModifier.ModifyMethod.ADDITIVE
             };
-
+            
             gun.currentGunStatModifiers = new StatModifier[] { curseWhileHeld };
-
+            
             gun.shellCasing = defaultGun.shellCasing;
             gun.shellsToLaunchOnFire = 0;
             gun.shellsToLaunchOnReload = gun.DefaultModule.numberOfShotsInClip;
             gun.reloadShellLaunchFrame = defaultGun.reloadShellLaunchFrame;
-
+            
             gun.reloadTime = 1f;
             gun.gunClass = GunClass.PISTOL;
             gun.SetBaseMaxAmmo(666);
             gun.quality = PickupObject.ItemQuality.EXCLUDED;
-
+            
             gun.encounterTrackable.EncounterGuid = $"this is the {lowerColor} skull revolver";
 
-            Projectile projectile = Instantiate<Projectile>(gun.DefaultModule.projectiles[0]);
-            projectile.gameObject.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(projectile.gameObject);
-            DontDestroyOnLoad(projectile);
-
+            Projectile projectile = isGoldenVersion ? WestBrosGoldenRevolverProjectile.AddComponent<Projectile>() : WestBrosBlackRevolverProjectile.AddComponent<Projectile>();
+            SpeculativeRigidbody projectileRigidBody = projectile.gameObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(projectileRigidBody, defaultGun.DefaultModule.projectiles[0].specRigidbody);
+            ExpandUtility.DuplicateComponent(projectile, defaultGun.DefaultModule.projectiles[0]);
             gun.DefaultModule.projectiles[0] = projectile;
-
             projectile.baseData.damage = 14f;
             projectile.baseData.speed = 25f;
             projectile.baseData.force = 14f;
-            projectile.transform.parent = gun.barrelOffset;
+
+
+            // projectile.transform.parent = gun.barrelOffset;
+            projectile.transform.localPosition = gun.barrelOffset.localPosition;
 
             projectile.shouldRotate = true;
-
-            int projectileWidth = 12; // actual sprite width is 19
-            int projectileHeight = 6; // actual sprite height is 9
-
-            projectile.AnimateProjectile(new List<string> {
-                "gr_black_revolver_projectile_001",
-                "gr_black_revolver_projectile_002",
-                "gr_black_revolver_projectile_003",
-                "gr_black_revolver_projectile_004",
-                "gr_black_revolver_projectile_005",
-                "gr_black_revolver_projectile_006",
-            }, 13, true,
-            AnimateProjectileTools.ConstructListOfSameValues(new IntVector2(projectileWidth, projectileHeight), 6),
-            AnimateProjectileTools.ConstructListOfSameValues(false, 7),
-            AnimateProjectileTools.ConstructListOfSameValues(tk2dBaseSprite.Anchor.MiddleCenter, 7),
-            AnimateProjectileTools.ConstructListOfSameValues(true, 7),
-            AnimateProjectileTools.ConstructListOfSameValues(false, 7),
-            AnimateProjectileTools.ConstructListOfSameValues<Vector3?>(null, 7),
-            AnimateProjectileTools.ConstructListOfSameValues<IntVector2?>(null, 7),
-            AnimateProjectileTools.ConstructListOfSameValues<IntVector2?>(null, 7),
-            AnimateProjectileTools.ConstructListOfSameValues<Projectile>(null, 7));
-
-            projectile.SetProjectileSpriteRight2("gr_black_revolver_projectile_001", projectileWidth, projectileHeight, false, tk2dBaseSprite.Anchor.MiddleCenter);
-
             var comp = projectile.gameObject.AddComponent<SkullRevolverBullet>();
             comp.jamsEnemies = true;
 

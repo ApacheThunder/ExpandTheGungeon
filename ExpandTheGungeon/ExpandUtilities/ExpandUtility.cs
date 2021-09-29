@@ -3865,35 +3865,36 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-        public static void DefineProjectileCollision(this tk2dSpriteCollectionData spriteCollection, string name, int pixelWidth, int pixelHeight, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null) {
-            try {
-                if (!overrideColliderPixelWidth.HasValue) { overrideColliderPixelWidth = new int?(pixelWidth); }
-                if (!overrideColliderPixelHeight.HasValue) { overrideColliderPixelHeight = new int?(pixelHeight); }
-                float num = pixelWidth / 16f;
-                float num2 = pixelHeight / 16f;
-                float x = overrideColliderPixelWidth.Value / 16f;
-                float y = overrideColliderPixelHeight.Value / 16f;
-                tk2dSpriteDefinition spriteDefinition = spriteCollection.GetSpriteDefinition(name);
-                spriteDefinition.colliderType = tk2dSpriteDefinition.ColliderType.Box;
-                spriteDefinition.collisionLayer = CollisionLayer.Projectile;
-                spriteDefinition.physicsEngine = tk2dSpriteDefinition.PhysicsEngine.Physics3D;
-                spriteDefinition.boundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);
-                spriteDefinition.boundsDataExtents = new Vector3(num, num2, 0f);
-                spriteDefinition.untrimmedBoundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);
-                spriteDefinition.untrimmedBoundsDataExtents = new Vector3(num, num2, 0f);
-                spriteDefinition.position0 = new Vector3(0f, 0f, 0f);
-                spriteDefinition.position1 = new Vector3(0f + num, 0f, 0f);
-                spriteDefinition.position2 = new Vector3(0f, 0f + num2, 0f);
-                spriteDefinition.position3 = new Vector3(0f + num, 0f + num2, 0f);
-                spriteDefinition.colliderVertices = new Vector3[] { Vector3.zero, new Vector3(x, y, 0.1f) };
-                spriteDefinition.colliderVertices[1].x = x;
-                spriteDefinition.colliderVertices[1].y = y;
-            } catch (Exception ex) {
-                ETGModConsole.Log("Ooops! Seems like something got very, Very, VERY wrong. Here's the exception:", false);
-                ETGModConsole.Log(ex.ToString(), true);
-            }
-        }
+        public static void DefineProjectileCollision(this tk2dSpriteCollectionData spriteCollection, string name, int pixelWidth, int pixelHeight, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null, int? overrideColliderOffsetX = null, int? overrideColliderOffsetY = null) {
 
+            if (!overrideColliderPixelWidth.HasValue) { overrideColliderPixelWidth = pixelWidth; }
+            if (!overrideColliderPixelHeight.HasValue) { overrideColliderPixelHeight = pixelHeight; }
+            if (!overrideColliderOffsetX.HasValue) { overrideColliderOffsetX = 0; }
+            if (!overrideColliderOffsetY.HasValue) { overrideColliderOffsetY = 0; }
+
+            float trueWidth = (float)pixelWidth / 16;
+            float trueHeight = (float)pixelHeight / 16;
+            float colliderWidth = (float)overrideColliderPixelWidth.Value / 16;
+            float colliderHeight = (float)overrideColliderPixelHeight.Value / 16;
+            float colliderOffsetX = (float)overrideColliderOffsetX.Value / 16;
+            float colliderOffsetY = (float)overrideColliderOffsetY.Value / 16;
+
+            tk2dSpriteDefinition spriteDefinition = spriteCollection.GetSpriteDefinition(name);
+            spriteDefinition.boundsDataCenter = new Vector3(trueWidth / 2f, trueHeight / 2f, 0f);
+            spriteDefinition.boundsDataExtents = new Vector3(trueWidth, trueHeight, 0f);
+            spriteDefinition.untrimmedBoundsDataCenter = new Vector3(trueWidth / 2f, trueHeight / 2f, 0f);
+            spriteDefinition.untrimmedBoundsDataExtents = new Vector3(trueWidth, trueHeight, 0f);
+            spriteDefinition.texelSize = new Vector2(1 / 16f, 1 / 16f);
+            spriteDefinition.position0 = new Vector3(0f, 0f, 0f);
+            spriteDefinition.position1 = new Vector3(0f + trueWidth, 0f, 0f);
+            spriteDefinition.position2 = new Vector3(0f, 0f + trueHeight, 0f);
+            spriteDefinition.position3 = new Vector3(0f + trueWidth, 0f + trueHeight, 0f);
+            spriteDefinition.colliderVertices = new Vector3[] {
+                new Vector3(colliderOffsetX, colliderOffsetY, 0f),
+                new Vector3(colliderWidth / 2, colliderHeight / 2)
+            };
+        }
+        
 
         public static Material Copy(this Material orig, Texture2D textureOverride = null, Shader shaderOverride = null) {
             Material m_NewMaterial = new Material(orig.shader) {
