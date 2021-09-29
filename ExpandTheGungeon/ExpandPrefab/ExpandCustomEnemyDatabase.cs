@@ -107,12 +107,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             // Collider settings for Black/Golden Revolver's projectiles. Adjust this if it's not to your liking. 
             // DefineProjectileCollision extension can be found in ExpandUtility.cs
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_001", 12, 6, overrideColliderOffsetY: 1);
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_002", 12, 6, overrideColliderOffsetY: 1);
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_003", 12, 6, overrideColliderOffsetY: 1);
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_004", 12, 6, overrideColliderOffsetY: 1);
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_005", 12, 6, overrideColliderOffsetY: 1);
-            WestBrosCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("gr_black_revolver_projectile_006", 12, 6, overrideColliderOffsetY: 1);
+            tk2dSpriteCollectionData WestBrosCollectionData = WestBrosCollection.GetComponent<tk2dSpriteCollectionData>();
+            for (int i = 1; i < 7; i++) {
+                WestBrosCollectionData.DefineProjectileCollision("gr_black_revolver_projectile_00" + i, 12, 6, overrideColliderOffsetY: 1);
+            }
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {

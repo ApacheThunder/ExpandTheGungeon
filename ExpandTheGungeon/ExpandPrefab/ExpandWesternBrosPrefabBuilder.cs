@@ -477,8 +477,8 @@ namespace ExpandTheGungeon.ExpandPrefab
                 }
 
                 // TODO balance
-                //actor.healthHaver.ForceSetCurrentHealth(1000);
-                //actor.healthHaver.SetHealthMaximum(1000);
+                actor.healthHaver.ForceSetCurrentHealth(600);
+                actor.healthHaver.SetHealthMaximum(600);
 
                 actor.RegenerateCache();
 

@@ -19,32 +19,24 @@ namespace ExpandTheGungeon.ItemAPI
         public static GameObject WestBrosBlackRevolverProjectile;
         public static GameObject WestBrosGoldenRevolverProjectile;
 
-        public static void AddBothVariants() {
+        public static readonly List<string> ProjectileSpriteList = new List<string>()
+        {
+            "gr_black_revolver_projectile_001",
+            "gr_black_revolver_projectile_002",
+            "gr_black_revolver_projectile_003",
+            "gr_black_revolver_projectile_004",
+            "gr_black_revolver_projectile_005",
+            "gr_black_revolver_projectile_006"
+        };
 
+
+        public static void AddBothVariants()
+        {
             WestBrosBlackRevolverProjectile = ExpandAssets.LoadAsset<GameObject>("WestBrosBlackRevolverProjectile");
             WestBrosGoldenRevolverProjectile = ExpandAssets.LoadAsset<GameObject>("WestBrosGoldenRevolverProjectile");
             GameObject WestBrosBlackRevolverProjectileChild = WestBrosBlackRevolverProjectile.transform.Find("Sprite").gameObject;
             GameObject WestBrosGoldenRevolverProjectileChild = WestBrosGoldenRevolverProjectile.transform.Find("Sprite").gameObject;
             
-            // Sprite Definitions have already got the collider settings setup. ;)
-            tk2dSprite WestBrosBlackRevolverProjectileSprite = SpriteSerializer.AddSpriteToObject(WestBrosBlackRevolverProjectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
-            tk2dSprite WestBrosGoldenRevolverProjectileSprite = SpriteSerializer.AddSpriteToObject(WestBrosGoldenRevolverProjectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
-            // Will set the animations up here.
-            ExpandUtility.GenerateSpriteAnimator(WestBrosBlackRevolverProjectileChild, playAutomatically: true);
-            ExpandUtility.GenerateSpriteAnimator(WestBrosGoldenRevolverProjectileChild, playAutomatically: true);
-            List<string> ProjectileSpriteList = new List<string>()
-            {
-                "gr_black_revolver_projectile_001",
-                "gr_black_revolver_projectile_002",
-                "gr_black_revolver_projectile_003",
-                "gr_black_revolver_projectile_004",
-                "gr_black_revolver_projectile_005",
-                "gr_black_revolver_projectile_006"
-            };
-            ExpandUtility.AddAnimation(WestBrosBlackRevolverProjectileChild.GetComponent<tk2dSpriteAnimator>(), WestBrosBlackRevolverProjectileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
-            ExpandUtility.AddAnimation(WestBrosGoldenRevolverProjectileChild.GetComponent<tk2dSpriteAnimator>(), WestBrosGoldenRevolverProjectileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
-            // The Projectile and rigid body component will be setup in Add()
-
             Add(true);
             Add(false);
 
@@ -174,6 +166,11 @@ namespace ExpandTheGungeon.ItemAPI
             gun.encounterTrackable.EncounterGuid = $"this is the {lowerColor} skull revolver";
 
             Projectile projectile = isGoldenVersion ? WestBrosGoldenRevolverProjectile.AddComponent<Projectile>() : WestBrosBlackRevolverProjectile.AddComponent<Projectile>();
+            GameObject projectileChild = projectile.transform.Find("Sprite").gameObject;
+            tk2dSprite projetileSprite = SpriteSerializer.AddSpriteToObject(projectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
+            ExpandUtility.GenerateSpriteAnimator(projectileChild, playAutomatically: true);
+            ExpandUtility.AddAnimation(projectileChild.GetComponent<tk2dSpriteAnimator>(), projetileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
+            
             SpeculativeRigidbody projectileRigidBody = projectile.gameObject.AddComponent<SpeculativeRigidbody>();
             ExpandUtility.DuplicateRigidBody(projectileRigidBody, defaultGun.DefaultModule.projectiles[0].specRigidbody);
             ExpandUtility.DuplicateComponent(projectile, defaultGun.DefaultModule.projectiles[0]);
