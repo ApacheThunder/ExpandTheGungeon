@@ -22,7 +22,6 @@ namespace ExpandTheGungeon.ItemAPI {
         public static GameObject PistolProjectile;
         public static GameObject MachinePistolProjectile;
         public static GameObject ShotgunProjectile;
-        
 
         public static void Init(AssetBundle expandSharedAssets1) {
 

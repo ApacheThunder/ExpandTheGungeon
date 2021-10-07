@@ -141,7 +141,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.OnAfterDeserialize();
             room.UpdatePrecalculatedData();
         }
-        
+
         public static void GenerateBasicRoomLayout(PrototypeDungeonRoom room, CellType DefaultCellType = CellType.FLOOR, PrototypeRoomPitEntry.PitBorderType pitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT) {
             int width = room.Width;
             int height = room.Height;
@@ -234,7 +234,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 doesDamage = DoesDamage,
                 damageDefinition = new CellDamageDefinition() {
                     damageTypes = DamageType,
-                    damageToPlayersPerTick = DamageToEnemiesPerTick,
+                    damageToPlayersPerTick = DamageToPlayersPerTick,
                     damageToEnemiesPerTick = DamageToEnemiesPerTick,
                     tickFrequency = TickFrequency,
                     respectsFlying = RespectsFlying,

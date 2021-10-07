@@ -4,7 +4,7 @@ using Dungeonator;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    public class ExpandObjectDatabase : MonoBehaviour {
+    public class ExpandObjectDatabase {
         
         public static GameObject YellowDrum;
         public static GameObject RedDrum;
@@ -94,8 +94,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Sconce_Light_Side;
         public static GameObject DefaultTorch;
         public static GameObject DefaultTorchSide;
-        public static GameObject GungeonWarpDoor;
-        public static GameObject CastleWarpDoor;
+        // public static GameObject GungeonWarpDoor;
+        // public static GameObject CastleWarpDoor;
         public static GameObject EndTimes;
         
         // DungeonPlacables
@@ -191,8 +191,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Sconce_Light_Side = ExpandAssets.LoadOfficialAsset<GameObject>("Sconce_Light_Side", ExpandAssets.AssetSource.SharedAuto1);
             DefaultTorch = ExpandAssets.LoadOfficialAsset<GameObject>("DefaultTorch", ExpandAssets.AssetSource.SharedAuto1);
             DefaultTorchSide = ExpandAssets.LoadOfficialAsset<GameObject>("DefaultTorchSide", ExpandAssets.AssetSource.SharedAuto1);
-            GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
-            CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
+            // GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
+            // CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
             EndTimes = ExpandAssets.LoadOfficialAsset<GameObject>("EndTimes", ExpandAssets.AssetSource.BraveResources);
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements)

@@ -154,10 +154,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (aiShooter) { aiShooter.ToggleGunAndHandRenderers(false, "ExpandCorruptedEnemyEngageDoer"); }
             GameObject newEnemy = null;
             
-            ExpandGlitchedEnemies glitchedEnemies = new ExpandGlitchedEnemies();
-
             try {
-                newEnemy = glitchedEnemies.SpawnRandomGlitchEnemy(currentRoom, cachedPosition, true);
+                newEnemy = ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, cachedPosition, true);
             } catch (Exception) {
                 // If something broke, destroy broken Enemy (if it exist) to prevent possible softlocks.
                 if (newEnemy) {
@@ -165,9 +163,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     Destroy(newEnemy);
                 }
             }
-
-            glitchedEnemies = null;
-
+                        
             if (newEnemy && newEnemy.GetComponent<AIActor>()) {
                 newEnemy.GetComponent<AIActor>().aiAnimator.PlayDefaultAwakenedState();
                 newEnemy.GetComponent<AIActor>().aiActor.State = AIActor.ActorState.Normal;

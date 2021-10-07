@@ -66,7 +66,7 @@ namespace ExpandTheGungeon {
             FilePath = Metadata.Directory;
             ResourcesPath = ETGMod.ResourcesDirectory;
 
-            try { ExpandSettings.ImportSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
+            try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
            
             itemList = new List<string>() {
                 "Baby Good Hammer",
@@ -92,16 +92,17 @@ namespace ExpandTheGungeon {
                         
             ExpandAssets.InitCustomAssetBundle();
 
-            ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo");
+            if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
 
             try {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
-                MainMenuFoyerUpdateHook = new Hook(
-                    typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
-                    typeof(ExpandTheGungeon).GetMethod(nameof(MainMenuUpdateHook), BindingFlags.NonPublic | BindingFlags.Instance),
-                    typeof(MainMenuFoyerController)
-                );
-                
+                if (ExpandSettings.EnableLogo) {
+                    MainMenuFoyerUpdateHook = new Hook(
+                        typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
+                        typeof(ExpandTheGungeon).GetMethod(nameof(MainMenuUpdateHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                        typeof(MainMenuFoyerController)
+                    );
+                }
                 GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
@@ -153,8 +154,10 @@ namespace ExpandTheGungeon {
                 // Init Custom DungeonFlow(s)
                 ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
                 // Post Init
-                // Things thta need existing stuff created first have code run here
+                // Things that need existing stuff created first have code run here
                 BootlegGuns.PostInit();
+                // Dungeon Prefabs
+                ExpandCustomDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
 
                 ExpandLists.InvalidRatFloorRainRooms = new List<string>() {
                     ExpandRoomPrefabs.SecretBossRoom.name,
@@ -245,6 +248,7 @@ namespace ExpandTheGungeon {
                     PowBlock.Init(expandSharedAssets1);
                     CursedBrick.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
+                    HotShotShotGun.Init();
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
@@ -266,7 +270,7 @@ namespace ExpandTheGungeon {
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
             orig(self);
-            if (((dfTextureSprite)self.TitleCard).Texture.name != ModLogo.name) {
+            if (ExpandSettings.EnableLogo && ((dfTextureSprite)self.TitleCard).Texture.name != ModLogo.name) {
                 ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
                 LogoEnabled = true;
             }
@@ -469,8 +473,86 @@ namespace ExpandTheGungeon {
         private void ExpandSerializeCollection(string[] consoleText) {
             if (consoleText.Length == 3) {
                 List<string> spritePaths = new List<string>() {
-                    "SecretElevatorExitTileset_Floor",
-                    "SecretElevatorExitTileset_Roof"
+                    "rockslide",
+                    "tabletech_assassin",
+                    "theleadkey",
+                    "babygoodhammer",
+                    "babygoodhammer_spawn_00",
+                    "babygoodhammer_spawn_01",
+                    "babygoodhammer_spawn_02",
+                    "babygoodhammer_spawn_03",
+                    "babygoodhammer_spawn_04",
+                    "babygoodhammer_spawn_05",
+                    "babygoodhammer_spawn_06",
+                    "babygoodhammer_spawn_07",
+                    "babygoodhammer_spawn_08",
+                    "babygoodhammer_spawn_09",
+                    "babygoodhammer_spawn_10",
+                    "babygoodhammer_spawn_11",
+                    "babygoodhammer_spawn_12",
+                    "babygoodhammer_spawn_13",
+                    "babygoodhammer_spawn_14",
+                    "babygoodhammer_spawn_15",
+                    "babygoodhammer_spawn_16",
+                    "babygoodhammer_spawn_17",
+                    "babygoodhammer_spawn_18",
+                    "babygoodhammer_spawn_19",
+                    "babygoodhammer_spawn_20",
+                    "babygoodhammer_spawn_21",
+                    "babygoodhammer_spawn_22",
+                    "babygoodhammer_spawn_23",
+                    "babygoodhammer_spawn_24",
+                    "babygoodhammer_spawn_25",
+                    "babysitter",
+                    "corrupted_poopsack_01",
+                    "corrupted_poopsack_02",
+                    "corrupted_poopsack_03",
+                    "corrupted_poopsack_04",
+                    "corrupted_poopsack_05",
+                    "corrupted_poopsack_06",
+                    "corrupted_poopsack_07",
+                    "corrupted_poopsack_08",
+                    "corrupted_poopsack_09",
+                    "corrupted_poopsack_10",
+                    "corruptionbomb",
+                    "corruptionbomb_minimapicon",
+                    "corruptionbomb_spin_01",
+                    "corruptionbomb_spin_02",
+                    "corruptionbomb_spin_03",
+                    "corruptionbomb_spin_04",
+                    "corruptionbomb_spin_05",
+                    "corruptionbomb_spin_06",
+                    "corruptionbomb_spin_07",
+                    "corruptionbomb_spin_08",
+                    "corruptionbomb_spin_09",
+                    "corruptionbomb_spin_10",
+                    "cronenbergbullets",
+                    "cursedbrick",
+                    "ex_mimiclay",
+                    "glitchround",
+                    "junglecrest",
+                    "plunger_fire_001",
+                    "plunger_fire_002",
+                    "plunger_fire_003",
+                    "plunger_fire_004",
+                    "plunger_fire_005",
+                    "plunger_fire_006",
+                    "PowBlock",
+                    "PowBlock_Used",
+                    "PowBlock_Idle_01",
+                    "PowBlock_Idle_02",
+                    "PowBlock_Idle_03",
+                    "PowBlock_Idle_04",
+                    "PowBlock_Idle_05",
+                    "PowBlock_Idle_06",
+                    "PowBlock_Idle_07",
+                    "PowBlock_Idle_08",
+                    "PowBlock_Idle_09",
+                    "PowBlock_Idle_10",
+                    "PowBlock_Idle_11",
+                    "PowBlock_Idle_12",
+                    "PowBlock_Idle_13",
+                    "PowBlock_Idle_14"
                 };
 
                 int X = int.Parse(consoleText[1]);
@@ -481,7 +563,7 @@ namespace ExpandTheGungeon {
             }
             
         }
-
+                
         private void ExpandTestCommand(string[] consoleText) {
             
             // BraveMemory.EnsureHeapSize(204800);

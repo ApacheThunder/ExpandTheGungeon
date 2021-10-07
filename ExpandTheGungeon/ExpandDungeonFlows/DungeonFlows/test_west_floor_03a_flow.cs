@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class test_west_floor_03a_flow : ExpandDungeonFlow {
+    public class test_west_floor_03a_flow {
         
         public static DungeonFlow TEST_West_Floor_03a_Flow() {
 

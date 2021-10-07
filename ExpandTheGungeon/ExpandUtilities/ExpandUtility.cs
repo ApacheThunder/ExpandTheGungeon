@@ -14,7 +14,7 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
-    public class ExpandUtility : MonoBehaviour {
+    public class ExpandUtility {
 
         // Better method of defining new node positions on a path. (allows defining placement type at same time as creating it)
         public static SerializedPathNode GeneratePathNode(IntVector2 position, SerializedPathNode.SerializedNodePlacement placement, bool usesAlternateTarget = false, float delayTime = 0, int alternateTargetPathIndex = -1, int alternateTargetNodeIndex = -1) {
@@ -313,83 +313,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             return m_NewBreakable;
         }
-
-        /*public static tk2dSpriteCollectionData ReplaceDungeonCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<string> spriteList = null) {
-            if (sourceCollection == null) { return null; }
-            tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
-            tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
-            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinietions[i] = collectionData.spriteDefinitions[i].Copy(); }
-            collectionData.spriteDefinitions = spriteDefinietions;
-            if (spriteSheet != null) {
-                Material[] materials = sourceCollection.materials;
-                Material[] newMaterials = new Material[materials.Length];
-                if (materials != null) {
-                    for (int i = 0; i < materials.Length; i++) {
-                        newMaterials[i] = materials[i].Copy(spriteSheet);
-                    }
-                    collectionData.materials = newMaterials;
-                    foreach (Material material2 in collectionData.materials) {
-                        foreach (tk2dSpriteDefinition spriteDefinition in collectionData.spriteDefinitions) {
-                            bool flag3 = material2 != null && spriteDefinition.material.name.Equals(material2.name);
-                            if (flag3) {
-                                spriteDefinition.material = material2;
-                                spriteDefinition.materialInst = new Material(material2);
-                            }
-                        }
-                    }
-                }                
-            } else if (spriteList != null) {
-                RuntimeAtlasPage runtimeAtlasPage = new RuntimeAtlasPage(0, 0, TextureFormat.RGBA32, 2);
-                for (int i = 0; i < spriteList.Count; i++) {
-                    Texture2D texture2D = ExpandAssets.LoadAsset<Texture2D>(spriteList[i]);
-                    if (!texture2D) {
-                        Debug.Log("[BuildDungeonCollection] Null Texture found at index: " + i);
-                        goto IL_EXIT;
-                    }
-                    float X = (texture2D.width / 16f);
-                    float Y = (texture2D.height / 16f);
-                    // tk2dSpriteDefinition spriteData = collectionData.GetSpriteDefinition(i.ToString());
-                    tk2dSpriteDefinition spriteData = collectionData.spriteDefinitions[i];
-                    if (spriteData != null) {
-                        if (spriteData.boundsDataCenter != Vector3.zero) {
-                            try {
-                                // Debug.Log("[BuildDungeonCollection] Pack Existing Atlas Element at index: " + i);
-                                RuntimeAtlasSegment runtimeAtlasSegment = runtimeAtlasPage.Pack(texture2D, false);
-                                spriteData.materialInst.mainTexture = runtimeAtlasSegment.texture;
-                                spriteData.uvs = runtimeAtlasSegment.uvs;
-                                spriteData.extractRegion = true;
-                                spriteData.position0 = Vector3.zero;
-                                spriteData.position1 = new Vector3(X, 0, 0);
-                                spriteData.position2 = new Vector3(0, Y, 0);
-                                spriteData.position3 = new Vector3(X, Y, 0);
-                                spriteData.boundsDataCenter = new Vector2((X/2), (Y/2));
-                                spriteData.untrimmedBoundsDataCenter = spriteData.boundsDataCenter;
-                                spriteData.boundsDataExtents = new Vector2(X, Y);
-                                spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
-                            } catch (Exception) {
-                                Debug.Log("[BuildDungeonCollection] Exception caught at index: " + i);
-                            }
-                        } else {
-                            // Debug.Log("Test 3. Replace Existing Atlas Element at index: " + i);
-                            try {
-                                ETGMod.ReplaceTexture(spriteData, texture2D, true);
-                            } catch (Exception) {
-                                Debug.Log("[BuildDungeonCollection] Exception caught at index: " + i);
-                            }
-                        }
-                    } else {
-                        Debug.Log("[BuildDungeonCollection] SpriteData is null at index: " + i);
-                    }
-                    IL_EXIT:;
-                }
-                runtimeAtlasPage.Apply();
-            } else {
-                Debug.Log("[BuildDungeonCollection] SpriteList is null!");
-            }
-            return collectionData;
-        }
-        */
-
+        
         public static tk2dSpriteCollectionData DuplicateDungeonCollection(GameObject TargetObject, tk2dSpriteCollectionData sourceCollection, string Name) {
 
             tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
@@ -528,7 +452,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static GameObject SpawnCustomBowlerNote(GameObject note, Vector2 position, RoomHandler parentRoom, string customText, bool doPoof = false) {
-            GameObject noteObject = Instantiate(note, position.ToVector3ZisY(0f), Quaternion.identity);
+            GameObject noteObject = UnityEngine.Object.Instantiate(note, position.ToVector3ZisY(0f), Quaternion.identity);
             if (noteObject) {
                 NoteDoer BowlerNote = noteObject.GetComponentInChildren<NoteDoer>();
                 if (BowlerNote) {
@@ -542,7 +466,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 for (int i = 0; i < interfacesInChildren.Length; i++) { parentRoom.RegisterInteractable(interfacesInChildren[i]); }
             }
             if (doPoof) {
-                GameObject vfxObject = (GameObject)Instantiate(ResourceCache.Acquire("Global VFX/VFX_Item_Spawn_Poof"));
+                GameObject vfxObject = (GameObject)UnityEngine.Object.Instantiate(ResourceCache.Acquire("Global VFX/VFX_Item_Spawn_Poof"));
                 tk2dBaseSprite component = vfxObject.GetComponent<tk2dBaseSprite>();
                 component.PlaceAtPositionByAnchor(position.ToVector3ZUp(0f) + new Vector3(0.5f, 0.75f, 0f), tk2dBaseSprite.Anchor.MiddleCenter);
                 component.HeightOffGround = 5f;
@@ -557,7 +481,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             GameObject eCrateOBJ = BraveResources.Load<GameObject>("EmergencyCrate");
             if (!eCrateOBJ) { return null; }
 
-            GameObject eCrateInstance = Instantiate(eCrateOBJ);
+            GameObject eCrateInstance = UnityEngine.Object.Instantiate(eCrateOBJ);
             EmergencyCrateController lootCrate = eCrateInstance.GetComponent<EmergencyCrateController>();
             if (!lootCrate) { return null; }
             
@@ -598,7 +522,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
 
             if (isExplodyBarrel) {
-                m_CachedObject = Instantiate(ExpandPrefabs.EX_ExplodyBarrelDummy, landingPosition, Quaternion.identity);
+                m_CachedObject = UnityEngine.Object.Instantiate(ExpandPrefabs.EX_ExplodyBarrelDummy, landingPosition, Quaternion.identity);
                 // if (m_CachedObject.GetComponent<SpeculativeRigidbody>()) { m_CachedObject.GetComponent<SpeculativeRigidbody>().Reinitialize(); }
             }
 
@@ -627,7 +551,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             corpseObject = null;
 
             if (instantiateCorpseObject && !EnemyHasNoCorpse) {
-                corpseObject = Instantiate(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").CorpseObject);
+                corpseObject = UnityEngine.Object.Instantiate(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").CorpseObject);
                 corpseObject.SetActive(false);
                 FakePrefab.MarkAsFakePrefab(corpseObject);
             } else if (ExternalCorpseObject && !EnemyHasNoCorpse) {
@@ -648,7 +572,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     if (GunAttachOffset.HasValue) { targetObject.transform.Find("GunAttachPoint").transform.localPosition = GunAttachOffset.Value; }
                 }
             } else if (!targetObject.GetComponent<AIActor>() && gunAttachObjectOverride && !EnemyHasNoShooter) {
-                // if (targetObject.transform.Find("GunAttachPoint")) { Destroy(targetObject.transform.Find("GunAttachPoint")); }
+                // if (targetObject.transform.Find("GunAttachPoint")) { UnityEngine.Object.Destroy(targetObject.transform.Find("GunAttachPoint")); }
                 m_CachedGunAttachPoint = new GameObject("GunAttachPoint") { layer = 0 };
                 if (GunAttachOffset.HasValue) {
                     m_CachedGunAttachPoint.transform.position = GunAttachOffset.Value;
@@ -830,7 +754,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_CachedAIActor.BlackPhantomParticlesCollider = 0;
             m_CachedAIActor.PreventFallingInPitsEver = false;
 
-            m_CachedAIActor.RegenerateCache();
+            if (isFakePrefab) { m_CachedAIActor.RegenerateCache(); }
 
             bulletManTemplate = null;
         }
@@ -993,7 +917,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static void GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
-            if (targetObject.GetComponent<tk2dSpriteAnimator>()) { Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
+            if (targetObject.GetComponent<tk2dSpriteAnimator>()) { UnityEngine.Object.Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
             tk2dSpriteAnimator newAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
             newAnimator.Library = library;
             newAnimator.DefaultClipId = DefaultClipId;
@@ -1651,7 +1575,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             postProcessCellData?.Invoke(targetRoom);
 
             if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) { targetRoom.BuildSecretRoomCover(); }
-            GameObject gameObject = (GameObject)Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
+            GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
             tk2dTileMap component = gameObject.GetComponent<tk2dTileMap>();
             string str = UnityEngine.Random.Range(10000, 99999).ToString();
             gameObject.name = "Glitch_" + "RuntimeTilemap_" + str;
@@ -1721,8 +1645,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static void ApplyCustomTexture(AIActor targetActor, Texture2D newTexture = null, List<Texture2D> spriteList = null, tk2dSpriteCollectionData prebuiltCollection = null, Shader overrideShader = null, bool disablePalette = false, bool makeStatic = false) {
             if (prebuiltCollection != null) {
-                tk2dSpriteAnimation spriteAnimator = Instantiate(targetActor.spriteAnimator.Library);
-                if (makeStatic) { DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
+                tk2dSpriteAnimation spriteAnimator = UnityEngine.Object.Instantiate(targetActor.spriteAnimator.Library);
+                if (makeStatic) { UnityEngine.Object.DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
                 foreach (tk2dSpriteAnimationClip tk2dSpriteAnimationClip in spriteAnimator.clips) {
                     foreach (tk2dSpriteAnimationFrame frame in tk2dSpriteAnimationClip.frames) { frame.spriteCollection = prebuiltCollection; }
                 }
@@ -1732,8 +1656,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 targetActor.sprite.SetSprite(prebuiltCollection, targetActor.sprite.spriteId);
                 return;
             } 
-            tk2dSpriteCollectionData collectionData = Instantiate(targetActor.sprite.Collection);
-            if (makeStatic) { DontDestroyOnLoad(collectionData); }
+            tk2dSpriteCollectionData collectionData = UnityEngine.Object.Instantiate(targetActor.sprite.Collection);
+            if (makeStatic) { UnityEngine.Object.DontDestroyOnLoad(collectionData); }
             tk2dSpriteDefinition[] spriteDefinitions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
             for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinitions[i] = collectionData.spriteDefinitions[i].Copy(); }
             collectionData.spriteDefinitions = spriteDefinitions;
@@ -1769,7 +1693,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 /*if (materials != null) {
                     for (int i = 0; i < collectionData.materials.Length; i++) {
                         Material material = new Material(materials[i]);
-                        // DontDestroyOnLoad(material);
+                        // UnityEngine.Object.DontDestroyOnLoad(material);
                         collectionData.materials[i].mainTexture = newTexture;
                         collectionData.materials[i].name = materials[i].name;
                         collectionData.materials[i] = material;
@@ -1812,8 +1736,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ETGModConsole.Log("Not replacing sprites on " + targetActor.GetActorName(), false);                
             }
 
-            tk2dSpriteAnimation spriteAnimator2 = Instantiate(targetActor.spriteAnimator.Library);            
-            if (makeStatic) { DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
+            tk2dSpriteAnimation spriteAnimator2 = UnityEngine.Object.Instantiate(targetActor.spriteAnimator.Library);            
+            if (makeStatic) { UnityEngine.Object.DontDestroyOnLoad(targetActor.spriteAnimator.Library); }
             foreach (tk2dSpriteAnimationClip tk2dSpriteAnimationClip in spriteAnimator2.clips) {
                 foreach (tk2dSpriteAnimationFrame frame in tk2dSpriteAnimationClip.frames) { frame.spriteCollection = collectionData; }
             }
@@ -1830,7 +1754,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Target sprite component or sprite animator component is null on target object: '" + targetObject.name + "'!");
                 return;
             }
-            if (targetObject.GetComponent<tk2dSpriteAnimation>()) { Destroy(targetObject.GetComponent<tk2dSpriteAnimation>()); }
+            if (targetObject.GetComponent<tk2dSpriteAnimation>()) { UnityEngine.Object.Destroy(targetObject.GetComponent<tk2dSpriteAnimation>()); }
 
             tk2dSpriteAnimation m_SpriteAnimation = targetObject.AddComponent<tk2dSpriteAnimation>();
             List<tk2dSpriteAnimationClip> m_ClipList = new List<tk2dSpriteAnimationClip>();
@@ -1932,8 +1856,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static tk2dSpriteCollectionData BuildSpriteCollection(tk2dSpriteCollectionData sourceCollection, Texture2D spriteSheet = null, List<Texture2D> spriteList = null, Shader overrideShader = null, bool IsStatic = false) {
             if (sourceCollection == null) { return null; }
-            tk2dSpriteCollectionData collectionData = Instantiate(sourceCollection);
-            if (IsStatic) { DontDestroyOnLoad(collectionData); }
+            tk2dSpriteCollectionData collectionData = UnityEngine.Object.Instantiate(sourceCollection);
+            if (IsStatic) { UnityEngine.Object.DontDestroyOnLoad(collectionData); }
             tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
             for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinietions[i] = collectionData.spriteDefinitions[i].Copy(); }
             collectionData.spriteDefinitions = spriteDefinietions;
@@ -2681,7 +2605,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                                     Transform child = cellData.parentRoom.hierarchyParent.GetChild(k);
                                     if (child.name.StartsWith("Chunk_")) { list.Add(child.gameObject); }
                                 }
-                                for (int l = list.Count - 1; l >= 0; l--) { Destroy(list[l]); }
+                                for (int l = list.Count - 1; l >= 0; l--) { UnityEngine.Object.Destroy(list[l]); }
                             }
                         }
                         try {
@@ -2711,7 +2635,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             /*if (target.GetComponentInChildren<TalkDoerLite>() != null) {
                 TalkDoerLite npcComponent = target.GetComponentInChildren<TalkDoerLite>();
-                Destroy(npcComponent.ultraFortunesFavor);
+                UnityEngine.Object.Destroy(npcComponent.ultraFortunesFavor);
             }*/
 
             target.AddComponent<HealthHaver>();
@@ -2785,8 +2709,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 tk2dBaseSprite baseSprite = target.GetComponent<tk2dBaseSprite>();
 
                 if (disableAnimator) {
-                    if (target.GetComponent<AIAnimator>()) { Destroy(target.GetComponent<AIAnimator>()); }
-                    if (target.GetComponent<tk2dSpriteAnimator>()) { Destroy(target.GetComponent<tk2dSpriteAnimator>()); }
+                    if (target.GetComponent<AIAnimator>()) { UnityEngine.Object.Destroy(target.GetComponent<AIAnimator>()); }
+                    if (target.GetComponent<tk2dSpriteAnimator>()) { UnityEngine.Object.Destroy(target.GetComponent<tk2dSpriteAnimator>()); }
                     target.AddComponent<tk2dSpriteAnimator>();
                     tk2dSpriteAnimator shrineDummyAnimator = target.GetComponent<tk2dSpriteAnimator>();
                     shrineDummyAnimator.Library = null;
@@ -2849,7 +2773,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_healthHaver.persistsOnDeath = false;
             m_healthHaver.SetHealthMaximum(maxHealth);
             m_healthHaver.Armor = 0;
-            m_healthHaver.CursedMaximum = maxHealth * 3;            
+            m_healthHaver.CursedMaximum = maxHealth * 3;
             m_healthHaver.useFortunesFavorInvulnerability = false;
             m_healthHaver.damagedAudioEvent = string.Empty;
             m_healthHaver.overrideDeathAudioEvent = string.Empty;
@@ -3009,7 +2933,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             Material material2 = null;
             tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
             if (isGlitched) {
-                dungeonCollection = Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                dungeonCollection = UnityEngine.Object.Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
                 foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
                     ExpandShaders.ApplyGlitchShaderUnlit(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
                 }
@@ -3108,7 +3032,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             Material material4 = null;
             tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
             if (isGlitched) {
-                dungeonCollection = Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                dungeonCollection = UnityEngine.Object.Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
                 foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
                     ExpandShaders.ApplyGlitchShader(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
                 }

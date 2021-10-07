@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class custom_glitch_flow : ExpandDungeonFlow {     
+    public class custom_glitch_flow {     
 
         public static DungeonFlow Custom_Glitch_Flow() {
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();

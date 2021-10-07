@@ -124,6 +124,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 room.allowWallDecoration = roomData.doWallDecoration;
                 room.usesProceduralLighting = roomData.doLighting;
             }
+
+            // Define FloorData in from second Texture object if one exists
+            Texture2D m_ExtraFloorData = ExpandAssets.LoadAsset<Texture2D>(room.name + "_FloorData"); 
+            if (m_ExtraFloorData != null) { ApplyExtraFloorCellDataFromTexture2D(room, m_ExtraFloorData); }
         }
 
         public static void AssignRoomToFloorRoomTable(PrototypeDungeonRoom Room, GlobalDungeonData.ValidTilesets targetTileSet, float? Weight) {
@@ -441,6 +445,120 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             return room;
         }
+
+
+                
+        public static void ApplyExtraFloorCellDataFromTexture2D(PrototypeDungeonRoom room, Texture2D sourceTexture) {
+            if (sourceTexture == null) {
+                ETGModConsole.Log("[ExpandTheGungeon] ApplyExtraFloorCellDataFromTexture2D: WARNING! Requested Texture for extra floor data is null!", ExpandSettings.debugMode);
+                ETGModConsole.Log("[ExpandTheGungeon] Room: " + room.name + " will not have any extra floor data!", ExpandSettings.debugMode);
+                return;
+            }
+
+            int width = room.Width;
+            int height = room.Height;
+            int ArrayLength = (width * height);
+
+            if (sourceTexture.GetPixels32().Length != ArrayLength) {
+                ETGModConsole.Log("[ExpandTheGungeon] ApplyExtraFloorCellDataFromTexture2D: WARNING! Image resolution doesn't match size of room!", ExpandSettings.debugMode);
+                ETGModConsole.Log("[ExpandTheGungeon] Room: " + room.name + " will not have any extra floor data!", ExpandSettings.debugMode);
+                return;
+            }
+
+            Color WhitePixel = new Color32(255, 255, 255, 255); // Normal Floor
+
+            Color RedPixel = new Color32(255, 0, 0, 255); // Fire damage cell
+
+            Color GreenPixel = new Color32(0, 255, 0, 255); // Poison damage cell
+
+            Color BlueHalfGreenPixel = new Color32(0, 127, 255, 255); // Ice Override
+            Color HalfBluePixel = new Color32(0, 0, 127, 255); // Water Override
+            Color HalfRedPixel = new Color32(0, 0, 127, 255); // Carpet Override
+            Color GreenHalfRBPixel = new Color32(127, 255, 127, 255); // Grass Override
+            Color HalfWhitePixel = new Color32(127, 127, 127, 255); // Bone Override
+            Color OrangePixel = new Color32(255, 127, 0, 255); // Flesh Override
+            Color RedHalfGBPixel = new Color32(255, 127, 127, 255); // ThickGoop Override
+            
+            for (int X = 0; X < width; X++) {
+                for (int Y = 0; Y < height; Y++) {
+                    int ArrayPosition = (Y * width + X);
+                    Color? m_Pixel = sourceTexture.GetPixel(X, Y);
+                    PrototypeDungeonRoomCellData cellData = room.FullCellData[ArrayPosition];
+                    float DamageToPlayersPerTick = 0;
+                    float DamageToEnemiesPerTick = 0;
+                    float TickFrequency = 0;
+                    bool RespectsFlying = true;
+                    bool IsPoison = false;
+                    bool isDamageCell = false;
+                    CoreDamageTypes DamageCellsType = CoreDamageTypes.None;
+                    FloorType floorType = FloorType.Stone;
+                    if (cellData != null && m_Pixel.HasValue && cellData.state == CellType.FLOOR) {
+                        if (m_Pixel.Value == RedPixel) {
+                            floorType = FloorType.Stone;
+                            DamageCellsType = CoreDamageTypes.Fire;
+                        } else if (m_Pixel.Value == BlueHalfGreenPixel) {
+                            floorType = FloorType.Ice;
+                        } else if (m_Pixel.Value == HalfBluePixel) {
+                            floorType = FloorType.Water;
+                        } else if (m_Pixel.Value == HalfRedPixel) {
+                            floorType = FloorType.Carpet;
+                        } else if (m_Pixel.Value == GreenHalfRBPixel) {
+                            floorType = FloorType.Grass;
+                        } else if (m_Pixel.Value == HalfWhitePixel) {
+                            floorType = FloorType.Bone;
+                        } else if (m_Pixel.Value == OrangePixel) {
+                            floorType = FloorType.Flesh;
+                        } else if (m_Pixel.Value == RedHalfGBPixel) {
+                            floorType = FloorType.ThickGoop;
+                        }
+                        if (DamageCellsType == CoreDamageTypes.Fire) {
+                            isDamageCell = true;
+                            DamageToPlayersPerTick = 0.5f;
+                            TickFrequency = 1;
+                        } else if (DamageCellsType == CoreDamageTypes.Poison) {
+                            IsPoison = true;
+                            isDamageCell = true;
+                            DamageToPlayersPerTick = 0.5f;
+                            TickFrequency = 1;
+                        }
+                        ApplyExtraFloorCellData(cellData, DamageCellsType, floorType, DamageToPlayersPerTick, DamageToEnemiesPerTick, TickFrequency, RespectsFlying, isDamageCell, IsPoison);
+                    }
+                }
+            }
+        }
+        
+
+        // New stuff for extra floor cell types
+        public static void ApplyExtraFloorCellData(PrototypeDungeonRoomCellData cellData, CoreDamageTypes DamageType, FloorType FloorType, float DamageToPlayersPerTick = 0, float DamageToEnemiesPerTick = 0, float TickFrequency = 0, bool RespectsFlying = true, bool DoesDamage = false, bool IsPoison = false) {
+            cellData.doesDamage = DoesDamage;
+            cellData.damageDefinition = new CellDamageDefinition() {
+                damageTypes = DamageType,
+                damageToPlayersPerTick = DamageToPlayersPerTick,
+                damageToEnemiesPerTick = DamageToEnemiesPerTick,
+                tickFrequency = TickFrequency,
+                respectsFlying = RespectsFlying,
+                isPoison = IsPoison
+            };
+            if (cellData.appearance == null) {
+                cellData.appearance = new PrototypeDungeonRoomCellAppearance() {
+                    overrideDungeonMaterialIndex = -1,
+                    IsPhantomCarpet = false,
+                    ForceDisallowGoop = false,
+                    globalOverrideIndices = new PrototypeIndexOverrideData() { indices = new List<int>(0) }
+                };
+            }
+            if (DamageType == CoreDamageTypes.Poison) {
+                cellData.ForceTileNonDecorated = true;
+                // cellData.appearance.OverrideFloorType = FloorType.Stone;
+                cellData.damageDefinition.damageTypes = CoreDamageTypes.Poison;
+            } else if (DamageType == CoreDamageTypes.Fire) {
+                cellData.ForceTileNonDecorated = true;
+                // cellData.appearance.OverrideFloorType = FloorType.Stone;
+                cellData.damageDefinition.damageTypes = CoreDamageTypes.Fire;
+            }
+            cellData.appearance.OverrideFloorType = FloorType;
+        }
+
     }
 }
 

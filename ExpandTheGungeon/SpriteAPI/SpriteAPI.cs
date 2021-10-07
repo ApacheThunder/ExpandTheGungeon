@@ -19,13 +19,19 @@ namespace ExpandTheGungeon.SpriteAPI {
         // Note you may get exceptions if you don't give it a large enough atlas size to work with. I have been using the same defaultsize, Xres, and Yres.
         // Someone who better understands these fields could probably create better defaults but that's what worked for me.
         public static void SerializeSpriteCollection(string CollectionName, List<string> spriteNames, int Xres, int Yres, string pathOverride = null) {
+            AssetBundle m_SpritesBundle = ExpandAssets.LoadFromModZIPOrModFolder("expandspritesbase");
+            if (!m_SpritesBundle) {
+                ETGModConsole.Log("[ExpandTheGungeon] Unserialized sprite textures stored in seperate asset bundle but it is missing! Ensure you have it setup properly!");
+                return;
+            }
+
             GameObject m_TempObject = new GameObject(CollectionName);
             newCollection = GenerateNewSpriteCollection(m_TempObject);
             AtlasPacker = new RuntimeAtlasPacker(Xres, Yres);
-            AddSpriteToObject(m_TempObject, ExpandAssets.LoadAsset<Texture2D>(spriteNames[0]));
+            AddSpriteToObject(m_TempObject, m_SpritesBundle.LoadAsset<Texture2D>(spriteNames[0]));
             if (spriteNames.Count > 0) {
                 for (int i = 1; i < spriteNames.Count; i++) {
-                    AddSpriteToCollection(ExpandAssets.LoadAsset<Texture2D>(spriteNames[i]), newCollection);
+                    AddSpriteToCollection(m_SpritesBundle.LoadAsset<Texture2D>(spriteNames[i]), newCollection);
                 }
             }
             DumpSpriteCollection(newCollection, pathOverride);
@@ -35,8 +41,10 @@ namespace ExpandTheGungeon.SpriteAPI {
                 SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + ".txt");
             }
 
+            m_SpritesBundle = null;
             newCollection = null;
             AtlasPacker = null;
+            
         }
 
         // Assigns a GameObject (loaded from an asset bundle in this version) with the attached tk2dSpriteCollectionData component to your chosen field.

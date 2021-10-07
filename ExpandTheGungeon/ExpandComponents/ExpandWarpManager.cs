@@ -113,7 +113,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetPlayer.SetInputOverride("Going to Old West");
             targetPlayer.specRigidbody.CollideWithOthers = false;
             if (targetPlayer.IsDodgeRolling) { targetPlayer.ForceStopDodgeRoll(); }
-            Vector2 lastPosition = targetPlayer.transform.position;
+            // Vector2 lastPosition = targetPlayer.transform.position;
+            Vector2 lastPosition = GameManager.Instance.MainCameraController.transform.position.XY();
             GameManager.Instance.MainCameraController.StopTrackingPlayer();
             GameManager.Instance.MainCameraController.SetManualControl(true, false);
             GameManager.Instance.MainCameraController.OverridePosition = lastPosition;

@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class BossrushFlows : ExpandDungeonFlow {
+    public class BossrushFlows {
                 
         public static DungeonFlow Bossrush_01_Castle;
         public static DungeonFlow Bossrush_01a_Sewer;
@@ -30,14 +30,14 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             // Dungeon TutorialPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
 
-            Bossrush_01_Castle = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01_Castle"));
-            Bossrush_01a_Sewer = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_01a_Sewer"));
-            Bossrush_02_Gungeon = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02_Gungeon"));
-            Bossrush_02a_Cathedral = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_02a_Cathedral"));
-            Bossrush_03_Mines = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_03_Mines"));
-            Bossrush_04_Catacombs = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_04_Catacombs"));
-            Bossrush_05_Forge = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_05_Forge"));
-            Bossrush_06_BulletHell = FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("Bossrush_06_BulletHell"));
+            Bossrush_01_Castle = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_01_Castle"));
+            Bossrush_01a_Sewer = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_01a_Sewer"));
+            Bossrush_02_Gungeon = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_02_Gungeon"));
+            Bossrush_02a_Cathedral = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_02a_Cathedral"));
+            Bossrush_03_Mines = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_03_Mines"));
+            Bossrush_04_Catacombs = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_04_Catacombs"));
+            Bossrush_05_Forge = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_05_Forge"));
+            Bossrush_06_BulletHell = FlowHelpers.DuplicateDungeonFlow(ExpandDungeonFlow.LoadOfficialFlow("Bossrush_06_BulletHell"));
 
             
             Bossrush_01_Castle.AllNodes.Clear();

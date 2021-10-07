@@ -106,11 +106,9 @@ namespace ExpandTheGungeon.ExpandComponents {
 				for (int i = 0; i < ActorPrefabSpawnCount; i++) {
                     if (IsGlitchedLJ) {                        
                         if (transform.position.GetAbsoluteRoom() != null) {
-                            ExpandGlitchedEnemies m_GlitchedEnemyDatabase = new ExpandGlitchedEnemies();
                             RoomHandler CurrentRoom = transform.position.GetAbsoluteRoom();
                             IntVector2 actorPosition = specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) - CurrentRoom.area.basePosition;
-                            m_GlitchedEnemyDatabase.SpawnGlitchedSuperReaper(CurrentRoom, actorPosition);
-                            Destroy(m_GlitchedEnemyDatabase);
+                            ExpandGlitchedEnemies.Instance.SpawnGlitchedSuperReaper(CurrentRoom, actorPosition);
                             return;
                         }              
                     } else {
@@ -122,9 +120,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         bool spawnsGlitchedObjectOnDeath = false;
                         if (UnityEngine.Random.value <= 0.25f) { ExplodesOnDeath = true; }
                         if (UnityEngine.Random.value <= 0.15f) { spawnsGlitchedObjectOnDeath = true; }
-                        ExpandGlitchedEnemies m_GlitchedEnemyDatabase = new ExpandGlitchedEnemies();
-                        aiactor = AIActor.Spawn(m_GlitchedEnemyDatabase.GenerateGlitchedActorPrefab(CachedTargetActorObject, ActorOverrideSource, ExplodesOnDeath, spawnsGlitchedObjectOnDeath), specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor), roomFromPosition, true, AnimationType, true);
-                        Destroy(m_GlitchedEnemyDatabase);
+                        aiactor = AIActor.Spawn(ExpandGlitchedEnemies.Instance.GenerateGlitchedActorPrefab(CachedTargetActorObject, ActorOverrideSource, ExplodesOnDeath, spawnsGlitchedObjectOnDeath), specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor), roomFromPosition, true, AnimationType, true);
                         if (aiactor == null) { return; }
                         if (aiActor.IsBlackPhantom) { aiactor.BecomeBlackPhantom(); }
                         if (aiactor) {

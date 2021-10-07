@@ -12,6 +12,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections.ObjectModel;
 using InControl;
+using ExpandTheGungeon.ExpandComponents;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -19,7 +20,9 @@ namespace ExpandTheGungeon.ExpandMain {
     public class ExpandSharedHooks {
         public static Hook cellhook;
         public static Hook enterRoomHook;
-        
+
+        public static Hook igniteGoopsCircleHook;
+        public static Hook buildPatchHook;
         public static Hook escapeRopeCanBeUsedHook;
         public static Hook clearPerLevelDataHook;
         public static Hook clearActiveGameDataHook;
@@ -101,6 +104,19 @@ namespace ExpandTheGungeon.ExpandMain {
         
         public static void InstallRequiredHooks() {
             
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DeadlyDeadlyGoopManager.IgniteGoopsCircle Hook..."); }
+            igniteGoopsCircleHook = new Hook(
+                typeof(DeadlyDeadlyGoopManager).GetMethod(nameof(DeadlyDeadlyGoopManager.IgniteGoopsCircle), BindingFlags.Public | BindingFlags.Static),
+                typeof(ExpandSharedHooks).GetMethod(nameof(IgniteGoopsCircleHook), BindingFlags.Public | BindingFlags.Static)
+            );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TallGrassPatch.BuildPatch Hook..."); }
+            buildPatchHook = new Hook(
+                typeof(TallGrassPatch).GetMethod(nameof(TallGrassPatch.BuildPatch), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(BuildPatchHook), BindingFlags.Public | BindingFlags.Instance),
+                typeof(TallGrassPatch)
+            );
+
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EscapeRopeItem.CanBeUsed Hook..."); }
             escapeRopeCanBeUsedHook = new Hook(
                 typeof(EscapeRopeItem).GetMethod("CanBeUsed", BindingFlags.Public | BindingFlags.Instance),
@@ -344,6 +360,20 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
         
+        public static void IgniteGoopsCircleHook(Action<Vector2, float>orig, Vector2 position, float radius) {
+            orig(position, radius);
+            for (int j = 0; j < ExpandStaticReferenceManager.AllGrasses.Count; j++) {
+                ExpandStaticReferenceManager.AllGrasses[j].IgniteCircle(position, radius);
+            }
+        }
+
+        public void BuildPatchHook(Action<TallGrassPatch>orig, TallGrassPatch self) {
+            ExpandTallGrassPatchSystem exTallGrassSystem = self.gameObject.AddComponent<ExpandTallGrassPatchSystem>();
+            exTallGrassSystem.cells = self.cells;
+            UnityEngine.Object.Destroy(self.gameObject.GetComponent<TallGrassPatch>());
+            exTallGrassSystem.BuildPatch();
+        }
+
         public bool EscapeRopCanBeUsedHook(Func<EscapeRopeItem, PlayerController, bool> orig, EscapeRopeItem self, PlayerController user) {
             return orig(self, user) && user?.CurrentRoom != null && !user.CurrentRoom.IsActuallyWildWestEntrance();
         }
@@ -384,58 +414,11 @@ namespace ExpandTheGungeon.ExpandMain {
         public static string GetEnemiesString(Func<string, int, string> orig, string key, int index = -1) {
             string m_EnemyString = orig(key, index);
             if (m_EnemyString != "ENEMIES_STRING_NOT_FOUND") { return m_EnemyString; } else { return key; }
-            /*Dictionary<string, StringTableManager.StringCollection> m_enemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_enemiesTable");
-            Dictionary<string, StringTableManager.StringCollection> m_backupEnemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_backupEnemiesTable");
-            string m_currentSubDirectory = ReflectionHelpers.ReflectGetField<string>(typeof(StringTableManager), "m_currentSubDirectory");
-            FieldInfo m_enemiesTableField = typeof(StringTableManager).GetField("m_enemiesTable", BindingFlags.Static | BindingFlags.NonPublic);
-            FieldInfo m_backupEnemiesTableField = typeof(StringTableManager).GetField("m_backupEnemiesTable", BindingFlags.Static | BindingFlags.NonPublic);
-            if (m_enemiesTable == null) {                
-                m_enemiesTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadEnemiesTable", null, new object[] { m_currentSubDirectory }));
-            }
-            if (m_backupEnemiesTable == null) {
-                m_backupEnemiesTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadEnemiesTable", null, new object[] { "english_items" }));
-            }
-            // This table was updated so I need to reacquire it?
-            m_enemiesTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_enemiesTable");
-            if (m_enemiesTable.ContainsKey(key)) {
-                if (index == -1) {
-                    string weightedString = m_enemiesTable[key].GetWeightedString();
-                    return StringTableManager.PostprocessString(weightedString);
-                }
-                return StringTableManager.PostprocessString(m_enemiesTable[key].GetExactString(index));
-            } else {
-                // if (!m_backupEnemiesTable.ContainsKey(key)) { return "ENEMIES_STRING_NOT_FOUND"; }
-                if (!m_backupEnemiesTable.ContainsKey(key)) { return key; }
-                if (index == -1) {
-                    string weightedString2 = m_backupEnemiesTable[key].GetWeightedString();
-                    return StringTableManager.PostprocessString(weightedString2);
-                }
-                return StringTableManager.PostprocessString(m_backupEnemiesTable[key].GetExactString(index));
-            }*/
         }
 
         public static string GetSynergyString(Func<string, int, string> orig, string key, int index = -1) {
             string m_Text = orig(key, index);
             if (!string.IsNullOrEmpty(m_Text)) { return orig(key, index); } else { return key; }
-            /*Dictionary<string, StringTableManager.StringCollection> m_synergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_synergyTable");
-            Dictionary<string, StringTableManager.StringCollection> m_backupSynergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_backupSynergyTable");
-            string m_currentSubDirectory = ReflectionHelpers.ReflectGetField<string>(typeof(StringTableManager), "m_currentSubDirectory");
-            FieldInfo m_synergyTableField = typeof(StringTableManager).GetField("m_synergyTable", BindingFlags.Static | BindingFlags.NonPublic);
-            FieldInfo m_backupSynergyTableField = typeof(StringTableManager).GetField("m_backupSynergyTable", BindingFlags.Static | BindingFlags.NonPublic);            
-            if (m_synergyTable == null) {
-                m_synergyTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadSynergyTable", null, new object[] { m_currentSubDirectory }));
-            }
-            if (m_backupSynergyTable == null) {
-                m_backupSynergyTableField.SetValue(typeof(StringTableManager), ReflectionHelpers.InvokeMethod<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "LoadSynergyTable", null, new object[] { "english_items" }));
-            }
-            m_synergyTable = ReflectionHelpers.ReflectGetField<Dictionary<string, StringTableManager.StringCollection>>(typeof(StringTableManager), "m_synergyTable");
-            // if (!m_synergyTable.ContainsKey(key)) { return string.Empty; }
-            if (!m_synergyTable.ContainsKey(key)) { return key; }
-            if (index == -1) {
-                string weightedString = m_synergyTable[key].GetWeightedString();
-                return StringTableManager.PostprocessString(weightedString);
-            }
-            return StringTableManager.PostprocessString(m_synergyTable[key].GetExactString(index));*/
         }
 
         public static GameObject ApplyObjectStampHook(int ix, int iy, ObjectStampData osd, Dungeon d, tk2dTileMap map, bool flipX = false, bool isLightStamp = false) {

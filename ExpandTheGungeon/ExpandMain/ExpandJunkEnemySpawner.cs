@@ -27,9 +27,7 @@ namespace ExpandTheGungeon.ExpandMain {
             roomList = roomList.Shuffle();
 
             if (roomHandler != null) { roomList = new List<int>(new int[] { dungeon.data.rooms.IndexOf(roomHandler) }); }
-
-            ExpandGlitchedEnemies m_GlitchEnemyDatabase = new ExpandGlitchedEnemies();
-
+            
             while (iterations < roomList.Count && RandomEnemiesPlaced < MaxEnemies) {
                 RoomHandler currentRoom = dungeon.data.rooms[roomList[iterations]];
                 if (currentRoom == null | currentRoom.area == null) { continue; }
@@ -51,9 +49,9 @@ namespace ExpandTheGungeon.ExpandMain {
 
                             if (RandomGlitchEnemyVector.HasValue) {
                                 if (Random.value <= 0.5f) {
-                                    m_GlitchEnemyDatabase.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
                                 } else {
-                                    m_GlitchEnemyDatabase.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
                                 }
                             } else { RandomEnemiesSkipped++; }
 
@@ -116,7 +114,6 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }
             }
-            Object.Destroy(m_GlitchEnemyDatabase);
             return;
         }
 

@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class really_big_flow : ExpandDungeonFlow {
+    public class really_big_flow {
         
         public static DungeonFlow Really_Big_Flow() {
 
@@ -316,16 +316,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             List<DungeonFlowNode> ChestNodes = new List<DungeonFlowNode>();
             
             for (int i = 0; i < 11; i++) {
-                ConnectorNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR));
+                ConnectorNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR));
             }            
             for (int i = 0; i < 89; i++) {
-                NormalNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL));
+                NormalNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL));
             }
 
-            ChestNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandPrefabs.reward_room));
-            ChestNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
-            ChestNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
-            ChestNodes.Add(GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
+            ChestNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandPrefabs.reward_room));
+            ChestNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
+            ChestNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
+            ChestNodes.Add(ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.reward_room));
 
             m_CachedFlow.name = "Really_Big_Flow";
             m_CachedFlow.fallbackRoomTable = ExpandPrefabs.CustomRoomTable2;

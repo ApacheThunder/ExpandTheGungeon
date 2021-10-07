@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
-    public class RoomDebug : MonoBehaviour {
+    public class RoomDebug {
 
         public static void DumpCurrentRoomLayout(PrototypeDungeonRoom overrideRoom = null, RoomHandler generatedRoomHandler = null) {
             try {

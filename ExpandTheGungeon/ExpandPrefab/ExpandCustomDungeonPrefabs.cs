@@ -10,36 +10,42 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    public class ExpandCustomDungeonPrefabs : DungeonDatabase {
+    public class ExpandCustomDungeonPrefabs {
+
+        public static GameObject Base_Space;
+        public static GameObject Base_Jungle;
+        public static GameObject Base_Belly;
+        public static GameObject Base_West;
+        public static GameObject Base_Phobos;        
 
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             switch (name.ToLower()) {
                 case "base_space":
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return SpaceDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                    return Base_Space.GetComponent<Dungeon>();
                 case "base_jungle":
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return JungleDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                    return Base_Jungle.GetComponent<Dungeon>();
                 case "base_belly":
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return BellyDungeon(GetOrLoadByName_Orig("Base_ResourcefulRat"));
+                    return Base_Belly.GetComponent<Dungeon>();
                 case "base_west":
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return WestDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
+                    return Base_West.GetComponent<Dungeon>();
                 case "base_phobos":
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return PhobosDungeon(GetOrLoadByName_Orig("Base_Gungeon"));
+                    return Base_Phobos.GetComponent<Dungeon>();
                 default:
                     return orig(name);
             }
         }
                 
-        public static Dungeon GetOrLoadByName_Orig(string name) {
+        public static Dungeon LoadOfficialDungeonFlow(string name) {
             AssetBundle assetBundle = ResourceManager.LoadAssetBundle("dungeons/" + name.ToLower());
             DebugTime.RecordStartTime();
             Dungeon component = assetBundle.LoadAsset<GameObject>(name).GetComponent<Dungeon>();
@@ -50,6 +56,20 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static Hook getOrLoadByName_Hook;
         public static Hook dungeonStartHook;
+
+        public static void InitDungoenPrefabs(AssetBundle expandSharedAuto1, AssetBundle sharedAssets1, AssetBundle sharedAssets2, AssetBundle braveResources) {
+            Base_Space = expandSharedAuto1.LoadAsset<GameObject>("Base_Space");
+            Base_Jungle = expandSharedAuto1.LoadAsset<GameObject>("Base_Jungle");
+            Base_Belly = expandSharedAuto1.LoadAsset<GameObject>("Base_Belly");
+            Base_West = expandSharedAuto1.LoadAsset<GameObject>("Base_West");
+            Base_Phobos = expandSharedAuto1.LoadAsset<GameObject>("Base_Phobos");
+
+            InitSpaceDungeon(Base_Space, LoadOfficialDungeonFlow("Base_ResourcefulRat"));
+            InitJungleDungeon(expandSharedAuto1, braveResources, Base_Jungle, LoadOfficialDungeonFlow("Base_ResourcefulRat"));
+            InitBellyDungeon(expandSharedAuto1, sharedAssets1, sharedAssets2, Base_Belly, LoadOfficialDungeonFlow("Base_ResourcefulRat"));
+            InitWestDungeon(expandSharedAuto1, sharedAssets2, Base_West, LoadOfficialDungeonFlow("Base_Gungeon"));
+            InitPhobosDungeon(expandSharedAuto1, sharedAssets2, Base_Phobos, LoadOfficialDungeonFlow("Base_Gungeon"));
+        }
 
         public void DungeonStart_Hook(Action<ItemDB>orig, ItemDB self) {
             List<WeightedGameObject> collection;
@@ -82,7 +102,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ReInitFloorDefinitions(GameManager.Instance);
         }
         
-
         public static void ReInitFloorDefinitions(GameManager gameManager) {
             if (gameManager) {
                 bool SpaceEntryExists = false;
@@ -149,13 +168,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             }
         }
+        
 
+        public static void InitSpaceDungeon(GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon MinesDungeonPrefab = LoadOfficialDungeonFlow("Base_Mines");
+            Dungeon FinalScenarioPilotPrefab = LoadOfficialDungeonFlow("FinalScenario_Pilot");
+            Dungeon FinalScenarioBulletPrefab = LoadOfficialDungeonFlow("FinalScenario_Bullet");
 
-        public static Dungeon SpaceDungeon(Dungeon dungeon) {
-            Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
-            Dungeon RatDungeonPrefab = GetOrLoadByName_Orig("Base_ResourcefulRat");
-            Dungeon FinalScenarioPilotPrefab = GetOrLoadByName_Orig("FinalScenario_Pilot");
-            Dungeon FinalScenarioBulletPrefab = GetOrLoadByName_Orig("FinalScenario_Bullet");
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+
 
             DungeonMaterial FinalScenario_MainMaterial = UnityEngine.Object.Instantiate(FinalScenarioPilotPrefab.roomMaterialDefinitions[0]);
             FinalScenario_MainMaterial.supportsPits = true;
@@ -175,7 +197,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CanyonStampData.objectStampWeight = 1;
             m_CanyonStampData.stamps = new TileStampData[0];
             m_CanyonStampData.spriteStamps = new SpriteStampData[0];
-            m_CanyonStampData.objectStamps = RatDungeonPrefab.stampData.objectStamps;
+            m_CanyonStampData.objectStamps = dungeonTemplate.stampData.objectStamps;
             m_CanyonStampData.SymmetricFrameChance = 0.25f;
             m_CanyonStampData.SymmetricCompleteChance = 0.6f;
 
@@ -375,19 +397,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
             
             FinalScenarioPilotPrefab = null;
-            RatDungeonPrefab = null;
             MinesDungeonPrefab = null;
-
-            return dungeon;
         }
 
-        public static Dungeon JungleDungeon(Dungeon dungeon) {
-            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
-            Dungeon GungeonPrefab = GetOrLoadByName_Orig("Base_Gungeon");
-            Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
-            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+        public static void InitJungleDungeon(AssetBundle expandSharedAuto1, AssetBundle braveResources, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon MinesDungeonPrefab = LoadOfficialDungeonFlow("Base_Mines");
+            Dungeon GungeonPrefab = LoadOfficialDungeonFlow("Base_Gungeon");
+            Dungeon SewersPrefab = LoadOfficialDungeonFlow("Base_Sewer");
+            Dungeon CastlePrefab = LoadOfficialDungeonFlow("Base_Castle");
+
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+
 
             DungeonMaterial Jungle_Woods = ScriptableObject.CreateInstance<DungeonMaterial>();
             Jungle_Woods.wallShards = GungeonPrefab.roomMaterialDefinitions[0].wallShards;
@@ -881,25 +902,23 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = string.Empty;
 
-            expandSharedAuto1 = null;
-            braveResources = null;
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
             CastlePrefab = null;
             SewersPrefab = null;
-
-            return dungeon;
         }
 
-        public static Dungeon BellyDungeon(Dungeon dungeon) {
-            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            Dungeon MinesDungeonPrefab = GetOrLoadByName_Orig("Base_Mines");
-            Dungeon GungeonPrefab = GetOrLoadByName_Orig("Base_Gungeon");
-            Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
-            Dungeon AbbeyPrefab = GetOrLoadByName_Orig("Base_Cathedral");
-                        
+        public static void InitBellyDungeon(AssetBundle expandSharedAuto1, AssetBundle sharedAssets, AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon MinesDungeonPrefab = LoadOfficialDungeonFlow("Base_Mines");
+            Dungeon GungeonPrefab = LoadOfficialDungeonFlow("Base_Gungeon");
+            Dungeon SewersPrefab = LoadOfficialDungeonFlow("Base_Sewer");
+            Dungeon AbbeyPrefab = LoadOfficialDungeonFlow("Base_Cathedral");
+
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+
+
+
             DungeonMaterial BellyMaterial = ScriptableObject.CreateInstance<DungeonMaterial>();
             BellyMaterial.name = "Belly";
             BellyMaterial.wallShards = GungeonPrefab.roomMaterialDefinitions[0].wallShards;
@@ -1318,22 +1337,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = AbbeyPrefab.musicEventName;
 
-            expandSharedAuto1 = null;
-            sharedAssets = null;
-            sharedAssets2 = null;
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
             AbbeyPrefab = null;
             SewersPrefab = null;
-
-            return dungeon;
         }
 
-        public static Dungeon WestDungeon(Dungeon dungeon) {
-            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
+        public static void InitWestDungeon(AssetBundle expandSharedAuto1, AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon CastlePrefab = LoadOfficialDungeonFlow("Base_Castle");
             
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+
 
             DungeonMaterial West_Canyon = ScriptableObject.CreateInstance<DungeonMaterial>();
             West_Canyon.name = "West_Canyon";
@@ -1764,21 +1779,20 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightRadius = 5;
             // dungeon.musicEventName = string.Empty;
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
-
-            expandSharedAuto1 = null;
+            
             CastlePrefab = null;
             sharedAssets2 = null;
-
-            return dungeon;
         }
 
-        public static Dungeon PhobosDungeon(Dungeon dungeon) {
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            AssetBundle expandSharedAuto1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            Dungeon NakatomiPrefab = GetOrLoadByName_Orig("Base_Nakatomi");
-            Dungeon SewersPrefab = GetOrLoadByName_Orig("Base_Sewer");
-            Dungeon CastlePrefab = GetOrLoadByName_Orig("Base_Castle");
-            Dungeon CatacombsPrefab = GetOrLoadByName_Orig("Base_Catacombs");
+        public static void InitPhobosDungeon(AssetBundle expandSharedAuto1, AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon NakatomiPrefab = LoadOfficialDungeonFlow("Base_Nakatomi");
+            Dungeon SewersPrefab = LoadOfficialDungeonFlow("Base_Sewer");
+            Dungeon CastlePrefab = LoadOfficialDungeonFlow("Base_Castle");
+            Dungeon CatacombsPrefab = LoadOfficialDungeonFlow("Base_Catacombs");
+
+
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
 
 
             DungeonMaterial m_PhobosBlue = ScriptableObject.CreateInstance<DungeonMaterial>();
@@ -2234,14 +2248,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightRadius = 4.5f;
             dungeon.musicEventName = "Play_MUS_sewer_theme_01";
 
-            sharedAssets2 = null;
-            expandSharedAuto1 = null;
             NakatomiPrefab = null;
             SewersPrefab = null;
             CastlePrefab = null;
             CatacombsPrefab = null;
-
-            return dungeon;
         }
     }
 }

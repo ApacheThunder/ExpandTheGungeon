@@ -5,6 +5,7 @@ using UnityEngine;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.SpriteAPI;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -14,10 +15,42 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static GameObject PowBlockObject;
 
+        private static readonly List<string> PowBlockIdleSprites = new List<string>() {
+                "PowBlock",
+                "PowBlock_Idle_01",
+                "PowBlock_Idle_02",
+                "PowBlock_Idle_03",
+                "PowBlock_Idle_04",
+                "PowBlock_Idle_05",
+                "PowBlock_Idle_06",
+                "PowBlock_Idle_07",
+                "PowBlock_Idle_07",
+                "PowBlock_Idle_07",
+                "PowBlock_Idle_07",
+                "PowBlock_Idle_08",
+                "PowBlock_Idle_09",
+                "PowBlock_Idle_10",
+                "PowBlock_Idle_11",
+                "PowBlock_Idle_12",
+                "PowBlock_Idle_13",
+                "PowBlock_Idle_14"
+            };
+
+        private static readonly List<string> PowBlockUsedSprites = new List<string>() { "PowBlock_Used", "PowBlock_Used", };
+        
         public static void Init(AssetBundle expandSharedAssets1) {
             PowBlockObject = expandSharedAssets1.LoadAsset<GameObject>("Pow Block");
-            SpriteSerializer.AddSpriteToObject(PowBlockObject, ExpandPrefabs.EXItemCollection, "PowBlock");
+
+            tk2dSprite m_PowBlockSprite = SpriteSerializer.AddSpriteToObject(PowBlockObject, ExpandPrefabs.EXItemCollection, "PowBlock");
             
+            ExpandUtility.GenerateSpriteAnimator(PowBlockObject, playAutomatically: true);
+
+            tk2dSpriteAnimator m_PowBlockAnimator = PowBlockObject.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(m_PowBlockAnimator, m_PowBlockSprite.Collection, PowBlockIdleSprites, "Idle", tk2dSpriteAnimationClip.WrapMode.Loop, 8);
+            ExpandUtility.AddAnimation(m_PowBlockAnimator, m_PowBlockSprite.Collection, PowBlockUsedSprites, "POW", tk2dSpriteAnimationClip.WrapMode.Loop, 2);
+
+
             PowBlock powBlock = PowBlockObject.AddComponent<PowBlock>();
             string shortDesc = "Shaken not stirred...";
             string longDesc = "A special block that when stomped on causes a violent shaking.\n\nEnemies shall lose their footing.";
@@ -71,7 +104,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void DoEffect(PlayerController user) {
             m_InUse = true;
-            sprite.SetSprite("PowBlock_Used");
+            spriteAnimator.Play("POW");
             PowTime(user);
         }
                 
@@ -79,7 +112,14 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void OnPreDrop(PlayerController player) { base.OnPreDrop(player); }
 
-        public override void Update() { base.Update(); }
+        public override void Update() {
+            base.Update();
+            if (!m_InUse && IsOnCooldown && !spriteAnimator.IsPlaying("POW")) {
+                spriteAnimator.Play("POW");
+            } else if (!m_InUse && !IsOnCooldown && !spriteAnimator.IsPlaying("Idle")) {
+                spriteAnimator.Play("Idle");
+            }
+        }
         
         
         public void PowTime(PlayerController user) {
@@ -97,58 +137,62 @@ namespace ExpandTheGungeon.ItemAPI {
                         if (ExcludedEnemies.Contains(RoomEnemies[i].EnemyGuid)) {
                             RoomEnemies[i].healthHaver.ApplyDamage(100000, Vector2.zero, "Pow Block Death", ignoreInvulnerabilityFrames: true, ignoreDamageCaps: true);
                         } else {
+                            if (RoomEnemies[i].gameObject.GetComponent<KaliberController>()) {
+                                Destroy(RoomEnemies[i].gameObject.GetComponent<KaliberController>());
+                                RoomEnemies[i].healthHaver.minimumHealth = 0f;
+                            }
                             RoomEnemies[i].DiesOnCollison = true;
                             RoomEnemies[i].CollisionDamage = 0;
                             RoomEnemies[i].CorpseObject = null;
                             RoomEnemies[i].EnemySwitchState = string.Empty;
                             RoomEnemies[i].healthHaver.ForceSetCurrentHealth(1);
                             RoomEnemies[i].gameObject.AddComponent<ExpandTossSpriteOnDeath>();
-                            RoomEnemies[i].procedurallyOutlined = false;
                             RoomEnemies[i].StealthDeath = true;
-                            StartCoroutine(FlipEnemy(RoomEnemies[i]));
+                            if (RoomEnemies[i].ShadowObject) {
+                                RoomEnemies[i].HasShadow = false;
+                                Destroy(RoomEnemies[i].ShadowObject);
+                            }
+                            GameObject m_RotationAnchor = new GameObject(RoomEnemies[i].name + " PowBlockRotationSource") { layer = RoomEnemies[i].gameObject.layer };
+                            m_RotationAnchor.transform.position = RoomEnemies[i].specRigidbody.GetPixelCollider(ColliderType.HitBox).UnitCenter;
+                            RoomEnemies[i].gameObject.transform.SetParent(m_RotationAnchor.transform);
+                            StartCoroutine(FlipEnemy(RoomEnemies[i], m_RotationAnchor.transform));
                         }
                     }
                 }
             }
-
-            StartCoroutine(ResetIcon());
+            
             m_InUse = false;
             return;
         }
         
-        private IEnumerator FlipEnemy(AIActor target) {
+        private IEnumerator FlipEnemy(AIActor target, Transform rotationAnchor) {
             float elapsed = 0;
             float duration = 0.25f;
-            float angle = 0;
+            Quaternion startAngle = Quaternion.Euler(new Vector3(0, 0, 0));
+            Quaternion endAngle = Quaternion.Euler(new Vector3(0, 0, 180));
 
             target.behaviorSpeculator.Stun(999, true);
-                        
+            if (target.aiShooter) { target.aiShooter.ToggleGunAndHandRenderers(false, "Was Powed"); }
+            if (!target.specRigidbody) { yield break; }
+            
             while (elapsed < duration) {
                 if (!target) { break; }
-
                 elapsed += BraveTime.DeltaTime;
-                
-                angle += (BraveTime.DeltaTime * 36f);
-
-                target.gameObject.transform.RotateAround(target.specRigidbody.GetUnitCenter(ColliderType.HitBox), Vector3.forward, angle);
-                
-                if (target.specRigidbody) {
-                    target.specRigidbody.UpdateCollidersOnRotation = true;
-                    target.specRigidbody.Reinitialize();
-                }
+                rotationAnchor.localRotation = Quaternion.Lerp(startAngle, endAngle, (elapsed / duration));
+                target.specRigidbody.UpdateCollidersOnRotation = true;
+                target.specRigidbody.LastRotation = target.gameObject.transform.eulerAngles.z;
+                if (target.specRigidbody.TK2DSprite != null) { target.specRigidbody.TK2DSprite.UpdateZDepth(); }
+                target.specRigidbody.ForceRegenerate(true);
+                target.specRigidbody.Reinitialize();                
                 if (target.sprite) { target.sprite.UpdateZDepth(); }
-
                 yield return null;
             }
+            rotationAnchor.DetachChildren();
+            yield return null;
+            Destroy(rotationAnchor.gameObject);
             yield break;
         }
-
-        private IEnumerator ResetIcon() {
-            yield return new WaitForSeconds(0.5f);
-            sprite.SetSprite("PowBlock");
-            yield break;
-        }
-
+        
         protected override void OnDestroy() { base.OnDestroy(); }
     }
 }

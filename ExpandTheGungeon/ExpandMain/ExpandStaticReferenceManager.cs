@@ -15,6 +15,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static List<PathingTrapController> AllMovingTraps;
         public static List<ConveyorBelt> AllConveyorBelts;
         public static List<ExpandWesternBroController> AllWesternBros;
+        public static List<ExpandTallGrassPatchSystem> AllGrasses;
 
         static ExpandStaticReferenceManager() {
             AllSecretDoors = new List<ExpandSecretDoorPlacable>();
@@ -31,6 +32,9 @@ namespace ExpandTheGungeon.ExpandMain {
 
             //West Bros List
             AllWesternBros = new List<ExpandWesternBroController>();
+
+            // Jungle Grass Patches
+            AllGrasses = new List<ExpandTallGrassPatchSystem>();
         }
 
         public static void PopulateLists() {
@@ -48,7 +52,6 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ConveyorBelts != null) {
                 foreach (ConveyorBelt conveyorBelt in ConveyorBelts) { AllConveyorBelts.Add(conveyorBelt); }
             }
-
         } 
 
 
@@ -61,6 +64,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllMovingTraps.Clear();
             AllConveyorBelts.Clear();
             AllWesternBros.Clear();
+            AllGrasses.Clear();
         }
 
         public static void ForceClearAllStaticMemory() {
@@ -72,6 +76,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllMovingTraps.Clear();
             AllConveyorBelts.Clear();
             AllWesternBros.Clear();
+            AllGrasses.Clear();
         }
     }
 }

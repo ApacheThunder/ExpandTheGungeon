@@ -936,6 +936,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Jungle_Boss.usesProceduralDecoration = false;
             Expand_Jungle_Boss.rewardChestSpawnPosition = new IntVector2(25, 20);
             Expand_Jungle_Boss.overriddenTilesets = GlobalDungeonData.ValidTilesets.JUNGLEGEON;
+            Expand_Jungle_Boss.overrideRoomVisualType = 0;
             foreach (PrototypeRoomExit exit in Expand_Jungle_Boss.exitData.exits) { exit.exitType = PrototypeRoomExit.ExitType.ENTRANCE_ONLY; }
             RoomBuilder.AddExitToRoom(Expand_Jungle_Boss, new Vector2(26, 37), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY, PrototypeRoomExit.ExitGroup.B);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(7, 25), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.bosstable_01_bulletking.includedRooms.elements[0].room.placedObjects[1].nonenemyBehaviour.gameObject, useExternalPrefab: true));
@@ -9483,7 +9484,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretExitRoom2.usesProceduralLighting = false;
             // RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(13, 9), ExpandPrefabs.ElevatorDeparture);
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, Vector2.zero, ExpandPrefabs.SecretElevatorExitTileset);
-            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(23, 6), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoorDestination, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(23, 6), ExpandUtility.GenerateDungeonPlacable(ExpandSecretDoorPrefabs.EXSecretDoor_Hollow_Unlocked, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(21, 4), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Door_Horizontal_West, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(0, 32), ExpandPrefabs.EXOldWestWarp);
             // RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(16, 2), ExpandPrefabs.WestLight);
@@ -9573,7 +9574,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(2, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(SecretRatEntranceRoom, new Vector2(14, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 6), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
-            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandSecretDoorPrefabs.EXSecretDoor);
+            RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(6, 16), ExpandSecretDoorPrefabs.EXSecretDoor_Hollow);
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(7, 5), EnemyBehaviourGuid: "5861e5a077244905a8c25c2b7b4d6ebb"); // bullet kin cowboy
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(5, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(10, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
@@ -9627,7 +9628,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor_Normal);
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor);
             RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SecretElevatorEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_MiniElevator_Room_Layout"));
 
             // This will share same layout as it's entrance version.
@@ -9678,7 +9679,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(5, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(3, 8), NonEnemyBehaviour: ExpandSecretDoorPrefabs.EXSecretDoorDestination.GetComponent<ExpandSecretDoorExitPlacable>());
+            RoomBuilder.AddObjectToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked);
             RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SecretElevatorDestinationRoom, expandSharedAssets1.LoadAsset<Texture2D>("Destination_MiniElevator_Room_Layout"));
 
 

@@ -5,62 +5,62 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class f2b_belly_flow_01 : ExpandDungeonFlow {
+    public class f2b_belly_flow_01 {
         
         public static DungeonFlow F2b_Belly_Flow_01() {
             
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 
-            if (!BellyInjectionData) {
-                BellyInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
-                BellyInjectionData.name = "Belly Common Injection Data";
-                BellyInjectionData.UseInvalidWeightAsNoInjection = true;
-                BellyInjectionData.PreventInjectionOfFailedPrerequisites = false;
-                BellyInjectionData.IsNPCCell = false;
-                BellyInjectionData.IgnoreUnmetPrerequisiteEntries = false;
-                BellyInjectionData.OnlyOne = false;
-                BellyInjectionData.ChanceToSpawnOne = 0.5f;
-                BellyInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-                BellyInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
+            if (!ExpandDungeonFlow.BellyInjectionData) {
+                ExpandDungeonFlow.BellyInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+                ExpandDungeonFlow.BellyInjectionData.name = "Belly Common Injection Data";
+                ExpandDungeonFlow.BellyInjectionData.UseInvalidWeightAsNoInjection = true;
+                ExpandDungeonFlow.BellyInjectionData.PreventInjectionOfFailedPrerequisites = false;
+                ExpandDungeonFlow.BellyInjectionData.IsNPCCell = false;
+                ExpandDungeonFlow.BellyInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+                ExpandDungeonFlow.BellyInjectionData.OnlyOne = false;
+                ExpandDungeonFlow.BellyInjectionData.ChanceToSpawnOne = 0.5f;
+                ExpandDungeonFlow.BellyInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+                ExpandDungeonFlow.BellyInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
             }
             
-            DungeonFlowNode entranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_Belly_Entrance);
-            DungeonFlowNode exitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.Expand_Belly_ExitHub);
-            DungeonFlowNode exitNode2 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Belly_RealExit);
-            DungeonFlowNode bossfoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode bossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_Belly_BossRoom);
+            DungeonFlowNode entranceNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_Belly_Entrance);
+            DungeonFlowNode exitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.Expand_Belly_ExitHub);
+            DungeonFlowNode exitNode2 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Belly_RealExit);
+            DungeonFlowNode bossfoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode bossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_Belly_BossRoom);
             
-            DungeonFlowNode BellyRewardNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
-            DungeonFlowNode BellyRewardNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
-            DungeonFlowNode BellyRewardNode_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Belly_Reward);
-            DungeonFlowNode BellyShrineNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Belly_Shrine);
+            DungeonFlowNode BellyRewardNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
+            DungeonFlowNode BellyRewardNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
+            DungeonFlowNode BellyRewardNode_03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Belly_Reward);
+            DungeonFlowNode BellyShrineNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Belly_Shrine);
 
-            DungeonFlowNode BellyRoomConnectorNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR);
-            DungeonFlowNode BellyRoomConnectorNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB);
+            DungeonFlowNode BellyRoomConnectorNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR);
+            DungeonFlowNode BellyRoomConnectorNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB);
 
-            DungeonFlowNode BellyRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_04 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_05 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_06 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_07 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_10 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_11 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_12 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_13 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_14 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_15 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_16 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode BellyRoomNode_17 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_06 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_07 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_10 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_11 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_12 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_13 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_14 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_15 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_16 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode BellyRoomNode_17 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
 
 
             m_CachedFlow.name = "F2b_Belly_Flow_01";
             m_CachedFlow.fallbackRoomTable = ExpandPrefabs.BellyRoomTable;
             m_CachedFlow.phantomRoomTable = null;
-            m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>() { BaseSubTypeRestrictions };
+            m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>() { ExpandDungeonFlow.BaseSubTypeRestrictions };
             m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>(0);
-            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { BaseSharedInjectionData/*, BellyInjectionData*/ };
+            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { ExpandDungeonFlow.BaseSharedInjectionData/*, ExpandDungeonFlow.BellyInjectionData*/ };
             m_CachedFlow.Initialize();
 
             m_CachedFlow.AddNodeToFlow(entranceNode, null);

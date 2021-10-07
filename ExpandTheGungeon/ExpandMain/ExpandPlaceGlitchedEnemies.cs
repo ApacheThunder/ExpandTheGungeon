@@ -8,8 +8,7 @@ namespace ExpandTheGungeon.ExpandMain {
     public class ExpandPlaceGlitchedEnemies {
 
         public static void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
-            ExpandGlitchedEnemies m_GlitchEnemyDatabase = new ExpandGlitchedEnemies();
-
+            
             if (!dungeon.IsGlitchDungeon && roomHandler == null) { return; }
 
             List<string> BannedRooms = new List<string>();
@@ -60,24 +59,24 @@ namespace ExpandTheGungeon.ExpandMain {
                             if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector3 = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 13); }
                             if (m_CachedPositions.Count > 0) { RandomGlitchEnemyVector4 = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions); }
                             
-
+                            
                             if (RandomGlitchEnemyVector.HasValue) {
-                                m_GlitchEnemyDatabase.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn);
                             } else { RandomEnemiesSkipped++; }
 
                             if (RandomGlitchEnemyVector2.HasValue && Random.value <= BonusGlitchEnemyOdds) {
-                                m_GlitchEnemyDatabase.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector2.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector2.Value, false, AIActor.AwakenAnimationType.Spawn);
                             } else { RandomEnemiesSkipped++; }
 
                             if (RandomGlitchEnemyVector3.HasValue && Random.value <= GlitchedBossOdds) {
-                                m_GlitchEnemyDatabase.SpawnRandomGlitchBoss(currentRoom, RandomGlitchEnemyVector3.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchBoss(currentRoom, RandomGlitchEnemyVector3.Value, false, AIActor.AwakenAnimationType.Spawn);
                             }
 
                             if (RandomGlitchEnemyVector4.HasValue && Random.value <= GlitchedBossOdds) {
                                 if (Random.value <= 0.65f) {
-                                    m_GlitchEnemyDatabase.SpawnGlitchedObjectAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedObjectAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
                                 } else {
-                                    m_GlitchEnemyDatabase.SpawnGlitchedPlayerAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedPlayerAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
                                 }
                             }
 
@@ -109,7 +108,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 ETGModConsole.Log("[DEBUG] Number of Glitched Enemies skipped: " + RandomEnemiesSkipped, false);
                 if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Glitched Enemies have been placed!", false); }
             }
-            Object.Destroy(m_GlitchEnemyDatabase);
             return;
         }
 

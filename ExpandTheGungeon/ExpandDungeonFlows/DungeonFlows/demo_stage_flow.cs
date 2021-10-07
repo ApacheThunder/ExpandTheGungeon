@@ -6,7 +6,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class demo_stage_flow : ExpandDungeonFlow {
+    public class demo_stage_flow {
 
         public static DungeonFlow DEMO_STAGE_FLOW() {
 

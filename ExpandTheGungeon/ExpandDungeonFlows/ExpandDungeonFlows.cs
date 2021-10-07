@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
     
-    public class ExpandDungeonFlow : FlowDatabase {
+    public class ExpandDungeonFlow {
 
         public static bool isGlitchFlow = false;
 
@@ -45,7 +45,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
                     break;
             }
-            DungeonFlow m_AssignedFallBackFlow = GetOrLoadByName(BraveUtility.RandomElement(GlitchChestFlows));
+            DungeonFlow m_AssignedFallBackFlow = FlowDatabase.GetOrLoadByName(BraveUtility.RandomElement(GlitchChestFlows));
             DungeonFlow m_AssignedFlow = FlowHelpers.DuplicateDungeonFlow(BraveUtility.RandomElement(dungeon.PatternSettings.flows));
             dungeon = null;
             foreach (DungeonFlowNode node in m_AssignedFlow.AllNodes) {

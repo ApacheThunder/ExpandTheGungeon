@@ -9,10 +9,11 @@ using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandComponents;
 using Gungeon;
 using ExpandTheGungeon.SpriteAPI;
+using Dungeonator;
 
 namespace ExpandTheGungeon.ExpandPrefab {
     
-    public class ExpandCustomEnemyDatabase : EnemyDatabase {
+    public class ExpandCustomEnemyDatabase {
 
         public static Hook loadEnemyGUIDHook;
         public static Dictionary<string, GameObject> enemyPrefabDictionary = new Dictionary<string, GameObject>();
@@ -34,6 +35,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject FriendlyCultistPrefab;
 
         // Normal Enemies
+        public static GameObject BuildHotShotGunCultistPrefab;
+        public static GameObject HotShotShotgunKinPrefab;
+        public static GameObject HotShotBulletKinPrefab;
         public static GameObject RatGrenadePrefab;
         public static GameObject BootlegBullatPrefab;
         public static GameObject BootlegBulletManPrefab;
@@ -76,6 +80,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static Texture2D[] RatGrenadeTextures;
 
         // Saved GUIDs for use in things like room prefabs
+        public static string BuildHotShotCultistGUID;
+        public static string HotShotShotgunKinGUID;
+        public static string HotShotBulletKinGUID;
         public static string ExplodyBoyGUID;
         public static string RatGrenadeGUID;
         public static string HammerCompanionGUID;
@@ -130,6 +137,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             // Real Prefabs
+            BuildHotShotCultistPrefab(expandSharedAssets1, out BuildHotShotGunCultistPrefab);
+            BuildHotShotShotgunManPrefab(expandSharedAssets1, out HotShotShotgunKinPrefab);
+            BuildHotShotBulletManPrefab(expandSharedAssets1, out HotShotBulletKinPrefab);
             BuildBabyGoodHammerPrefab(expandSharedAssets1, out HammerCompanionPrefab);
             BuildBootlegBullatPrefab(expandSharedAssets1, out BootlegBullatPrefab);
             BuildBootlegBulletManPrefab(expandSharedAssets1, out BootlegBulletManPrefab);
@@ -203,9 +213,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static void PaletteFixEnemies(AssetBundle expandSharedAssets1) {
 
-            RedShotGunMan = GetOrLoadByGuid("128db2f0781141bcb505d8f00f9e4d47").gameObject;
-            BlueShotGunMan = GetOrLoadByGuid("b54d89f9e802455cbb2b8a96a31e8259").gameObject;
-            BulletManEyepatch = GetOrLoadByGuid("70216cae6c1346309d86d4a0b4603045").gameObject;
+            RedShotGunMan = EnemyDatabase.GetOrLoadByGuid("128db2f0781141bcb505d8f00f9e4d47").gameObject;
+            BlueShotGunMan = EnemyDatabase.GetOrLoadByGuid("b54d89f9e802455cbb2b8a96a31e8259").gameObject;
+            BulletManEyepatch = EnemyDatabase.GetOrLoadByGuid("70216cae6c1346309d86d4a0b4603045").gameObject;
             RedShotgunManCollection = expandSharedAssets1.LoadAsset<GameObject>("RedShotgunManCollection");
             BlueShotgunManCollection = expandSharedAssets1.LoadAsset<GameObject>("BlueShotgunManCollection");
             BulletManEyepatchCollection = expandSharedAssets1.LoadAsset<GameObject>("BulletManEyepatchCollection");
@@ -217,7 +227,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(RedShotGunEnemy.sprite.Collection), RedShotGunCollectionData);
 
-            Material m_NewRedShotGunManMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            Material m_NewRedShotGunManMaterial = new Material(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
             m_NewRedShotGunManMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RedBulletShotgunMan");
             RedShotGunCollectionData.materials[0] = m_NewRedShotGunManMaterial;
 
@@ -235,7 +245,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BlueShotGunEnemy.sprite.Collection), BlueShotGunCollectionData);
 
-            Material m_NewBlueShotGunManMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            Material m_NewBlueShotGunManMaterial = new Material(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
             m_NewBlueShotGunManMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("BlueBulletShotgunMan");
             BlueShotGunCollectionData.materials[0] = m_NewBlueShotGunManMaterial;
 
@@ -253,7 +263,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(BulletManEyepatchEnemy.sprite.Collection), BulletManEyepatchCollectionData);
 
-            Material m_NewBulletManEyepatchMaterial = new Material(GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            Material m_NewBulletManEyepatchMaterial = new Material(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
             m_NewBulletManEyepatchMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletManEyepatch");
             BulletManEyepatchCollectionData.materials[0] = m_NewBulletManEyepatchMaterial;
 
@@ -274,7 +284,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 placeableHeight = 2,
                 isNormalEnemy = IsNormalEnemy
             };
-            Instance.Entries.Add(item);
+            EnemyDatabase.Instance.Entries.Add(item);
             enemyPrefabDictionary.Add(EnemyGUID, EnemyPrefab);
             if (AddToMTGSpawnPool && !string.IsNullOrEmpty(EnemyPrefab.GetComponent<AIActor>().ActorName)) {
                 string EnemyName = EnemyPrefab.GetComponent<AIActor>().ActorName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower();
@@ -289,11 +299,687 @@ namespace ExpandTheGungeon.ExpandPrefab {
             return orig(guid);
         }
 
-        public static AIActor GetOrLoadByGuid_Orig(string guid) { return Instance.InternalGetByGuid(guid); }
+        public static AIActor GetOrLoadByGuid_Orig(string guid) { return EnemyDatabase.Instance.InternalGetByGuid(guid); }
+        
+        public static void BuildHotShotCultistPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("57255ed50ee24794b7aac1ac3cfb8a95");
 
+            GameObject m_DummyCorpseObject = null;
+            
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("HotShotCultist");
+            
+            GameObject LeftHand = m_CachedTargetObject.transform.Find("left hand").gameObject;
+            GameObject RightHand = m_CachedTargetObject.transform.Find("right hand").gameObject;
+            GunHandController LeftHandController = LeftHand.AddComponent<GunHandController>();
+            GunHandController RightHandController = RightHand.AddComponent<GunHandController>();
+
+            LeftHandController.GunId = 38;
+            LeftHandController.UsesOverrideProjectileData = true;
+            LeftHandController.OverrideProjectile = m_CachedEnemyActor.gameObject.GetComponent<AIBulletBank>().Bullets[0].BulletObject.GetComponent<Projectile>();
+            LeftHandController.OverrideProjectileData = m_CachedEnemyActor.gameObject.GetComponent<AIBulletBank>().Bullets[0].ProjectileData;
+            LeftHandController.GunFlipMaster = RightHandController;
+            LeftHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            LeftHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = false,
+                ForwardRight = false,
+                Forward = false,
+                ForwardLeft = true,
+                BackLeft = true
+            };
+            LeftHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            LeftHandController.isEightWay = false;
+            LeftHandController.PreFireDelay = 0;
+            LeftHandController.NumShots = 3;
+            LeftHandController.ShotCooldown = 0.18f;
+            LeftHandController.Cooldown = 1f;
+            LeftHandController.RampBullets = false;
+            LeftHandController.RampStartHeight = 2;
+            LeftHandController.RampTime = 1;
+
+
+            RightHandController.GunId = 38;
+            RightHandController.UsesOverrideProjectileData = true;
+            RightHandController.OverrideProjectile = LeftHandController.OverrideProjectile;
+            RightHandController.OverrideProjectileData = LeftHandController.OverrideProjectileData;
+            RightHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            RightHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = true,
+                ForwardRight = true,
+                Forward = false,
+                ForwardLeft = false,
+                BackLeft = false
+            };
+            RightHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            RightHandController.isEightWay = false;
+            RightHandController.PreFireDelay = 0;
+            RightHandController.NumShots = 2;
+            RightHandController.ShotCooldown = 0.25f;
+            RightHandController.Cooldown = 1.28f;
+            RightHandController.RampBullets = false;
+            RightHandController.RampStartHeight = 2;
+            RightHandController.RampTime = 1;
+            
+            SpeculativeRigidbody m_CachedRigidBody = m_CachedTargetObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(m_CachedRigidBody, m_CachedEnemyActor.specRigidbody);
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "HotShot Gun Cultist", "61a8112544ce4389ab14f2287616a71b", (tk2dSprite)m_CachedEnemyActor.sprite, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+            
+            if (m_CachedAIActor.aiAnimator) {
+                ExpandUtility.DuplicateComponent(m_CachedAIActor.aiAnimator, m_CachedEnemyActor.aiAnimator);
+            }
+            if (m_CachedAIActor.spriteAnimator) {
+                ExpandUtility.DuplicateComponent(m_CachedAIActor.spriteAnimator, m_CachedEnemyActor.spriteAnimator);
+            }
+
+            tk2dSpriteCollectionData HotShotCollectionData = m_CachedTargetObject.AddComponent<tk2dSpriteCollectionData>();
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(m_CachedEnemyActor.sprite.Collection), HotShotCollectionData);
+
+            Material m_NewHotShotMaterial = new Material(m_CachedEnemyActor.sprite.Collection.materials[0]);
+            m_NewHotShotMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("HotShotCultist_Collection");
+            HotShotCollectionData.materials[0] = m_NewHotShotMaterial;
+            
+            foreach (tk2dSpriteDefinition spriteDefinition in HotShotCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewHotShotMaterial; }
+            m_CachedAIActor.sprite.Collection = HotShotCollectionData;
+            
+            ExpandUtility.DuplicateSpriteAnimation(m_CachedTargetObject, m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>(), m_CachedEnemyActor.spriteAnimator.Library, HotShotCollectionData);
+            m_CachedAIActor.spriteAnimator.Library = m_CachedTargetObject.GetComponent<tk2dSpriteAnimation>();
+            
+
+            m_CachedAIActor.MovementSpeed = 3.75f;
+            m_CachedAIActor.HasShadow = true;
+            m_CachedAIActor.ActorShadowOffset = m_CachedEnemyActor.ActorShadowOffset;
+            m_CachedAIActor.EnemySwitchState = m_CachedEnemyActor.EnemySwitchState;
+            m_CachedAIActor.ShadowHeightOffGround = m_CachedEnemyActor.ShadowHeightOffGround;
+            m_CachedAIActor.shadowHeightOffset = m_CachedEnemyActor.shadowHeightOffset;
+            m_CachedAIActor.TransferShadowToCorpse = false;
+            m_CachedAIActor.shadowDeathType = AIActor.ShadowDeathType.Fade;
+            m_CachedAIActor.ShadowObject = null;
+
+            m_CachedAIActor.PathableTiles = CellTypes.FLOOR;
+
+            m_CachedAIActor.healthHaver.SetHealthMaximum(23);
+            m_CachedAIActor.healthHaver.CursedMaximum = (23 * 3);
+            
+            ExpandHideGunHandsOnDeath hideGunHandsOnDeath = m_CachedTargetObject.AddComponent<ExpandHideGunHandsOnDeath>();
+            hideGunHandsOnDeath.gunHands.Add(LeftHandController);
+            hideGunHandsOnDeath.gunHands.Add(RightHandController);
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>() {
+                new RedBarrelAwareness() { AvoidRedBarrels = true, ShootRedBarrels = true, PushRedBarrels = true }
+            };
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = true,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new SeekTargetBehavior() {
+                    StopWhenInRange = true,
+                    CustomRange = 7,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.25f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>() {
+                new SequentialAttackBehaviorGroup() {
+                    OverrideCooldowns = null,
+                    RunInClass = false,
+                    AttackBehaviors = new List<AttackBehaviorBase>() {
+                        new ExpandDashBehavior() {
+                            gunHands = new List<GunHandController>() { LeftHandController, RightHandController },
+                            dashDirection = ExpandDashBehavior.DashDirection.Random,
+                            quantizeDirection = 45,
+                            dashDistance = 5,
+                            dashTime = 0.65f,
+                            postDashSpeed = 0,
+                            doubleDashChance = 0,
+                            avoidTarget = false,
+                            ShootPoint = null,
+                            bulletScript = null,
+                            fireAtDashStart = false,
+                            stopOnCollision = false,
+                            chargeAnim = null,
+                            dashAnim = "dodgeroll",
+                            doDodgeDustUp = true,
+                            warpDashAnimLength = true,
+                            hideShadow = false,
+                            hideGun = true,
+                            toggleTrailRenderer = false,
+                            enableShadowTrail = false,
+                            Cooldown = 0.25f,
+                            CooldownVariance = 0,
+                            AttackCooldown = 0,
+                            GlobalCooldown = 0,
+                            InitialCooldown = 0,
+                            InitialCooldownVariance = 0,
+                            GroupName = null,
+                            GroupCooldown = 0,
+                            MinRange = 0,
+                            Range = 0,
+                            MinWallDistance = 0,
+                            MaxEnemiesInRoom = 0,
+                            MinHealthThreshold = 0,
+                            MaxHealthThreshold = 1,
+                            HealthThresholds = new float[0],
+                            AccumulateHealthThresholds = true,
+                            targetAreaStyle = null,
+                            IsBlackPhantom = false,
+                            resetCooldownOnDamage = null,
+                            RequiresLineOfSight = false,
+                            MaxUsages = 0
+                        },
+                        new ExpandDashBehavior() {
+                            gunHands = new List<GunHandController>() { LeftHandController, RightHandController },
+                            dashDirection = ExpandDashBehavior.DashDirection.Random,
+                            quantizeDirection = 45,
+                            dashDistance = 5,
+                            dashTime = 0.65f,
+                            postDashSpeed = 0,
+                            doubleDashChance = 0,
+                            avoidTarget = false,
+                            ShootPoint = null,
+                            bulletScript = null,
+                            fireAtDashStart = false,
+                            stopOnCollision = false,
+                            chargeAnim = null,
+                            dashAnim = "dodgeroll",
+                            doDodgeDustUp = true,
+                            warpDashAnimLength = true,
+                            hideShadow = false,
+                            hideGun = true,
+                            toggleTrailRenderer = false,
+                            enableShadowTrail = false,
+                            Cooldown = 6f,
+                            CooldownVariance = 2,
+                            AttackCooldown = 0,
+                            GlobalCooldown = 0,
+                            InitialCooldown = 6,
+                            InitialCooldownVariance = 2,
+                            GroupName = null,
+                            GroupCooldown = 0,
+                            MinRange = 0,
+                            Range = 0,
+                            MinWallDistance = 0,
+                            MaxEnemiesInRoom = 0,
+                            MinHealthThreshold = 0,
+                            MaxHealthThreshold = 1,
+                            HealthThresholds = new float[0],
+                            AccumulateHealthThresholds = true,
+                            targetAreaStyle = null,
+                            IsBlackPhantom = false,
+                            resetCooldownOnDamage = new BasicAttackBehavior.ResetCooldownOnDamage() { Cooldown = true, AttackCooldown = false, GlobalCooldown = false, GroupCooldown = false, ResetCooldown = 4 },
+                            RequiresLineOfSight = false,
+                            MaxUsages = 0
+                        },
+                    }
+                },
+                new AttackBehaviorGroup() {
+                    ShareCooldowns = false,
+                    AttackBehaviors = new List<AttackBehaviorGroup.AttackGroupItem>() {
+                        new AttackBehaviorGroup.AttackGroupItem() {
+                            NickName = "Dual Wield Shoot",
+                            Probability = 1,
+                            Behavior = new GunHandBasicShootBehavior() {
+                                MaxUsages = 0,
+                                RequiresLineOfSight = false,
+                                resetCooldownOnDamage = null,
+                                IsBlackPhantom = false,
+                                targetAreaStyle = null,
+                                AccumulateHealthThresholds = true,
+                                HealthThresholds = new float[0],
+                                MaxHealthThreshold = 1,
+                                MinHealthThreshold = 0,
+                                MaxEnemiesInRoom = 0,
+                                MinWallDistance = 0,
+                                Range = 12,
+                                MinRange = 0,
+                                GroupCooldown = 0,
+                                GroupName = null,
+                                InitialCooldownVariance = 0,
+                                InitialCooldown = 0,
+                                GlobalCooldown = 0,
+                                AttackCooldown = 0.25f,
+                                CooldownVariance = 0,
+                                Cooldown = 0.25f,
+                                GunHands = new List<GunHandController>() { LeftHandController, RightHandController },
+                                FireAllGuns = false,
+                                LineOfSight = true
+                            }
+                        }
+                    }
+                }
+            };
+            
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>() { LeftHandController, RightHandController };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            BuildHotShotCultistGUID = m_CachedAIActor.EnemyGuid;
+
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+
+            m_CachedEnemyActor = null;
+            return;
+        }
+
+        public static void BuildHotShotShotgunManPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = RedShotGunMan.GetComponent<AIActor>(); // Red ShotGun Man
+
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("HotShotShotgunKin");
+            
+            GameObject LeftHand = m_CachedTargetObject.transform.Find("left hand").gameObject;
+            GameObject RightHand = m_CachedTargetObject.transform.Find("right hand").gameObject;
+
+            GunHandController LeftHandController = LeftHand.AddComponent<GunHandController>();
+            GunHandController RightHandController = RightHand.AddComponent<GunHandController>();
+
+            LeftHandController.GunId = HotShotShotGun.HotShotShotGunID;
+            LeftHandController.UsesOverrideProjectileData = true;
+            LeftHandController.OverrideProjectileData = m_CachedEnemyActor.gameObject.GetComponent<AIBulletBank>().Bullets[0].ProjectileData;
+            LeftHandController.GunFlipMaster = RightHandController;
+            LeftHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            LeftHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = false,
+                ForwardRight = false,
+                Forward = false,
+                ForwardLeft = true,
+                BackLeft = true
+            };
+            LeftHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            LeftHandController.isEightWay = false;
+            LeftHandController.PreFireDelay = 0.1f;
+            LeftHandController.NumShots = 1;
+            LeftHandController.ShotCooldown = 1;
+            LeftHandController.Cooldown = 2.5f;
+            LeftHandController.RampBullets = false;
+            LeftHandController.RampStartHeight = 2;
+            LeftHandController.RampTime = 1;
+
+            RightHandController.GunId = HotShotShotGun.HotShotShotGunID;
+            RightHandController.UsesOverrideProjectileData = true;
+            RightHandController.OverrideProjectileData = LeftHandController.OverrideProjectileData;
+            RightHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            RightHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = true,
+                ForwardRight = true,
+                Forward = false,
+                ForwardLeft = false,
+                BackLeft = false
+            };
+            RightHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            RightHandController.isEightWay = false;
+            RightHandController.PreFireDelay = 0.2f;
+            RightHandController.NumShots = 1;
+            RightHandController.ShotCooldown = 0.8f;
+            RightHandController.Cooldown = 3;
+            RightHandController.RampBullets = false;
+            RightHandController.RampStartHeight = 2;
+            RightHandController.RampTime = 1;
+            
+            SpeculativeRigidbody m_CachedRigidBody = m_CachedTargetObject.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateRigidBody(m_CachedRigidBody, m_CachedEnemyActor.specRigidbody);
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "HotShot Shotgun Kin", "758a0a0215e6448ab52adf73bc44ae5e", (tk2dSprite)m_CachedEnemyActor.sprite, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+            
+            if (m_CachedAIActor.aiAnimator) {
+                ExpandUtility.DuplicateComponent(m_CachedAIActor.aiAnimator, m_CachedEnemyActor.aiAnimator);
+            }
+            if (m_CachedAIActor.spriteAnimator) {
+                ExpandUtility.DuplicateComponent(m_CachedAIActor.spriteAnimator, m_CachedEnemyActor.spriteAnimator);
+            }
+
+            tk2dSpriteCollectionData HotShotShotGunCollectionData = m_CachedTargetObject.AddComponent<tk2dSpriteCollectionData>();
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(m_CachedEnemyActor.sprite.Collection), HotShotShotGunCollectionData);
+
+            Material m_NewHotShotGunManMaterial = new Material(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection.materials[0]);
+            m_NewHotShotGunManMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("HotShotShotgunMan");
+            HotShotShotGunCollectionData.materials[0] = m_NewHotShotGunManMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in HotShotShotGunCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewHotShotGunManMaterial; }
+            m_CachedAIActor.sprite.Collection = HotShotShotGunCollectionData;
+
+            ExpandUtility.DuplicateSpriteAnimation(m_CachedTargetObject, m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>(), m_CachedEnemyActor.spriteAnimator.Library, HotShotShotGunCollectionData);
+            m_CachedAIActor.spriteAnimator.Library = m_CachedTargetObject.GetComponent<tk2dSpriteAnimation>();
+            m_CachedAIActor.optionalPalette = null;
+            
+            m_CachedAIActor.MovementSpeed = 2;
+            m_CachedAIActor.HasShadow = true;
+            m_CachedAIActor.ActorShadowOffset = m_CachedEnemyActor.ActorShadowOffset;
+            m_CachedAIActor.EnemySwitchState = m_CachedEnemyActor.EnemySwitchState;
+            m_CachedAIActor.ShadowHeightOffGround = m_CachedEnemyActor.ShadowHeightOffGround;
+            m_CachedAIActor.shadowHeightOffset = m_CachedEnemyActor.shadowHeightOffset;
+            m_CachedAIActor.TransferShadowToCorpse = false;
+            m_CachedAIActor.shadowDeathType = AIActor.ShadowDeathType.Fade;
+            m_CachedAIActor.ShadowObject = null;
+
+            m_CachedAIActor.PathableTiles = CellTypes.FLOOR;
+
+            m_CachedAIActor.healthHaver.SetHealthMaximum(30);
+            m_CachedAIActor.healthHaver.CursedMaximum = (30 * 3);
+            m_CachedAIActor.healthHaver.spawnBulletScript = true;
+            m_CachedAIActor.healthHaver.chanceToSpawnBulletScript = 0.3f;
+            m_CachedAIActor.healthHaver.overrideDeathAnimBulletScript = "burst";
+            m_CachedAIActor.healthHaver.noCorpseWhenBulletScriptDeath = true;
+            m_CachedAIActor.healthHaver.bulletScriptType = HealthHaver.BulletScriptType.OnAnimEvent;
+            m_CachedAIActor.healthHaver.bulletScript = new BulletScriptSelector() { scriptTypeName = "BulletShotgunManDeathBurst1" };
+
+            AIBulletBank bulletBank = m_CachedAIActor.gameObject.AddComponent<AIBulletBank>();
+            ExpandUtility.DuplicateComponent(bulletBank, m_CachedEnemyActor.gameObject.GetComponent<AIBulletBank>());
+
+            ExpandHideGunHandsOnDeath hideGunHandsOnDeath = m_CachedTargetObject.AddComponent<ExpandHideGunHandsOnDeath>();
+            hideGunHandsOnDeath.gunHands.Add(LeftHandController);
+            hideGunHandsOnDeath.gunHands.Add(RightHandController);
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = true,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new RideInCartsBehavior(),
+                new SeekTargetBehavior() {
+                    StopWhenInRange = true,
+                    CustomRange = 7,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.25f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>() {
+                new GunHandBasicShootBehavior() {
+                    MaxUsages = 0,
+                    RequiresLineOfSight = false,
+                    resetCooldownOnDamage = null,
+                    IsBlackPhantom = false,
+                    targetAreaStyle = null,
+                    AccumulateHealthThresholds = true,
+                    HealthThresholds = new float[0],
+                    MaxHealthThreshold = 1,
+                    MinHealthThreshold = 0,
+                    MaxEnemiesInRoom = 0,
+                    MinWallDistance = 0,
+                    Range = 0,
+                    MinRange = 0,
+                    GroupCooldown = 0,
+                    GroupName = null,
+                    InitialCooldownVariance = 0,
+                    InitialCooldown = 0,
+                    GlobalCooldown = 0,
+                    AttackCooldown = 0,
+                    CooldownVariance = 0,
+                    Cooldown = 0,
+                    GunHands = new List<GunHandController>() { LeftHandController, RightHandController },
+                    FireAllGuns = false,
+                    LineOfSight = true
+                }
+            };
+
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>() { LeftHandController, RightHandController };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            HotShotShotgunKinGUID = m_CachedAIActor.EnemyGuid;
+
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+
+            m_CachedEnemyActor = null;
+            return;
+        }
+        
+        public static void BuildHotShotBulletManPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c"); // Bandana Bullet Kin
+            AIActor m_CachedMimicActor = GetOrLoadByGuid_Orig("2ebf8ef6728648089babb507dec4edb7"); // Brown Chest Mimic
+
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("HotShotBulletKin");
+            
+            GameObject LeftHand = m_CachedTargetObject.transform.Find("left hand").gameObject;
+            GameObject RightHand = m_CachedTargetObject.transform.Find("right hand").gameObject;
+
+            GunHandController LeftHandController = LeftHand.AddComponent<GunHandController>();
+            GunHandController RightHandController = RightHand.AddComponent<GunHandController>();
+
+            ExpandUtility.DuplicateRigidBody(m_CachedTargetObject.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.specRigidbody);
+
+            LeftHandController.GunId = 38;
+            LeftHandController.UsesOverrideProjectileData = true;
+            LeftHandController.OverrideProjectile = m_CachedMimicActor.gameObject.transform.Find("left hand").GetComponent<GunHandController>().OverrideProjectile;
+            LeftHandController.OverrideProjectileData = m_CachedMimicActor.gameObject.transform.Find("left hand").GetComponent<GunHandController>().OverrideProjectileData;
+            LeftHandController.GunFlipMaster = RightHandController;
+            LeftHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            LeftHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = false,
+                ForwardRight = false,
+                Forward = false,
+                ForwardLeft = true,
+                BackLeft = true
+            };
+            LeftHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            LeftHandController.isEightWay = false;
+            LeftHandController.PreFireDelay = 0;
+            LeftHandController.NumShots = 1;
+            LeftHandController.ShotCooldown = 0.4f;
+            LeftHandController.Cooldown = 2f;
+            LeftHandController.RampBullets = false;
+            LeftHandController.RampStartHeight = 2;
+            LeftHandController.RampTime = 1;
+
+            RightHandController.GunId = 38;
+            RightHandController.UsesOverrideProjectileData = true;
+            RightHandController.OverrideProjectile = LeftHandController.OverrideProjectile;
+            RightHandController.OverrideProjectileData = LeftHandController.OverrideProjectileData;
+            RightHandController.handObject = m_CachedEnemyActor.aiShooter.handObject;
+            RightHandController.gunBehindBody = new GunHandController.DirectionalAnimationBoolSixWay() {
+                Back = true,
+                BackRight = true,
+                ForwardRight = true,
+                Forward = false,
+                ForwardLeft = false,
+                BackLeft = false
+            };
+            RightHandController.gunBehindBodyEight = new GunHandController.DirectionalAnimationBoolEightWay();
+            RightHandController.isEightWay = false;
+            RightHandController.PreFireDelay = 0;
+            RightHandController.NumShots = 1;
+            RightHandController.ShotCooldown = 0.4f;
+            RightHandController.Cooldown = 2f;
+            RightHandController.RampBullets = false;
+            RightHandController.RampStartHeight = 2;
+            RightHandController.RampTime = 1;
+
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "HotShot Bullet Kin", "8a0b7a287410464bb17b9e656958bd19", (tk2dSprite)m_CachedEnemyActor.sprite, instantiateCorpseObject: false, ExternalCorpseObject: GetOrLoadByGuid_Orig("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+
+            m_CachedAIActor.MovementSpeed = 2;
+            m_CachedAIActor.PathableTiles = CellTypes.FLOOR;
+            
+            
+            if (m_CachedAIActor.aiAnimator) { ExpandUtility.DuplicateComponent(m_CachedAIActor.aiAnimator, m_CachedEnemyActor.aiAnimator); }
+
+            if (m_CachedAIActor.spriteAnimator) { ExpandUtility.DuplicateComponent(m_CachedAIActor.spriteAnimator, m_CachedEnemyActor.spriteAnimator); }
+
+            tk2dSpriteCollectionData HotShotCollectionData = m_CachedTargetObject.AddComponent<tk2dSpriteCollectionData>();
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(m_CachedEnemyActor.sprite.Collection), HotShotCollectionData);
+
+            Material m_NewHotShotMaterial = new Material(m_CachedEnemyActor.sprite.Collection.materials[0]);
+            m_NewHotShotMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("HotShotBulletMan_Collection");
+            HotShotCollectionData.materials[0] = m_NewHotShotMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in HotShotCollectionData.spriteDefinitions) { spriteDefinition.material = m_NewHotShotMaterial; }
+            m_CachedAIActor.sprite.Collection = HotShotCollectionData;
+
+            ExpandUtility.DuplicateSpriteAnimation(m_CachedTargetObject, m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>(), m_CachedEnemyActor.spriteAnimator.Library, HotShotCollectionData);
+            m_CachedAIActor.spriteAnimator.Library = m_CachedTargetObject.GetComponent<tk2dSpriteAnimation>();
+            
+
+            ExpandHideGunHandsOnDeath hideGunHandsOnDeath = m_CachedTargetObject.AddComponent<ExpandHideGunHandsOnDeath>();
+            hideGunHandsOnDeath.gunHands.Add(LeftHandController);
+            hideGunHandsOnDeath.gunHands.Add(RightHandController);
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>() {
+                new RedBarrelAwareness() { AvoidRedBarrels = true, ShootRedBarrels = true, PushRedBarrels = true }
+            };
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = true,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new RideInCartsBehavior(),
+                new SeekTargetBehavior() {
+                    StopWhenInRange = true,
+                    CustomRange = 7,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.25f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>() {
+                new GunHandBasicShootBehavior() {
+                    MaxUsages = 0,
+                    RequiresLineOfSight = false,
+                    resetCooldownOnDamage = null,
+                    IsBlackPhantom = false,
+                    targetAreaStyle = null,
+                    AccumulateHealthThresholds = true,
+                    HealthThresholds = new float[0],
+                    MaxHealthThreshold = 1,
+                    MinHealthThreshold = 0,
+                    MaxEnemiesInRoom = 0,
+                    MinWallDistance = 0,
+                    Range = 0,
+                    MinRange = 0,
+                    GroupCooldown = 0,
+                    GroupName = null,
+                    InitialCooldownVariance = 0,
+                    InitialCooldown = 0,
+                    GlobalCooldown = 0,
+                    AttackCooldown = 0,
+                    CooldownVariance = 0,
+                    Cooldown = 0,
+                    GunHands = new List<GunHandController>() { LeftHandController, RightHandController },
+                    FireAllGuns = false,
+                    LineOfSight = true
+                }
+            };
+
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>() { LeftHandController, RightHandController };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            HotShotBulletKinGUID = m_CachedAIActor.EnemyGuid;
+
+            AddEnemyToDatabase(m_CachedTargetObject, m_CachedAIActor.EnemyGuid, true);
+
+            m_CachedEnemyActor = null;
+            return;
+        }
         
         public static void BuildRatGrenadePrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
-            m_CachedTargetObject = Instantiate(GetOrLoadByGuid_Orig("14ea47ff46b54bb4a98f91ffcffb656d").gameObject);
+            m_CachedTargetObject = UnityEngine.Object.Instantiate(GetOrLoadByGuid_Orig("14ea47ff46b54bb4a98f91ffcffb656d").gameObject);
             m_CachedTargetObject.SetActive(false);
             m_CachedTargetObject.name = "Greande Rat";
 
@@ -305,7 +991,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.EnemyGuid = "1a1dc5ed-92a6-4bd1-bbee-098991e7d2d4";
             m_CachedAIActor.EnemyId = UnityEngine.Random.Range(10000, 100000);
             m_CachedAIActor.CorpseObject = null;
-            Destroy(m_CachedAIActor.gameObject.GetComponent<EncounterTrackable>());
+            UnityEngine.Object.Destroy(m_CachedAIActor.gameObject.GetComponent<EncounterTrackable>());
             
             tk2dSprite m_Sprite = m_CachedTargetObject.GetComponent<tk2dSprite>();
             tk2dSpriteAnimator m_SpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
@@ -333,7 +1019,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (isFakePrefab) {
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);                
             }
-            DontDestroyOnLoad(m_CachedTargetObject);
+            UnityEngine.Object.DontDestroyOnLoad(m_CachedTargetObject);
 
             RatGrenadeGUID = m_CachedAIActor.EnemyGuid;
         }
@@ -2868,7 +3554,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static void BuildMetalCubeGuyWestPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
 
-            m_CachedTargetObject = Instantiate(ExpandPrefabs.MetalCubeGuy.gameObject);
+            m_CachedTargetObject = UnityEngine.Object.Instantiate(ExpandPrefabs.MetalCubeGuy.gameObject);
             m_CachedTargetObject.SetActive(false);
             m_CachedTargetObject.name = "MetalCubeGuy_TrapVersion_West";
 
@@ -2908,7 +3594,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MetalCubeGuyWestGUID = m_CachedTargetAIActor.EnemyGuid;
             AddEnemyToDatabase(m_CachedTargetObject, m_CachedTargetAIActor.EnemyGuid, true);
             FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-            DontDestroyOnLoad(m_CachedTargetObject);
+            UnityEngine.Object.DontDestroyOnLoad(m_CachedTargetObject);
         }
 
         public static void BuildDummyExplodyBarrelGuyPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
@@ -3072,7 +3758,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
-            m_CachedTargetObject = Instantiate(GetOrLoadByGuid("dc3cd41623d447aeba77c77c99598426").gameObject);
+            m_CachedTargetObject = UnityEngine.Object.Instantiate(EnemyDatabase.GetOrLoadByGuid("dc3cd41623d447aeba77c77c99598426").gameObject);
             m_CachedTargetObject.SetActive(false);
 
             m_CachedTargetObject.name = "BossParasite";
@@ -3105,7 +3791,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             parasiteDeathController.bigExplosionCount = 1;
             parasiteDeathController.bigExplosionMidDelay = 0.3f;
 
-            Destroy(m_CachedTargetObject.GetComponent<BossFinalMarineDeathController>());
+            UnityEngine.Object.Destroy(m_CachedTargetObject.GetComponent<BossFinalMarineDeathController>());
             
             GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
             bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
@@ -3162,13 +3848,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ParasiteBossGUID = m_TargetAIActor.EnemyGuid;
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-                DontDestroyOnLoad(m_CachedTargetObject);
+                UnityEngine.Object.DontDestroyOnLoad(m_CachedTargetObject);
             }
         }
         
         public static void BuildJungleBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
-            m_CachedTargetObject = Instantiate(GetOrLoadByGuid("880bbe4ce1014740ba6b4e2ea521e49d").gameObject);
+            m_CachedTargetObject = UnityEngine.Object.Instantiate(EnemyDatabase.GetOrLoadByGuid("880bbe4ce1014740ba6b4e2ea521e49d").gameObject);
             m_CachedTargetObject.SetActive(false);
             m_CachedTargetObject.name = "Com4nd0 Boss";
 
@@ -3186,8 +3872,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             m_TargetAIActor.SetsFlagOnDeath = false;
                       
-            // Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotIntroDoer>());
-            Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotDeathController>());
+            // UnityEngine.Object.Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotIntroDoer>());
+            UnityEngine.Object.Destroy(m_CachedTargetObject.GetComponent<BossFinalRobotDeathController>());
 
             GenericIntroDoer bossIntroDoer = m_CachedTargetObject.GetComponent<GenericIntroDoer>();
             bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
@@ -3238,7 +3924,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 com4nd0GUID = m_TargetAIActor.EnemyGuid;
                 AddEnemyToDatabase(m_CachedTargetObject, m_TargetAIActor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
-                DontDestroyOnLoad(m_CachedTargetObject);                
+                UnityEngine.Object.DontDestroyOnLoad(m_CachedTargetObject);                
             }
         }
 

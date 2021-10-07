@@ -6,7 +6,7 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 namespace ExpandTheGungeon {
 
 	// A slightly rewritten version of old Anywhere Mod by stellatedHexahedron
-	public class DungeonFlowModule : MonoBehaviour {
+	public class DungeonFlowModule {
 
         private static List<string> knownFlows = new List<string>();	
 		private static List<string> knownTilesets = new List<string>();

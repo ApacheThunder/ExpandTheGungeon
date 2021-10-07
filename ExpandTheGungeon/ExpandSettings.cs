@@ -5,6 +5,7 @@ namespace ExpandTheGungeon {
 
     public static class ExpandSettings {
 
+        public static bool EnableLogo = true;
         public static bool EnableTestDungeonFlow = false;
         public static string TestFlow = "Test_CustomRoom_Flow";
         public static string TestFloor = "tt_phobos";
@@ -28,10 +29,8 @@ namespace ExpandTheGungeon {
         public static bool HasSpawnedSecretBoss = false;
         public static bool phobosElevatorHasBeenUsed = false;
         public static float randomSeed = 0.5f;
-
-
-
-        public static void ImportSettings() {
+        
+        public static void LoadSettings() {
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
                 string CachedJSONText = File.ReadAllText(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));
                 ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
@@ -60,6 +59,7 @@ namespace ExpandTheGungeon {
         }
         
         public static void OverwriteUserSettings(ExpandCachedStats stats) {
+            EnableLogo = stats.EnableLogo;
             EnableTestDungeonFlow = stats.EnableTestDungeonFlow;
             TestFlow = stats.TestFlow;
             TestFloor = stats.TestFloor;
@@ -78,6 +78,7 @@ namespace ExpandTheGungeon {
     }
 
     public class ExpandCachedStats : ScriptableObject {
+        public bool EnableLogo;
         public bool EnableTestDungeonFlow;
         public string TestFlow;
         public string TestFloor;
@@ -95,6 +96,7 @@ namespace ExpandTheGungeon {
         public int GameLanguage;
         
         public ExpandCachedStats() {
+            EnableLogo = ExpandSettings.EnableLogo;
             EnableTestDungeonFlow = ExpandSettings.EnableTestDungeonFlow;
             TestFlow = ExpandSettings.TestFlow;
             TestFloor = ExpandSettings.TestFloor;

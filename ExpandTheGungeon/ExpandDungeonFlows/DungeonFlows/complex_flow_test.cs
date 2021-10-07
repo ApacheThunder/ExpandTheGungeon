@@ -7,7 +7,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class complex_flow_test : ExpandDungeonFlow {        
+    public class complex_flow_test {        
 
         public static DungeonFlow Complex_Flow_Test() {
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();

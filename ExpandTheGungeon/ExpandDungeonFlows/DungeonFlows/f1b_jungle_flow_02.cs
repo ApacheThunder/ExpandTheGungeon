@@ -5,23 +5,23 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class f1b_jungle_flow_02 : ExpandDungeonFlow {
+    public class f1b_jungle_flow_02 {
 
         public static DungeonFlow F1b_Jungle_Flow_02() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 
-            if (!JungleInjectionData) {
-                JungleInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
-                JungleInjectionData.name = "Jungle Common Injection Data";
-                JungleInjectionData.UseInvalidWeightAsNoInjection = true;
-                JungleInjectionData.PreventInjectionOfFailedPrerequisites = false;
-                JungleInjectionData.IsNPCCell = false;
-                JungleInjectionData.IgnoreUnmetPrerequisiteEntries = false;
-                JungleInjectionData.OnlyOne = false;
-                JungleInjectionData.ChanceToSpawnOne = 0.5f;
-                JungleInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-                JungleInjectionData.InjectionData = new List<ProceduralFlowModifierData>() {
+            if (!ExpandDungeonFlow.JungleInjectionData) {
+                ExpandDungeonFlow.JungleInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+                ExpandDungeonFlow.JungleInjectionData.name = "Jungle Common Injection Data";
+                ExpandDungeonFlow.JungleInjectionData.UseInvalidWeightAsNoInjection = true;
+                ExpandDungeonFlow.JungleInjectionData.PreventInjectionOfFailedPrerequisites = false;
+                ExpandDungeonFlow.JungleInjectionData.IsNPCCell = false;
+                ExpandDungeonFlow.JungleInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+                ExpandDungeonFlow.JungleInjectionData.OnlyOne = false;
+                ExpandDungeonFlow.JungleInjectionData.ChanceToSpawnOne = 0.5f;
+                ExpandDungeonFlow.JungleInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+                ExpandDungeonFlow.JungleInjectionData.InjectionData = new List<ProceduralFlowModifierData>() {
                     new ProceduralFlowModifierData() {
                         annotation = "Cathedral Crest Room",
                         DEBUG_FORCE_SPAWN = false,
@@ -104,38 +104,38 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
 
 
-            DungeonFlowNode entranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_Jungle_Entrance);
-            DungeonFlowNode exitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.Expand_Jungle_Exit);
-            DungeonFlowNode bossfoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode bossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_Jungle_Boss);
+            DungeonFlowNode entranceNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_Jungle_Entrance);
+            DungeonFlowNode exitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.Expand_Jungle_Exit);
+            DungeonFlowNode bossfoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode bossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_Jungle_Boss);
 
-            DungeonFlowNode JungleShopNode = GenerateDefaultNode(m_CachedFlow, ExpandPrefabs.shop02.category, overrideTable: ExpandPrefabs.shop_room_table);
-            DungeonFlowNode JungleRewardNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
-            DungeonFlowNode JungleRewardNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
+            DungeonFlowNode JungleShopNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, ExpandPrefabs.shop02.category, overrideTable: ExpandPrefabs.shop_room_table);
+            DungeonFlowNode JungleRewardNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
+            DungeonFlowNode JungleRewardNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.gungeon_rewardroom_1);
 
 
-            DungeonFlowNode JungleRoomNode_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, oneWayLoopTarget: true);
-            DungeonFlowNode JungleRoomNode_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_04 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_05 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_06 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, oneWayLoopTarget: true);
-            DungeonFlowNode JungleRoomNode_07 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_09 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_10 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_11 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB);
-            DungeonFlowNode JungleRoomNode_12 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_13 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_14 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_16 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_17 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            DungeonFlowNode JungleRoomNode_18 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, oneWayLoopTarget: true);
+            DungeonFlowNode JungleRoomNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_06 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, oneWayLoopTarget: true);
+            DungeonFlowNode JungleRoomNode_07 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_09 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_10 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_11 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB);
+            DungeonFlowNode JungleRoomNode_12 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_13 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_14 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_16 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_17 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode JungleRoomNode_18 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
 
             m_CachedFlow.name = "F1b_Jungle_Flow_02";
             m_CachedFlow.fallbackRoomTable = ExpandPrefabs.JungleRoomTable;
             m_CachedFlow.phantomRoomTable = null;
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
             m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>(0);
-            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { BaseSharedInjectionData, JungleInjectionData };
+            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { ExpandDungeonFlow.BaseSharedInjectionData, ExpandDungeonFlow.JungleInjectionData };
             m_CachedFlow.Initialize();
 
             m_CachedFlow.AddNodeToFlow(entranceNode, null);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class f4c_west_flow_01 : ExpandDungeonFlow {
+    public class f4c_west_flow_01 {
 
         public static DungeonFlow F4c_West_Flow_01() {
 
@@ -15,18 +15,18 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.phantomRoomTable = null;
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
             m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>(0);
-            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { CustomSecretFloorSharedInjectionData };
+            m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { ExpandDungeonFlow.CustomSecretFloorSharedInjectionData };
             m_CachedFlow.Initialize();
 
 
-            DungeonFlowNode entranceNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_West_Entrance);
-            DungeonFlowNode exitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.SecretExitRoom);
-            DungeonFlowNode fakebossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode fakebossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.FakeBossRoom);
-            DungeonFlowNode westBossfoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode westBossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_West_WestBrosBossRoom);
+            DungeonFlowNode entranceNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandRoomPrefabs.Expand_West_Entrance);
+            DungeonFlowNode exitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandRoomPrefabs.SecretExitRoom);
+            DungeonFlowNode fakebossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode fakebossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.FakeBossRoom);
+            DungeonFlowNode westBossfoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode westBossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_West_WestBrosBossRoom);
             
-            DungeonFlowNode WestWinchesterNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode WestWinchesterNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             List<PrototypeDungeonRoom> m_WinchesterRoomList = new List<PrototypeDungeonRoom>();
 
             foreach (WeightedRoom weightedRoom in ExpandPrefabs.winchesterroomtable.includedRooms.elements) {
@@ -38,66 +38,66 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 WestWinchesterNode.overrideExactRoom = BraveUtility.RandomElement(m_WinchesterRoomList);
             }
             
-            DungeonFlowNode WestGunMuncherNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.subshop_muncher_01);
+            DungeonFlowNode WestGunMuncherNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.subshop_muncher_01);
 
-            DungeonFlowNode WestShopNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.shop_room_table);
-            DungeonFlowNode WestShopBackRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_SecretShopWarp, handlesOwnWarping: false);
+            DungeonFlowNode WestShopNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.shop_room_table);
+            DungeonFlowNode WestShopBackRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_SecretShopWarp, handlesOwnWarping: false);
 
-            DungeonFlowNode WestChestRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandRoomPrefabs.Expand_West_ChestRoom);
-            DungeonFlowNode WestChestRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandRoomPrefabs.Expand_West_ChestRoom);
+            DungeonFlowNode WestChestRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandRoomPrefabs.Expand_West_ChestRoom);
+            DungeonFlowNode WestChestRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.REWARD, ExpandRoomPrefabs.Expand_West_ChestRoom);
 
-            DungeonFlowNode WestSecretRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretKeyShop);
-            DungeonFlowNode WestSecretSpacerRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_TinySecretEmpty);
-            DungeonFlowNode WestSecretWarp_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_SecretWarp, handlesOwnWarping: false);
-            DungeonFlowNode WestSecretHub_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, ExpandRoomPrefabs.Expand_West_SecretHub, isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode WestSecretHub_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, ExpandRoomPrefabs.Expand_West_SecretHub2, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode WestSecretRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretKeyShop);
+            DungeonFlowNode WestSecretSpacerRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_TinySecretEmpty);
+            DungeonFlowNode WestSecretWarp_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_SecretWarp, handlesOwnWarping: false);
+            DungeonFlowNode WestSecretHub_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, ExpandRoomPrefabs.Expand_West_SecretHub, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode WestSecretHub_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.HUB, ExpandRoomPrefabs.Expand_West_SecretHub2, isWarpWingNode: true, handlesOwnWarping: false);
 
-            DungeonFlowNode WestRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
-            DungeonFlowNode WestRoom_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_04 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_05 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_06 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_07 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_08 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
-            DungeonFlowNode WestRoom_09 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_10 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
-            DungeonFlowNode WestRoom_11 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
-            DungeonFlowNode WestRoom_12 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
+            DungeonFlowNode WestRoom_03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_06 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_07 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_08 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
+            DungeonFlowNode WestRoom_09 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_10 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestCanyonRoomTable);
+            DungeonFlowNode WestRoom_11 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
+            DungeonFlowNode WestRoom_12 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestTinyCanyonRoomTable);
 
-            DungeonFlowNode WestRoom_13 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
-            DungeonFlowNode WestRoom_14 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
-            DungeonFlowNode WestRoom_15 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
-            DungeonFlowNode WestRoom_16 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
+            DungeonFlowNode WestRoom_13 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
+            DungeonFlowNode WestRoom_14 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
+            DungeonFlowNode WestRoom_15 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
+            DungeonFlowNode WestRoom_16 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.WestInterior1RoomTable);
 
-            DungeonFlowNode MinibossRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.MegaMiniBossRoomTable);
-            DungeonFlowNode ChallengeShrineRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.MegaChallengeShrineTable);
-            DungeonFlowNode ShrineRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandRoomPrefabs.Expand_West_ShrineRoom);
+            DungeonFlowNode MinibossRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, overrideTable: ExpandPrefabs.MegaMiniBossRoomTable);
+            DungeonFlowNode ChallengeShrineRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.MegaChallengeShrineTable);
+            DungeonFlowNode ShrineRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandRoomPrefabs.Expand_West_ShrineRoom);
             ShrineRoom_01.forcedDoorType = DungeonFlowNode.ForcedDoorType.LOCKED;
-            DungeonFlowNode SpecialRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.basic_special_rooms_noBlackMarket);
+            DungeonFlowNode SpecialRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.basic_special_rooms_noBlackMarket);
 
-            DungeonFlowNode BlankRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_BlankPedestalRoom);
-            DungeonFlowNode BlankRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_BlankPedestalRoom);
+            DungeonFlowNode BlankRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_BlankPedestalRoom);
+            DungeonFlowNode BlankRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_BlankPedestalRoom);
 
-            DungeonFlowNode RatKeyRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
-            DungeonFlowNode RatKeyRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
-            DungeonFlowNode SecretRatKeyRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
-            DungeonFlowNode SecretRatKeyRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
+            DungeonFlowNode RatKeyRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
+            DungeonFlowNode RatKeyRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
+            DungeonFlowNode SecretRatKeyRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
+            DungeonFlowNode SecretRatKeyRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
 
 
-            DungeonFlowNode PuzzleRoom_01 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom1);
-            DungeonFlowNode PuzzleRoom_02 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom2);
-            DungeonFlowNode PuzzleRoom_03 = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom3);
+            DungeonFlowNode PuzzleRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom1);
+            DungeonFlowNode PuzzleRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom2);
+            DungeonFlowNode PuzzleRoom_03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.PuzzleRoom3);
 
-            DungeonFlowNode m_SpecialRewardNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
+            DungeonFlowNode m_SpecialRewardNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.SecretRewardRoom);
 
-            DungeonFlowNode m_SecretBossNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
-            DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.DragunBossFoyerRoom);
-            // DungeonFlowNode m_SecretBossFoyerNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode m_SecretBossExitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
-            // DungeonFlowNode m_SecretBossExitNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.DraGunExitRoom);
-            // DungeonFlowNode m_SecretBossEndTimesNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandPrefabs.DraGunEndTimesRoom, isWarpWingNode: true);
-            // DungeonFlowNode m_SecretBossShopNode = GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.BlacksmithShop);
+            DungeonFlowNode m_SecretBossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
+            DungeonFlowNode m_SecretBossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.DragunBossFoyerRoom);
+            // DungeonFlowNode m_SecretBossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
+            DungeonFlowNode m_SecretBossExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
+            // DungeonFlowNode m_SecretBossExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.DraGunExitRoom);
+            // DungeonFlowNode m_SecretBossEndTimesNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandPrefabs.DraGunEndTimesRoom, isWarpWingNode: true);
+            // DungeonFlowNode m_SecretBossShopNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.BlacksmithShop);
 
             m_CachedFlow.AddNodeToFlow(entranceNode, null);
             m_CachedFlow.AddNodeToFlow(WestRoom_01, entranceNode);            

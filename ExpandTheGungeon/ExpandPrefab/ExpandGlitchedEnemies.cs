@@ -8,7 +8,17 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    public class ExpandGlitchedEnemies : MonoBehaviour {        
+    public class ExpandGlitchedEnemies {        
+
+        public static ExpandGlitchedEnemies Instance {
+            get {
+                if (m_instance == null) { m_instance = new ExpandGlitchedEnemies(); }
+                return m_instance;
+            }
+        }
+
+        private static ExpandGlitchedEnemies m_instance;
+
 
         public ExpandGlitchedEnemies() {
             GrenadeGuyPrefab = EnemyDatabase.GetOrLoadByGuid("4d37ce3d666b4ddda8039929225b7ede").gameObject;
@@ -461,7 +471,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AIActor m_cachedSuperReaperActor = superReaperPrefab.GetComponent<AIActor>();
             if (m_cachedSuperReaperActor == null) { return; }
             
-            Destroy(m_cachedSuperReaperActor.gameObject.GetComponentInChildren<SuperReaperController>(true));
+            UnityEngine.Object.Destroy(m_cachedSuperReaperActor.gameObject.GetComponentInChildren<SuperReaperController>(true));
             m_cachedSuperReaperActor.gameObject.AddComponent<ExpandGlitchedSuperReaperController>();
             if (isCursed) {
                 ExpandGlitchedSuperReaperController glitchReaperController = m_cachedSuperReaperActor.gameObject.GetComponent<ExpandGlitchedSuperReaperController>();
@@ -655,7 +665,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             try { 
                 if (source.bulletBank != null) {
                     if (!isResourcefulRat) {
-                        if (target.bulletBank != null) { Destroy(target.bulletBank); }
+                        if (target.bulletBank != null) { UnityEngine.Object.Destroy(target.bulletBank); }
                         target.gameObject.AddComponent<AIBulletBank>();
                     }
                     AIBulletBank m_bulletBank = target.gameObject.GetComponent<AIBulletBank>();
@@ -670,7 +680,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             try { 
                 if (source.GetComponent<AIShooter>() != null) {
                     if (!isResourcefulRat) {
-                        if (target.aiShooter != null) { Destroy(target.GetComponent<AIShooter>()); }
+                        if (target.aiShooter != null) { UnityEngine.Object.Destroy(target.GetComponent<AIShooter>()); }
                         target.gameObject.AddComponent<AIShooter>();
                     }                    
                     AIShooter m_aiShooter = target.gameObject.GetComponent<AIShooter>();
@@ -780,7 +790,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     foreach (AIAnimator.NamedVFXPool vfx in source.aiAnimator.OtherVFX) {
                         AIAnimator.NamedVFXPool NewVFXEntry = new AIAnimator.NamedVFXPool() { name = vfx.name, vfxPool = vfx.vfxPool };
                         if (vfx.anchorTransform) {
-                            GameObject anchorObject = Instantiate(vfx.anchorTransform.gameObject, target.transform.position, Quaternion.identity);
+                            GameObject anchorObject = UnityEngine.Object.Instantiate(vfx.anchorTransform.gameObject, target.transform.position, Quaternion.identity);
                             anchorObject.name.Replace("(Clone)", string.Empty);
                             anchorObject.name.Replace("(clone)", string.Empty);
                             anchorObject.transform.SetParent(target.transform, false);
@@ -795,7 +805,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
         public GameObject SpawnGlitchedBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -857,8 +867,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             try {
                 /*if (CachedSourceEnemyObject == SunburstPrefab.gameObject) {
-                    CachedGlitchEnemyActor.GetComponent<DashBehavior>().Destroy();
-                    CachedGlitchEnemyActor.GetComponent<SequentialAttackBehaviorGroup>().Destroy();
+                    CachedGlitchEnemyActor.GetComponent<DashBehavior>().UnityEngine.Object.Destroy();
+                    CachedGlitchEnemyActor.GetComponent<SequentialAttackBehaviorGroup>().UnityEngine.Object.Destroy();
                 }*/
 
                 if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
@@ -931,11 +941,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedCultist(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(CultistPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(CultistPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1069,11 +1079,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedGhost(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(GhostPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(GhostPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1205,11 +1215,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedArrowheadKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(ArrowheadManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(ArrowheadManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1342,11 +1352,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedSniperKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletRifleManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletRifleManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1471,11 +1481,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedAshBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(AshBulletManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(AshBulletManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1607,11 +1617,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedAshShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(AshBulletShotgunManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(AshBulletShotgunManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1742,11 +1752,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedCardinalBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletCardinalPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletCardinalPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -1878,11 +1888,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBulletMachineGunMan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletMachineGunManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletMachineGunManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2013,11 +2023,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBulletManDevil(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManDevilPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManDevilPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2148,11 +2158,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBulletManShroomed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManShroomedPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManShroomedPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2278,11 +2288,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBulletSkeletonHelmet(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletSkeletonHelmetPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletSkeletonHelmetPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2412,11 +2422,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedVeteranShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletShotgunManSawedOffPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletShotgunManSawedOffPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2545,11 +2555,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedMutantShotGunKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletShotgunManMutantPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletShotgunManMutantPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2679,11 +2689,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedMutantBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManMutantPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManMutantPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2814,11 +2824,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedShotGrubKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletShotgrubManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletShotgrubManPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -2948,11 +2958,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBird(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BirdPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BirdPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3066,11 +3076,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBulletShark(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletSharkPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletSharkPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3188,11 +3198,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBlueLeadWizard(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(LeadWizardBluePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(LeadWizardBluePrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3227,7 +3237,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());
 
             try {
                 if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
@@ -3301,11 +3311,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedNecromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(NecromancerPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(NecromancerPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3348,7 +3358,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());
 
             try {
                 if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
@@ -3422,11 +3432,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedJamromancer(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(JamromancerPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(JamromancerPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3469,7 +3479,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());            
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CrazedController>());            
 
             try {
                 if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
@@ -3543,11 +3553,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedWizardRed(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(WizardRedPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(WizardRedPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3662,11 +3672,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedWizardYellow(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(WizardYellowPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(WizardYellowPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3781,11 +3791,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedWizardBlue(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(WizardBluePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(WizardBluePrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -3900,11 +3910,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedSunburst(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(SunburstPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(SunburstPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -4021,11 +4031,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBullatGiant(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BullatGiantPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BullatGiantPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -4146,11 +4156,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedResourcefulRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            // GameObject CachedTargetEnemyObject = Instantiate(ResourcefulRatBossPrefab);
+            // GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(ResourcefulRatBossPrefab);
             // DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             GameObject CachedTargetEnemyObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(EnemyDatabase.GetOrLoadByGuid("6868795625bd46f3ae3e4377adce288b").gameObject, CurrentRoom, position, true, awakenAnimType, autoEngage);
             GameObject CachedSourceEnemyObject;
@@ -4227,11 +4237,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatRewardRoomController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatRewardRoomController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ResourcefulRatIntroDoer>());
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
             CachedGlitchEnemyActor.healthHaver.OnlyAllowSpecialBossDamage = false;
@@ -4284,11 +4294,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             // DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             CachedGlitchEnemyActor.ConfigureOnPlacement(CurrentRoom);
-            // Destroy(CachedTargetEnemyObject);
+            // UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return CachedTargetEnemyObject;
         }
         public GameObject SpawnGlitchedBlockner(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(ManfredsRivalPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(ManfredsRivalPrefab);
             GameObject CachedSourceEnemyObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -4364,10 +4374,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalKnightsController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalNPCKnightsController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalKnightsController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ManfredsRivalNPCKnightsController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
@@ -4424,11 +4434,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBandanaBulletKin(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManBandanaPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManBandanaPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -4557,7 +4567,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedAngryBook(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -4591,7 +4601,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BraveUtility.RandomElement(RandomSourceEnemyPrefabs));
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BraveUtility.RandomElement(RandomSourceEnemyPrefabs));
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -4682,11 +4692,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBeadie(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(FloatingEyePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(FloatingEyePrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -4740,11 +4750,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             try {
                 if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
-                    Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ExplodeOnDeath>());
+                    UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ExplodeOnDeath>());
                     CachedGlitchEnemyActor.gameObject.AddComponent<ExpandExplodeOnDeath>();
                 } else {
                     if (UnityEngine.Random.value <= 0.2f) {
-                        Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ExplodeOnDeath>());
+                        UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<ExplodeOnDeath>());
                         CachedGlitchEnemyActor.gameObject.AddComponent<ExpandExplodeOnDeath>();
                     }
                 }
@@ -4815,7 +4825,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedChicken(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -4842,7 +4852,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(BulletKingsToadieObject);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(ChickenPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(ChickenPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -4890,7 +4900,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ForceRegenerate(true, true);
             specRigidbody.RegenerateCache();
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CuccoController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CuccoController>());
 
             CachedGlitchEnemyActor.healthHaver.ManualDeathHandling = CachedEnemyActor.healthHaver.ManualDeathHandling;
             CachedGlitchEnemyActor.healthHaver.deathEffect = CachedEnemyActor.healthHaver.deathEffect;
@@ -4970,7 +4980,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedSnake(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -4999,7 +5009,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(SnakePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(SnakePrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies);
 
             if (CachedSourceEnemyObject == null) {
@@ -5092,11 +5102,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBlizzbulon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BlizzbulonPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BlizzbulonPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -5213,7 +5223,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedRandomBlob(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -5221,7 +5231,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (BraveUtility.RandomBool()) { BlobulonObject = PoisbulonPrefab; }
 
-            GameObject CachedTargetEnemyObject = Instantiate(BlobulonObject);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BlobulonObject);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -5348,7 +5358,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedRat(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -5374,7 +5384,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
 
-            GameObject CachedTargetEnemyObject = Instantiate(BraveUtility.RandomElement(RatPrefabs));
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BraveUtility.RandomElement(RatPrefabs));
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -5492,7 +5502,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject CorruptedRat = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
             // CurrentRoom.RegisterEnemy(CorruptedRat.GetComponent<AIActor>());
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return CorruptedRat;
         }
 
@@ -5506,7 +5516,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RandomSourceEnemyPrefabs.Add(GunNutChainPrefab);
 
 
-            GameObject CachedTargetEnemyObject = Instantiate(BraveUtility.RandomElement(RandomSourceEnemyPrefabs), new Vector2(0,0).ToVector3ZUp(1f), Quaternion.identity);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BraveUtility.RandomElement(RandomSourceEnemyPrefabs), new Vector2(0,0).ToVector3ZUp(1f), Quaternion.identity);
 
 
             if (CachedTargetEnemyObject == GunNutSpectrePrefab | 
@@ -5570,7 +5580,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (UnityEngine.Random.value <= 0.1f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
             if (CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BulletLimbController>() != null) {
-                Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BulletLimbController>());
+                UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BulletLimbController>());
             }
 
             CachedGlitchEnemyActor.EnemyId = UnityEngine.Random.Range(700, 800);
@@ -5629,12 +5639,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
 
         public GameObject SpawnGlitchedCop(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(CopPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(CopPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -5729,7 +5739,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -5788,11 +5798,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedCopAndroid(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(CopAndroidPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(CopAndroidPrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -5887,7 +5897,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -5946,11 +5956,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(SuperSpaceTurtlePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(SuperSpaceTurtlePrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -6048,7 +6058,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.25f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -6113,11 +6123,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedCursedSpaceTurtle(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(CursedSuperSpaceTurtlePrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(CursedSuperSpaceTurtlePrefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -6217,7 +6227,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
             
             CachedGlitchEnemyActor.healthHaver.SetHealthMaximum(CachedEnemyActor.healthHaver.GetCurrentHealth(), 0f, false);
             CachedGlitchEnemyActor.healthHaver.minimumHealth = CachedEnemyActor.healthHaver.minimumHealth;
@@ -6282,13 +6292,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
 
             CachedGlitchEnemyActor.BecomeBlackPhantom();
             return targetObject;
         }
         public GameObject SpawnGlitchedPayDayShotGunGuy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(PayDayShootPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(PayDayShootPrefab);
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
             List<GameObject> SpecialSourceEnemies = new List<GameObject>();
@@ -6379,8 +6389,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
-            Destroy(CachedGlitchEnemyActor.GetComponent<PaydaySynergyProcessor>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<PaydaySynergyProcessor>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -6439,11 +6449,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedR2G2(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(R2G2Prefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(R2G2Prefab);
             GameObject CachedSourceEnemyObject;
 
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -6537,7 +6547,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -6602,7 +6612,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedPortableTurret(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -6623,7 +6633,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(BulletManBandanaPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(PortableTurretPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(PortableTurretPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -6643,7 +6653,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
             try {
-                Destroy(CachedGlitchEnemyActor.healthHaver.GetComponent<ExplodeOnDeath>());
+                UnityEngine.Object.Destroy(CachedGlitchEnemyActor.healthHaver.GetComponent<ExplodeOnDeath>());
                 CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
                 ExpandExplodeOnDeath CachedExploder = CachedGlitchEnemyActor.healthHaver.GetComponent<ExpandExplodeOnDeath>();
                 CachedExploder.deathType = OnDeathBehavior.DeathType.Death;
@@ -6663,8 +6673,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
-            Destroy(CachedGlitchEnemyActor.GetComponent<PortableTurretController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<PortableTurretController>());
             
             CachedGlitchEnemyActor.ManualKnockbackHandling = CachedEnemyActor.ManualKnockbackHandling;
             CachedGlitchEnemyActor.KnockbackVelocity = CachedEnemyActor.KnockbackVelocity;
@@ -6746,7 +6756,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBabyMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -6773,7 +6783,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BabyGoodMimicPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BabyGoodMimicPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -6835,7 +6845,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -6900,7 +6910,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedDog(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -6926,7 +6936,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(DogPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(DogPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -6987,7 +6997,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -7051,7 +7061,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dBaseSprite GlitchActorSprite = CachedGlitchEnemyActor.sprite.GetComponent<tk2dBaseSprite>();
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedWolf(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -7079,7 +7089,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(WolfPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(WolfPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -7140,7 +7150,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -7208,7 +7218,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
             }
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedSerJunkan(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -7235,7 +7245,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(SerJunkanPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(SerJunkanPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
             
             if (CachedSourceEnemyObject == null) {
@@ -7303,8 +7313,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     CachedGlitchEnemyActor.behaviorSpeculator.RegenerateCache();
                 } catch (Exception) { }
                                 
-                Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
-                Destroy(CachedGlitchEnemyActor.GetComponent<SackKnightController>());
+                UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+                UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<SackKnightController>());
             } else {
                 try {
                     if (CachedEnemyActor.aiShooter != null) {
@@ -7315,7 +7325,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         if (CachedGlitchEnemyActor.aiShooter == null) { CachedGlitchEnemyActor.gameObject.AddComponent<AIShooter>(); }
                     }
                 } catch (Exception) { }
-                Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+                UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
             }
 
             SpeculativeRigidbody specRigidbody = CachedGlitchEnemyActor.specRigidbody;
@@ -7490,7 +7500,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedCaterpillar(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -7516,7 +7526,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(CaterpillarPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(CaterpillarPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
             
             if (CachedSourceEnemyObject == null) {
@@ -7577,7 +7587,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             CachedGlitchEnemyActor.healthHaver.SetHealthMaximum(CachedEnemyActor.healthHaver.GetCurrentHealth(), 0f, false);
             CachedGlitchEnemyActor.healthHaver.minimumHealth = CachedEnemyActor.healthHaver.minimumHealth;
@@ -7647,7 +7657,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedRaccoon(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
@@ -7675,7 +7685,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
             
 
-            GameObject CachedTargetEnemyObject = Instantiate(RaccoonPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(RaccoonPrefab);
             GameObject CachedSourceEnemyObject;
             if (isNonGlitchedVersion) {
                 CachedSourceEnemyObject = TinyBlobulordObject.gameObject;
@@ -7734,7 +7744,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (!isNonGlitchedVersion && UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -7800,7 +7810,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite);
             }
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedTurkey(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken, bool isNonGlitchedVersion = false) {
@@ -7826,7 +7836,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(BulletKingsToadieObject);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(TurkeyPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(TurkeyPrefab);
             GameObject CachedSourceEnemyObject;
 
             if (isNonGlitchedVersion) {
@@ -7886,7 +7896,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (!isNonGlitchedVersion && UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -7956,7 +7966,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBlanky(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -7982,7 +7992,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(BulletKingsToadieObject);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BlankyPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BlankyPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -8036,7 +8046,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -8098,7 +8108,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBabyShelleton(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -8125,7 +8135,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BabyShelletonPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BabyShelletonPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedSourceEnemyObject == null) {
@@ -8187,9 +8197,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             specRigidbody.ClearSpecificCollisionExceptions();
             specRigidbody.RemoveCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.PlayerHitBox, CollisionLayer.PlayerCollider));
 
-            Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
-            Destroy(CachedGlitchEnemyActor.GetComponent<AIBeamShooter>());
-            Destroy(CachedGlitchEnemyActor.GetComponent<BasicBeamController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<CompanionController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<AIBeamShooter>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.GetComponent<BasicBeamController>());
 
             if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.gameObject.AddComponent<ExpandSpawnGlitchEnemyOnDeath>(); }
 
@@ -8254,7 +8264,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RnadomColorIntensityFloat);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
 
@@ -8264,9 +8274,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject CachedSourceEnemyObject;
 
             if (BraveUtility.RandomBool()) {
-                CachedTargetEnemyObject = Instantiate(BulletBrosSmileyPrefab);
+                CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletBrosSmileyPrefab);
             } else {
-                CachedTargetEnemyObject = Instantiate(BulletBrosShadesPrefab);
+                CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletBrosShadesPrefab);
             }
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8340,10 +8350,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BulletBroDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BulletBrosIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BroController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BulletBroDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BulletBrosIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BroController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
             CachedGlitchEnemyActor.healthHaver.OnlyAllowSpecialBossDamage = false;
             CachedGlitchEnemyActor.healthHaver.SetHealthMaximum(CachedEnemyActor.healthHaver.GetCurrentHealth(), null, false);
@@ -8402,11 +8412,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedGatlingGull(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(GatlingGullPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(GatlingGullPrefab);
             GameObject CachedSourceEnemyObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8476,11 +8486,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullOutroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullCrowController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullOutroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GatlingGullCrowController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
@@ -8544,7 +8554,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBeholster(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -8572,7 +8582,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BeholsterPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BeholsterPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8618,9 +8628,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BeholsterController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BeholsterTentacleController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BeholsterController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BeholsterTentacleController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
@@ -8681,7 +8691,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedBossDoorMimic(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -8691,7 +8701,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BossDoorMimicPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BossDoorMimicPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8730,9 +8740,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
             CachedGlitchEnemyActor.healthHaver.OnlyAllowSpecialBossDamage = false;
@@ -8790,7 +8800,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
         public GameObject SpawnGlitchedHighPriest(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
@@ -8800,7 +8810,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(HighPriestPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(HighPriestPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8840,8 +8850,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.OverrideDisplayName = ("Corrupted " + CachedEnemyActor.GetActorName());
             CachedGlitchEnemyActor.ActorName = ("Corrupted " + CachedGlitchEnemyActor.GetActorName());
             CachedGlitchEnemyActor.name = ("Corrupted " + CachedGlitchEnemyActor.name);
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<HighPriestIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<HighPriestIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
             CachedGlitchEnemyActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.None;
             CachedGlitchEnemyActor.healthHaver.OnlyAllowSpecialBossDamage = false;
@@ -8898,7 +8908,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
 
@@ -8926,7 +8936,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ValidSourceEnemies.Add(GrenadeGuyPrefab);
             ValidSourceEnemies = ValidSourceEnemies.Shuffle();
 
-            GameObject CachedTargetEnemyObject = Instantiate(BossDoorMimicPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BossDoorMimicPrefab);
             GameObject CachedSourceEnemyObject = BraveUtility.RandomElement(ValidSourceEnemies).gameObject;
 
             if (CachedTargetEnemyObject == null) { return null; }
@@ -8937,12 +8947,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AIActor CachedEnemyActor = CachedSourceEnemyObject.GetComponent<AIActor>();
             AIActor CachedGlitchEnemyActor = CachedTargetEnemyObject.GetComponent<AIActor>();
-            /*Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BossStatuesController>(true));
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BossStatuesIntroDoer>(true));
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<GenericIntroDoer>(true));*/
+            /*UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossStatueDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BossStatuesController>(true));
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<BossStatuesIntroDoer>(true));
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponentInChildren<GenericIntroDoer>(true));*/
 
             if (ExpandSettings.debugMode) {
                 ETGModConsole.Log("Spawning '" + CachedGlitchEnemyActor.ActorName + "' with GUID: " + CachedGlitchEnemyActor.EnemyGuid + " .", false);
@@ -8990,9 +9000,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.SpeculatorDelayTime = CachedEnemyActor.SpeculatorDelayTime;
             CachedGlitchEnemyActor.State = AIActor.ActorState.Inactive;
             CachedGlitchEnemyActor.HasBeenEngaged = false;
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicDeathController>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicIntroDoer>());
-            Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicDeathController>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<BossDoorMimicIntroDoer>());
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.gameObject.GetComponent<GenericIntroDoer>());
 
 
             // if (Stats.randomEnemySizeEnabled) { ChaosEnemyResizer.Instance.EnemyScale(CachedGlitchEnemyActor, Vector2.one); }
@@ -9036,12 +9046,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandShaders.Instance.ApplySuperGlitchShader(GlitchActorSprite, CachedEnemyActor);
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
 
         public GameObject SpawnGlitchedObjectAsEnemy(RoomHandler CurrentRoom, IntVector2 position, bool autoEngage = false, AIActor.AwakenAnimationType awakenAnimType = AIActor.AwakenAnimationType.Awaken) {
-            GameObject CachedTargetEnemyObject = Instantiate(BulletManPrefab);
+            GameObject CachedTargetEnemyObject = UnityEngine.Object.Instantiate(BulletManPrefab);
             GameObject CachedSourceEnemyObject;
             
             List<GameObject> ValidSourceEnemies = new List<GameObject>();
@@ -9202,11 +9212,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             CachedGlitchEnemyActor.specRigidbody = ExpandUtility.GenerateNewEnemyRigidBody(CachedGlitchEnemyActor, IntVector2.Zero, m_RigidBodyPixelSize);
 
-            Destroy(CachedGlitchEnemyActor.aiAnimator);
+            UnityEngine.Object.Destroy(CachedGlitchEnemyActor.aiAnimator);
             CachedGlitchEnemyActor.specRigidbody.RegenerateColliders = true;
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);            
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             /*if (!isConvictPastCrowdNPC) {
                 ETGModConsole.Log(m_SelectedNPC.name);
             } else {
@@ -9400,7 +9410,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
 
-            Destroy(CachedTargetEnemyObject);
+            UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             CachedEnemyActor = null;
             return targetObject;
         }        

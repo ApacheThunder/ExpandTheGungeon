@@ -11,7 +11,7 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPlaceWallMimic : MonoBehaviour {
+    public class ExpandPlaceWallMimic {
 
         public static List<string> BannedWallMimicRoomList = new List<string>() {
             "tutorial_room_007_bosstime",
@@ -67,9 +67,7 @@ namespace ExpandTheGungeon.ExpandMain {
                     if (ExpandSettings.debugMode) { ETGModConsole.Log("Dungeon has no rooms or Dungeon.data is null! This is super abnormal!", false); }
                     return;
                 }
-
-                SetupSecretDoorDestinations(dungeon);
-
+                
                 PlaceGlitchElevator(dungeon, currentFloor);
 
                 ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
@@ -468,22 +466,6 @@ namespace ExpandTheGungeon.ExpandMain {
                     ETGModConsole.Log("[DEBUG] No valid locations found for room: " + currentRoom.GetRoomName() + ".  This room was skipped!", false);
                 }
                 return false;
-            }
-        }
-
-        // Note that this door currently only supports maps that place exactly two of these.
-        // Run this during PlaceWallMimics step of floor generation.
-        public static void SetupSecretDoorDestinations(Dungeon dungeon) {
-            ExpandSecretDoorPlacable m_SecretDoorEntrance = FindObjectOfType<ExpandSecretDoorPlacable>();
-            ExpandSecretDoorExitPlacable m_SecretDoorDestination = FindObjectOfType<ExpandSecretDoorExitPlacable>();
-
-            if (m_SecretDoorDestination && m_SecretDoorEntrance) {
-                m_SecretDoorDestination.m_Destination = (m_SecretDoorEntrance.transform.position + new Vector3(1.25f, 0.6f));
-                m_SecretDoorEntrance.m_Destination = (m_SecretDoorDestination.transform.position + new Vector3(1.25f, 0.6f));
-                m_SecretDoorDestination.m_DestinationDoor = m_SecretDoorEntrance;
-                m_SecretDoorEntrance.m_DestinationDoor = m_SecretDoorDestination;
-                m_SecretDoorDestination.hasBeenSetup = true;
-                m_SecretDoorEntrance.hasBeenSetup = true;
             }
         }
 

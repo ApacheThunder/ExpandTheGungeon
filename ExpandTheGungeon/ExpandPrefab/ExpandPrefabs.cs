@@ -348,7 +348,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXBootlegRoomCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBootlegRoomCollection", "EXBootlegRoom_Collection", "EXBootlegRoomCollection");
             SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
 
-            EXGunCollection.GetComponent<tk2dSpriteCollectionData>().DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
+            tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
+            gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
         }
 
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {

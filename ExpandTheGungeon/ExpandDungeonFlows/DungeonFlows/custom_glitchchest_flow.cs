@@ -6,7 +6,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
-    public class custom_glitchchest_flow : ExpandDungeonFlow {
+    public class custom_glitchchest_flow {
                         
         public static DungeonFlow Custom_GlitchChest_Flow() {
 

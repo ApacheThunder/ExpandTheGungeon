@@ -6,11 +6,14 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandUtilities {
     
-    public class ExpandShaders : MonoBehaviour {
+    public class ExpandShaders {
 
         public static ExpandShaders Instance {
             get {
-                if (!m_instance) { m_instance = ETGModMainBehaviour.Instance.gameObject.AddComponent<ExpandShaders>(); }
+                if (m_instance == null) {
+                    // m_instance = ETGModMainBehaviour.Instance.gameObject.AddComponent<ExpandShaders>();
+                    m_instance = new ExpandShaders();
+                }
                 return m_instance;
             }
         }
@@ -359,12 +362,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
                 if (aiActor.sprite == null) { return; }
 
-                if (gameObject.transform != null && gameObject.transform.position.GetAbsoluteRoom() != null) {
-                    if (gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("doublebeholsterroom01")) { return; }
-                    if (gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("bossstatuesroom01")) { return; }
-                    if (gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("boss foyer")) { return; }
+                if (aiActor.gameObject.transform != null && aiActor.gameObject.transform.position.GetAbsoluteRoom() != null) {
+                    if (aiActor.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("doublebeholsterroom01")) { return; }
+                    if (aiActor.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("bossstatuesroom01")) { return; }
+                    if (aiActor.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith("boss foyer")) { return; }
                     if (GameManager.Instance.Dungeon.data.Entrance != null) {
-                        if (gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(GameManager.Instance.Dungeon.data.Entrance.GetRoomName())) {
+                        if (aiActor.gameObject.transform.position.GetAbsoluteRoom().GetRoomName().StartsWith(GameManager.Instance.Dungeon.data.Entrance.GetRoomName())) {
                             return;
                         }
                     }
@@ -680,7 +683,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             MeshRenderer spriteComponent = sprite.GetComponent<MeshRenderer>();
             Material[] sharedMaterials = spriteComponent.sharedMaterials;
             Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
-            Material CustomMaterial = Instantiate(m_cachedGlitchMaterial);
+            Material CustomMaterial = UnityEngine.Object.Instantiate(m_cachedGlitchMaterial);
             /*if (glitchactor != null) {
                 if (glitchactor.optionalPalette != null) {
                     CustomMaterial.SetTexture("_MainTex", glitchactor.optionalPalette);
@@ -786,7 +789,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             MeshRenderer spriteComponent = firstSprite.GetComponent<MeshRenderer>();
             Material[] sharedMaterials = spriteComponent.sharedMaterials;
             Array.Resize(ref sharedMaterials, sharedMaterials.Length + 1);
-            Material CustomMaterial = Instantiate(m_cachedGlitchMaterial);
+            Material CustomMaterial = UnityEngine.Object.Instantiate(m_cachedGlitchMaterial);
             CustomMaterial.SetTexture("_MainTex", sharedMaterials[0].GetTexture("_MainTex"));
             sharedMaterials[sharedMaterials.Length - 1] = CustomMaterial;
             spriteComponent.sharedMaterials = sharedMaterials;

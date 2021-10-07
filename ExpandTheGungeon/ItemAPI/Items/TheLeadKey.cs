@@ -67,13 +67,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private bool IsUsableRightNow(PlayerController user) {
             if (!user) { return false; }
-            if (user.CurrentRoom != null) {
-                if (user.CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return false; }
-            }
-            if (m_InUse | user.IsInCombat | user.IsInMinecart) { return false; }
+            if (user?.CurrentRoom?.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return false; }
+            if (m_InUse | user.IsInCombat | user.IsInMinecart | user.InExitCell) { return false; }
             if (user.CurrentRoom != null && user.CurrentRoom.IsSealed) { return false; }
-            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
-            if (user.InExitCell) { return false; }
+            if (GameManager.Instance?.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
             return true;
         }
 
@@ -481,7 +478,6 @@ namespace ExpandTheGungeon.ItemAPI {
                 typeof(MineCartController),
                 typeof(ExpandSecretDoorPlacable),
                 typeof(ExpandElevatorDepartureManager),
-                typeof(ExpandSecretDoorExitPlacable),
                 typeof(TrapController)
             };
             foreach (Type type in ComponentsToCheck) {

@@ -20,21 +20,19 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_hasTriggered = true;
 
             if (!gameObject.GetComponent<tk2dSprite>()) { return; }
-
+            if (aiActor) { aiActor.SetOutlines(false); }
             GameObject TossedSpriteVFX = new GameObject(gameObject.name + "Sprite Toss VFX") { layer = LayerMask.NameToLayer("FG_Critical") };
             tk2dSprite newSprite = TossedSpriteVFX.AddComponent<tk2dSprite>();
             newSprite.Collection = sprite.Collection;
             newSprite.SetSprite(gameObject.GetComponent<tk2dSprite>().spriteId);
             newSprite.HeightOffGround = 4;
-
+            TossedSpriteVFX.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
             TossedSpriteVFX.transform.position = transform.position;
             TossedSpriteVFX.transform.rotation = transform.rotation;
             newSprite.UpdateZDepth();
             TossedSpriteVFX.AddComponent<ExpandTossVFX>().Init();
             AkSoundEngine.PostEvent("Play_EX_PowBlock_EnemyDeath", TossedSpriteVFX);
-            aiActor.procedurallyOutlined = false;
             sprite.renderer.enabled = false;
-            // Destroy(gameObject);
         }
         
         protected override void OnDestroy() { base.OnDestroy(); }
@@ -64,7 +62,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private IEnumerator HandleSpriteToss(GameObject vfxObject) {
             float elapsed = 0;
             float duration = 0.5f;
-            float duration2 = 2f;
+            float duration2 = 4f;
 
             float MovementSpeed1 = 0.07f;
             float MovementSpeed2 = 0.09f;
