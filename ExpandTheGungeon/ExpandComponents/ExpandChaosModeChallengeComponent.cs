@@ -263,7 +263,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (RoomVectorForEnemy!= null) {
                     if (RoomVectorForEnemy.HasValue) {
                         if (UnityEngine.Random.value < BonusEnemySpawnOdds) {
-                            SpawnAirDrop(m_LootCratePrefab, SelectedPlayer, RoomVectorForEnemy.Value, null, 1f, AirDropExplodeChances, false, false, BraveUtility.RandomElement(RoomEnemyGUIDList));
+                            if (UnityEngine.Random.value < AirDropExplodeChances) {
+                                ExpandUtility.SpawnParaDrop(currentRoom, RoomVectorForEnemy.Value.ToVector3());
+                            } else {
+                                ExpandUtility.SpawnParaDrop(currentRoom, RoomVectorForEnemy.Value.ToVector3(), EnemyDrop: BraveUtility.RandomElement(RoomEnemyGUIDList));
+                            }
+                            // SpawnAirDrop(m_LootCratePrefab, SelectedPlayer, RoomVectorForEnemy.Value, null, 1f, AirDropExplodeChances, false, false, BraveUtility.RandomElement(RoomEnemyGUIDList));
                         }
                     }
                 }
@@ -276,7 +281,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (activeEnemies.Count > 0) {
                     foreach (AIActor enemy in activeEnemies) {
                         if (enemy.GetAbsoluteParentRoom() == currentRoom) {
-                            if (UnityEngine.Random.value <= EnemyResizeOdds) {
+                            if (UnityEngine.Random.value <= EnemyResizeOdds && !enemy.gameObject.GetComponent<ExpandParadropController>()) {
                                 MakeTinyOrBig(enemy);
                             }
                             if (UnityEngine.Random.value <= 0.3 && !enemy.healthHaver.IsBoss) {
@@ -1219,7 +1224,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return randomAvailableCell;
                 }
             } else {
-                return randomAvailableCell;
+                return GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2();
             }
         }
 

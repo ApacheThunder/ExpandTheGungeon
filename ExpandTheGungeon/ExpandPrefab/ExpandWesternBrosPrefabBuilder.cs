@@ -52,7 +52,7 @@ namespace ExpandTheGungeon.ExpandPrefab
             Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
             Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
 
-            Shades = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig("c00390483f394a849c36143eb878998f");
+            Shades = ExpandCustomEnemyDatabase.GetOfficialEnemyByGuid("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
             SetupHand(assetBundle, out WestBrosHandPrefab, ExpandCustomEnemyDatabase.WestBrosCollection.GetComponent<tk2dSpriteCollectionData>());
@@ -142,7 +142,7 @@ namespace ExpandTheGungeon.ExpandPrefab
 
         private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer = false)
         {
-            GameObject prefab = ExpandCustomEnemyDatabase.GetOrLoadByGuid_Orig(isSmiley
+            GameObject prefab = ExpandCustomEnemyDatabase.GetOfficialEnemyByGuid(isSmiley
                 ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
                 : "c00390483f394a849c36143eb878998f").gameObject; // Shades
 

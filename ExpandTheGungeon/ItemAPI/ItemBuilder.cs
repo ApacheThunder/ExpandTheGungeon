@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Gungeon;
 using UnityEngine;
+using HutongGames.Utility;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -77,7 +78,28 @@ namespace ExpandTheGungeon.ItemAPI {
 			}
 		}
 
-		public static void SetCooldownType(PlayerItem item, CooldownType cooldownType, float value) {
+        public static void SetupEXItem(PickupObject item, string name, string shortDesc, string longDesc, string idPool = "ex", bool createEncounterTrackable = true) {
+			try {
+                item.encounterTrackable = null;
+                ETGMod.Databases.Items.SetupItem(item, item.name);
+                SpriteBuilder.AddToAmmonomicon(item.sprite.GetCurrentSpriteDef());
+                item.encounterTrackable.journalData.AmmonomiconSprite = item.sprite.GetCurrentSpriteDef().name;
+                GunExt.SetName(item, name);
+                GunExt.SetShortDescription(item, shortDesc);
+                GunExt.SetLongDescription(item, longDesc);
+                bool isPlayerItem = item is PlayerItem;
+				if (isPlayerItem) { (item as PlayerItem).consumable = false; }
+				Game.Items.Add(idPool + ":" + name.ToLower().Replace(" ", "_"), item);
+				ETGMod.Databases.Items.Add(item, false, "ANY");
+                if (!createEncounterTrackable) { UnityEngine.Object.Destroy(item.encounterTrackable); }
+			} catch (Exception ex) {
+                UnityEngine.Debug.LogException(ex);
+				ETGModConsole.Log(ex.Message, false);
+				ETGModConsole.Log(ex.StackTrace, false);
+			}
+		}
+
+        public static void SetCooldownType(PlayerItem item, CooldownType cooldownType, float value) {
 			item.damageCooldown = -1f;
 			item.roomCooldown = -1;
 			item.timeCooldown = -1f;

@@ -24,6 +24,7 @@ namespace ExpandTheGungeon {
         public static int GameLanguage = 0;
 
         // These are set during GamePlay, don't read/write them from JSON text.
+        public static bool spritesBundlePresent = false;
         public static bool allowGlitchFloor = false;
         public static bool elevatorHasBeenUsed = false;
         public static bool HasSpawnedSecretBoss = false;

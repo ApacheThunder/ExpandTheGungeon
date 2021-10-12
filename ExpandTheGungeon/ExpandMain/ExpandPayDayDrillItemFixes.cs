@@ -250,7 +250,9 @@ namespace ExpandTheGungeon.ExpandMain {
                         FallbackGUIDs = FallbackGUIDs.Shuffle();
                         EnemyGUID = BraveUtility.RandomElement(FallbackGUIDs);
                     }
-                    AddSpecificEnemyToRoomProcedurallyFixed(newRoom, EnemyGUID, true);
+                    if (!EnemyDatabase.GetOrLoadByGuid(EnemyGUID).GetComponent<CompanionController>()) {
+                        AddSpecificEnemyToRoomProcedurallyFixed(newRoom, EnemyGUID, true);
+                    }
                 }
                 yield return new WaitForSeconds(3f);
                 while (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.RoomClear) > 0) {

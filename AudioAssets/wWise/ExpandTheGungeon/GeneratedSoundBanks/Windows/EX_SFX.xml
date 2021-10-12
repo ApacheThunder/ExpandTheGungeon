@@ -36,6 +36,12 @@
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
+				<Event Id="3761498917" Name="Play_EX_SonicBrake_01" ObjectPath="\Events\Weapons\Play_EX_SonicBrake_01"/>
+				<Event Id="1464046876" Name="Play_EX_SonicDeath_01" ObjectPath="\Events\Weapons\Play_EX_SonicDeath_01"/>
+				<Event Id="304406506" Name="Play_EX_SonicLoseRings_01" ObjectPath="\Events\Weapons\Play_EX_SonicLoseRings_01"/>
+				<Event Id="4229475922" Name="Play_EX_SonicRingCollect_01" ObjectPath="\Events\Weapons\Play_EX_SonicRingCollect_01"/>
+				<Event Id="2662118238" Name="Play_EX_SonicSpinDashCharge_01" ObjectPath="\Events\Weapons\Play_EX_SonicSpinDashCharge_01"/>
+				<Event Id="3398866015" Name="Play_EX_SonicSpinDashRelease_01" ObjectPath="\Events\Weapons\Play_EX_SonicSpinDashRelease_01"/>
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
 				<Event Id="3751824788" Name="Play_EX_TrashMan_01" ObjectPath="\Events\Weapons\Play_EX_TrashMan_01"/>
 				<Event Id="3935194361" Name="Play_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Play_EX_UnicornMusic_01"/>
@@ -53,6 +59,12 @@
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
 				<Event Id="2623135779" Name="Stop_EX_SFX_All" ObjectPath="\Events\Weapons\Stop_EX_SFX_All"/>
+				<Event Id="1444952135" Name="Stop_EX_SonicBrake_01" ObjectPath="\Events\Weapons\Stop_EX_SonicBrake_01"/>
+				<Event Id="2837708698" Name="Stop_EX_SonicDeath_01" ObjectPath="\Events\Weapons\Stop_EX_SonicDeath_01"/>
+				<Event Id="977607592" Name="Stop_EX_SonicLoseRings_01" ObjectPath="\Events\Weapons\Stop_EX_SonicLoseRings_01"/>
+				<Event Id="1406733088" Name="Stop_EX_SonicRingCollect_01" ObjectPath="\Events\Weapons\Stop_EX_SonicRingCollect_01"/>
+				<Event Id="4171926144" Name="Stop_EX_SonicSpinDashCharge_01" ObjectPath="\Events\Weapons\Stop_EX_SonicSpinDashCharge_01"/>
+				<Event Id="3031994881" Name="Stop_EX_SonicSpinDashRelease_01" ObjectPath="\Events\Weapons\Stop_EX_SonicSpinDashRelease_01"/>
 				<Event Id="633823961" Name="Stop_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Stop_EX_TableAssassin_01"/>
 				<Event Id="4051006923" Name="Stop_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Stop_EX_UnicornMusic_01"/>
 				<Event Id="301805658" Name="Stop_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Stop_EXAlarmMushroom_01"/>
@@ -70,6 +82,10 @@
 					<ShortName>GlitchDestruct.wav</ShortName>
 					<Path>SFX\GlitchDestruct_255C9D35.wem</Path>
 				</File>
+				<File Id="193116416" Language="SFX">
+					<ShortName>SonicBrake.wav</ShortName>
+					<Path>SFX\SonicBrake_255C9D35.wem</Path>
+				</File>
 				<File Id="210760446" Language="SFX">
 					<ShortName>TableAssassin.wav</ShortName>
 					<Path>SFX\TableAssassin_255C9D35.wem</Path>
@@ -81,6 +97,10 @@
 				<File Id="282880781" Language="SFX">
 					<ShortName>BootlegGungeonMusic.wav</ShortName>
 					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
+				</File>
+				<File Id="376140418" Language="SFX">
+					<ShortName>SonicSpinDashCharge.wav</ShortName>
+					<Path>SFX\SonicSpinDashCharge_255C9D35.wem</Path>
 				</File>
 				<File Id="389740606" Language="SFX">
 					<ShortName>UnicornMusic.wav</ShortName>
@@ -130,6 +150,14 @@
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_255C9D35.wem</Path>
 				</File>
+				<File Id="737636557" Language="SFX">
+					<ShortName>SonicRingCollect.wav</ShortName>
+					<Path>SFX\SonicRingCollect_255C9D35.wem</Path>
+				</File>
+				<File Id="858414521" Language="SFX">
+					<ShortName>SonicSpinDashRelease.wav</ShortName>
+					<Path>SFX\SonicSpinDashRelease_255C9D35.wem</Path>
+				</File>
 				<File Id="861146735" Language="SFX">
 					<ShortName>BreachTransition.wav</ShortName>
 					<Path>SFX\BreachTransition_255C9D35.wem</Path>
@@ -153,6 +181,14 @@
 				<File Id="984890443" Language="SFX">
 					<ShortName>Belly_Door_Close.wav</ShortName>
 					<Path>SFX\Belly_Door_Close_255C9D35.wem</Path>
+				</File>
+				<File Id="989083201" Language="SFX">
+					<ShortName>SonicDeath.wav</ShortName>
+					<Path>SFX\SonicDeath_255C9D35.wem</Path>
+				</File>
+				<File Id="994875608" Language="SFX">
+					<ShortName>SonicLoseRings.wav</ShortName>
+					<Path>SFX\SonicLoseRings_255C9D35.wem</Path>
 				</File>
 				<File Id="1005918670" Language="SFX">
 					<ShortName>Belly_Door_Lock.wav</ShortName>

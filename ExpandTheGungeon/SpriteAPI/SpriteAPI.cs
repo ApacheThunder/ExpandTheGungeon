@@ -1,6 +1,4 @@
-﻿using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ItemAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,38 +11,33 @@ namespace ExpandTheGungeon.SpriteAPI {
 
         private static tk2dSpriteCollectionData newCollection;
         private static RuntimeAtlasPacker AtlasPacker;
-
+        
         // Use to serialize an existing set of sprites in your mod.
         // Create a list of sprite names (case sensitive by the way) you want put into an atlas and this will output the atlas texture and JSON txt dump of the new sprite collection.
         // Note you may get exceptions if you don't give it a large enough atlas size to work with. I have been using the same defaultsize, Xres, and Yres.
         // Someone who better understands these fields could probably create better defaults but that's what worked for me.
         public static void SerializeSpriteCollection(string CollectionName, List<string> spriteNames, int Xres, int Yres, string pathOverride = null) {
-            AssetBundle m_SpritesBundle = ExpandAssets.LoadFromModZIPOrModFolder("expandspritesbase");
-            if (!m_SpritesBundle) {
-                ETGModConsole.Log("[ExpandTheGungeon] Unserialized sprite textures stored in seperate asset bundle but it is missing! Ensure you have it setup properly!");
+            if (!ExpandSettings.spritesBundlePresent) {
+                ETGModConsole.Log("[ExpandTheGungeon] Unserialized sprite textures stored in optional asset bundle but it is missing! Ensure you have it setup properly!");
                 return;
             }
-
             GameObject m_TempObject = new GameObject(CollectionName);
             newCollection = GenerateNewSpriteCollection(m_TempObject);
             AtlasPacker = new RuntimeAtlasPacker(Xres, Yres);
-            AddSpriteToObject(m_TempObject, m_SpritesBundle.LoadAsset<Texture2D>(spriteNames[0]));
+            AddSpriteToObject(m_TempObject, ExpandAssets.LoadSpriteAsset<Texture2D>(spriteNames[0]));
             if (spriteNames.Count > 0) {
                 for (int i = 1; i < spriteNames.Count; i++) {
-                    AddSpriteToCollection(m_SpritesBundle.LoadAsset<Texture2D>(spriteNames[i]), newCollection);
+                    AddSpriteToCollection(ExpandAssets.LoadSpriteAsset<Texture2D>(spriteNames[i]), newCollection);
                 }
             }
             DumpSpriteCollection(newCollection, pathOverride);
             if (!string.IsNullOrEmpty(pathOverride)) {
-                SaveStringToFile(JsonUtility.ToJson(newCollection), pathOverride, CollectionName + ".txt");
+                SaveStringToFile(JsonUtility.ToJson(newCollection), pathOverride, CollectionName + "Collection" + ".txt");
             } else {
-                SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + ".txt");
+                SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + "Collection" + ".txt");
             }
-
-            m_SpritesBundle = null;
             newCollection = null;
             AtlasPacker = null;
-            
         }
 
         // Assigns a GameObject (loaded from an asset bundle in this version) with the attached tk2dSpriteCollectionData component to your chosen field.
@@ -193,8 +186,7 @@ namespace ExpandTheGungeon.SpriteAPI {
             }
         }
 
-        public static void SaveStringToFile(string text, string filePath, string fileName)
-        {
+        public static void SaveStringToFile(string text, string filePath, string fileName) {
             using (StreamWriter streamWriter = new StreamWriter(Path.Combine(filePath, fileName), true)) { streamWriter.WriteLine(text); }
         }
 

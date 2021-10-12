@@ -8,14 +8,14 @@ namespace ExpandTheGungeon.ItemAPI {
     
     public class BabySitter : PassiveItem {
                 
-        public static GameObject BabySitterobject;
+        public static GameObject BabySitterObject;
         
         public static void Init(AssetBundle expandSharedAssets1) {
 
-            BabySitterobject = expandSharedAssets1.LoadAsset<GameObject>("Baby Sitter");
-            SpriteSerializer.AddSpriteToObject(BabySitterobject, ExpandPrefabs.EXItemCollection, "babysitter");
+            BabySitterObject = expandSharedAssets1.LoadAsset<GameObject>("Baby Sitter");
+            SpriteSerializer.AddSpriteToObject(BabySitterObject, ExpandPrefabs.EXItemCollection, "babysitter");
 
-            BabySitter babysitItem = BabySitterobject.AddComponent<BabySitter>();
+            BabySitter babysitItem = BabySitterObject.AddComponent<BabySitter>();
             
             string shortDesc = "You've got a friend in me...";
             string longDesc = "Looks like you're stuck baby sitting him today.\n\nHe'll try his best to be useful.\nTry not to get him killed.";
@@ -23,16 +23,19 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(babysitItem, shortDesc, longDesc, "ex");
             babysitItem.quality = ItemQuality.B;
             if (!ExpandSettings.EnableEXItems) { babysitItem.quality = ItemQuality.EXCLUDED; }
-            babysitItem.CompanionGuid = "1d1e1070617842f09e6f45df3cb223f6";
-            babysitItem.DeathStatModifier = new StatModifier() {
-                amount = 1.8f,
-                statToBoost = PlayerStats.StatType.Damage,
-                modifyType = StatModifier.ModifyMethod.MULTIPLICATIVE,
-            };
         }
         
 
         public BabySitter() {
+
+            DeathStatModifier = new StatModifier() {
+                amount = 1.8f,
+                statToBoost = PlayerStats.StatType.Damage,
+                modifyType = StatModifier.ModifyMethod.MULTIPLICATIVE,
+            };
+
+            CompanionGuid = ExpandCustomEnemyDatabase.SonicCompanionGUID;
+
             m_PickedUp = false;
             m_HasDied = false;
             m_HasGivenStats = false;
@@ -53,35 +56,20 @@ namespace ExpandTheGungeon.ItemAPI {
         private bool m_HasGivenStats;
         [NonSerialized]
         private float m_healthRemaining;
+        private float m_maxHealthRemaining;
 
         [NonSerialized]
         public bool PreventRespawnOnFloorLoad;
                 
         private GameObject m_extantCompanion;
         
-        public GameObject ExtantCompanion { get { return m_extantCompanion; } }
-
-        private void CreateCompanion(PlayerController owner) {
-            if (PreventRespawnOnFloorLoad | m_HasDied) { return; }
-            
-            string guid = CompanionGuid;
-            
-            AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(guid);
-            Vector3 vector = owner.transform.position;
-            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) { vector += new Vector3(1.125f, -0.3125f, 0f); }
-            GameObject extantCompanion2 = Instantiate(orLoadByGuid.gameObject, vector, Quaternion.identity);
-            m_extantCompanion = extantCompanion2;
-            CompanionController orAddComponent = m_extantCompanion.GetOrAddComponent<CompanionController>();
-            orAddComponent.Initialize(owner);
-            extantCompanion2.GetComponent<HealthHaver>().OnPreDeath += OnPreDeath;
-            if (m_healthRemaining > 0) { extantCompanion2.GetComponent<HealthHaver>().ForceSetCurrentHealth(m_healthRemaining); }
-            if (orAddComponent.specRigidbody) {
-                PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(orAddComponent.specRigidbody, null, false);
-            }
+        private void CompanionOnHealthChanged(float resultValue, float maxValue) {
+            m_healthRemaining = resultValue;
+            m_maxHealthRemaining = maxValue;
         }
-                
 
-        public void OnPreDeath(Vector2 direction) {
+       
+        private void OnPreDeath(Vector2 direction) {
             if (this && m_owner && !m_HasDied && !m_HasGivenStats) {
                 m_HasGivenStats = true;
                 StatModifier curseMod = new StatModifier() {
@@ -97,41 +85,44 @@ namespace ExpandTheGungeon.ItemAPI {
             }
         }
 
-        public void ForceCompanionRegeneration(PlayerController owner, Vector2? overridePosition) {
-            bool flag = false;
-            Vector2 vector = Vector2.zero;
-            if (m_extantCompanion) {
-                flag = true;
-                vector = m_extantCompanion.transform.position.XY();
+        private void CreateCompanion(PlayerController owner) {
+            if (PreventRespawnOnFloorLoad | m_HasDied) { return; }
+            
+            string guid = CompanionGuid;
+            
+            AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(guid);
+            Vector3 vector = owner.transform.position;
+            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) { vector += new Vector3(1.125f, -0.3125f, 0f); }
+            GameObject extantCompanion2 = Instantiate(orLoadByGuid.gameObject, vector, Quaternion.identity);
+            m_extantCompanion = extantCompanion2;
+            CompanionController orAddComponent = m_extantCompanion.GetOrAddComponent<CompanionController>();
+            orAddComponent.Initialize(owner);
+            extantCompanion2.GetComponent<HealthHaver>().OnPreDeath += OnPreDeath;
+            extantCompanion2.GetComponent<HealthHaver>().OnHealthChanged += CompanionOnHealthChanged;
+            if (m_healthRemaining > 0) {
+                extantCompanion2.GetComponent<HealthHaver>().SetHealthMaximum(m_maxHealthRemaining);
+                extantCompanion2.GetComponent<HealthHaver>().ForceSetCurrentHealth(m_healthRemaining);
             }
-            if (overridePosition != null) {
-                flag = true;
-                vector = overridePosition.Value;
-            }
-            DestroyCompanion();
-            CreateCompanion(owner);
-            if (m_extantCompanion && flag) {
-                m_extantCompanion.transform.position = vector.ToVector3ZisY(0f);
-                SpeculativeRigidbody component = m_extantCompanion.GetComponent<SpeculativeRigidbody>();
-                if (component) { component.Reinitialize(); }
+            if (orAddComponent.specRigidbody) {
+                PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(orAddComponent.specRigidbody, null, false);
             }
         }
-
-        public void ForceDisconnectCompanion() { m_extantCompanion = null; }
-
+        
         private void DestroyCompanion() {
             if (!m_extantCompanion) { return; }
-            m_extantCompanion.GetComponent<HealthHaver>().OnPreDeath -= OnPreDeath;
+            if (m_extantCompanion.GetComponent<HealthHaver>()) {
+                m_extantCompanion.GetComponent<HealthHaver>().OnPreDeath -= OnPreDeath;
+                m_extantCompanion.GetComponent<HealthHaver>().OnHealthChanged -= CompanionOnHealthChanged;
+            }
+            if (!m_HasDied) {
+                m_maxHealthRemaining = m_extantCompanion.GetComponent<HealthHaver>().GetMaxHealth();
+                m_healthRemaining = m_extantCompanion.GetComponent<HealthHaver>().GetCurrentHealth();
+            }
             Destroy(m_extantCompanion);
             m_extantCompanion = null;
         }
 
-        protected override void Update() {
-            base.Update();
-            if (this && !m_HasDied && m_PickedUp && m_extantCompanion) {
-                m_healthRemaining = m_extantCompanion.GetComponent<HealthHaver>().GetCurrentHealth();
-            }
-        }
+        protected override void Update() { base.Update(); }
 
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
@@ -155,6 +146,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     component.m_HasDied = m_HasDied;
                     component.m_PickedUp = true;
                     component.m_healthRemaining = m_healthRemaining;
+                    component.m_maxHealthRemaining = m_maxHealthRemaining;
                     if (component.m_HasDied) {
                         component.m_pickedUpThisRun = true;
                         component.Break();
@@ -174,6 +166,7 @@ namespace ExpandTheGungeon.ItemAPI {
             data.Add(m_PickedUp);
             data.Add(m_HasDied);
             data.Add(m_healthRemaining);
+            data.Add(m_maxHealthRemaining);
             data.Add(m_HasGivenStats);
         }
 
@@ -183,7 +176,8 @@ namespace ExpandTheGungeon.ItemAPI {
                 m_PickedUp = (bool)data[0];
                 m_HasDied = (bool)data[1];
                 m_healthRemaining = (float)data[2];
-                m_HasGivenStats = (bool)data[3];
+                m_maxHealthRemaining = (float)data[3];
+                m_HasGivenStats = (bool)data[4];
             }
         }
 

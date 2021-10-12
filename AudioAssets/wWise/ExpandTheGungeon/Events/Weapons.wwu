@@ -625,6 +625,174 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_SonicBrake_01" ID="{4EE06166-1A0D-40D8-9499-CD492A3431B3}">
+					<ChildrenList>
+						<Action Name="" ID="{B1EC5EC1-CAC7-4667-AC86-3F95458C084C}" ShortID="432412235">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicBrake" ID="{105902F0-6A01-41ED-A51E-C49884B43FCB}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicBrake_01" ID="{6654D55B-743D-4604-9668-2700EC54F15B}">
+					<ChildrenList>
+						<Action Name="" ID="{FB28D38B-492D-40F6-BD72-D76DC54F1912}" ShortID="416729254">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicBrake" ID="{105902F0-6A01-41ED-A51E-C49884B43FCB}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SonicDeath_01" ID="{5A39EB6D-9DB3-4C0D-99F5-97DB35F4E6D8}">
+					<ChildrenList>
+						<Action Name="" ID="{ECD31FAE-B40F-4432-AA40-3A2E374320E4}" ShortID="790755540">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicDeath" ID="{41DC838A-FE04-46A9-AADD-E61DEBB95C0A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicDeath_01" ID="{3871A16E-A133-4101-A73A-0FF5805B1A64}">
+					<ChildrenList>
+						<Action Name="" ID="{7AC967D3-0163-4C22-B807-1A0DAFCDC832}" ShortID="348446911">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicDeath" ID="{41DC838A-FE04-46A9-AADD-E61DEBB95C0A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SonicLoseRings_01" ID="{140FD901-CC40-4620-B686-4A3FD4BEB8D8}">
+					<ChildrenList>
+						<Action Name="" ID="{3A8A8A46-7C4D-4993-8FF4-7308CF85DB3C}" ShortID="441091844">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicLoseRings" ID="{081D92CA-797B-405F-B2FA-4B9BEC1935EA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicLoseRings_01" ID="{5E666AE8-E179-4717-AB32-E5DF3C4E43EE}">
+					<ChildrenList>
+						<Action Name="" ID="{733646A7-9392-4349-ABE5-8CA5B5A8EE16}" ShortID="134189554">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicLoseRings" ID="{081D92CA-797B-405F-B2FA-4B9BEC1935EA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SonicRingCollect_01" ID="{0C71EB37-48DC-4749-809C-C011F64045A3}">
+					<ChildrenList>
+						<Action Name="" ID="{EB63A30B-04CA-4C4D-85B9-D7FD06DF9715}" ShortID="112774990">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicRingCollect" ID="{B37AAC9C-A9AC-40A5-863C-637201059161}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicRingCollect_01" ID="{F845A3D6-2835-491E-A94C-42DC61AA2097}">
+					<ChildrenList>
+						<Action Name="" ID="{1BD396B1-D2CF-46B2-B8CA-82306B636FDF}" ShortID="771899924">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicRingCollect" ID="{B37AAC9C-A9AC-40A5-863C-637201059161}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SonicSpinDashCharge_01" ID="{DB50BE87-BA9C-459D-ABE9-1DB19A98815E}">
+					<ChildrenList>
+						<Action Name="" ID="{BD7FF752-E21A-4809-A467-F6745F174632}" ShortID="679341414">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicSpinDashCharge" ID="{48F5658B-AE7E-4EFC-8680-89AE850BA98E}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicSpinDashCharge_01" ID="{AEFF3A73-5884-49A1-9E0C-8A066A05995F}">
+					<ChildrenList>
+						<Action Name="" ID="{77E62523-D7FE-4721-870F-92815CBCC512}" ShortID="134950264">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicSpinDashCharge" ID="{48F5658B-AE7E-4EFC-8680-89AE850BA98E}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SonicSpinDashRelease_01" ID="{393612BD-DCE9-43D1-8BD7-390041EE74AB}">
+					<ChildrenList>
+						<Action Name="" ID="{B28A4BA1-11C0-4EFC-8E41-241D063A64B1}" ShortID="1063342446">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicSpinDashRelease" ID="{74BD831A-84EF-4EBD-9C54-C2460F90A6D0}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_SonicSpinDashRelease_01" ID="{D0E6E8D2-3858-44FB-A708-8BFAC8C5BA81}">
+					<ChildrenList>
+						<Action Name="" ID="{95FD384E-E8B4-4C92-931A-2F9CA0557833}" ShortID="813651762">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SonicSpinDashRelease" ID="{74BD831A-84EF-4EBD-9C54-C2460F90A6D0}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

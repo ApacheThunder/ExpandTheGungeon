@@ -16,6 +16,53 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static void SpawnCustomCurrency(Vector2 centerPoint, int amountToDrop, int currencyItemID) {
+            List<GameObject> currencyToDrop = GetCustomCurrencyToDrop(currencyItemID, amountToDrop);
+            float num = 360f / currencyToDrop.Count;
+            Vector3 up = Vector3.up;
+            List<CurrencyPickup> list = new List<CurrencyPickup>();
+            for (int i = 0; i < currencyToDrop.Count; i++) {
+                Vector3 vector = Quaternion.Euler(0f, 0f, num * i) * up;
+                vector *= 2f;
+                GameObject gameObject = SpawnManager.SpawnDebris(currencyToDrop[i], centerPoint.ToVector3ZUp(centerPoint.y), Quaternion.identity);
+                CurrencyPickup component = gameObject.GetComponent<CurrencyPickup>();
+                component.PreventPickup = true;
+                list.Add(component);
+                /*PickupMover component2 = gameObject.GetComponent<PickupMover>();
+                if (component2) { component2.enabled = false; }*/
+                DebrisObject orAddComponent = gameObject.GetOrAddComponent<DebrisObject>();
+                DebrisObject debrisObject = orAddComponent;
+                debrisObject.OnGrounded = (Action<DebrisObject>)Delegate.Combine(debrisObject.OnGrounded, new Action<DebrisObject>(delegate (DebrisObject sourceDebris) {
+                    sourceDebris.GetComponent<CurrencyPickup>().PreventPickup = false;
+                    sourceDebris.OnGrounded = null;
+                }));
+                orAddComponent.shouldUseSRBMotion = true;
+                orAddComponent.angularVelocity = 0f;
+                orAddComponent.Priority = EphemeralObject.EphemeralPriority.Critical;
+                orAddComponent.Trigger(vector.WithZ(2f) * UnityEngine.Random.Range(1.5f, 2.125f), 0.05f, 1f);
+                orAddComponent.canRotate = false;
+            }
+        }
+
+        public static List<GameObject> GetCustomCurrencyToDrop(int itemID, int amountToDrop) {
+            List<GameObject> list = new List<GameObject>();
+
+            PickupObject pickupObject = PickupObjectDatabase.GetById(itemID);
+
+            if (!pickupObject) { return list; }
+
+            int currencyValue = PickupObjectDatabase.GetById(itemID).GetComponent<CurrencyPickup>().currencyValue;
+            while (amountToDrop > 0) {
+                GameObject currencyObject = null;
+                if (amountToDrop >= currencyValue) {
+                    amountToDrop -= currencyValue;
+                    currencyObject = pickupObject.gameObject;
+                }
+                if (currencyObject) { list.Add(currencyObject); }
+            }
+            return list;
+        }
+
         // Better method of defining new node positions on a path. (allows defining placement type at same time as creating it)
         public static SerializedPathNode GeneratePathNode(IntVector2 position, SerializedPathNode.SerializedNodePlacement placement, bool usesAlternateTarget = false, float delayTime = 0, int alternateTargetPathIndex = -1, int alternateTargetNodeIndex = -1) {
             SerializedPathNode m_PathNode = new SerializedPathNode();

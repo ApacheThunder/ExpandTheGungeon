@@ -33,9 +33,12 @@ namespace ExpandTheGungeon {
 
         public static readonly string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         public static readonly string ModAssetBundleName = "ExpandSharedAuto";
+        public static readonly string ModSpriteAssetBundleName = "ExpandSpritesBase";
         public static readonly string ModSoundBankName = "EX_SFX";
         public static readonly string ConsoleCommandName = "expand";
 
+
+        private static bool m_ListsCleared = false;
         private static List<string> itemList;
         
         private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
@@ -87,10 +90,11 @@ namespace ExpandTheGungeon {
                 "Pow Block",
                 "Cursed Brick",
                 "Black Revolver",
-                "Golden Revolver"
+                "Golden Revolver",
+                "Sonic Box"
             };
                         
-            ExpandAssets.InitCustomAssetBundle();
+            ExpandAssets.InitCustomAssetBundles();
 
             if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
 
@@ -188,19 +192,13 @@ namespace ExpandTheGungeon {
 
             InitConsoleCommands(ConsoleCommandName);
 
-            if (ExpandSettings.EnableTestDungeonFlow | ExpandSettings.EnableLanguageFix) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+            GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
 
             if (ExpandSettings.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
             }
-
-            // This should fix issus with Pasts trying to spawn inactive versions of custom enemies
-            // (and any other mod that has created a custom AIActor or object that has a HealthHaver component)
-            StaticReferenceManager.AllHealthHavers.Clear();
-            // Remove any custom instances that use BroController
-            StaticReferenceManager.AllBros.Clear();
-
+            
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
             sharedAssets = null;
@@ -215,6 +213,18 @@ namespace ExpandTheGungeon {
 
         private static IEnumerator WaitForFoyerLoad() {
             while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
+            if (!m_ListsCleared) {
+                // This should fix issus with Pasts trying to spawn inactive versions of custom enemies
+                // (and any other mod that has created a custom AIActor or object that has a HealthHaver component)
+                // Moved to WaitForForyerLoad so this can clean up fakeprefabs from other mods regardless of mods.txt load order
+                StaticReferenceManager.AllHealthHavers.Clear();
+                // Remove any custom instances that use BroController
+                StaticReferenceManager.AllBros.Clear();
+                // Clear any fakeprefab AIActors from lists.
+                StaticReferenceManager.AllEnemies.Clear();
+                m_ListsCleared = true;
+            }
+
             if (ExpandSettings.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
                 StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
@@ -247,6 +257,8 @@ namespace ExpandTheGungeon {
                     BabySitter.Init(expandSharedAssets1);
                     PowBlock.Init(expandSharedAssets1);
                     CursedBrick.Init(expandSharedAssets1);
+                    SonicRing.Init(expandSharedAssets1);
+                    SonicBox.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
                     HotShotShotGun.Init();
 
@@ -473,9 +485,6 @@ namespace ExpandTheGungeon {
         private void ExpandSerializeCollection(string[] consoleText) {
             if (consoleText.Length == 3) {
                 List<string> spritePaths = new List<string>() {
-                    "rockslide",
-                    "tabletech_assassin",
-                    "theleadkey",
                     "babygoodhammer",
                     "babygoodhammer_spawn_00",
                     "babygoodhammer_spawn_01",
@@ -538,7 +547,6 @@ namespace ExpandTheGungeon {
                     "plunger_fire_005",
                     "plunger_fire_006",
                     "PowBlock",
-                    "PowBlock_Used",
                     "PowBlock_Idle_01",
                     "PowBlock_Idle_02",
                     "PowBlock_Idle_03",
@@ -552,7 +560,30 @@ namespace ExpandTheGungeon {
                     "PowBlock_Idle_11",
                     "PowBlock_Idle_12",
                     "PowBlock_Idle_13",
-                    "PowBlock_Idle_14"
+                    "PowBlock_Idle_14",
+                    "PowBlock_Used",
+                    "rockslide",
+                    "SonicBox_Idle_01",
+                    "SonicBox_Idle_02",
+                    "SonicBox_Idle_03",
+                    "SonicBox_Broken_01",
+                    "SonicRing_Idle_01",
+                    "SonicRing_Idle_02",
+                    "SonicRing_Idle_03",
+                    "SonicRing_Idle_04",
+                    "SonicRing_Idle_05",
+                    "SonicRing_Idle_06",
+                    "SonicRing_Idle_07",
+                    "SonicRing_Idle_08",
+                    "SonicRing_Idle_09",
+                    "SonicRing_Idle_10",
+                    "SonicRing_Idle_11",
+                    "SonicRing_Idle_12",
+                    "SonicRing_Idle_13",
+                    "SonicRing_Idle_14",
+                    "SonicRing_Idle_15",
+                    "tabletech_assassin",
+                    "theleadkey"
                 };
 
                 int X = int.Parse(consoleText[1]);
@@ -565,7 +596,7 @@ namespace ExpandTheGungeon {
         }
                 
         private void ExpandTestCommand(string[] consoleText) {
-            
+            ETGModConsole.Log(LayerMask.NameToLayer("Unpixelated").ToString());
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 

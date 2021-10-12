@@ -455,6 +455,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (!m_DestinationDoor.enabled) { m_DestinationDoor.enabled = true; }
             m_DestinationDoor.m_RecievedPlayer = player;
             m_DestinationDoor.m_IsRecievingPlayer = true;
+            specRigidbody.PixelColliders[0].Enabled = true;
             if (sprite) { sprite.HeightOffGround = -1.5f; sprite.UpdateZDepth(); }
             m_InUse = false;
             yield break;

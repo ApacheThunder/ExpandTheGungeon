@@ -8,8 +8,23 @@ namespace ExpandTheGungeon.ExpandComponents {
         public ExpandTossSpriteOnDeath() {
             deathType = DeathType.PreDeath;
             preDeathDelay = 0f;
-            triggerName = "";
+            triggerName = string.Empty;
+            applyRotation = true;
+            isPowBlockDeath = true;
+
+            PopupSpeed = 0.07f;
+            DropSpeed = 0.09f;
+
+            specificSpriteName = string.Empty;
         }
+
+        public bool applyRotation;
+        public bool isPowBlockDeath;
+
+        public float PopupSpeed;
+        public float DropSpeed;
+
+        public string specificSpriteName;
 
         private bool m_hasTriggered;
 
@@ -21,17 +36,28 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (!gameObject.GetComponent<tk2dSprite>()) { return; }
             if (aiActor) { aiActor.SetOutlines(false); }
-            GameObject TossedSpriteVFX = new GameObject(gameObject.name + "Sprite Toss VFX") { layer = LayerMask.NameToLayer("FG_Critical") };
+            GameObject TossedSpriteVFX = new GameObject(gameObject.name + "Sprite Toss VFX") { layer = LayerMask.NameToLayer("Unoccluded") };
             tk2dSprite newSprite = TossedSpriteVFX.AddComponent<tk2dSprite>();
-            newSprite.Collection = sprite.Collection;
-            newSprite.SetSprite(gameObject.GetComponent<tk2dSprite>().spriteId);
+            if (!string.IsNullOrEmpty(specificSpriteName)) {
+                newSprite.SetSprite(sprite.Collection, specificSpriteName);
+            } else {
+                newSprite.SetSprite(sprite.Collection, gameObject.GetComponent<tk2dSprite>().spriteId);
+            }
             newSprite.HeightOffGround = 4;
             TossedSpriteVFX.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
             TossedSpriteVFX.transform.position = transform.position;
-            TossedSpriteVFX.transform.rotation = transform.rotation;
+            TossedSpriteVFX.transform.localScale = transform.localScale;
+
+            if (applyRotation) { TossedSpriteVFX.transform.rotation = transform.rotation; }
             newSprite.UpdateZDepth();
-            TossedSpriteVFX.AddComponent<ExpandTossVFX>().Init();
-            AkSoundEngine.PostEvent("Play_EX_PowBlock_EnemyDeath", TossedSpriteVFX);
+
+            ExpandTossVFX tossVFX = TossedSpriteVFX.AddComponent<ExpandTossVFX>();
+            tossVFX.DoRotation = applyRotation;
+            tossVFX.MovementSpeed1 = PopupSpeed;
+            tossVFX.MovementSpeed2 = DropSpeed;
+            tossVFX.Init();
+
+            if (isPowBlockDeath) { AkSoundEngine.PostEvent("Play_EX_PowBlock_EnemyDeath", TossedSpriteVFX); }
             sprite.renderer.enabled = false;
         }
         
@@ -40,7 +66,20 @@ namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandTossVFX : BraveBehaviour {
 
-        public ExpandTossVFX() { m_Finished = false; }
+        public ExpandTossVFX() {
+            DoRotation = true;
+
+            MovementSpeed1 = 0.07f;
+            MovementSpeed2 = 0.09f;
+
+            m_Finished = false;
+        }
+
+        public bool DoRotation;
+
+        public float MovementSpeed1;
+        public float MovementSpeed2;
+
 
         private bool m_Finished;
 
@@ -48,7 +87,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void Init() {
             StartCoroutine(HandleSpriteToss(gameObject));
-            StartCoroutine(HandleSpriteRotation(gameObject));
+            if (DoRotation) { StartCoroutine(HandleSpriteRotation(gameObject)); }
         }
 
         private void Update() {
@@ -63,9 +102,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             float elapsed = 0;
             float duration = 0.5f;
             float duration2 = 4f;
-
-            float MovementSpeed1 = 0.07f;
-            float MovementSpeed2 = 0.09f;
                         
             while (elapsed < duration) {
                 elapsed += BraveTime.DeltaTime;
@@ -85,16 +121,12 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator HandleSpriteRotation(GameObject vfxObject) {
             float angle = 0;
-
             while (vfxObject) {
                 if (!vfxObject) { break; }
-
                 angle += (BraveTime.DeltaTime * 6f);
-            
                 vfxObject.transform.RotateAround(sprite.WorldCenter, Vector3.forward, angle);
                 yield return null;
             }
-            
             yield break;
         }
 

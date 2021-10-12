@@ -17,6 +17,10 @@ namespace ExpandTheGungeon {
             return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<T>(assetPath);
         }
 
+        public static T LoadSpriteAsset<T>(string assetPath) where T : UnityEngine.Object {
+            return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModSpriteAssetBundleName).LoadAsset<T>(assetPath);
+        }
+
         public static T LoadOfficialAsset<T>(string assetPath, AssetSource assetType) where T : UnityEngine.Object {
             switch (assetType) {
                 case AssetSource.BraveResources:
@@ -34,17 +38,23 @@ namespace ExpandTheGungeon {
             }
         }
         
-        public static void InitCustomAssetBundle() {
+        public static void InitCustomAssetBundles() {
             
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
             Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
             
             AssetBundle m_ExpandSharedAssets1 = null;
-            
+            AssetBundle m_ExpandSpritesBase = null;
+
             try {
-                m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder();
+                m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAssetBundleName.ToLower());
+                m_ExpandSpritesBase = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModSpriteAssetBundleName.ToLower());
+                if (m_ExpandSpritesBase != null) {
+                    m_AssetBundles.Add(ExpandTheGungeon.ModSpriteAssetBundleName, m_ExpandSpritesBase);
+                    ExpandSettings.spritesBundlePresent = true;
+                }
                 if (m_ExpandSharedAssets1 != null) {
-                    m_AssetBundles.Add("ExpandSharedAuto", m_ExpandSharedAssets1);
+                    m_AssetBundles.Add(ExpandTheGungeon.ModAssetBundleName, m_ExpandSharedAssets1);
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
                     Debug.Log(ErrorMessage);
@@ -52,7 +62,7 @@ namespace ExpandTheGungeon {
                     return;
                 }
             } catch (Exception ex) {
-                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading ExpandSharedAuto asset bundle! Possible GUID conflict with other custom AssetBundles?";
+                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading custom asset bundles! Possible GUID conflict with other custom AssetBundles?";
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
                 ExpandTheGungeon.ExceptionText = ErrorMessage;
@@ -60,7 +70,7 @@ namespace ExpandTheGungeon {
             }
         }
 
-        public static AssetBundle LoadFromModZIPOrModFolder(string AssetBundleName = "expandsharedauto") {
+        public static AssetBundle LoadFromModZIPOrModFolder(string AssetBundleName) {
             AssetBundle m_CachedBundle = null;
             if (File.Exists(ExpandTheGungeon.ZipFilePath)) {
                 if (ExpandSettings.debugMode) { Debug.Log("Zip Found"); }

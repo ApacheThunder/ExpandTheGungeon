@@ -12,15 +12,6 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -102,6 +93,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
+    <Compile Include="ExpandComponents\ExpandCompanionManager.cs" />
     <Compile Include="ExpandComponents\ExpandDashBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandHideGunHandsOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandParadropController.cs" />
@@ -164,6 +157,7 @@
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
+    <Compile Include="ItemAPI\Items\SonicBox.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />
     <Compile Include="ItemAPI\Items\BulletKinGun.cs" />
@@ -196,6 +190,7 @@
     <Compile Include="ItemAPI\Items\TheLeadKey.cs" />
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
+    <Compile Include="ItemAPI\Items\SonicRing.cs" />
     <Compile Include="ItemAPI\Items\WoodenCrest.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
     <Compile Include="ExpandMain\ExpandJunkEnemySpawner.cs" />
