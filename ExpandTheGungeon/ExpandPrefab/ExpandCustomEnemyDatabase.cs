@@ -4201,7 +4201,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     SpawnTetherDistance = 0,
                     PathInterval = 0.25f,
                     SpecifyRange = false,
-                    MinActiveRange = 2,
+                    MinActiveRange = 0,
                     MaxActiveRange = 0
                     // ExternalCooldownSource = true
                 }

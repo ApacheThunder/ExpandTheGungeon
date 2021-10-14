@@ -35,6 +35,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public SonicBox() {
             CompanionGuid = ExpandCustomEnemyDatabase.SonicCompanionGUID;
+
             DeathStatModifier = new StatModifier() {
                 amount = 1.5f,
                 statToBoost = PlayerStats.StatType.Damage,
@@ -91,7 +92,6 @@ namespace ExpandTheGungeon.ItemAPI {
                     int RingCount = UnityEngine.Random.Range(3, 10);
                     ExpandUtility.SpawnCustomCurrency(m_extantCompanion.GetComponent<SpeculativeRigidbody>().GetUnitCenter(ColliderType.HitBox), RingCount, SonicRing.RingID);
                     AkSoundEngine.PostEvent("Play_EX_SonicLoseRings_01", m_extantCompanion);
-                    
                 }
             }
             m_canSpawnRings = false;
