@@ -101,9 +101,9 @@ namespace ExpandTheGungeon.ExpandMain {
             );
         }
 
-        
+
         public static void InstallRequiredHooks() {
-            
+
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DeadlyDeadlyGoopManager.IgniteGoopsCircle Hook..."); }
             igniteGoopsCircleHook = new Hook(
                 typeof(DeadlyDeadlyGoopManager).GetMethod(nameof(DeadlyDeadlyGoopManager.IgniteGoopsCircle), BindingFlags.Public | BindingFlags.Static),

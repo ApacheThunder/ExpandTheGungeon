@@ -596,7 +596,6 @@ namespace ExpandTheGungeon {
         }
                 
         private void ExpandTestCommand(string[] consoleText) {
-            ETGModConsole.Log(LayerMask.NameToLayer("Unpixelated").ToString());
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
