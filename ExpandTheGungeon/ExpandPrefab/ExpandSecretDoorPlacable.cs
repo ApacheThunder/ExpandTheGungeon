@@ -282,11 +282,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         private bool m_IsLocked {
             get {
-                if (m_spawnUnlocked) {
-                    return false;
-                } else if (Lock && (Lock.IsBusted | Lock.IsLocked)) {
-                    return true;
-                }
+                if (m_spawnUnlocked) { return false; } else if (Lock && (Lock.IsBusted | Lock.IsLocked)) { return true; }
                 return false;
             }    
         }
@@ -403,10 +399,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
         private void HandleTriggerCollision(SpeculativeRigidbody Rigidbody, SpeculativeRigidbody sourceSpecRigidbody, CollisionData collisionData) {
             if ((m_InUse | m_IsLocked) | !m_WaitingForPlayer) { return; }
             PlayerController player = Rigidbody.GetComponent<PlayerController>();
+            PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(player);
             if (player) {
                 m_InUse = true;
                 if (player.IsDodgeRolling) { player.ForceStopDodgeRoll(); }
                 player.SetInputOverride("Entering Elevator");
+                if (otherPlayer) {
+                    if (otherPlayer.IsDodgeRolling) { otherPlayer.ForceStopDodgeRoll(); }
+                    otherPlayer.SetInputOverride("Entering Elevator");
+                }
                 if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Red"); }
                 if (sprite) { sprite.HeightOffGround = 3f; sprite.UpdateZDepth(); }
                 specRigidbody.OnTriggerCollision = (SpeculativeRigidbody.OnTriggerDelegate)Delegate.Remove(specRigidbody.OnTriggerCollision, new SpeculativeRigidbody.OnTriggerDelegate(HandleTriggerCollision));
@@ -463,6 +464,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
         
         private IEnumerator ReceivePlayer(PlayerController player) {
             if (sprite) { sprite.HeightOffGround = 3f; sprite.UpdateZDepth(); }
+            PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(player);
+            yield return null;
+            if (otherPlayer) {
+                otherPlayer.forceAimPoint = Vector2.down;
+                otherPlayer.ForceStaticFaceDirection(Vector2.down);
+            }
             player.forceAimPoint = Vector2.down;
             player.ForceStaticFaceDirection(Vector2.down);
             if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Red"); }
@@ -485,16 +492,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (sprite) { sprite.HeightOffGround = -1.5f; sprite.UpdateZDepth(); }
             yield return new WaitForSeconds(0.1f);
             player.ForceMoveInDirectionUntilThreshold(Vector2.down, player.CenterPosition.y - 1.5f, 0, 0.6f, new List<SpeculativeRigidbody>() { specRigidbody });
+            if (otherPlayer) {
+                otherPlayer.ForceMoveInDirectionUntilThreshold(Vector2.down, GameManager.Instance.GetOtherPlayer(player).CenterPosition.y - 1.5f, 0, 0.6f, new List<SpeculativeRigidbody>() { specRigidbody });
+            }
             yield return new WaitForSeconds(0.6f);
             if (spriteAnimator) {
                 AkSoundEngine.PostEvent("Play_OBJ_cardoor_close_01", gameObject);
                 spriteAnimator.Play("door_close");
                 while (spriteAnimator.IsPlaying("door_close")) { yield return null; }
             }
-            player.forceAimPoint = null;
             if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Green"); }
             player.forceAimPoint = null;
             player.ClearAllInputOverrides();
+            if (otherPlayer) {
+                otherPlayer.forceAimPoint = null;
+                otherPlayer.ClearAllInputOverrides();
+            }
             m_IsRecievingPlayer = false;
             m_InUse = false;
             yield break;

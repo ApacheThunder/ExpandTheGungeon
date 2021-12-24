@@ -66,13 +66,11 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator HandleWarp(PlayerController player) {
             Pixelator.Instance.FadeToBlack(0.1f, false, 0f);
+            PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(player);
             yield return new WaitForSeconds(0.1f);
             IntVector2 targetPoint = TargetRoom.area.basePosition + TargetPoint;
             player.WarpToPoint(targetPoint.ToVector2(), false, false);
-            if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
-                PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(player);
-                if (otherPlayer && otherPlayer.healthHaver.IsAlive) { otherPlayer.ReuniteWithOtherPlayer(player, false); }
-            }
+            if (otherPlayer && otherPlayer.healthHaver.IsAlive) { otherPlayer.ReuniteWithOtherPlayer(player, false); }
             GameManager.Instance.MainCameraController.ForceToPlayerPosition(player);
             Pixelator.Instance.FadeToBlack(0.1f, true, 0f);
             player.ClearInputOverride("arbitrary warp");

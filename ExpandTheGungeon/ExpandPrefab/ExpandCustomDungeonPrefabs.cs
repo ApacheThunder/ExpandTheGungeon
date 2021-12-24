@@ -901,7 +901,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = string.Empty;
-
+            
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
             CastlePrefab = null;

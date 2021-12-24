@@ -139,8 +139,15 @@ namespace ExpandTheGungeon.ItemAPI {
                         } else {
                             if (RoomEnemies[i].gameObject.GetComponent<KaliberController>()) {
                                 Destroy(RoomEnemies[i].gameObject.GetComponent<KaliberController>());
-                                RoomEnemies[i].healthHaver.minimumHealth = 0f;
                             }
+                            if (RoomEnemies[i].gameObject.GetComponent<BloodbulonController>()) {
+                                Destroy(RoomEnemies[i].gameObject.GetComponent<BloodbulonController>());
+                            }
+                            if (RoomEnemies[i].gameObject.GetComponent<TBulonController>()) {
+                                Destroy(RoomEnemies[i].gameObject.GetComponent<TBulonController>());
+                            }
+                            if (RoomEnemies[i].gameObject.GetComponent<ShelletonRespawnController>()) { Destroy(RoomEnemies[i].gameObject.GetComponent<ShelletonRespawnController>()); }
+                            RoomEnemies[i].healthHaver.minimumHealth = 0f;
                             RoomEnemies[i].DiesOnCollison = true;
                             RoomEnemies[i].CollisionDamage = 0;
                             RoomEnemies[i].CorpseObject = null;
