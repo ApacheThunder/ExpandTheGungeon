@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public static bool PlayerHasWallMimicItem = false;
         public static bool PlayerHasCorruptedJunk = false;
+        public static bool PlayerHasThirdEye = false;
 
         public void PlaceWallMimics(Action<Dungeon, RoomHandler>orig, Dungeon dungeon, RoomHandler roomHandler) {
             int WallMimicsPlaced = 0;
@@ -84,7 +85,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 ExpandFloorDecorator.PlaceFloorDecoration(dungeon);
 
-                if (PlayerHasCorruptedJunk) { CorruptRandomRooms(dungeon, currentFloor); }
+                if (PlayerHasCorruptedJunk | PlayerHasThirdEye) { CorruptRandomRooms(dungeon, currentFloor); }
             } catch (Exception ex) {
                 if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!"); }
                 Debug.Log("Exception caught in early setup code for ExpandMain.ExpandPlaceWallMimics!");
@@ -514,18 +515,20 @@ namespace ExpandTheGungeon.ExpandMain {
             m_Rooms.Clear();
             m_Rooms.Add(Room1);
 
-            if (Room2 != null && UnityEngine.Random.value > 0.5f) { m_Rooms.Add(Room2); }
+            if (Room2 != null && (UnityEngine.Random.value > 0.5f | PlayerHasThirdEye)) { m_Rooms.Add(Room2); }
 
             foreach (RoomHandler room in m_Rooms) {
-                try { 
-                    string RoomName = room.GetRoomName();
+                try {
+                    if (PlayerHasCorruptedJunk) {
+                        string RoomName = room.GetRoomName();
 
-                    if (!string.IsNullOrEmpty(RoomName)) {
-                        room.area.PrototypeRoomName = "Corrupted " + RoomName;
-                    } else {
-                        room.area.PrototypeRoomName = "Corrupted Room";
+                        if (!string.IsNullOrEmpty(RoomName)) {
+                            room.area.PrototypeRoomName = "Corrupted " + RoomName;
+                        } else {
+                            room.area.PrototypeRoomName = "Corrupted Room";
+                        }
+                        ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, room, isCorruptedJunkRoom: true);
                     }
-                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, room, isCorruptedJunkRoom: true);
                     ExpandPlaceGlitchedEnemies.PlaceRandomEnemies(dungeon, currentFloor, room);
                 } catch (Exception ex) {
                     string RoomName = room.GetRoomName();

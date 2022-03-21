@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandCompanionManager.cs" />
     <Compile Include="ExpandComponents\ExpandDashBehavior.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="ItemAPI\Items\Mimiclay.cs" />
     <Compile Include="ItemAPI\Items\TableTechAssassin.cs" />
     <Compile Include="ItemAPI\Items\SonicRing.cs" />
+    <Compile Include="ItemAPI\Items\ThirdEye.cs" />
     <Compile Include="ItemAPI\Items\WoodenCrest.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
     <Compile Include="ExpandMain\ExpandJunkEnemySpawner.cs" />

@@ -4,7 +4,6 @@ using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
-using System.IO;
 using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -57,10 +56,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             };
 
             IsWinnerChest = false;
+            surpriseChestDoesSpawnAnim = false;
 
             IsBroken = false;
             m_configured = false;
             m_Opened = false;
+            m_temporarilyUnopenable = false;
         }
 
         public ChestType chestType;
@@ -71,6 +72,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         
         public bool IsBroken;
         public bool IsWinnerChest;
+        public bool surpriseChestDoesSpawnAnim;
 
         public string openAnimName;
         public string breakAnimName;
@@ -86,6 +88,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private bool m_configured;
         private bool m_Opened;
+        private bool m_temporarilyUnopenable;
 
         private GameObject minimapIconInstance;
 
@@ -318,7 +321,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield break;
         }
 
-
         private void Awake() {
             SpriteOutlineManager.AddOutlineToSprite(sprite, BaseOutlineColor, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
             switch (chestType) {
@@ -427,7 +429,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                             GameManager.Instance.Dungeon.data[new IntVector2(i, j)].isOccupied = true;
                         }
                     }
-                    spriteAnimator.Play("coop_chest_knock");
+                    if (surpriseChestDoesSpawnAnim) {
+                        renderer.enabled = false;
+                        StartCoroutine(HandleSupriseChestSpawnAnimation());
+                    } else {
+                        spriteAnimator.Play("coop_chest_knock");
+                    }
                     return;
                 case ChestType.WestChest:
                     if (component) {
@@ -444,7 +451,68 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return;
             }
         }
+
+        private IEnumerator HandleSupriseChestSpawnAnimation() {
+            if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = true; }
+
+            GameObject VFX_PreSpawn = Instantiate(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>().VFX_PreSpawn, transform.position, Quaternion.identity);
+            GameObject VFX_GroundHit = Instantiate(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>().VFX_GroundHit, transform.position, Quaternion.identity);
+
+            VFX_PreSpawn.transform.SetParent(transform);
+            VFX_PreSpawn.transform.localPosition = new Vector3(-0.625f, 0.875f, 0);
+
+            VFX_GroundHit.transform.SetParent(transform);
+            VFX_GroundHit.transform.localPosition = new Vector3(-0.3125f, -0.375f, 0);
+
+            m_temporarilyUnopenable = true;
+
+            if (VFX_PreSpawn != null) {                
+                VFX_PreSpawn.SetActive(true);
+                yield return new WaitForSeconds(0.1f);
+                renderer.enabled = true;                
+            } else {
+                renderer.enabled = true;
+            }
+            
+            tk2dSpriteAnimationClip spawnAnimClip = spriteAnimator.GetClipByName("coop_chest_appear");
+
+            if (spawnAnimClip != null) {                
+                specRigidbody.enabled = false;
+                float clipTime = (spawnAnimClip.frames.Length / spawnAnimClip.fps);
+                spriteAnimator.Play(spawnAnimClip);
+                sprite.UpdateZDepth();
+                float groundHitDelay = 0.73f;
+                float elapsed = 0f;
+                bool groundHitTriggered = false;
+                while (elapsed < clipTime) {
+                    elapsed += BraveTime.DeltaTime;
+                    if (elapsed >= groundHitDelay && !groundHitTriggered) {
+                        groundHitTriggered = true;
+                        Exploder.DoRadialPush(sprite.WorldCenter.ToVector3ZUp(sprite.WorldCenter.y), 22f, 5f);
+                        if (VFX_GroundHit) { VFX_GroundHit.SetActive(true); }
+                        specRigidbody.enabled = true;
+                        List<CollisionData> list = new List<CollisionData>();
+                        PhysicsEngine.Instance.OverlapCast(specRigidbody, list, false, true, null, null, false, null, null, new SpeculativeRigidbody[0]);
+                        for (int i = 0; i < list.Count; i++) {
+                            CollisionData collisionData = list[i];
+                            if (collisionData.OtherRigidbody && collisionData.OtherRigidbody.minorBreakable) {
+                                collisionData.OtherRigidbody.minorBreakable.Break(collisionData.OtherRigidbody.UnitCenter - specRigidbody.UnitCenter);
+                            }
+                        }
+                    }
+                    yield return null;
+                }
+            }
+            sprite.UpdateZDepth();
+            m_room.RegisterInteractable(this);
+            PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(specRigidbody, null, false);
+            m_temporarilyUnopenable = false;
+            if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = false; }
+            spriteAnimator.Play("coop_chest_knock");            
+            yield break;
+        }
         
+
         public void RegisterFakeChestOnMinimap(RoomHandler r) {
             m_registeredIconRoom = r;
             GameObject iconPrefab = MinimapIconPrefab ?? (BraveResources.Load("Global Prefabs/Minimap_Treasure_Icon", ".prefab") as GameObject);
@@ -481,7 +549,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ChestJunkChance *= GameManager.Instance.RewardManager.HasKeyJunkMultiplier;
                 }
                 if (SackKnightController.HasJunkan()) {
-                    ChestJunkChance *= GameManager.Instance.RewardManager.HasJunkanJunkMultiplier;
+                    ChestJunkChance *= GameManager. Instance.RewardManager.HasJunkanJunkMultiplier;
                     Multiplier *= 3f;
                 }
                 ChestJunkChance -= Multiplier;
@@ -495,7 +563,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void OnEnteredRange(PlayerController interactor) {
             if (!this) { return; }
-            if (m_Opened) { return; }
+            if (m_Opened | m_temporarilyUnopenable) { return; }
             SpriteOutlineManager.RemoveOutlineFromSprite(sprite, false);
             SpriteOutlineManager.AddOutlineToSprite(sprite, Color.white, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
             sprite.UpdateZDepth();

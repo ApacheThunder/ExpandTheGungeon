@@ -75,6 +75,8 @@ namespace ExpandTheGungeon {
 
             bool playerHasCorruptedJunk = false;
 
+            if (ExpandPlaceWallMimic.PlayerHasThirdEye && Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) { Pixelator.Instance.DoOcclusionLayer = false; }
+
             if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
             if (player2) { if (player2.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
 

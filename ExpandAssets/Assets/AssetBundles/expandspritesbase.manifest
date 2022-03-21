@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3537725924
+CRC: 2249909984
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0e6d50a00bb54c795d3811c24d9f6599
+    Hash: 9e64c065102d3e75900e17b66ae4c952
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -871,6 +871,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_front_left_002.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_left.png
 - Assets/ExpandSprites/Misc/EXLargeMonster_Collection/Belly_Monster_Move_010.png
+- Assets/ExpandSprites/GunsAndItems/EXItem_Collection/thethirdeye.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Right_003.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_down.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_angel_rev_idle_001.png

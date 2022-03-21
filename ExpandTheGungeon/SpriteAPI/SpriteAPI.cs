@@ -32,9 +32,9 @@ namespace ExpandTheGungeon.SpriteAPI {
             }
             DumpSpriteCollection(newCollection, pathOverride);
             if (!string.IsNullOrEmpty(pathOverride)) {
-                SaveStringToFile(JsonUtility.ToJson(newCollection), pathOverride, CollectionName + "Collection" + ".txt");
+                SaveStringToFile(JsonUtility.ToJson(newCollection), pathOverride, CollectionName + ".txt");
             } else {
-                SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + "Collection" + ".txt");
+                SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + ".txt");
             }
             newCollection = null;
             AtlasPacker = null;

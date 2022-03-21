@@ -905,7 +905,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private static GameObject GenerateRoomDoorMeshHook(RuntimeExitDefinition exit, RoomHandler room, DungeonData dungeonData) {
-            try { 
+            try {
                 DungeonData.Direction directionFromRoom = exit.GetDirectionFromRoom(room);
                 IntVector2 intVector;
                 if (exit.upstreamRoom == room) {

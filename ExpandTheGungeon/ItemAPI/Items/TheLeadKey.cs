@@ -47,6 +47,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public TheLeadKey() {
             m_InUse = false;
             m_IsTeleporting = false;
+            m_DebugMode = false;
         }
         
         private Texture2D m_CachedScreenCapture;
@@ -54,6 +55,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private bool m_InUse;
         private bool m_IsTeleporting;
         private bool m_ScreenCapInProgress;
+        private bool m_DebugMode;
 
         private Vector3 m_cachedRoomPosition;
 
@@ -233,6 +235,9 @@ namespace ExpandTheGungeon.ItemAPI {
                         Debug.LogException(ex);
                     }
                     AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                    fxController.GlitchAmount = 0;
+                    Destroy(TempFXObject);
+                    m_InUse = false;
                     TogglePlayerInput(user, false);
                     ClearCooldowns();
                     yield break;
@@ -271,6 +276,9 @@ namespace ExpandTheGungeon.ItemAPI {
                         ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
                         if (ExpandSettings.debugMode) { Debug.LogException(ex); }
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                        fxController.GlitchAmount = 0;
+                        Destroy(TempFXObject);
+                        m_InUse = false;
                         TogglePlayerInput(user, false);
                         ClearCooldowns();
                         yield break;
@@ -278,6 +286,12 @@ namespace ExpandTheGungeon.ItemAPI {
                     yield return null;
                     if (SecretBossRoomCluster == null) {
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                        while (fxController.GlitchAmount > 0) {
+                            fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                            yield return null;
+                        }
+                        Destroy(TempFXObject);
+                        m_InUse = false;
                         TogglePlayerInput(user, false);
                         ClearCooldowns();
                         yield break;
@@ -309,12 +323,19 @@ namespace ExpandTheGungeon.ItemAPI {
 
                     Destroy(TempFXObject);
                     m_InUse = false;
+                    if (m_DebugMode) { ClearCooldowns(); }
                     yield break;
                 }
             }
 
             if (SelectedPrototypeDungeonRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                while (fxController.GlitchAmount > 0) {
+                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                    yield return null;
+                }
+                Destroy(TempFXObject);
+                m_InUse = false;
                 TogglePlayerInput(user, false);
                 ClearCooldowns();
                 yield break;
@@ -322,10 +343,117 @@ namespace ExpandTheGungeon.ItemAPI {
 
             if (m_CopyCurrentRoom) { SelectedPrototypeDungeonRoom.overrideRoomVisualType = currentRoom.RoomVisualSubtype; }
 
-            RoomHandler GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+            RoomHandler GlitchRoom = null;
 
-            if (GlitchRoom == null) {
+            string DungeonName = "NULL";
+
+            List<string> DungeonNames = new List<string>() {
+                "castle",
+                "sewer",
+                // "jungle",
+                "phobos",
+                "gungeon",
+                "cathedral",
+                "belly",
+                "mines",                
+                "resourcefulrat",
+                "catacombs",
+                // "nakatomi",
+                // "west",
+                "forge",
+                "bullethell",
+            };
+
+            for (int i = 0; i < DungeonNames.Count; i++) {
+                if (dungeon.gameObject.name.ToLower().Contains(DungeonNames[i])) {
+                    DungeonNames.Remove(DungeonNames[i]);
+                    break;
+                }
+            }
+            
+            DungeonNames = DungeonNames.Shuffle();
+
+            DungeonName = BraveUtility.RandomElement(DungeonNames);
+
+            foreach (string Name in DungeonNames) {
+                if (SelectedPrototypeDungeonRoom.name.ToLower().Contains(Name)) {
+                    DungeonName = Name;
+                    break;
+                }
+            }
+            
+            if (!IsExitElevatorRoom) {                
+                if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("castle") && !dungeon.gameObject.name.ToLower().Contains("castle")) {
+                    DungeonName = "Castle";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("sewer_") && !dungeon.gameObject.name.ToLower().Contains("sewer")) {
+                    DungeonName = "Sewer";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_jungle") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
+                    DungeonName = "Jungle";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_forest") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
+                    // DungeonName = "Jungle"; Can't use this tileset without exceptions happening.
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("phobos") && !dungeon.gameObject.name.ToLower().Contains("phobos")) {
+                    DungeonName = "Phobos";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("gungeon_") && !dungeon.gameObject.name.ToLower().Contains("gungeon")) {
+                    DungeonName = "Gungeon";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("cathedral_") && !dungeon.gameObject.name.ToLower().Contains("cathedral")) {
+                    DungeonName = "Cathedral";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_belly") && !dungeon.gameObject.name.ToLower().Contains("belly")) {
+                    DungeonName = "Belly";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mine_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
+                    DungeonName = "Mines";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mines_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
+                    DungeonName = "Mines";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hollow_") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("catacomb") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("connector_shortcatacave") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_clobulonparadise") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_cubeworld") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_themummyreturns") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_shelletons") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_skeletonsandcubes") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_blobsandcubeslivingtogether") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                    DungeonName = "Catacombs";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("office_") && !dungeon.gameObject.name.ToLower().Contains("nakatomi")) {
+                    // DungeonName = "Nakatomi"; // There are issues trying to use this tileset so will allow random tileset.
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_west") && !dungeon.gameObject.name.ToLower().Contains("west")) {
+                    // DungeonName = "West"; // West tileset causes issues so have to disable this as well.
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("forge") && !dungeon.gameObject.name.ToLower().Contains("forge")) {
+                    DungeonName = "Forge";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("bhell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
+                    DungeonName = "BulletHell";
+                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
+                    DungeonName = "BulletHell";
+                }
+                
+                Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_" + DungeonName);
+                if (!DungeonName.ToLower().Contains(dungeon.gameObject.name)) {
+                    GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+                } else {
+                    GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+                }
+                dungeon2 = null;
+            } else {
+                Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Phobos");
+                GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+                dungeon2 = null;
+            }
+                     
+            if (GlitchRoom == null) {                
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
+                while (fxController.GlitchAmount > 0) {
+                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                    yield return null;
+                }
+                Destroy(TempFXObject);
+                m_InUse = false;                
                 TogglePlayerInput(user, false);
                 ClearCooldowns();
                 yield break;
@@ -406,7 +534,7 @@ namespace ExpandTheGungeon.ItemAPI {
             }
 
             if (GlitchRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET && GlitchRoom.IsSecretRoom) { GlitchRoom.secretRoomManager.OpenDoor(); }
-
+            
             if (m_CopyCurrentRoom) {
                 ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
             } else {
@@ -464,6 +592,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Destroy(TempFXObject);
             
             m_InUse = false;
+            if (m_DebugMode) { ClearCooldowns(); }
             yield break;
         }
 
@@ -527,7 +656,6 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         private IEnumerator HandleTeleportToRoom(PlayerController targetPlayer, Vector2 targetPoint) {
-            // if (targetPlayer.transform.position.GetAbsoluteRoom() != null) { StunEnemiesForTeleport(targetPlayer.transform.position.GetAbsoluteRoom(), 0.25f); }
             CameraController cameraController = GameManager.Instance.MainCameraController;
             Vector2 offsetVector = (cameraController.transform.position - targetPlayer.transform.position);
             offsetVector -= cameraController.GetAimContribution();

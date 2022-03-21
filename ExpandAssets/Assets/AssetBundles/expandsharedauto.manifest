@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1228745382
+CRC: 1962024779
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4993aa7d332133bcb821fef69eccbcd4
+    Hash: 6cfb073bb9189d1d971aea4e15efad5a
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -138,6 +138,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate14.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/BulletHell/BHell_TheReunion.bytes
 - Assets/ExpandTextures/RoomBuilderAssets/Creepy_Glitched_Room_Layout.png
+- Assets/ExpandPrefabs/Items/EXThirdEye.prefab
 - Assets/ExpandPrefabs/AIActors/Cultist Companion.prefab
 - Assets/ExpandPrefabs/Misc/EX_Trap_Apache.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_tight1.bytes

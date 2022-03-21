@@ -91,7 +91,8 @@ namespace ExpandTheGungeon {
                 "Cursed Brick",
                 "Black Revolver",
                 "Golden Revolver",
-                "Sonic Box"
+                "Sonic Box",
+                "The Third Eye"
             };
                         
             ExpandAssets.InitCustomAssetBundles();
@@ -259,6 +260,7 @@ namespace ExpandTheGungeon {
                     CursedBrick.Init(expandSharedAssets1);
                     SonicRing.Init(expandSharedAssets1);
                     SonicBox.Init(expandSharedAssets1);
+                    ThirdEye.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
                     HotShotShotGun.Init();
 
@@ -563,10 +565,10 @@ namespace ExpandTheGungeon {
                     "PowBlock_Idle_14",
                     "PowBlock_Used",
                     "rockslide",
+                    "SonicBox_Broken_01",
                     "SonicBox_Idle_01",
                     "SonicBox_Idle_02",
                     "SonicBox_Idle_03",
-                    "SonicBox_Broken_01",
                     "SonicRing_Idle_01",
                     "SonicRing_Idle_02",
                     "SonicRing_Idle_03",
@@ -583,7 +585,8 @@ namespace ExpandTheGungeon {
                     "SonicRing_Idle_14",
                     "SonicRing_Idle_15",
                     "tabletech_assassin",
-                    "theleadkey"
+                    "theleadkey",
+                    "thethirdeye"
                 };
 
                 int X = int.Parse(consoleText[1]);
@@ -631,9 +634,18 @@ namespace ExpandTheGungeon {
 
             TestPortal.transform.position -= new Vector3(0, 0, -50);*/
 
+            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            // Chest TestWestChest = Chest.Spawn(ExpandPrefabs.EX_Chest_West.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
-            // TestWestChest.spawnCurve.keys[1].value = float.Parse(consoleText[0]);
+            Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
+
+
+            Material shade = new Material(ShaderCache.Acquire("Brave/ItemSpecific/LootGlintAdditivePass"));
+            shade.SetColor("_OverrideColor", new Color(1f, 0.77f, 0f));
+
+            TestChest.sprite.usesOverrideMaterial = true;
+            TestChest.sprite.renderer.material.shader = shade.shader;
+            TestChest.sprite.renderer.material.SetColor("_OverrideColor", new Color(1.3f, 0.8f, 0f, 1));
+
 
 
             // GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);

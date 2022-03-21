@@ -49,9 +49,9 @@ namespace ExpandTheGungeon.ExpandMain {
                 GlobalDungeonData.ValidTilesets.HELLGEON,
                 GlobalDungeonData.ValidTilesets.SPACEGEON
             };
-            List<AGDEnemyReplacementTier> CultistReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, hardEnemyTargetGUIDs, hotShotCultist, 0.25f);
-            List<AGDEnemyReplacementTier> ShotgunReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, bulletKinTargetGUIDs, hotShotBulletKins, 0.2f);
-            List<AGDEnemyReplacementTier> BulletKinReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, shotgunKin2TargetGUIDs, hotShotShotGuns, 0.3f);
+            List<AGDEnemyReplacementTier> CultistReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, hardEnemyTargetGUIDs, hotShotCultist, 0.35f);
+            List<AGDEnemyReplacementTier> ShotgunReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, bulletKinTargetGUIDs, hotShotBulletKins, 0.1f);
+            List<AGDEnemyReplacementTier> BulletKinReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, shotgunKin2TargetGUIDs, hotShotShotGuns, 0.15f);
             foreach (AGDEnemyReplacementTier tier in ShotgunReplacements) { agdEnemyReplacementTiers.Add(tier); }
             foreach (AGDEnemyReplacementTier tier in ShotgunReplacements) { agdEnemyReplacementTiers.Add(tier); }
             foreach (AGDEnemyReplacementTier tier in BulletKinReplacements) { agdEnemyReplacementTiers.Add(tier); }
