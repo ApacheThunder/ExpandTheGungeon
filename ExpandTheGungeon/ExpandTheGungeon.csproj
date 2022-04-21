@@ -93,6 +93,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
+    <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandCompanionManager.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
+    <Compile Include="ItemAPI\Items\ClownBullets.cs" />
     <Compile Include="ItemAPI\Items\SonicBox.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />

@@ -3,19 +3,19 @@
 	<Platform GUID="{3C83247A-1B1C-464E-80E3-395381A820B2}">
 		<Banks>
 			<Language ID="393239870">
-				<File Name="EX_SFX" Hash="3395000397" Timestamp="1634018094"/>
+				<File Name="EX_SFX" Hash="2562139961" Timestamp="1650482903"/>
 				<File Name="ExpandAudioBank" Hash="3450134296" Timestamp="1576373296"/>
-				<File Name="Init" Hash="3475493408" Timestamp="1591492044"/>
+				<File Name="Init" Hash="3475493408" Timestamp="1650481842"/>
 				<File Name="SFX" Hash="3911131824" Timestamp="1576542849"/>
 			</Language>
 		</Banks>
 		<XMLInfo>
 			<Language ID="393239870">
-				<File Name="EX_SFX" Hash="1981914963" Timestamp="1634018094"/>
-				<File Name="Init" Hash="86243866" Timestamp="1591492044"/>
+				<File Name="EX_SFX" Hash="2843533690" Timestamp="1650482903"/>
+				<File Name="Init" Hash="86243866" Timestamp="1650481842"/>
 			</Language>
 			<Language ID="-1">
-				<File Name="" Hash="2151828320" Timestamp="1634018094"/>
+				<File Name="" Hash="2234603245" Timestamp="1650482903"/>
 			</Language>
 		</XMLInfo>
 	</Platform>

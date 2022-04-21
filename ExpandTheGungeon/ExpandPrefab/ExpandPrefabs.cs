@@ -26,6 +26,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSecretDoorCollection;
         public static GameObject EXBootlegRoomCollection;
         public static GameObject SecretElevatorExitTilesetCollection;
+        public static GameObject EXBalloonCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -322,6 +323,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Custom Chest used on West for secret puzzle
         public static GameObject EX_Chest_West;
 
+        // Custom Balloon Objects (based off balloon used for robot arm side quest)
+        public static GameObject EX_RedBalloon;
+        public static GameObject EX_BlueBalloon;
+        public static GameObject EX_GreenBalloon;
+        public static GameObject EX_PinkBalloon;
+        public static GameObject EX_YellowBalloon;
+        
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
         public static GameObject ENV_Tileset_West;
@@ -347,6 +355,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSecretDoorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSecretDoorCollection", "EXSecretDoor_Collection", "EXSecretDoorCollection");
             EXBootlegRoomCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBootlegRoomCollection", "EXBootlegRoom_Collection", "EXBootlegRoomCollection");
             SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
+            EXBalloonCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBalloonCollection", "EXBalloon_Collection", "EXBalloonCollection");
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -3421,7 +3430,77 @@ namespace ExpandTheGungeon.ExpandPrefab {
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<MajorBreakable>()), chestWestBreakable);
             chestWestBreakable.spriteNameToUseAtZeroHP = "chest_west_break_001";
             
+            
+            
+            EX_RedBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_RedBalloon");
+            tk2dSprite m_RedBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_RedBalloon, EXBalloonCollection, "redballoon_idle_001");
+            m_RedBalloonSprite.HeightOffGround = 1;
+            EX_RedBalloon.AddComponent<ExpandBalloonController>();
 
+            EX_GreenBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_GreenBalloon");
+            tk2dSprite m_GreenBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_GreenBalloon, EXBalloonCollection, "greenballoon_idle_001");
+            m_GreenBalloonSprite.HeightOffGround = 2;
+            EX_GreenBalloon.AddComponent<ExpandBalloonController>();
+
+            EX_BlueBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_BlueBalloon");
+            tk2dSprite m_BlueBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_BlueBalloon, EXBalloonCollection, "blueballoon_idle_001");
+            m_BlueBalloonSprite.HeightOffGround = 1.25f;
+            EX_BlueBalloon.AddComponent<ExpandBalloonController>();
+
+            EX_PinkBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_PinkBalloon");
+            tk2dSprite m_PinkBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_PinkBalloon, EXBalloonCollection, "pinkballoon_idle_001");
+            m_PinkBalloonSprite.HeightOffGround = 1.3f;
+            EX_PinkBalloon.AddComponent<ExpandBalloonController>();
+
+            EX_YellowBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_YellowBalloon");
+            tk2dSprite m_YellowBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_YellowBalloon, EXBalloonCollection, "yellowballoon_idle_001");
+            m_YellowBalloonSprite.HeightOffGround = 1.45f;
+            EX_YellowBalloon.AddComponent<ExpandBalloonController>();
+
+                        
+            List<string> m_RedBalloonPopFrames = new List<string>() {
+                "redballoon_pop_001",
+                "redballoon_pop_002",
+                "redballoon_pop_003",
+            };
+
+            List<string> m_BlueBalloonPopFrames = new List<string>() {
+                "blueballoon_pop_001",
+                "blueballoon_pop_002",
+                "blueballoon_pop_003",
+            };
+
+            List<string> m_GreenBalloonPopFrames = new List<string>() {
+                "greenballoon_pop_001",
+                "greenballoon_pop_002",
+                "greenballoon_pop_003",
+            };
+
+            List<string> m_PinkBalloonPopFrames = new List<string>() {
+                "pinkballoon_pop_001",
+                "pinkballoon_pop_002",
+                "pinkballoon_pop_003",
+            };
+
+            List<string> m_YellowBalloonPopFrames = new List<string>() {
+                "yellowballoon_pop_001",
+                "yellowballoon_pop_002",
+                "yellowballoon_pop_003",
+            };
+            
+            ExpandUtility.GenerateSpriteAnimator(EX_RedBalloon);
+            ExpandUtility.GenerateSpriteAnimator(EX_BlueBalloon);
+            ExpandUtility.GenerateSpriteAnimator(EX_GreenBalloon);
+            ExpandUtility.GenerateSpriteAnimator(EX_PinkBalloon);
+            ExpandUtility.GenerateSpriteAnimator(EX_YellowBalloon);
+
+            ExpandUtility.AddAnimation(EX_RedBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_RedBalloonPopFrames, "pop", frameRate: 12);
+            ExpandUtility.AddAnimation(EX_BlueBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_BlueBalloonPopFrames, "pop", frameRate: 12);
+            ExpandUtility.AddAnimation(EX_GreenBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_GreenBalloonPopFrames, "pop", frameRate: 12);
+            ExpandUtility.AddAnimation(EX_PinkBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_PinkBalloonPopFrames, "pop", frameRate: 12);
+            ExpandUtility.AddAnimation(EX_YellowBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_YellowBalloonPopFrames, "pop", frameRate: 12);
+
+            
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

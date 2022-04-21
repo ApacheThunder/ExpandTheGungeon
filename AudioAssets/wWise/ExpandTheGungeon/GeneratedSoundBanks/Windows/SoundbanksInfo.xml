@@ -21,6 +21,9 @@
 			<ShortName>EX_SFX</ShortName>
 			<Path>EX_SFX.bnk</Path>
 			<IncludedEvents>
+				<Event Id="975922376" Name="Play_EX_BalloonPop_01" ObjectPath="\Events\Weapons\Play_EX_BalloonPop_01"/>
+				<Event Id="975922379" Name="Play_EX_BalloonPop_02" ObjectPath="\Events\Weapons\Play_EX_BalloonPop_02"/>
+				<Event Id="975922378" Name="Play_EX_BalloonPop_03" ObjectPath="\Events\Weapons\Play_EX_BalloonPop_03"/>
 				<Event Id="987254125" Name="Play_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Close"/>
 				<Event Id="330989735" Name="Play_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Open"/>
 				<Event Id="3501969484" Name="Play_EX_BellyDoor_Seal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Seal"/>
@@ -106,9 +109,17 @@
 					<ShortName>BootlegGungeonMusic.wav</ShortName>
 					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
 				</File>
+				<File Id="352764876" Language="SFX">
+					<ShortName>Balloonpop1.wav</ShortName>
+					<Path>SFX\Balloonpop1_255C9D35.wem</Path>
+				</File>
 				<File Id="376140418" Language="SFX">
 					<ShortName>SonicSpinDashCharge.wav</ShortName>
 					<Path>SFX\SonicSpinDashCharge_255C9D35.wem</Path>
+				</File>
+				<File Id="385469871" Language="SFX">
+					<ShortName>Balloonpop2.wav</ShortName>
+					<Path>SFX\Balloonpop2_255C9D35.wem</Path>
 				</File>
 				<File Id="389740606" Language="SFX">
 					<ShortName>UnicornMusic.wav</ShortName>
@@ -161,6 +172,10 @@
 				<File Id="737636557" Language="SFX">
 					<ShortName>SonicRingCollect.wav</ShortName>
 					<Path>SFX\SonicRingCollect_255C9D35.wem</Path>
+				</File>
+				<File Id="848029394" Language="SFX">
+					<ShortName>Balloonpop3.wav</ShortName>
+					<Path>SFX\Balloonpop3_255C9D35.wem</Path>
 				</File>
 				<File Id="858414521" Language="SFX">
 					<ShortName>SonicSpinDashRelease.wav</ShortName>

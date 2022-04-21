@@ -4,6 +4,7 @@ using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandMain;
 using Dungeonator;
 using ExpandTheGungeon.ExpandComponents;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ItemAPI {
     
@@ -11,7 +12,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public static GameObject ThirdEyeObject;
         public static int ThirdEyeID;
-
+                
         public static void Init(AssetBundle expandSharedAssets1) {            
             ThirdEyeObject = expandSharedAssets1.LoadAsset<GameObject>("EXThirdEye");
             SpriteSerializer.AddSpriteToObject(ThirdEyeObject, ExpandPrefabs.EXItemCollection, "thethirdeye");
@@ -35,6 +36,18 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!ExpandSettings.EnableEXItems) { thirdEye.quality = ItemQuality.EXCLUDED; }
             ThirdEyeID = thirdEye.PickupObjectId;
         }
+        
+
+        public ThirdEye() {
+            m_BannedRooms = m_BannedRooms = new List<string> {
+                "endtimes_chamber",
+                "lichroom03"
+            };
+        }
+
+        private List<string> m_BannedRooms;
+
+        private RoomHandler m_CurrentRoom;
 
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
@@ -45,7 +58,8 @@ namespace ExpandTheGungeon.ItemAPI {
         
         private void OnRoomCleared(PlayerController player) {
             bool debugMode = false;
-            if (Random.value <= 0.2f | debugMode) {
+            if (m_CurrentRoom != null && m_CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return; }
+            if (m_CurrentRoom != player.CurrentRoom && (Random.value <= 0.15f | debugMode)) {
                 IntVector2 bestRewardLocation = player.CurrentRoom.GetBestRewardLocation(new IntVector2(2, 1), RoomHandler.RewardLocationStyle.CameraCenter, true);
                 GameObject m_EnemyChest = Instantiate(ExpandPrefabs.SurpriseChestObject, bestRewardLocation.ToVector3(), Quaternion.identity);                
                 
@@ -57,6 +71,26 @@ namespace ExpandTheGungeon.ItemAPI {
                     }
                 }
             }
+            m_CurrentRoom = player.CurrentRoom;
+        }
+
+        protected override void Update() {
+            if (Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) {
+                if (m_owner && m_owner.CurrentRoom != null && !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) &&
+                   !m_BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
+                   )
+                {
+                    Pixelator.Instance.DoOcclusionLayer = false;
+                }
+            } else if (Pixelator.Instance && !Pixelator.Instance.DoOcclusionLayer) {
+                if (m_owner && m_owner.CurrentRoom != null &&
+                   !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) && m_BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
+                   )
+                {
+                    Pixelator.Instance.DoOcclusionLayer = true;
+                }
+            }
+            base.Update();
         }
 
         public override DebrisObject Drop(PlayerController player) {

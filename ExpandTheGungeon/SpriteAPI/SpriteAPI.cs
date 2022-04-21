@@ -22,7 +22,7 @@ namespace ExpandTheGungeon.SpriteAPI {
                 return;
             }
             GameObject m_TempObject = new GameObject(CollectionName);
-            newCollection = GenerateNewSpriteCollection(m_TempObject);
+            newCollection = GenerateNewSpriteCollection(m_TempObject, CollectionName);
             AtlasPacker = new RuntimeAtlasPacker(Xres, Yres);
             AddSpriteToObject(m_TempObject, ExpandAssets.LoadSpriteAsset<Texture2D>(spriteNames[0]));
             if (spriteNames.Count > 0) {

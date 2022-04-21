@@ -10,6 +10,9 @@ Event	ID	Name			Wwise Object Path	Notes
 	587415615	Play_EX_TableAssassin_01			\Weapons\Play_EX_TableAssassin_01	
 	633823961	Stop_EX_TableAssassin_01			\Weapons\Stop_EX_TableAssassin_01	
 	797577896	Play_EX_CorruptedObjectDamage_01			\Weapons\Play_EX_CorruptedObjectDamage_01	
+	975922376	Play_EX_BalloonPop_01			\Weapons\Play_EX_BalloonPop_01	
+	975922378	Play_EX_BalloonPop_03			\Weapons\Play_EX_BalloonPop_03	
+	975922379	Play_EX_BalloonPop_02			\Weapons\Play_EX_BalloonPop_02	
 	977607592	Stop_EX_SonicLoseRings_01			\Weapons\Stop_EX_SonicLoseRings_01	
 	987254125	Play_EX_BellyDoor_Close			\Weapons\Play_EX_BellyDoor_Close	
 	1036099945	Stop_EX_CorruptionRoomTransition_01			\Weapons\Stop_EX_CorruptionRoomTransition_01	
@@ -75,7 +78,9 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	210760446	TableAssassin	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\TableAssassin_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\TableAssassin		242060
 	270161796	Abomination_Damage	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Abomination_damage_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Damage		63204
 	282880781	BootlegGungeonMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BootlegGungeonMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\BootlegGungeonMusic		1462202
+	352764876	Balloonpop1	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Balloonpop1_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop1		53664
 	376140418	SonicSpinDashCharge	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicSpinDashCharge_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashCharge		303752
+	385469871	Balloonpop2	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Balloonpop2_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop2		14748
 	389740606	UnicornMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\UnicornMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\UnicornMusic		745599
 	395418058	Belly_Door_Open	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Open_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Open		20740
 	438768819	Play_EX_BOSS_westbros_slam_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Play_EX_BOSS_westbros_slam_01_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Play_EX_BOSS_westbros_slam_01		220114
@@ -89,6 +94,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	719081646	CorruptionAmbience_02	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_22BDB8A3_5B8C7134.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_02		254016
 	737519471	Belly_Door_Unlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Unlock_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Unlock		13150
 	737636557	SonicRingCollect	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicRingCollect_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicRingCollect		152120
+	848029394	Balloonpop3	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Balloonpop3_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop3		24958
 	858414521	SonicSpinDashRelease	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicSpinDashRelease_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashRelease		249824
 	861146735	BreachTransition	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransition_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransition		705304
 	900807623	GlitchBombExplode	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombExplode_255C9D35.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombExplode		417356

@@ -15,7 +15,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             InitialDelay = 1;
             PointReachedPauseTime = 0;
             PathingTime = 6;
-            
         }
 
         public bool AllowFearState;

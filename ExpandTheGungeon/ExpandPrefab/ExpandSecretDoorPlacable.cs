@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             InteractableLock m_EXLockHollow = EXSecretDoorHollow_Lock.AddComponent<InteractableLock>();
             m_EXLockHollow.Suppress = m_RatLock.GetComponent<InteractableLock>().Suppress;
-            m_EXLockHollow.lockMode = InteractableLock.InteractableLockMode.RESOURCEFUL_RAT;
+            m_EXLockHollow.lockMode = InteractableLock.InteractableLockMode.RAT_REWARD;
             m_EXLockHollow.JailCellKeyId = m_RatLock.GetComponent<InteractableLock>().JailCellKeyId;
             m_EXLockHollow.IdleAnimName = m_RatLock.GetComponent<InteractableLock>().IdleAnimName;
             m_EXLockHollow.UnlockAnimName = m_RatLock.GetComponent<InteractableLock>().UnlockAnimName;

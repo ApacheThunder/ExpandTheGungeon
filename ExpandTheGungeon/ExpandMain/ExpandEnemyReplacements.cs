@@ -29,7 +29,7 @@ namespace ExpandTheGungeon.ExpandMain {
         private static void InitHotShotReplacements(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers) {
             List<string> hotShotShotGuns = new List<string>() { ExpandCustomEnemyDatabase.HotShotShotgunKinGUID };
             List<string> hotShotBulletKins = new List<string>() { ExpandCustomEnemyDatabase.HotShotBulletKinGUID };
-            List<string> hotShotCultist = new List<string>() { ExpandCustomEnemyDatabase.BuildHotShotCultistGUID };
+            List<string> hotShotCultist = new List<string>() { ExpandCustomEnemyDatabase.HotShotCultistGUID };
 
             string nameAppend = "EXHotShot";
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {

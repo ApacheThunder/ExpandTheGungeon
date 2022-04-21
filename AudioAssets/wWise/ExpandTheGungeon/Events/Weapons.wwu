@@ -793,6 +793,48 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_BalloonPop_01" ID="{34CDE184-3CD8-4A16-81E7-1E23E403E20B}">
+					<ChildrenList>
+						<Action Name="" ID="{6E2F1B37-4BE0-45A7-9F5D-88CB03593BBD}" ShortID="518615176">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Balloonpop1" ID="{044D3F44-8951-4039-9340-9FF4B233F8E0}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_BalloonPop_02" ID="{0855B5BC-A9AD-438C-80D7-1CBE927308FF}">
+					<ChildrenList>
+						<Action Name="" ID="{7866BCB9-01C5-43D2-AB41-6F08CB3AA288}" ShortID="840878063">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Balloonpop2" ID="{7BBB8310-92B7-43AB-AB42-1762061EC86D}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_BalloonPop_03" ID="{5A0A9090-2509-4CB8-9021-03CCF8D939F9}">
+					<ChildrenList>
+						<Action Name="" ID="{839F3F0C-36D6-4456-ABCD-7659102E20B0}" ShortID="881664146">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Balloonpop3" ID="{2C7D98FE-E5DA-4183-BCBB-8486D19E806C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
