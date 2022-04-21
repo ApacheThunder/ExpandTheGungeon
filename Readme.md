@@ -68,5 +68,6 @@ Credits:
 * Neighborino for help making sprites for the Cronenberg monsters that Cronenberg Bullets transform enemies into. He has also provided some additional room designs and revised versions of Cronenberg sprites for aggressive versions found on Belly.
 * Goldenrevolver for helping adding the West Bros Boss to Old West and verious other improvements to existing assets.
 * blazeykay for creating the sprite used by the item "The Third Eye".
+* SmilingMustache for the Clown kin sprites! :D
 * https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.
