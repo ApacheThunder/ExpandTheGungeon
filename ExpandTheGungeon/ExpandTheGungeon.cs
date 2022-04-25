@@ -11,7 +11,7 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections;
-
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon {
 
@@ -93,7 +93,8 @@ namespace ExpandTheGungeon {
                 "Golden Revolver",
                 "Sonic Box",
                 "The Third Eye",
-                "Clown Bullets"
+                "Clown Bullets",
+                "Portable Elevator"
             };
                         
             ExpandAssets.InitCustomAssetBundles();
@@ -263,6 +264,7 @@ namespace ExpandTheGungeon {
                     SonicBox.Init(expandSharedAssets1);
                     ThirdEye.Init(expandSharedAssets1);
                     ClownBullets.Init(expandSharedAssets1);
+                    PortableElevator.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
                     HotShotShotGun.Init();
 
@@ -485,230 +487,23 @@ namespace ExpandTheGungeon {
 
             ExpandExportSettings(consoleText);
         }
-        
-        private void ExpandSerializeCollection(string[] consoleText) {
-            if (consoleText.Length == 3) {
-                List<string> spritePaths = new List<string>() {
-                    /*"blueballoon_idle_001",
-                    "blueballoon_pop_001",
-                    "blueballoon_pop_002",
-                    "blueballoon_pop_003",
-                    "greenballoon_idle_001",
-                    "greenballoon_pop_001",
-                    "greenballoon_pop_002",
-                    "greenballoon_pop_003",
-                    "pinkballoon_pop_003",
-                    "pinkballoon_idle_001",
-                    "pinkballoon_pop_001",
-                    "pinkballoon_pop_002",
-                    "redballoon_idle_001",
-                    "redballoon_pop_001",
-                    "redballoon_pop_002",
-                    "redballoon_pop_003",
-                    "yellowballoon_idle_001",
-                    "yellowballoon_pop_001",
-                    "yellowballoon_pop_002",
-                    "yellowballoon_pop_003"*/
-                    /*"clownkin_death_back_south_001",
-                    "clownkin_death_back_south_002",
-                    "clownkin_death_back_south_003",
-                    "clownkin_death_back_south_004",
-                    "clownkin_death_front_north_001",
-                    "clownkin_death_front_north_002",
-                    "clownkin_death_front_north_003",
-                    "clownkin_death_front_north_004",
-                    "clownkin_death_left_back_001",
-                    "clownkin_death_left_back_002",
-                    "clownkin_death_left_back_003",
-                    "clownkin_death_left_back_004",
-                    "clownkin_death_left_back_005",
-                    "clownkin_death_left_front_001",
-                    "clownkin_death_left_front_002",
-                    "clownkin_death_left_front_003",
-                    "clownkin_death_left_front_004",
-                    "clownkin_death_left_front_005",
-                    "clownkin_death_left_side_001",
-                    "clownkin_death_left_side_002",
-                    "clownkin_death_left_side_003",
-                    "clownkin_death_left_side_004",
-                    "clownkin_death_right_back_001",
-                    "clownkin_death_right_back_002",
-                    "clownkin_death_right_back_003",
-                    "clownkin_death_right_back_004",
-                    "clownkin_death_right_back_005",
-                    "clownkin_death_right_front_001",
-                    "clownkin_death_right_front_002",
-                    "clownkin_death_right_front_003",
-                    "clownkin_death_right_front_004",
-                    "clownkin_death_right_front_005",
-                    "clownkin_death_right_side_001",
-                    "clownkin_death_right_side_002",
-                    "clownkin_death_right_side_003",
-                    "clownkin_death_right_side_004",
-                    "clownkin_die_left_001",
-                    "clownkin_die_left_002",
-                    "clownkin_die_left_back_001",
-                    "clownkin_die_left_back_002",
-                    "clownkin_die_right_001",
-                    "clownkin_die_right_002",
-                    "clownkin_die_right_back_001",
-                    "clownkin_die_right_back_002",
-                    "clownkin_hit_back_left_001",
-                    "clownkin_hit_back_right_001",
-                    "clownkin_hit_left_001",
-                    "clownkin_hit_right_001",
-                    "clownkin_idle_back_001",
-                    "clownkin_idle_back_002",
-                    "clownkin_idle_left_001",
-                    "clownkin_idle_left_002",
-                    "clownkin_idle_right_001",
-                    "clownkin_idle_right_002",
-                    "clownkin_pitfall_001",
-                    "clownkin_pitfall_002",
-                    "clownkin_pitfall_003",
-                    "clownkin_pitfall_004",
-                    "clownkin_pitfall_005",
-                    "clownkin_run_left_001",
-                    "clownkin_run_left_002",
-                    "clownkin_run_left_003",
-                    "clownkin_run_left_004",
-                    "clownkin_run_left_005",
-                    "clownkin_run_left_006",
-                    "clownkin_run_left_back_001",
-                    "clownkin_run_left_back_002",
-                    "clownkin_run_left_back_003",
-                    "clownkin_run_left_back_004",
-                    "clownkin_run_left_back_005",
-                    "clownkin_run_left_back_006",
-                    "clownkin_run_right_001",
-                    "clownkin_run_right_002",
-                    "clownkin_run_right_003",
-                    "clownkin_run_right_004",
-                    "clownkin_run_right_005",
-                    "clownkin_run_right_006",
-                    "clownkin_run_right_back_001",
-                    "clownkin_run_right_back_002",
-                    "clownkin_run_right_back_003",
-                    "clownkin_run_right_back_004",
-                    "clownkin_run_right_back_005",
-                    "clownkin_run_right_back_006",
-                    "clownkin_spawn_001",
-                    "clownkin_spawn_002",
-                    "clownkin_spawn_003",
-                    "clownkin_wig",
-                    "clownkin_wig_grounded"*/
-                    "babygoodhammer",
-                    "babygoodhammer_spawn_00",
-                    "babygoodhammer_spawn_01",
-                    "babygoodhammer_spawn_02",
-                    "babygoodhammer_spawn_03",
-                    "babygoodhammer_spawn_04",
-                    "babygoodhammer_spawn_05",
-                    "babygoodhammer_spawn_06",
-                    "babygoodhammer_spawn_07",
-                    "babygoodhammer_spawn_08",
-                    "babygoodhammer_spawn_09",
-                    "babygoodhammer_spawn_10",
-                    "babygoodhammer_spawn_11",
-                    "babygoodhammer_spawn_12",
-                    "babygoodhammer_spawn_13",
-                    "babygoodhammer_spawn_14",
-                    "babygoodhammer_spawn_15",
-                    "babygoodhammer_spawn_16",
-                    "babygoodhammer_spawn_17",
-                    "babygoodhammer_spawn_18",
-                    "babygoodhammer_spawn_19",
-                    "babygoodhammer_spawn_20",
-                    "babygoodhammer_spawn_21",
-                    "babygoodhammer_spawn_22",
-                    "babygoodhammer_spawn_23",
-                    "babygoodhammer_spawn_24",
-                    "babygoodhammer_spawn_25",
-                    "babysitter",
-                    "corrupted_poopsack_01",
-                    "corrupted_poopsack_02",
-                    "corrupted_poopsack_03",
-                    "corrupted_poopsack_04",
-                    "corrupted_poopsack_05",
-                    "corrupted_poopsack_06",
-                    "corrupted_poopsack_07",
-                    "corrupted_poopsack_08",
-                    "corrupted_poopsack_09",
-                    "corrupted_poopsack_10",
-                    "corruptionbomb",
-                    "corruptionbomb_minimapicon",
-                    "corruptionbomb_spin_01",
-                    "corruptionbomb_spin_02",
-                    "corruptionbomb_spin_03",
-                    "corruptionbomb_spin_04",
-                    "corruptionbomb_spin_05",
-                    "corruptionbomb_spin_06",
-                    "corruptionbomb_spin_07",
-                    "corruptionbomb_spin_08",
-                    "corruptionbomb_spin_09",
-                    "corruptionbomb_spin_10",
-                    "cronenbergbullets",
-                    "cursedbrick",
-                    "ex_mimiclay",
-                    "glitchround",
-                    "junglecrest",
-                    "plunger_fire_001",
-                    "plunger_fire_002",
-                    "plunger_fire_003",
-                    "plunger_fire_004",
-                    "plunger_fire_005",
-                    "plunger_fire_006",
-                    "PowBlock",
-                    "PowBlock_Idle_01",
-                    "PowBlock_Idle_02",
-                    "PowBlock_Idle_03",
-                    "PowBlock_Idle_04",
-                    "PowBlock_Idle_05",
-                    "PowBlock_Idle_06",
-                    "PowBlock_Idle_07",
-                    "PowBlock_Idle_08",
-                    "PowBlock_Idle_09",
-                    "PowBlock_Idle_10",
-                    "PowBlock_Idle_11",
-                    "PowBlock_Idle_12",
-                    "PowBlock_Idle_13",
-                    "PowBlock_Idle_14",
-                    "PowBlock_Used",
-                    "rockslide",
-                    "SonicBox_Broken_01",
-                    "SonicBox_Idle_01",
-                    "SonicBox_Idle_02",
-                    "SonicBox_Idle_03",
-                    "SonicRing_Idle_01",
-                    "SonicRing_Idle_02",
-                    "SonicRing_Idle_03",
-                    "SonicRing_Idle_04",
-                    "SonicRing_Idle_05",
-                    "SonicRing_Idle_06",
-                    "SonicRing_Idle_07",
-                    "SonicRing_Idle_08",
-                    "SonicRing_Idle_09",
-                    "SonicRing_Idle_10",
-                    "SonicRing_Idle_11",
-                    "SonicRing_Idle_12",
-                    "SonicRing_Idle_13",
-                    "SonicRing_Idle_14",
-                    "SonicRing_Idle_15",
-                    "tabletech_assassin",
-                    "theleadkey",
-                    "thethirdeye",
-                    "clownbullets"
-                };
 
+        // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: EXItem_Collection 256 256)
+        // If you wish to manually specify path of output files add path as 4th parameter.
+        public void ExpandSerializeCollection(string[] consoleText) {
+            if (consoleText.Length == 3/* | consoleText.Length == 4*/) {
+                string CollectionName = consoleText[0];
                 int X = int.Parse(consoleText[1]);
                 int Y = int.Parse(consoleText[2]);
-                SpriteSerializer.SerializeSpriteCollection(consoleText[0], spritePaths, X, Y);
+                string OverridePath = string.Empty;                
+                if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
+                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXItem_Collection, X, Y, OverridePath);                
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
             
         }
-                
+
         private void ExpandTestCommand(string[] consoleText) {
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
@@ -747,7 +542,12 @@ namespace ExpandTheGungeon {
 
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
+            GameObject m_Elevator = UnityEngine.Object.Instantiate(ExpandPrefabs.EXPortableElevator_Departure, CurrentPlayer.gameObject.transform.position + new Vector3(2, 3), Quaternion.identity);
+
+            ExpandPortableElevatorController m_ElevatorController = m_Elevator.GetComponent<ExpandPortableElevatorController>();
+            m_ElevatorController.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
+
+            /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
 
 
             Material shade = new Material(ShaderCache.Acquire("Brave/ItemSpecific/LootGlintAdditivePass"));
@@ -755,7 +555,7 @@ namespace ExpandTheGungeon {
 
             TestChest.sprite.usesOverrideMaterial = true;
             TestChest.sprite.renderer.material.shader = shade.shader;
-            TestChest.sprite.renderer.material.SetColor("_OverrideColor", new Color(1.3f, 0.8f, 0f, 1));
+            TestChest.sprite.renderer.material.SetColor("_OverrideColor", new Color(1.3f, 0.8f, 0f, 1));*/
 
 
 

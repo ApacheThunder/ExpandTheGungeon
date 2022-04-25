@@ -282,7 +282,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 m_extantBlinkShadow.transform.position = m_cachedBlinkPosition + (Owner.sprite.transform.position.XY() - Owner.specRigidbody.UnitCenter);
                 tk2dSpriteAnimator tk2dSpriteAnimator = m_extantBlinkShadow.gameObject.AddComponent<tk2dSpriteAnimator>();
                 tk2dSpriteAnimator.Library = Owner.spriteAnimator.Library;     
-                if (m_overrideFlatColorID.HasValue) { m_extantBlinkShadow.renderer.material.SetColor(m_overrideFlatColorID.Value, (!canWarpDirectly) ? new Color(0.4f, 0f, 0f, 1f) : new Color(0.25f, 0.25f, 0.25f, 1f)); }                
+                if (m_overrideFlatColorID.HasValue) { m_extantBlinkShadow.renderer.material.SetColor(m_overrideFlatColorID.Value, (!canWarpDirectly) ? new Color(0.4f, 0f, 0f, 1f) : new Color(0.25f, 0.25f, 0.25f, 1f)); }
                 m_extantBlinkShadow.usesOverrideMaterial = true;
                 m_extantBlinkShadow.FlipX = Owner.sprite.FlipX;
                 m_extantBlinkShadow.FlipY = Owner.sprite.FlipY;

@@ -27,6 +27,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXBootlegRoomCollection;
         public static GameObject SecretElevatorExitTilesetCollection;
         public static GameObject EXBalloonCollection;
+        public static GameObject EXPortableElevatorCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -329,7 +330,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EX_GreenBalloon;
         public static GameObject EX_PinkBalloon;
         public static GameObject EX_YellowBalloon;
-        
+
+        // Custom Elevator for Portable Elevator Item
+        public static GameObject EXPortableElevator_Departure;
+        public static GameObject EXPortableElevator_Reticle;
+
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
         public static GameObject ENV_Tileset_West;
@@ -356,6 +361,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXBootlegRoomCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBootlegRoomCollection", "EXBootlegRoom_Collection", "EXBootlegRoomCollection");
             SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
             EXBalloonCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBalloonCollection", "EXBalloon_Collection", "EXBalloonCollection");
+            EXPortableElevatorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXPortableElevatorCollection", "EXPortableElevator_Collection", "EXPortableElevatorCollection");
+
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -3178,8 +3185,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXItemDropController.IsItemCrate = true;
             EXItemDropController.UseLandingVFX = true;
             EXItemDropController.DropHeightHorizontalOffset = 8;
-
-            
+                        
 
 
             EX_Chest_West = expandSharedAssets1.LoadAsset<GameObject>("EX_Chest_West");
@@ -3218,8 +3224,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "chest_west_break_003",
                 "chest_west_break_004"
             };
-
-            // SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, chestWestSprites, ChestWestSprite.Collection);
             
             ExpandUtility.GenerateSpriteAnimator(EX_Chest_West);
             
@@ -3349,9 +3353,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             List<string> ChestWestLockBreak = new List<string>() { "west_lock_broke_001", };
-
-            // SpriteBuilder.AddSpritesToCollection(expandSharedAssets1, ChestWestLockSprites, ChestWestLockSprite.Collection);
-
+            
             ExpandUtility.GenerateSpriteAnimator(ChestWestLock);
 
             tk2dSpriteAnimator ChestWestLockAnimator = ChestWestLock.GetComponent<tk2dSpriteAnimator>();
@@ -3500,7 +3502,104 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(EX_PinkBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_PinkBalloonPopFrames, "pop", frameRate: 12);
             ExpandUtility.AddAnimation(EX_YellowBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_YellowBalloonPopFrames, "pop", frameRate: 12);
 
+
+            EXPortableElevator_Departure = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Departure");
+                        
+            GameObject m_ElevatorChild_Departure = EXPortableElevator_Departure.transform.Find("elevator").gameObject;
+            GameObject m_ElevatorChild_Floor = EXPortableElevator_Departure.transform.Find("floor").gameObject;
+            GameObject m_ElevatorChild_InteriorFloor = EXPortableElevator_Departure.transform.Find("interiorFloor").gameObject;
+                       
+
+            tk2dSprite m_EXPortableElevator_DepartureSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
+            m_EXPortableElevator_DepartureSprite.HeightOffGround = -4.75f;
             
+            tk2dSprite m_EXPortableElevator_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            m_EXPortableElevator_FloorSprite.HeightOffGround = -1.75f;
+
+            tk2dSprite m_EXPortableElevator_InteriorFloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            m_EXPortableElevator_InteriorFloorSprite.HeightOffGround = -0.75f;
+
+
+            List<string> m_PortableElevatorArriveFrames = new List<string>() {
+                "portable_elevator_arrive_01",
+                "portable_elevator_arrive_02",
+                "portable_elevator_arrive_03",
+                "portable_elevator_arrive_04",
+            };
+
+            List<string> m_PortableElevatorDepartFrames = new List<string>() {
+                "portable_elevator_depart_01",
+                "portable_elevator_depart_02",
+                "portable_elevator_depart_03",
+                "portable_elevator_depart_04",
+                "portable_elevator_depart_05",
+                "portable_elevator_depart_06",
+                "portable_elevator_depart_07",
+                "portable_elevator_depart_08",
+                "portable_elevator_depart_09",
+                "portable_elevator_depart_10",
+                "portable_elevator_depart_11",
+            };
+
+            List<string> m_PortableElevatorOpenFrames = new List<string>() {
+                "portable_elevator_open_01",
+                "portable_elevator_open_02",
+                "portable_elevator_open_03",
+                "portable_elevator_open_04",
+                "portable_elevator_open_05",
+            };
+
+            List<string> m_PortableElevatorCloseFrames = new List<string>() {
+                "portable_elevator_open_05",
+                "portable_elevator_open_04",
+                "portable_elevator_open_03",
+                "portable_elevator_open_02",
+                "portable_elevator_open_01"
+            };
+                                    
+            ExpandUtility.GenerateSpriteAnimator(m_ElevatorChild_Departure);
+
+            tk2dSpriteAnimator m_EXPortableElevator_DepartureAnimator = m_ElevatorChild_Departure.GetComponent<tk2dSpriteAnimator>();
+            
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorArriveFrames, "arrive", frameRate: 16);
+            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].eventAudio = "Play_OBJ_elevator_arrive_01";
+            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].triggerEvent = true;
+
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorDepartFrames, "depart", frameRate: 30); // 30
+            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].eventAudio = "Play_OBJ_elevator_leave_01";
+            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].triggerEvent = true;
+
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorOpenFrames, "open", frameRate: 9);
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorCloseFrames, "close", frameRate: 9);
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
+
+
+            ExpandPortableElevatorController m_EXElevatorController = EXPortableElevator_Departure.AddComponent<ExpandPortableElevatorController>();
+            m_EXElevatorController.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
+
+
+            EXPortableElevator_Reticle = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Reticle");
+            SpriteSerializer.AddSpriteToObject(EXPortableElevator_Reticle, EXPortableElevatorCollection, "portable_elevator_reticle_green");
+                        
+            ExpandReticleRiserEffect m_PortableElevatorReticle = EXPortableElevator_Reticle.AddComponent<ExpandReticleRiserEffect>();
+            m_PortableElevatorReticle.UpdateSpriteDefinitions = true;
+            m_PortableElevatorReticle.CurrentSpriteName = "portable_elevator_reticle_green";
+            m_PortableElevatorReticle.NumRisers = 3;
+            m_PortableElevatorReticle.RiserHeight = 1;
+            m_PortableElevatorReticle.RiseTime = 1.5f;
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

@@ -121,22 +121,23 @@ namespace ExpandTheGungeon.ItemAPI {
             Projectile ShotgunProjectileComponent = ShotgunProjectile.AddComponent<Projectile>();
             ExpandUtility.DuplicateComponent(ShotgunProjectileComponent, shotgun.DefaultModule.projectiles[0]);
             shotgun.DefaultModule.projectiles[0] = ShotgunProjectileComponent;
-            ProjectileVolleyData shotgunVollyData = new ProjectileVolleyData() {
-                projectiles = new List<ProjectileModule>() {
-                    shotgun.DefaultModule,
-                    new ProjectileModule(),
-                    new ProjectileModule(),
-                    new ProjectileModule(),
-                    new ProjectileModule(),
-                    new ProjectileModule(),
-                },
-                UsesBeamRotationLimiter = false,
-                BeamRotationDegreesPerSecond = 30,
-                ModulesAreTiers = false,
-                UsesShotgunStyleVelocityRandomizer = true,
-                DecreaseFinalSpeedPercentMin = -15,
-                IncreaseFinalSpeedPercentMax = 15
+
+            ProjectileVolleyData shotgunVollyData = ScriptableObject.CreateInstance<ProjectileVolleyData>();
+            shotgunVollyData.projectiles = new List<ProjectileModule>() {
+                shotgun.DefaultModule,
+                new ProjectileModule(),
+                new ProjectileModule(),
+                new ProjectileModule(),
+                new ProjectileModule(),
+                new ProjectileModule(),
             };
+            shotgunVollyData.UsesBeamRotationLimiter = false;
+            shotgunVollyData.BeamRotationDegreesPerSecond = 30;
+            shotgunVollyData.ModulesAreTiers = false;
+            shotgunVollyData.UsesShotgunStyleVelocityRandomizer = true;
+            shotgunVollyData.DecreaseFinalSpeedPercentMin = -15;
+            shotgunVollyData.IncreaseFinalSpeedPercentMax = 15;
+            
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[1]);
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[2]);
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[3]);

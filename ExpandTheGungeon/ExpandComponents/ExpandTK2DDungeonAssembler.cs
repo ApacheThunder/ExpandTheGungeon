@@ -3035,10 +3035,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         num6 += stampDataBase.height;
                     }
                 }
-                IL_75E:
+                // IL_75E:
                 num4++;
                 continue;
-                goto IL_75E;
+                // goto IL_75E;
             }
             int num8 = 0;
             while (num8 < list3.Count)
@@ -3069,10 +3069,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         num9 += stampDataBase3.height;
                     }
                 }
-                IL_83F:
+                // IL_83F:
                 num8++;
                 continue;
-                goto IL_83F;
+                // goto IL_83F;
             }
             List<TK2DInteriorDecorator.WallExpanse> list4 = r.GatherExpanses(DungeonData.Direction.SOUTH, true, false, false);
             int num11 = 0;
@@ -3110,10 +3110,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         }
                     }
                 }
-                IL_9B1:
+                // IL_9B1:
                 num11++;
                 continue;
-                goto IL_9B1;
+                // goto IL_9B1;
             }
             for (int num14 = 2; num14 < r.area.dimensions.x - 2; num14++)
             {

@@ -2169,29 +2169,28 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
             dungeon.pathGridDefinitions = new List<TileIndexGrid>(0);
             // dungeon.dungeonDustups
-            dungeon.damageTypeEffectMatrix = new DamageTypeEffectMatrix() {
-                definitions = new List<DamageTypeEffectDefinition>() {
-                    new DamageTypeEffectDefinition() {
-                        name = "Fire",
-                        damageType = CoreDamageTypes.Magic,
-                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
-                    },
-                    new DamageTypeEffectDefinition() {
-                        name = "Ice",
-                        damageType = CoreDamageTypes.Fire,
-                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
-                    },
-                    new DamageTypeEffectDefinition() {
-                        name = "Rubel",
-                        damageType = CoreDamageTypes.Ice,
-                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
-                    },
-                    new DamageTypeEffectDefinition() {
-                        name = "Water",
-                        damageType = CoreDamageTypes.Poison,
-                        wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
-                    },
-                }
+            dungeon.damageTypeEffectMatrix = ScriptableObject.CreateInstance<DamageTypeEffectMatrix>();
+            dungeon.damageTypeEffectMatrix.definitions = new List<DamageTypeEffectDefinition>() {
+                new DamageTypeEffectDefinition() {
+                    name = "Fire",
+                    damageType = CoreDamageTypes.Magic,
+                    wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                },
+                new DamageTypeEffectDefinition() {
+                    name = "Ice",
+                    damageType = CoreDamageTypes.Fire,
+                    wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                },
+                new DamageTypeEffectDefinition() {
+                    name = "Rubel",
+                    damageType = CoreDamageTypes.Ice,
+                    wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                },
+                new DamageTypeEffectDefinition() {
+                    name = "Water",
+                    damageType = CoreDamageTypes.Poison,
+                    wallDecals = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] },
+                },
             };
             
             dungeon.stampData = ScriptableObject.CreateInstance<DungeonTileStampData>();

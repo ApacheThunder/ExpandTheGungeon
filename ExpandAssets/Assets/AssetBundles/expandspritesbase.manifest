@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 265645474
+CRC: 4184612945
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4d0da607b7098475f2b1a3b6d7de3ac5
+    Hash: d9a73413a868a3b9bc18bbee14f58a81
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -96,6 +96,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_front_left_004.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_02.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_golden_revolver_idle_004.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_run_down_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock_Idle_11.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/alarm_mushroom2_alarm_004.png
@@ -105,6 +106,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/blueballoon_pop_003.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Back_02.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_back_right_003.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_05.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_move_down_003.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_pitfall_002.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_nome_rev_enemy_pre_fire_003.png
@@ -171,6 +173,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_hit_left_005.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/corrupted_poopsack_02.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_death_right_002.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_09.png
 - Assets/ExpandSprites/AIActors/GungeoneerMimic_Collection/PlayerMimicMirror_MimicFadeIn_10.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock_Idle_02.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_angel_rev_reload_001.png
@@ -183,8 +186,10 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Rebound_Death_05.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Spindash_05.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_back_south_002.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_01.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Left_01.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_left_003.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor_broken.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_death_left_007.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/blueballoon_pop_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Rebound_Death_01.png
@@ -213,6 +218,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_move_down_001.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/greenballoon_pop_002.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/yellowballoon_pop_001.png
+- Assets/ExpandSprites/GunsAndItems/EXItem_Collection/portable_elevator.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_corpse.png
 - Assets/ExpandSprites/AIActors/GungeoneerMimic_Collection/PlayerMimicMirror_MimicFadeIn_07.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_angel_rev_fire_003.png
@@ -253,16 +259,20 @@ Assets:
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_02.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_hit_right_003.png
 - Assets/ExpandSprites/GunsAndItems/EXGun_Collection/bootleg_pistol_fire_004.png
+- Assets/ExpandSprites/GunsAndItems/EXItem_Collection/portable_elevator_pushed.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Collection/Cronenberg_Spawn_004.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_004.png
 - Assets/ExpandSprites/AIActors/BootlegBullat_Collection/bullat_idle_004.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_08.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_05.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_move_down_003.png
 - Assets/ExpandSprites/Misc/EXParadrop_Collection/EX_Parachute_Open_04.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_right_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor_alt.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Back_01.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock_Used.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_up_003.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor_broken_alt.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_left_front_004.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_right_002.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_back_008.png
@@ -372,6 +382,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_left_009.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_golden_revolver_fire_001.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_nome_rev_enemy_pre_fire_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_04.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Left_010.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_idle_front_004.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_idle_back_001.png
@@ -427,6 +438,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXMonster_Collection/Belly_PitVFX3_07.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_left_001.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_back_003.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_arrive_02.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_19.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_idle_up_001.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_back_south_001.png
@@ -477,6 +489,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXTrap_Collection/alarm_mushroom2_alarm_006.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicBox_Broken_01.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_pitfall_002.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_reticle_red.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_18.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Spindash_06.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_spawn_005.png
@@ -507,8 +520,10 @@ Assets:
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_left_front_005.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_004.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_15.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_02.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/pinkballoon_pop_002.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/chest_west_open_003.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_01.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_move_down_004.png
 - Assets/ExpandSprites/Misc/EXMonster_Collection/Belly_Void.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_back_right_005.png
@@ -576,6 +591,7 @@ Assets:
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/plunger_fire_001.png
 - Assets/ExpandSprites/AIActors/BootlegBullat_Collection/bullat_die_003.png
 - Assets/ExpandSprites/Misc/EXMonster_Collection/Belly_PitVFX1_04.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_08.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_front_003.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_hit_left_001.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Collection/Cronenberg_Move_005.png
@@ -603,9 +619,11 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_pitfall_004.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Idle_Back_Right_01.png
 - Assets/ExpandSprites/Misc/EXLargeMonster_Collection/Belly_Monster_Move_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_interiorfloor.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_left_004.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Left_002.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_front_005.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_arrive_01.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_black_revolver_reload_002.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Left_006.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_03.png
@@ -619,6 +637,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_side_003.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_left_002.png
 - Assets/ExpandSprites/Misc/EXLargeMonster_Collection/Belly_Monster_Move_006.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_10.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_back_002.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Forward_006.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_08.png
@@ -648,6 +667,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_right_005.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_13.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_pitfall_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_03.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_12.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_spawn_002.png
@@ -657,6 +677,7 @@ Assets:
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_03.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/chest_west_open_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Right_009.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_04.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_09.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_back_right_005.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_back_right_002.png
@@ -669,6 +690,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_tuc_rev_enemy_pre_fire_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock.png
 - Assets/ExpandSprites/AIActors/BabyGoodHammer_Collection/babygoodhammer_idle_down_03.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_11.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_pitfall_002.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_pitfall_004.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_006.png
@@ -744,6 +766,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXLargeMonster_Collection/Shipwreck_Right.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicBox_Idle_02.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_spawn_002.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_07.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_die_right_002.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Spindash_04.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_back_left_002.png
@@ -765,6 +788,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_down_005.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_up_002.png
 - Assets/ExpandSprites/Misc/EXParadrop_Collection/EX_Parachute.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_arrive_04.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_left_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/corruptionbomb_spin_07.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_spawn_002.png
@@ -772,6 +796,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_left_002.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_right_003.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_pitfall_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_arrive_03.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_idle_back_002.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_back_001.png
 - Assets/ExpandSprites/AIActors/BabyGoodHammer_Collection/babygoodhammer_move_right_01.png
@@ -785,6 +810,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_002.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_hit_right_001.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/west_lock_open_006.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_reticle_green.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_front_right_002.png
 - Assets/ExpandSprites/AIActors/BootlegBullat_Collection/bullat_idle_005.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/chest_west_appear_002.png
@@ -797,6 +823,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_burst_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Right_007.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_left_005.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor_border.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/greenballoon_pop_003.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Left_02.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Collection/Cronenberg_Spawn_006.png
@@ -815,6 +842,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXSecretDoor_Collection/EXSecretDoor_Close_04.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Collection/Cronenberg_Spawn_003.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_24.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_03.png
 - Assets/ExpandSprites/Misc/EXBootlegRoom_Collection/BootlegRoom_ExitTiles_East.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Rebound_Back_Right_01.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_spawn_003.png
@@ -825,6 +853,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Left_008.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_black_revolver_reload_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_15.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_02.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_005.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_005.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_pitfall_down_001.png
@@ -890,6 +919,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXTrap_Collection/music_switch_idle_off_001.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_run_right_002.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_run_right_001.png
+- Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_06.png
 - Assets/ExpandSprites/Misc/EXJungle_Collection/Jungle_TreeStump.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_08.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_07.png

@@ -1,4 +1,4 @@
-ExpandTheGungeon - v2.6 by Apache Thunder.
+ExpandTheGungeon - v2.6.1 by Apache Thunder.
 
 Features:
 
@@ -69,5 +69,6 @@ Credits:
 * Goldenrevolver for helping adding the West Bros Boss to Old West and verious other improvements to existing assets.
 * blazeykay for creating the sprite used by the item "The Third Eye".
 * SmilingMustache for the Clown kin sprites! :D
+* Dallan for the item sprite used for Portable Elevator.
 * https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.

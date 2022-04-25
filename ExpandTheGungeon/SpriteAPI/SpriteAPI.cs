@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace ExpandTheGungeon.SpriteAPI {
 
 	public static class SpriteSerializer {
-
+        
         private static tk2dSpriteCollectionData newCollection;
         private static RuntimeAtlasPacker AtlasPacker;
         
