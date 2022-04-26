@@ -35,9 +35,8 @@ namespace ExpandTheGungeon.ExpandMain {
             
             if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
                         
-            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {
-                ExpandSettings.phobosElevatorHasBeenUsed = false;
-                ExpandSettings.elevatorHasBeenUsed = false;
+            if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {                
+                ExpandSettings.glitchElevatorHasBeenUsed = false;
             }
             
             ExpandStaticReferenceManager.PopulateLists();
@@ -353,19 +352,19 @@ namespace ExpandTheGungeon.ExpandMain {
                 
         private void PlaceGlitchElevator(Dungeon dungeon, int CurrentFloor) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
-            if (dungeon.IsGlitchDungeon | ExpandSettings.elevatorHasBeenUsed | CurrentFloor > 4) { return; }
+            if (dungeon.IsGlitchDungeon | ExpandSettings.glitchElevatorHasBeenUsed | CurrentFloor > 4) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
-                ExpandSettings.elevatorHasBeenUsed = false;
+                ExpandSettings.glitchElevatorHasBeenUsed = false;
                 return;
             }
             if (levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST) {
-                ExpandSettings.elevatorHasBeenUsed = false;
+                ExpandSettings.glitchElevatorHasBeenUsed = false;
                 return;
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             if (GameManager.Instance.CurrentFloor >= 5) { return; }
-            if (UnityEngine.Random.value > 0.003f) { return; }
+            if (UnityEngine.Random.value > 0.004f) { return; }
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
             foreach (RoomHandler room in dungeon.data.rooms) {
@@ -448,12 +447,18 @@ namespace ExpandTheGungeon.ExpandMain {
             if (validWalls.Count > 0) {
                 IntVector2 WallCell = (BraveUtility.RandomElement(validWalls) - currentRoom.area.basePosition);
                 GameObject ElevatorObject = ExpandPrefabs.ElevatorDeparture.InstantiateObject(currentRoom, WallCell, false);
-                ElevatorObject.AddComponent<ExpandElevatorDepartureManager>();
-                ExpandElevatorDepartureManager elevatorComponent = ElevatorObject.GetComponent<ExpandElevatorDepartureManager>();
-                elevatorComponent.UsesOverrideTargetFloor = true;
-                elevatorComponent.IsGlitchElevator = true;
-                if (elevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
-                    foreach (tk2dBaseSprite baseSprite in elevatorComponent.gameObject.GetComponentsInChildren<tk2dBaseSprite>(true)) {
+                if (ElevatorObject.GetComponent<ElevatorDepartureController>()) {
+                    ElevatorObject.AddComponent<ExpandElevatorDepartureManager>();
+                    ExpandElevatorDepartureManager elevatorComponent = ElevatorObject.GetComponent<ExpandElevatorDepartureManager>();
+                    elevatorComponent.UsesOverrideTargetFloor = true;
+                    elevatorComponent.IsGlitchElevator = true;
+                } else if (ElevatorObject.GetComponent<ExpandNewElevatorController>()) {
+                    ExpandNewElevatorController exElevatorController = ElevatorObject.GetComponent<ExpandNewElevatorController>();                    
+                    exElevatorController.IsGlitchElevator = true;
+                }
+                
+                if (ElevatorObject.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
+                    foreach (tk2dBaseSprite baseSprite in ElevatorObject.GetComponentsInChildren<tk2dBaseSprite>(true)) {
                         ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
                     }
                 }

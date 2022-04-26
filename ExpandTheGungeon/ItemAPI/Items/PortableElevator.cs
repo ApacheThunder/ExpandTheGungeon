@@ -179,7 +179,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private void DoElevatorDrop(Vector2 currentTarget, RoomHandler targetRoom) {
             GameObject m_ElevatorOBJ = Instantiate(ExpandPrefabs.EXPortableElevator_Departure, currentTarget, Quaternion.identity);
-            ExpandPortableElevatorController m_ElevatorController = m_ElevatorOBJ.GetComponent<ExpandPortableElevatorController>();
+            ExpandNewElevatorController m_ElevatorController = m_ElevatorOBJ.GetComponent<ExpandNewElevatorController>();
             m_ElevatorController.ConfigureOnPlacement(targetRoom);            
         }
 

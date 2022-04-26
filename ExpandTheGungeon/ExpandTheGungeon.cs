@@ -497,7 +497,7 @@ namespace ExpandTheGungeon {
                 int Y = int.Parse(consoleText[2]);
                 string OverridePath = string.Empty;                
                 if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
-                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXItem_Collection, X, Y, OverridePath);                
+                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXPortableElevator_Collection, X, Y, OverridePath);                
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
@@ -544,7 +544,7 @@ namespace ExpandTheGungeon {
 
             GameObject m_Elevator = UnityEngine.Object.Instantiate(ExpandPrefabs.EXPortableElevator_Departure, CurrentPlayer.gameObject.transform.position + new Vector3(2, 3), Quaternion.identity);
 
-            ExpandPortableElevatorController m_ElevatorController = m_Elevator.GetComponent<ExpandPortableElevatorController>();
+            ExpandNewElevatorController m_ElevatorController = m_Elevator.GetComponent<ExpandNewElevatorController>();
             m_ElevatorController.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
 
             /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);

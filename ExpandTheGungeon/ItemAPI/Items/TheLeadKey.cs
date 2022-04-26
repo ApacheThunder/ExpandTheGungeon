@@ -224,8 +224,6 @@ namespace ExpandTheGungeon.ItemAPI {
 
             PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
-            bool IsExitElevatorRoom = false;
-
             if (m_CopyCurrentRoom) {
                 try {
                     SelectedPrototypeDungeonRoom = RoomBuilder.GenerateRoomPrefabFromTexture2D(RoomDebug.DumpRoomAreaToTexture2D(currentRoom));
@@ -249,10 +247,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 if (RoomSelectionSeed <= 0.01f) { GoingToSecretBoss = true; }
 
                 if (!GoingToSecretBoss | ExpandSettings.HasSpawnedSecretBoss) {
-                    if (RoomSelectionSeed <= 0.05f && GameManager.Instance.CurrentFloor != 6 && GameManager.Instance.CurrentFloor != 5 && !ExpandSettings.phobosElevatorHasBeenUsed) {
-                        SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(ExitElevatorRoomList);
-                        IsExitElevatorRoom = true;
-                    } else if (RoomSelectionSeed <= 0.25f) {
+                    if (RoomSelectionSeed <= 0.25f) {
                         SelectedPrototypeDungeonRoom = BraveUtility.RandomElement(RewardRoomList);
                     } else if (RoomSelectionSeed <= 0.5f) {
                         List<PrototypeDungeonRoom> m_SpecialRooms = new List<PrototypeDungeonRoom>();
@@ -382,69 +377,65 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
             }
             
-            if (!IsExitElevatorRoom) {                
-                if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("castle") && !dungeon.gameObject.name.ToLower().Contains("castle")) {
-                    DungeonName = "Castle";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("sewer_") && !dungeon.gameObject.name.ToLower().Contains("sewer")) {
-                    DungeonName = "Sewer";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_jungle") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
-                    DungeonName = "Jungle";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_forest") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
-                    // DungeonName = "Jungle"; Can't use this tileset without exceptions happening.
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("phobos") && !dungeon.gameObject.name.ToLower().Contains("phobos")) {
-                    DungeonName = "Phobos";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("gungeon_") && !dungeon.gameObject.name.ToLower().Contains("gungeon")) {
-                    DungeonName = "Gungeon";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("cathedral_") && !dungeon.gameObject.name.ToLower().Contains("cathedral")) {
-                    DungeonName = "Cathedral";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_belly") && !dungeon.gameObject.name.ToLower().Contains("belly")) {
-                    DungeonName = "Belly";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mine_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
-                    DungeonName = "Mines";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mines_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
-                    DungeonName = "Mines";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hollow_") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("catacomb") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("connector_shortcatacave") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_clobulonparadise") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_cubeworld") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_themummyreturns") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_shelletons") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_skeletonsandcubes") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_blobsandcubeslivingtogether") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
-                    DungeonName = "Catacombs";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("office_") && !dungeon.gameObject.name.ToLower().Contains("nakatomi")) {
-                    // DungeonName = "Nakatomi"; // There are issues trying to use this tileset so will allow random tileset.
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_west") && !dungeon.gameObject.name.ToLower().Contains("west")) {
-                    // DungeonName = "West"; // West tileset causes issues so have to disable this as well.
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("forge") && !dungeon.gameObject.name.ToLower().Contains("forge")) {
-                    DungeonName = "Forge";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("bhell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
-                    DungeonName = "BulletHell";
-                } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
-                    DungeonName = "BulletHell";
-                }
-                
-                Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_" + DungeonName);
-                if (!DungeonName.ToLower().Contains(dungeon.gameObject.name)) {
-                    GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
-                } else {
-                    GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
-                }
-                dungeon2 = null;
-            } else {
-                Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Phobos");
-                GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, IsExitElevatorRoom, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
-                dungeon2 = null;
+                        
+            if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("castle") && !dungeon.gameObject.name.ToLower().Contains("castle")) {
+                DungeonName = "Castle";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("sewer_") && !dungeon.gameObject.name.ToLower().Contains("sewer")) {
+                DungeonName = "Sewer";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_jungle") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
+                DungeonName = "Jungle";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_forest") && !dungeon.gameObject.name.ToLower().Contains("jungle")) {
+                // DungeonName = "Jungle"; Can't use this tileset without exceptions happening.
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("phobos") && !dungeon.gameObject.name.ToLower().Contains("phobos")) {
+                DungeonName = "Phobos";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("gungeon_") && !dungeon.gameObject.name.ToLower().Contains("gungeon")) {
+                DungeonName = "Gungeon";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("cathedral_") && !dungeon.gameObject.name.ToLower().Contains("cathedral")) {
+                DungeonName = "Cathedral";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_belly") && !dungeon.gameObject.name.ToLower().Contains("belly")) {
+                DungeonName = "Belly";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mine_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
+                DungeonName = "Mines";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("mines_") && !dungeon.gameObject.name.ToLower().Contains("mines")) {
+                DungeonName = "Mines";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hollow_") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("catacomb") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("connector_shortcatacave") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_clobulonparadise") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_cubeworld") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_themummyreturns") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_shelletons") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_skeletonsandcubes") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("normal_blobsandcubeslivingtogether") && !dungeon.gameObject.name.ToLower().Contains("catacombs")) {
+                DungeonName = "Catacombs";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("office_") && !dungeon.gameObject.name.ToLower().Contains("nakatomi")) {
+                // DungeonName = "Nakatomi"; // There are issues trying to use this tileset so will allow random tileset.
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("expand_west") && !dungeon.gameObject.name.ToLower().Contains("west")) {
+                // DungeonName = "West"; // West tileset causes issues so have to disable this as well.
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("forge") && !dungeon.gameObject.name.ToLower().Contains("forge")) {
+                DungeonName = "Forge";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("bhell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
+                DungeonName = "BulletHell";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
+                DungeonName = "BulletHell";
             }
+            
+            Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_" + DungeonName);
+            if (!DungeonName.ToLower().Contains(dungeon.gameObject.name)) {
+                GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, false, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+            } else {
+                GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, false, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
+            }
+            dungeon2 = null;
+            
                      
             if (GlitchRoom == null) {                
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
@@ -541,26 +532,9 @@ namespace ExpandTheGungeon.ItemAPI {
                 ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
             
-            if (IsExitElevatorRoom) {
-                ElevatorDepartureController DepartureElevator = null;
-                
-                if (FindObjectsOfType<ElevatorDepartureController>() != null) {
-                    foreach (ElevatorDepartureController elevator in FindObjectsOfType<ElevatorDepartureController>()) {
-                        if (elevator.gameObject.transform.parent == GlitchRoom.hierarchyParent) {
-                            DepartureElevator = elevator;
-                            break;
-                        }
-                    }
-                }
-                
-                if (DepartureElevator) {
-                    ExpandElevatorDepartureManager exElevator = DepartureElevator.gameObject.AddComponent<ExpandElevatorDepartureManager>();
-                    exElevator.OverrideTargetFloor = GlobalDungeonData.ValidTilesets.PHOBOSGEON;
-                }
-                TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom, new Vector2(4, 2));
-            } else {
-                TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
-            }
+            
+            TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
+            
             yield return null;
             while (m_IsTeleporting) { yield return null; }
             

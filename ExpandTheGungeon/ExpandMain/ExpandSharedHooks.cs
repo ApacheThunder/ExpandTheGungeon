@@ -57,8 +57,9 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook throwGunHook;
         public static Hook onContinueGameSelectedHook;
         public static Hook getNextTilesetHook;
+        public static Hook placePlayerInRoomHook;
 
-        
+
         public static bool IsHooksInstalled = false;
         
         public static void InstallPrimaryHooks(bool InstallHooks = true) {
@@ -356,7 +357,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("ThrowGunHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Gun)
             );
-                    
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Dungeon.PlacePlayerInRoom Hook...."); }
+            placePlayerInRoomHook = new Hook(
+                typeof(Dungeon).GetMethod("PlacePlayerInRoom", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(PlacePlayerInRoomHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(Dungeon)
+            );
+            
             return;
         }
         
@@ -1588,6 +1596,88 @@ namespace ExpandTheGungeon.ExpandMain {
             } else {
                 return orig(self);
             }
+        }
+
+        private void PlacePlayerInRoomHook(Action<Dungeon, tk2dTileMap, RoomHandler>orig, Dungeon self, tk2dTileMap map, RoomHandler startRoom) {
+            PlayerController[] allPlayers = GameManager.Instance.AllPlayers;
+            if (allPlayers.Length == 0) { return; }
+            int num = (allPlayers.Length >= 2) ? allPlayers.Length : 1;
+            for (int i = 0; i < num; i++) {
+                PlayerController playerController = (allPlayers.Length >= 2) ? allPlayers[i] : GameManager.Instance.PrimaryPlayer;
+                EntranceController entranceController = UnityEngine.Object.FindObjectOfType<EntranceController>();
+                ElevatorArrivalController elevatorArrivalController = UnityEngine.Object.FindObjectOfType<ElevatorArrivalController>();
+                ExpandNewElevatorController[] exElevatorArrivalControllers = null;
+                ExpandNewElevatorController exElevatorArrivalController = null;
+                if (!elevatorArrivalController && !GameManager.IsReturningToFoyerWithPlayer) {
+                    exElevatorArrivalControllers = UnityEngine.Object.FindObjectsOfType<ExpandNewElevatorController>();
+                    if (exElevatorArrivalControllers?.Length > 0) {
+                        foreach (ExpandNewElevatorController exElevator in exElevatorArrivalControllers) {
+                            if (exElevator.IsArrivalElevator) {
+                                exElevatorArrivalController = exElevator;
+                                break;
+                            }
+                        }
+                    }
+                }
+                Vector2 vector = Vector2.zero;
+                float num2 = 0.25f;
+                if (GameManager.IsReturningToFoyerWithPlayer) {
+                    vector = GameObject.Find("ReturnToFoyerPoint").transform.position.XY();
+                    vector += Vector2.right * i;
+                    playerController.transform.position = vector.ToVector3ZUp(-0.1f);
+                    playerController.Reinitialize();
+                } else {
+                    if (elevatorArrivalController | exElevatorArrivalController) {
+                        if (elevatorArrivalController) {
+                            vector = elevatorArrivalController.spawnTransform.position.XY();
+                            num2 = 1f;
+                            elevatorArrivalController.DoArrival(playerController, num2);
+                            num2 += 0.4f;
+                        } else {
+                            vector = exElevatorArrivalController.gameObject.transform.position.XY() + new Vector2(2, 2);
+                            num2 = 1f;
+                            exElevatorArrivalController.DoArrival(num2);
+                            num2 += 0.4f;
+                        }
+                    } else {
+                        if (entranceController) {
+                            vector = entranceController.spawnTransform.position.XY();
+                            vector += Vector2.right * i;
+                            playerController.transform.position = new Vector3(map.transform.position.x + vector.x - 0.5f, map.transform.position.y + vector.y, -0.1f);
+                            playerController.Reinitialize();
+                            num2 += 0.4f;
+                            playerController.DoSpinfallSpawn(num2);
+                            goto AbortPlayerSearch;
+                        }
+                        if (i == 1 && GameObject.Find("SecondaryPlayerSpawnPoint") != null) {
+                            vector = GameObject.Find("SecondaryPlayerSpawnPoint").transform.position.XY();
+                            vector += Vector2.right * i;
+                            playerController.transform.position = vector.ToVector3ZUp(-0.1f);
+                            playerController.Reinitialize();
+                            goto AbortPlayerSearch;
+                        }
+                        if (GameObject.Find("PlayerSpawnPoint") != null) {
+                            vector = GameObject.Find("PlayerSpawnPoint").transform.position.XY();
+                            vector += Vector2.right * i;
+                            playerController.transform.position = vector.ToVector3ZUp(-0.1f);
+                            playerController.Reinitialize();
+                            goto AbortPlayerSearch;
+                        }
+                        vector = startRoom.GetCenterCell().ToVector2();
+                        if (self.data[vector.ToIntVector2(VectorConversions.Round)].type == CellType.WALL || self.data[vector.ToIntVector2(VectorConversions.Round)].type == CellType.PIT) {
+                            vector = startRoom.Epicenter.ToVector2();
+                        }
+                        vector += Vector2.right * i;
+                    }
+                    Vector3 position = new Vector3(map.transform.position.x + vector.x + 0.5f, map.transform.position.y + vector.y + 0.5f, -0.1f);
+                    playerController.transform.position = position;
+                    playerController.Reinitialize();
+                    playerController.DoInitialFallSpawn(num2);
+                }
+                AbortPlayerSearch:;
+            }
+            GameManager.IsReturningToFoyerWithPlayer = false;
+            GameManager.Instance.MainCameraController.ForceToPlayerPosition(GameManager.Instance.PrimaryPlayer);
         }
 
     }

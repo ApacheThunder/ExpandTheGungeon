@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2701012709
+CRC: 1216352053
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 27381147711144f996c1c41ea741ddf9
+    Hash: 4f1be055278b200d19175f984b1f1d73
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -373,6 +373,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/FB_Expand_Achievement_Gungeon_Master.bytes
 - Assets/ExpandPrefabs/AIActors/Clownkin_Wig.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate4.bytes
+- Assets/ExpandTextures/RoomFactoryAssets/Expand_ExitRoom_NewElevator.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal7.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal25.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals23.bytes
@@ -650,6 +651,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_TurtleMelon_Blocks_Pits_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Connector_03.bytes
 - Assets/ExpandPrefabs/Misc/EX Alarm Mushroom.prefab
+- Assets/ExpandPrefabs/Misc/EXPortableElevator_Departure_Placable.prefab
 - Assets/ExpandTextures/RoomBuilderAssets/Mines/Neighborino_GoopTroop_Layout.png
 - Assets/ExpandTextures/RoomBuilderAssets/Hollow/Expand_Neighborino_SawRoom_Layout.png
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_B.prefab
@@ -687,6 +689,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny18.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/EXWestFloorBossIntroScreenFX.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport2_2.bytes
+- Assets/ExpandPrefabs/Misc/EXElevator_Arrival_Placable.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/H_Expand_MasterRound4.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/roomCeilingBorderGrid.txt

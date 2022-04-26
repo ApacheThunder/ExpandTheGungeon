@@ -205,7 +205,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         GameManager.DoMidgameSave(nextTileset);
                     }
                     if (IsGlitchElevator) {
-                        ExpandSettings.elevatorHasBeenUsed = true;
+                        ExpandSettings.glitchElevatorHasBeenUsed = true;
                         GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
                     } else if (UsesOverrideTargetFloor) {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;
@@ -256,7 +256,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                                 GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_space");
                                 break;
                             case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
-                                ExpandSettings.phobosElevatorHasBeenUsed = true;
                                 GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_phobos");
                                 break;
                             case GlobalDungeonData.ValidTilesets.FINALGEON: // Use FINALGEON to specify a name that does not have a matching tilesetID

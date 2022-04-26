@@ -95,7 +95,7 @@
   <ItemGroup>
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
-    <Compile Include="ExpandComponents\ExpandPortableElevatorController.cs" />
+    <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />

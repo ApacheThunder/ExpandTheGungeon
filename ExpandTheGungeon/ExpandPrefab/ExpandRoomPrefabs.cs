@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -61,6 +62,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Special Jungle Entrance rooms for Floor 1
         public static PrototypeDungeonRoom Expand_Keep_TreeRoom;
         public static PrototypeDungeonRoom Expand_Keep_TreeRoom2;
+
+        // New Exit room for new Elevator object
+        public static PrototypeDungeonRoom Expand_ExitRoom_NewElevator;
 
 
         // Rooms for floor 2.
@@ -910,7 +914,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Jungle_OldCrest.associatedMinimapIcon = ExpandPrefabs.EXJungleCrest_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(5, 7), ExpandObjectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
-
+            
 
             Expand_Jungle_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_Exit", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
@@ -1384,6 +1388,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
 
+            Expand_ExitRoom_NewElevator = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_ExitRoom_NewElevator", true);
+            Expand_ExitRoom_NewElevator.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_ExitRoom_NewElevator, new Vector2(5, 7), ExpandPrefabs.EXPortableElevator_Departure_Placable);
 
             Expand_West_BlankPedestalRoom.name = "Blank Reward Room";
             Expand_West_BlankPedestalRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);

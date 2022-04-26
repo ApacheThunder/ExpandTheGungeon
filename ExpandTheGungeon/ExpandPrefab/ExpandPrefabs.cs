@@ -220,8 +220,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject CurrsedMirror;
         
         // Used for forcing Arrival Elevator to spawn on phobos floor tileset ID.
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForNakatomi;
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForRatNakatomi;
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForOffice; 
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForJungle;
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForBelly;
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForOldWest;
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForPhobos;
+        private static DungeonPlaceableVariant ElevatorArrivalVarientForSpace;
+        // New Departure Elevator for all custom/unused tilesets.
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForOffice;        
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForJungle;
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForBelly;
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForOldWest;
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForPhobos;
+        private static DungeonPlaceableVariant ElevatorDepartureVarientForSpace;
 
         // Modified Challenge Modifiers/Challenge Objects
         public static GameObject ChallengeManagerObject;
@@ -334,6 +345,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Custom Elevator for Portable Elevator Item
         public static GameObject EXPortableElevator_Departure;
         public static GameObject EXPortableElevator_Reticle;
+        // Placable version of Elevator for exit rooms
+        public static GameObject EXPortableElevator_Departure_Placable;
+        // Arrival version of placable version of portable elevator
+        public static GameObject EXElevator_Arrival_Placable;
 
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
         public static GameObject ENV_Tileset_Belly;
@@ -579,10 +594,40 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             );
 
+            Shop_Truck_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = PowBlock.PowBlockPickupID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+
+            Shop_Truck_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = ClownBullets.ClownBulletsID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+
             Shop_Curse_Items_01.defaultItemDrops.Add(
                 new WeightedGameObject() {
                     rawGameObject = null,
                     pickupId = CursedBrick.CursedBrickID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+
+            Shop_Curse_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = ThirdEye.ThirdEyeID,
                     weight = 1,
                     forceDuplicatesPossible = false,
                     additionalPrerequisites = new DungeonPrerequisite[0],
@@ -836,6 +881,197 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             NPCBabyDragunChaos.AddComponent<ExpandBabyDragunComponent>();
             
+            //Set this up first so we can use it in ElevatorDeparture dungoen placable.
+
+            EXPortableElevator_Departure = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Departure");
+
+            GameObject m_ElevatorChild_Departure = EXPortableElevator_Departure.transform.Find("elevator").gameObject;
+            GameObject m_ElevatorChild_Floor = EXPortableElevator_Departure.transform.Find("floor").gameObject;
+            GameObject m_ElevatorChild_InteriorFloor = EXPortableElevator_Departure.transform.Find("interiorFloor").gameObject;
+
+
+            tk2dSprite m_EXPortableElevator_DepartureSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
+            m_EXPortableElevator_DepartureSprite.HeightOffGround = -4.75f;
+
+            tk2dSprite m_EXPortableElevator_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor_alt");
+            m_EXPortableElevator_FloorSprite.HeightOffGround = -1.75f;
+
+            tk2dSprite m_EXPortableElevator_InteriorFloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            m_EXPortableElevator_InteriorFloorSprite.HeightOffGround = -0.75f;
+
+
+            List<string> m_PortableElevatorArriveFrames = new List<string>() {
+                "portable_elevator_arrive_01",
+                "portable_elevator_arrive_02",
+                "portable_elevator_arrive_03",
+                "portable_elevator_arrive_04",
+            };
+
+            List<string> m_PortableElevatorDepartFrames = new List<string>() {
+                "portable_elevator_depart_01",
+                "portable_elevator_depart_02",
+                "portable_elevator_depart_03",
+                "portable_elevator_depart_04",
+                "portable_elevator_depart_05",
+                "portable_elevator_depart_06",
+                "portable_elevator_depart_07",
+                "portable_elevator_depart_08",
+                "portable_elevator_depart_09",
+                "portable_elevator_depart_10",
+                "portable_elevator_depart_11",
+            };
+
+            List<string> m_PortableElevatorOpenFrames = new List<string>() {
+                "portable_elevator_open_01",
+                "portable_elevator_open_02",
+                "portable_elevator_open_03",
+                "portable_elevator_open_04",
+                "portable_elevator_open_05",
+            };
+
+            List<string> m_PortableElevatorCloseFrames = new List<string>() {
+                "portable_elevator_open_05",
+                "portable_elevator_open_04",
+                "portable_elevator_open_03",
+                "portable_elevator_open_02",
+                "portable_elevator_open_01"
+            };
+
+            ExpandUtility.GenerateSpriteAnimator(m_ElevatorChild_Departure);
+
+            tk2dSpriteAnimator m_EXPortableElevator_DepartureAnimator = m_ElevatorChild_Departure.GetComponent<tk2dSpriteAnimator>();
+
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorArriveFrames, "arrive", frameRate: 16);
+            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].eventAudio = "Play_OBJ_elevator_arrive_01";
+            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].triggerEvent = true;
+
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorDepartFrames, "depart", frameRate: 30); // 30
+            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].eventAudio = "Play_OBJ_elevator_leave_01";
+            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].triggerEvent = true;
+
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorOpenFrames, "open", frameRate: 9);
+            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorCloseFrames, "close", frameRate: 9);
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
+
+
+            ExpandNewElevatorController m_EXElevatorController = EXPortableElevator_Departure.AddComponent<ExpandNewElevatorController>();
+            m_EXElevatorController.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
+
+
+            EXPortableElevator_Reticle = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Reticle");
+            SpriteSerializer.AddSpriteToObject(EXPortableElevator_Reticle, EXPortableElevatorCollection, "portable_elevator_reticle_green");
+
+            ExpandReticleRiserEffect m_PortableElevatorReticle = EXPortableElevator_Reticle.AddComponent<ExpandReticleRiserEffect>();
+            m_PortableElevatorReticle.UpdateSpriteDefinitions = true;
+            m_PortableElevatorReticle.CurrentSpriteName = "portable_elevator_reticle_green";
+            m_PortableElevatorReticle.NumRisers = 3;
+            m_PortableElevatorReticle.RiserHeight = 1;
+            m_PortableElevatorReticle.RiseTime = 1.5f;
+
+
+            EXPortableElevator_Departure_Placable = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Departure_Placable");
+
+            GameObject m_ElevatorPlacableChild_Departure = EXPortableElevator_Departure_Placable.transform.Find("elevator").gameObject;
+            GameObject m_ElevatorPlacableChild_Floor = EXPortableElevator_Departure_Placable.transform.Find("floor").gameObject;
+            GameObject m_ElevatorPlacableChild_FloorBorder = EXPortableElevator_Departure_Placable.transform.Find("floorBorder").gameObject;
+            GameObject m_ElevatorPlacableChild_InteriorFloor = EXPortableElevator_Departure_Placable.transform.Find("interiorFloor").gameObject;
+            
+            // m_ElevatorPlacableChild_FloorBorder.transform.localPosition -= new Vector3(1, 1);
+
+            tk2dSprite m_EXPortableElevator_Departure_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
+            m_EXPortableElevator_Departure_PlacableChildSprite.HeightOffGround = -4.75f;
+
+            tk2dSprite m_EXPortableElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            m_EXPortableElevatorPlacable_FloorSprite.HeightOffGround = -1.7f;
+
+            tk2dSprite m_EXPortableElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            m_EXPortableElevatorPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
+
+            tk2dSprite m_EXPortableElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            m_EXPortableElevator_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
+
+            ExpandUtility.GenerateSpriteAnimator(m_ElevatorPlacableChild_Departure);
+
+            tk2dSpriteAnimator m_EXPortableElevator_DeparturePlacableAnimator = m_ElevatorPlacableChild_Departure.GetComponent<tk2dSpriteAnimator>();
+            m_EXPortableElevator_DeparturePlacableAnimator.Library = m_EXPortableElevator_DepartureAnimator.Library;
+
+            ExpandNewElevatorController m_EXElevatorPlacableController = EXPortableElevator_Departure_Placable.AddComponent<ExpandNewElevatorController>();
+            m_EXElevatorPlacableController.ArriveOnSpawn = false;
+            m_EXElevatorPlacableController.UsesOverrideTargetFloor = false;
+            m_EXElevatorPlacableController.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
+
+
+
+            EXElevator_Arrival_Placable = expandSharedAssets1.LoadAsset<GameObject>("EXElevator_Arrival_Placable");
+
+            GameObject m_ElevatorArrivalPlacableChild_Departure = EXElevator_Arrival_Placable.transform.Find("elevator").gameObject;
+            GameObject m_ElevatorArrivalPlacableChild_Floor = EXElevator_Arrival_Placable.transform.Find("floor").gameObject;
+            GameObject m_ElevatorArrivalPlacableChild_FloorBorder = EXElevator_Arrival_Placable.transform.Find("floorBorder").gameObject;
+            GameObject m_ElevatorArrivalPlacableChild_InteriorFloor = EXElevator_Arrival_Placable.transform.Find("interiorFloor").gameObject;
+
+            tk2dSprite m_EXElevator_Arrival_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
+            m_EXElevator_Arrival_PlacableChildSprite.HeightOffGround = -4.75f;
+
+            tk2dSprite m_EXElevatorArrivalPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            m_EXElevatorArrivalPlacable_FloorSprite.HeightOffGround = -1.7f;
+
+            tk2dSprite m_EXElevatorArrivalPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            m_EXElevatorArrivalPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
+
+            tk2dSprite m_EXPElevatorArrival_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            m_EXPElevatorArrival_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
+            // ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
+
+            ExpandUtility.GenerateSpriteAnimator(m_ElevatorArrivalPlacableChild_Departure);
+
+            tk2dSpriteAnimator m_EXElevator_ArrivalPlacableAnimator = m_ElevatorArrivalPlacableChild_Departure.GetComponent<tk2dSpriteAnimator>();
+            m_EXElevator_ArrivalPlacableAnimator.Library = m_EXPortableElevator_DepartureAnimator.Library;
+
+            ExpandNewElevatorController m_EXElevatorArrivalPlacableController = EXElevator_Arrival_Placable.AddComponent<ExpandNewElevatorController>();
+            m_EXElevatorArrivalPlacableController.IsArrivalElevator = true;
+            m_EXElevatorArrivalPlacableController.ArriveOnSpawn = false;
+            m_EXElevatorArrivalPlacableController.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
+
             ElevatorDeparture = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Departure");
             ElevatorArrival = sharedAssets2.LoadAsset<DungeonPlaceable>("Elevator_Arrival");
 
@@ -1010,11 +1246,315 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
             CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
 
-            ElevatorArrivalVarientForNakatomi = new DungeonPlaceableVariant() {
-                percentChance = 0.1f,
+            /*
+            ElevatorArrivalVarientForJungle;
+            ElevatorArrivalVarientForBelly;
+            ElevatorArrivalVarientForOldWest;
+            ElevatorArrivalVarientForPhobos;
+            ElevatorArrivalVarientForSpace;
+            */
+
+            ElevatorArrivalVarientForOffice = new DungeonPlaceableVariant() {
+                percentChance = 1f,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                nonDatabasePlaceable = ElevatorArrival.variantTiers[5].nonDatabasePlaceable,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.OFFICEGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+            ElevatorArrivalVarientForJungle = new DungeonPlaceableVariant() {
+                percentChance = 1f,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+            ElevatorArrivalVarientForBelly = new DungeonPlaceableVariant() {
+                percentChance = 1f,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.BELLYGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+            ElevatorArrivalVarientForOldWest = new DungeonPlaceableVariant() {
+                percentChance = 1f,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.WESTGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+            ElevatorArrivalVarientForPhobos = new DungeonPlaceableVariant() {
+                percentChance = 1f,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+            ElevatorArrivalVarientForSpace = new DungeonPlaceableVariant() {
+                percentChance = 1f,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.SPACEGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+
+            ElevatorDepartureVarientForOffice = new DungeonPlaceableVariant() {
+                percentChance = 1,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                // nonDatabasePlaceable = ElevatorDeparture.variantTiers[5].nonDatabasePlaceable,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.OFFICEGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+
+            ElevatorDepartureVarientForJungle = new DungeonPlaceableVariant() {
+                percentChance = 1,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+
+            ElevatorDepartureVarientForBelly = new DungeonPlaceableVariant() {
+                percentChance = 1,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.BELLYGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+
+            ElevatorDepartureVarientForOldWest = new DungeonPlaceableVariant() {
+                percentChance = 1,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.LESS_THAN,
+                        statToCheck = TrackedStats.BULLETS_FIRED,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        comparisonValue = 0,
+                        useSessionStatValue = false,
+                        encounteredObjectGuid = string.Empty,
+                        requiredNumberOfEncounters = 0,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.WESTGEON,
+                        requireTileset = true,
+                        requireFlag = false,
+                        requireDemoMode = false
+                    }
+                }
+            };
+
+            ElevatorDepartureVarientForPhobos = new DungeonPlaceableVariant() {
+                percentChance = 1,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
                 forceBlackPhantom = false,
@@ -1040,11 +1580,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             };
 
-            ElevatorDepartureVarientForRatNakatomi = new DungeonPlaceableVariant() {
-                percentChance = 0.1f,
+            ElevatorDepartureVarientForSpace = new DungeonPlaceableVariant() {
+                percentChance = 1,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                nonDatabasePlaceable = ElevatorDeparture.variantTiers[5].nonDatabasePlaceable,
+                nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
                 forceBlackPhantom = false,
@@ -1062,13 +1602,27 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         requiredNumberOfEncounters = 0,
                         requireCharacter = false,
                         requiredCharacter = PlayableCharacters.Pilot,
-                        requiredTileset = GlobalDungeonData.ValidTilesets.PHOBOSGEON,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.SPACEGEON,
                         requireTileset = true,
                         requireFlag = false,
                         requireDemoMode = false
                     }
                 }
             };
+
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForOffice);
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForJungle);
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForBelly);
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForOldWest);
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForPhobos);
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForSpace);
+            
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForOffice);
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForJungle);
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForBelly);
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForOldWest);
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForPhobos);
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForSpace);
             
 
             // Build Room table with Castle and Gungeon room tables merged
@@ -1468,8 +2022,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[4]);
 
             
-            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForNakatomi);
-            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForRatNakatomi);
 
             if (MetalCubeGuy) {
                 MetalCubeGuy.AddComponent<ExpandExplodeOnDeath>();
@@ -3501,105 +4053,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(EX_GreenBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_GreenBalloonPopFrames, "pop", frameRate: 12);
             ExpandUtility.AddAnimation(EX_PinkBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_PinkBalloonPopFrames, "pop", frameRate: 12);
             ExpandUtility.AddAnimation(EX_YellowBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_YellowBalloonPopFrames, "pop", frameRate: 12);
-
-
-            EXPortableElevator_Departure = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Departure");
-                        
-            GameObject m_ElevatorChild_Departure = EXPortableElevator_Departure.transform.Find("elevator").gameObject;
-            GameObject m_ElevatorChild_Floor = EXPortableElevator_Departure.transform.Find("floor").gameObject;
-            GameObject m_ElevatorChild_InteriorFloor = EXPortableElevator_Departure.transform.Find("interiorFloor").gameObject;
-                       
-
-            tk2dSprite m_EXPortableElevator_DepartureSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
-            m_EXPortableElevator_DepartureSprite.HeightOffGround = -4.75f;
             
-            tk2dSprite m_EXPortableElevator_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
-            m_EXPortableElevator_FloorSprite.HeightOffGround = -1.75f;
-
-            tk2dSprite m_EXPortableElevator_InteriorFloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
-            m_EXPortableElevator_InteriorFloorSprite.HeightOffGround = -0.75f;
-
-
-            List<string> m_PortableElevatorArriveFrames = new List<string>() {
-                "portable_elevator_arrive_01",
-                "portable_elevator_arrive_02",
-                "portable_elevator_arrive_03",
-                "portable_elevator_arrive_04",
-            };
-
-            List<string> m_PortableElevatorDepartFrames = new List<string>() {
-                "portable_elevator_depart_01",
-                "portable_elevator_depart_02",
-                "portable_elevator_depart_03",
-                "portable_elevator_depart_04",
-                "portable_elevator_depart_05",
-                "portable_elevator_depart_06",
-                "portable_elevator_depart_07",
-                "portable_elevator_depart_08",
-                "portable_elevator_depart_09",
-                "portable_elevator_depart_10",
-                "portable_elevator_depart_11",
-            };
-
-            List<string> m_PortableElevatorOpenFrames = new List<string>() {
-                "portable_elevator_open_01",
-                "portable_elevator_open_02",
-                "portable_elevator_open_03",
-                "portable_elevator_open_04",
-                "portable_elevator_open_05",
-            };
-
-            List<string> m_PortableElevatorCloseFrames = new List<string>() {
-                "portable_elevator_open_05",
-                "portable_elevator_open_04",
-                "portable_elevator_open_03",
-                "portable_elevator_open_02",
-                "portable_elevator_open_01"
-            };
-                                    
-            ExpandUtility.GenerateSpriteAnimator(m_ElevatorChild_Departure);
-
-            tk2dSpriteAnimator m_EXPortableElevator_DepartureAnimator = m_ElevatorChild_Departure.GetComponent<tk2dSpriteAnimator>();
-            
-            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorArriveFrames, "arrive", frameRate: 16);
-            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].eventAudio = "Play_OBJ_elevator_arrive_01";
-            m_EXPortableElevator_DepartureAnimator.Library.clips[0].frames[0].triggerEvent = true;
-
-            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorDepartFrames, "depart", frameRate: 30); // 30
-            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].eventAudio = "Play_OBJ_elevator_leave_01";
-            m_EXPortableElevator_DepartureAnimator.Library.clips[1].frames[0].triggerEvent = true;
-
-            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorOpenFrames, "open", frameRate: 9);
-            ExpandUtility.AddAnimation(m_EXPortableElevator_DepartureAnimator, EXPortableElevatorCollection.GetComponent<tk2dSpriteCollectionData>(), m_PortableElevatorCloseFrames, "close", frameRate: 9);
-
-
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
-            ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
-
-
-            ExpandPortableElevatorController m_EXElevatorController = EXPortableElevator_Departure.AddComponent<ExpandPortableElevatorController>();
-            m_EXElevatorController.ImpactVFXObjects = new GameObject[] {
-                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
-                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
-                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
-            };
-
-
-            EXPortableElevator_Reticle = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Reticle");
-            SpriteSerializer.AddSpriteToObject(EXPortableElevator_Reticle, EXPortableElevatorCollection, "portable_elevator_reticle_green");
-                        
-            ExpandReticleRiserEffect m_PortableElevatorReticle = EXPortableElevator_Reticle.AddComponent<ExpandReticleRiserEffect>();
-            m_PortableElevatorReticle.UpdateSpriteDefinitions = true;
-            m_PortableElevatorReticle.CurrentSpriteName = "portable_elevator_reticle_green";
-            m_PortableElevatorReticle.NumRisers = 3;
-            m_PortableElevatorReticle.RiserHeight = 1;
-            m_PortableElevatorReticle.RiseTime = 1.5f;
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");
@@ -3625,8 +4079,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_ExpandBlobRancher.SpawnTargetGuid = m_BlobRancher.SpawnTargetGuid;
             UnityEngine.Object.Destroy(Challenge_BlobulinAmmo.GetComponent<BlobulinAmmoChallengeModifier>());
             
-
-
             challengeManager.PossibleChallenges[1].challenge = Challenge_BlobulinAmmo.GetComponent<ExpandBlobulinRancherChallengeComponent>();
             challengeMegaManager.PossibleChallenges[1].challenge = Challenge_BlobulinAmmo.GetComponent<ExpandBlobulinRancherChallengeComponent>();
 
