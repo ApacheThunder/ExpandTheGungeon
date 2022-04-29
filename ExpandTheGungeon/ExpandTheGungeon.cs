@@ -265,6 +265,7 @@ namespace ExpandTheGungeon {
                     ThirdEye.Init(expandSharedAssets1);
                     ClownBullets.Init(expandSharedAssets1);
                     PortableElevator.Init(expandSharedAssets1);
+                    PortableShip.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
                     HotShotShotGun.Init();
 
@@ -497,7 +498,7 @@ namespace ExpandTheGungeon {
                 int Y = int.Parse(consoleText[2]);
                 string OverridePath = string.Empty;                
                 if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
-                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXPortableElevator_Collection, X, Y, OverridePath);                
+                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXJungle_Collection, X, Y, OverridePath);                
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
@@ -540,14 +541,48 @@ namespace ExpandTheGungeon {
 
             TestPortal.transform.position -= new Vector3(0, 0, -50);*/
 
+
+
             PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
 
-            GameObject m_Elevator = UnityEngine.Object.Instantiate(ExpandPrefabs.EXPortableElevator_Departure, CurrentPlayer.gameObject.transform.position + new Vector3(2, 3), Quaternion.identity);
+            GameObject CurrentPlayerSpriteOBJ = CurrentPlayer.gameObject.transform.Find("PlayerSprite").gameObject;
+            CurrentPlayerSpriteOBJ.name = "PlaysSprite_BAK";
 
-            ExpandNewElevatorController m_ElevatorController = m_Elevator.GetComponent<ExpandNewElevatorController>();
-            m_ElevatorController.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
+
+            // GameObject Pilotship = ExpandAssets.LoadOfficialAsset<GameObject>("PlayerRogueShip", ExpandAssets.AssetSource.BraveResources);
+            GameObject Pilotship = (GameObject)BraveResources.Load("PlayerRogueShip", ".prefab");
+            GameObject CurrentPilotshipPlayerSpriteOBJ = UnityEngine.Object.Instantiate(Pilotship.transform.Find("PlayerRotatePoint").gameObject, CurrentPlayer.transform.position, Quaternion.identity);
+            // CurrentPilotshipPlayerSpriteOBJ.transform.localPosition = Pilotship.transform.Find("PlayerRotatePoint").localPosition;
+
+            CurrentPilotshipPlayerSpriteOBJ.transform.SetParent(CurrentPlayer.gameObject.transform);
+            
+
+            PlayerSpaceshipController PilotShipController = Pilotship.GetComponent<PlayerSpaceshipController>();
+
+            // CurrentPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Stop();
+            // CurrentPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library = CurrentPilotshipPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library;
+
+            // CurrentPlayer.AlternateCostumeLibrary = CurrentPilotshipPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library;
+            
+            AIBulletBank sourceBulletBank = Pilotship.GetComponent<AIBulletBank>();
+            AIBulletBank targetBulletBank = CurrentPlayer.gameObject.AddComponent<AIBulletBank>();
+
+            ExpandUtility.DuplicateComponent(targetBulletBank, sourceBulletBank);
+
+            float LaserCooldown = 0.15f;
+            float MissleCooldown = 3;
+
+            // CurrentPlayer.enabled = false;
+
+            PlayerSpaceshipController NewShip = CurrentPlayer.gameObject.AddComponent<PlayerSpaceshipController>();
+            NewShip.stats = CurrentPlayer.stats;
+            NewShip.LaserShootPoints = new List<Transform>() { CurrentPilotshipPlayerSpriteOBJ.transform.Find("fire1"), CurrentPilotshipPlayerSpriteOBJ.transform.Find("fire2") };
+            NewShip.TimefallCorpseLibrary = PilotShipController.TimefallCorpseLibrary;
+            NewShip.LaserACooldown = LaserCooldown;
+            NewShip.MissileCooldown = MissleCooldown;
 
             /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
+            
 
 
             Material shade = new Material(ShaderCache.Acquire("Brave/ItemSpecific/LootGlintAdditivePass"));

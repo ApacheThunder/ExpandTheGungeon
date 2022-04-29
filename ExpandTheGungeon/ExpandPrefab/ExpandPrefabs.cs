@@ -264,6 +264,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXJungleTree_MinimapIcon;
         public static GameObject EXJungleCrest_MinimapIcon;
         public static GameObject Jungle_ExitLadder;
+        public static GameObject Jungle_ExitLadder_Destination;
+        public static GameObject Jungle_ExitLadder_Hole;
         public static GameObject Jungle_BlobLostSign;
         public static GameObject Jungle_ItemStump;
         public static GameObject Door_Horizontal_Belly;
@@ -608,6 +610,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new WeightedGameObject() {
                     rawGameObject = null,
                     pickupId = ClownBullets.ClownBulletsID,
+                    weight = 1,
+                    forceDuplicatesPossible = false,
+                    additionalPrerequisites = new DungeonPrerequisite[0],
+                }
+            );
+
+            Shop_Truck_Items_01.defaultItemDrops.Add(
+                new WeightedGameObject() {
+                    rawGameObject = null,
+                    pickupId = PortableShip.PortableShipID,
                     weight = 1,
                     forceDuplicatesPossible = false,
                     additionalPrerequisites = new DungeonPrerequisite[0],
@@ -2685,6 +2697,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_jungleExitLadderSprite = SpriteSerializer.AddSpriteToObject(Jungle_ExitLadder, EXJungleCollection, "Jungle_ExitLadder");
             Jungle_ExitLadder.AddComponent<ExpandJungleExitLadderComponent>();
             
+            Jungle_ExitLadder_Destination = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ExitLadder_Destination");
+            tk2dSprite m_jungleExitLadderDestinationSprite = SpriteSerializer.AddSpriteToObject(Jungle_ExitLadder_Destination, EXJungleCollection, "Jungle_ExitLadder_Destination");
+            m_jungleExitLadderDestinationSprite.HeightOffGround = -4;
+            Jungle_ExitLadder_Destination.AddComponent<ExpandJungleExitLadderComponent>();
+
+            Jungle_ExitLadder_Hole = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ExitLadder_Hole");
+            tk2dSprite m_jungleExitLadderHoleSprite = SpriteSerializer.AddSpriteToObject(Jungle_ExitLadder_Hole, EXJungleCollection, "Jungle_ExitLadder_Destination_Hole");
+            m_jungleExitLadderHoleSprite.HeightOffGround = -1;
+            Jungle_ExitLadder_Hole.SetLayerRecursively(LayerMask.NameToLayer("BG_Critical"));
+
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_ExitLadder_Hole, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(30, 30), offset: IntVector2.One);
+
+
             Jungle_BlobLostSign = expandSharedAssets1.LoadAsset<GameObject>("Expand_JungleSign");
             ExpandUtility.BuildNewCustomSign(Jungle_BlobLostSign, Teleporter_Info_Sign, "Lost Blob Note", "This poor fella got lost on his way home.");
                         

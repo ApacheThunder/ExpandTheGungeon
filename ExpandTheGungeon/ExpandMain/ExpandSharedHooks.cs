@@ -811,7 +811,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
                         if (cellData != null) {
                             if (cellData.type == CellType.FLOOR) {
-                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildShadowIndex", self, new object[] { cellData, d, map, l, m });                                
+                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildShadowIndex", self, new object[] { cellData, d, map, l, m });
                             } else if (cellData.type == CellType.PIT) {
                                 ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildPitShadowIndex", self, new object[] { cellData, d, map, l, m });
                             }

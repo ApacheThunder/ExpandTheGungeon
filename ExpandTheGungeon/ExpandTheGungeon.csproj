@@ -164,6 +164,7 @@
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\ClownBullets.cs" />
     <Compile Include="ItemAPI\Items\PortableElevator.cs" />
+    <Compile Include="ItemAPI\Items\PortableShip.cs" />
     <Compile Include="ItemAPI\Items\SonicBox.cs" />
     <Compile Include="ItemAPI\Items\BabySitter.cs" />
     <Compile Include="ItemAPI\Items\BootlegGuns.cs" />

@@ -1195,8 +1195,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "thethirdeye",
             "clownbullets",
             "portable_elevator_pushed",
-            "portable_elevator"
-
+            "portable_elevator",
+            "portableship",
+            "portableship_alt"
         };
 
         public static readonly List<string> Clownkin_Collection = new List<string> {
@@ -1342,6 +1343,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "portable_elevator_depart_09",
             "portable_elevator_depart_10",
             "portable_elevator_depart_11"
+        };
+
+        public static readonly List<string> EXJungle_Collection = new List<string>() {
+            "Jungle_Tree_Large",
+            "Jungle_Tree_Large_Frame",
+            "Jungle_Tree_Large_Open",
+            "Jungle_Tree_Large_Shadow",
+            "JungleTree_MinimapIcon",
+            "junglecrest_minimapicon.png",
+            "Jungle_TreeStump",
+            "Jungle_ExitLadder",
+            "Jungle_ExitLadder_Destination",
+            "Jungle_ExitLadder_Destination_Hole"
         };
     }
 }

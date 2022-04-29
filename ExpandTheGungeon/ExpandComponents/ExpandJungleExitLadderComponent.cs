@@ -10,28 +10,122 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandJungleExitLadderComponent : DungeonPlaceableBehaviour, IPlaceConfigurable, IPlayerInteractable {
 
         public ExpandJungleExitLadderComponent() {
+            IsLevelExitWarp = false;
+            IsDestinationWarp = false;
             UsesOverrideTargetFloor = false;
             OverrideTargetFloorName = "tt5";
+            TargetRoomTileset = "Base_Castle";
+
+            TargetPointInRoom = new Vector2(2, 4);
             BaseOutlineColor = Color.black;
 
             m_Interacted = false;
-            
+            m_Configured = false;       
         }
 
+        public bool IsLevelExitWarp;
+        public bool IsDestinationWarp;
         public bool UsesOverrideTargetFloor;
 
         public string OverrideTargetFloorName;
+        public string TargetRoomTileset;
+
+        public PrototypeDungeonRoom TargetRoomPrefab;
+        public RoomHandler TargetRoom;
+        
+        public Vector2 TargetPointInRoom;
+        public Vector2? PreviousLadderLocation;
         public Color BaseOutlineColor;
 
         private bool m_Interacted;
+        private bool m_Configured;
+
+        private RoomHandler m_ParentRoom;
+        
+        private void Update() {
+            if (!m_Configured) { return; }
+
+            SpriteOutlineManager.AddOutlineToSprite(sprite, BaseOutlineColor, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
+
+            if (IsDestinationWarp) {
+                sprite.HeightOffGround = -4;
+                sprite.UpdateZDepth();
+            } else {
+                sprite.HeightOffGround = -2;
+                sprite.UpdateZDepth();
+            }
+
+            m_Configured = false;
+        }
+
+        private void Awake() { }
+
+        public void ConfigureOnPlacement(RoomHandler room) {
+            m_ParentRoom = room;
+            m_Configured = true;
+        }
 
         public void Interact(PlayerController player) {
             if (!m_Interacted && player) {
                 m_Interacted = true;
-                StartCoroutine(HandleExitFloor());
+
+                if (IsLevelExitWarp) {
+                    StartCoroutine(HandleExitFloor());
+                    return;
+                }
+                
+                if (TargetRoom != null) {
+                    if (PreviousLadderLocation.HasValue) { TargetPointInRoom = PreviousLadderLocation.Value; }
+                    StartCoroutine(HandleWarp(player, TargetRoom, TargetPointInRoom));
+                    m_Interacted = false;
+                    return;
+                }
+
+                if (TargetRoomPrefab == null) { TargetRoomPrefab = ExpandRoomPrefabs.Expand_ExitRoom_NewElevator; }
+
+                Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName(TargetRoomTileset);
+                TargetRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, TargetRoomPrefab, true, false);
+                dungeon2 = null;
+                
+                if (TargetRoom == null) {
+                    StartCoroutine(HandleExitFloor());
+                    return;
+                }
+
+                Instantiate(ExpandPrefabs.Jungle_ExitLadder_Hole, TargetRoom.area.basePosition.ToVector3() + TargetPointInRoom.ToVector3ZUp() - new Vector2(0, 1).ToVector3ZUp(), Quaternion.identity);
+                
+                GameObject m_DestinationLadder = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.Jungle_ExitLadder_Destination, TargetRoom, TargetPointInRoom.ToIntVector2() - new IntVector2(0, 1), true);
+
+                ExpandJungleExitLadderComponent m_DestinationLadderController = m_DestinationLadder.GetComponent<ExpandJungleExitLadderComponent>();
+                m_DestinationLadderController.IsDestinationWarp = true;
+                m_DestinationLadderController.TargetRoom = m_ParentRoom;
+                m_DestinationLadderController.PreviousLadderLocation = new Vector2(4, 6.8f);
+                m_DestinationLadderController.ConfigureOnPlacement(TargetRoom);
+                
+                TargetRoom.RegisterInteractable(m_DestinationLadderController);
+
+                TargetPointInRoom += new Vector2(0.45f, 1.5f);
+
+                StartCoroutine(HandleWarp(player, TargetRoom, TargetPointInRoom));
+                m_Interacted = false;
             }
             return;
         }        
+        
+        private IEnumerator HandleWarp(PlayerController player, RoomHandler targetRoomn, Vector2 TargetLocation) {
+            Pixelator.Instance.FadeToBlack(0.1f, false, 0f);
+            PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(player);
+            yield return new WaitForSeconds(0.1f);
+            Vector2 targetPoint = (targetRoomn.area.basePosition.ToVector2() + TargetLocation);
+            player.WarpToPoint(targetPoint, false, false);
+            if (otherPlayer && otherPlayer.healthHaver.IsAlive) { otherPlayer.ReuniteWithOtherPlayer(player, false); }
+            GameManager.Instance.MainCameraController.ForceToPlayerPosition(player);
+            Pixelator.Instance.FadeToBlack(0.1f, true, 0f);
+            yield return new WaitForSeconds(1f);
+            player.ClearInputOverride("arbitrary warp");
+            m_Interacted = false;
+            yield break;
+        }
 
         private IEnumerator HandleExitFloor() {
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].PrepareForSceneTransition(); }
@@ -59,17 +153,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield break;
         }
-
-        private void Awake() {
-            SpriteOutlineManager.AddOutlineToSprite(sprite, BaseOutlineColor, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
-            sprite.HeightOffGround = -2;
-            sprite.UpdateZDepth();
-        }
-
-        // public void Start() { }
-        // private void Update() { }
-
-        public void ConfigureOnPlacement(RoomHandler room) { }
         
         public void OnEnteredRange(PlayerController interactor) {
             if (!this) { return; }

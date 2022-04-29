@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1216352053
+CRC: 838843051
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4f1be055278b200d19175f984b1f1d73
+    Hash: b2e7d95f23c0f2325f102c9816da3305
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -122,6 +122,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera7.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular4.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/M_Expand_Achievement_Rider.bytes
+- Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ExitLadder_Destination.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/FB_Expand_Achievement_Gunsmith.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Entrance.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Jungle.prefab
@@ -180,6 +181,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Hollow/Expand_Neighborino_BlobRoom_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Brother4.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular37.bytes
+- Assets/ExpandPrefabs/Items/Portable Ship.prefab
 - Assets/ExpandPrefabs/AIActors/Bootleg BulletMan.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate5.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Circleish3.bytes
@@ -253,6 +255,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/F_Expand_Obsidian_Shell_Casing.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Hunter13.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed2.bytes
+- Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ExitLadder_Hole.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_OddSquare1.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_tight2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/K_Expand_Achievement_Gungeon_Acolyte.bytes

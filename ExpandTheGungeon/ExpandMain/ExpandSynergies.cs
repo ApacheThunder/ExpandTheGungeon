@@ -183,6 +183,23 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             );
 
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "Become Friend's Ship...",
+                    MandatoryItemIDs = new List<int>() { PortableShip.PortableShipID, 326 }, // Synergy for Portable Ship and Number 2
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
             GameManager.Instance.SynergyManager.synergies = m_TempSynergyList.ToArray();
             return;
         }

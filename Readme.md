@@ -70,5 +70,6 @@ Credits:
 * blazeykay for creating the sprite used by the item "The Third Eye".
 * SmilingMustache for the Clown kin sprites! :D
 * Dallan for the item sprite used for Portable Elevator.
+* SomeBunny for the portable ship item sprite.
 * https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.
