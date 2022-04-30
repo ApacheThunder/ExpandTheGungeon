@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2152124903
+CRC: 2988471441
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b3077d47b2edf131ced0e09e01296ab5
+    Hash: 59cc8e5b93c058f405d2064353c3474f
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -555,6 +555,7 @@ Assets:
 - Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_West.prefab
 - Assets/ExpandTextures/SpriteCollections/Misc/EXTrap_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/KP_Expand_hegemony.bytes
+- Assets/ExpandPrefabs/Misc/EXJungleElevator_Departure_Placable.prefab
 - Assets/ExpandTextures/SpriteCollections/Misc/EXBalloon_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny9.bytes
 - Assets/ExpandSerializedData/TilesetData/Belly/roomCeilingBorderGrid.txt
@@ -694,6 +695,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport2_2.bytes
 - Assets/ExpandPrefabs/Misc/EXElevator_Arrival_Placable.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate3.bytes
+- Assets/ExpandTextures/RoomFactoryAssets/Keep_JungleElevatorRoom.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/H_Expand_MasterRound4.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/roomCeilingBorderGrid.txt
 - Assets/ExpandTextures/RoomBuilderAssets/TrapRooms/Expand_Thwomp_Crossing_Horizontal_Layout.png
@@ -763,6 +765,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/ExpandRickRoll_MusicSwitch.prefab
 - Assets/ExpandTextures/RoomBuilderAssets/Secret_Exit_Room_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera_GutsyBulges.bytes
+- Assets/ExpandPrefabs/Misc/EXPortableElevator_Departure_Placable 1.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed12.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/M_Expand_Achievement_Resourceful.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Bar2.bytes

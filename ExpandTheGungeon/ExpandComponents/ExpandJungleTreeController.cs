@@ -25,12 +25,19 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_Destroyed;
 
         private RoomHandler m_ParentRoom;
+        private RoomHandler m_TargetExitRoom;
 
+        
         private IEnumerator Start() {
             yield return null;
             while (GameManager.Instance.IsLoadingLevel && Dungeon.IsGenerating) { yield return null; }
             yield return null;
-            
+            Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Jungle");
+            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, true, false, RoomExploredOnMinimap: false);
+            dungeon2 = null;
+
+
+
             IntVector2 baseCellPosition = (transform.position.IntXY(VectorConversions.Floor) + new IntVector2(4, 2));
             
             for(int X = -1; X < 2; X++) {
@@ -44,7 +51,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
                         
             specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(HandleCollision));
-            // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Combine(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));
             yield break;
         }
 
@@ -69,12 +75,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield break;
         }
-
-
-        /*private void HandleBeamCollision(BasicBeamController obj) {
-            GoopModifier component = obj.GetComponent<GoopModifier>();
-            if (component && component.goopDefinition != null && component.goopDefinition.CanBeIgnited && component.goopDefinition.fireEffect != null) { OnFireStarted(); }
-        }*/
+        
 
         private void HandleCollision(CollisionData rigidbodyCollision) {
             Projectile projectile = rigidbodyCollision.OtherRigidbody.projectile;
@@ -97,17 +98,27 @@ namespace ExpandTheGungeon.ExpandComponents {
             specRigidbody.OnRigidbodyCollision = (SpeculativeRigidbody.OnRigidbodyCollisionDelegate)Delegate.Remove(specRigidbody.OnRigidbodyCollision, new SpeculativeRigidbody.OnRigidbodyCollisionDelegate(HandleCollision));
             // specRigidbody.OnHitByBeam = (Action<BasicBeamController>)Delegate.Remove(specRigidbody.OnHitByBeam, new Action<BasicBeamController>(HandleBeamCollision));
             
-            GameObject PitManager = new GameObject("Jungle Pit Manager") { layer = 0 };
-            PitManager.transform.position = (transform.position + new Vector3(5, 2));
-            tk2dSprite PitDummySprite = PitManager.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(PitDummySprite, ExpandSecretDoorPrefabs.EXSecretDoorMinimapIcon.GetComponent<tk2dSprite>());
-            tk2dSprite pitSprite = PitManager.GetComponent<tk2dSprite>();
-            pitSprite.renderer.enabled = false;
+            if (m_TargetExitRoom != null) {
+                GameObject Arrival = new GameObject();
+                Arrival.transform.position = (m_TargetExitRoom.area.basePosition + new IntVector2(9, 6)).ToVector3();
+                Arrival.transform.SetParent(m_TargetExitRoom.hierarchyParent);
+                Arrival.name = "Arrival";
+                
+                m_ParentRoom.TargetPitfallRoom = m_TargetExitRoom;
+            } else {
+                GameObject PitManager = new GameObject("Jungle Pit Manager") { layer = 0 };
+                PitManager.transform.position = (transform.position + new Vector3(5, 2));
+                tk2dSprite PitDummySprite = PitManager.AddComponent<tk2dSprite>();
+                ExpandUtility.DuplicateSprite(PitDummySprite, ExpandSecretDoorPrefabs.EXSecretDoorMinimapIcon.GetComponent<tk2dSprite>());
+                tk2dSprite pitSprite = PitManager.GetComponent<tk2dSprite>();
+                pitSprite.renderer.enabled = false;
 
-            ExpandUtility.GenerateOrAddToRigidBody(PitManager, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(2, 2));
+                ExpandUtility.GenerateOrAddToRigidBody(PitManager, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, dimensions: new IntVector2(2, 2));
 
-            JungleTreePitController junglePitManager = PitManager.AddComponent<JungleTreePitController>();
-            junglePitManager.targetLevelName = targetLevelName;
+                JungleTreePitController junglePitManager = PitManager.AddComponent<JungleTreePitController>();
+                junglePitManager.targetLevelName = targetLevelName;
+            }
+            
 
             StartCoroutine(HandleDelayedFireDamage());
         }

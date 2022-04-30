@@ -348,8 +348,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Custom Elevator for Portable Elevator Item
         public static GameObject EXPortableElevator_Departure;
         public static GameObject EXPortableElevator_Reticle;
-        // Placable version of Elevator for exit rooms
+        // Placable versions of Elevator for exit rooms
         public static GameObject EXPortableElevator_Departure_Placable;
+        public static GameObject EXJungleElevator_Departure_Placable;
         // Arrival version of placable version of portable elevator
         public static GameObject EXElevator_Arrival_Placable;
 
@@ -995,7 +996,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_PortableElevatorReticle.RiserHeight = 1;
             m_PortableElevatorReticle.RiseTime = 1.5f;
 
-
+            // EXJungleElevator_Departure_Placable;
             EXPortableElevator_Departure_Placable = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Departure_Placable");
 
             GameObject m_ElevatorPlacableChild_Departure = EXPortableElevator_Departure_Placable.transform.Find("elevator").gameObject;
@@ -1041,6 +1042,49 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
             };
 
+            EXJungleElevator_Departure_Placable = expandSharedAssets1.LoadAsset<GameObject>("EXJungleElevator_Departure_Placable");
+
+            GameObject m_JunglePlacableChild_Departure = EXJungleElevator_Departure_Placable.transform.Find("elevator").gameObject;
+            GameObject m_JunglePlacableChild_Floor = EXJungleElevator_Departure_Placable.transform.Find("floor").gameObject;
+            GameObject m_JunglePlacableChild_FloorBorder = EXJungleElevator_Departure_Placable.transform.Find("floorBorder").gameObject;
+            GameObject m_JunglePlacableChild_InteriorFloor = EXJungleElevator_Departure_Placable.transform.Find("interiorFloor").gameObject;
+
+            tk2dSprite m_EXJungleElevator_Departure_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
+            m_EXJungleElevator_Departure_PlacableChildSprite.HeightOffGround = -4.75f;
+
+            tk2dSprite m_EXJungleElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            m_EXJungleElevatorPlacable_FloorSprite.HeightOffGround = -1.7f;
+
+            tk2dSprite m_EXJungleElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            m_EXJungleElevatorPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
+
+            tk2dSprite m_EXJungleElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            m_EXJungleElevator_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(64, 28));
+            ExpandUtility.GenerateOrAddToRigidBody(m_JunglePlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 13), offset: new IntVector2(32, 93));
+
+            ExpandUtility.GenerateSpriteAnimator(m_JunglePlacableChild_Departure);
+
+            tk2dSpriteAnimator m_EXJungleElevator_DeparturePlacableAnimator = m_JunglePlacableChild_Departure.GetComponent<tk2dSpriteAnimator>();
+            m_EXJungleElevator_DeparturePlacableAnimator.Library = m_EXPortableElevator_DepartureAnimator.Library;
+
+            ExpandNewElevatorController m_EXJunglePlacableController = EXJungleElevator_Departure_Placable.AddComponent<ExpandNewElevatorController>();
+            m_EXJunglePlacableController.ArriveOnSpawn = false;
+            m_EXJunglePlacableController.UsesOverrideTargetFloor = true;
+            m_EXJunglePlacableController.OverrideFloorName = "tt_jungle";
+            m_EXJunglePlacableController.ImpactVFXObjects = new GameObject[] {
+                sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
+                sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
+            };
 
 
             EXElevator_Arrival_Placable = expandSharedAssets1.LoadAsset<GameObject>("EXElevator_Arrival_Placable");
@@ -1065,7 +1109,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
-            // ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(32, 64));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(64, 21));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 78), offset: new IntVector2(16, 28));

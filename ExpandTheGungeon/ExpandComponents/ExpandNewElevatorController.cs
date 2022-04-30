@@ -142,11 +142,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_MainRigidBody = m_Floor.GetComponent<SpeculativeRigidbody>();
             if (IsArrivalElevator) {
                 IntVector2 intVector = transform.position.IntXY(VectorConversions.Floor);
-                for (int i = 0; i < 6; i++) {
-                    for (int j = 0; j < 6; j++) {
-                        CellData cellData = GameManager.Instance.Dungeon.data.cellData[intVector.x + i][intVector.y + j];
+                for (int X = 0; X < 6; X++) {
+                    for (int Y = 0; Y < 6; Y++) {
+                        CellData cellData = GameManager.Instance.Dungeon.data.cellData[intVector.x + X][intVector.y + Y];
                         cellData.cellVisualData.precludeAllTileDrawing = true;
-                        if (j < 4) {                            
+                        if (Y < 5 && Y > 0 && X > 0 && X < 5) {                            
                             cellData.type = CellType.PIT;
                             cellData.fallingPrevented = true;
                         } else {
@@ -154,9 +154,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                         }
                     }
                 }
-                for (int k = 0; k < 6; k++) {
-                    for (int l = 0; l < 8; l++) {
-                        CellData cellData2 = GameManager.Instance.Dungeon.data.cellData[intVector.x + k][intVector.y + l];
+                for (int X = 0; X < 6; X++) {
+                    for (int Y = 0; Y < 8; Y++) {
+                        CellData cellData2 = GameManager.Instance.Dungeon.data.cellData[intVector.x + X][intVector.y + Y];
                         cellData2.cellVisualData.containsObjectSpaceStamp = true;
                         cellData2.cellVisualData.containsWallSpaceStamp = true;
                     }
@@ -237,14 +237,10 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void DeflagCells() {
             IntVector2 intVector = transform.position.IntXY(VectorConversions.Floor);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 6; j++) {
-                    if (j != 0 || (i >= 2 && i <= 3)) {
-                        if (j != 1 || (i >= 1 && i <= 4)) {
-                            CellData cellData = GameManager.Instance.Dungeon.data.cellData[intVector.x + i][intVector.y + j];
-                            if (j < 4) { cellData.fallingPrevented = false; }
-                        }
-                    }
+            for (int X = 0; X < 6; X++) {
+                for (int Y = 0; Y < 6; Y++) {
+                    CellData cellData = GameManager.Instance.Dungeon.data.cellData[intVector.x + X][intVector.y + Y];
+                    if (Y < 5 && Y > 0 && X > 0 && X < 5) { cellData.fallingPrevented = false; }
                 }
             }
         }
@@ -339,7 +335,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_MainRigidBody.PixelColliders[4].Enabled = true;
                     m_MainRigidBody.PixelColliders[5].Enabled = true;
                     m_MainRigidBody.PixelColliders[6].Enabled = true;
-                    m_MainRigidBody.PixelColliders[7].Enabled = true;
+                    if (!IsArrivalElevator) { m_MainRigidBody.PixelColliders[7].Enabled = true; }
                     StartCoroutine(HandleArrival(0f));
                 } else {
                     StartCoroutine(HandleArrival(1f));
@@ -437,6 +433,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_ElevatorInteriorFloor.SetActive(false);
             animator.PlayAndDisableObject(elevatorDepartAnimName, null);
             if (IsArrivalElevator) {
+                m_MainRigidBody.PixelColliders[2].Enabled = false;
+                m_MainRigidBody.PixelColliders[3].Enabled = false;
+                m_MainRigidBody.PixelColliders[4].Enabled = false;
+                m_MainRigidBody.PixelColliders[5].Enabled = false;
+                m_MainRigidBody.PixelColliders[6].Enabled = false;
+                m_MainRigidBody.Reinitialize();
                 DeflagCells();
             } else {
                 HidePlayers();

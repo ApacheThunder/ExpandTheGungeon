@@ -345,7 +345,7 @@ namespace ExpandTheGungeon.ItemAPI {
             List<string> DungeonNames = new List<string>() {
                 "castle",
                 "sewer",
-                // "jungle",
+                "jungle",
                 "phobos",
                 "gungeon",
                 "cathedral",
@@ -354,7 +354,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 "resourcefulrat",
                 "catacombs",
                 // "nakatomi",
-                // "west",
+                "west",
                 "forge",
                 "bullethell",
             };

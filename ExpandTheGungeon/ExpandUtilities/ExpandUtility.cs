@@ -1690,7 +1690,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return targetRoom;
         }
 
-        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true) {
+        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true) {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1820,9 +1820,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
             targetRoom.PostGenerationCleanup();
 
             if (addRoomToMinimap) {
-                targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
+                if (RoomExploredOnMinimap) {
+                    targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
+                } else {
+                    targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED;
+                }
                 GameManager.Instance.StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(targetRoom, true, true, false));
-                if (isSecretRatExitRoom) { targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED; }
+                if (isSecretRatExitRoom && RoomExploredOnMinimap) { targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED; }
             }         
             if (addTeleporter) { targetRoom.AddProceduralTeleporterToRoom(); }
             if (addRoomToMinimap) { Minimap.Instance.InitializeMinimap(dungeon.data); }

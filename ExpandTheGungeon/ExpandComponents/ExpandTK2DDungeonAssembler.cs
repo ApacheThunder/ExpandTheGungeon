@@ -641,8 +641,21 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private TileIndexGrid GetTypeBorderGridForBorderIndex(CellData current, Dungeon d, Dungeon d2, out int usedVisualType)
-        {
-            TileIndexGrid roomCeilingBorderGrid = d2.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+        {   
+            TileIndexGrid roomCeilingBorderGrid;
+            
+            try {
+                roomCeilingBorderGrid = d2.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    Debug.Log("[ExpandTheGungeon] [WARNING] Exception caught in ExpandTK2DDungeonAssembler.GetTypeBorderGridForBorderIndex !");
+                    Debug.LogException(ex);
+                }
+                roomCeilingBorderGrid = null;
+                usedVisualType = 0;
+                return null;
+            }
+            
             usedVisualType = current.cellVisualData.roomVisualTypeIndex;
             if (d2.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON)
             {
@@ -1148,6 +1161,199 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
+        private void BuildOcclusionLayerCenterJungle(CellData current, Dungeon d, tk2dTileMap map, int ix, int iy)
+        {
+            if (!IsValidJungleOcclusionCell(current, d, ix, iy)) { return; }
+
+            bool flag = true;
+            bool flag2 = true;
+            if (!BCheck(d, ix, iy))
+            {
+                flag = false;
+                flag2 = false;
+            }
+            if (current.UniqueHash < 0.05f)
+            {
+                flag = false;
+                flag2 = false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (!IsValidJungleOcclusionCell(d.data[ix + i, iy + j], d, ix + i, iy + j))
+                    {
+                        flag2 = false;
+                        if (i < 2 || j < 2)
+                        {
+                            flag = false;
+                        }
+                    }
+                    if (!flag2 && !flag)
+                    {
+                        break;
+                    }
+                }
+                if (!flag2 && !flag)
+                {
+                    break;
+                }
+            }
+            if (flag2 && current.UniqueHash < 0.75f)
+            {
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
+                d.data[ix + 1, iy].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 2, iy].cellVisualData.occlusionHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
+                d.data[ix, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 1, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 2, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
+                d.data[ix, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 1, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 2, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
+            }
+            else if (flag)
+            {
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
+                d.data[ix + 1, iy].cellVisualData.occlusionHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
+                d.data[ix, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
+                d.data[ix + 1, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
+            }
+            else
+            {
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
+            }
+            d.data[ix, iy].cellVisualData.occlusionHasBeenProcessed = true;
+        }
+
+        private void BuildBorderLayerCenterJungle(CellData current, Dungeon d, tk2dTileMap map, int ix, int iy)
+        {
+            
+            if (!IsValidJungleBorderCell(current, d, ix, iy)) { return; }
+            
+            bool flag = true;
+            bool flag2 = true;
+            if (!BCheck(d, ix, iy))
+            {
+                flag = false;
+                flag2 = false;
+            }
+            if (current.UniqueHash < 0.05f)
+            {
+                flag = false;
+                flag2 = false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (!IsValidJungleBorderCell(d.data[ix + i, iy + j], d, ix + i, iy + j))
+                    {
+                        flag2 = false;
+                        if (i < 2 || j < 2)
+                        {
+                            flag = false;
+                        }
+                    }
+                    if (!flag2 && !flag)
+                    {
+                        break;
+                    }
+                }
+                if (!flag2 && !flag)
+                {
+                    break;
+                }
+            }
+            if (flag2 && current.UniqueHash < 0.75f)
+            {
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
+                d.data[ix + 1, iy].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 2, iy].cellVisualData.ceilingHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
+                d.data[ix, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 1, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 2, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
+                d.data[ix, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 1, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 2, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
+            }
+            else if (flag)
+            {
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
+                d.data[ix + 1, iy].cellVisualData.ceilingHasBeenProcessed = true;
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
+                d.data[ix, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
+                d.data[ix + 1, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
+            }
+            else
+            {
+                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
+                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
+            }
+            d.data[ix, iy].cellVisualData.ceilingHasBeenProcessed = true;
+        }
+
+
+        private bool IsValidJungleBorderCell(CellData current, Dungeon d, int ix, int iy)
+        {
+            bool IsValid = false;
+            try {
+                IsValid = !current.cellVisualData.ceilingHasBeenProcessed && !IsCardinalBorder(current, d, ix, iy) && current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy);
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    Debug.Log("[ExpandTheGungeon] Excpetion caught in ExpandTK2DDungeonAssembler.IsValidJungleBorderCell!");
+                    Debug.LogException(ex);
+                }
+            }
+            return IsValid;
+        }
+
+        private bool IsValidJungleOcclusionCell(CellData current, Dungeon d, int ix, int iy)
+        {
+            bool IsValid = false;
+            try {
+                IsValid = BCheck(d, ix, iy, 1) && (!current.cellVisualData.ceilingHasBeenProcessed && !current.cellVisualData.occlusionHasBeenProcessed) && (current.type != CellType.WALL || IsCardinalBorder(current, d, ix, iy) || (iy > 2 && (d.data.isFaceWallLower(ix, iy) || d.data.isFaceWallHigher(ix, iy))));
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    Debug.Log("[ExpandTheGungeon] Excpetion caught in ExpandTK2DDungeonAssembler.IsValidJungleOcclusionCell!");
+                    Debug.LogException(ex);
+                }
+            }
+            return IsValid;
+        }
 
 
         // Modified for future use but not currently required for Runtime room generation as nothing else in this class uses this as is.
@@ -1483,174 +1689,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
         
-        private void BuildOcclusionLayerCenterJungle(CellData current, Dungeon d, tk2dTileMap map, int ix, int iy)
-        {
-            if (!IsValidJungleOcclusionCell(current, d, ix, iy))
-            {
-                return;
-            }
-            bool flag = true;
-            bool flag2 = true;
-            if (!BCheck(d, ix, iy))
-            {
-                flag = false;
-                flag2 = false;
-            }
-            if (current.UniqueHash < 0.05f)
-            {
-                flag = false;
-                flag2 = false;
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (!IsValidJungleOcclusionCell(d.data[ix + i, iy + j], d, ix + i, iy + j))
-                    {
-                        flag2 = false;
-                        if (i < 2 || j < 2)
-                        {
-                            flag = false;
-                        }
-                    }
-                    if (!flag2 && !flag)
-                    {
-                        break;
-                    }
-                }
-                if (!flag2 && !flag)
-                {
-                    break;
-                }
-            }
-            if (flag2 && current.UniqueHash < 0.75f)
-            {
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
-                d.data[ix + 1, iy].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 2, iy].cellVisualData.occlusionHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
-                d.data[ix, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 1, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 2, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
-                d.data[ix, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 1, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 2, iy + 2].cellVisualData.occlusionHasBeenProcessed = true;
-            }
-            else if (flag)
-            {
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
-                d.data[ix + 1, iy].cellVisualData.occlusionHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
-                d.data[ix, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
-                d.data[ix + 1, iy + 1].cellVisualData.occlusionHasBeenProcessed = true;
-            }
-            else
-            {
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
-            }
-            d.data[ix, iy].cellVisualData.occlusionHasBeenProcessed = true;
-        }
-                
-        private void BuildBorderLayerCenterJungle(CellData current, Dungeon d, tk2dTileMap map, int ix, int iy)
-        {
-            if (!IsValidJungleBorderCell(current, d, ix, iy))
-            {
-                return;
-            }
-            bool flag = true;
-            bool flag2 = true;
-            if (!BCheck(d, ix, iy))
-            {
-                flag = false;
-                flag2 = false;
-            }
-            if (current.UniqueHash < 0.05f)
-            {
-                flag = false;
-                flag2 = false;
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (!IsValidJungleBorderCell(d.data[ix + i, iy + j], d, ix + i, iy + j))
-                    {
-                        flag2 = false;
-                        if (i < 2 || j < 2)
-                        {
-                            flag = false;
-                        }
-                    }
-                    if (!flag2 && !flag)
-                    {
-                        break;
-                    }
-                }
-                if (!flag2 && !flag)
-                {
-                    break;
-                }
-            }
-            if (flag2 && current.UniqueHash < 0.75f)
-            {
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 352);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 353);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y, 354);
-                d.data[ix + 1, iy].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 2, iy].cellVisualData.ceilingHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 330);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 331);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 1, 332);
-                d.data[ix, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 1, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 2, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 2, 308);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 2, 309);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 2, current.positionInTilemap.y + 2, 310);
-                d.data[ix, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 1, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 2, iy + 2].cellVisualData.ceilingHasBeenProcessed = true;
-            }
-            else if (flag)
-            {
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 418);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y, 419);
-                d.data[ix + 1, iy].cellVisualData.ceilingHasBeenProcessed = true;
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y + 1, 396);
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x + 1, current.positionInTilemap.y + 1, 397);
-                d.data[ix, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
-                d.data[ix + 1, iy + 1].cellVisualData.ceilingHasBeenProcessed = true;
-            }
-            else
-            {
-                map.Layers[GlobalDungeonData.borderLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
-                map.Layers[GlobalDungeonData.occlusionPartitionIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, 374);
-            }
-            d.data[ix, iy].cellVisualData.ceilingHasBeenProcessed = true;
-        }
-
         private TileIndexVariant GetIndexFromTileArray(CellData current, List<TileIndexVariant> list)
         {
             float uniqueHash = current.UniqueHash;
@@ -1873,16 +1911,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             return false;
         }
         
-        private bool IsValidJungleBorderCell(CellData current, Dungeon d, int ix, int iy)
-        {
-            return !current.cellVisualData.ceilingHasBeenProcessed && !IsCardinalBorder(current, d, ix, iy) && current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy);
-        }
-
-        private bool IsValidJungleOcclusionCell(CellData current, Dungeon d, int ix, int iy)
-        {
-            return BCheck(d, ix, iy, 1) && (!current.cellVisualData.ceilingHasBeenProcessed && !current.cellVisualData.occlusionHasBeenProcessed) && (current.type != CellType.WALL || IsCardinalBorder(current, d, ix, iy) || (iy > 2 && (d.data.isFaceWallLower(ix, iy) || d.data.isFaceWallHigher(ix, iy))));
-        }
-
         public void ApplySpriteStamp(int ix, int iy, SpriteStampData ssd, Dungeon d, tk2dTileMap map)
         {
             DungeonTileStampData.StampSpace occupySpace = ssd.occupySpace;
