@@ -52,6 +52,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom gungeon_rewardroom_1;
         public static PrototypeDungeonRoom paradox_04;
         public static PrototypeDungeonRoom paradox_04_copy;
+        public static PrototypeDungeonRoom blobulordroom01;
         public static PrototypeDungeonRoom doublebeholsterroom01;
         public static PrototypeDungeonRoom bossstatuesroom01;
         public static PrototypeDungeonRoom oldbulletking_room_01;
@@ -424,6 +425,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             gungeon_rewardroom_1 = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("gungeon_rewardroom_1");
             paradox_04 = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("paradox_04");
             paradox_04_copy = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("paradox_04 copy");
+            blobulordroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("BlobulordRoom01");
             doublebeholsterroom01 = ExpandDungeonFlow.LoadOfficialFlow("Secret_DoubleBeholster_Flow").AllNodes[2].overrideExactRoom;
             bossstatuesroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("bossstatuesroom01");
             oldbulletking_room_01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("oldbulletking_room_01");

@@ -120,6 +120,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static SharedInjectionData CastleInjectionData;
         public static SharedInjectionData JungleInjectionData;
         public static SharedInjectionData BellyInjectionData;
+        public static SharedInjectionData PhobosInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
@@ -510,6 +511,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
             KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
             KnownFlows.Add(f4c_west_flow_01.F4c_West_Flow_01());
+            KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[0])));
+            KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[1])));
+
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
             Foyer_Flow.name = "Foyer_Flow";
@@ -531,39 +535,18 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(BossrushFlows.MiniBossrush_01);
 
             // Add official flows to list (flows found in Dungeon asset bundles after AG&D)
-            for (int i = 0; i < TutorialPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(TutorialPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CastlePrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CastlePrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < SewerPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < GungeonPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(GungeonPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CathedralPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < MinesPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(MinesPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < ResourcefulRatPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ResourcefulRatPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < CatacombsPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(CatacombsPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < NakatomiPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(NakatomiPrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < ForgePrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(ForgePrefab.PatternSettings.flows[i]));
-            }
-            for (int i = 0; i < BulletHellPrefab.PatternSettings.flows.Count; i++) {
-                KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(BulletHellPrefab.PatternSettings.flows[i]));
-            }
+            foreach (DungeonFlow flow in TutorialPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in CastlePrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in SewerPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in GungeonPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in CathedralPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in MinesPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in ResourcefulRatPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in CatacombsPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in NakatomiPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in ForgePrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            foreach (DungeonFlow flow in BulletHellPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
+            
 
             // Let's make things look cool and give all boss rush flows my new tiny exit room. :D            
             BossrushFlows.Bossrush_01a_Sewer.AllNodes[2].overrideExactRoom = ExpandPrefabs.tiny_exit;

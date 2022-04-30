@@ -2047,7 +2047,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false,
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("Complex_Flow_Test") },
+                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F0b_Phobos_Flow_01"), FlowDatabase.GetOrLoadByName("F0b_Phobos_Flow_02") },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -2225,9 +2225,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             dungeon.doorObjects = NakatomiPrefab.alternateDoorObjectsNakatomi;
             dungeon.lockedDoorObjects = null;
-            // Use Gungeon's existing oneWayDoor/pressure plate/phantomBlockers
-            // dungeon.oneWayDoorObjects 
-            // dungeon.oneWayDoorPressurePlate
+            dungeon.oneWayDoorObjects = NakatomiPrefab.oneWayDoorObjects;
+            dungeon.oneWayDoorPressurePlate = NakatomiPrefab.oneWayDoorPressurePlate;
             // dungeon.phantomBlockerDoorObjects
             dungeon.WarpWingDoorPrefab = null;
             // dungeon.baseChestContents
@@ -2238,6 +2237,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // dungeon.SecretRoomHorizontalPoofVFX
             // dungeon.SecretRoomVerticalPoofVFX
             // dungeon.sharedSettingsPrefab
+            dungeon.BossMasteryTokenItemId = -1;
             dungeon.StripPlayerOnArrival = false;
             dungeon.SuppressEmergencyCrates = false;
             dungeon.SetTutorialFlag = false;
