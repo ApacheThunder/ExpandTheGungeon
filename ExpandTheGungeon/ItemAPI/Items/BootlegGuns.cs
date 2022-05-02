@@ -111,8 +111,10 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.encounterTrackable.EncounterGuid = "fa0575b4cf0140ddb6b0ed6d962bff47";
             shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
+            shotgun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.SHOTGUN;
             ETGMod.Databases.Items.Add(shotgun);
             BootlegShotgunID = shotgun.PickupObjectId;
+            
 
             ShotgunProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegShotgunProjectile");
             tk2dSprite ShotgunProjectileSprite = SpriteSerializer.AddSpriteToObject(ShotgunProjectile.transform.Find("Sprite").gameObject, ExpandPrefabs.EXGunCollection, "bootleg_pistol_projectile_001");
@@ -131,6 +133,13 @@ namespace ExpandTheGungeon.ItemAPI {
                 new ProjectileModule(),
                 new ProjectileModule(),
             };
+
+            for (int i = 1; i < shotgunVollyData.projectiles.Count; i++) {
+                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[i]);
+                shotgunVollyData.projectiles[i].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+                shotgunVollyData.projectiles[i].ammoCost = 0;
+            }
+
             shotgunVollyData.UsesBeamRotationLimiter = false;
             shotgunVollyData.BeamRotationDegreesPerSecond = 30;
             shotgunVollyData.ModulesAreTiers = false;
@@ -138,16 +147,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgunVollyData.DecreaseFinalSpeedPercentMin = -15;
             shotgunVollyData.IncreaseFinalSpeedPercentMax = 15;
             
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[1]);
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[2]);
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[3]);
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[4]);
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(shotgun.DefaultModule), shotgunVollyData.projectiles[5]);
-            shotgunVollyData.projectiles[1].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
-            shotgunVollyData.projectiles[2].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
-            shotgunVollyData.projectiles[3].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
-            shotgunVollyData.projectiles[4].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
-            shotgunVollyData.projectiles[5].ammoType = GameUIAmmoType.AmmoType.SMALL_BULLET;
+
             shotgun.Volley = shotgunVollyData;
             ShotgunProjectileComponent.gameObject.transform.localPosition = shotgun.barrelOffset.localPosition;
 

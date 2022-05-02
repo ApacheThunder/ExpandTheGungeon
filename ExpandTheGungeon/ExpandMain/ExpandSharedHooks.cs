@@ -58,7 +58,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook onContinueGameSelectedHook;
         public static Hook getNextTilesetHook;
         public static Hook placePlayerInRoomHook;
-
+        public static Hook floodFillDungeonInteriorHook;
 
         public static bool IsHooksInstalled = false;
         
@@ -364,10 +364,48 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod(nameof(PlacePlayerInRoomHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Dungeon)
             );
-            
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.FloodFillDungeonInterior Hook...."); }
+            floodFillDungeonInteriorHook = new Hook(
+                typeof(DungeonData).GetMethod("FloodFillDungeonInterior", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(FloodFillDungeonInteriorHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(DungeonData)
+            );
+
             return;
         }
-        
+
+        private void FloodFillDungeonInteriorHook(Action<DungeonData>orig, DungeonData self) {
+            Stack<CellData> stack = new Stack<CellData>();
+            for (int i = 0; i < self.rooms.Count; i++) {
+                if (self.rooms[i] == self.Entrance || self.rooms[i].IsStartOfWarpWing) {
+                    try {
+                        stack.Push(self[self.rooms[i].GetRandomAvailableCellDumb()]);
+                    } catch (Exception ex) {
+                        ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
+                        Debug.LogException(ex);
+                    }
+                }
+            }
+            try { 
+                while (stack.Count > 0) {
+                    CellData cellData = stack.Pop();
+                    if (cellData.type != CellType.WALL) {
+                        List<CellData> cellNeighbors = self.GetCellNeighbors(cellData, false);
+                        cellData.isGridConnected = true;
+                        for (int j = 0; j < cellNeighbors.Count; j++) {
+                            if (cellNeighbors[j] != null && cellNeighbors[j].type != CellType.WALL && !cellNeighbors[j].isGridConnected) {
+                                stack.Push(cellNeighbors[j]);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
+                Debug.LogException(ex);
+            }
+        }
+
         public static void IgniteGoopsCircleHook(Action<Vector2, float>orig, Vector2 position, float radius) {
             orig(position, radius);
             for (int j = 0; j < ExpandStaticReferenceManager.AllGrasses.Count; j++) {

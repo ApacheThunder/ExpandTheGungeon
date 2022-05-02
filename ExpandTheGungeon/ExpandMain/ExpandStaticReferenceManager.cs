@@ -16,6 +16,8 @@ namespace ExpandTheGungeon.ExpandMain {
         public static List<ConveyorBelt> AllConveyorBelts;
         public static List<ExpandWesternBroController> AllWesternBros;
         public static List<ExpandTallGrassPatchSystem> AllGrasses;
+        public static List<ExpandAlarmMushroomPlacable> AllAlarmMushrooms;
+
 
         static ExpandStaticReferenceManager() {
             AllSecretDoors = new List<ExpandSecretDoorPlacable>();
@@ -35,6 +37,8 @@ namespace ExpandTheGungeon.ExpandMain {
 
             // Jungle Grass Patches
             AllGrasses = new List<ExpandTallGrassPatchSystem>();
+
+            AllAlarmMushrooms = new List<ExpandAlarmMushroomPlacable>();
         }
 
         public static void PopulateLists() {
@@ -42,6 +46,7 @@ namespace ExpandTheGungeon.ExpandMain {
             FlippableCover[] Tables = Object.FindObjectsOfType<FlippableCover>();
             PathingTrapController[] MovingTraps = Object.FindObjectsOfType<PathingTrapController>();
             ConveyorBelt[] ConveyorBelts = Object.FindObjectsOfType<ConveyorBelt>();
+            ExpandAlarmMushroomPlacable[] AlarmMushrooms = Object.FindObjectsOfType<ExpandAlarmMushroomPlacable>();
 
             if (BeholsterShrines != null) {
                 foreach (BeholsterShrineController BeholsterShrine in BeholsterShrines) { AllBeholsterShrines.Add(BeholsterShrine); }
@@ -52,11 +57,15 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ConveyorBelts != null) {
                 foreach (ConveyorBelt conveyorBelt in ConveyorBelts) { AllConveyorBelts.Add(conveyorBelt); }
             }
+
+            if (AlarmMushrooms != null) {
+                foreach (ExpandAlarmMushroomPlacable alarmMushroom in AlarmMushrooms) { AllAlarmMushrooms.Add(alarmMushroom); }
+            }
         } 
 
 
         public static void ClearStaticPerLevelData() {
-            if (GameManager.Instance.Dungeon.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CATACOMBGEON) { AllSecretDoors.Clear(); }
+            if (GameManager.Instance?.Dungeon?.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CATACOMBGEON) { AllSecretDoors.Clear(); }
             AllGlitchTiles.Clear();
             AllFriendlyHammers.Clear();
             AllCorruptionSoundObjects.Clear();
@@ -65,6 +74,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllConveyorBelts.Clear();
             AllWesternBros.Clear();
             AllGrasses.Clear();
+            AllAlarmMushrooms.Clear();
         }
 
         public static void ForceClearAllStaticMemory() {
@@ -77,6 +87,7 @@ namespace ExpandTheGungeon.ExpandMain {
             AllConveyorBelts.Clear();
             AllWesternBros.Clear();
             AllGrasses.Clear();
+            AllAlarmMushrooms.Clear();
         }
     }
 }

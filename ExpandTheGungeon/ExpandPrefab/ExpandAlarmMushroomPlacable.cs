@@ -4,6 +4,8 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using Pathfinding;
+using ExpandTheGungeon.ExpandMain;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -32,14 +34,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public DungeonPlaceable EnemySpawnPlacableOverride;
 
+        public RoomHandler ParentRoom;
+
         private bool m_triggered;
-        private RoomHandler m_room;
+        
 
         private GameObject m_TriggerVFX;
 
         private void Start() {
-            if (m_room == null) { m_room = GetAbsoluteParentRoom(); }
-            if (m_room != null) {
+            if (ParentRoom == null) { ParentRoom = GetAbsoluteParentRoom(); }
+            if (ParentRoom != null) {
                 SpeculativeRigidbody SpecRigidbody = specRigidbody;
                 if (SpecRigidbody) {
                     SpecRigidbody.OnTriggerCollision = (SpeculativeRigidbody.OnTriggerDelegate)Delegate.Combine(SpecRigidbody.OnTriggerCollision, new SpeculativeRigidbody.OnTriggerDelegate(HandleTriggerCollision));
@@ -47,17 +51,30 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
         }
 
+        public void ConfigureOnPlacement(RoomHandler room) { ParentRoom = room; }
+
+        public void TriggerNow(bool DoSoundFX) {
+            if (m_triggered) { return; }
+            StartCoroutine(Trigger(DoSoundFX));
+        }
+
         private void HandleTriggerCollision(SpeculativeRigidbody specRigidbody, SpeculativeRigidbody sourceSpecRigidbody, CollisionData collisionData) {
             if (m_triggered) { return; }
             PlayerController player = specRigidbody.GetComponent<PlayerController>();
-            if (player) { StartCoroutine(Trigger()); }
+            if (player) {
+                foreach (ExpandAlarmMushroomPlacable alarmMushroom in ExpandStaticReferenceManager.AllAlarmMushrooms)  {
+                    if (alarmMushroom != this && alarmMushroom.ParentRoom == ParentRoom) { alarmMushroom.TriggerNow(false); }
+                }
+                StartCoroutine(Trigger(true));
+            }
         }
+        
 
-        private IEnumerator Trigger() {
+        private IEnumerator Trigger(bool DoSoundFX) {
             if (m_triggered) { yield break; }
-            if (!string.IsNullOrEmpty(TriggerAnimation)) { spriteAnimator.Play(TriggerAnimation); }
-            if (!string.IsNullOrEmpty(TriggerSFX)) { AkSoundEngine.PostEvent(TriggerSFX, gameObject); }
             m_triggered = true;
+            if (!string.IsNullOrEmpty(TriggerAnimation)) { spriteAnimator.Play(TriggerAnimation); }
+            if (DoSoundFX && !string.IsNullOrEmpty(TriggerSFX)) { AkSoundEngine.PostEvent(TriggerSFX, gameObject); }
             Vector2 SpawnOffset = Vector2.zero;
             if (EnemySpawnOffset.HasValue) { SpawnOffset = EnemySpawnOffset.Value; }
             if (TriggerVFX) {
@@ -67,6 +84,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     m_TriggerVFX = SpawnManager.SpawnVFX(TriggerVFX, specRigidbody.UnitBottomCenter + SpawnOffset, Quaternion.identity);
                 }
             }
+            
             if (useAirDropSpawn) {
                 Vector2 SpawnPosition = transform.position;
 
@@ -82,22 +100,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 if (selectedVarient != null && UnityEngine.Random.value > 0.2f) {
                     if (!string.IsNullOrEmpty(selectedVarient.enemyPlaceableGuid)) {
                         GameObject enemyObject = Instantiate(EnemyDatabase.GetOrLoadByGuid(selectedVarient.enemyPlaceableGuid).gameObject, SpawnPosition, Quaternion.identity);
-                        enemyObject.GetComponent<AIActor>().ConfigureOnPlacement(m_room);
-                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, enemyObject, DropHorizontalOffset: 10, useLandingVFX: false);
+                        enemyObject.GetComponent<AIActor>().ConfigureOnPlacement(ParentRoom);
+                        ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, enemyObject, DropHorizontalOffset: 10, useLandingVFX: false);
                     } else if (selectedVarient.nonDatabasePlaceable) {
                         GameObject ParaDroppedObject = Instantiate(selectedVarient.nonDatabasePlaceable, SpawnPosition, Quaternion.identity);
-                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, ParaDroppedObject, DropHorizontalOffset: 10, useLandingVFX: false);
+                        ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, ParaDroppedObject, DropHorizontalOffset: 10, useLandingVFX: false);
                     } else {
-                        ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                        ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
                         isExplodyBarrel = true;
                     }
                 } else {
-                    ExpandUtility.SpawnParaDrop(m_room, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                    ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
                     isExplodyBarrel = true;
                 }
-                if (!m_room.IsSealed && !isExplodyBarrel) { m_room.SealRoom(); }
+                if (!ParentRoom.IsSealed && !isExplodyBarrel) { ParentRoom.SealRoom(); }
                 yield return null;
-                DestroyMushroom();
+                DestroyMushroom(DoSoundFX);
             } else {
                 AIActor selectedEnemy = null;
                 if (EnemySpawnPlacableOverride) {
@@ -109,20 +127,27 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     DungeonPlaceableVariant enemyVariant = backupEnemyPlaceable.SelectFromTiersFull();
                 }
                 if (selectedEnemy) {
-                    AIActor targetAIActor = AIActor.Spawn(selectedEnemy, specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) + SpawnOffset.ToIntVector2(), m_room, true, AIActor.AwakenAnimationType.Spawn, true);
+                    AIActor targetAIActor = AIActor.Spawn(selectedEnemy, specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) + SpawnOffset.ToIntVector2(), ParentRoom, true, AIActor.AwakenAnimationType.Spawn, true);
                     targetAIActor.reinforceType = AIActor.ReinforceType.SkipVfx;
                     targetAIActor.HandleReinforcementFallIntoRoom(0.8f);
-                    if (!m_room.IsSealed) { m_room.SealRoom(); }
+                    if (!ParentRoom.IsSealed) { ParentRoom.SealRoom(); }
                     while (targetAIActor.IsGone) { yield return null; }
-                    DestroyMushroom();
+                    DestroyMushroom(DoSoundFX);
                 }
             }
             yield break;
         }
 
-        private void DestroyMushroom(float additionalDelay = 0) { StartCoroutine(DelayedDestroy(additionalDelay)); }
+        private void DestroyMushroom(bool DoSoundFX, float additionalDelay = 0) {
+            if (ExpandStaticReferenceManager.AllAlarmMushrooms != null && ExpandStaticReferenceManager.AllAlarmMushrooms.Count > 0) {
+                ExpandStaticReferenceManager.AllAlarmMushrooms.Remove(this);
+            }
+            bool MuteSX = false;
+            if (!DoSoundFX) { MuteSX = true; }
+            StartCoroutine(DelayedDestroy(additionalDelay, MuteSX));
+        }
 
-        private IEnumerator DelayedDestroy(float additionalDelay) {
+        private IEnumerator DelayedDestroy(float additionalDelay, bool MuteAudio) {
             spriteAnimator.Play(TriggerAnimation);
             float elapsed = 0;
             float delay = (2.5f + additionalDelay);
@@ -134,7 +159,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (DestroyVFX) {
                 SpawnManager.SpawnVFX(DestroyVFX, specRigidbody.UnitCenter, Quaternion.identity);
             } else {
-                LootEngine.DoDefaultItemPoof(specRigidbody.UnitCenter, false, false);
+                LootEngine.DoDefaultItemPoof(specRigidbody.UnitCenter, false, MuteAudio);
             }
             yield return null;
             if (m_TriggerVFX) { Destroy(m_TriggerVFX); }
@@ -142,9 +167,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             yield break;
         }
         
-        public void ConfigureOnPlacement(RoomHandler room) { m_room = room; }
-
-        protected override void OnDestroy() { base.OnDestroy(); }
+        protected override void OnDestroy() {
+            if (ExpandStaticReferenceManager.AllAlarmMushrooms != null && ExpandStaticReferenceManager.AllAlarmMushrooms.Count > 0 && ExpandStaticReferenceManager.AllAlarmMushrooms.Contains(this)) {
+                ExpandStaticReferenceManager.AllAlarmMushrooms.Remove(this);
+            }
+            base.OnDestroy();
+        }
     }
 }
 

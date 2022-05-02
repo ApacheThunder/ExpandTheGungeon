@@ -22,9 +22,11 @@ namespace ExpandTheGungeon {
                 // Add some of the new FTA enemies to the old secret floors
                 if (m_cachedReplacementTiers != null) { ExpandEnemyReplacements.Init(m_cachedReplacementTiers); }
             }
-            
-            InitObjectMods(GameManager.Instance.Dungeon);
 
+            ExpandStaticReferenceManager.PopulateLists();
+
+            InitObjectMods(GameManager.Instance.Dungeon);
+            
             ExpandDungeonFlow.isGlitchFlow = false;
         }
 

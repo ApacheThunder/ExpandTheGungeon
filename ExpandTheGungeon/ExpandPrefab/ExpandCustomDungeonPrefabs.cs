@@ -875,7 +875,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             dungeon.PlaceDoors = true;
             dungeon.doorObjects = ExpandPrefabs.Jungle_Doors;
-            dungeon.oneWayDoorObjects = GungeonPrefab.oneWayDoorObjects;
+            // dungeon.oneWayDoorObjects = GungeonPrefab.oneWayDoorObjects;
+            dungeon.oneWayDoorObjects = ExpandPrefabs.Jungle_OneWayDoors;
             dungeon.oneWayDoorPressurePlate = GungeonPrefab.oneWayDoorPressurePlate;
             dungeon.phantomBlockerDoorObjects = GungeonPrefab.phantomBlockerDoorObjects;
             dungeon.UsesWallWarpWingDoors = false;

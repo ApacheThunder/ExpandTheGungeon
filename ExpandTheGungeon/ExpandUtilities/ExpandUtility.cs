@@ -16,6 +16,79 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static DungeonPlaceable DuplicateDungoenPlaceable(DungeonPlaceable sourcePlaceable) {
+            DungeonPlaceable m_cachedPlaceable = ScriptableObject.CreateInstance<DungeonPlaceable>();
+            m_cachedPlaceable.width = sourcePlaceable.width;
+            m_cachedPlaceable.height = sourcePlaceable.height;
+            m_cachedPlaceable.isPassable = sourcePlaceable.isPassable;
+            m_cachedPlaceable.roomSequential = sourcePlaceable.roomSequential;
+            m_cachedPlaceable.respectsEncounterableDifferentiator = sourcePlaceable.respectsEncounterableDifferentiator;
+            m_cachedPlaceable.UsePrefabTransformOffset = sourcePlaceable.UsePrefabTransformOffset;
+            m_cachedPlaceable.MarkSpawnedItemsAsRatIgnored = sourcePlaceable.MarkSpawnedItemsAsRatIgnored;
+            m_cachedPlaceable.DebugThisPlaceable = sourcePlaceable.DebugThisPlaceable;
+            m_cachedPlaceable.IsAnnexTable = sourcePlaceable.IsAnnexTable;
+            m_cachedPlaceable.variantTiers = new List<DungeonPlaceableVariant>();
+
+            if (sourcePlaceable.variantTiers != null && sourcePlaceable.variantTiers.Count > 0) {
+                for (int i = 0; i < sourcePlaceable.variantTiers.Count; i++) {
+
+                    DungeonPlaceableVariant sourceVarient = sourcePlaceable.variantTiers[i];
+
+                    List<DungeonPrerequisite> m_CachedPrequisitesList = new List<DungeonPrerequisite>();
+                    List<DungeonPlaceableRoomMaterialRequirement> m_CachedMaterialRequirementsList = new List<DungeonPlaceableRoomMaterialRequirement>();
+
+                    m_cachedPlaceable.variantTiers.Add(new DungeonPlaceableVariant() {
+                        percentChance = sourceVarient.percentChance,
+                        unitOffset = sourceVarient.unitOffset,
+                        nonDatabasePlaceable = sourceVarient.nonDatabasePlaceable,
+                        enemyPlaceableGuid = sourceVarient.enemyPlaceableGuid,
+                        forceBlackPhantom = sourceVarient.forceBlackPhantom,
+                        addDebrisObject = sourceVarient.addDebrisObject,
+                    });
+
+                    DungeonPlaceableVariant cachedVarient = m_cachedPlaceable.variantTiers[i];
+                                        
+                    if (sourceVarient.prerequisites != null && sourceVarient.prerequisites.Length > 0) {
+                        foreach (DungeonPrerequisite prerequisite in sourceVarient.prerequisites) {
+                            m_CachedPrequisitesList.Add(new DungeonPrerequisite() {
+                                comparisonValue = prerequisite.comparisonValue,
+                                encounteredObjectGuid = prerequisite.encounteredObjectGuid,
+                                encounteredRoom = prerequisite.encounteredRoom,
+                                maxToCheck = prerequisite.maxToCheck,
+                                prerequisiteOperation = prerequisite.prerequisiteOperation,
+                                prerequisiteType = prerequisite.prerequisiteType,
+                                requireCharacter = prerequisite.requireCharacter,
+                                requiredCharacter = prerequisite.requiredCharacter,
+                                requireDemoMode = prerequisite.requireDemoMode,
+                                requiredNumberOfEncounters = prerequisite.requiredNumberOfEncounters,
+                                requiredTileset = prerequisite.requiredTileset,
+                                requireFlag = prerequisite.requireFlag,
+                                requireTileset = prerequisite.requireTileset,
+                                saveFlagToCheck = prerequisite.saveFlagToCheck,
+                                statToCheck = prerequisite.statToCheck,
+                                useSessionStatValue = prerequisite.useSessionStatValue
+                            });
+                        }
+                    }
+
+                    if (sourceVarient.materialRequirements != null && sourceVarient.materialRequirements.Length > 0) {
+                        foreach (DungeonPlaceableRoomMaterialRequirement materialRequirement in sourceVarient.materialRequirements) {
+                            m_CachedMaterialRequirementsList.Add(new DungeonPlaceableRoomMaterialRequirement() {
+                                RequireMaterial = materialRequirement.RequireMaterial,
+                                RoomMaterial = materialRequirement.RoomMaterial,
+                                TargetTileset = materialRequirement.TargetTileset
+                            });
+                        }
+                    }
+
+                    cachedVarient.prerequisites = m_CachedPrequisitesList.ToArray();
+                    cachedVarient.materialRequirements = m_CachedMaterialRequirementsList.ToArray();
+                }
+            }
+
+            return m_cachedPlaceable;
+        }
+
         public static void SpawnCustomCurrency(Vector2 centerPoint, int amountToDrop, int currencyItemID) {
             List<GameObject> currencyToDrop = GetCustomCurrencyToDrop(currencyItemID, amountToDrop);
             float num = 360f / currencyToDrop.Count;

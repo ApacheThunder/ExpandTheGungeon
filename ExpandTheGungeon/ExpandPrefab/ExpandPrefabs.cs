@@ -207,6 +207,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable RatTrapPlacable;
         public static DungeonPlaceable CorruptedSecretRoomSpecialItem;
         public static DungeonPlaceable Jungle_Doors;
+        public static DungeonPlaceable Jungle_OneWayDoors;
         public static DungeonPlaceable Belly_Doors;
         public static DungeonPlaceable West_Doors;
 
@@ -216,6 +217,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject SkusketHead;
         public static GameObject CandleGuy;
         public static GameObject WallMimic;
+        public static GameObject AK47BulletKin;
 
         public static GameObject RatJailDoor;
         public static GameObject CurrsedMirror;
@@ -260,6 +262,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ExpandThunderstormPlaceable;
         public static GameObject Door_Horizontal_Jungle;
         public static GameObject Door_Vertical_Jungle;
+        public static GameObject DoorOneWay_Horizontal_Jungle;
+        public static GameObject DoorOneWay_Vertical_Jungle;
         public static GameObject Jungle_LargeTree;
         public static GameObject Jungle_LargeTreeTopFrame;
         public static GameObject EXJungleTree_MinimapIcon;
@@ -390,6 +394,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
             Dungeon TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
+            Dungeon CastleDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Castle");
+            Dungeon GungeonDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Gungeon");
             Dungeon SewerDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
             Dungeon MinesDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Mines");
             Dungeon ratDungeon = DungeonDatabase.GetOrLoadByName("base_resourcefulrat");
@@ -1299,17 +1305,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MetalCubeGuy = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").gameObject;
             SerManuel = EnemyDatabase.GetOrLoadByGuid("fc809bd43a4d41738a62d7565456622c").gameObject;
             SkusketHead = EnemyDatabase.GetOrLoadByGuid("c2f902b7cbe745efb3db4399927eab34").gameObject;
+            AK47BulletKin = EnemyDatabase.GetOrLoadByGuid("db35531e66ce41cbb81d507a34366dfe").gameObject;
+
+            // Fix missing death sound
+            AK47BulletKin.GetComponent<AIActor>().EnemySwitchState = EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").EnemySwitchState;
 
             RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
             CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
-
-            /*
-            ElevatorArrivalVarientForJungle;
-            ElevatorArrivalVarientForBelly;
-            ElevatorArrivalVarientForOldWest;
-            ElevatorArrivalVarientForPhobos;
-            ElevatorArrivalVarientForSpace;
-            */
+            
 
             ElevatorArrivalVarientForOffice = new DungeonPlaceableVariant() {
                 percentChance = 1f,
@@ -2696,7 +2699,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Door_Vertical_Jungle_Controller.gameObject.transform.Find("DoorRight").gameObject.GetComponent<tk2dSprite>().sprite.SetSprite("jungle_door_north_right_001");
 
 
-            Jungle_Doors = UnityEngine.Object.Instantiate(ForgeDungeonPrefab.doorObjects);
+            // Jungle_Doors = UnityEngine.Object.Instantiate(ForgeDungeonPrefab.doorObjects);
+            Jungle_Doors = ExpandUtility.DuplicateDungoenPlaceable(ForgeDungeonPrefab.doorObjects);
             Jungle_Doors.variantTiers[0].nonDatabasePlaceable = Door_Vertical_Jungle;
             Jungle_Doors.variantTiers[1].nonDatabasePlaceable = Door_Horizontal_Jungle;
             FakePrefab.MarkAsFakePrefab(Door_Horizontal_Jungle);
@@ -2704,7 +2708,40 @@ namespace ExpandTheGungeon.ExpandPrefab {
             UnityEngine.Object.DontDestroyOnLoad(Door_Horizontal_Jungle);
             UnityEngine.Object.DontDestroyOnLoad(Door_Vertical_Jungle);
 
+
+            DoorOneWay_Vertical_Jungle = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[0].nonDatabasePlaceable);
+            GameObject m_DoorOneWay_Vertical_Jungle_Bottom = DoorOneWay_Vertical_Jungle.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
+            GameObject m_DoorOneWay_Vertical_Jungle_Top = m_DoorOneWay_Vertical_Jungle_Bottom.transform.Find("Door").gameObject;
+            m_DoorOneWay_Vertical_Jungle_Bottom.GetComponent<tk2dSprite>().SetSprite("jungel_one_way_blocker_vertical_bottom_001");
+            m_DoorOneWay_Vertical_Jungle_Top.GetComponent<tk2dSprite>().SetSprite("jungel_one_way_blocker_vertical_top_001");
+            m_DoorOneWay_Vertical_Jungle_Top.transform.localPosition -= new Vector3(0, 0.1f);
+            m_DoorOneWay_Vertical_Jungle_Top.GetComponent<tk2dSprite>().HeightOffGround = 2;
+            m_DoorOneWay_Vertical_Jungle_Top.GetComponent<tk2dSprite>().UpdateZDepthLater();
+            DoorOneWay_Vertical_Jungle.SetActive(false);
+            
+            DoorOneWay_Horizontal_Jungle = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[1].nonDatabasePlaceable);
+            GameObject m_DoorOneWay_Horizontal_Jungle_Bottom = DoorOneWay_Horizontal_Jungle.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
+            GameObject m_DoorOneWay_Horizontal_Jungle_Top = m_DoorOneWay_Horizontal_Jungle_Bottom.transform.Find("Door").gameObject;
+            m_DoorOneWay_Horizontal_Jungle_Bottom.GetComponent<tk2dSprite>().SetSprite("jungel_one_way_blocker_horizontal_bottom_001");
+            m_DoorOneWay_Horizontal_Jungle_Top.GetComponent<tk2dSprite>().SetSprite("jungel_one_way_blocker_horizontal_top_001");
+            m_DoorOneWay_Horizontal_Jungle_Top.transform.localPosition -= new Vector3(0, 0.25f);
+            m_DoorOneWay_Horizontal_Jungle_Top.GetComponent<tk2dSprite>().HeightOffGround = 2f;
+            m_DoorOneWay_Horizontal_Jungle_Top.GetComponent<tk2dSprite>().UpdateZDepthLater();
+            DoorOneWay_Horizontal_Jungle.SetActive(false);
                         
+
+            FakePrefab.MarkAsFakePrefab(DoorOneWay_Vertical_Jungle);
+            FakePrefab.MarkAsFakePrefab(DoorOneWay_Horizontal_Jungle);
+            UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Vertical_Jungle);
+            UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Horizontal_Jungle);
+
+            Jungle_OneWayDoors = ExpandUtility.DuplicateDungoenPlaceable(CastleDungeonPrefab.oneWayDoorObjects);
+
+            Jungle_OneWayDoors.variantTiers[0].nonDatabasePlaceable = DoorOneWay_Vertical_Jungle;
+            Jungle_OneWayDoors.variantTiers[1].nonDatabasePlaceable = DoorOneWay_Horizontal_Jungle;
+
+
+
             Jungle_LargeTree = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_Tree");
             tk2dSprite JungleTreeSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTree, EXJungleCollection, "Jungle_Tree_Large");
             JungleTreeSprite.HeightOffGround = -8;
@@ -2877,7 +2914,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Door_Horizontal_Belly.SetActive(false);
             Door_Vertical_Belly.SetActive(false);
 
-            Belly_Doors = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects);
+            // Belly_Doors = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects);
+            Belly_Doors = ExpandUtility.DuplicateDungoenPlaceable(NakatomiDungeonPrefab.doorObjects);
             Belly_Doors.variantTiers[0].nonDatabasePlaceable = Door_Vertical_Belly;
             Belly_Doors.variantTiers[1].nonDatabasePlaceable = Door_Horizontal_Belly;
             FakePrefab.MarkAsFakePrefab(Door_Vertical_Belly);
@@ -4278,6 +4316,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
             TutorialDungeonPrefab = null;
+            CastleDungeonPrefab = null;
+            GungeonDungeonPrefab = null;
             SewerDungeonPrefab = null;
             MinesDungeonPrefab = null;
             ratDungeon = null;

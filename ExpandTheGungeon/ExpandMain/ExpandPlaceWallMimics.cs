@@ -39,8 +39,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandSettings.glitchElevatorHasBeenUsed = false;
             }
             
-            ExpandStaticReferenceManager.PopulateLists();
-            
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }
