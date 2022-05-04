@@ -149,6 +149,7 @@
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_02.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f2b_belly_flow_01.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f4c_west_flow_01.cs" />
+    <Compile Include="ExpandFoyer.cs" />
     <Compile Include="ExpandMain\ExpandDungeonDoorManager.cs" />
     <Compile Include="ExpandMain\ExpandFloorDecorator.cs" />
     <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />

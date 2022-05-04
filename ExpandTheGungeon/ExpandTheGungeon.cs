@@ -10,8 +10,6 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using System.Collections;
-using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon {
 
@@ -27,6 +25,7 @@ namespace ExpandTheGungeon {
         
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
+        public static bool ListsCleared = false;
 
         public static string ExceptionText;
         public static string ExceptionText2;
@@ -37,8 +36,7 @@ namespace ExpandTheGungeon {
         public static readonly string ModSoundBankName = "EX_SFX";
         public static readonly string ConsoleCommandName = "expand";
 
-
-        private static bool m_ListsCleared = false;
+        
         private static List<string> itemList;
         
         private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
@@ -150,8 +148,7 @@ namespace ExpandTheGungeon {
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
 
-            try
-            {
+            try {
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom Enemy Prefabs
@@ -195,8 +192,8 @@ namespace ExpandTheGungeon {
 
             InitConsoleCommands(ConsoleCommandName);
 
-            GameManager.Instance.StartCoroutine(WaitForFoyerLoad());
-
+            CreateFoyerController();
+            
             if (ExpandSettings.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
@@ -213,32 +210,8 @@ namespace ExpandTheGungeon {
 
         public override void Exit() {  }
         
-
-        private static IEnumerator WaitForFoyerLoad() {
-            while (Foyer.DoIntroSequence && Foyer.DoMainMenu) { yield return null; }
-            if (!m_ListsCleared) {
-                // This should fix issus with Pasts trying to spawn inactive versions of custom enemies
-                // (and any other mod that has created a custom AIActor or object that has a HealthHaver component)
-                // Moved to WaitForForyerLoad so this can clean up fakeprefabs from other mods regardless of mods.txt load order
-                StaticReferenceManager.AllHealthHavers.Clear();
-                // Remove any custom instances that use BroController
-                StaticReferenceManager.AllBros.Clear();
-                // Clear any fakeprefab AIActors from lists.
-                StaticReferenceManager.AllEnemies.Clear();
-                m_ListsCleared = true;
-            }
-
-            if (ExpandSettings.EnableLanguageFix) {
-                GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
-                StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
-            }
-            if (ExpandSettings.EnableTestDungeonFlow) {
-                GameManager.Instance.InjectedFlowPath = ExpandSettings.TestFlow;
-                GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
-            }
-            yield break;
-        }
-        
+        public void CreateFoyerController() { new GameObject("ShotgunMod Foyer Checker", new Type[] { typeof(ExpandFoyer) }); }
+                
         private void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ItemAPISetup) {
                 try {
@@ -284,7 +257,7 @@ namespace ExpandTheGungeon {
             
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
-            if (ExpandSettings.EnableTestDungeonFlow) { GameManager.Instance.StartCoroutine(WaitForFoyerLoad()); }
+            if (ExpandSettings.EnableTestDungeonFlow) { CreateFoyerController(); };
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
