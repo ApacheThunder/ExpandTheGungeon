@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1032013700
+CRC: 2951469723
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9dd033533c82190b8ae9f33fd909c8b1
+    Hash: 1c8d8bdb2c1837d1c7b7c41e6f154a62
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -96,6 +96,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_front_left_004.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_02.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_golden_revolver_idle_004.png
+- Assets/ExpandSprites/Misc/EXOffice_Collection/office_one_way_blocker_horizontal_bottom_001.png
 - Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_floor.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_run_down_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock_Idle_11.png
@@ -475,6 +476,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Right_06.png
 - Assets/ExpandSprites/Misc/EXMonster_Collection/Belly_PitVFX3_06.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_back_left_005.png
+- Assets/ExpandSprites/Misc/EXOffice_Collection/office_one_way_blocker_vertical_bottom_001.png
 - Assets/ExpandSprites/GunsAndItems/EXGun_Collection/bootleg_pistol_projectile_001.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_golden_revolver_reload_006.png
 - Assets/ExpandSprites/Misc/EXJungle_Collection/Jungle_ExitLadder_Destination_Hole.png
@@ -518,6 +520,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Rebound_Back_01.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_004.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_right_006.png
+- Assets/ExpandSprites/Misc/EXOffice_Collection/office_one_way_blocker_horizontal_top_001.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_idle_left_001.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_left_front_005.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_004.png
@@ -895,6 +898,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_17.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_back_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Forward_Right_007.png
+- Assets/ExpandSprites/Misc/EXOffice_Collection/office_one_way_blocker_vertical_top_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Right_02.png
 - Assets/ExpandSprites/Misc/EXParadrop_Collection/EX_Paradrop_Crate_Land_006.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_back_left_006.png

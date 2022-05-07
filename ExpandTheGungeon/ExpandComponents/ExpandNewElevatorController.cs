@@ -5,6 +5,7 @@ using System.Collections;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -24,7 +25,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             floorBrokenSpriteName = "portable_elevator_floor_broken";
             floorBrokenAltSpriteName = "portable_elevator_floor_broken_alt";
 
-            OverrideFloorName = "tt_phobos";
+            OverrideFloorNames = new List<string> { "tt_phobos", "tt_office" };
 
             DropHeight = 20;
 
@@ -85,7 +86,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool IsGlitchElevator;
 
 
-        public string OverrideFloorName;
+        public List<string> OverrideFloorNames;
 
         public string elevatorArriveAnimName;
         public string elevatorOpenAnimName;
@@ -463,7 +464,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                 StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
             } else {
                 if (UsesOverrideTargetFloor) {
-                    GameManager.Instance.DelayedLoadCustomLevel(delay, OverrideFloorName);
+                    if (OverrideFloorNames.Count > 1) {
+                        OverrideFloorNames = OverrideFloorNames.Shuffle();
+                        GameManager.Instance.DelayedLoadCustomLevel(delay, BraveUtility.RandomElement(OverrideFloorNames));
+                    } else {
+                        GameManager.Instance.DelayedLoadCustomLevel(delay, OverrideFloorNames[0]);
+                    }
                 } else {
                     GameManager.Instance.DelayedLoadNextLevel(delay);
                 }

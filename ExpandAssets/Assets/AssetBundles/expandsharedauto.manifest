@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 788159471
+CRC: 1024236959
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 18085f621ed27b2a85c29d505caa36de
+    Hash: c640124698f8c1129e90b4146db21dce
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -44,6 +44,7 @@ Assets:
 - Assets/ExpandTextures/Misc/OldFilm.mp4
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_TinyPassage1.bytes
 - Assets/ExpandPrefabs/Misc/EX_Chest_West.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/lavaGrids.txt
 - Assets/ExpandTextures/RoomFactoryAssets/MH_Expand_Achievement_Trickshot.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular32.bytes
 - Assets/ExpandPrefabs/AIActors/EXCorruptedEnemy.prefab
@@ -54,7 +55,9 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/Mines/Neighborino_Walkway_Layout.png
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandSarco_Monster.prefab
 - Assets/ExpandTextures/RoomBuilderAssets/Forge/Expand_Neighborino_Pits_Layout.png
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_2.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals11.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_1.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Hunter12.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_GunFairy.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals9.bytes
@@ -124,15 +127,18 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/M_Expand_Achievement_Rider.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ExitLadder_Destination.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/FB_Expand_Achievement_Gunsmith.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/carpetGrids_1.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Entrance.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Jungle.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_CornerBomb3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal19.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_2_grid.txt
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_MelonTurtle_Apache_Hub_Layout.png
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBulletManCollection.txt
 - Assets/ExpandPrefabs/AIActors/EX_ExplodyBoy.prefab
 - Assets/ExpandPrefabs/Shaders/ExpandScanlines.shader
 - Assets/ExpandPrefabs/Misc/RoomCorruptionAmbience_Placable.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/roomFloorBorderGrid.txt
 - Assets/ExpandTextures/SpriteCollections/AIActors/BabyGoodHammer_Collection.png
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorBlocker_North.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular17.bytes
@@ -170,6 +176,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/FloorData/Expand_Forest_Mixed1_FloorData.png
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_A.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal30.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_1_grid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Witch5.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Boxes4.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport2.bytes
@@ -241,6 +248,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate26.bytes
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorBlocker_East.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Jungle_Boss.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/lavaGrids.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals26.bytes
 - Assets/ExpandPrefabs/Misc/3DStuff/Materials/pipeSS01.dds
 - Assets/ExpandPrefabs/Misc/EX_GlitchPortal.prefab
@@ -290,6 +298,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular3.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/BootlegShotgunManRedCollection.prefab
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorBlocker_West.prefab
+- Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_Office.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed19.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Odd4.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular29.bytes
@@ -383,6 +392,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Gungeon_HiddenMonsterRoom.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_MushZookie.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular31.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/roomFloorBorderGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_ArrowSpent.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_tight3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_AnimalsHunters1.bytes
@@ -442,6 +452,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal15.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Yshape2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals14.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/carpetGrids_0.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Straight2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Ice4.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/K_Expand_bonk.bytes
@@ -469,7 +480,9 @@ Assets:
 - Assets/ExpandTextures/BossCards/MimicInMirror_BossCardBackground.png
 - Assets/ExpandTextures/RoomFactoryAssets/M_Expand_Achievement_Mine_Master.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular16.bytes
+- Assets/ExpandTextures/SpriteCollections/Misc/EXOffice_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals5.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_0_grid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/F_Expand_dragun.bytes
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Gold/roomFloorBorderGrid.txt
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ItemStump.prefab
@@ -496,6 +509,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Owl8.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Mixed2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Mixed9.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/carpetGrids_1.txt
 - Assets/ExpandPrefabs/Dungeons/Base_Belly.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals27.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport2_3.bytes
@@ -526,6 +540,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular27.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Extra1.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular34.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_1_grid.txt
 - Assets/ExpandPrefabs/Items/EXClownBullets.prefab
 - Assets/ExpandTextures/RoomBuilderAssets/Destination_MiniElevator_Room_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed14.bytes
@@ -544,7 +559,9 @@ Assets:
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_01.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/O_Expand_Achievement_Sworn_Gun.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_TribalSummon.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_2.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Steps1.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/pitLayoutGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Square3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Smallcentral.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_TinyPassage3.bytes
@@ -614,6 +631,7 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/roomCeilingBorderGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Oldman6.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Fight2.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi_MaterialTable.txt
 - Assets/ExpandTextures/BossCards/WesternBrosBossCard.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular36.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Mixed10.bytes
@@ -631,6 +649,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Fight3.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Animals10.bytes
 - Assets/ExpandPrefabs/AIActors/Bootleg ShotgunMan Red.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/roomCeilingBorderGrid.txt
 - Assets/ExpandSerializedData/TilesetData/West/WoodInterior/floorGrid1.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_RegularSnakeParrot.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/EXOldWestWarp.prefab
@@ -638,6 +657,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular20.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_ArrowCat.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_Fight5.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_0_grid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular41.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/Belly_PitVFX1.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Bunny_Special4ShrineRoom.bytes
@@ -692,6 +712,7 @@ Assets:
 - Assets/ExpandTextures/RoomBuilderAssets/GungeonProper/Expand_Neighborino_JumpInThePit_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny18.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/EXWestFloorBossIntroScreenFX.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Teleport2_2.bytes
 - Assets/ExpandPrefabs/Misc/EXElevator_Arrival_Placable.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate3.bytes
@@ -831,7 +852,9 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Thin5.bytes
 - Assets/ExpandPrefabs/Misc/Sarcophagus_ShotgunBook_Kaliber.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate15.bytes
+- Assets/ExpandTextures/TilesetAssets/ENV_Tileset_Nakatomi.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular22.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/pitLayoutGrid.txt
 - Assets/ExpandTextures/SpriteCollections/GunsAndItems/EXItem_Collection.png
 - Assets/ExpandTextures/RoomBuilderAssets/Mines/Neighborino_Singer_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mushroom.bytes
@@ -861,6 +884,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_BIRDS.bytes
 - Assets/ExpandSerializedData/SpriteCollections/SonicCompanionCollection.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular44.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_0.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed13.bytes
 - Assets/ExpandTextures/RoomBuilderAssets/Utiliroom_Pitfall_Layout.png
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandDustStormFX.prefab
@@ -906,6 +930,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Connector_06.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/SonicCompanion_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate27.bytes
+- Assets/ExpandSerializedData/SpriteCollections/EXOfficeCollection.txt
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorBlocker_South.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera17.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Long.bytes
@@ -929,6 +954,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Brother2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_AnimalsTribal.bytes
 - Assets/ExpandPrefabs/AIActors/Angry Cronenberg Abomination.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/roomCeilingBorderGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular15.bytes
 - Assets/ExpandTextures/RoomBuilderAssets/Castle/Expand_TurtleMelon_R_Blocks_Layout.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal5.bytes
@@ -967,6 +993,8 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Brother6.bytes
 - Assets/ExpandPrefabs/AIActors/HotShotShotgunKin.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal29.bytes
+- Assets/ExpandPrefabs/SpriteCollections/Misc/EXOfficeCollection.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_2_grid.txt
 - Assets/ExpandSerializedData/SpriteCollections/EXPortableElevatorCollection.txt
 - Assets/ExpandSerializedData/SpriteCollections/EXSecretDoorCollection.txt
 - Assets/ExpandSerializedData/SpriteCollections/GungeoneerMimicCollection.txt
@@ -991,6 +1019,7 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/Misc/EXPortableElevator_Collection.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Viscera22.bytes
 - Assets/ExpandPrefabs/AIActors/Cronenberg Abomination.prefab
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_0.txt
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/floorSquares.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed6.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed15.bytes
@@ -1029,6 +1058,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/EX_YellowBalloon.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Hunter24.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny7.bytes
+- Assets/ExpandPrefabs/Dungeons/Base_Office.prefab
 - Assets/ExpandPrefabs/Misc/3DStuff/PipePlazaMesh.fbm/pipeSS01.dds
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular8.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny12.bytes
@@ -1115,8 +1145,10 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular36.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed8.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal23.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_1.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular38.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Skeletal26.bytes
+- Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/carpetGrids_0.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Hunter19.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular2.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Interior1_Boxes5.bytes

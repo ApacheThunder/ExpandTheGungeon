@@ -28,6 +28,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject SecretElevatorExitTilesetCollection;
         public static GameObject EXBalloonCollection;
         public static GameObject EXPortableElevatorCollection;
+        public static GameObject EXOfficeCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -151,6 +152,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable WestCanyonRoomTable;
         public static GenericRoomTable WestTinyCanyonRoomTable;
         public static GenericRoomTable WestInterior1RoomTable;
+        public static GenericRoomTable AbbeyRoomTableForOffice;
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
@@ -210,6 +212,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable Jungle_OneWayDoors;
         public static DungeonPlaceable Belly_Doors;
         public static DungeonPlaceable West_Doors;
+        public static DungeonPlaceable Office_OneWayDoors;
 
         // Modified/Reference AIActors
         public static GameObject MetalCubeGuy;
@@ -286,6 +289,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXOldWestWarp;
         public static GameObject EXSpaceFloor_50x50;
         public static GameObject EXSpaceFloorPitBorder_50x50;
+        public static GameObject DoorOneWay_Vertical_Office;
+        public static GameObject DoorOneWay_Horizontal_Office;
 
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
@@ -362,6 +367,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ENV_Tileset_Belly;
         public static GameObject ENV_Tileset_West;
         public static GameObject ENV_Tileset_Phobos;
+        public static GameObject ENV_Tileset_Office;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -385,6 +391,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretElevatorExitTilesetCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SecretElevatorExitTilesetCollection", "SecretElevatorExitTileset_Collection", "SecretElevatorExitTilesetCollection");
             EXBalloonCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBalloonCollection", "EXBalloon_Collection", "EXBalloonCollection");
             EXPortableElevatorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXPortableElevatorCollection", "EXPortableElevator_Collection", "EXPortableElevatorCollection");
+            EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
 
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
@@ -415,6 +422,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
             ExpandDungeonCollections.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
+
+            ENV_Tileset_Office = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Office");
+            ExpandDungeonCollections.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
+
 
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
             BulletManUpsideDownTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_UpsideDown");
@@ -507,7 +518,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ForgeRoomTable = ForgeDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             BulletHellRoomTable = BulletHellDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             boss_foyertable = sharedAssets2.LoadAsset<GenericRoomTable>("Boss Foyers");
-
+            
             gungeon_entrance_bossrush = UnityEngine.Object.Instantiate(gungeon_entrance);
             gungeon_entrance_bossrush.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             gungeon_entrance_bossrush.name = "Bossrush Curse Shrine";
@@ -553,6 +564,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             WestInterior1RoomTable.includedRooms = new WeightedRoomCollection();
             WestInterior1RoomTable.includedRooms.elements = new List<WeightedRoom>();
             WestInterior1RoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            AbbeyRoomTableForOffice = ScriptableObject.CreateInstance<GenericRoomTable>();
+            AbbeyRoomTableForOffice.name = "Office_RoomTable";
+            AbbeyRoomTableForOffice.includedRooms = new WeightedRoomCollection();
+            AbbeyRoomTableForOffice.includedRooms.elements = new List<WeightedRoom>();
+            AbbeyRoomTableForOffice.includedRoomTables = AbbeyRoomTable.includedRoomTables;
+
+            foreach (WeightedRoom room in AbbeyRoomTable.includedRooms.elements) {
+                // room.room.FullCellData
+                bool hasPits = false;
+                foreach (PrototypeDungeonRoomCellData cellData in room.room.FullCellData) {
+                    if (cellData.state == CellType.PIT) { hasPits = true; break; }
+                }
+                if (!hasPits) { AbbeyRoomTableForOffice.includedRooms.elements.Add(room); }
+            }
+
 
 
             OfficeAndUnusedWeightedRooms = new WeightedRoom[] {
@@ -1085,7 +1112,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandNewElevatorController m_EXJunglePlacableController = EXJungleElevator_Departure_Placable.AddComponent<ExpandNewElevatorController>();
             m_EXJunglePlacableController.ArriveOnSpawn = false;
             m_EXJunglePlacableController.UsesOverrideTargetFloor = true;
-            m_EXJunglePlacableController.OverrideFloorName = "tt_jungle";
+            m_EXJunglePlacableController.OverrideFloorNames = new List<string> { "tt_jungle" };
             m_EXJunglePlacableController.ImpactVFXObjects = new GameObject[] {
                 sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
                 sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
@@ -2742,6 +2769,37 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
 
+            DoorOneWay_Vertical_Office = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[0].nonDatabasePlaceable);
+            GameObject m_DoorOneWay_Vertical_Office_Bottom = DoorOneWay_Vertical_Office.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
+            GameObject m_DoorOneWay_Vertical_Office_Top = m_DoorOneWay_Vertical_Office_Bottom.transform.Find("Door").gameObject;
+            m_DoorOneWay_Vertical_Office_Bottom.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_vertical_bottom_001");
+            m_DoorOneWay_Vertical_Office_Top.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_vertical_top_001");
+            m_DoorOneWay_Vertical_Office_Top.transform.localPosition -= new Vector3(0, 0.1f);
+            m_DoorOneWay_Vertical_Office_Top.GetComponent<tk2dSprite>().HeightOffGround = 2;
+            m_DoorOneWay_Vertical_Office_Top.GetComponent<tk2dSprite>().UpdateZDepthLater();
+            DoorOneWay_Vertical_Office.SetActive(false);
+
+            DoorOneWay_Horizontal_Office = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[1].nonDatabasePlaceable);
+            GameObject m_DoorOneWay_Horizontal_Office_Bottom = DoorOneWay_Horizontal_Office.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
+            GameObject m_DoorOneWay_Horizontal_Office_Top = m_DoorOneWay_Horizontal_Office_Bottom.transform.Find("Door").gameObject;
+            m_DoorOneWay_Horizontal_Office_Bottom.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_horizontal_bottom_001");
+            m_DoorOneWay_Horizontal_Office_Top.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_horizontal_top_001");
+            m_DoorOneWay_Horizontal_Office_Top.transform.localPosition -= new Vector3(0, 0.25f);
+            m_DoorOneWay_Horizontal_Office_Top.GetComponent<tk2dSprite>().HeightOffGround = 2f;
+            m_DoorOneWay_Horizontal_Office_Top.GetComponent<tk2dSprite>().UpdateZDepthLater();
+            DoorOneWay_Horizontal_Office.SetActive(false);
+
+
+            FakePrefab.MarkAsFakePrefab(DoorOneWay_Vertical_Office);
+            FakePrefab.MarkAsFakePrefab(DoorOneWay_Horizontal_Office);
+            UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Vertical_Office);
+            UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Horizontal_Office);
+
+            Office_OneWayDoors = ExpandUtility.DuplicateDungoenPlaceable(CastleDungeonPrefab.oneWayDoorObjects);
+            Office_OneWayDoors.variantTiers[0].nonDatabasePlaceable = DoorOneWay_Vertical_Office;
+            Office_OneWayDoors.variantTiers[1].nonDatabasePlaceable = DoorOneWay_Horizontal_Office;
+
+            
             Jungle_LargeTree = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_Tree");
             tk2dSprite JungleTreeSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTree, EXJungleCollection, "Jungle_Tree_Large");
             JungleTreeSprite.HeightOffGround = -8;
@@ -3184,9 +3242,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.GenerateSpriteAnimator(Sarco_MonsterObject);
             ExpandUtility.AddAnimation(Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>(), EXLargeMonsterCollection.GetComponent<tk2dSpriteCollectionData>(), BellyMonsterAnimationFrames, "MonsterChase", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
             
-            ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
+            SpeculativeRigidbody bellyMonsterRigidBody = ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
+            bellyMonsterRigidBody.MaxVelocity = new Vector2(-1.5f, 0);
 
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].eventInfo = "slam";
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].triggerEvent = true;

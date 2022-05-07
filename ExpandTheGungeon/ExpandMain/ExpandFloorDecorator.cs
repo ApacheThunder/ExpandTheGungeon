@@ -18,7 +18,8 @@ namespace ExpandTheGungeon.ExpandMain {
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {
                 GlobalDungeonData.ValidTilesets.BELLYGEON,
                 GlobalDungeonData.ValidTilesets.WESTGEON,
-                GlobalDungeonData.ValidTilesets.MINEGEON
+                GlobalDungeonData.ValidTilesets.MINEGEON,
+                GlobalDungeonData.ValidTilesets.SPACEGEON,
             };
 
             if (!ignoreTilesetType && !ValidTilesets.Contains(dungeon.tileIndices.tilesetId)) { return; }
@@ -28,6 +29,32 @@ namespace ExpandTheGungeon.ExpandMain {
             List<RoomHandler> DungeonRooms = dungeon.data.rooms;
 
             if (roomListOverride != null) { DungeonRooms = roomListOverride; }
+
+            if (dungeon.gameObject.name.ToLower().StartsWith("base_office")) {
+                FlippableCover[] AllTables = Object.FindObjectsOfType<FlippableCover>();
+
+                if (AllTables != null && AllTables.Length > 0) {
+                    for (int i = 0; i < AllTables.Length; i++) {
+                        Vector3 CachedTablePosition = AllTables[i].gameObject.transform.position;
+                        GameObject Table = null;
+                        RoomHandler parentRoom = AllTables[i].transform.position.GetAbsoluteRoom();
+                        if (AllTables[i].gameObject.name.ToLower().Contains("table_horizontal")) {
+                            parentRoom.DeregisterInteractable(AllTables[i]);
+                            Object.Destroy(AllTables[i].gameObject);
+                            Table = Object.Instantiate(ExpandObjectDatabase.TableHorizontalSteel, CachedTablePosition, Quaternion.identity);
+                        } else if (AllTables[i].gameObject.name.ToLower().Contains("table_vertical")) {
+                            parentRoom.DeregisterInteractable(AllTables[i]);
+                            Object.Destroy(AllTables[i].gameObject);
+                            Table = Object.Instantiate(ExpandObjectDatabase.TableVerticalSteel, CachedTablePosition, Quaternion.identity);
+                        }                        
+                        if (Table) {
+                            Table.transform.parent = parentRoom.hierarchyParent;
+                            Table.GetComponent<FlippableCover>().ConfigureOnPlacement(parentRoom);
+                            parentRoom.RegisterInteractable(Table.GetComponent<FlippableCover>());
+                        }
+                    }
+                }
+            }
 
             foreach (RoomHandler currentRoom in DungeonRooms) {                 
                 try {
@@ -40,6 +67,11 @@ namespace ExpandTheGungeon.ExpandMain {
                             break;
                         case GlobalDungeonData.ValidTilesets.MINEGEON:
                             PlaceRandomAlarmMushrooms(dungeon, currentRoom);
+                            break;
+                        case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                            if (dungeon.gameObject.name.ToLower().StartsWith("base_office")) {
+                                PlaceRandomOfficeSupplies(dungeon, currentRoom);
+                            }
                             break;
                     }
                 } catch (System.Exception ex) {                    
@@ -270,6 +302,56 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
         
+        private static void PlaceRandomOfficeSupplies(Dungeon dungeon, RoomHandler currentRoom) {
+            PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
+
+            Dungeon NakatomiPrefab = ExpandCustomDungeonPrefabs.LoadOfficialDungeonPrefab("Base_Nakatomi");
+
+            List<GameObject> m_ObjectList = new List<GameObject>();
+
+            m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[6].objectReference);
+            m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[9].objectReference);
+            m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[10].objectReference);
+            m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[11].objectReference);
+            m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Front);
+            m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Left);
+            m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Right);
+            m_ObjectList.Add(ExpandObjectDatabase.KitchenCounter);
+            m_ObjectList = m_ObjectList.Shuffle();
+
+            NakatomiPrefab = null;
+            
+            int MaxObjectsPerRoom = 8;
+
+            if (currentRoom != null && !currentRoom.IsShop && !currentRoom.IsSecretRoom && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && 
+                !currentRoom.IsMaintenanceRoom() && !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !currentRoom.PrecludeTilemapDrawing &&
+                roomCategory != PrototypeDungeonRoom.RoomCategory.REWARD && Random.value <= 0.6f)
+            {
+                List<IntVector2> m_CachedPositions = new List<IntVector2>();
+                int MaxObjectCount = MaxObjectsPerRoom;
+                if (Random.value <= 0.3f){
+                    MaxObjectCount = 16;
+                } else if (roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                    MaxObjectCount = 5;
+                }
+
+                int ObjectCount = Random.Range(6, MaxObjectsPerRoom);
+                
+                for (int i = 0; i < ObjectCount; i++) {
+                    IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions);
+
+                    if (RandomVector.HasValue) {
+                        GameObject selectedObject = Object.Instantiate(BraveUtility.RandomElement(m_ObjectList), RandomVector.Value.ToVector3(), Quaternion.identity);
+                        selectedObject.transform.parent = currentRoom.hierarchyParent;
+                        RandomObjectsPlaced++;
+                        if (m_CachedPositions.Count <= 0) { break; }
+                    } else {
+                        RandomObjectsSkipped++;
+                    }
+                }
+            }
+        }
+
         private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 1, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false, bool isCactusDecoration = false) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }
             try { 

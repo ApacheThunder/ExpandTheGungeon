@@ -11,6 +11,8 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.SpriteAPI;
+using ExpandTheGungeon.ExpandMain;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
@@ -1763,7 +1765,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return targetRoom;
         }
 
-        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true) {
+        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true, string RunTimeTileMapName = "Glitch") {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1825,23 +1827,27 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 ETGModConsole.Log("WARNING: Trying fall back code..." + targetRoom.GetRoomName());
                 Debug.LogException(ex);
                 try {
-                    dungeon.data.GenerateLightsForRoom(dungeon2.decoSettings, targetRoom, GameObject.Find("_Lights").transform, lightStyle);
+                    dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, targetRoom, GameObject.Find("_Lights").transform, lightStyle);
                 } catch (Exception ex2) {
                     ETGModConsole.Log("WARNING: Exception caused during GenerateLightsForRoom step on room while attempting fall back code: " + targetRoom.GetRoomName());
                     Debug.LogException(ex2);
                 }
             }
             postProcessCellData?.Invoke(targetRoom);
-
+            
             if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) { targetRoom.BuildSecretRoomCover(); }
+
+            MaybeSpawnWallMimics(dungeon, targetRoom, dungeon2.tileIndices.tilesetId, dungeon2.tileIndices.dungeonCollection);
+            
+
             GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
             tk2dTileMap component = gameObject.GetComponent<tk2dTileMap>();
             string str = UnityEngine.Random.Range(10000, 99999).ToString();
-            gameObject.name = "Glitch_" + "RuntimeTilemap_" + str;
+            gameObject.name = RunTimeTileMapName + "_RuntimeTilemap_" + str;
             component.renderData.name = "Glitch_" + "RuntimeTilemap_" + str + " Render Data";
             component.Editor__SpriteCollection = dungeon2.tileIndices.dungeonCollection;
             try {
-                TK2DDungeonAssembler.RuntimeResizeTileMap(component, a.x + num2 * 2, a.y + num2 * 2, m_tilemap.partitionSizeX, m_tilemap.partitionSizeY);
+                ExpandTK2DDungeonAssembler.RuntimeResizeTileMap(component, a.x + num2 * 2, a.y + num2 * 2, m_tilemap.partitionSizeX, m_tilemap.partitionSizeY);
                 IntVector2 intVector5 = new IntVector2(prototype.Width, prototype.Height);
                 IntVector2 b3 = basePosition + b;
                 IntVector2 intVector6 = intVector3 + b3;
@@ -1892,6 +1898,31 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             targetRoom.PostGenerationCleanup();
 
+            GameObject m_CollisionObject = new GameObject(component.renderData.name + "_CollisionObject");
+            IntVector2 targetRoomPosition = targetRoom.area.basePosition;
+            m_CollisionObject.transform.parent = targetRoom.hierarchyParent;
+            IntVector2 targetRoomSize = targetRoom.area.dimensions;
+            m_CollisionObject.transform.position = targetRoomPosition.ToVector3();
+
+            for (int width = -2; width < targetRoomSize.x + 2; width++) {
+                for (int height = -2; height < targetRoomSize.y + 2; height++) {
+                    int X = targetRoomPosition.x + width;
+                    int Y = targetRoomPosition.y + height;
+                    if (dungeon.data.isWall(X, Y)) {
+                        IntVector2 positionOffset = new IntVector2(width, height);
+                        if (dungeon.data.isFaceWallLower(X, Y)) {
+                            GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: IntVector2.One, offset: positionOffset);
+                        } else {
+                            GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: IntVector2.One, offset: positionOffset);
+                        }
+                    }
+                }
+            }
+
+            if (!m_CollisionObject.GetComponent<SpeculativeRigidbody>()) { UnityEngine.Object.Destroy(m_CollisionObject); }
+
+            ExpandFloorDecorator.PlaceFloorDecoration(dungeon, new List<RoomHandler>() { targetRoom });
+
             if (addRoomToMinimap) {
                 if (RoomExploredOnMinimap) {
                     targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
@@ -1904,9 +1935,237 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (addTeleporter) { targetRoom.AddProceduralTeleporterToRoom(); }
             if (addRoomToMinimap) { Minimap.Instance.InitializeMinimap(dungeon.data); }
             DeadlyDeadlyGoopManager.ReinitializeData();
+            
             return targetRoom;
         }
         
+        public static void MaybeSpawnWallMimics(Dungeon dungeon, RoomHandler currentRoom, GlobalDungeonData.ValidTilesets TilesetOverride = GlobalDungeonData.ValidTilesets.CASTLEGEON, bool GuranteedWallMimic = false, int OverrideWallMimicCount = -1, tk2dSpriteCollectionData FakeWallDungeonCollectionOverride = null) {
+            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && UnityEngine.Random.value > 0.01f) { return; }
+
+            string RoomName = "NULL";
+
+            if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { RoomName = currentRoom.GetRoomName(); }
+
+            if (currentRoom.PrecludeTilemapDrawing | currentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET | currentRoom.IsMaintenanceRoom()) {
+                return;
+            }
+
+            if (!GuranteedWallMimic) {
+                if (currentRoom.IsShop | currentRoom.GetRoomName().StartsWith("DraGunRoom") | ExpandPlaceWallMimic.BannedWallMimicRoomList.Contains(RoomName.ToLower())) {
+                    return;
+                }
+                if (currentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS && BraveUtility.RandomBool()) { return; }
+            }
+
+            int WallMimicsPerRoom = 1;
+
+            if (TilesetOverride != GlobalDungeonData.ValidTilesets.CASTLEGEON) { TilesetOverride = dungeon.tileIndices.tilesetId; }
+
+            if (ExpandPlaceWallMimic.PlayerHasWallMimicItem) {
+                switch (TilesetOverride) {
+                    case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.WESTGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                        WallMimicsPerRoom = 2;
+                        break;
+                    case GlobalDungeonData.ValidTilesets.HELLGEON:
+                        WallMimicsPerRoom = 3;
+                        break;
+                    default:
+                        WallMimicsPerRoom = 1;
+                        break;
+                }
+            }
+                       
+
+            if (OverrideWallMimicCount != -1) { WallMimicsPerRoom = OverrideWallMimicCount; }
+            
+            int NorthWallCount = 0;
+            int WestWallCount = 0;
+            int EastWallCount = 0;
+            int WallMimicsPlaced = 0;
+            int loopCount = 0;
+            int SouthWallCount = 0;
+            List<Tuple<IntVector2, DungeonData.Direction>> validWalls = new List<Tuple<IntVector2, DungeonData.Direction>>();
+            try { 
+                for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
+                    for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
+                        int X = currentRoom.area.basePosition.x + Width;
+                        int Y = currentRoom.area.basePosition.y + Height;
+                        if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0 && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) != null && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
+                            int WallCount = 0;
+                			if (!dungeon.data.isWall(X - 1, Y + 2) &&
+                                !dungeon.data.isWall(X, Y + 2) && 
+                                !dungeon.data.isWall(X + 1, Y + 2) &&
+                                !dungeon.data.isWall(X + 2, Y + 2) &&
+                				!dungeon.data.isWall(X - 1, Y + 1) &&
+                                !dungeon.data.isWall(X, Y + 1) && 
+                                !dungeon.data.isWall(X + 1, Y + 1) &&
+                                !dungeon.data.isWall(X + 2, Y + 1) &&
+                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X, Y) && 
+                                dungeon.data.isWall(X + 1, Y) &&
+                                dungeon.data.isWall(X + 2, Y) && 
+                				dungeon.data.isWall(X - 1, Y - 1) &&
+                                dungeon.data.isWall(X, Y - 1) && 
+                                dungeon.data.isWall(X + 1, Y - 1) &&
+                                dungeon.data.isWall(X + 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 1, Y - 3) &&
+                                !dungeon.data.isPlainEmptyCell(X, Y - 3) && 
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y - 3) &&
+                                !dungeon.data.isPlainEmptyCell(X + 2, Y - 3))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.NORTH));
+                				WallCount++;
+                                SouthWallCount++;
+                            } else if (dungeon.data.isWall(X - 1, Y + 2) && 
+                                dungeon.data.isWall(X, Y + 2) &&
+                                dungeon.data.isWall(X + 1, Y + 2) &&
+                                dungeon.data.isWall(X + 2, Y + 2) &&
+                                dungeon.data.isWall(X - 1, Y + 1) &&
+                                dungeon.data.isWall(X, Y + 1) &&
+                                dungeon.data.isWall(X + 1, Y + 1) &&
+                                dungeon.data.isWall(X + 2, Y + 1) && 
+                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X, Y) &&
+                                dungeon.data.isWall(X + 1, Y) &&
+                                dungeon.data.isWall(X + 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X, Y + 4) &&
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y + 4))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.SOUTH));
+                				WallCount++;
+                                NorthWallCount++;
+                            } else if (dungeon.data.isWall(X, Y + 2) &&
+                				dungeon.data.isWall(X, Y + 1) &&
+                				dungeon.data.isWall(X - 1, Y) &&
+                				dungeon.data.isWall(X, Y - 1) &&
+                				dungeon.data.isWall(X, Y - 2) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y + 2) && 
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y + 1) && 
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X + 1, Y) &&
+                				dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y - 2))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.EAST));
+                				WallCount++;
+                                WestWallCount++;
+                            } else if (dungeon.data.isWall(X, Y + 2) && 
+                				dungeon.data.isWall(X, Y + 1) &&
+                				dungeon.data.isWall(X + 1, Y) &&
+                				dungeon.data.isWall(X, Y - 1) &&
+                				dungeon.data.isWall(X, Y - 2) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y + 2) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y + 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X - 1, Y) &&
+                				dungeon.data.isPlainEmptyCell(X - 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y - 2))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X - 1, Y), DungeonData.Direction.WEST));
+                				WallCount++;
+                                EastWallCount++;
+                            }
+                			if (WallCount > 0) {
+                				bool WallStillValid = true;
+                                int XPadding = -5;
+                				while (XPadding <= 5 && WallStillValid) {
+                					int YPadding = -5;
+                					while (YPadding <= 5 && WallStillValid) {
+                						int x = X + XPadding;
+                						int y = Y + YPadding;
+                						if (dungeon.data.CheckInBoundsAndValid(x, y)) {
+                							CellData cellData = dungeon.data[x, y];
+                							if (cellData != null) {
+                                                if (cellData.type == CellType.PIT | cellData.diagonalWallType != DiagonalWallType.NONE) { WallStillValid = false; }
+                                            }
+                						}
+                						YPadding++;
+                					}
+                					XPadding++;
+                				}
+                				if (!WallStillValid) {
+                					while (WallCount > 0) {
+                						validWalls.RemoveAt(validWalls.Count - 1);
+                						WallCount--;
+                					}
+                				}
+                			}
+                		}
+                	}
+                }
+                if (validWalls.Count <= 0) {
+                    if (ExpandSettings.debugMode) {
+                        ETGModConsole.Log("[DEBUG] No valid locations found for room: " + RoomName + " while attempting Wall Mimic placement!", false);
+                    }
+                }
+                while (loopCount < WallMimicsPerRoom && validWalls.Count > 0) {
+                    if (validWalls.Count > 0) {
+                        Tuple<IntVector2, DungeonData.Direction> WallCell = BraveUtility.RandomElement(validWalls);
+                        IntVector2 Position = WallCell.First;
+                        DungeonData.Direction Direction = WallCell.Second;
+                        if (Direction != DungeonData.Direction.WEST) {
+                            currentRoom.RuntimeStampCellComplex(Position.x, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+                        }
+                        if (Direction != DungeonData.Direction.EAST) {
+                            currentRoom.RuntimeStampCellComplex(Position.x + 1, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+                        }
+                        AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(GameManager.Instance.RewardManager.WallMimicChances.EnemyGuid);
+                        AIActor WallMimic = AIActor.Spawn(orLoadByGuid, Position, currentRoom, true, AIActor.AwakenAnimationType.Default, false);
+                        ExpandWallMimicManager wallMimicController = WallMimic.gameObject.GetComponent<ExpandWallMimicManager>();
+                        if (wallMimicController) {
+                            if (ExpandPlaceWallMimic.PlayerHasWallMimicItem) { wallMimicController.CursedBrickMode = true; }
+                            wallMimicController.DungeonCollectionOverride = FakeWallDungeonCollectionOverride;
+                            wallMimicController.SkipPlayerCheck = true;
+                        }
+                        validWalls.Remove(WallCell);
+                        WallMimicsPlaced++;
+                    }
+                    loopCount++;
+                }
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] Exception while trying to place WallMimic(s) in room: " + currentRoom.GetRoomName(), false);
+                    Debug.LogException(ex);
+                }
+                return;
+            }
+            if (WallMimicsPlaced > 0) {
+            	if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] Wall Mimic(s) succesfully placed in room: " + currentRoom.GetRoomName(), false);
+                    ETGModConsole.Log("[DEBUG] Number of Valid North Wall Mimics locations: " + NorthWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid South Wall Mimics locations: " + SouthWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid East Wall Mimics locations: " + EastWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid West Wall Mimics locations: " + WestWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Wall Mimics succesfully placed in room: " + WallMimicsPlaced, false);
+            	}
+                return;
+            } else {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] No valid location found for room: " + currentRoom.GetRoomName() + " while attempting Wall Mimic placement!", false);
+                }
+                return;
+            }
+        }
+     
         public static void GenerateLightsForRoomFromOtherTileset(TilemapDecoSettings decoSettings, RoomHandler rh, Transform lightParent, Dungeon dungeon, Dungeon dungeon2, DungeonData.LightGenerationStyle style = DungeonData.LightGenerationStyle.STANDARD) {
             if (!dungeon2.roomMaterialDefinitions[rh.RoomVisualSubtype].useLighting) { return; }
             
@@ -3369,7 +3628,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             yield break;
         }
 
-        public static GameObject GenerateRoomCeilingMesh(HashSet<IntVector2> cells, string objectName = "secret room ceiling object", DungeonData dungeonData = null, bool mimicCheck = false, bool isGlitched = false) {
+        public static GameObject GenerateRoomCeilingMesh(HashSet<IntVector2> cells, string objectName = "secret room ceiling object", DungeonData dungeonData = null, bool mimicCheck = false, bool isGlitched = false, tk2dSpriteCollectionData overrideDungeonCollection = null, Dungeon dungeonOverride = null) {
             if (dungeonData == null) { dungeonData = GameManager.Instance.Dungeon.data; }
             Mesh mesh = new Mesh();
             List<Vector3> list = new List<Vector3>();
@@ -3378,9 +3637,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
             List<Vector2> list4 = new List<Vector2>();
             Material material = null;
             Material material2 = null;
-            tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
+            tk2dSpriteCollectionData dungeonCollection = overrideDungeonCollection;
+            if (!dungeonCollection) { dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection; }
             if (isGlitched) {
-                dungeonCollection = UnityEngine.Object.Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                dungeonCollection = UnityEngine.Object.Instantiate(dungeonCollection);
                 foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
                     ExpandShaders.ApplyGlitchShaderUnlit(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
                 }
@@ -3388,7 +3648,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             Vector3 b = new Vector3(0f, 0f, -3.01f);
             Vector3 b2 = new Vector3(0f, 0f, -3.02f);
             foreach (IntVector2 position in cells) {
-                TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(position, dungeonData);
+                TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(position, dungeonData, dungeonOverride);
                 int indexByWeight = borderGridForCellPosition.centerIndices.GetIndexByWeight();
                 int tileFromRawTile = BuilderUtil.GetTileFromRawTile(indexByWeight);
                 tk2dSpriteDefinition tk2dSpriteDefinition = dungeonCollection.spriteDefinitions[tileFromRawTile];
@@ -3463,7 +3723,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return gameObject;
         }
 
-        public static GameObject GenerateWallMesh(DungeonData.Direction exitDirection, IntVector2 exitBasePosition, string objectName = "secret room door object", DungeonData dungeonData = null, bool abridged = false, bool isGlitched = false) {
+        public static GameObject GenerateWallMesh(DungeonData.Direction exitDirection, IntVector2 exitBasePosition, string objectName = "secret room door object", DungeonData dungeonData = null, bool abridged = false, bool isGlitched = false, tk2dSpriteCollectionData DungeonCollectionOverride = null, Dungeon secondaryDungeon = null) {
             if (dungeonData == null) { dungeonData = GameManager.Instance.Dungeon.data; }
             Mesh mesh = new Mesh();
             List<Vector3> list = new List<Vector3>();
@@ -3477,14 +3737,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
             Material material2 = null;
             Material material3 = null;
             Material material4 = null;
-            tk2dSpriteCollectionData dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection;
+            tk2dSpriteCollectionData dungeonCollection = DungeonCollectionOverride;
+
+            if (!DungeonCollectionOverride) { dungeonCollection = GameManager.Instance.Dungeon.tileIndices.dungeonCollection; }
+
             if (isGlitched) {
-                dungeonCollection = UnityEngine.Object.Instantiate(GameManager.Instance.Dungeon.tileIndices.dungeonCollection);
+                dungeonCollection = UnityEngine.Object.Instantiate(dungeonCollection);
                 foreach (tk2dSpriteDefinition spriteInfo in dungeonCollection.spriteDefinitions) {
                     ExpandShaders.ApplyGlitchShader(spriteInfo, UnityEngine.Random.Range(0.038f, 0.042f), UnityEngine.Random.Range(0.073f, 0.067f), UnityEngine.Random.Range(0.052f, 0.048f), UnityEngine.Random.Range(0.073f, 0.67f), UnityEngine.Random.Range(0.052f, 0.048f));
                 }
             }
-            TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(exitBasePosition, dungeonData);
+            TileIndexGrid borderGridForCellPosition = GetBorderGridForCellPosition(exitBasePosition, dungeonData, secondaryDungeon);
             CellData cellData = dungeonData[exitBasePosition];
             switch (exitDirection) {
                 case DungeonData.Direction.NORTH: {
@@ -3866,7 +4129,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_CachedRigidBody.RecheckTriggers = RecheckTriggers;
             m_CachedRigidBody.UpdateCollidersOnRotation = false;
             m_CachedRigidBody.UpdateCollidersOnScale = false;
-
+            
             IntVector2 Offset = IntVector2.Zero;
             IntVector2 Dimensions = IntVector2.Zero;
             if (colliderGenerationMode != PixelCollider.PixelColliderGeneration.Tk2dPolygon) {
@@ -3968,11 +4231,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return !cells.Contains(new IntVector2(x, y)) && ((data.cellData[x][y].type == CellType.WALL || data.cellData[x][y].isSecretRoomCell) && data.cellData[x][y - 2].type != CellType.WALL && !data.cellData[x][y - 2].isSecretRoomCell);
         }
 
-        private static TileIndexGrid GetBorderGridForCellPosition(IntVector2 position, DungeonData data) {
-            TileIndexGrid roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[data.cellData[position.x][position.y].cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
-            if (roomCeilingBorderGrid == null) {
-                roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[0].roomCeilingBorderGrid;
+        private static TileIndexGrid GetBorderGridForCellPosition(IntVector2 position, DungeonData data, Dungeon dungeonOverride = null) {
+            TileIndexGrid roomCeilingBorderGrid;
+            if (dungeonOverride) {
+                roomCeilingBorderGrid = dungeonOverride.roomMaterialDefinitions[data.cellData[position.x][position.y].cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+            } else {
+                roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[data.cellData[position.x][position.y].cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
             }
+            if (!roomCeilingBorderGrid) { roomCeilingBorderGrid = GameManager.Instance.Dungeon.roomMaterialDefinitions[0].roomCeilingBorderGrid; }
             return roomCeilingBorderGrid;
         }
 
@@ -4180,42 +4446,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             RenderTexture.active = old_rt;
             return tex;
         }
-
-        public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/", string fileExtension = ".txt") {
-            string m_ResultAsset = string.Empty;
-            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
-            if (!string.IsNullOrEmpty(m_ResultAsset)) {
-                return m_ResultAsset;
-            } else {
-                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
-                return string.Empty;
-            }
-        }
-
-        public static string[] GetLinesFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/", string fileExtension = ".txt") {
-            string m_ResultAsset = string.Empty;
-            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
-            if (!string.IsNullOrEmpty(m_ResultAsset)) {
-                return m_ResultAsset.Split(new char[] { '\n' });
-            } else {
-                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
-                return new string[0];
-            }
-        }
-
-        public static TileIndexGrid DeserializeTileIndexGridFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/TilesetData/", string fileExtension = ".txt") {
-            string serializedData = string.Empty;
-            try { serializedData = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
-            if (!string.IsNullOrEmpty(serializedData)) {
-                TileIndexGrid m_TileIndexGridData = ScriptableObject.CreateInstance<TileIndexGrid>();
-                JsonUtility.FromJsonOverwrite(serializedData, m_TileIndexGridData);
-                return m_TileIndexGridData;
-            } else {
-                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
-                return null;
-            }
-        }
-
+        
         public static Texture2D BytesToTexture(byte[] bytes, string resourceName) {
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             ImageConversion.LoadImage(texture2D, bytes);

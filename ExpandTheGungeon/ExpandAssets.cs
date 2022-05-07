@@ -168,6 +168,56 @@ namespace ExpandTheGungeon {
         public static void SaveStringToFile(string text, string filePath, string fileName) {
             using (StreamWriter streamWriter = new StreamWriter(Path.Combine(filePath, fileName), true)) { streamWriter.WriteLine(text); }
         }
+
+        public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/", string fileExtension = ".txt") {
+            string m_ResultAsset = string.Empty;
+            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(m_ResultAsset)) {
+                return m_ResultAsset;
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return string.Empty;
+            }
+        }
+
+        public static string[] GetLinesFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/", string fileExtension = ".txt") {
+            string m_ResultAsset = string.Empty;
+            try { m_ResultAsset = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(m_ResultAsset)) {
+                return m_ResultAsset.Split(new char[] { '\n' });
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return new string[0];
+            }
+        }
+
+        public static TileIndexGrid DeserializeTileIndexGridFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/TilesetData/", string fileExtension = ".txt") {
+            string serializedData = string.Empty;
+            try { serializedData = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(serializedData)) {
+                TileIndexGrid m_TileIndexGridData = ScriptableObject.CreateInstance<TileIndexGrid>();
+                JsonUtility.FromJsonOverwrite(serializedData, m_TileIndexGridData);
+                return m_TileIndexGridData;
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return null;
+            }
+        }
+
+        public static FacewallIndexGridDefinition DeserializeFacewallGridDefinitionFromAssetBundle(AssetBundle bundle, string AssetPath, string basePath = "Assets/ExpandSerializedData/TilesetData/", string fileExtension = ".txt") {
+            string serializedData = string.Empty;
+            try { serializedData = bundle.LoadAsset<TextAsset>((basePath + AssetPath + fileExtension)).text; } catch (Exception) { }
+            if (!string.IsNullOrEmpty(serializedData)) {
+                FacewallIndexGridDefinition m_FaceWallIndexGridDefinition = new FacewallIndexGridDefinition();
+                JsonUtility.FromJsonOverwrite(serializedData, m_FaceWallIndexGridDefinition);
+                return m_FaceWallIndexGridDefinition;
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Error! Requested Text asset: " + AssetPath + " returned null! Ensure asset exists in asset bundle!", true);
+                return null;
+            }
+        }
+
+
 	}
 }
 

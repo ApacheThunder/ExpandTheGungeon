@@ -43,17 +43,21 @@ namespace ExpandTheGungeon.ItemAPI {
                 "endtimes_chamber",
                 "lichroom03"
             };
+            m_pickedUp = false;
         }
 
         private List<string> m_BannedRooms;
 
         private RoomHandler m_CurrentRoom;
 
+        private bool m_PickedUp;
+
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
             ExpandPlaceWallMimic.PlayerHasThirdEye = true;
             Pixelator.Instance.DoOcclusionLayer = false;
-            player.OnRoomClearEvent += OnRoomCleared;            
+            player.OnRoomClearEvent += OnRoomCleared;
+            m_PickedUp = true;
         }
         
         private void OnRoomCleared(PlayerController player) {
@@ -75,11 +79,12 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void Update() {
+            if (m_PickedUp) { foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) { room.SetRoomActive(true); } }
             if (Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) {
                 if (m_owner && m_owner.CurrentRoom != null && !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) &&
                    !m_BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
                    )
-                {
+                {   
                     Pixelator.Instance.DoOcclusionLayer = false;
                 }
             } else if (Pixelator.Instance && !Pixelator.Instance.DoOcclusionLayer) {
@@ -97,6 +102,11 @@ namespace ExpandTheGungeon.ItemAPI {
             DebrisObject drop = base.Drop(player);
             ExpandPlaceWallMimic.PlayerHasThirdEye = false;
             Pixelator.Instance.DoOcclusionLayer = true;
+            m_PickedUp = false;
+            foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
+                if (player.CurrentRoom != null && player.CurrentRoom != room && !player.CurrentRoom.connectedRooms.Contains(room))
+                room.SetRoomActive(false);
+            }
             player.OnRoomClearEvent -= OnRoomCleared;
             return drop;
         }
@@ -105,6 +115,7 @@ namespace ExpandTheGungeon.ItemAPI {
         protected override void OnDestroy() {
             if (Pixelator.Instance) { Pixelator.Instance.DoOcclusionLayer = true; }
             ExpandPlaceWallMimic.PlayerHasThirdEye = false;
+            m_PickedUp = false;
             base.OnDestroy();
         }
     }    

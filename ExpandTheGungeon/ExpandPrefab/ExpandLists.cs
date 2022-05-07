@@ -1357,6 +1357,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "Jungle_ExitLadder_Destination",
             "Jungle_ExitLadder_Destination_Hole"
         };
+        public static readonly List<string> EXOffice_Collection = new List<string>() {
+            "office_one_way_blocker_vertical_top_001",
+            "office_one_way_blocker_vertical_bottom_001",
+            "office_one_way_blocker_horizontal_bottom_001",
+            "office_one_way_blocker_horizontal_top_001"
+        };
     }
 }
 

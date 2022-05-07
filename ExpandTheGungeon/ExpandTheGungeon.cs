@@ -135,7 +135,7 @@ namespace ExpandTheGungeon {
 
             ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
 
-            ExpandObjectDatabase.BuildDatabase();
+            // ExpandObjectDatabase.BuildDatabase();
 
 
             // Init Custom GameLevelDefinitions
@@ -471,7 +471,7 @@ namespace ExpandTheGungeon {
                 int Y = int.Parse(consoleText[2]);
                 string OverridePath = string.Empty;                
                 if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
-                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXJungle_Collection, X, Y, OverridePath);                
+                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXOffice_Collection, X, Y, OverridePath);                
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
@@ -516,44 +516,9 @@ namespace ExpandTheGungeon {
 
 
 
-            PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-
-            GameObject CurrentPlayerSpriteOBJ = CurrentPlayer.gameObject.transform.Find("PlayerSprite").gameObject;
-            CurrentPlayerSpriteOBJ.name = "PlaysSprite_BAK";
-
-
-            // GameObject Pilotship = ExpandAssets.LoadOfficialAsset<GameObject>("PlayerRogueShip", ExpandAssets.AssetSource.BraveResources);
-            GameObject Pilotship = (GameObject)BraveResources.Load("PlayerRogueShip", ".prefab");
-            GameObject CurrentPilotshipPlayerSpriteOBJ = UnityEngine.Object.Instantiate(Pilotship.transform.Find("PlayerRotatePoint").gameObject, CurrentPlayer.transform.position, Quaternion.identity);
-            // CurrentPilotshipPlayerSpriteOBJ.transform.localPosition = Pilotship.transform.Find("PlayerRotatePoint").localPosition;
-
-            CurrentPilotshipPlayerSpriteOBJ.transform.SetParent(CurrentPlayer.gameObject.transform);
+            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
             
-
-            PlayerSpaceshipController PilotShipController = Pilotship.GetComponent<PlayerSpaceshipController>();
-
-            // CurrentPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Stop();
-            // CurrentPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library = CurrentPilotshipPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library;
-
-            // CurrentPlayer.AlternateCostumeLibrary = CurrentPilotshipPlayerSpriteOBJ.GetComponent<tk2dSpriteAnimator>().Library;
-            
-            AIBulletBank sourceBulletBank = Pilotship.GetComponent<AIBulletBank>();
-            AIBulletBank targetBulletBank = CurrentPlayer.gameObject.AddComponent<AIBulletBank>();
-
-            ExpandUtility.DuplicateComponent(targetBulletBank, sourceBulletBank);
-
-            float LaserCooldown = 0.15f;
-            float MissleCooldown = 3;
-
-            // CurrentPlayer.enabled = false;
-
-            PlayerSpaceshipController NewShip = CurrentPlayer.gameObject.AddComponent<PlayerSpaceshipController>();
-            NewShip.stats = CurrentPlayer.stats;
-            NewShip.LaserShootPoints = new List<Transform>() { CurrentPilotshipPlayerSpriteOBJ.transform.Find("fire1"), CurrentPilotshipPlayerSpriteOBJ.transform.Find("fire2") };
-            NewShip.TimefallCorpseLibrary = PilotShipController.TimefallCorpseLibrary;
-            NewShip.LaserACooldown = LaserCooldown;
-            NewShip.MissileCooldown = MissleCooldown;
-
+            // GameManager.Instance.StartCoroutine(SecondDungeonOBJ.GetComponent<Dungeon>().Regenerate(false));
             /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
             
 

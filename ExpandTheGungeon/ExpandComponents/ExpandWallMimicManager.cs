@@ -12,6 +12,11 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandWallMimicManager : CustomEngageDoer, IPlaceConfigurable {
         
         public ExpandWallMimicManager() {
+            SpawnEnemyMode = false;
+            GlitchedEnemyMode = false;
+            CursedBrickMode = false;
+            SkipPlayerCheck = false;
+
             m_AssetBundle = ResourceManager.LoadAssetBundle("shared_auto_001");
             WallDisappearVFX = m_AssetBundle.LoadAsset<GameObject>("VFX_Dust_Explosion");
             if (SpawnEnemyList == null) {
@@ -53,9 +58,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }            
             m_AssetBundle = null;
             m_isHidden = true;
-            SpawnEnemyMode = false;
-            GlitchedEnemyMode = false;
-            CursedBrickMode = false;
             m_isFriendlyMimic = false;
             m_failedWallConfigure = false;
             m_isGlitched = false;
@@ -71,7 +73,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool CursedBrickMode;
         public bool SpawnEnemyMode;
         public bool GlitchedEnemyMode;
+        public bool SkipPlayerCheck;
 
+        public tk2dSpriteCollectionData DungeonCollectionOverride;
+        public Dungeon SourceDungeonForTileSetOverride;
 
         private AssetBundle m_AssetBundle;
         private GameObject WallDisappearVFX;
@@ -132,7 +137,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             aiAnimator.LockFacingDirection = true;
             aiAnimator.FacingDirection = DungeonData.GetAngleFromDirection(m_facingDirection);
             if (!m_failedWallConfigure) {
-                m_fakeWall = ExpandUtility.GenerateWallMesh(m_facingDirection, pos1, "Mimic Wall", null, true, m_isGlitched);
+                m_fakeWall = ExpandUtility.GenerateWallMesh(m_facingDirection, pos1, "Mimic Wall", null, true, m_isGlitched, DungeonCollectionOverride, SourceDungeonForTileSetOverride);
                 if (aiActor.ParentRoom != null) { m_fakeWall.transform.parent = aiActor.ParentRoom.hierarchyParent; }
                 m_fakeWall.transform.position = pos1.ToVector3().WithZ(pos1.y - 2) + Vector3.down;
                 if (m_facingDirection == DungeonData.Direction.SOUTH) {
@@ -140,7 +145,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 } else if (m_facingDirection == DungeonData.Direction.WEST) {
                     m_fakeWall.transform.position = m_fakeWall.transform.position + new Vector3(-0.1875f, 0f);
                 }
-                m_fakeCeiling = ExpandUtility.GenerateRoomCeilingMesh(GetCeilingTileSet(pos1, pos2, m_facingDirection), "Mimic Ceiling", null, true, m_isGlitched);
+                m_fakeCeiling = ExpandUtility.GenerateRoomCeilingMesh(GetCeilingTileSet(pos1, pos2, m_facingDirection), "Mimic Ceiling", null, true, m_isGlitched, DungeonCollectionOverride, SourceDungeonForTileSetOverride);
                 if (aiActor.ParentRoom != null) { m_fakeCeiling.transform.parent = aiActor.ParentRoom.hierarchyParent; }
                 m_fakeCeiling.transform.position = pos1.ToVector3().WithZ(pos1.y - 4);
                 if (m_facingDirection == DungeonData.Direction.NORTH) {
@@ -173,10 +178,12 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void Update() {
             bool PlayerInRoom = false;
-            foreach (PlayerController playerController in GameManager.Instance.AllPlayers) {
-                if (playerController.CurrentRoom == aiActor.ParentRoom) { PlayerInRoom = true; }
+            if (!SkipPlayerCheck) {
+                foreach (PlayerController playerController in GameManager.Instance.AllPlayers) {
+                    if (playerController.CurrentRoom == aiActor.ParentRoom) { PlayerInRoom = true; }
+                }
             }
-            if (PlayerInRoom && CanAwaken) {
+            if ((SkipPlayerCheck | PlayerInRoom) && CanAwaken) {
                 Vector2 vector = specRigidbody.PixelColliders[0].UnitBottomLeft;
                 Vector2 vector2 = vector;
                 if (!m_failedWallConfigure) { vector = specRigidbody.PixelColliders[2].UnitBottomLeft; }

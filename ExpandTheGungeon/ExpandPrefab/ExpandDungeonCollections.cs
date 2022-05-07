@@ -25,9 +25,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_UnlitCutout.SetFloat("_Cutoff", 0.5f);
             m_UnlitCutout.SetFloat("_Perpendicular", 1);
             
-            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Belly/ENV_Tileset_Belly"), m_NewDungeonCollection);
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Belly/ENV_Tileset_Belly"), m_NewDungeonCollection);
 
-            string[] m_BellyMaterialTable = ExpandUtility.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Belly/ENV_Tileset_Belly_MaterialTable");
+            string[] m_BellyMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Belly/ENV_Tileset_Belly_MaterialTable");
             
 
             for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
@@ -55,7 +55,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
 
-            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/West/ENV_Tileset_West"), m_NewDungeonCollection);
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/West/ENV_Tileset_West"), m_NewDungeonCollection);
                         
             Material m_LitCutout = new Material(sharedAssets.LoadAsset<Material>("lit cutout"));
             m_LitCutout.mainTexture = tileSetTexture;
@@ -66,7 +66,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Material m_UnlitTransparent = new Material(sharedAssets.LoadAsset<Material>("unlit transparent"));
             m_UnlitTransparent.mainTexture = tileSetTexture;
 
-            string[] m_WestMaterialTable = ExpandUtility.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/West/ENV_Tileset_West_MaterialTable");
+            string[] m_WestMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/West/ENV_Tileset_West_MaterialTable");
 
             for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
                 if (m_WestMaterialTable[i].Contains("lit cutout")) {
@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static tk2dSpriteCollectionData ENV_Tileset_Phobos(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
 
             tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
-            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Phobos/ENV_Tileset_Phobos"), m_NewDungeonCollection);
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Phobos/ENV_Tileset_Phobos"), m_NewDungeonCollection);
 
             Material m_LitCutout = new Material(sharedAssets.LoadAsset<Material>("lit cutout"));
             m_LitCutout.mainTexture = tileSetTexture;
@@ -101,10 +101,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Material m_LitBlend = new Material(sharedAssets.LoadAsset<Material>("lit blend"));
             m_LitBlend.mainTexture = tileSetTexture;
 
-            Material m_Unlit = new Material(Shader.Find("Brave/Unity Transparent Cutout"));
+            // Material m_Unlit = new Material(Shader.Find("Brave/Unity Transparent Cutout"));
+            Material m_Unlit = new Material(sharedAssets.LoadAsset<Material>("unli"));
             m_Unlit.mainTexture = tileSetTexture;
             
-            string[] m_WestMaterialTable = ExpandUtility.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Phobos/ENV_Tileset_Phobos_MaterialTable");
+            string[] m_WestMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Phobos/ENV_Tileset_Phobos_MaterialTable");
 
             for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
                 if (m_WestMaterialTable[i].Contains("lit cutout")) {
@@ -127,6 +128,43 @@ namespace ExpandTheGungeon.ExpandPrefab {
             return m_NewDungeonCollection;
         }
 
+        public static tk2dSpriteCollectionData ENV_Tileset_Office(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
+
+            tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Nakatomi/ENV_Tileset_Nakatomi"), m_NewDungeonCollection);
+
+            Material m_LitCutout = new Material(sharedAssets.LoadAsset<Material>("lit cutout"));
+            m_LitCutout.mainTexture = tileSetTexture;
+
+            Material m_LitBlend = new Material(sharedAssets.LoadAsset<Material>("lit blend"));
+            m_LitBlend.mainTexture = tileSetTexture;
+
+            // Material m_Unlit = new Material(Shader.Find("Brave/Unity Transparent Cutout"));
+            Material m_Unlit = new Material(sharedAssets.LoadAsset<Material>("unli"));
+            m_Unlit.mainTexture = tileSetTexture;
+            
+            string[] m_WestMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi_MaterialTable");
+
+            for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
+                if (m_WestMaterialTable[i].Contains("lit cutout")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
+                } else if (m_WestMaterialTable[i].Contains("lit blend")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitBlend;
+                } else if (m_WestMaterialTable[i].Contains("unlit")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_Unlit;
+                } else {
+                    Debug.Log("[ExpandTheGungeon] ERROR: sprite id " + i + " did not have a matching material name in lookup table!");
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
+                }
+            }
+
+            m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_Unlit};
+            m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
+            
+            sharedAssets = null;
+
+            return m_NewDungeonCollection;
+        }
 	}
 }
 

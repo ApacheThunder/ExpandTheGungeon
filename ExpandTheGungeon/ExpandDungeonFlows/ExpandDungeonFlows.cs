@@ -121,6 +121,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static SharedInjectionData JungleInjectionData;
         public static SharedInjectionData BellyInjectionData;
         public static SharedInjectionData PhobosInjectionData;
+        public static SharedInjectionData OfficeInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
@@ -513,6 +514,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(f4c_west_flow_01.F4c_West_Flow_01());
             KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[0])));
             KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[1])));
+            KnownFlows.Add(f0b_office_flows.F0b_Office_Flow_01(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[0])));
 
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow

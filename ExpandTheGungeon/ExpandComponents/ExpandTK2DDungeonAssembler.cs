@@ -9,6 +9,47 @@ namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandTK2DDungeonAssembler {
         
+        public static void RuntimeResizeTileMap(tk2dTileMap tileMap, int w, int h, int partitionSizeX, int partitionSizeY) {
+            foreach (Layer layer in tileMap.Layers) {
+                layer.DestroyGameData(tileMap);
+                if (layer.gameObject != null) {
+                    tk2dUtil.DestroyImmediate(layer.gameObject);
+                    layer.gameObject = null;
+                }
+            }
+            Layer[] array = new Layer[tileMap.Layers.Length];
+            for (int j = 0; j < tileMap.Layers.Length; j++) {
+                Layer layer2 = tileMap.Layers[j];
+                array[j] = new Layer(layer2.hash, w, h, partitionSizeX, partitionSizeY);
+                Layer layer3 = array[j];
+                if (!layer2.IsEmpty) {
+                    int num = Mathf.Min(tileMap.height, h);
+                    int num2 = Mathf.Min(tileMap.width, w);
+                    for (int k = 0; k < num; k++) {
+                        for (int l = 0; l < num2; l++) { layer3.SetRawTile(l, k, layer2.GetRawTile(l, k)); }
+                    }
+                    layer3.Optimize();
+                }
+            }
+            bool flag = tileMap.ColorChannel != null && !tileMap.ColorChannel.IsEmpty;
+            ColorChannel colorChannel = new ColorChannel(w, h, partitionSizeX, partitionSizeY);
+            if (flag) {
+                int num3 = Mathf.Min(tileMap.height, h) + 1;
+                int num4 = Mathf.Min(tileMap.width, w) + 1;
+                for (int m = 0; m < num3; m++) {
+                    for (int n = 0; n < num4; n++) { colorChannel.SetColor(n, m, tileMap.ColorChannel.GetColor(n, m)); }
+                }
+                colorChannel.Optimize();
+            }
+            tileMap.ColorChannel = colorChannel;
+            tileMap.Layers = array;
+            tileMap.width = w;
+            tileMap.height = h;
+            tileMap.partitionSizeX = partitionSizeX;
+            tileMap.partitionSizeY = partitionSizeY;
+            tileMap.ForceBuild();
+        }
+        
         // Modified for future use but not currently required for Runtime room generation as nothing else in this class uses this as is.
         public static GameObject ApplyObjectStamp(int ix, int iy, ObjectStampData osd, Dungeon d, tk2dTileMap map, bool flipX = false, bool isLightStamp = false) {
             try {
@@ -37,6 +78,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 int num = (occupySpace != DungeonTileStampData.StampSpace.OBJECT_SPACE) ? GlobalDungeonData.wallStampLayerIndex : GlobalDungeonData.objectStampLayerIndex;
                 float z = map.data.Layers[num].z;
+                if (!osd.objectReference) { return null; }
                 Vector3 vector = osd.objectReference.transform.position;
                 ObjectStampOptions component = osd.objectReference.GetComponent<ObjectStampOptions>();
                 if (component != null) { vector = component.GetPositionOffset(); }
@@ -184,9 +226,9 @@ namespace ExpandTheGungeon.ExpandComponents {
 
 
         public TileIndices m_tileIndices;
-        
+
         public Dictionary<TilesetIndexMetadata.TilesetFlagType, List<Tuple<int, TilesetIndexMetadata>>> m_metadataLookupTable;
-                
+        
         public bool BCheck(Dungeon d, int ix, int iy, int thresh) { return d.data.CheckInBounds(new IntVector2(ix, iy), 3 + thresh); }
 
         public bool BCheck(Dungeon d, int ix, int iy) { return BCheck(d, ix, iy, 0); }
@@ -199,11 +241,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return true;
                 }
             }
-            /*for (int i = 0; i < list.Count; i++) {
-                if (list[i].Second.dungeonRoomSubType == roomType || list[i].Second.secondRoomSubType == roomType || list[i].Second.thirdRoomSubType == roomType) {
-                    return true;
-                }
-            }*/
             return false;
         }
         
@@ -213,13 +250,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             foreach (TilesetIndexMetadata.TilesetFlagType flagType in array) {
                 m_metadataLookupTable.Add(flagType, indices.dungeonCollection.GetIndicesForTileType(flagType));
             }
-            /*for (int i = 0; i < array.Length; i++) {
-                m_metadataLookupTable.Add(array[i], indices.dungeonCollection.GetIndicesForTileType(array[i]));
-            }*/
             SecretRoomUtility.metadataLookupTableRef = m_metadataLookupTable;
             m_tileIndices = indices;
         }
-        
+
+
         public void BuildTileIndicesForCell(Dungeon d, Dungeon d2, tk2dTileMap map, int ix, int iy) {
             CellData cellData = d.data.cellData[ix][iy];
             if (cellData == null) { return; }
@@ -232,7 +267,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             bool flag = BCheck(d, ix, iy, 3) && d.data[ix, iy - 2] != null && d.data[ix, iy - 2].isExitCell;
             if (cellData.nearestRoom != null && cellData.nearestRoom.PrecludeTilemapDrawing && (!cellData.nearestRoom.DrawPrecludedCeilingTiles || (!cellData.isExitCell && !flag))) {
                 if (cellData.nearestRoom.DrawPrecludedCeilingTiles) {
-                    BuildCollisionIndex(cellData, d, d, map, ix, iy);
+                    BuildCollisionIndex(cellData, d, d2, map, ix, iy);
                     BuildBorderIndicesForCell(cellData, d, d2, map, ix, iy);
                 }
                 cellData.cellVisualData.precludeAllTileDrawing = true;
@@ -240,7 +275,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             if (cellData.parentRoom != null && cellData.parentRoom.PrecludeTilemapDrawing && (!cellData.nearestRoom.DrawPrecludedCeilingTiles || (!cellData.isExitCell && !flag))) {
                 if (cellData.parentRoom.DrawPrecludedCeilingTiles) {
-                    BuildCollisionIndex(cellData, d, d, map, ix, iy);
+                    BuildCollisionIndex(cellData, d, d2, map, ix, iy);
                     BuildBorderIndicesForCell(cellData, d, d2, map, ix, iy);
                 }
                 cellData.cellVisualData.precludeAllTileDrawing = true;
@@ -256,7 +291,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             BuildDecoIndices(cellData, d, d2, map, ix, iy);
             if (flag2) { BuildFloorEdgeBorderTiles(cellData, d, d2, map, ix, iy); }
             BuildFeatureEdgeBorderTiles(cellData, d, d2, map, ix, iy);
-            BuildCollisionIndex(cellData, d, d, map, ix, iy);
+            BuildCollisionIndex(cellData, d, d2, map, ix, iy);
             if (BCheck(d, ix, iy, -2)) { ProcessFacewallIndices(cellData, d, d2, map, ix, iy); }
             BuildBorderIndicesForCell(cellData, d, d2, map, ix, iy);
 
@@ -319,10 +354,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             if (cellData.distanceFromNearestRoom < 4f && cellData.nearestRoom.area.PrototypeLostWoodsRoom) {
                 HandleLostWoodsMirroring(cellData, d, map, ix, iy);
-            }
+            }            
+
             cellData.hasBeenGenerated = true;
         }
-
+                
         private void BuildBorderIndicesForCell(CellData current, Dungeon d, Dungeon d2, tk2dTileMap map, int ix, int iy) {
             if (m_tileIndices.placeBorders) {
                 if (current.nearestRoom != null && current.nearestRoom.area.prototypeRoom != null && current.nearestRoom.area.prototypeRoom.preventBorders) {
@@ -579,17 +615,17 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
-        private void BuildCollisionIndex(CellData current, Dungeon d, Dungeon d2, tk2dTileMap map, int ix, int iy) {
+        public void BuildCollisionIndex(CellData current, Dungeon d, Dungeon d2, tk2dTileMap map, int ix, int iy) {
             if (current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy)) {
-                TileIndexGrid roomCeilingBorderGrid = d2.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
-                if ((d2.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON || d2.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON) && current.nearestRoom != null) {
-                    roomCeilingBorderGrid = d2.roomMaterialDefinitions[current.nearestRoom.RoomVisualSubtype].roomCeilingBorderGrid;
+                TileIndexGrid roomCeilingBorderGrid = d.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].roomCeilingBorderGrid;
+                if ((d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON || d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.OFFICEGEON) && current.nearestRoom != null) {
+                    roomCeilingBorderGrid = d.roomMaterialDefinitions[current.nearestRoom.RoomVisualSubtype].roomCeilingBorderGrid;
                 }
-                if (roomCeilingBorderGrid == null) { roomCeilingBorderGrid = d2.roomMaterialDefinitions[0].roomCeilingBorderGrid; }
+                if (roomCeilingBorderGrid == null) { roomCeilingBorderGrid = d.roomMaterialDefinitions[0].roomCeilingBorderGrid; }
                 map.Layers[GlobalDungeonData.collisionLayerIndex].SetTile(current.positionInTilemap.x, current.positionInTilemap.y, roomCeilingBorderGrid.centerIndices.indices[0]);
             }
         }
-
+        
         private void BuildPitShadowIndex(CellData current, Dungeon d, Dungeon d2, tk2dTileMap map, int ix, int iy) {
             if (!d2.roomMaterialDefinitions[current.cellVisualData.roomVisualTypeIndex].doPitAO) { return; }
             if (current != null && current.cellVisualData.hasStampedPath) { return; }
@@ -1253,11 +1289,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             foreach (RoomInternalMaterialTransition materialTransition in d.roomMaterialDefinitions[roomType].internalMaterialTransitions) {
                 if (materialTransition.materialTransition == cellType) { return materialTransition; }
             }
-            /*for (int i = 0; i < d.roomMaterialDefinitions[roomType].internalMaterialTransitions.Length; i++) {
-                if (d.roomMaterialDefinitions[roomType].internalMaterialTransitions[i].materialTransition == cellType) {
-                    return d.roomMaterialDefinitions[roomType].internalMaterialTransitions[i];
-                }
-            }*/
             return null;
         }
         
@@ -1336,16 +1367,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             float uniqueHash = current.UniqueHash;
             float num = 0f;
             foreach (TileIndexVariant variant in list) { num += variant.likelihood; }
-            // for (int i = 0; i < list.Count; i++) { num += list[i].likelihood; }
             float num2 = uniqueHash * num;
             foreach (TileIndexVariant variant in list) {
                 num2 -= variant.likelihood;
                 if (num2 <= 0f) { return variant; }
             }
-            /*for (int j = 0; j < list.Count; j++) {
-                num2 -= list[j].likelihood;
-                if (num2 <= 0f) { return list[j]; }
-            }*/
             return list[0];
         }
 
@@ -1357,11 +1383,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     num += MetadataTuple.Second.weight;
                 }
             }
-            /*for (int i = 0; i < list.Count; i++) {
-                if (list[i].Second.dungeonRoomSubType == roomTypeIndex || list[i].Second.secondRoomSubType == roomTypeIndex || list[i].Second.thirdRoomSubType == roomTypeIndex) {
-                    num += list[i].Second.weight;
-                }
-            }*/
             float num2 = uniqueHash * num;
             foreach (Tuple<int, TilesetIndexMetadata> MetadataTuple in list) {
                 if (MetadataTuple.Second.dungeonRoomSubType == roomTypeIndex || MetadataTuple.Second.secondRoomSubType == roomTypeIndex || MetadataTuple.Second.thirdRoomSubType == roomTypeIndex) {
@@ -1369,12 +1390,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (num2 <= 0f) { return MetadataTuple.First; }
                 }
             }
-            /*for (int j = 0; j < list.Count; j++) {
-                if (list[j].Second.dungeonRoomSubType == roomTypeIndex || list[j].Second.secondRoomSubType == roomTypeIndex || list[j].Second.thirdRoomSubType == roomTypeIndex) {
-                    num2 -= list[j].Second.weight;
-                    if (num2 <= 0f) { return list[j].First; }
-                }
-            }*/
             return list[0].First;
         }
 
@@ -1389,12 +1404,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     num += MetadataTuple.Second.weight;
                 }
             }
-            /*for (int i = 0; i < list.Count; i++) {
-                Tuple<int, TilesetIndexMetadata> tuple = list[i];
-                if (tuple.Second.dungeonRoomSubType == -1 || tuple.Second.dungeonRoomSubType == roomTypeIndex || tuple.Second.secondRoomSubType == roomTypeIndex || tuple.Second.thirdRoomSubType == roomTypeIndex) {
-                    num += tuple.Second.weight;
-                }
-            }*/
             float num2 = UnityEngine.Random.value * num;
             foreach (Tuple<int, TilesetIndexMetadata> MetadataTuple in list) {
                 if (MetadataTuple.Second.dungeonRoomSubType == -1 || MetadataTuple.Second.dungeonRoomSubType == roomTypeIndex || MetadataTuple.Second.secondRoomSubType == roomTypeIndex || MetadataTuple.Second.thirdRoomSubType == roomTypeIndex) {
@@ -1405,16 +1414,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
             }
-            /*for (int j = 0; j < list.Count; j++) {
-                Tuple<int, TilesetIndexMetadata> tuple2 = list[j];
-                if (tuple2.Second.dungeonRoomSubType == -1 || tuple2.Second.dungeonRoomSubType == roomTypeIndex || tuple2.Second.secondRoomSubType == roomTypeIndex || tuple2.Second.thirdRoomSubType == roomTypeIndex) {
-                    num2 -= tuple2.Second.weight;
-                    if (num2 <= 0f) {
-                        index = tuple2.First;
-                        return tuple2.Second;
-                    }
-                }
-            }*/
             index = list[0].First;
             return list[0].Second;
         }
@@ -1479,36 +1478,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
             }
-            /*for (int i = 0; i < d.data.rooms.Count; i++) {
-                RoomHandler roomHandler = d.data.rooms[i];
-                if (roomHandler != nearestRoom && roomHandler.area.PrototypeLostWoodsRoom) {
-                    CellData cellData = d.data[a + roomHandler.area.basePosition];
-                    if (cellData != null && current != null) {
-                        if (cellData.isExitCell == current.isExitCell) {
-                            if (cellData.IsAnyFaceWall() == current.IsAnyFaceWall()) {
-                                if (cellData.IsTopWall() == current.IsTopWall()) {
-                                    if (cellData.type == current.type) {
-                                        if (CheckLostWoodsCellValidity(d, current.position + new IntVector2(0, 1), cellData.position + new IntVector2(0, 1))) {
-                                            if (CheckLostWoodsCellValidity(d, current.position + new IntVector2(0, -1), cellData.position + new IntVector2(0, -1))) {
-                                                if (CheckLostWoodsCellValidity(d, current.position + new IntVector2(1, 0), cellData.position + new IntVector2(1, 0))) {
-                                                    if (CheckLostWoodsCellValidity(d, current.position + new IntVector2(-1, 0), cellData.position + new IntVector2(-1, 0))) {
-                                                        if (!cellData.cellVisualData.hasAlreadyBeenTilemapped) {
-                                                            cellData.cellVisualData.hasAlreadyBeenTilemapped = true;
-                                                            for (int j = 0; j < map.Layers.Length; j++) {
-                                                                map.Layers[j].SetTile(cellData.positionInTilemap.x, cellData.positionInTilemap.y, map.Layers[j].GetTile(current.positionInTilemap.x, current.positionInTilemap.y));
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }*/
         }
         
         private void AssignSpecificColorsToTile(int ix, int iy, int layer, Color32 bottomLeft, Color32 bottomRight, Color32 topLeft, Color32 topRight, tk2dTileMap map) {
@@ -1542,9 +1511,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             foreach (TileIndexGrid indexGrid in indexGrids) {
                 if (indexGrid.roomTypeRestriction == -1 || indexGrid.roomTypeRestriction == roomType) { return true; }
             }
-            /*for (int i = 0; i < indexGrids.Count; i++) {
-                if (indexGrids[i].roomTypeRestriction == -1 || indexGrids[i].roomTypeRestriction == roomType) { return true; }
-            }*/
             return false;
         }
         
@@ -1642,31 +1608,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 cellData3.cellVisualData.containsWallSpaceStamp = (cellData3.cellVisualData.containsWallSpaceStamp || preventWallStamping);
                 cellData2.cellVisualData.faceWallOverrideIndex = dependency.neighborIndex;
             }
-            /*for (int i = 0; i < neighborDependencies.Count; i++) {
-                CellData cellData2 = d.data[new IntVector2(ix, iy) + DungeonData.GetIntVector2FromDirection(neighborDependencies[i].neighborDirection)];
-                if (cellData2.cellVisualData.faceWallOverrideIndex != -1 || !cellData2.IsAnyFaceWall()) {
-                    flag2 = false;
-                    break;
-                }
-                if (cellData2.cellVisualData.roomVisualTypeIndex != d.data.cellData[ix][iy].cellVisualData.roomVisualTypeIndex) {
-                    flag2 = false;
-                    break;
-                }
-                if (cellData2.position.y == iy && d.data.isFaceWallLower(cellData2.position.x, cellData2.position.y) != flag) {
-                    flag2 = false;
-                    break;
-                }
-                list.Add(cellData2);
-                CellData cellData3 = cellData2;
-                cellData3.cellVisualData.containsWallSpaceStamp = (cellData3.cellVisualData.containsWallSpaceStamp || preventWallStamping);
-                cellData2.cellVisualData.faceWallOverrideIndex = neighborDependencies[i].neighborIndex;
-            }*/
             if (!flag2) {
                 foreach (CellData celldata in list) { celldata.cellVisualData.faceWallOverrideIndex = -1; }
-                /*for (int j = 0; j < list.Count; j++) {
-                    CellData cellData4 = list[j];
-                    cellData4.cellVisualData.faceWallOverrideIndex = -1;
-                }*/
             }
             return flag2;
         }

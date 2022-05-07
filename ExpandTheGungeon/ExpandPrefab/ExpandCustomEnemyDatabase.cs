@@ -3546,7 +3546,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             StoneCubeCollection_West = expandSharedAssets1.LoadAsset<GameObject>("StoneCubeCollection_West");
             tk2dSpriteCollectionData StoneCubeCollection_WestCollection = StoneCubeCollection_West.AddComponent<tk2dSpriteCollectionData>();
 
-            JsonUtility.FromJsonOverwrite(ExpandUtility.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "SpriteCOllections/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "SpriteCOllections/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
 
             Material m_NewMaterial = new Material(GetOfficialEnemyByGuid("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection.materials[0]);
             m_NewMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
