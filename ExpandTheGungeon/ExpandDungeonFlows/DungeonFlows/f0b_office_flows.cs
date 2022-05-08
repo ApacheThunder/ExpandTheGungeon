@@ -30,7 +30,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.flowInjectionData = new List<ProceduralFlowModifierData>(0);
             m_CachedFlow.sharedInjectionData = new List<SharedInjectionData>() { ExpandDungeonFlow.BaseSharedInjectionData, ExpandDungeonFlow.PhobosInjectionData };
 
-            m_CachedFlow.FirstNode.overrideExactRoom = ExpandPrefabs.big_entrance;
+            m_CachedFlow.FirstNode.overrideExactRoom = ExpandPrefabs.elevator_entrance;
             m_CachedFlow.AllNodes[2].overrideExactRoom = ExpandPrefabs.oldbulletking_room_01;
 
             return m_CachedFlow;

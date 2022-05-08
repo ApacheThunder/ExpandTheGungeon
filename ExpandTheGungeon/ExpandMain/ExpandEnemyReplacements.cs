@@ -49,7 +49,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 GlobalDungeonData.ValidTilesets.HELLGEON,
                 GlobalDungeonData.ValidTilesets.SPACEGEON
             };
-            List<AGDEnemyReplacementTier> CultistReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, hardEnemyTargetGUIDs, hotShotCultist, 0.35f);
+            List<AGDEnemyReplacementTier> CultistReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, gunCultestGUIDs, hotShotCultist, 0.35f);
             List<AGDEnemyReplacementTier> ShotgunReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, bulletKinTargetGUIDs, hotShotBulletKins, 0.1f);
             List<AGDEnemyReplacementTier> BulletKinReplacements = GenerateEnemyReplacementTiers(nameAppend, new DungeonPrerequisite[0], ValidTilesets, shotgunKin2TargetGUIDs, hotShotShotGuns, 0.15f);
             foreach (AGDEnemyReplacementTier tier in ShotgunReplacements) { agdEnemyReplacementTiers.Add(tier); }
@@ -277,6 +277,8 @@ namespace ExpandTheGungeon.ExpandMain {
             "6e972cd3b11e4b429b888b488e308551", // gunzookie
             "8a9e9bedac014a829a48735da6daf3da" // gunzockie
         };
+
+        public static readonly List<string> gunCultestGUIDs = new List<string>() { "57255ed50ee24794b7aac1ac3cfb8a95" }; // Gun Cultist
 
         public static readonly List<string> bigEnemySewersTargetGUIDs = new List<string>() {
             "cd4a4b7f612a4ba9a720b9f97c52f38c", // lead_maiden

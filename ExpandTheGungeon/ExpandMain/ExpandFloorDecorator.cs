@@ -2,7 +2,7 @@
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandPrefab;
-using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 
@@ -32,31 +32,65 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (dungeon.gameObject.name.ToLower().StartsWith("base_office")) {
                 FlippableCover[] AllTables = Object.FindObjectsOfType<FlippableCover>();
-
+                
                 if (AllTables != null && AllTables.Length > 0) {
                     for (int i = 0; i < AllTables.Length; i++) {
                         Vector3 CachedTablePosition = AllTables[i].gameObject.transform.position;
+                        List<GameObject> m_surfaceObjects = new List<GameObject>();
+                        bool ReplaceThisTable = false;
+                        bool IsVerticalTable = false;
+                        bool TableHadDecoration = false;
+                        bool TableWasDecorated = false;
+                        float ChanceToDecorate = 1;
                         GameObject Table = null;
                         RoomHandler parentRoom = AllTables[i].transform.position.GetAbsoluteRoom();
-                        if (AllTables[i].gameObject.name.ToLower().Contains("table_horizontal")) {
+                        if (AllTables[i].gameObject.name.ToLower().Contains("table_vertical") | AllTables[i].gameObject.name.ToLower().Contains("coffin_vertical")) {
+                            ReplaceThisTable = true;
+                            IsVerticalTable = true;
+                        } else if (AllTables[i].gameObject.name.ToLower().Contains("table_horizontal") | AllTables[i].gameObject.name.ToLower().Contains("coffin_horizontal")) {
+                            ReplaceThisTable = true;
+                        }
+                        if (ReplaceThisTable) {
+                            SurfaceDecorator m_TableDecorator = AllTables[i].gameObject.GetComponent<SurfaceDecorator>();
+                            if (m_TableDecorator) {
+                                m_surfaceObjects = ReflectionHelpers.ReflectGetField<List<GameObject>>(typeof(SurfaceDecorator), "m_surfaceObjects", m_TableDecorator);
+                                if (m_surfaceObjects != null && m_surfaceObjects.Count > 0) {
+                                    TableWasDecorated = true;
+                                    for (int I = 0; I < m_surfaceObjects.Count; I++) { Object.Destroy(m_surfaceObjects[I]); }
+                                }
+                                ChanceToDecorate = m_TableDecorator.chanceToDecorate;
+                                TableHadDecoration = true;
+                            }
                             parentRoom.DeregisterInteractable(AllTables[i]);
                             Object.Destroy(AllTables[i].gameObject);
-                            Table = Object.Instantiate(ExpandObjectDatabase.TableHorizontalSteel, CachedTablePosition, Quaternion.identity);
-                        } else if (AllTables[i].gameObject.name.ToLower().Contains("table_vertical")) {
-                            parentRoom.DeregisterInteractable(AllTables[i]);
-                            Object.Destroy(AllTables[i].gameObject);
-                            Table = Object.Instantiate(ExpandObjectDatabase.TableVerticalSteel, CachedTablePosition, Quaternion.identity);
-                        }                        
-                        if (Table) {
-                            Table.transform.parent = parentRoom.hierarchyParent;
-                            Table.GetComponent<FlippableCover>().ConfigureOnPlacement(parentRoom);
-                            parentRoom.RegisterInteractable(Table.GetComponent<FlippableCover>());
+                            if (IsVerticalTable) {
+                                Table = Object.Instantiate(ExpandObjectDatabase.TableVerticalSteel, CachedTablePosition, Quaternion.identity);
+                            } else {
+                                Table = Object.Instantiate(ExpandObjectDatabase.TableHorizontalSteel, CachedTablePosition, Quaternion.identity);
+                            }
+                            if (Table) {
+                                FlippableCover NewTable = Table.GetComponent<FlippableCover>();
+                                Table.transform.parent = parentRoom.hierarchyParent;
+                                NewTable.ConfigureOnPlacement(parentRoom);
+                                if (TableHadDecoration) {
+                                    SurfaceDecorator newDecorator = Table.GetComponent<SurfaceDecorator>();
+                                    if (newDecorator) {
+                                        if (TableWasDecorated) {
+                                            newDecorator.chanceToDecorate = 1;
+                                        } else {
+                                            newDecorator.chanceToDecorate = ChanceToDecorate;
+                                        }
+                                        newDecorator.Decorate(parentRoom);
+                                    }
+                                }
+                                parentRoom.RegisterInteractable(NewTable);
+                            }
                         }
                     }
                 }
             }
 
-            foreach (RoomHandler currentRoom in DungeonRooms) {                 
+            foreach (RoomHandler currentRoom in DungeonRooms) {
                 try {
                     switch (dungeon.tileIndices.tilesetId) {
                         case GlobalDungeonData.ValidTilesets.WESTGEON:
@@ -313,6 +347,7 @@ namespace ExpandTheGungeon.ExpandMain {
             m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[9].objectReference);
             m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[10].objectReference);
             m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[11].objectReference);
+            m_ObjectList.Add(NakatomiPrefab.stampData.objectStamps[12].objectReference);
             m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Front);
             m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Left);
             m_ObjectList.Add(ExpandObjectDatabase.KitchenChair_Right);

@@ -1112,7 +1112,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandNewElevatorController m_EXJunglePlacableController = EXJungleElevator_Departure_Placable.AddComponent<ExpandNewElevatorController>();
             m_EXJunglePlacableController.ArriveOnSpawn = false;
             m_EXJunglePlacableController.UsesOverrideTargetFloor = true;
-            m_EXJunglePlacableController.OverrideFloorNames = new List<string> { "tt_jungle" };
+            m_EXJunglePlacableController.OverrideFloorName = "tt_jungle";
             m_EXJunglePlacableController.ImpactVFXObjects = new GameObject[] {
                 sharedAssets.LoadAsset<GameObject>("VFX_Dust_Explosion"),
                 sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),

@@ -1773,8 +1773,45 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.stampData.name = "ENV_WEST_STAMP_DATA";
             dungeon.stampData.tileStampWeight = 1;
             dungeon.stampData.spriteStampWeight = 0;
-            dungeon.stampData.objectStampWeight = 1;
-            dungeon.stampData.stamps = new TileStampData[0];
+            dungeon.stampData.objectStampWeight = 0.08f;
+            dungeon.stampData.stamps = new TileStampData[] {
+                new TileStampData() {
+                    width = 3,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.WALL_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.STRUCTURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 1 }
+                    },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    stampTileIndices = new List<int>() { 100, 129, 100, 100, 151, 100 }
+                },
+                new TileStampData() {
+                    width = 3,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.WALL_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.STRUCTURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() { roomSubType = 2, roomRelativeWeight = 1 }
+                    },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    stampTileIndices = new List<int>() { 100, 130, 100, 100, 152, 100 }
+                }
+            };
             dungeon.stampData.spriteStamps = new SpriteStampData[0];
             dungeon.stampData.objectStamps = m_GungeonObjectStampData;
             dungeon.stampData.SymmetricFrameChance = 0.1f;
@@ -2686,9 +2723,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_ObjectStamps[10].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS;
             m_ObjectStamps[11].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
             // m_ObjectStamps[12].roomTypeData[0].roomRelativeWeight = 0.01f; // Slippery Sign (floor)
-            m_ObjectStamps[12].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
-            m_ObjectStamps[12].roomTypeData[0].roomSubType = 1;
+            // m_ObjectStamps[12].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
+            // m_ObjectStamps[12].roomTypeData[0].roomSubType = 1;
 
+            m_ObjectStamps.Remove(m_ObjectStamps[12]);
             m_ObjectStamps.Remove(m_ObjectStamps[11]);
             m_ObjectStamps.Remove(m_ObjectStamps[10]);
             m_ObjectStamps.Remove(m_ObjectStamps[9]);

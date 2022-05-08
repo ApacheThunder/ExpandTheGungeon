@@ -3,11 +3,9 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
-    public class ExpandHideGunHandsOnDeath : OnDeathBehavior {
+    public class ExpandHideGunHandsOnDeath : BraveBehaviour {
 
         public ExpandHideGunHandsOnDeath() {
-            deathType = DeathType.PreDeath;
-            preDeathDelay = 0.001f;
             gunHands = new List<GunHandController>();
             m_hasTriggered = false;
         }
@@ -16,17 +14,28 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private bool m_hasTriggered;
 
-        public void ManuallyTrigger(Vector2 damageDirection) { OnTrigger(damageDirection); }
-
-        protected override void OnTrigger(Vector2 dirVec) {
+        public void Start() { healthHaver.OnPreDeath += OnPreDeath; }
+        
+        private void OnPreDeath(Vector2 dirVec) {
             if (m_hasTriggered) {
                 return;
             } else {
                 m_hasTriggered = true;
                 if (gunHands.Count <= 0) { return; }
                 foreach (GunHandController gunHand in gunHands) {
-                    if (gunHand.Gun) { gunHand.Gun.renderer.enabled = false; }
-                    if (gunHand.handObject) { gunHand.handObject.sprite.renderer.enabled = false; }
+                    if (gunHand.Gun) {                        
+                        gunHand.Gun.renderer.enabled = false;
+                        SpriteOutlineManager.ToggleOutlineRenderers(gunHand.Gun.sprite, false);
+                    }
+                    if (gunHand.handObject) {
+                        gunHand.handObject.sprite.renderer.enabled = false;
+                        SpriteOutlineManager.ToggleOutlineRenderers(gunHand.handObject.sprite, false);
+                        gunHand.handObject.gameObject.SetActive(false);
+                    }
+                    if (gunHand.sprite) {
+                        gunHand.sprite.renderer.enabled = false;
+                        SpriteOutlineManager.ToggleOutlineRenderers(gunHand.sprite, false);
+                    }
                 }
             }
         }
