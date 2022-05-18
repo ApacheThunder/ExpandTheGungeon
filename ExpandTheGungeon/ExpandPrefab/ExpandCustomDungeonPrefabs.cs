@@ -166,11 +166,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             new GameLevelDefinition() {
                                 dungeonSceneName = "tt_space",
                                 dungeonPrefabPath = "Base_Space",
-                                priceMultiplier = 2,
+                                priceMultiplier = 1.4f,
                                 secretDoorHealthMultiplier = 1,
-                                enemyHealthMultiplier = 2.1f,
+                                enemyHealthMultiplier = 1.7f,
                                 damageCap = 300,
-                                bossDpsCap = 78,
+                                bossDpsCap = 60,
                                 flowEntries = new List<DungeonFlowLevelEntry>(0),
                                 predefinedSeeds = new List<int>(0)
                             }
@@ -338,7 +338,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { complex_flow_test.Complex_Flow_Test() },
+                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F0b_Office_Flow_01") },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -2507,7 +2507,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false,
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                // flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F0b_Phobos_Flow_01"), FlowDatabase.GetOrLoadByName("F0b_Phobos_Flow_02") },
                 flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F0b_Office_Flow_01") },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),

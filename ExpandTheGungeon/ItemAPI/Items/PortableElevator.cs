@@ -48,6 +48,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         public PortableElevator() {
+            ValidDestinations = new List<string>() { "tt_office", "tt_phobos", "tt_space", };
+
             maxDistance = 10;
 
             m_WasUsed = false;
@@ -56,6 +58,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
 
+        public List<string> ValidDestinations;
         public float maxDistance;
 
         public GameObject reticleQuad;        
@@ -180,8 +183,17 @@ namespace ExpandTheGungeon.ItemAPI {
         private void DoElevatorDrop(Vector2 currentTarget, RoomHandler targetRoom) {
             GameObject m_ElevatorOBJ = Instantiate(ExpandPrefabs.EXPortableElevator_Departure, currentTarget, Quaternion.identity);
             ExpandNewElevatorController m_ElevatorController = m_ElevatorOBJ.GetComponent<ExpandNewElevatorController>();
-            if (BraveUtility.RandomBool()) { m_ElevatorController.OverrideFloorName = "tt_office"; }
+            m_ElevatorController.OverrideFloorName = BraveUtility.RandomElement(ValidDestinations.Shuffle());
             m_ElevatorController.ConfigureOnPlacement(targetRoom);
+
+            if(Random.value <= 0.004f) {
+                if (m_ElevatorOBJ.GetComponentsInChildren<tk2dBaseSprite>(true) != null) {
+                    foreach (tk2dBaseSprite baseSprite in m_ElevatorOBJ.GetComponentsInChildren<tk2dBaseSprite>(true)) {
+                        ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
+                    }
+                }
+            }
+            m_ElevatorController.IsGlitchElevator = true;
         }
 
         protected override void OnDestroy() {
