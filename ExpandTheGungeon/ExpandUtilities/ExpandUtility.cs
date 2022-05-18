@@ -11,7 +11,6 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandMain;
 
 namespace ExpandTheGungeon.ExpandUtilities {
@@ -1940,7 +1939,13 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static void MaybeSpawnWallMimics(Dungeon dungeon, RoomHandler currentRoom, GlobalDungeonData.ValidTilesets TilesetOverride = GlobalDungeonData.ValidTilesets.CASTLEGEON, bool GuranteedWallMimic = false, int OverrideWallMimicCount = -1, tk2dSpriteCollectionData FakeWallDungeonCollectionOverride = null) {
-            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && UnityEngine.Random.value > 0.01f) { return; }
+            float RandomValue = 0;
+
+            GameObject TempObject = new GameObject("TempObject", new Type[] { typeof(ExpandRandomVarGenerator) });
+            RandomValue = TempObject.GetComponent<ExpandRandomVarGenerator>().GenerateRandomFloat();
+            UnityEngine.Object.Destroy(TempObject);
+
+            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && RandomValue < 0.982f) { return; }
 
             string RoomName = "NULL";
 
@@ -4598,7 +4603,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
     }
 
     public static class ReflectionHelpers {
-        
+
+        public delegate void ActionEX<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+
         public static IList CreateDynamicList(Type type) {
             bool flag = type == null;
             if (flag) { throw new ArgumentNullException("type", "Argument cannot be null."); }

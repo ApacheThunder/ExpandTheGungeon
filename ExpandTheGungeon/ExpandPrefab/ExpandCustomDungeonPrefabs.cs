@@ -218,12 +218,102 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             DungeonTileStampData m_CanyonStampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
             m_CanyonStampData.name = "ENV_SPACE_STAMP_DATA";
-            m_CanyonStampData.tileStampWeight = 0;
+            m_CanyonStampData.tileStampWeight = 1;
             m_CanyonStampData.spriteStampWeight = 0;
-            m_CanyonStampData.objectStampWeight = 1;
+            m_CanyonStampData.objectStampWeight = 1f;
             m_CanyonStampData.stamps = new TileStampData[0];
             m_CanyonStampData.spriteStamps = new SpriteStampData[0];
-            m_CanyonStampData.objectStamps = dungeonTemplate.stampData.objectStamps;
+
+            List<ObjectStampData> m_CanyonObjectData = new List<ObjectStampData>() {
+                new ObjectStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                            new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1 },
+                            new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.5f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 3, roomRelativeWeight = 0.75f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 4, roomRelativeWeight = 0.25f }
+                        },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXSpace_Grass_01
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                            new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1 },
+                            new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.5f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 3, roomRelativeWeight = 0.75f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 4, roomRelativeWeight = 0.25f }
+                        },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXSpace_Grass_02
+                },
+                new ObjectStampData() {
+                    width = 1,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                            new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1 },
+                            new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.5f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 3, roomRelativeWeight = 0.75f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 4, roomRelativeWeight = 0.25f }
+                        },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXSpace_Grass_03
+                },
+                new ObjectStampData() {
+                    width = 2,
+                    height = 2,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.NATURAL,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                            new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1 },
+                            new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.5f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 3, roomRelativeWeight = 0.75f },
+                            new StampPerRoomPlacementSettings() { roomSubType = 4, roomRelativeWeight = 0.25f }
+                        },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXSpace_Grass_04
+                }
+            };
+
+            foreach (ObjectStampData stampData in dungeonTemplate.stampData.objectStamps) { m_CanyonObjectData.Add(stampData); }
+            
+            m_CanyonStampData.objectStamps = m_CanyonObjectData.ToArray();
             m_CanyonStampData.SymmetricFrameChance = 0.25f;
             m_CanyonStampData.SymmetricCompleteChance = 0.6f;
 
@@ -456,88 +546,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_Woods.supportsDiagonalWalls = false;
             Jungle_Woods.supportsUpholstery = false;
             Jungle_Woods.carpetIsMainFloor = false;
-            Jungle_Woods.carpetGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/carpetGrid1") };
+            Jungle_Woods.carpetGrids = new TileIndexGrid[] {
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/carpetGrids_0"),
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/carpetGrids_1")
+            };
             Jungle_Woods.supportsChannels = false;
             Jungle_Woods.minChannelPools = 0;
             Jungle_Woods.maxChannelPools = 3;
             Jungle_Woods.channelTenacity = 0.75f;
             Jungle_Woods.channelGrids = new TileIndexGrid[0];
             Jungle_Woods.supportsLavaOrLavalikeSquares = false;
-            Jungle_Woods.lavaGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/lavaGrid") };
+            Jungle_Woods.lavaGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/lavaGrid") };
             Jungle_Woods.supportsIceSquares = false;
             Jungle_Woods.iceGrids = new TileIndexGrid[0];
             Jungle_Woods.roomFloorBorderGrid = null;
-            Jungle_Woods.roomCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/roomCeilingBorderGrid");
-            Jungle_Woods.pitLayoutGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/pitLayoutGrid");
+            Jungle_Woods.roomCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/roomCeilingBorderGrid");
+            Jungle_Woods.pitLayoutGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/pitLayoutGrid");
             Jungle_Woods.pitBorderRaisedGrid = null;
             Jungle_Woods.additionalPitBorderFlatGrid = null;
-            Jungle_Woods.pitBorderFlatGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/outerCeilingBorderGrid");
-            Jungle_Woods.outerCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/outerCeilingBorderGrid");
+            Jungle_Woods.pitBorderFlatGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/outerCeilingBorderGrid");
+            Jungle_Woods.outerCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/outerCeilingBorderGrid");
             Jungle_Woods.floorSquareDensity = 0.05f;
             Jungle_Woods.floorSquares = new TileIndexGrid[0];
             Jungle_Woods.usesFacewallGrids = false;
             Jungle_Woods.facewallGrids = new FacewallIndexGridDefinition[] {
-                new FacewallIndexGridDefinition() {
-                    grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/faceWallGrid1"),
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
-                new FacewallIndexGridDefinition() {
-                    grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/faceWallGrid2"),
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
-                new FacewallIndexGridDefinition() {
-                    grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/faceWallGrid3"),
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Jungle/Woods/facewallGrids_0"),
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Jungle/Woods/facewallGrids_1"),
             };
+            Jungle_Woods.facewallGrids[0].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/facewallGrids_1_grid");
+            Jungle_Woods.facewallGrids[1].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/facewallGrids_2_grid");
             Jungle_Woods.usesInternalMaterialTransitions = false;
             Jungle_Woods.usesProceduralMaterialTransitions = false;
             Jungle_Woods.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
@@ -593,88 +630,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_Bamboo.supportsDiagonalWalls = false;
             Jungle_Bamboo.supportsUpholstery = false;
             Jungle_Bamboo.carpetIsMainFloor = false;
-            Jungle_Bamboo.carpetGrids = Jungle_Woods.carpetGrids;
+            Jungle_Bamboo.carpetGrids = new TileIndexGrid[] {
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/carpetGrids_0"),
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/carpetGrids_1")
+            };
             Jungle_Bamboo.supportsChannels = false;
             Jungle_Bamboo.minChannelPools = 0;
             Jungle_Bamboo.maxChannelPools = 3;
             Jungle_Bamboo.channelTenacity = 0.75f;
             Jungle_Bamboo.channelGrids = new TileIndexGrid[0];
             Jungle_Bamboo.supportsLavaOrLavalikeSquares = true;
-            Jungle_Bamboo.lavaGrids = Jungle_Woods.lavaGrids;
+            Jungle_Bamboo.lavaGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/lavaGrid") };
             Jungle_Bamboo.supportsIceSquares = false;
             Jungle_Bamboo.iceGrids = new TileIndexGrid[0];
             Jungle_Bamboo.roomFloorBorderGrid = null;
-            Jungle_Bamboo.roomCeilingBorderGrid = Jungle_Woods.roomCeilingBorderGrid;                        
-            Jungle_Bamboo.pitLayoutGrid = Jungle_Woods.pitLayoutGrid;
-            Jungle_Bamboo.pitBorderFlatGrid = Jungle_Woods.outerCeilingBorderGrid;
+            Jungle_Bamboo.roomCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/roomCeilingBorderGrid");
+            Jungle_Bamboo.pitLayoutGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/pitLayoutGrid");
             Jungle_Bamboo.pitBorderRaisedGrid = null;
             Jungle_Bamboo.additionalPitBorderFlatGrid = null;
-            Jungle_Bamboo.outerCeilingBorderGrid = Jungle_Woods.outerCeilingBorderGrid;
+            Jungle_Bamboo.pitBorderFlatGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/outerCeilingBorderGrid");
+            Jungle_Bamboo.outerCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/outerCeilingBorderGrid");
             Jungle_Bamboo.floorSquareDensity = 0.05f;
             Jungle_Bamboo.floorSquares = new TileIndexGrid[0];
             Jungle_Bamboo.usesFacewallGrids = false;
             Jungle_Bamboo.facewallGrids = new FacewallIndexGridDefinition[] {
-                new FacewallIndexGridDefinition() {
-                    grid = Jungle_Woods.facewallGrids[0].grid,
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
-                new FacewallIndexGridDefinition() {
-                    grid = Jungle_Woods.facewallGrids[1].grid,
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
-                new FacewallIndexGridDefinition() {
-                    grid = Jungle_Woods.facewallGrids[2].grid,
-                    minWidth = 3,
-                    maxWidth = 8,
-                    hasIntermediaries = false,
-                    minIntermediaryBuffer = 4,
-                    maxIntermediaryBuffer = 6,
-                    minIntermediaryLength = 1,
-                    maxIntermediaryLength = 3,
-                    topsMatchBottoms = true,
-                    middleSectionSequential = false,
-                    canExistInCorners = true,
-                    forceEdgesInCorners = true,
-                    canAcceptWallDecoration = false,
-                    canAcceptFloorDecoration = false,
-                    forcedStampMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
-                    canBePlacedInExits = false,
-                    chanceToPlaceIfPossible = 0.15f,
-                    perTileFailureRate = 0.05f
-                },
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/facewallGrids_0"),
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/facewallGrids_1"),
             };
+            Jungle_Bamboo.facewallGrids[0].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/facewallGrids_1_grid");
+            Jungle_Bamboo.facewallGrids[1].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/facewallGrids_2_grid");
             Jungle_Bamboo.usesInternalMaterialTransitions = false;
             Jungle_Bamboo.usesProceduralMaterialTransitions = false;
             Jungle_Bamboo.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
@@ -813,10 +797,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 lightCookies = new Texture2D[0],
                 debug_view = false
             };
-            
+
             dungeon.tileIndices = new TileIndices() {
                 tilesetId = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
-                dungeonCollection = braveResources.LoadAsset<GameObject>("TallGrassStrip").GetComponent<tk2dTiledSprite>().Collection,
+                // dungeonCollection = braveResources.LoadAsset<GameObject>("TallGrassStrip").GetComponent<tk2dTiledSprite>().Collection,
+                dungeonCollection = ExpandPrefabs.ENV_Tileset_Jungle.GetComponent<tk2dSpriteCollectionData>(),
                 dungeonCollectionSupportsDiagonalWalls = false,
                 aoTileIndices = new AOTileIndices() {
                     AOFloorTileIndex = 0,
@@ -927,7 +912,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightIntensity = 3;
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
-            dungeon.musicEventName = string.Empty;
+            dungeon.musicEventName = "Play_EX_MUS_Jungle_01";
             
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
@@ -1363,6 +1348,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
             dungeon.musicEventName = AbbeyPrefab.musicEventName;
+            // dungeon.musicEventName = "Play_EX_MUS_Belly_01";
 
             MinesDungeonPrefab = null;
             GungeonPrefab = null;
@@ -1843,7 +1829,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightRadius = 5;
             // dungeon.musicEventName = string.Empty;
             dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
-            
+            // dungeon.musicEventName = "Play_MUS_Office_Theme_01";
+
             CastlePrefab = null;
             sharedAssets2 = null;
         }

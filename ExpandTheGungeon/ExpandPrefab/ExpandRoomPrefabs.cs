@@ -1379,7 +1379,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Keep_JungleElevatorRoom.overrideRoomVisualType = 2;
             RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(7, 15), ExpandPrefabs.EXJungleElevator_Departure_Placable);
             RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(6, 3), ExpandObjectDatabase.GodRays);
-            RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(9, 6), ExpandPrefabs.Arrival);
+            // RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(9, 6), ExpandPrefabs.Arrival);
 
             Expand_ExitRoom_NewElevator = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_ExitRoom_NewElevator", true);
             Expand_ExitRoom_NewElevator.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;

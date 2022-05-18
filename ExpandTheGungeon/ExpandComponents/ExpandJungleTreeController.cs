@@ -33,10 +33,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             while (GameManager.Instance.IsLoadingLevel && Dungeon.IsGenerating) { yield return null; }
             yield return null;
             Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Jungle");
-            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, true, false, RoomExploredOnMinimap: false);
+            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, false, false, RoomExploredOnMinimap: false);
             dungeon2 = null;
-
-
 
             IntVector2 baseCellPosition = (transform.position.IntXY(VectorConversions.Floor) + new IntVector2(4, 2));
             
@@ -103,7 +101,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Arrival.transform.position = (m_TargetExitRoom.area.basePosition + new IntVector2(9, 6)).ToVector3();
                 Arrival.transform.SetParent(m_TargetExitRoom.hierarchyParent);
                 Arrival.name = "Arrival";
-                
+                GameObject Ladder = Instantiate(ExpandPrefabs.Jungle_ExitLadder, Arrival.transform.position - new Vector3(0.7f, 0), Quaternion.identity);
+                ExpandJungleExitLadderComponent LadderComponent = Ladder.GetComponent<ExpandJungleExitLadderComponent>();
+                LadderComponent.PreviousLadderLocation = (sprite.WorldBottomCenter - new Vector2(0.6f, -1.5f) - m_ParentRoom.area.basePosition.ToVector2());
+                LadderComponent.TargetRoom = m_ParentRoom;
+                LadderComponent.ConfigureOnPlacement(m_TargetExitRoom);
+                m_TargetExitRoom.RegisterInteractable(LadderComponent);
+
                 m_ParentRoom.TargetPitfallRoom = m_TargetExitRoom;
             } else {
                 GameObject PitManager = new GameObject("Jungle Pit Manager") { layer = 0 };
@@ -162,9 +166,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void ConfigureOnPlacement(RoomHandler room) {
             m_ParentRoom = room;
-
-            // Minimap.Instance.RegisterRoomIcon(m_ParentRoom, ExpandPrefabs.EXJungleTree_MinimapIcon, false);
-
+            
             IntVector2 basePosition = (transform.position.IntXY(VectorConversions.Floor) + PitOffset);
             IntVector2 cellPos = basePosition;
             IntVector2 cellPos2 = (basePosition + new IntVector2(1, 0));            

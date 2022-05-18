@@ -12,7 +12,6 @@
 # Dependencies end user must provide
 Dependencies/*
 
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

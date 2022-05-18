@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2951469723
+CRC: 2249211429
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1c8d8bdb2c1837d1c7b7c41e6f154a62
+    Hash: bc45023062307f2409c8693cecb85405
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -286,6 +286,7 @@ Assets:
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/PowBlock_Idle_04.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_burst_005.png
 - Assets/ExpandSprites/Misc/EXParadrop_Collection/EX_Paradrop_Crate_Land_003.png
+- Assets/ExpandSprites/Misc/EXSpace_Collection/spacegrass_01.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_black_revolver_projectile_003.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_right_008.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_28.png
@@ -644,6 +645,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_run_left_002.png
 - Assets/ExpandSprites/Misc/EXLargeMonster_Collection/Belly_Monster_Move_006.png
 - Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_depart_10.png
+- Assets/ExpandSprites/Misc/EXSpace_Collection/spacegrass_02.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_idle_back_002.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Forward_006.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_08.png
@@ -730,6 +732,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_tuc_rev_reload_003.png
 - Assets/ExpandSprites/Misc/EXBootlegRoom_Collection/BootlegRoom_Doors.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_angel_rev_enemy_pre_fire_002.png
+- Assets/ExpandSprites/Misc/EXSpace_Collection/spacegrass_03.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicBox_Idle_03.png
 - Assets/ExpandSprites/AIActors/BootlegBulletManBandana_Collection/bulletmanbandana_hit_right_001.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_move_up_005.png
@@ -1072,6 +1075,7 @@ Assets:
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_12.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_move_up_003.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/chest_west_break_001.png
+- Assets/ExpandSprites/Misc/EXSpace_Collection/spacegrass_04.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/alarm_mushroom2_break_001.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/music_switch_activate_004.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_14.png

@@ -42,9 +42,6 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook flagCellsHook;
         public static Hook generateRoomDoorMeshHook;
         public static Hook animationCompletedHook;
-        public static Hook flushMusicAudioHook;
-        public static Hook switchToStateHook;
-        public static Hook flushAudioHook;
         public static Hook teardownPunchoutHook;
         public static Hook GetSynergyStringHook;
         public static Hook buildorderLayerCenterJungleHook;
@@ -59,6 +56,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getNextTilesetHook;
         public static Hook placePlayerInRoomHook;
         public static Hook floodFillDungeonInteriorHook;
+        
 
         public static bool IsHooksInstalled = false;
         
@@ -247,28 +245,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod("AnimationCompletedHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(AIAnimator)
             );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
-            flushMusicAudioHook = new Hook(
-                typeof(GameManager).GetMethod("FlushMusicAudio", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("FlushMusicAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(GameManager)
-            );
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToState Hook...."); }
-            switchToStateHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod("SwitchToState", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("SwitchToStateHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(DungeonFloorMusicController)
-            );
             
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
-            flushAudioHook = new Hook(
-                typeof(GameManager).GetMethod("FlushAudio", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("FlushAudioHook", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(GameManager)
-            );
-
-
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PunchoutController.TeardownPunchout Hook...."); }
             teardownPunchoutHook = new Hook(
                 typeof(PunchoutController).GetMethod("TeardownPunchout", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -304,7 +281,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(TK2DDungeonAssembler)
             );
 
-            /*if (ExpandStats.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AkSoundEngine.PostEvent Hook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing AkSoundEngine.PostEvent Hook...."); }
             Hook postEventHook = new Hook(
                 typeof(AkSoundEngine).GetMethod("PostEvent", new Type[] { typeof(string), typeof(GameObject) }),
                 typeof(ExpandSharedHooks).GetMethod("PostEventHook", BindingFlags.Public | BindingFlags.Static)
@@ -371,7 +348,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod(nameof(FloodFillDungeonInteriorHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonData)
             );
-
+            
             return;
         }
 
@@ -1010,23 +987,6 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        // These hooks ensure our custom music/audio gets stopped properly.
-        private void FlushMusicAudioHook(Action<GameManager>orig, GameManager self) {
-            AkSoundEngine.PostEvent("Stop_EX_MUS_BootlegMusic_01", self.gameObject);
-            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
-            orig(self);
-        }
-
-        private void SwitchToStateHook(Action<DungeonFloorMusicController, DungeonFloorMusicController.DungeonMusicState> orig, DungeonFloorMusicController self, DungeonFloorMusicController.DungeonMusicState targetState) {
-            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
-            AkSoundEngine.PostEvent("Stop_EX_MUS_BootlegMusic_01", self.gameObject);
-            orig(self, targetState);
-        }
-
-        private void FlushAudioHook(Action<GameManager> orig, GameManager self) {
-            orig(self);
-            AkSoundEngine.PostEvent("Stop_EX_SFX_All", self.gameObject);
-        }
                 
         private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
             if (!GameStatsManager.Instance.IsRainbowRun) { orig(self); return; }
@@ -1312,7 +1272,7 @@ namespace ExpandTheGungeon.ExpandMain {
             return roomCeilingBorderGrid;
         }
 
-        public static uint PostEventHook(Func<string, GameObject, uint> orig, string in_pszEventName, GameObject in_gameObjectID) {
+        /*public static uint PostEventHook(Func<string, GameObject, uint> orig, string in_pszEventName, GameObject in_gameObjectID) {
             if (in_pszEventName == "play_OBJ_door_open_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
                 return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Open", in_gameObjectID);
             } else if (in_pszEventName == "play_OBJ_door_close_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
@@ -1322,8 +1282,9 @@ namespace ExpandTheGungeon.ExpandMain {
             } else if (in_pszEventName == "Play_OBJ_gate_open_01" && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
                 return AkSoundEngine.PostEvent("Play_EX_BellyDoor_Unseal", in_gameObjectID);
             }
+            if (!string.IsNullOrEmpty(in_pszEventName) && in_pszEventName == "Stop_MUS_All") { AkSoundEngine.PostEvent("Stop_EX_MUS_All", in_gameObjectID); }
             return orig(in_pszEventName, in_gameObjectID);
-        }
+        }*/
         
         public void PostGenerationCleanupHook(Action<DungeonData>orig, DungeonData self) {
             try {

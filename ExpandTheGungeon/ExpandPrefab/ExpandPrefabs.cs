@@ -29,6 +29,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXBalloonCollection;
         public static GameObject EXPortableElevatorCollection;
         public static GameObject EXOfficeCollection;
+        public static GameObject EXSpaceCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -224,21 +225,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static GameObject RatJailDoor;
         public static GameObject CurrsedMirror;
-        
+
         // Used for forcing Arrival Elevator to spawn on phobos floor tileset ID.
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForOffice; 
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForJungle;
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForBelly;
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForOldWest;
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForPhobos;
-        private static DungeonPlaceableVariant ElevatorArrivalVarientForSpace;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForUnknownTilesets;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForOffice; 
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForJungle;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForBelly;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForOldWest;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForPhobos;
+        public static DungeonPlaceableVariant ElevatorArrivalVarientForSpace;
         // New Departure Elevator for all custom/unused tilesets.
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForOffice;        
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForJungle;
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForBelly;
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForOldWest;
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForPhobos;
-        private static DungeonPlaceableVariant ElevatorDepartureVarientForSpace;
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForOffice;        
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForJungle;
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForBelly;
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForOldWest;
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForPhobos;
+        public static DungeonPlaceableVariant ElevatorDepartureVarientForSpace;
 
         // Modified Challenge Modifiers/Challenge Objects
         public static GameObject ChallengeManagerObject;
@@ -364,10 +366,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXElevator_Arrival_Placable;
 
         // Custom Dungeon Sprite Collection Objects. (now loaded via custom asset bundle! These aren't fake prefabs!)
+        public static GameObject ENV_Tileset_Jungle;
         public static GameObject ENV_Tileset_Belly;
         public static GameObject ENV_Tileset_West;
         public static GameObject ENV_Tileset_Phobos;
         public static GameObject ENV_Tileset_Office;
+
+        // Grass sprites conveted to objects from "space" tileset (unused tileset used by all the pasts)
+        public static GameObject EXSpace_Grass_01;
+        public static GameObject EXSpace_Grass_02;
+        public static GameObject EXSpace_Grass_03;
+        public static GameObject EXSpace_Grass_04;
 
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
@@ -377,7 +386,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Modified Items
         public static GameObject ChamberGun;
 
-        public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
+        public static void InitSpriteCollections(AssetBundle expandSharedAssets1, AssetBundle sharedAssets) {
+            ENV_Tileset_Jungle = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Jungle");
+            ENV_Tileset_Belly = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Belly");
+            ENV_Tileset_West = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_West");
+            ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
+            ENV_Tileset_Office = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Office");
+            ExpandDungeonCollections.ENV_Tileset_Jungle(ENV_Tileset_Jungle, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Jungle"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonCollections.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonCollections.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonCollections.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonCollections.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
+
             EXItemCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXItemCollection", "EXItem_Collection", "EXItemCollection");
             EXGunCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXGunCollection", "EXGun_Collection", "EXGunCollection");
             EXChestCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXChestCollection", "EXChest_Collection", "EXChestCollection");
@@ -392,6 +412,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXBalloonCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBalloonCollection", "EXBalloon_Collection", "EXBalloonCollection");
             EXPortableElevatorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXPortableElevatorCollection", "EXPortableElevator_Collection", "EXPortableElevatorCollection");
             EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
+            EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
 
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
@@ -411,22 +432,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon ForgeDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Forge");
             Dungeon CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             Dungeon NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
-            
+
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
             
-            ENV_Tileset_Belly = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Belly");
-            ExpandDungeonCollections.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
-
-            ENV_Tileset_West = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_West");
-            ExpandDungeonCollections.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
-
-            ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
-            ExpandDungeonCollections.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
-
-            ENV_Tileset_Office = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Office");
-            ExpandDungeonCollections.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
-
-
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
             BulletManUpsideDownTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_UpsideDown");
 
@@ -1340,6 +1348,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
             CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
             
+            ElevatorArrivalVarientForUnknownTilesets = new DungeonPlaceableVariant() {
+                percentChance = 0,
+                percentChanceMultiplier = 1,
+                unitOffset = Vector2.zero,
+                nonDatabasePlaceable = EXElevator_Arrival_Placable,
+                enemyPlaceableGuid = string.Empty,
+                pickupObjectPlaceableId = -1,
+                forceBlackPhantom = false,
+                addDebrisObject = false,
+                materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
+                prerequisites = new DungeonPrerequisite[0]
+            };
+
 
             ElevatorArrivalVarientForOffice = new DungeonPlaceableVariant() {
                 percentChance = 1f,
@@ -1516,11 +1537,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             };
 
+            
             ElevatorDepartureVarientForOffice = new DungeonPlaceableVariant() {
                 percentChance = 1,
                 percentChanceMultiplier = 1,
                 unitOffset = Vector2.zero,
-                // nonDatabasePlaceable = ElevatorDeparture.variantTiers[5].nonDatabasePlaceable,
                 nonDatabasePlaceable = EXPortableElevator_Departure_Placable,
                 enemyPlaceableGuid = string.Empty,
                 pickupObjectPlaceableId = -1,
@@ -1697,6 +1718,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
             };
 
+            
+            ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForUnknownTilesets);
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForOffice);
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForJungle);
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForBelly);
@@ -1709,8 +1732,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForBelly);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForOldWest);
             ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForPhobos);
-            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForSpace);
-            
+            ElevatorDeparture.variantTiers.Add(ElevatorDepartureVarientForSpace);            
+            ElevatorDeparture.variantTiers[6].nonDatabasePlaceable = EXPortableElevator_Departure_Placable;
 
             // Build Room table with Castle and Gungeon room tables merged
             CastleGungeonMergedTable.name = "CastleGungeonMergedTable";
@@ -4220,7 +4243,32 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(EX_GreenBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_GreenBalloonPopFrames, "pop", frameRate: 12);
             ExpandUtility.AddAnimation(EX_PinkBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_PinkBalloonPopFrames, "pop", frameRate: 12);
             ExpandUtility.AddAnimation(EX_YellowBalloon.GetComponent<tk2dSpriteAnimator>(), EXBalloonCollection.GetComponent<tk2dSpriteCollectionData>(), m_YellowBalloonPopFrames, "pop", frameRate: 12);
-            
+
+
+            EXSpace_Grass_01 = expandSharedAssets1.LoadAsset<GameObject>("EXSpace_Grass_01");
+            //EXSpace_Grass_01.layer = LayerMask.NameToLayer("BG_Critical");
+            tk2dSprite m_SpaceGrassSprite_01 = SpriteSerializer.AddSpriteToObject(EXSpace_Grass_01, EXSpaceCollection,"spacegrass_01");
+            m_SpaceGrassSprite_01.HeightOffGround = -1;
+            m_SpaceGrassSprite_01.usesOverrideMaterial = true;
+            m_SpaceGrassSprite_01.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            EXSpace_Grass_02 = expandSharedAssets1.LoadAsset<GameObject>("EXSpace_Grass_02");
+            tk2dSprite m_SpaceGrassSprite_02 = SpriteSerializer.AddSpriteToObject(EXSpace_Grass_02, EXSpaceCollection, "spacegrass_02");
+            m_SpaceGrassSprite_02.HeightOffGround = -1;
+            m_SpaceGrassSprite_02.usesOverrideMaterial = true;
+            m_SpaceGrassSprite_02.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            EXSpace_Grass_03 = expandSharedAssets1.LoadAsset<GameObject>("EXSpace_Grass_03");
+            tk2dSprite m_SpaceGrassSprite_03 = SpriteSerializer.AddSpriteToObject(EXSpace_Grass_03, EXSpaceCollection, "spacegrass_03");
+            m_SpaceGrassSprite_03.HeightOffGround = -1;
+            m_SpaceGrassSprite_03.usesOverrideMaterial = true;
+            m_SpaceGrassSprite_03.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            EXSpace_Grass_04 = expandSharedAssets1.LoadAsset<GameObject>("EXSpace_Grass_04");
+            tk2dSprite m_SpaceGrassSprite_04 = SpriteSerializer.AddSpriteToObject(EXSpace_Grass_04, EXSpaceCollection, "spacegrass_04");
+            m_SpaceGrassSprite_04.HeightOffGround = -1;
+            m_SpaceGrassSprite_04.usesOverrideMaterial = true;
+            m_SpaceGrassSprite_04.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
 
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");

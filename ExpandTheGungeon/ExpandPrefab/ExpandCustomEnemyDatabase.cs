@@ -16,6 +16,53 @@ namespace ExpandTheGungeon.ExpandPrefab {
     
     public static class ExpandCustomEnemyDatabase {
 
+        static ExpandCustomEnemyDatabase() {
+            HotShotCultistGUID = "61a8112544ce4389ab14f2287616a71b";
+            HotShotShotgunKinGUID = "758a0a0215e6448ab52adf73bc44ae5e";
+            HotShotBulletKinGUID = "8a0b7a287410464bb17b9e656958bd19";
+            ExplodyBoyGUID = "27638478e52e4785925b578b52bf79d3";
+            RatGrenadeGUID = "1a1dc5ed-92a6-4bd1-bbee-098991e7d2d4";
+            HammerCompanionGUID = "05145e1a-1a10-4797-b37e-a15bb26d7641";
+            BootlegBullatGUID = "7ef020b9-11fb-4a24-a818-60581e6d3105";
+            BootlegBulletManGUID = "a52cfba8-f141-4a98-9022-48816201f834";
+            BootlegBulletManBandanaGUID = "7093253e-a118-4813-8feb-703a1ad31665";
+            BootlegShotgunManRedGUID = "01e4e238-89bb-4b30-b93a-ae17dc19e748";
+            BootlegShotgunManBlueGUID = "f7c0b0ab-3d80-4855-9fd6-38861af1147a";
+            CronenbergGUID = "0a2433d6e0784eefb28762c5c127d0b3";
+            AggressiveCronenbergGUID = "6d2d7a845e464d3ca453fe1fff5fed84";
+            MetalCubeGuyWestGUID = "c1e60b8c0691499183c69393e02c9de9";
+            FriendlyCultistGUID = "1d1e1070617842f09e6f45df3cb223f6";
+            SonicCompanionGUID = "38e61aef773a481697c4956d85279087";
+            corruptedEnemyGUID = "182c39c4d904493283f75ab29775d9c6";
+            doppelgunnerbossEnemyGUID = "5f0fa34b5a2e44cdab4a06f89bb5c442";
+            ParasiteBossGUID = "acd8d483f24e4c43b964fa4e54068cf1";
+            com4nd0GUID = "0a406e36-80eb-43b8-8ad0-c56232f9496e";
+            ClownkinGUID = "5736cc6185294b839666c65ac8e082c1";
+        }
+
+        // Saved GUIDs for use in things like room prefabs
+        public static readonly string HotShotCultistGUID;
+        public static readonly string HotShotShotgunKinGUID;
+        public static readonly string HotShotBulletKinGUID;
+        public static readonly string ExplodyBoyGUID;
+        public static readonly string RatGrenadeGUID;
+        public static readonly string HammerCompanionGUID;
+        public static readonly string BootlegBullatGUID;
+        public static readonly string BootlegBulletManGUID;
+        public static readonly string BootlegBulletManBandanaGUID;
+        public static readonly string BootlegShotgunManRedGUID;
+        public static readonly string BootlegShotgunManBlueGUID;
+        public static readonly string CronenbergGUID;
+        public static readonly string AggressiveCronenbergGUID;
+        public static readonly string MetalCubeGuyWestGUID;
+        public static readonly string FriendlyCultistGUID;
+        public static readonly string SonicCompanionGUID;
+        public static readonly string corruptedEnemyGUID;
+        public static readonly string doppelgunnerbossEnemyGUID;
+        public static readonly string ParasiteBossGUID;
+        public static readonly string com4nd0GUID;
+        public static readonly string ClownkinGUID;
+
         public static Hook loadEnemyGUIDHook;
 
         public static Dictionary<string, AIActor> enemyPrefabDictionary = new Dictionary<string, AIActor>();
@@ -86,29 +133,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ClownkinWig;
 
         public static Texture2D[] RatGrenadeTextures;
-
-        // Saved GUIDs for use in things like room prefabs
-        public static readonly string HotShotCultistGUID = "61a8112544ce4389ab14f2287616a71b";
-        public static readonly string HotShotShotgunKinGUID = "758a0a0215e6448ab52adf73bc44ae5e";
-        public static readonly string HotShotBulletKinGUID = "8a0b7a287410464bb17b9e656958bd19";
-        public static readonly string ExplodyBoyGUID = "27638478e52e4785925b578b52bf79d3";
-        public static readonly string RatGrenadeGUID = "1a1dc5ed-92a6-4bd1-bbee-098991e7d2d4";
-        public static readonly string HammerCompanionGUID = "05145e1a-1a10-4797-b37e-a15bb26d7641";
-        public static readonly string BootlegBullatGUID = "7ef020b9-11fb-4a24-a818-60581e6d3105";
-        public static readonly string BootlegBulletManGUID = "a52cfba8-f141-4a98-9022-48816201f834";
-        public static readonly string BootlegBulletManBandanaGUID = "7093253e-a118-4813-8feb-703a1ad31665";
-        public static readonly string BootlegShotgunManRedGUID = "01e4e238-89bb-4b30-b93a-ae17dc19e748";
-        public static readonly string BootlegShotgunManBlueGUID = "f7c0b0ab-3d80-4855-9fd6-38861af1147a";
-        public static readonly string CronenbergGUID = "0a2433d6e0784eefb28762c5c127d0b3";
-        public static readonly string AggressiveCronenbergGUID = "6d2d7a845e464d3ca453fe1fff5fed84";
-        public static readonly string MetalCubeGuyWestGUID = "c1e60b8c0691499183c69393e02c9de9";
-        public static readonly string FriendlyCultistGUID = "1d1e1070617842f09e6f45df3cb223f6";
-        public static readonly string SonicCompanionGUID = "38e61aef773a481697c4956d85279087";
-        public static readonly string corruptedEnemyGUID = "182c39c4d904493283f75ab29775d9c6";
-        public static readonly string doppelgunnerbossEnemyGUID = "5f0fa34b5a2e44cdab4a06f89bb5c442";
-        public static readonly string ParasiteBossGUID = "acd8d483f24e4c43b964fa4e54068cf1";
-        public static readonly string com4nd0GUID = "0a406e36-80eb-43b8-8ad0-c56232f9496e";
-        public static readonly string ClownkinGUID = "5736cc6185294b839666c65ac8e082c1";
+        
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
@@ -3546,12 +3571,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             StoneCubeCollection_West = expandSharedAssets1.LoadAsset<GameObject>("StoneCubeCollection_West");
             tk2dSpriteCollectionData StoneCubeCollection_WestCollection = StoneCubeCollection_West.AddComponent<tk2dSpriteCollectionData>();
 
-            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "SpriteCOllections/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "SpriteCollections/StoneCubeCollection_West"), StoneCubeCollection_WestCollection);
 
             Material m_NewMaterial = new Material(GetOfficialEnemyByGuid("ba928393c8ed47819c2c5f593100a5bc").sprite.Collection.materials[0]);
             m_NewMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Stone_Cube_Collection_West");
 
-            StoneCubeCollection_WestCollection.materials[0] = m_NewMaterial;
+            StoneCubeCollection_WestCollection.materials = new Material[] { m_NewMaterial };
 
             foreach (tk2dSpriteDefinition spriteDefinition in StoneCubeCollection_WestCollection.spriteDefinitions) {
                 spriteDefinition.material = m_NewMaterial;

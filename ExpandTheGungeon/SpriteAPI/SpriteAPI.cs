@@ -24,6 +24,7 @@ namespace ExpandTheGungeon.SpriteAPI {
             }
             GameObject m_TempObject = new GameObject(CollectionName);
             newCollection = GenerateNewSpriteCollection(m_TempObject, CollectionName);
+            
             AtlasPacker = new RuntimeAtlasPacker(Xres, Yres);
             AddSpriteToObject(m_TempObject, ExpandAssets.LoadSpriteAsset<Texture2D>(spriteNames[0]));
             if (spriteNames.Count > 0) {
@@ -32,6 +33,12 @@ namespace ExpandTheGungeon.SpriteAPI {
                 }
             }
             DumpSpriteCollection(newCollection, pathOverride);
+
+            foreach (tk2dSpriteDefinition spriteDefinition in newCollection.spriteDefinitions) { spriteDefinition.material = null; }
+            newCollection.material = null;
+            newCollection.materials = null;
+            newCollection.textures = null;
+
             if (!string.IsNullOrEmpty(pathOverride)) {
                 SaveStringToFile(JsonUtility.ToJson(newCollection), pathOverride, CollectionName + ".txt");
             } else {
@@ -39,6 +46,19 @@ namespace ExpandTheGungeon.SpriteAPI {
             }
             newCollection = null;
             AtlasPacker = null;
+        }
+
+        public static void SerializeSpriteCollection(tk2dSpriteCollectionData collectionData, bool SaveTextures = false, string pathOverride = null) {
+            if (SaveTextures) { DumpSpriteCollection(collectionData, pathOverride); }
+            collectionData.material = null;
+            collectionData.materials = null;
+            collectionData.textures = null;
+            foreach (tk2dSpriteDefinition spriteDefinition in collectionData.spriteDefinitions) { spriteDefinition.material = null; }
+            if (!string.IsNullOrEmpty(pathOverride)) {
+                SaveStringToFile(JsonUtility.ToJson(collectionData), pathOverride, collectionData.name + ".txt");
+            } else {
+                SaveStringToFile(JsonUtility.ToJson(collectionData), ETGMod.ResourcesDirectory, collectionData.name + ".txt");
+            }
         }
 
         // Assigns a GameObject (loaded from an asset bundle in this version) with the attached tk2dSpriteCollectionData component to your chosen field.
@@ -74,6 +94,30 @@ namespace ExpandTheGungeon.SpriteAPI {
         public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, string mainSpriteDefinitionName) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), mainSpriteDefinitionName);
+            m_tk2dSprite.SortingOrder = 0;
+            obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
+            return m_tk2dSprite;
+        }
+
+        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, int spriteID) {
+            tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
+            m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), spriteID);
+            m_tk2dSprite.SortingOrder = 0;
+            obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
+            return m_tk2dSprite;
+        }
+
+        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, string mainSpriteDefinitionName) {
+            tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
+            m_tk2dSprite.SetSprite(existingSpriteCollection, mainSpriteDefinitionName);
+            m_tk2dSprite.SortingOrder = 0;
+            obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
+            return m_tk2dSprite;
+        }
+
+        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, int spriteID) {
+            tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
+            m_tk2dSprite.SetSprite(existingSpriteCollection, spriteID);
             m_tk2dSprite.SortingOrder = 0;
             obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
             return m_tk2dSprite;

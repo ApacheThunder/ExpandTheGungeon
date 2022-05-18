@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon {
 	
@@ -37,22 +38,30 @@ namespace ExpandTheGungeon {
                     return ResourceManager.LoadAssetBundle("brave_resources_001").LoadAsset<T>(assetPath);
             }
         }
-        
-        public static void InitCustomAssetBundles() {
-            
+
+        public static void InitSpritesAssetBundle() {
             FieldInfo m_AssetBundlesField = typeof(ResourceManager).GetField("LoadedBundles", BindingFlags.Static | BindingFlags.NonPublic);
             Dictionary<string, AssetBundle> m_AssetBundles = (Dictionary<string, AssetBundle>)m_AssetBundlesField.GetValue(typeof(ResourceManager));
             
-            AssetBundle m_ExpandSharedAssets1 = null;
             AssetBundle m_ExpandSpritesBase = null;
-
+            m_ExpandSpritesBase = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModSpriteAssetBundleName.ToLower());
+            if (m_ExpandSpritesBase != null) {
+                m_AssetBundles.Add(ExpandTheGungeon.ModSpriteAssetBundleName, m_ExpandSpritesBase);
+                ExpandSettings.spritesBundlePresent = true;
+            }
+        }
+        
+        public static void InitCustomAssetBundles(string nameSpace = null) {
+            Dictionary<string, AssetBundle> m_AssetBundles = ReflectionHelpers.ReflectGetField<Dictionary<string, AssetBundle>>(typeof(ResourceManager), "LoadedBundles");
+            AssetBundle m_ExpandSharedAssets1 = null;
+            
             try {
-                m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAssetBundleName.ToLower());
-                m_ExpandSpritesBase = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModSpriteAssetBundleName.ToLower());
-                if (m_ExpandSpritesBase != null) {
-                    m_AssetBundles.Add(ExpandTheGungeon.ModSpriteAssetBundleName, m_ExpandSpritesBase);
-                    ExpandSettings.spritesBundlePresent = true;
+                if (string.IsNullOrEmpty(nameSpace)) {
+                    m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAssetBundleName.ToLower());
+                } else {                    
+                    m_ExpandSharedAssets1 = LoadAssetBundleFromResource(ExpandTheGungeon.ModAssetBundleName, nameSpace);
                 }
+                
                 if (m_ExpandSharedAssets1 != null) {
                     m_AssetBundles.Add(ExpandTheGungeon.ModAssetBundleName, m_ExpandSharedAssets1);
                 } else {
@@ -93,6 +102,19 @@ namespace ExpandTheGungeon {
             if (m_CachedBundle) { return m_CachedBundle; } else { return null; }
         }
         
+        public static AssetBundle LoadAssetBundleFromResource(string AssetBundleName, string nameSpace) {
+            using (Stream manifestResourceStream = Assembly.GetCallingAssembly().GetManifestResourceStream($"{nameSpace}." + AssetBundleName)) {
+                if (manifestResourceStream != null) {
+                    byte[] array = new byte[manifestResourceStream.Length];
+                    manifestResourceStream.Read(array, 0, array.Length);
+                    return AssetBundle.LoadFromMemory(array);
+                }
+            }
+            ETGModConsole.Log("No bytes found in " + AssetBundleName, false);
+            return null;
+        }
+
+
         public static void InitAudio (AssetBundle expandSharedAssets1, string assetPath) {
             TextAsset SoundBankBinary = expandSharedAssets1.LoadAsset<TextAsset>(assetPath);
             if (SoundBankBinary) {
@@ -110,7 +132,7 @@ namespace ExpandTheGungeon {
                 }
             }
         }
-                
+        
         public static void DumpTexture2DToFile(Texture2D target, bool useRandomFilenames = false) {
             if (target == null) { return; }
             string text = "DUMPsprites/" + "DUMP" + target.name;
@@ -164,7 +186,7 @@ namespace ExpandTheGungeon {
         }
 
         public static string BytesToString(byte[] bytes) { return Encoding.UTF8.GetString(bytes, 0, bytes.Length); }
-
+        
         public static void SaveStringToFile(string text, string filePath, string fileName) {
             using (StreamWriter streamWriter = new StreamWriter(Path.Combine(filePath, fileName), true)) { streamWriter.WriteLine(text); }
         }

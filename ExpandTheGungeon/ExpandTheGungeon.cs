@@ -14,11 +14,13 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 namespace ExpandTheGungeon {
 
     public class ExpandTheGungeon : ETGModule {
+                
         
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
 
+        public static string ModName;
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -57,12 +59,15 @@ namespace ExpandTheGungeon {
             }
             return true;
         }
-        
+
+        private GameObject m_FoyerCheckerOBJ;
+
         public override void Init() {
             
             ExceptionText = string.Empty;
             ExceptionText2 = string.Empty;
-            
+
+            ModName = Metadata.Name;
             ZipFilePath = Metadata.Archive;
             FilePath = Metadata.Directory;
             ResourcesPath = ETGMod.ResourcesDirectory;
@@ -94,8 +99,10 @@ namespace ExpandTheGungeon {
                 "Clown Bullets",
                 "Portable Elevator"
             };
-                        
-            ExpandAssets.InitCustomAssetBundles();
+            
+            ExpandAssets.InitCustomAssetBundles(ModName);
+
+            if (!string.IsNullOrEmpty(ExceptionText)) { return; }
 
             if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
 
@@ -124,9 +131,17 @@ namespace ExpandTheGungeon {
                 if (!string.IsNullOrEmpty(ExceptionText2)) { ETGModConsole.Log(ExceptionText2); }
                 return;
             }
-            
-            ExpandSharedHooks.InstallRequiredHooks();
-            
+
+            try {
+                ExpandSharedHooks.InstallRequiredHooks();
+                ExpandDungeonMusicAPI.InitHooks();
+            } catch (Exception ex) {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
+                Debug.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
+                Debug.LogException(ex);
+                return;
+            }
+
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
@@ -134,15 +149,12 @@ namespace ExpandTheGungeon {
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
 
             ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
-
-            // ExpandObjectDatabase.BuildDatabase();
-
-
+            
             // Init Custom GameLevelDefinitions
             ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
 
             // Init Custom Sprite Collections
-            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1);
+            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
             ExpandCustomEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
 
             // Init ItemAPI
@@ -206,11 +218,14 @@ namespace ExpandTheGungeon {
             braveResources = null;
             enemiesBase = null;
         }
-
-
+        
         public override void Exit() {  }
         
-        public void CreateFoyerController() { new GameObject("ShotgunMod Foyer Checker", new Type[] { typeof(ExpandFoyer) }); }
+        public void CreateFoyerController() {
+            if (!m_FoyerCheckerOBJ) {
+                m_FoyerCheckerOBJ = new GameObject("ExpandTheGungeon Foyer Checker", new Type[] { typeof(ExpandFoyer) });
+            }
+        }
                 
         private void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ItemAPISetup) {
@@ -465,13 +480,21 @@ namespace ExpandTheGungeon {
         // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: EXItem_Collection 256 256)
         // If you wish to manually specify path of output files add path as 4th parameter.
         public void ExpandSerializeCollection(string[] consoleText) {
+            try {
+                ExpandAssets.InitSpritesAssetBundle();
+            } catch (Exception ex) {
+                string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading sprite asset bundles! This is an option asset bundle however it is required for building sprite collections!";
+                Debug.Log(ErrorMessage);
+                Debug.LogException(ex);
+            }
+
             if (consoleText.Length == 3/* | consoleText.Length == 4*/) {
                 string CollectionName = consoleText[0];
                 int X = int.Parse(consoleText[1]);
                 int Y = int.Parse(consoleText[2]);
                 string OverridePath = string.Empty;                
                 if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
-                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXOffice_Collection, X, Y, OverridePath);                
+                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXSpace_Collection, X, Y, OverridePath);                
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
             }
@@ -479,6 +502,7 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandTestCommand(string[] consoleText) {
+            
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
@@ -491,7 +515,8 @@ namespace ExpandTheGungeon {
                 AlarmMushroom.transform.Find("Shadow").localPosition = new Vector3(X, Y);
             }*/
 
-            // ExpandAssets.DumpSpriteCollection(ExpandPrefabs.ENV_Tileset_Belly.GetComponent<tk2dSpriteCollectionData>());            
+            // ETGMod.Assets.Dump.DumpSpriteCollection(ExpandCustomDungeonPrefabs.Base_Space.GetComponent<Dungeon>().tileIndices.dungeonCollection);
+            
 
             /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
             SupriseChest.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
@@ -515,8 +540,8 @@ namespace ExpandTheGungeon {
             TestPortal.transform.position -= new Vector3(0, 0, -50);*/
 
 
-
             // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+
             
             // GameManager.Instance.StartCoroutine(SecondDungeonOBJ.GetComponent<Dungeon>().Regenerate(false));
             /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);

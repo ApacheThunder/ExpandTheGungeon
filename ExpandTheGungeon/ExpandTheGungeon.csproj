@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{879A1D67-4A5C-4A21-9823-426D1752D3D2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -96,6 +96,7 @@
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
+    <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f4c_west_flow_01.cs" />
     <Compile Include="ExpandFoyer.cs" />
     <Compile Include="ExpandMain\ExpandDungeonDoorManager.cs" />
+    <Compile Include="ExpandMain\ExpandDungeonMusicAPI.cs" />
     <Compile Include="ExpandMain\ExpandFloorDecorator.cs" />
     <Compile Include="ExpandMain\ExpandStaticReferenceManager.cs" />
     <Compile Include="ExpandMain\ExpandSynergies.cs" />
@@ -245,6 +247,9 @@
     <Compile Include="ExpandPrefab\ExpandRoomPrefabs.cs" />
     <Compile Include="ExpandAssets.cs" />
     <Compile Include="SpriteAPI\SpriteAPI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandSharedAuto" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

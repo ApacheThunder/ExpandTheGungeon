@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{E8B82890-BBC3-42F9-B0D6-AD61F2DEA226}" SchemaVersion="85">
 	<Triggers>
-		<WorkUnit Name="Default Work Unit" ID="{E8B82890-BBC3-42F9-B0D6-AD61F2DEA226}" PersistMode="Standalone">
-			<ChildrenList>
-				<Trigger Name="Pause" ID="{1ED16E55-5B83-42BC-91C3-0EF572CFF7E1}"/>
-			</ChildrenList>
-		</WorkUnit>
+		<WorkUnit Name="Default Work Unit" ID="{E8B82890-BBC3-42F9-B0D6-AD61F2DEA226}" PersistMode="Standalone"/>
 	</Triggers>
 </WwiseDocument>

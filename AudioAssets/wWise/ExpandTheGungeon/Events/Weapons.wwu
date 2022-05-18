@@ -280,7 +280,6 @@
 						<Action Name="" ID="{93207545-D0DB-4A46-9AA4-0B530C894047}" ShortID="649236829">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
-								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -311,6 +310,28 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="UnicornMusic" ID="{0886B0D3-A9D1-45F8-8A76-D12388BB3AFA}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{C0CE385E-2942-46BE-86C5-2B1DD101C174}" ShortID="542798905">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BellyMusic_Intro" ID="{52A4F6B8-3FAE-4CE6-99C4-3C09277EC25C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{9FBA6CFB-0DEF-4E4E-A788-8BB1C1698B4E}" ShortID="666078366">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest" ID="{64BE8365-0BE9-40CD-BCE5-27A234B79DD7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -517,7 +538,6 @@
 						<Action Name="" ID="{58029F71-9C7F-460B-8F4A-C515B2FE81B5}" ShortID="300205951">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
-								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -830,6 +850,34 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Balloonpop3" ID="{2C7D98FE-E5DA-4183-BCBB-8486D19E806C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Belly_01" ID="{512A4991-6FE8-437B-8F15-83511C8C25DF}">
+					<ChildrenList>
+						<Action Name="" ID="{974F6203-F8D8-439C-BE48-FAB6BACCD0BE}" ShortID="208172566">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BellyMusic_Intro" ID="{52A4F6B8-3FAE-4CE6-99C4-3C09277EC25C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Jungle_01" ID="{BDA54E72-FCBB-41D1-B0EA-DFA4B78391F2}">
+					<ChildrenList>
+						<Action Name="" ID="{78CEF857-C54E-4571-8210-497AEE482B1E}" ShortID="470673185">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest" ID="{64BE8365-0BE9-40CD-BCE5-27A234B79DD7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

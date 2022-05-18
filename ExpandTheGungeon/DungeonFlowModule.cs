@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using Dungeonator;
 
 namespace ExpandTheGungeon {
 
@@ -48,7 +49,7 @@ namespace ExpandTheGungeon {
                     knownScenes.Add(customFloors.dungeonSceneName.ToLower());
                 }                
             }
-
+            
             ETGModConsole.Commands.AddUnit("load_flow", new Action<string[]>(LoadFlowFunction), new AutocompletionSettings(delegate(int index, string input) {
 				if (index == 0) {
                     return ReturnMatchesFromList(input.ToLower(), knownFlows);
@@ -60,28 +61,34 @@ namespace ExpandTheGungeon {
                     return new string[0];
                 }
             }));
-
         }	
 	
 		public static void LoadFlowFunction(string[] args) {
 			if (args == null | args.Length == 0 | args[0].ToLower() == "help") {
 				ETGModConsole.Log("WARNING: this command can crash gungeon! \nIf the game hangs on loading screen, use console to load a different level!\nUsage: load_flow [FLOW NAME] [TILESET NAME]. [TILESET NAME] is optional. Press tab for a list of each.\nOnce you run the command and you press escape, you should see the loading screen. If nothing happens when you use the command, the flow you tried to load doesn't exist or the path to it needs to be manually specified. Example: \"load_flow NPCParadise\".\nIf it hangs on loading screen then the tileset you tried to use doesn't exist, is no longer functional, or the flow uses rooms that are not compatible with the chosen tileset.\nAlso, you should probably know that if you run this command from the breach, the game never gives you the ability to shoot or use active items, so you should probably start a run first.");
-			} else {
-				bool tilesetSpecified = args.Length > 1;
+			} else if (args != null && args.Length > 3) {
+                ETGModConsole.Log("ERROR: Too many arguments specified! DungoenFlow name, dungoen prefab name, and dungoen scene name are the expected arguments!");
+            } else {
+                bool tilesetSpecified = args.Length > 1;
                 bool sceneSpecified = args.Length > 2;
+
+                if (tilesetSpecified && !knownTilesets.Contains(args[1]) && DungeonDatabase.GetOrLoadByName(args[1])) {
+                    knownTilesets.Add(args[1]);
+                }
+
                 bool invalidTileset = tilesetSpecified && !knownTilesets.Contains(args[1]);
                 string flowName = args[0].Replace('-', ' ');
 
-                if (flowName.ToLower().StartsWith("custom_glitchchest_flow") | 
+                if (flowName.ToLower().StartsWith("custom_glitchchest_flow") |
                     flowName.ToLower().StartsWith("custom_glitchchestalt_flow") |
                     flowName.ToLower().StartsWith("custom_glitch_flow"))
                 {
                     ExpandDungeonFlow.isGlitchFlow = true;
-                }                
-				if (invalidTileset) {
+                }
+                if (invalidTileset) {
                     ETGModConsole.Log("Not a valid tileset!");
                 } else {
-					try {
+                    try {
                         string LogMessage = ("Attempting to load Dungeon Flow \"" + args[0] + "\"");
 
                         if (tilesetSpecified) { LogMessage += (" with tileset \"" + args[1] + "\""); }
@@ -102,16 +109,16 @@ namespace ExpandTheGungeon {
                             ETGModConsole.Log("If you're trying to go nowhere, you're succeeding.");
                         }
                     } catch (Exception ex) {
-						ETGModConsole.Log("WHOOPS! Something went wrong! Most likely you tried to load a broken flow, or the tileset is incomplete and doesn't have the right tiles for the flow.");
-						ETGModConsole.Log("In order to get the game back into working order, the mod is now loading NPCParadise, with the castle tileset.");
+                        ETGModConsole.Log("WHOOPS! Something went wrong! Most likely you tried to load a broken flow, or the tileset is incomplete and doesn't have the right tiles for the flow.");
+                        ETGModConsole.Log("In order to get the game back into working order, the mod is now loading NPCParadise, with the castle tileset.");
                         Debug.Log("WHOOPS! Something went wrong! Most likely you tried to load a broken flow, or the tileset is incomplete and doesn't have the right tiles for the flow.");
                         Debug.Log("In order to get the game back into working order, the mod is now loading NPCParadise, with the castle tileset.");
                         Debug.LogException(ex);
                         ExpandDungeonFlow.isGlitchFlow = false;
                         GameManager.Instance.LoadCustomFlowForDebug("npcparadise", "Base_Castle", "tt_castle");
-					}
-				}
-			}
+                    }
+                }
+            }
         }	
     }
 }

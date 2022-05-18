@@ -1363,6 +1363,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "office_one_way_blocker_horizontal_bottom_001",
             "office_one_way_blocker_horizontal_top_001"
         };
+        public static readonly List<string> EXSpace_Collection = new List<string>() {
+            "spacegrass_01",
+            "spacegrass_02",
+            "spacegrass_03",
+            "spacegrass_04"
+        };
     }
 }
 

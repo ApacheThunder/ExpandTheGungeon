@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ValidationCache Version="1" SchemaVersion="85">
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1650482605" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1652503603" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Actor-Mixer Hierarchy\Factory SoundSeed Air Objects.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Actor-Mixer Hierarchy\Factory Synth One.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Attenuations\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
@@ -20,12 +20,12 @@
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Effects\Factory iZotope Multiband Distortion.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Effects\Factory iZotope Singleband Distortion.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Effects\Factory McDSP Effects.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Events\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Events\Weapons.wwu" DateLow="1650481848" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\ExpandTheGungeon.Spenser.wsettings" DateLow="1650482607" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Events\Default Work Unit.wwu" DateLow="1652384180" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Events\Weapons.wwu" DateLow="1652503603" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\ExpandTheGungeon.Spenser.wsettings" DateLow="1652503648" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\ExpandTheGungeon.wproj" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Game Parameters\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="1652387855" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Mixing Sessions\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Modulators\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
@@ -34,9 +34,9 @@
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Queries\Factory Queries.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\SoundBanks\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Soundcaster Sessions\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\States\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Switches\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
-	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Triggers\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\States\Default Work Unit.wwu" DateLow="1652394771" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Switches\Default Work Unit.wwu" DateLow="1652384180" DateHigh="0"/>
+	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Triggers\Default Work Unit.wwu" DateLow="1652394771" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\Virtual Acoustics\Default Work Unit.wwu" DateLow="1635182564" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1587193210" DateHigh="0"/>
 	<ValidationCacheItem File="C:\Users\Spenser\Documents\WwiseProjects\ExpandTheGungeon\Actor-Mixer Hierarchy\Factory SoundSeed Air Objects.wwu" DateLow="1576522896" DateHigh="0"/>
