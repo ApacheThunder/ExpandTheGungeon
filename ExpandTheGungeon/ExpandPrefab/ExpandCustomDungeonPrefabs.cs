@@ -547,8 +547,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_Woods.supportsUpholstery = false;
             Jungle_Woods.carpetIsMainFloor = false;
             Jungle_Woods.carpetGrids = new TileIndexGrid[] {
-                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/carpetGrids_0"),
-                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/carpetGrids_1")
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Woods/carpetGrid")
             };
             Jungle_Woods.supportsChannels = false;
             Jungle_Woods.minChannelPools = 0;
@@ -631,8 +630,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_Bamboo.supportsUpholstery = false;
             Jungle_Bamboo.carpetIsMainFloor = false;
             Jungle_Bamboo.carpetGrids = new TileIndexGrid[] {
-                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/carpetGrids_0"),
-                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/carpetGrids_1")
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Jungle/Bamboo/carpetGrid")
             };
             Jungle_Bamboo.supportsChannels = false;
             Jungle_Bamboo.minChannelPools = 0;

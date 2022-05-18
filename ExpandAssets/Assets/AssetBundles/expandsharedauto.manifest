@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2103202821
+CRC: 2152279382
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: babf772bfa8db0bac3105540901222b4
+    Hash: 3f7973c1fe1d7229e71841d9dd26c72f
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -69,6 +69,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Jungle_Exit.bytes
 - Assets/ExpandPrefabs/Items/EXBootlegGunAnimations.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mines_Regular13.bytes
+- Assets/ExpandSerializedData/TilesetData/Jungle/Woods/carpetGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Bat.bytes
 - Assets/ExpandPrefabs/Misc/EXPortableElevator_Reticle.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Secret_Expand_Achievement_The_Password.bytes
@@ -130,7 +131,6 @@ Assets:
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ExitLadder_Destination.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/FB_Expand_Achievement_Gunsmith.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/carpetGrids_1.txt
-- Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/carpetGrids_0.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Entrance.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Jungle.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon_CornerBomb3.bytes
@@ -419,7 +419,6 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Proper_Regular41.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BulletManEyepatch.png
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Secret_Brother10.bytes
-- Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/carpetGrids_1.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Hunter14.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/CultistCompanionCollection.prefab
 - Assets/ExpandSerializedData/TilesetData/Belly/pitLayoutGrid.txt
@@ -603,6 +602,7 @@ Assets:
 - Assets/ExpandTextures/RoomFactoryAssets/B_Expand_Achievement_Jammed.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/CronenbergCollection.prefab
 - Assets/ExpandTextures/SpriteCollections/Misc/EXParadrop_Collection.png
+- Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/carpetGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/West/Expand_West_Canyon1_Tiny4.bytes
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
 - Assets/ExpandSerializedData/SpriteCollections/EXChestCollection.txt
@@ -631,7 +631,6 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/AIActors/BulletMan_Monochrome.png
 - Assets/ExpandTextures/RoomFactoryAssets/Belly/Expand_Belly_Pirate24.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Roundabout.bytes
-- Assets/ExpandSerializedData/TilesetData/Jungle/Woods/carpetGrids_1.txt
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_Shard_002.prefab
 - Assets/ExpandSerializedData/TilesetData/West/WoodInterior/facadeTopGrid.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_SniperTotemBuff.bytes
@@ -908,7 +907,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_0.txt
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Mixed13.bytes
 - Assets/ExpandTextures/RoomBuilderAssets/Utiliroom_Pitfall_Layout.png
-- Assets/ExpandSerializedData/TilesetData/Jungle/Woods/carpetGrids_0.txt
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandDustStormFX.prefab
 - Assets/ExpandTextures/RoomFactoryAssets/Jungle/Expand_Forest_Tribal30.bytes
 - Assets/ExpandTextures/RoomFactoryAssets/Expand_Mutant.bytes

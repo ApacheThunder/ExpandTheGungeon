@@ -73,3 +73,4 @@ Credits:
 * SomeBunny for the portable ship item sprite.
 * https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.
+* C4ndy_cane for all the custom level music added to this mod!
