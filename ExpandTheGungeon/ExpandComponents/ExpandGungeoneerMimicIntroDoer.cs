@@ -159,20 +159,19 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield return StartCoroutine(DoTalk(new Vector3(0.5f, 1.25f)));
             yield return StartCoroutine(WaitForSecondsInvariant(0.6f));
-            if (mirrorAnimation) {
-                AkSoundEngine.PostEvent("Play_OBJ_crystal_shatter_01", gameObject);
-                AkSoundEngine.PostEvent("Play_OBJ_pot_shatter_01", gameObject);
-                AkSoundEngine.PostEvent("Play_OBJ_glass_shatter_01", gameObject);
-                
+            if (mirrorAnimation) {                
                 mirrorAnimation.Play("MirrorGlassCrack");
+                AkSoundEngine.PostEvent("Play_OBJ_crystal_shatter_01", GameManager.Instance.MainCameraController.gameObject);
+                AkSoundEngine.PostEvent("Play_OBJ_pot_shatter_01", GameManager.Instance.MainCameraController.gameObject);
+                AkSoundEngine.PostEvent("Play_OBJ_glass_shatter_01", GameManager.Instance.MainCameraController.gameObject);
                 while (mirrorAnimation.IsPlaying("MirrorGlassCrack")) { yield return null; }
+                AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", GameManager.Instance.MainCameraController.gameObject);
                 if (MirrorBase.GetComponent<tk2dSprite>()) { MirrorBase.GetComponent<tk2dSprite>().SetSprite("PlayerMimicMirror_Broken"); }
                 if (ShatterSystem) { ShatterSystem.SetActive(true); }
                 if (MirrorShatterFX) {
                     MirrorShatterFX.SetActive(true);
                     MirrorShatterFX.GetComponent<tk2dSpriteAnimator>().PlayAndDestroyObject("PlayerMimicShatter");
                 }
-                if (MirrorBase) { AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", gameObject); }
                 m_MirrorHasShattered = true;
                 yield return StartCoroutine(WalkThroughMirror());
             } else {
@@ -294,10 +293,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                 MirrorBase.GetComponent<tk2dSprite>().HeightOffGround -= 2f;
                 MirrorBase.GetComponent<tk2dSprite>().UpdateZDepth();
             }
-            if (m_GungeoneerMimicController) { m_GungeoneerMimicController.IntroDone = true; }
+            if (m_GungeoneerMimicController) {
+                m_GungeoneerMimicController.ModifyCamera(true);
+                m_GungeoneerMimicController.IntroDone = true;
+            }
             if (!m_MirrorHasShattered) {
                 if (MirrorBase.GetComponent<tk2dSprite>()) { MirrorBase.GetComponent<tk2dSprite>().SetSprite("PlayerMimicMirror_Broken"); }
-                if (MirrorBase) { AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", gameObject); }
+                AkSoundEngine.PostEvent("Play_OBJ_mirror_shatter_01", GameManager.Instance.MainCameraController.gameObject);
                 if (MirrorShatterFX) {
                     MirrorShatterFX.SetActive(true);
                     MirrorShatterFX.GetComponent<tk2dSpriteAnimator>().PlayAndDestroyObject("PlayerMimicShatter");

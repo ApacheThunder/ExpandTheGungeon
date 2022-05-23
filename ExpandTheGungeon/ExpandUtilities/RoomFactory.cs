@@ -9,13 +9,12 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandUtilities {
     
-    public static class RoomFactory {
-
-        public static readonly string dataHeader = "***DATA***";
-                
-        private static RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
-        private static RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
+    public class RoomFactory {
         
+        public static readonly string dataHeader = "***DATA***";
+        private static readonly RoomEventDefinition sealOnEnterWithEnemies = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM);
+        private static readonly RoomEventDefinition unsealOnRoomClear = new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM);
+                
         public struct RoomData {
             public string category;
             public string normalSubCategory;
@@ -37,11 +36,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static PrototypeDungeonRoom BuildFromAssetBundle(AssetBundle[] Bundles, string assetPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool assignDecorationSettings = false) {
-            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath);
+            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath); ;
             if (m_Asset) {
-                Texture2D texture = ExpandUtility.BytesToTexture(m_Asset.bytes, m_Asset.name);
                 RoomData roomData = ExtractRoomDataFromTextAssetBytes(m_Asset);
-                return Build(Bundles, texture, roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
+                return Build(Bundles, ExpandUtility.BytesToTexture(m_Asset.bytes, m_Asset.name), roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: RoomFactory asset: " + assetPath + " was not found!");
                 return null;
@@ -63,7 +61,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return CreateEmptyRoom(12, 12);
         }
 
-        public static void ApplyRoomData(AssetBundle[] Bundles, PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, bool assignDecorationProperties, float? Weight) {
+        public static void ApplyRoomData(AssetBundle[] Bundles, PrototypeDungeonRoom room, RoomData roomData, bool setRoomCategory, bool autoAssignToFloor, bool assignDecorationProperties, float? Weight, bool CellDataWasSerialized = false) {
             // Tools.Print("Building Exits...");
             if (roomData.exitPositions != null) {
                 for (int i = 0; i < roomData.exitPositions.Length; i++) {
@@ -126,8 +124,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
 
             // Define FloorData in from second Texture object if one exists
-            Texture2D m_ExtraFloorData = ExpandAssets.LoadAsset<Texture2D>(room.name + "_FloorData"); 
-            if (m_ExtraFloorData != null) { ApplyExtraFloorCellDataFromTexture2D(room, m_ExtraFloorData); }
+            if (!CellDataWasSerialized) {
+                Texture2D m_ExtraFloorData = ExpandAssets.LoadAsset<Texture2D>(room.name + "_FloorData");
+                if (m_ExtraFloorData) { ApplyExtraFloorCellDataFromTexture2D(room, m_ExtraFloorData); }
+            }
         }
 
         public static void AssignRoomToFloorRoomTable(PrototypeDungeonRoom Room, GlobalDungeonData.ValidTilesets targetTileSet, float? Weight) {
@@ -186,10 +186,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 string text = data.Substring(i, dataHeader.Length);
                 if (text.Equals(dataHeader)) { return JsonUtility.FromJson<RoomData>(data.Substring(i + dataHeader.Length)); }
             }
-            ETGModConsole.Log("No room data found at " + data, true);
+            ETGModConsole.Log("No room data found!", true);
             return default(RoomData);
         }
-
+        
         public static PrototypeDungeonRoom CreateRoomFromTexture(Texture2D texture) {
             int width = texture.width;
             int height = texture.height;
@@ -364,13 +364,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 } else if (GetPlaceableFromBundles(Bundles, assetPath) != null) {
                     DungeonPrerequisite[] instancePrerequisites = new DungeonPrerequisite[0];
                     room.placedObjectPositions.Add(location);
-                    room.placedObjects.Add(new PrototypePlacedObjectData {
-                    	contentsBasePosition = location,
-                    	fieldData = new List<PrototypePlacedObjectFieldData>(),
-                    	instancePrerequisites = instancePrerequisites,
-                    	linkedTriggerAreaIDs = new List<int>(),
-                    	placeableContents = GetPlaceableFromBundles(Bundles, assetPath)
-                    });
+                    room.placedObjects.Add(
+                        new PrototypePlacedObjectData {
+                    	    contentsBasePosition = location,
+                    	    fieldData = new List<PrototypePlacedObjectFieldData>(),
+                    	    instancePrerequisites = instancePrerequisites,
+                    	    linkedTriggerAreaIDs = new List<int>(),
+                    	    placeableContents = GetPlaceableFromBundles(Bundles, assetPath)
+                        }
+                    );
                     return;
                 } else {
                     Tools.PrintError("Unable to find asset in asset bundles: " + assetPath, "FF0000");

@@ -13,8 +13,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             DungeonFlowNode entranceNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandPrefabs.elevator_entrance);
             DungeonFlowNode exitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.exit_room_basic);
-            DungeonFlowNode bossfoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode bossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.Expand_West_WestBrosBossRoom);
+            DungeonFlowNode bossfoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideRoom: ExpandRoomPrefabs.GungeoneerMimicBossFoyerRoom);
+            DungeonFlowNode bossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
 
             DungeonFlowNode TestRoomNode_0 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Apache_RickRollChest);
 
@@ -55,10 +55,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(TestSecretRoomNode, TestRewardNode);
 
             m_CachedFlow.AddNodeToFlow(TestShopNode, TestRoomNode_01);
-            // m_CachedFlow.AddNodeToFlow(bossfoyerNode, TestShopNode);
-            // m_CachedFlow.AddNodeToFlow(bossNode, bossfoyerNode);
-            // m_CachedFlow.AddNodeToFlow(exitNode, bossNode);
-            m_CachedFlow.AddNodeToFlow(exitNode, TestShopNode);
+            m_CachedFlow.AddNodeToFlow(bossfoyerNode, TestShopNode);
+            m_CachedFlow.AddNodeToFlow(bossNode, bossfoyerNode);
+            m_CachedFlow.AddNodeToFlow(exitNode, bossNode);
             // m_CachedFlow.AddNodeToFlow(SecondSecretRoom, TestShopNode);
 
             m_CachedFlow.AddNodeToFlow(testConnectorNode01, TestRoomNode_01);

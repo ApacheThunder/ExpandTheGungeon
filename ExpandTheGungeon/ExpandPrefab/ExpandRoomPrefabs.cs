@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -23,16 +22,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom PuzzleRoom1;
         public static PrototypeDungeonRoom PuzzleRoom2;
         public static PrototypeDungeonRoom PuzzleRoom3;
-        public static PrototypeDungeonRoom ThwompCrossingVerticalNoRain;
-
+        
+        
         // Special Rooms used under certain circumstances when Player picks up Corrupted Junk.
         public static PrototypeDungeonRoom CreepyGlitchRoom;
         public static PrototypeDungeonRoom CreepyGlitchRoom_Entrance;
         // General Purpose Boss Room for Gungeoneer Mimic Boss;
         public static PrototypeDungeonRoom GungeoneerMimicBossRoom;
+        public static PrototypeDungeonRoom GungeoneerMimicBossFoyerRoom;
 
         // Custom rooms for the regular floors. (most designs provided courtasy of TheTurtleMelon)
-                
+
         // Rooms for Floor 1. 
         public static PrototypeDungeonRoom Expand_Explode;
         public static PrototypeDungeonRoom Expand_C_Hub;
@@ -984,7 +984,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(1, 8), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightPurple, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightPurple, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightPurple, useExternalPrefab: true));
-            // RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Gungeon_BellyEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Gungeon_BellyEntranceRoom_ext"), DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
+            // RoomBuilder.GenerateRoomLayout(Expand_Gungeon_BellyEntranceRoom, "Expand_Gungeon_BellyEntranceRoom_ext", DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
 
 
             Expand_Belly_BossRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_BossRoom");
@@ -1165,7 +1165,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_SecretHub.usesProceduralDecoration = false;
             // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub, new Vector2(10, 19), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
-            Expand_West_SecretHub2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
+            // Expand_West_SecretHub2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
+            Expand_West_SecretHub2 = UnityEngine.Object.Instantiate(Expand_West_SecretHub);
             Expand_West_SecretHub2.name = "Expand_West_SecretHub2";
             Expand_West_SecretHub2.overrideRoomVisualType = 2;
             Expand_West_SecretHub2.usesProceduralDecoration = false;
@@ -1201,7 +1202,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             FakeBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            ThwompCrossingVerticalNoRain = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             PuzzleRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1209,6 +1209,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CreepyGlitchRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             CreepyGlitchRoom_Entrance = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             GungeoneerMimicBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            GungeoneerMimicBossFoyerRoom = UnityEngine.Object.Instantiate(ExpandPrefabs.DragunBossFoyerRoom);
+            GungeoneerMimicBossFoyerRoom.overrideRoomVisualType = 2;
             Expand_West_WestBrosBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
 
             Expand_Explode = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1958,7 +1960,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Giant_Elevator_Room, new Vector2(89, 62), ExpandObjectDatabase.Brazier);
             // RoomFromText.AddObjectToRoom(Giant_Elevator_Room, new Vector2(50, 55), ChaosGlitchFloorGenerator.Instance.CustomGlitchDungeonPlacable(ChaosPrefabs.RainFXObject, useExternalPrefab: true));
             // Generate Cell Data
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Giant_Elevator_Room, expandSharedAssets1.LoadAsset<Texture2D>("Giant_Elevator_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(Giant_Elevator_Room, "Giant_Elevator_Room_Layout");
 
 
             // Replacement to Utiliroom which was removed in 2.1.8
@@ -2049,7 +2051,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Utiliroom_SpecialPit.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
             RoomBuilder.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(1, 4), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(Utiliroom_SpecialPit, new Vector2(8, 4), DungeonData.Direction.EAST);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Utiliroom_SpecialPit, expandSharedAssets1.LoadAsset<Texture2D>("Utiliroom_SpecialPit_Layout"));
+            RoomBuilder.GenerateRoomLayout(Utiliroom_SpecialPit, "Utiliroom_SpecialPit_Layout");
 
 
             Utiliroom_Pitfall.name = "Utiliroom (Pitfall)";
@@ -2094,7 +2096,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 0), DungeonData.Direction.SOUTH, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(4, 9), DungeonData.Direction.NORTH, ContainsDoor: false);
             RoomBuilder.AddExitToRoom(Utiliroom_Pitfall, new Vector2(9, 4), DungeonData.Direction.EAST, ContainsDoor: false);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Utiliroom_Pitfall, expandSharedAssets1.LoadAsset<Texture2D>("Utiliroom_Pitfall_Layout"));
+            RoomBuilder.GenerateRoomLayout(Utiliroom_Pitfall, "Utiliroom_Pitfall_Layout");
 
             SecretRewardRoom.name = "Secret Reward Room";
             SecretRewardRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -2155,7 +2157,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), ExpandPrefabs.RatJailDoor);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 15), ExpandPrefabs.RatKeyRewardPedestal);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretRewardRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Reward_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(SecretRewardRoom, "Secret_Reward_Room_Layout");
 
             SecretBossRoom.name = "Secret Boss Room";
             SecretBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -2256,7 +2258,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(1, 6), ExpandPrefabs.ElevatorDeparture);
             RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(2, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretExitRoom, new Vector2(3, 1), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Arrival, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretExitRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Exit_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(SecretExitRoom, "Secret_Exit_Room_Layout");
 
 
             ThwompCrossingVertical.name = "Thwomp_Crossing_Vertical";
@@ -2307,55 +2309,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.AddObjectToRoom(ThwompCrossingVertical, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(ThwompCrossingVertical, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Thwomp_Crossing_Vertical_Layout"));
-
-            ThwompCrossingVerticalNoRain.name = "Thwomp_Crossing_Vertical(NoRain)";
-            ThwompCrossingVerticalNoRain.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
-            ThwompCrossingVerticalNoRain.GUID = Guid.NewGuid().ToString();
-            ThwompCrossingVerticalNoRain.PreventMirroring = false;
-            ThwompCrossingVerticalNoRain.category = PrototypeDungeonRoom.RoomCategory.NORMAL;
-            ThwompCrossingVerticalNoRain.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
-            ThwompCrossingVerticalNoRain.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.TRAP;
-            ThwompCrossingVerticalNoRain.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
-            ThwompCrossingVerticalNoRain.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
-            ThwompCrossingVerticalNoRain.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
-            ThwompCrossingVerticalNoRain.pits = new List<PrototypeRoomPitEntry>();
-            ThwompCrossingVerticalNoRain.placedObjects = new List<PrototypePlacedObjectData>();
-            ThwompCrossingVerticalNoRain.placedObjectPositions = new List<Vector2>();
-            ThwompCrossingVerticalNoRain.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
-            ThwompCrossingVerticalNoRain.roomEvents = new List<RoomEventDefinition>(0);
-            ThwompCrossingVerticalNoRain.overriddenTilesets = 0;
-            ThwompCrossingVerticalNoRain.prerequisites = new List<DungeonPrerequisite>();
-            ThwompCrossingVerticalNoRain.InvalidInCoop = false;
-            ThwompCrossingVerticalNoRain.cullProceduralDecorationOnWeakPlatforms = false;
-            ThwompCrossingVerticalNoRain.preventAddedDecoLayering = false;
-            ThwompCrossingVerticalNoRain.precludeAllTilemapDrawing = false;
-            ThwompCrossingVerticalNoRain.drawPrecludedCeilingTiles = false;
-            ThwompCrossingVerticalNoRain.preventBorders = false;
-            ThwompCrossingVerticalNoRain.preventFacewallAO = false;
-            ThwompCrossingVerticalNoRain.usesCustomAmbientLight = false;
-            ThwompCrossingVerticalNoRain.customAmbientLight = Color.white;
-            ThwompCrossingVerticalNoRain.ForceAllowDuplicates = false;
-            ThwompCrossingVerticalNoRain.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
-            ThwompCrossingVerticalNoRain.IsLostWoodsRoom = false;
-            ThwompCrossingVerticalNoRain.UseCustomMusic = false;
-            ThwompCrossingVerticalNoRain.UseCustomMusicState = false;
-            ThwompCrossingVerticalNoRain.CustomMusicEvent = string.Empty;
-            ThwompCrossingVerticalNoRain.UseCustomMusicSwitch = false;
-            ThwompCrossingVerticalNoRain.CustomMusicSwitch = string.Empty;
-            ThwompCrossingVerticalNoRain.overrideRoomVisualTypeForSecretRooms = false;
-            ThwompCrossingVerticalNoRain.rewardChestSpawnPosition = new IntVector2(7, 7);
-            ThwompCrossingVerticalNoRain.Width = 14;
-            ThwompCrossingVerticalNoRain.Height = 30;
-            ThwompCrossingVerticalNoRain.overrideRoomVisualType = 3;
-            RoomBuilder.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(ThwompCrossingVerticalNoRain, new Vector2(7, 31), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 7), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 16), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.AddObjectToRoom(ThwompCrossingVerticalNoRain, new Vector2(11, 22), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(ThwompCrossingVerticalNoRain, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Thwomp_Crossing_Vertical_Layout"));
-
+            RoomBuilder.GenerateRoomLayout(ThwompCrossingVertical, "Expand_Thwomp_Crossing_Vertical_Layout");
+            
             ThwompCrossingHorizontal.name = "Thwomp_Crossing_Horizontal";
             ThwompCrossingHorizontal.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             ThwompCrossingHorizontal.GUID = Guid.NewGuid().ToString();
@@ -2400,7 +2355,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(11, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(16, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
             RoomBuilder.AddObjectToRoom(ThwompCrossingHorizontal, new Vector2(21, 12), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // Metal Cube Guy (trap version)
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(ThwompCrossingHorizontal, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Thwomp_Crossing_Horizontal_Layout"));
+            RoomBuilder.GenerateRoomLayout(ThwompCrossingHorizontal, "Expand_Thwomp_Crossing_Horizontal_Layout");
 
 
 
@@ -2467,7 +2422,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(0, 10), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(PuzzleRoom3, new Vector2(39, 10), DungeonData.Direction.EAST);
             RoomBuilder.AddObjectToRoom(PuzzleRoom3, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(PuzzleRoom3, expandSharedAssets1.LoadAsset<Texture2D>("Zelda_Puzzle_Room_3_Layout"));
+            RoomBuilder.GenerateRoomLayout(PuzzleRoom3, "Zelda_Puzzle_Room_3_Layout");
 
 
             CreepyGlitchRoom.name = "Creepy Glitched Room";
@@ -2518,8 +2473,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), EnemyBehaviourGuid: "5f0fa34b5a2e44cdab4a06f89bb5c442");
             // RoomBuilder.AddObjectToRoom(CreepyGlitchRoom, new Vector2(12, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             // RoomFromText.AddObjectToRoom(CreepyGlitchRoom, new Vector2(13, 13), ExpandUtility.GenerateDungeonPlacable(ExpandPrefab.RoomCorruptionAmbience, useExternalPrefab: true));
-            // RoomBuilder.GenerateRoomLayoutFromTexture2D(CreepyGlitchRoom, expandSharedAssets1.LoadAsset<Texture2D>("CreepyGlitchRoom_Layout"));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(CreepyGlitchRoom, expandSharedAssets1.LoadAsset<Texture2D>("Creepy_Glitched_Room_Layout"));
+            // RoomBuilder.GenerateRoomLayout(CreepyGlitchRoom, "CreepyGlitchRoom_Layout");
+            RoomBuilder.GenerateRoomLayout(CreepyGlitchRoom, "Creepy_Glitched_Room_Layout");
 
             CreepyGlitchRoom_Entrance.name = "Creepy Glitched Room Entrance";
             CreepyGlitchRoom_Entrance.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -2612,7 +2567,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(15, 0), DungeonData.Direction.SOUTH, PrototypeRoomExit.ExitType.ENTRANCE_ONLY, exitSize: 4);
             // RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXPlayerMimicBoss, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(GungeoneerMimicBossRoom, new Vector2(16, 29), EnemyBehaviourGuid: "5f0fa34b5a2e44cdab4a06f89bb5c442");
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(GungeoneerMimicBossRoom, expandSharedAssets1.LoadAsset<Texture2D>("Creepy_MirrorBoss_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(GungeoneerMimicBossRoom, "Creepy_MirrorBoss_Room_Layout");
 
             // Castle Custom Rooms
             Expand_Explode.name = "Expand TurtleMelon Explode";
@@ -2719,7 +2674,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(6, 19), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
             RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(23, 3), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
             RoomBuilder.AddObjectToRoom(Expand_Explode, new Vector2(7, 11), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard (gunsinger)
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Explode, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Explode_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Explode, "Expand_TurtleMelon_Explode_Layout");
 
 
             Expand_C_Hub.name = "Expand TurtleMelon C Hub";
@@ -2838,7 +2793,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(20, 37), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
             RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(5, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
             RoomBuilder.AddObjectToRoom(Expand_C_Hub, new Vector2(33, 20), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_C_Hub, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_C_Hub_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_C_Hub, "Expand_TurtleMelon_C_Hub_Layout");
 
 
             Expand_C_Gap.name = "Expand TurtleMelon C Gap";
@@ -2971,7 +2926,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(13, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(4, 7), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
             RoomBuilder.AddObjectToRoom(Expand_C_Gap, new Vector2(3, 13), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_C_Gap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_C_Gap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_C_Gap, "Expand_TurtleMelon_C_Gap_Layout");
 
 
             Expand_ChainGap.name = "Expand TurtleMelon Chain Gap";
@@ -3034,7 +2989,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(22, 11), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.TableVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 8), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
             RoomBuilder.AddObjectToRoom(Expand_ChainGap, new Vector2(13, 12), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_ChainGap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Chain_Gap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_ChainGap, "Expand_TurtleMelon_Chain_Gap_Layout");
 
 
             Expand_Challange1.name = "Expand TurtleMelon Challenge 1";
@@ -3123,7 +3078,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(3, 35), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
             RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(4, 38), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
             RoomBuilder.AddObjectToRoom(Expand_Challange1, new Vector2(20, 22), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Challange1, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Challenge_1_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Challange1, "Expand_TurtleMelon_Challenge_1_Layout");
 
 
             Expand_Pit_Line.name = "Expand TurtleMelon Pit Line";
@@ -3177,7 +3132,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(5, 14), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
             RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 7), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
             RoomBuilder.AddObjectToRoom(Expand_Pit_Line, new Vector2(16, 22), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Pit_Line, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Pit_Line_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Pit_Line, "Expand_TurtleMelon_Pit_Line_Layout");
 
 
             Expand_Singer_Gap.name = "Expand TurtleMelon Singer Gap";
@@ -3283,7 +3238,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(23, 15), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
             RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 23), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
             RoomBuilder.AddObjectToRoom(Expand_Singer_Gap, new Vector2(10, 17), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Singer_Gap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Singer_Gap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Singer_Gap, "Expand_TurtleMelon_Singer_Gap_Layout");
 
             Expand_Flying_Gap.name = "Expand TurtleMelon Flying Gap";
             Expand_Flying_Gap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -3379,7 +3334,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(18, 23), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 3), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
             RoomBuilder.AddObjectToRoom(Expand_Flying_Gap, new Vector2(13, 10), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Flying_Gap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Flying_Gap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Flying_Gap, "Expand_TurtleMelon_Flying_Gap_Layout");
 
 
             Expand_Battle.name = "Expand TurtleMelon Battle Hub";
@@ -3857,7 +3812,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(15, 27), ExpandObjectDatabase.ExplodyBarrel);
             RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(5, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
             RoomBuilder.AddObjectToRoom(Expand_Cross, new Vector2(25, 15), EnemyBehaviourGuid: "8bb5578fba374e8aae8e10b754e61d62"); // cardinal
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Cross, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Cross_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Cross, "Expand_TurtleMelon_Cross_Layout");
 
 
             Expand_Blocks.name = "Expand TurtleMelon Blocks";
@@ -3953,7 +3908,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(24, 10), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
             RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(8, 18), EnemyBehaviourGuid: "6f22935656c54ccfb89fca30ad663a64"); // blue_bookllet
             RoomBuilder.AddObjectToRoom(Expand_Blocks, new Vector2(16, 27), EnemyBehaviourGuid: "a400523e535f41ac80a43ff6b06dc0bf"); // green_bookllet
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Blocks, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Blocks_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Blocks, "Expand_TurtleMelon_Blocks_Layout");
 
 
 
@@ -4032,7 +3987,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(10, 2), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(2, 10), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Blocks_Pits, new Vector2(17, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Blocks_Pits, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Blocks_Pits_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Blocks_Pits, "Expand_TurtleMelon_Blocks_Pits_Layout");
 
 
             Expand_Wall_Pit.name = "Expand TurtleMelon Wall Pit";
@@ -4124,7 +4079,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(2, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_Wall_Pit, new Vector2(20, 19), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(Expand_Wall_Pit, new Vector2(9, 8), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Wall_Pit, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Wall_Pit_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Wall_Pit, "Expand_TurtleMelon_Wall_Pit_Layout");
 
 
 
@@ -4243,7 +4198,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 7), EnemyBehaviourGuid: "cf2b7021eac44e3f95af07db9a7c442c"); // LeadWizard
             RoomBuilder.AddObjectToRoom(Expand_Gate_Cross, new Vector2(16, 12), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Gate_Cross, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Gate_Cross_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Gate_Cross, "Expand_TurtleMelon_Gate_Cross_Layout");
 
             Expand_Passage.name = "Expand TurtleMelon Passage";
             Expand_Passage.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -4332,7 +4287,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(2, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
             RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(20, 2), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
             RoomBuilder.AddObjectToRoom(Expand_Passage, new Vector2(11, 17), EnemyBehaviourGuid: "c0260c286c8d4538a697c5bf24976ccf"); // dynamite_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Passage, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Passage_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Passage, "Expand_TurtleMelon_Passage_Layout");
 
 
             Expand_Pit_Jump.name = "Expand TurtleMelon Pit Jump";
@@ -4383,7 +4338,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(12, 3), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
             RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(15, 13), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
             RoomBuilder.AddObjectToRoom(Expand_Pit_Jump, new Vector2(16, 21), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); // red_shotgun_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Pit_Jump, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Pit_Jump_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Pit_Jump, "Expand_TurtleMelon_Pit_Jump_Layout");
 
 
             Expand_Pit_Passage.name = "Expand TurtleMelon Pit Passage";
@@ -4434,7 +4389,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(13, 4), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
             RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(5, 10), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
             RoomBuilder.AddObjectToRoom(Expand_Pit_Passage, new Vector2(14, 15), EnemyBehaviourGuid: "6b7ef9e5d05b4f96b04f05ef4a0d1b18"); // rubber_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Pit_Passage, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Pit_Passage_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Pit_Passage, "Expand_TurtleMelon_Pit_Passage_Layout");
 
 
             Expand_R_Blocks.name = "Expand TurtleMelon R Blocks";
@@ -4550,7 +4505,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(34, 8), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_R_Blocks, new Vector2(9, 28), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_R_Blocks, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_R_Blocks_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_R_Blocks, "Expand_TurtleMelon_R_Blocks_Layout");
 
 
             Expand_Small_Passage.name = "Expand TurtleMelon Small Passage 1";
@@ -4651,7 +4606,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(0, 13), ExpandObjectDatabase.Bush);
             RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(1, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Small_Passage, new Vector2(5, 8), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Small_Passage, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Small_Passage_1_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Small_Passage, "Expand_TurtleMelon_Small_Passage_1_Layout");
 
 
             Expand_Box.name = "Expand TurtleMelon Box";
@@ -4793,7 +4748,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(5, 4), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(12, 13), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Box, new Vector2(14, 4), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Box, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Box_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Box, "Expand_TurtleMelon_Box_Layout");
 
 
             Expand_Steps.name = "Expand TurtleMelon Steps";
@@ -4852,7 +4807,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(14, 11), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 7), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_Steps, new Vector2(4, 15), EnemyBehaviourGuid: "206405acad4d4c33aac6717d184dc8d4"); // apprentice_gunjurer
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Steps, expandSharedAssets1.LoadAsset<Texture2D>("Expand_TurtleMelon_Steps_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Steps, "Expand_TurtleMelon_Steps_Layout");
 
 
             Expand_Apache_Hub.name = "Expand MelonTurtle Apache Hub";
@@ -4945,7 +4900,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(34, 25), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
             RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(3, 20), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
             RoomBuilder.AddObjectToRoom(Expand_Apache_Hub, new Vector2(35, 15), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_Hub, expandSharedAssets1.LoadAsset<Texture2D>("Expand_MelonTurtle_Apache_Hub_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_Hub, "Expand_MelonTurtle_Apache_Hub_Layout");
 
 
             Expand_Box_Hub.name = "Expand MelonTurtle Box Hub";
@@ -5103,7 +5058,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(11, 15), EnemyBehaviourGuid: "c0ff3744760c4a2eb0bb52ac162056e6"); // bookllet
             RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(34, 28), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
             RoomBuilder.AddObjectToRoom(Expand_Box_Hub, new Vector2(10, 36), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // red_shotgun_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Box_Hub, expandSharedAssets1.LoadAsset<Texture2D>("Expand_MelonTurtle_Box_Hub_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Box_Hub, "Expand_MelonTurtle_Box_Hub_Layout");
 
 
 
@@ -5417,7 +5372,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(18, 18), NonEnemyBehaviour: ExpandPrefabs.Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
             RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 6), EnemyBehaviourGuid: "463d16121f884984abe759de38418e48"); // chain_gunner
             RoomBuilder.AddObjectToRoom(Expand_Enclose_Hub, new Vector2(19, 32), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Enclose_Hub, expandSharedAssets1.LoadAsset<Texture2D>("Expand_MelonTurtle_Enclose_Hub_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Enclose_Hub, "Expand_MelonTurtle_Enclose_Hub_Layout");
 
 
             Expand_Crosshairs.name = "Expand Neighborino Crosshairs";
@@ -5474,7 +5429,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(15, 24), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
             RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(4, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
             RoomBuilder.AddObjectToRoom(Expand_Crosshairs, new Vector2(24, 14), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // 
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Crosshairs, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_Crosshair_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Crosshairs, "Expand_Neighborino_Crosshair_Layout");
 
             Expand_Basic.name = "Expand Neighborino Basic";
             Expand_Basic.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -5544,7 +5499,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(24, 21), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // blue_shotgun_kin
             RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(8, 12), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
             RoomBuilder.AddObjectToRoom(Expand_Basic, new Vector2(18, 12), EnemyBehaviourGuid: "ec8ea75b557d4e7b8ceeaacdf6f8238c"); // gun_nut
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Basic, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_Basic_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Basic, "Expand_Neighborino_Basic_Layout");
 
             Expand_JumpInThePit.name = "Expand Neighborino JumpInThePit";
             Expand_JumpInThePit.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -5655,7 +5610,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_JumpInThePit, new Vector2(13, 36), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(Expand_JumpInThePit, new Vector2(5, 4), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
             RoomBuilder.AddObjectToRoom(Expand_JumpInThePit, new Vector2(19, 28), EnemyBehaviourGuid: "1a4872dafdb34fd29fe8ac90bd2cea67"); // king_bullat
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_JumpInThePit, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_JumpInThePit_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_JumpInThePit, "Expand_Neighborino_JumpInThePit_Layout");
 
             Expand_LongSpikeTrap.name = "Expand Neighborino Long SpikeTrap";
             Expand_LongSpikeTrap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -5739,7 +5694,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(7, 34), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(5, 34), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_LongSpikeTrap, new Vector2(3, 34), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_LongSpikeTrap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_LongSpikeTrap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_LongSpikeTrap, "Expand_Neighborino_LongSpikeTrap_Layout");
 
             Expand_SpikeTrap.name = "Expand Neighborino SpikeTrap";
             Expand_SpikeTrap.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -5799,7 +5754,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 14), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 16), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_SpikeTrap, new Vector2(12, 18), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SpikeTrap, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_SpikeTrap_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SpikeTrap, "Expand_Neighborino_SpikeTrap_Layout");
 
             Expand_ThinRoom.name = "Expand Neighborino Thin Room";
             Expand_ThinRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -5978,7 +5933,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_SniperRoom, new Vector2(16, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddObjectToRoom(Expand_SniperRoom, new Vector2(6, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
             RoomBuilder.AddObjectToRoom(Expand_SniperRoom, new Vector2(8, 1), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SniperRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_SniperRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SniperRoom, "Expand_Neighborino_SniperRoom_Layout");
 
             Expand_TableRoom.name = "Expand Neighborino Table Room";
             Expand_TableRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -6192,7 +6147,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_GoopTroop, new Vector2(13, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddObjectToRoom(Expand_GoopTroop, new Vector2(15, 13), EnemyBehaviourGuid: "e61cab252cfb435db9172adc96ded75f"); // poisbulon
             RoomBuilder.AddObjectToRoom(Expand_GoopTroop, new Vector2(11, 13), EnemyBehaviourGuid: "e61cab252cfb435db9172adc96ded75f"); // poisbulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_GoopTroop, expandSharedAssets1.LoadAsset<Texture2D>("Neighborino_GoopTroop_Layout"), DamageCellsType: CoreDamageTypes.Poison);
+            RoomBuilder.GenerateRoomLayout(Expand_GoopTroop, "Neighborino_GoopTroop_Layout", DamageCellsType: CoreDamageTypes.Poison);
 
             Expand_HopScotch.name = "Expand Neighborino HopScotch";
             Expand_HopScotch.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -6243,7 +6198,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_HopScotch, new Vector2(19, 2), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_HopScotch, new Vector2(22, 4), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_HopScotch, new Vector2(24, 7), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_HopScotch, expandSharedAssets1.LoadAsset<Texture2D>("Neighborino_Hopscoth_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_HopScotch, "Neighborino_Hopscoth_Layout");
 
 
             Expand_Pit.name = "Expand Neighborino Pit";
@@ -6408,7 +6363,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Pit, new Vector2(20, 7), EnemyBehaviourGuid: "ed37fa13e0fa4fcf8239643957c51293"); // gigi
             RoomBuilder.AddObjectToRoom(Expand_Pit, new Vector2(7, 17), EnemyBehaviourGuid: "af84951206324e349e1f13f9b7b60c1a"); // skusket
             RoomBuilder.AddObjectToRoom(Expand_Pit, new Vector2(20, 17), EnemyBehaviourGuid: "af84951206324e349e1f13f9b7b60c1a"); // skusket
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Pit, expandSharedAssets1.LoadAsset<Texture2D>("Neighborino_Pit_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Pit, "Neighborino_Pit_Layout");
 
             Expand_Singer.name = "Expand Neighborino Singer";
             Expand_Singer.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -6521,7 +6476,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Singer, new Vector2(13, 2), EnemyBehaviourGuid: "f905765488874846b7ff257ff81d6d0c"); // fungun
             RoomBuilder.AddObjectToRoom(Expand_Singer, new Vector2(9, 3), EnemyBehaviourGuid: "128db2f0781141bcb505d8f00f9e4d47"); //
             RoomBuilder.AddObjectToRoom(Expand_Singer, new Vector2(18, 3), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); //
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Singer, expandSharedAssets1.LoadAsset<Texture2D>("Neighborino_Singer_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Singer, "Neighborino_Singer_Layout");
 
             Expand_TableRoom2.name = "Expand Neighborino Table Room 2";
             Expand_TableRoom2.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -6841,7 +6796,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Walkway, new Vector2(6, 18), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); // 
             RoomBuilder.AddObjectToRoom(Expand_Walkway, new Vector2(14, 13), EnemyBehaviourGuid: "2752019b770f473193b08b4005dc781f"); // veteran_shotgun_kin 
             RoomBuilder.AddObjectToRoom(Expand_Walkway, new Vector2(8, 13), EnemyBehaviourGuid: "2752019b770f473193b08b4005dc781f"); // veteran_shotgun_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Walkway, expandSharedAssets1.LoadAsset<Texture2D>("Neighborino_Walkway_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Walkway, "Neighborino_Walkway_Layout");
 
             Expand_SpiderMaze.name = "Expand Apache SpiderMaze";
             Expand_SpiderMaze.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -6915,7 +6870,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(30, 30), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
             RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(6, 35), EnemyBehaviourGuid: "249db525a9464e5282d02162c88e0357"); // spent
             RoomBuilder.AddObjectToRoom(Expand_SpiderMaze, new Vector2(29, 34), EnemyBehaviourGuid: "5288e86d20184fa69c91ceb642d31474"); // gummy
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SpiderMaze, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_SpiderMaze_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SpiderMaze, "Expand_Apache_SpiderMaze_Layout");
 
             Expand_BlobRoom.name = "Expand Neighborino Blob Room";
             Expand_BlobRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7069,7 +7024,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_BlobRoom, new Vector2(15, 8), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
             // RoomBuilder.AddObjectToRoom(Expand_BlobRoom, new Vector2(8, 12), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
             // RoomBuilder.AddObjectToRoom(Expand_BlobRoom, new Vector2(13, 12), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // Blobulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_BlobRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_BlobRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_BlobRoom, "Expand_Neighborino_BlobRoom_Layout");
 
             /*Expand_CubeRoom.name = "Expand Neighborino Cube Room";
             Expand_CubeRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7119,7 +7074,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_CubeRoom, new Vector2(7, 3), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // metal_cube_guy (trap version)
             RoomBuilder.AddObjectToRoom(Expand_CubeRoom, new Vector2(11, 11), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // metal_cube_guy (trap version)
             RoomBuilder.AddObjectToRoom(Expand_CubeRoom, new Vector2(7, 20), EnemyBehaviourGuid: "ba928393c8ed47819c2c5f593100a5bc"); // metal_cube_guy (trap version)
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_CubeRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_CubeRoom_Layout"));*/
+            RoomBuilder.GenerateRoomLayout(Expand_CubeRoom, "Expand_Neighborino_CubeRoom_Layout");*/
 
             Expand_HellInACell.name = "Expand Neighborino Hell In a Cell";
             Expand_HellInACell.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7222,7 +7177,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_HellInACell, new Vector2(9, 7), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_HellInACell, new Vector2(13, 7), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_HellInACell, new Vector2(16, 8), EnemyBehaviourGuid: "42be66373a3d4d89b91a35c9ff8adfec"); // blobulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_HellInACell, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_HellInACell_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_HellInACell, "Expand_Neighborino_HellInACell_Layout");
 
             Expand_IceIsNice.name = "Expand Neighborino Ice is Nice";
             Expand_IceIsNice.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7326,7 +7281,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_IceIsNice, new Vector2(7, 4), EnemyBehaviourGuid: "9b2cf2949a894599917d4d391a0b7394"); // high_gunjurer
             RoomBuilder.AddObjectToRoom(Expand_IceIsNice, new Vector2(15, 4), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bulletkin
             RoomBuilder.AddObjectToRoom(Expand_IceIsNice, new Vector2(7, 9), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bulletkin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_IceIsNice, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_IceIsNice_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_IceIsNice, "Expand_Neighborino_IceIsNice_Layout");
 
             Expand_IceScotch.name = "Expand Neighborino Ice Scotch";
             Expand_IceScotch.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7428,7 +7383,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_IceScotch, new Vector2(9, 6), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_IceScotch, new Vector2(7, 7), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_IceScotch, new Vector2(9, 8), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_IceScotch, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_IceScotch_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_IceScotch, "Expand_Neighborino_IceScotch_Layout");
 
             Expand_MrPresident.name = "Expand Neighborino Mr President";
             Expand_MrPresident.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7569,7 +7524,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_MrPresident, new Vector2(15, 15), EnemyBehaviourGuid: "b54d89f9e802455cbb2b8a96a31e8259"); //
             RoomBuilder.AddObjectToRoom(Expand_MrPresident, new Vector2(15, 4), EnemyBehaviourGuid: "336190e29e8a4f75ab7486595b700d4a"); // skullets
             RoomBuilder.AddObjectToRoom(Expand_MrPresident, new Vector2(1, 12), EnemyBehaviourGuid: "336190e29e8a4f75ab7486595b700d4a"); // skullets
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_MrPresident, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_MrPresident_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_MrPresident, "Expand_Neighborino_MrPresident_Layout");
 
             Expand_SawRoom.name = "Expand Neighborino Saw Room";
             Expand_SawRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7680,7 +7635,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_SawRoom, new Vector2(9, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_SawRoom, new Vector2(16, 17), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_SawRoom, new Vector2(9, 12), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SawRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_SawRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SawRoom, "Expand_Neighborino_SawRoom_Layout");
 
 
 
@@ -7930,7 +7885,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Arena, new Vector2(12, 8), EnemyBehaviourGuid: "88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Arena, new Vector2(9, 5), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Arena, new Vector2(10, 12), EnemyBehaviourGuid: "70216cae6c1346309d86d4a0b4603045"); // veteran_bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Arena, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_Arena_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Arena, "Expand_Neighborino_Arena_Layout");
 
             Expand_CaptainCrunch.name = "Expand Neighborino Captain Crunch";
             Expand_CaptainCrunch.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -7992,7 +7947,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_CaptainCrunch, new Vector2(14, 13), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.FlameTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_CaptainCrunch, new Vector2(13, 14), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.FlameTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_CaptainCrunch, new Vector2(14, 14), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.FlameTrap, useExternalPrefab: true));
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_CaptainCrunch, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_CaptainCrunch_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_CaptainCrunch, "Expand_Neighborino_CaptainCrunch_Layout");
 
             Expand_CorridorOfDoom.name = "Expand Neighborino Corridor of Doom";
             Expand_CorridorOfDoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8086,7 +8041,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_CorridorOfDoom, new Vector2(12, 1), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_CorridorOfDoom, new Vector2(21, 2), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
             RoomBuilder.AddObjectToRoom(Expand_CorridorOfDoom, new Vector2(22, 4), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_CorridorOfDoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_CorridorOfDoomDeath_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_CorridorOfDoom, "Expand_Neighborino_CorridorOfDoomDeath_Layout");
 
             Expand_FireRoom.name = "Expand Neighborino Fire Room";
             Expand_FireRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8157,7 +8112,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_FireRoom, new Vector2(3, 7), EnemyBehaviourGuid: "4d37ce3d666b4ddda8039929225b7ede"); // grenade_kin
             RoomBuilder.AddObjectToRoom(Expand_FireRoom, new Vector2(3, 7), EnemyBehaviourGuid: "ccf6d241dad64d989cbcaca2a8477f01"); // leadbulon
             RoomBuilder.AddObjectToRoom(Expand_FireRoom, new Vector2(9, 3), EnemyBehaviourGuid: "ccf6d241dad64d989cbcaca2a8477f01"); // leadbulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_FireRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_FireRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_FireRoom, "Expand_Neighborino_FireRoom_Layout");
 
             Expand_Pits.name = "Expand Neighborino Pits";
             Expand_Pits.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8260,7 +8215,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_Pits, new Vector2(15, 9), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(Expand_Pits, new Vector2(9, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddObjectToRoom(Expand_Pits, new Vector2(9, 9), EnemyBehaviourGuid: "b70cbd875fea498aa7fd14b970248920"); // great_bulletshark
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Pits, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_Pits_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Pits, "Expand_Neighborino_Pits_Layout");
 
             Expand_SkullRoom.name = "Expand Neighborino Skull Room";
             Expand_SkullRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8425,7 +8380,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_SkullRoom, new Vector2(15, 8), EnemyBehaviourGuid: "336190e29e8a4f75ab7486595b700d4a"); // skullet
             RoomBuilder.AddObjectToRoom(Expand_SkullRoom, new Vector2(5, 8), EnemyBehaviourGuid: "336190e29e8a4f75ab7486595b700d4a"); // skullet
             RoomBuilder.AddObjectToRoom(Expand_SkullRoom, new Vector2(9, 15), EnemyBehaviourGuid: "21dd14e5ca2a4a388adab5b11b69a1e1"); // shelleton
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SkullRoom, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Neighborino_SkullRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SkullRoom, "Expand_Neighborino_SkullRoom_Layout");
 
             Expand_TableRoomAgain.name = "Expand Neighborino Tables Again";
             Expand_TableRoomAgain.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -8553,7 +8508,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             Expand_4wave = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_4wave");
-            Expand_Bat = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Bat");
             Expand_Spiralbomb = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Spiralbomb");
             Expand_Bat = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Bat");
             Expand_Batsmall = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Batsmall");
@@ -8871,7 +8825,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(23, 23), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXSawBladeTrap_4x4Zone, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(9, 21), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
             RoomBuilder.AddObjectToRoom(Expand_Apache_FieldOfSaws, new Vector2(21, 9), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5"); // bullet_kin
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_FieldOfSaws, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_FieldOfSaws_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_FieldOfSaws, "Expand_Apache_FieldOfSaws_Layout");
 
 
             Expand_Apache_TheCrushZone.name = "Apache The Crush Zone";
@@ -9081,7 +9035,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(33, 24), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(12, 13), EnemyBehaviourGuid: "e61cab252cfb435db9172adc96ded75f"); // poisbulon
             RoomBuilder.AddObjectToRoom(Expand_Apache_TheCrushZone, new Vector2(24, 22), EnemyBehaviourGuid: "0239c0680f9f467dbe5c4aab7dd1eca6"); // blobulon
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_TheCrushZone, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_TheCrushZone_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_TheCrushZone, "Expand_Apache_TheCrushZone_Layout");
 
             Expand_Apache_SpikeAndPits.name = "Apache Spikes and Pits";
             Expand_Apache_SpikeAndPits.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -9165,7 +9119,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(17, 19), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(19, 19), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.SpikeTrap, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Apache_SpikeAndPits, new Vector2(15, 10), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_SpikeAndPits, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_SpikeAndPits_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_SpikeAndPits, "Expand_Apache_SpikeAndPits_Layout");
 
             Expand_Apache_PitTraps.name = "Apache Pit Traps";
             Expand_Apache_PitTraps.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
@@ -9317,7 +9271,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Apache_PitTraps, new Vector2(17, 17), EnemyBehaviourGuid: "4db03291a12144d69fe940d5a01de376"); // hollowpoint
             RoomBuilder.AddObjectToRoom(Expand_Apache_PitTraps, new Vector2(6, 17), EnemyBehaviourGuid: "72d2f44431da43b8a3bae7d8a114a46d"); // bulletshark
             RoomBuilder.AddObjectToRoom(Expand_Apache_PitTraps, new Vector2(17, 6), EnemyBehaviourGuid: "72d2f44431da43b8a3bae7d8a114a46d"); // bulletshark
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_PitTraps, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_PitTraps_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_PitTraps, "Expand_Apache_PitTraps_Layout");
 
 
 
@@ -9377,7 +9331,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
             Expand_Apache_RickRollChest.additionalObjectLayers.Remove(Expand_Apache_RickRollChest.additionalObjectLayers[1]);
             RoomBuilder.AddObjectToRoom(Expand_Apache_RickRollChest, new Vector2(7, 9), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.RickRollChestObject, useExternalPrefab: true), xOffset: 8);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_RickRollChest, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_RickRollChestRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_RickRollChest, "Expand_Apache_RickRollChestRoom_Layout");
 
 
             Expand_Apache_SurpriseChest.name = "Apache Suprise Chest Room";
@@ -9436,7 +9390,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
             Expand_Apache_SurpriseChest.additionalObjectLayers.Remove(Expand_Apache_SurpriseChest.additionalObjectLayers[1]);
             RoomBuilder.AddObjectToRoom(Expand_Apache_SurpriseChest, new Vector2(8, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.SurpriseChestObject, useExternalPrefab: true), yOffset: 8);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_Apache_SurpriseChest, expandSharedAssets1.LoadAsset<Texture2D>("Expand_Apache_RickRollChestRoom_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_Apache_SurpriseChest, "Expand_Apache_SurpriseChest_Layout");
 
 
             SecretExitRoom2.name = "Secret Elevator Exit";
@@ -9520,7 +9474,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(27, 35), ExpandPrefabs.Cactus_B);
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(19, 57), ExpandPrefabs.Cactus_B);
             RoomBuilder.AddObjectToRoom(SecretExitRoom2, new Vector2(28, 57), ExpandPrefabs.Cactus_B);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretExitRoom2, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Elevator_Exit_Layout"));
+            RoomBuilder.GenerateRoomLayout(SecretExitRoom2, "Secret_Elevator_Exit_Layout");
 
 
             SecretRatEntranceRoom.name = "Secret Rat MiniElevator Room";
@@ -9578,7 +9532,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(7, 5), EnemyBehaviourGuid: "5861e5a077244905a8c25c2b7b4d6ebb"); // bullet kin cowboy
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(5, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
             RoomBuilder.AddObjectToRoom(SecretRatEntranceRoom, new Vector2(10, 11), EnemyBehaviourGuid: "ddf12a4881eb43cfba04f36dd6377abb"); // shotgun kin cowboy
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(SecretRatEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_Rat_MiniElevator_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(SecretRatEntranceRoom, "Secret_Rat_MiniElevator_Room_Layout");
 
 
             Expand_SecretElevatorEntranceRoom.name = "Secret MiniElevator Room";
@@ -9629,7 +9583,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(Expand_SecretElevatorEntranceRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SecretElevatorEntranceRoom, expandSharedAssets1.LoadAsset<Texture2D>("Secret_MiniElevator_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SecretElevatorEntranceRoom, "Secret_MiniElevator_Room_Layout");
 
             // This will share same layout as it's entrance version.
             Expand_SecretElevatorDestinationRoom.name = "Destination MiniElevator Room";
@@ -9680,7 +9634,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(1, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddExitToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(9, 9), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(Expand_SecretElevatorDestinationRoom, new Vector2(3, 8), ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked);
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(Expand_SecretElevatorDestinationRoom, expandSharedAssets1.LoadAsset<Texture2D>("Destination_MiniElevator_Room_Layout"));
+            RoomBuilder.GenerateRoomLayout(Expand_SecretElevatorDestinationRoom, "Destination_MiniElevator_Room_Layout");
 
 
 

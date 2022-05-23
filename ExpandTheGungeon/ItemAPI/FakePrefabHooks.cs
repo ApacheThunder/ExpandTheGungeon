@@ -22,22 +22,21 @@ namespace ExpandTheGungeon.ItemAPI {
                 typeof(FakePrefabHooks).GetMethod("InstantiateOPI")
             );
 
-			Hook hook4 = new Hook(typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] {
-				typeof(UnityEngine.Object), typeof(Transform) }),
+			Hook hook4 = new Hook(
+                typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Transform) }),
                 typeof(FakePrefabHooks).GetMethod("InstantiateOP")
             );
 
 			Hook hook5 = new Hook(
-                typeof(UnityEngine.Object).GetMethod("Instantiate", 
-                new Type[] { typeof(UnityEngine.Object) }),  typeof(FakePrefabHooks).GetMethod("InstantiateO")
+                typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object) }),
+                typeof(FakePrefabHooks).GetMethod("InstantiateO")
             );
 			Hook hook6 = new Hook(
                 typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion) }),
                 typeof(FakePrefabHooks).GetMethod("InstantiateOPR")
             );
 			Hook hook7 = new Hook(
-                typeof(UnityEngine.Object).GetMethod("Instantiate",
-                new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion), typeof(Transform) }),
+                typeof(UnityEngine.Object).GetMethod("Instantiate", new Type[] { typeof(UnityEngine.Object), typeof(Vector3), typeof(Quaternion), typeof(Transform) }),
                 typeof(FakePrefabHooks).GetMethod("InstantiateOPRP")
             );
 		}

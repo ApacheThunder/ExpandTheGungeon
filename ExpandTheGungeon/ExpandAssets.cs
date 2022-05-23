@@ -21,7 +21,7 @@ namespace ExpandTheGungeon {
         public static T LoadSpriteAsset<T>(string assetPath) where T : UnityEngine.Object {
             return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModSpriteAssetBundleName).LoadAsset<T>(assetPath);
         }
-
+        
         public static T LoadOfficialAsset<T>(string assetPath, AssetSource assetType) where T : UnityEngine.Object {
             switch (assetType) {
                 case AssetSource.BraveResources:
@@ -50,7 +50,7 @@ namespace ExpandTheGungeon {
                 ExpandSettings.spritesBundlePresent = true;
             }
         }
-        
+                
         public static void InitCustomAssetBundles(string nameSpace = null) {
             Dictionary<string, AssetBundle> m_AssetBundles = ReflectionHelpers.ReflectGetField<Dictionary<string, AssetBundle>>(typeof(ResourceManager), "LoadedBundles");
             AssetBundle m_ExpandSharedAssets1 = null;

@@ -4,9 +4,19 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
-	public class RoomBuilder {
-                
-        public static void GenerateRoomLayoutFromTexture2D(PrototypeDungeonRoom room, Texture2D sourceTexture, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
+    public class RoomBuilder {
+
+        public static void GenerateRoomLayout(PrototypeDungeonRoom room, string AssetPath, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
+            Texture2D sourceTexture = ExpandAssets.LoadAsset<Texture2D>(AssetPath);                        
+            if (sourceTexture == null) {
+                ETGModConsole.Log("[ExpandTheGungeon] GenerateRoomLayout: Error! Requested Texture Resource is Null or Room Asset Bundle missing!");
+                return;
+            }
+            GenerateRoomLayoutFromTexture(room, sourceTexture, PitBorderType, DamageCellsType);
+            return;
+        }
+
+        public static void GenerateRoomLayoutFromTexture(PrototypeDungeonRoom room, Texture2D sourceTexture, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             float DamageToPlayersPerTick = 0;
             float DamageToEnemiesPerTick = 0;
             float TickFrequency = 0;
@@ -142,35 +152,6 @@ namespace ExpandTheGungeon.ExpandUtilities {
             room.UpdatePrecalculatedData();
         }
 
-        public static void GenerateBasicRoomLayout(PrototypeDungeonRoom room, CellType DefaultCellType = CellType.FLOOR, PrototypeRoomPitEntry.PitBorderType pitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT) {
-            int width = room.Width;
-            int height = room.Height;
-            int ArrayLength = (width * height);
-
-            room.FullCellData = new PrototypeDungeonRoomCellData[ArrayLength];
-            List<Vector2> m_Pits = new List<Vector2>();
-
-            for (int X = 0; X < width; X++) {
-                for (int Y = 0; Y < height; Y++) {
-                    int ArrayPosition = (Y * width + X);
-                    room.FullCellData[ArrayPosition] = GenerateCellData(DefaultCellType);
-                    if (DefaultCellType == CellType.PIT) { m_Pits.Add(new Vector2(X, Y)); }
-                }
-            }
-
-            if (m_Pits.Count > 0) {
-                room.pits = new List<PrototypeRoomPitEntry>() {
-                    new PrototypeRoomPitEntry(m_Pits) {
-                        containedCells = m_Pits,
-                        borderType = pitBorderType
-                    }
-                };
-            }
-
-            room.OnBeforeSerialize();
-            room.UpdatePrecalculatedData();
-        }
-
         public static PrototypeDungeonRoom GenerateRoomPrefabFromTexture2D(Texture2D sourceTexture, PrototypeDungeonRoom.RoomCategory roomCategory = PrototypeDungeonRoom.RoomCategory.NORMAL, PrototypeRoomPitEntry.PitBorderType PitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT, CoreDamageTypes DamageCellsType = CoreDamageTypes.None) {
             PrototypeDungeonRoom m_NewRoomPrefab = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             m_NewRoomPrefab.name = "Expand Corrupted Room";
@@ -215,10 +196,39 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_NewRoomPrefab.Width = sourceTexture.width;
             m_NewRoomPrefab.Height = sourceTexture.height;
             m_NewRoomPrefab.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
-            GenerateRoomLayoutFromTexture2D(m_NewRoomPrefab, sourceTexture, PitBorderType, DamageCellsType);
+            GenerateRoomLayoutFromTexture(m_NewRoomPrefab, sourceTexture, PitBorderType, DamageCellsType);
             return m_NewRoomPrefab;
         }
-        
+
+        public static void GenerateBasicRoomLayout(PrototypeDungeonRoom room, CellType DefaultCellType = CellType.FLOOR, PrototypeRoomPitEntry.PitBorderType pitBorderType = PrototypeRoomPitEntry.PitBorderType.FLAT) {
+            int width = room.Width;
+            int height = room.Height;
+            int ArrayLength = (width * height);
+
+            room.FullCellData = new PrototypeDungeonRoomCellData[ArrayLength];
+            List<Vector2> m_Pits = new List<Vector2>();
+
+            for (int X = 0; X < width; X++) {
+                for (int Y = 0; Y < height; Y++) {
+                    int ArrayPosition = (Y * width + X);
+                    room.FullCellData[ArrayPosition] = GenerateCellData(DefaultCellType);
+                    if (DefaultCellType == CellType.PIT) { m_Pits.Add(new Vector2(X, Y)); }
+                }
+            }
+
+            if (m_Pits.Count > 0) {
+                room.pits = new List<PrototypeRoomPitEntry>() {
+                    new PrototypeRoomPitEntry(m_Pits) {
+                        containedCells = m_Pits,
+                        borderType = pitBorderType
+                    }
+                };
+            }
+
+            room.OnBeforeSerialize();
+            room.UpdatePrecalculatedData();
+        }
+                
         public static PrototypeDungeonRoomCellData GenerateCellData(CellType cellType, DiagonalWallType diagnalWallType = DiagonalWallType.NONE, bool DoesDamage = false, bool IsPoison = false, CoreDamageTypes DamageType = CoreDamageTypes.None, float DamageToPlayersPerTick = 0, float DamageToEnemiesPerTick = 0, float TickFrequency = 0, bool RespectsFlying = true, CellVisualData.CellFloorType OverrideFloorType = CellVisualData.CellFloorType.Stone) {
             PrototypeDungeonRoomCellData m_NewCellData = new PrototypeDungeonRoomCellData(string.Empty, cellType) {
                 state = cellType,

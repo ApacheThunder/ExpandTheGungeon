@@ -214,23 +214,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
             EndTimes = ExpandAssets.LoadOfficialAsset<GameObject>("EndTimes", ExpandAssets.AssetSource.BraveResources);
 
-            foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements)
-            {
-                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name))
-                {
-                    if (wRoom.room.name.ToLower().StartsWith("sewer_trash_compactor_001"))
-                    {
+            foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
+                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
+                    if (wRoom.room.name.ToLower().StartsWith("sewer_trash_compactor_001")) {
                         CrushDoor_Horizontal = wRoom.room.placedObjects[0].nonenemyBehaviour.gameObject;
                     }
                 }
             }
 
-            foreach (WeightedRoom wRoom in forgeDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements)
-            {
-                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name))
-                {
-                    if (wRoom.room.name.ToLower().StartsWith("forge_normal_cubulead_03"))
-                    {
+            foreach (WeightedRoom wRoom in forgeDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
+                if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
+                    if (wRoom.room.name.ToLower().StartsWith("forge_normal_cubulead_03")) {
                         CrushDoor_Vertical = wRoom.room.placedObjects[0].nonenemyBehaviour.gameObject;
                     }
                 }

@@ -154,11 +154,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (GameManager.Instance.SecondaryPlayer) { GameManager.Instance.SecondaryPlayer.CurrentInputState = PlayerInputState.AllInput; }
             GameManager.Instance.MainCameraController.SetManualControl(false, true);
             Destroy(clockhairObject);
+            m_GungeoneerMimicBossController.ModifyCamera(false);
             healthHaver.DeathAnimationComplete(null, null);
             if (gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>()) {
                 Destroy(gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>().MirrorBase);
                 Destroy(gameObject.GetComponent<ExpandGungeoneerMimicIntroDoer>().MirrorShatterFX);
             }
+
             yield break;
         }
         

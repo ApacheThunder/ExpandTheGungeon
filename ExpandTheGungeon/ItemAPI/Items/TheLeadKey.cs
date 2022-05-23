@@ -366,10 +366,8 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
             }
             
-            DungeonNames = DungeonNames.Shuffle();
-
-            DungeonName = BraveUtility.RandomElement(DungeonNames);
-
+            DungeonName = BraveUtility.RandomElement(DungeonNames.Shuffle());
+            
             foreach (string Name in DungeonNames) {
                 if (SelectedPrototypeDungeonRoom.name.ToLower().Contains(Name)) {
                     DungeonName = Name;
@@ -429,7 +427,7 @@ namespace ExpandTheGungeon.ItemAPI {
             }
             
             Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_" + DungeonName);
-            if (!DungeonName.ToLower().Contains(dungeon.gameObject.name)) {
+            if (!DungeonName.ToLower().Contains(dungeon.gameObject.name) && !m_CopyCurrentRoom) {
                 GlitchRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, SelectedPrototypeDungeonRoom, false, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
             } else {
                 GlitchRoom = ExpandUtility.AddCustomRuntimeRoom(SelectedPrototypeDungeonRoom, false, false, allowProceduralLightFixtures: (true || m_CopyCurrentRoom));
@@ -437,7 +435,7 @@ namespace ExpandTheGungeon.ItemAPI {
             dungeon2 = null;
             
                      
-            if (GlitchRoom == null) {                
+            if (GlitchRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
                 while (fxController.GlitchAmount > 0) {
                     fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
@@ -531,8 +529,7 @@ namespace ExpandTheGungeon.ItemAPI {
             } else {
                 ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
-            
-            
+                        
             TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
             
             yield return null;

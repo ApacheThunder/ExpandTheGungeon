@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using HutongGames.PlayMaker.Actions;
 using System.Collections;
 using HutongGames.PlayMaker;
-using ExpandTheGungeon.ExpandPrefab;
-using ExpandTheGungeon.ExpandUtilities;
-using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections.ObjectModel;
 using InControl;
 using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ExpandDungeonFlows;
+using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -56,7 +57,10 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getNextTilesetHook;
         public static Hook placePlayerInRoomHook;
         public static Hook floodFillDungeonInteriorHook;
-        
+        public static Hook getNextNearbyTileHook;
+        public static Hook getAllNearbyTilesHook;
+        public static Hook initNearbyTileCheckHook;
+        public static Hook getTileHook;
 
         public static bool IsHooksInstalled = false;
         
@@ -347,6 +351,20 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(DungeonData).GetMethod("FloodFillDungeonInterior", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod(nameof(FloodFillDungeonInteriorHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonData)
+            );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PhysicsEngine.InitNearbyTileCheck Hook...."); }
+            initNearbyTileCheckHook = new Hook(
+                typeof(PhysicsEngine).GetMethod("InitNearbyTileCheck", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(float), typeof(float), typeof(float), typeof(float), typeof(tk2dTileMap), typeof(IntVector2), typeof(float), typeof(float), typeof(IntVector2), typeof(DungeonData) }, new ParameterModifier[0]),
+                typeof(ExpandSharedHooks).GetMethod(nameof(InitNearbyTileCheck), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PhysicsEngine)
+            );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PhysicsEngine.GetTile Hook...."); }
+            getTileHook = new Hook(
+                typeof(PhysicsEngine).GetMethod("GetTile", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(int), typeof(int), typeof(tk2dTileMap), typeof(int), typeof(string), typeof(DungeonData) }, new ParameterModifier[0]),
+                typeof(ExpandSharedHooks).GetMethod(nameof(GetTile), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PhysicsEngine)
             );
             
             return;
@@ -1562,30 +1580,40 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public int GetTargetLevelIndexFromSavedTileset(GlobalDungeonData.ValidTilesets tilesetID) {
             switch (tilesetID) {
-                case GlobalDungeonData.ValidTilesets.GUNGEON:
-                    return 2;
                 case GlobalDungeonData.ValidTilesets.CASTLEGEON:
                     return 1;
-                default:
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.MINEGEON) { return 3; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.CATACOMBGEON) { return 4; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.FORGEGEON) { return 5; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.HELLGEON) { return 6; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.OFFICEGEON) { return 5; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.FINALGEON) { return 6; }
-                    // if (tilesetID != GlobalDungeonData.ValidTilesets.RATGEON) { return 1; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.RATGEON) { return 4; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.SPACEGEON) { return 1; }
-                    if (tilesetID == GlobalDungeonData.ValidTilesets.PHOBOSGEON) { return 1; }
-                    return 4;
                 case GlobalDungeonData.ValidTilesets.SEWERGEON:
                     return 2;
                 case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
                     return 2;
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    return 2;
                 case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
                     return 3;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    return 3;
+                case GlobalDungeonData.ValidTilesets.MINEGEON:
+                    return 3;
+                case GlobalDungeonData.ValidTilesets.RATGEON:
+                    return 4;
+                case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                    return 4;
+                case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                    return 5;
                 case GlobalDungeonData.ValidTilesets.WESTGEON:
                     return 5;
+                case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                    return 5;
+                case GlobalDungeonData.ValidTilesets.HELLGEON:
+                    return 6;
+                case GlobalDungeonData.ValidTilesets.FINALGEON:
+                    return 6;
+                case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                    return 1;
+                case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                    return 1;
+                default:
+                    return 1;
             }
         }
 
@@ -1679,6 +1707,32 @@ namespace ExpandTheGungeon.ExpandMain {
             GameManager.Instance.MainCameraController.ForceToPlayerPosition(GameManager.Instance.PrimaryPlayer);
         }
 
+        // Catch exceptions with tilemap collisions in AddCustomRuntimeRoomWithTileSet with certain tileset combinations.
+        private void InitNearbyTileCheck(ActionEX<PhysicsEngine, float, float, float, float, tk2dTileMap, IntVector2, float, float, IntVector2, DungeonData> orig, PhysicsEngine self, float worldMinX, float worldMinY, float worldMaxX, float worldMaxY, tk2dTileMap tileMap, IntVector2 pixelColliderDimensions, float positionX, float positionY, IntVector2 pixelsToMove, DungeonData dungeonData) {
+            try {
+                orig(self, worldMinX, worldMinY, worldMaxX, worldMaxY, tileMap, pixelColliderDimensions, positionX, positionY, pixelsToMove, dungeonData);
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in PhysicsEngine.InitNearbyTileCheck!");
+                    Debug.LogException(ex);
+                }
+                return;
+            }
+        }
+        
+        // Catch exceptions with tilemap collisions in AddCustomRuntimeRoomWithTileSet with certain tileset combinations.
+        private PhysicsEngine.Tile GetTile(FuncEX<PhysicsEngine, int, int, tk2dTileMap, int, string, DungeonData, PhysicsEngine.Tile> orig, PhysicsEngine self, int x, int y, tk2dTileMap tileMap, int layer, string layerName, DungeonData dungeonData) {
+            try {
+                PhysicsEngine.Tile tile = orig(self, x, y, tileMap, layer, layerName, dungeonData);
+                return tile;
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in PhysicsEngine.GetTile!");
+                    Debug.LogException(ex);
+                }
+                return null;
+            }
+        }
     }
 }
 

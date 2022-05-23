@@ -149,12 +149,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!m_StormController) { yield break; }
             
             bool Active = true;
-            if (ExpandLists.InvalidRatFloorRainRooms.Contains(player.CurrentRoom.GetRoomName()) | 
+            /*if (ExpandLists.InvalidRatFloorRainRooms.Contains(player.CurrentRoom.GetRoomName()) | 
                 player.CurrentRoom.IsShop | 
                 player.CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS)
             {
                 Active = false;
-            }
+            }*/
             yield return null;
             if (!Active) {
                 if (!m_StormController.enabled && !isActive) { yield break; }

@@ -3,9 +3,7 @@
 namespace ExpandTheGungeon.ExpandPrefab {
 
     public static class ExpandLists {
-
-        public static List<string> InvalidRatFloorRainRooms = new List<string>();
-
+        
         public static readonly List<int> RatChestItems = new List<int>() {
             626, // elimentaler
             662, // partially_eaten_cheese

@@ -174,20 +174,7 @@ namespace ExpandTheGungeon {
                 BootlegGuns.PostInit();
                 // Dungeon Prefabs
                 ExpandCustomDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
-
-                ExpandLists.InvalidRatFloorRainRooms = new List<string>() {
-                    ExpandRoomPrefabs.SecretBossRoom.name,
-                    ExpandRoomPrefabs.ThwompCrossingVerticalNoRain.name,
-                    ExpandRoomPrefabs.SecretRewardRoom.name,
-                    ExpandPrefabs.DragunBossFoyerRoom.name,
-                    ExpandPrefabs.DraGunExitRoom.name,
-                    ExpandPrefabs.DraGunEndTimesRoom.name,
-                    ExpandPrefabs.BlacksmithShop.name,
-                    "Zelda Puzzle Room 1",
-                    "Zelda Puzzle Room 2",
-                    "Zelda Puzzle Room 3",
-                    "Special Entrance"
-                };
+                                
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);

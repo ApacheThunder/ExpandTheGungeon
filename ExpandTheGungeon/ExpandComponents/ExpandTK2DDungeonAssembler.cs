@@ -291,7 +291,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             BuildDecoIndices(cellData, d, d2, map, ix, iy);
             if (flag2) { BuildFloorEdgeBorderTiles(cellData, d, d2, map, ix, iy); }
             BuildFeatureEdgeBorderTiles(cellData, d, d2, map, ix, iy);
+            
             BuildCollisionIndex(cellData, d, d2, map, ix, iy);
+
             if (BCheck(d, ix, iy, -2)) { ProcessFacewallIndices(cellData, d, d2, map, ix, iy); }
             BuildBorderIndicesForCell(cellData, d, d2, map, ix, iy);
 

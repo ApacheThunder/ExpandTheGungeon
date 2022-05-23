@@ -78,6 +78,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom ResourcefulRat_FirstSecretRoom_01;
         public static PrototypeDungeonRoom ResourcefulRat_SecondSecretRoom_01;
 
+        // Rat Floor Entrance Room
+        public static PrototypeDungeonRoom ResourcefulRat_Entrance;
+
         // Unused Rat Floor Entrance room from Sewers
         public static PrototypeDungeonRoom SewersRatExitEoom;
 
@@ -486,6 +489,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ResourcefulRat_LongMinecartRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().TargetMinecartRoom;
             ResourcefulRat_FirstSecretRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().FirstSecretRoom;
             ResourcefulRat_SecondSecretRoom_01 = RatTrapdoor.GetComponent<ResourcefulRatMinesHiddenTrapdoor>().SecondSecretRoom;
+
+            ResourcefulRat_Entrance = ratDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom;
+            // Remove arrival elevator...Why does it even exist for this floor. :P
+            ResourcefulRat_Entrance.placedObjects[0].placeableContents = null;
+
 
             tiny_entrance = UnityEngine.Object.Instantiate(TutorialDungeonPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom);
             tiny_exit = UnityEngine.Object.Instantiate(TutorialDungeonPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom);
@@ -1849,7 +1857,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             if (Hell_Hath_No_Joery_009 != null) {
-                RoomBuilder.GenerateRoomLayoutFromTexture2D(Hell_Hath_No_Joery_009, expandSharedAssets1.LoadAsset<Texture2D>("Hell_Hath_No_Joery_009_Layout"));
+                RoomBuilder.GenerateRoomLayout(Hell_Hath_No_Joery_009, "Hell_Hath_No_Joery_009_Layout");
             }
 
             List<PrototypeDungeonRoom> m_GatlingGullRooms = new List<PrototypeDungeonRoom>();
@@ -2074,7 +2082,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             big_entrance.placedObjectPositions[0] = big_entrance.placedObjects[0].contentsBasePosition;
             big_entrance.placedObjectPositions[1] = big_entrance.placedObjects[1].contentsBasePosition;
 
-            RoomBuilder.GenerateRoomLayoutFromTexture2D(big_entrance, expandSharedAssets1.LoadAsset<Texture2D>("Large_Elevator_Entrance_Layout"));
+            RoomBuilder.GenerateRoomLayout(big_entrance, "Large_Elevator_Entrance_Layout");
 
             MegaChallengeShrineTable.includedRooms = new WeightedRoomCollection();
             MegaChallengeShrineTable.includedRooms.elements = new List<WeightedRoom>();

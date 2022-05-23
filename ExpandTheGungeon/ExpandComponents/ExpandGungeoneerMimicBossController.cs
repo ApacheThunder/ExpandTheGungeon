@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
+using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -29,8 +30,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_DelayedActive = false;
             m_MirrorGunToggle = true;
             m_IsPathfindingToCenter = false;
+            m_RandomMovement = false;
             m_BeamSweepingBack = false;
             m_InvertSweepAngle = false;
+            m_CameraChanged = false;
 
             m_IsFiring = false;
             m_PauseAutoFire = false;
@@ -68,7 +71,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_DelayedActive;
         private bool m_MirrorGunToggle;
         private bool m_IsPathfindingToCenter;
-        
+        private bool m_RandomMovement;
+
         private bool m_IsFiring;
         private bool m_PauseAutoFire;
 
@@ -80,6 +84,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_BeamSweepingBack;
         private bool m_InvertSweepAngle;
         private bool m_IsDisconnected;
+        private bool m_CameraChanged;
         
         private RoomHandler m_ParentRoom;
         private ExpandGungeoneerMimicIntroDoer m_IntroDoer;
@@ -132,8 +137,26 @@ namespace ExpandTheGungeon.ExpandComponents {
             
         }
 
+        public void ModifyCamera(bool value) {
+            if (!GameManager.HasInstance || GameManager.Instance.IsLoadingLevel || GameManager.IsReturningToBreach) { return; }
+            CameraController mainCameraController = GameManager.Instance.MainCameraController;
+            if (!mainCameraController) { return; }
+            if (value && m_ParentRoom != null) {
+                m_CameraChanged = true;
+                mainCameraController.OverrideZoomScale = 0.55f;
+                mainCameraController.SetManualControl(true);
+                mainCameraController.StopTrackingPlayer();
+                mainCameraController.OverridePosition = m_ParentRoom.area.Center + new Vector2(0, 0.75f);
+            } else if (!value) {
+                m_CameraChanged = false;
+                mainCameraController.OverrideZoomScale = 1f;
+                mainCameraController.SetManualControl(false);
+                mainCameraController.StartTrackingPlayer();
+            }
+        }
+
         private void Update() {
-            try { 
+            try {
                 if (!IsConfigured) { return; }
 
                 if (!m_HasBeenActivated && m_Player && m_Player.GetAbsoluteParentRoom() != null && transform.position.GetAbsoluteRoom() != null && m_Player.GetAbsoluteParentRoom() == transform.position.GetAbsoluteRoom()) {
@@ -153,16 +176,17 @@ namespace ExpandTheGungeon.ExpandComponents {
                     MovedToCenter = true;
                     StartCoroutine(PathBackToCenter(m_AIActor, m_ParentRoom.area.UnitCenter));
                 }
-           
-                if (m_DelayedActive && (m_AIActor.PlayerTarget == null | m_AIActor.TargetRigidbody == null)) { m_AIActor.PlayerTarget = m_Player; }
+                
+                if (!m_DelayedActive) { return; }
 
-                if (m_DelayedActive && m_Player && m_AIActor) {
+                if (m_AIActor.PlayerTarget == null | m_AIActor.TargetRigidbody == null) { m_AIActor.PlayerTarget = m_Player; }
+
+                if (m_Player && m_AIActor) {
                     UpdateSprites();
                     if (m_AIActor.spriteAnimator.IsPlaying("run_down")) { m_AIActor.spriteAnimator.Stop(); }
                 }
 
-                if (m_DelayedActive && m_MirrorGunToggle) {
-                    
+                if (m_MirrorGunToggle) {
                     if (m_AIActor.aiShooter.EquippedGun.PickupObjectId != m_Player.CurrentGun.PickupObjectId && ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
                         ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_Player.CurrentGun.PickupObjectId);
                     } else if (!ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
@@ -186,7 +210,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         m_AIActor.aiShooter.CurrentGun.ClearReloadData();
                         m_IsFiring = false;
                     }
-                } else if (m_DelayedActive && !m_MirrorGunToggle) {
+                } else if (!m_MirrorGunToggle) {
                     if (!m_StartingGuns.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId)) {
                         ChangeOrAddGun(m_AIActor.aiShooter.Inventory, BraveUtility.RandomElement(m_StartingGuns));
                     }
@@ -220,13 +244,12 @@ namespace ExpandTheGungeon.ExpandComponents {
         
         private void LateUpdate() {
             try { 
-                if (m_IsDisconnected | !IsConfigured) { return; }
-
+                if (m_IsDisconnected | !IsConfigured | !m_DelayedActive) { return; }
                 if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead) { return; }
-
+                
                 m_RandomRefresh -= BraveTime.DeltaTime;
 
-                if (m_DelayedActive && !m_IsPathfindingToCenter) {
+                if (!m_IsPathfindingToCenter) {
                     if (m_ParentRoom != null) {
                         Vector2 RoomCenterPosition = m_ParentRoom.area.UnitCenter;
                         float MaxDistanceFromCenterX = (m_ParentRoom.area.dimensions.x / 2f);
@@ -234,74 +257,60 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                         Vector2 CurrentPosition = m_AIActor.gameObject.transform.position;
                         if (Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterX | Vector2.Distance(CurrentPosition, RoomCenterPosition) > MaxDistanceFromCenterY) {
-                            m_IsPathfindingToCenter = true;
-                            StartCoroutine(PathBackToCenter(m_AIActor, RoomCenterPosition));
+                            if (!m_RandomMovement) {
+                                m_IsPathfindingToCenter = true;
+                                StartCoroutine(PathBackToCenter(m_AIActor, RoomCenterPosition));
+                            }
                         }
                     }
                 }
-
-                if (m_DelayedActive) {
-
-                    if (EnableFallBackAttacks && m_RandomRefresh <= 0) {
-                        if (m_MirrorGunToggle) {
-                            m_MirrorGunToggle = false;
-                            m_RandomRefresh = Random.Range(15, 30);
-                        } else {
-                            m_MirrorGunToggle = true;
-                            m_RandomRefresh = Random.Range(10, 18);
-                        }
-                    }
-
-                    if (m_BeamSweepingBack) {
-                        m_BeamSweepAngle -= (BraveTime.DeltaTime * 30);
-                        if (m_BeamSweepAngle <= 0) {
-                            m_BeamSweepingBack = false;
-                            if (!m_InvertSweepAngle) {
-                                m_InvertSweepAngle = true;
-                            } else if (m_InvertSweepAngle) {
-                                m_InvertSweepAngle = false;
-                            }
-                        }
+                
+                if (EnableFallBackAttacks && m_RandomRefresh <= 0) {
+                    if (m_MirrorGunToggle) {
+                        m_MirrorGunToggle = false;
+                        m_RandomRefresh = Random.Range(15, 30);
                     } else {
-                        m_BeamSweepAngle += (BraveTime.DeltaTime * 30);
-                        if (m_BeamSweepAngle >= 15) {
-                            m_BeamSweepingBack = true;
-                        }
+                        m_MirrorGunToggle = true;
+                        m_RandomRefresh = Random.Range(10, 18);
                     }
                 }
 
-                if (m_DelayedActive && m_Player && m_Player.GetAbsoluteParentRoom() != null && m_AIActor.GetAbsoluteParentRoom() != null && m_Player.GetAbsoluteParentRoom() == m_AIActor.GetAbsoluteParentRoom()) {
-                    bool m_MovementStutter = false;
-                    if (!m_AIActor.BehaviorOverridesVelocity && !m_IsPathfindingToCenter) { m_AIActor.BehaviorOverridesVelocity = true; }
-                    if (!m_IsPathfindingToCenter && UsesRotationInsteadOfInversion) {
-                        if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                        if (!m_MovementStutter) {
-                            if (m_MirrorGunToggle) {
-                                m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
-                            } else {
-                                Vector2 m_CurrentVector = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
-                                float Div = 1.1f;
-                                if (GameManager.IsTurboMode) { Div = 1.25f; }
-                                float X = (m_CurrentVector.x / Div);
-                                float Y = (m_CurrentVector.y / Div);
-                                m_AIActor.BehaviorVelocity = new Vector2(X, Y);
-                            }
-                        }
-                    } else if (!m_IsPathfindingToCenter) {
-                        if (!m_MirrorGunToggle) { if (Random.value <= 0.995f) { m_MovementStutter = true; } }
-                        if (!m_MovementStutter) {
-                            if (m_MirrorGunToggle) {
-                                m_AIActor.BehaviorVelocity = (m_AIActor.TargetRigidbody.Velocity * -1f);
-                            } else {
-                                Vector2 m_CurrentVector = (m_AIActor.TargetRigidbody.Velocity * -1f);
-                                float Div = 1.1f;
-                                if (GameManager.IsTurboMode) { Div = 1.25f; }
-                                float X = (m_CurrentVector.x / Div);
-                                float Y = (m_CurrentVector.y / Div);
-                                m_AIActor.BehaviorVelocity = m_CurrentVector;
-                            }
+                if (m_BeamSweepingBack) {
+                    m_BeamSweepAngle -= (BraveTime.DeltaTime * 30);
+                    if (m_BeamSweepAngle <= 0) {
+                        m_BeamSweepingBack = false;
+                        if (!m_InvertSweepAngle) {
+                            m_InvertSweepAngle = true;
+                        } else if (m_InvertSweepAngle) {
+                            m_InvertSweepAngle = false;
                         }
                     }
+                } else {
+                    m_BeamSweepAngle += (BraveTime.DeltaTime * 30);
+                    if (m_BeamSweepAngle >= 15) {
+                        m_BeamSweepingBack = true;
+                    }
+                }
+
+                if (!m_Player | m_Player.GetAbsoluteParentRoom() == null | m_Player.GetAbsoluteParentRoom() != m_AIActor.ParentRoom) {
+                    return;
+                }
+
+                if (m_MirrorGunToggle && m_RandomMovement) {
+                    m_RandomMovement = false;
+                } else if (!m_MirrorGunToggle && !m_RandomMovement) {
+                    m_RandomMovement = true;
+                    StartCoroutine(HandleRandomPathing(m_AIActor));
+                }
+                
+                if (m_IsPathfindingToCenter | m_RandomMovement | !m_MirrorGunToggle) { return; }
+
+                if (!m_AIActor.BehaviorOverridesVelocity) { m_AIActor.BehaviorOverridesVelocity = true; }
+
+                if (UsesRotationInsteadOfInversion) {
+                    m_AIActor.BehaviorVelocity = (Quaternion.Euler(0f, 0f, RotationAngle) * m_AIActor.TargetRigidbody.Velocity).XY();
+                } else {
+                    m_AIActor.BehaviorVelocity = (m_AIActor.TargetRigidbody.Velocity * -1f);
                 }
             } catch (System.Exception ex) {
                 if (ExpandSettings.debugMode) { Debug.LogException(ex); }
@@ -412,9 +421,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         // This prevents boss from getting stuck in door ways at the edge of the room.
         private IEnumerator PathBackToCenter(AIActor target, Vector2 returnPosition) {
             if (!target) {
-                target.BehaviorVelocity = Vector2.zero;
-                target.BehaviorOverridesVelocity = true;
                 m_IsPathfindingToCenter = false;
+                if (target) { target.BehaviorOverridesVelocity = false; }
                 yield break;
             }
             float elapsed = 0f;
@@ -430,11 +438,79 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_IsPathfindingToCenter = false;
                     yield break;
                 }
+                if (m_RandomMovement) { break; }
                 yield return null;
-            }
+            }            
             target.BehaviorOverridesVelocity = true;
             m_IsPathfindingToCenter = false;
             yield break;
+        }
+
+        private IEnumerator HandleRandomPathing(AIActor target) {
+            IL_RESTART:;
+            if (!target | m_MirrorGunToggle | !m_RandomMovement | m_IsPathfindingToCenter) {
+                if (target | !m_IsPathfindingToCenter) { target.BehaviorOverridesVelocity = true; }
+                yield break;
+            }
+            float elapsed = 0f;
+            float maxPathAttemptTime = Random.Range(2, 10);
+            Vector2? PathTarget = GetRandomPathTarget();
+            while (!PathTarget.HasValue) {
+                if (!target | m_MirrorGunToggle | !m_RandomMovement | m_IsPathfindingToCenter) {
+                    if (target | !m_IsPathfindingToCenter) { target.BehaviorOverridesVelocity = true; }
+                    break;
+                }
+                yield return null;
+            }
+            if (m_MirrorGunToggle | !target) {
+                m_RandomMovement = false;
+                yield break;
+            }
+            if (!m_IsPathfindingToCenter) { target.BehaviorOverridesVelocity = false; }
+            target.ClearPath();
+            target.PathfindToPosition(PathTarget.Value, canPassOccupied: true);
+            yield return null;
+            while (!target.PathComplete) {
+                elapsed += BraveTime.DeltaTime;
+                if (elapsed > maxPathAttemptTime) {
+                    target.ClearPath();
+                    elapsed = 0;
+                    maxPathAttemptTime = Random.Range(2, 10);
+                    break;
+                }
+                if (!target | m_MirrorGunToggle | !m_RandomMovement | m_IsPathfindingToCenter) { break; }
+                yield return null;
+            }
+            if (!target | m_MirrorGunToggle | !m_RandomMovement | m_IsPathfindingToCenter) {
+                if (target && !m_IsPathfindingToCenter) { target.BehaviorOverridesVelocity = true; }
+                yield break;
+            } else {
+                goto IL_RESTART;
+            }
+        }
+
+        private Vector2? GetRandomPathTarget() {            
+            CellValidator cellValidator = delegate (IntVector2 c) {
+                for (int X = 0; X < 2; X++) {
+                    for (int Y = 0; Y < 2; Y++) {
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + X, c.y + Y) | 
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.PIT | 
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].isOccupied |
+                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.WALL)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+            IntVector2? m_PossibleLocation = m_ParentRoom.GetRandomAvailableCell(new IntVector2?(new IntVector2(2, 2)), new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+
+            if (m_PossibleLocation.HasValue) {
+                return m_PossibleLocation.Value.ToVector2();
+            } else {
+                return null;
+            }
         }
 
         private IEnumerator HandleFireGun() {
@@ -713,6 +789,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         protected override void OnDestroy() {
+            if (m_CameraChanged) { ModifyCamera(false); }
             if (!m_IsDisconnected) { Disconnect(); }
             base.OnDestroy();
         }

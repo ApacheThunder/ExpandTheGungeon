@@ -444,6 +444,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             } else {
                 HidePlayers();
             }
+            if (!IsArrivalElevator) {
+                AkSoundEngine.PostEvent("Stop_EX_MUS_All", gameObject);
+                AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
+                Transform rainFXOBJ = GameManager.Instance.Dungeon.gameObject.transform.Find("ExpandJungleThunderStorm");
+                if (rainFXOBJ) {
+                    AkSoundEngine.PostEvent("Stop_ENV_rain_loop_01", rainFXOBJ.gameObject);
+                    Destroy(rainFXOBJ.gameObject);
+                }
+            }
         }
 
         private void DepartLevel(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
