@@ -22,6 +22,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             };
 
             SurpriseChestEnemySpawnPool = new List<string>() {
+                ExpandCustomEnemyDatabase.ClownkinNoFXGUID, // Clown Kin (no FX/Balloon version)
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 "05891b158cd542b1a5f3df30fb67a7ff", // arrow_head
                 "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
@@ -152,7 +153,40 @@ namespace ExpandTheGungeon.ExpandComponents {
                     majorBreakable.OnBreak = (Action)Delegate.Remove(majorBreakable.OnBreak, new Action(OnBroken));
                     majorBreakable.SpawnItemOnBreak = false;
                 }
-                if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) { StartCoroutine(SpwanEnemyAirDrop()); }
+                if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) {
+                    Vector3 RoomOffset = m_room.area.basePosition.ToVector3();
+                    List<string> EnemyGUIDs = new List<string>() {
+                        "88b6b6a93d4b4234a67844ef4728382c", // bandana_bullet_kin
+                        "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
+                        "01972dee89fc4404a5c408d50007dad5", // bullet_kin
+                        "01972dee89fc4404a5c408d50007dad5" // red_shotgun_kin
+                    };
+                    List<string> AltEnemyGUIDs = new List<string>() {
+                        ExpandCustomEnemyDatabase.ClownkinNoFXGUID,
+                        ExpandCustomEnemyDatabase.BootlegBulletManGUID,
+                        ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
+                        ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID,
+                        ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID
+                    };
+                    EnemyGUIDs = EnemyGUIDs.Shuffle();
+                    for (int i = 0; i < EnemyGUIDs.Count; i++) {
+                        if (BraveUtility.RandomBool()) { EnemyGUIDs[i] = BraveUtility.RandomElement(AltEnemyGUIDs.Shuffle()); }
+                    }
+                    if (!string.IsNullOrEmpty(m_room.GetRoomName()) && (m_room.GetRoomName().ToLower().Contains("gungeon_rewardroom_1") | m_room.GetRoomName().ToLower().Contains(ExpandRoomPrefabs.Expand_Apache_RickRollChest.name.ToLower()))) {
+                        ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 3, 0)), null, BraveUtility.RandomElement(EnemyGUIDs));
+                        ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 9, 0)), null, BraveUtility.RandomElement(EnemyGUIDs));
+                        ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 3, 0)), null, BraveUtility.RandomElement(EnemyGUIDs));
+                        ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 9, 0)), null, BraveUtility.RandomElement(EnemyGUIDs));
+                    } else {
+                        Vector2 SpawnPosition = (specRigidbody.GetPixelCollider(ColliderType.HitBox).UnitCenter - new Vector2(0, 0.5f));
+                        AIActor Enemy = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(EnemyGUIDs)), SpawnPosition, m_room, true, AIActor.AwakenAnimationType.Spawn, true);
+                        if (Enemy) {
+                            ExpandParadropController paraDropController = Enemy.gameObject.AddComponent<ExpandParadropController>();
+                            paraDropController.Configured = true;
+                        }
+                    }
+                    StartCoroutine(DelayedRoomSeal());
+                }
                 StartCoroutine(DoRickRoll());
             }
         }
@@ -297,27 +331,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
         
 
-        private IEnumerator SpwanEnemyAirDrop(float delay = 0.05f) {
-            Vector3 RoomOffset = m_room.area.basePosition.ToVector3();
-            string EnemyGUID1 = "88b6b6a93d4b4234a67844ef4728382c"; // bandana_bullet_kin
-            string EnemyGUID2 = "4d37ce3d666b4ddda8039929225b7ede"; // grenade_kin
-            string EnemyGUID3 = "01972dee89fc4404a5c408d50007dad5"; // bullet_kin
-            string EnemyGUID4 = "128db2f0781141bcb505d8f00f9e4d47"; // red_shotgun_kin
-
-            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID1 = ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID; }
-            if (UnityEngine.Random.value <= 0.1f) { EnemyGUID2 = ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID; }
-            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID3 = ExpandCustomEnemyDatabase.BootlegBulletManGUID; }
-            if (UnityEngine.Random.value <= 0.5f) { EnemyGUID4 = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID; }
-            
-            ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 3, 0)), null, EnemyGUID1);
-            ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(4, 9, 0)), null, EnemyGUID2);
-            ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 3, 0)), null, EnemyGUID3);
-            ExpandUtility.SpawnParaDrop(m_room, (RoomOffset + new Vector3(13, 9, 0)), null, EnemyGUID4);
-
+        private IEnumerator DelayedRoomSeal(float delay = 0.05f) {
             yield return new WaitForSeconds(delay);
-
             if (!m_room.IsSealed) { m_room.SealRoom(); }
-
             yield break;
         }
 
@@ -345,10 +361,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Instantiate(BraveResources.Load("Global VFX/VFX_ChestKnock_001", ".prefab"), sprite.WorldCenter + new Vector2(0f, 0.3125f), Quaternion.identity);
             }
         }
-
-        // public void Start() { }
-        // private void Update() { }
-
+        
         public void ConfigureOnPlacement(RoomHandler room) {
             m_room = room;
             

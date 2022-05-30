@@ -30,6 +30,8 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupEXItem(sonicBoxItem, name, shortDesc, longDesc);
             sonicBoxItem.quality = ItemQuality.A;
             if (!ExpandSettings.EnableEXItems) { sonicBoxItem.quality = ItemQuality.EXCLUDED; };
+
+            ExpandLists.CompanionItems.Add(SonicBoxObject);
         }
         
 

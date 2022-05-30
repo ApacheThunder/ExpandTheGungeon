@@ -38,6 +38,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ParasiteBossGUID = "acd8d483f24e4c43b964fa4e54068cf1";
             com4nd0GUID = "0a406e36-80eb-43b8-8ad0-c56232f9496e";
             ClownkinGUID = "5736cc6185294b839666c65ac8e082c1";
+            ClownkinAltGUID = "dd1505fb84744002ad42ee8316b86ea0";
+            ClownkinNoFXGUID = "ccd416569b6d4ca0bb057a837a517d73";
         }
 
         // Saved GUIDs for use in things like room prefabs
@@ -62,6 +64,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly string ParasiteBossGUID;
         public static readonly string com4nd0GUID;
         public static readonly string ClownkinGUID;
+        public static readonly string ClownkinAltGUID;
+        public static readonly string ClownkinNoFXGUID;
 
         public static Hook loadEnemyGUIDHook;
 
@@ -98,6 +102,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject BootlegShotgunManRedPrefab;
         public static GameObject BootlegShotgunManBluePrefab;
         public static GameObject ClownkinPrefab;
+        public static GameObject ClownkinAltPrefab;
+        public static GameObject ClownkinNoFXPrefab;
         public static GameObject CronenbergPrefab;
         public static GameObject MetalCubeGuyWestPrefab;
         public static GameObject AggressiveCronenbergPrefab;
@@ -183,6 +189,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildBootlegShotgunManRedPrefab(expandSharedAssets1, out BootlegShotgunManRedPrefab);
             BuildBootlegShotgunManBluePrefab(expandSharedAssets1, out BootlegShotgunManBluePrefab);
             BuildClownkinPrefab(expandSharedAssets1, out ClownkinPrefab, out ClownkinWig);
+            BuildClownkinAltPrefab(expandSharedAssets1, out ClownkinAltPrefab);
+            BuildClownkinNoFXPrefab(expandSharedAssets1, out ClownkinNoFXPrefab);
             BuildDummyExplodyBarrelGuyPrefab(expandSharedAssets1, out ExplodyBoyPrefab);
             BuildCronenbergPrefab(expandSharedAssets1, out CronenbergPrefab);
             BuildAggressiveCronenbergPrefab(expandSharedAssets1, out AggressiveCronenbergPrefab);
@@ -4602,12 +4610,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "clownkin_wig_grounded"
             };
 
-            ExpandUtility.GenerateSpriteAnimator(ClownkinWig, playAutomatically: true);
+            ExpandUtility.GenerateSpriteAnimator(m_CachedWigObject, playAutomatically: true);
 
-            ExpandUtility.AddAnimation(ClownkinWig.GetComponent<tk2dSpriteAnimator>(), ClownkinCollection.GetComponent<tk2dSpriteCollectionData>(), m_ClownWigGroundedFrames, "wig_drop", frameRate: 2);
-            ClownkinWig.GetComponent<tk2dSpriteAnimator>().DefaultClipId = 0;
+            ExpandUtility.AddAnimation(m_CachedWigObject.GetComponent<tk2dSpriteAnimator>(), ClownkinCollection.GetComponent<tk2dSpriteCollectionData>(), m_ClownWigGroundedFrames, "wig_drop", frameRate: 2);
+            m_CachedWigObject.GetComponent<tk2dSpriteAnimator>().DefaultClipId = 0;
 
-            DebrisObject m_CachedDebrisObject = ClownkinWig.AddComponent<DebrisObject>();
+            DebrisObject m_CachedDebrisObject = m_CachedWigObject.AddComponent<DebrisObject>();
             m_CachedDebrisObject.Priority = EphemeralObject.EphemeralPriority.Middling;
             m_CachedDebrisObject.audioEventName = string.Empty;
             m_CachedDebrisObject.playAnimationOnTrigger = false;
@@ -4711,6 +4719,305 @@ namespace ExpandTheGungeon.ExpandPrefab {
             return;
         }
         
+        public static void BuildClownkinAltPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c"); // bandana_bullet_kin
+            AIActor m_CachedEnemyActor2 = GetOfficialEnemyByGuid("01972dee89fc4404a5c408d50007dad5"); // BulletKin
+            AIActor CachedSpaceTurtle = GetOfficialEnemyByGuid("9216803e9c894002a4b931d7ea9c6bdf");
+
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("ClownkinAlt");
+
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, ClownkinCollection, "clownkin_idle_left_001");
+            
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, ClownkinPrefab.GetComponent<tk2dSpriteAnimator>().Library, DefaultClipId: 0);
+            
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
+
+            ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, CachedSpaceTurtle.aiShooter, CachedSpaceTurtle.GetComponent<AIBulletBank>(), 520, m_CachedGunAttachPoint.transform);
+
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "ClownKin Companion", ClownkinAltGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+            
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+            m_CachedAIActor.MovementSpeed = 3;
+            m_CachedAIActor.IgnoreForRoomClear = true;
+            m_CachedAIActor.IsHarmlessEnemy = true;
+            m_CachedAIActor.EnemySwitchState = "Metal_Bullet_Man";
+            m_CachedAIActor.specRigidbody.PixelColliders[0].ManualOffsetX = 8;
+            m_CachedAIActor.specRigidbody.PixelColliders[1].ManualOffsetX = 8;
+            m_CachedAIActor.aiShooter.AllowTwoHands = true;
+            m_CachedAIActor.aiShooter.handObject = m_CachedEnemyActor2.aiShooter.handObject;
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+                                    
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Movement;
+                m_CachedAIActor.aiAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = true;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.AnimatedFacingDirection = -90;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "idle",
+                    AnimNames = new string[] { "idle_back", "idle_right", "idle_left", "idle_back" },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "move",
+                    AnimNames = new string[] { string.Empty, "move_forward_right", "move_forward_left", string.Empty },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "hit",
+                    AnimNames = new string[] { "hit_back_left", "hit_left", "hit_right", "hit_back_right" },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "spawn",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.FourWay,
+                            Prefix = "spawn",
+                            AnimNames = new string[] { "idle_back", "idle_right", "idle_left", "idle_back" },
+                            Flipped = new DirectionalAnimation.FlipType[4],
+                        }
+                    },
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "awaken",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.FourWay,
+                            Prefix = "awaken",
+                            AnimNames = new string[] { "idle_back", "idle_right", "idle_left", "idle_back" },
+                            Flipped = new DirectionalAnimation.FlipType[4],
+                        }
+                    },
+                };
+            }
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = true,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new CompanionFollowPlayerBehavior() {
+                    PathInterval = 0.25f,
+                    DisableInCombat = true,
+                    IdealRadius = 3f,
+                    CatchUpRadius = 6f,
+                    CatchUpAccelTime = 5,
+                    CatchUpSpeed = 6,
+                    CatchUpMaxSpeed = 10,
+                    CatchUpAnimation = string.Empty,
+                    CatchUpOutAnimation = string.Empty,
+                    IdleAnimations = new string[] { "idle" },
+                    CanRollOverPits = false,
+                    RollAnimation = string.Empty
+                },
+                new SeekTargetBehavior() {
+                    StopWhenInRange = true,
+                    CustomRange = 6,
+                    LineOfSight = false,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.5f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>() {
+                new ShootGunBehavior() {
+                    GroupCooldownVariance = 0,
+                    LineOfSight = true,
+                    WeaponType = WeaponType.AIShooterProjectile,
+                    OverrideBulletName = null,
+                    BulletScript = null,
+                    FixTargetDuringAttack = false,
+                    StopDuringAttack = false,
+                    LeadAmount = 1,
+                    LeadChance = 0.5f,
+                    RespectReload = true,
+                    MagazineCapacity = 6,
+                    ReloadSpeed = 3.5f,
+                    EmptiesClip = false,
+                    SuppressReloadAnim = false,
+                    TimeBetweenShots = -1,
+                    PreventTargetSwitching = false,
+                    OverrideAnimation = null,
+                    OverrideDirectionalAnimation = null,
+                    HideGun = false,
+                    UseLaserSight = false,
+                    UseGreenLaser = false,
+                    PreFireLaserTime = -1,
+                    AimAtFacingDirectionWhenSafe = false,
+                    Cooldown = 0.25f,
+                    CooldownVariance = 0,
+                    AttackCooldown = 0.25f,
+                    GlobalCooldown = 0,
+                    InitialCooldown = 0,
+                    InitialCooldownVariance = 0,
+                    GroupName = null,
+                    GroupCooldown = 0,
+                    MinRange = 0,
+                    Range = 12,
+                    MinWallDistance = 0,
+                    MaxEnemiesInRoom = 0,
+                    MinHealthThreshold = 0,
+                    MaxHealthThreshold = 1,
+                    HealthThresholds = new float[0],
+                    AccumulateHealthThresholds = true,
+                    targetAreaStyle = null,
+                    IsBlackPhantom = false,
+                    resetCooldownOnDamage = null,
+                    RequiresLineOfSight = false,
+                    MaxUsages = 0
+                }
+            };
+
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 1f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            ExpandClownKinBalloonManager m_ClownKinController = m_CachedTargetObject.AddComponent<ExpandClownKinBalloonManager>();
+            m_ClownKinController.IsSingleBalloon = true;
+            m_ClownKinController.SingleBalloonDoesBlankOnPop = true;
+            m_ClownKinController.DoConfettiOnSpawn = false;
+
+            HelmetController m_WigTosser = m_CachedTargetObject.AddComponent<HelmetController>();
+            m_WigTosser.helmetEffect = ClownkinWig;
+            m_WigTosser.helmetForce = 5;
+
+
+            ExpandUtility.MakeCompanion(m_CachedAIActor, null, null, true, false, false, true);
+
+            ExpandCompanionManager companionManager = m_CachedTargetObject.AddComponent<ExpandCompanionManager>();
+            companionManager.ToggleFaceSouthWhenStopped = true;
+            companionManager.WithTargetFaceType = AIAnimator.FacingType.Target;
+
+            AddEnemyToDatabase(m_CachedTargetObject, ClownkinAltGUID, true);
+            m_CachedEnemyActor = null;
+            m_CachedEnemyActor2 = null;
+            CachedSpaceTurtle = null;
+
+            return;
+        }
+
+        public static void BuildClownkinNoFXPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+
+            AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("01972dee89fc4404a5c408d50007dad5");
+
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Clownkin_NoFX");
+
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, ClownkinCollection, "clownkin_idle_left_001");
+
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, ClownkinPrefab.GetComponent<tk2dSpriteAnimator>().Library, DefaultClipId: 0);
+            
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "ClownKin From Chest", ClownkinNoFXGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("01972dee89fc4404a5c408d50007dad5").CorpseObject, EnemyHasNoShooter: true);
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+            m_CachedAIActor.MovementSpeed = 2;
+            m_CachedAIActor.EnemySwitchState = "Metal_Bullet_Man";
+            m_CachedAIActor.IgnoreForRoomClear = true;
+            m_CachedAIActor.specRigidbody.PixelColliders[0].ManualOffsetX = 8;
+            m_CachedAIActor.specRigidbody.PixelColliders[1].ManualOffsetX = 8;
+            m_CachedAIActor.IsHarmlessEnemy = true;
+            m_CachedAIActor.CollisionDamage = 0;
+            
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+                                    
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Movement;
+                m_CachedAIActor.aiAnimator.directionalType = AIAnimator.DirectionalType.Sprite;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = true;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.AnimatedFacingDirection = -90;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "idle",
+                    AnimNames = new string[] { "idle_back", "idle_right", "idle_left", "idle_back" },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "move",
+                    AnimNames = new string[] { string.Empty, "move_forward_right", "move_forward_left", string.Empty },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "hit",
+                    AnimNames = new string[] { "hit_back_left", "hit_left", "hit_right", "hit_back_right" },
+                    Flipped = new DirectionalAnimation.FlipType[4],
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>(0);
+            }
+            
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>(0);
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>(0);
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() { new ExpandSimpleMoveErraticallyBehavior() };
+
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 1f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+                        
+            HelmetController m_WigTosser = m_CachedTargetObject.AddComponent<HelmetController>();
+            m_WigTosser.helmetEffect = ClownkinWig;
+            m_WigTosser.helmetForce = 5;
+            
+            AddEnemyToDatabase(m_CachedTargetObject, ClownkinNoFXGUID, true);
+            m_CachedEnemyActor = null;
+
+            return;
+        }
+
         // Dummy prefab for assinging corrupted enemies to room prefabs.
         public static void BuildCorruptedEnemyPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
             AIActor m_CachedSourceActor = GetOfficialEnemyByGuid("01972dee89fc4404a5c408d50007dad5"); //bullet_kin

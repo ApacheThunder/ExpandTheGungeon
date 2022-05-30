@@ -61,6 +61,8 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getAllNearbyTilesHook;
         public static Hook initNearbyTileCheckHook;
         public static Hook getTileHook;
+        public static Hook floorChestPlacerConfigureOnPlacementHook;
+        public static Hook applyBenefitHook;
 
         public static bool IsHooksInstalled = false;
         
@@ -366,6 +368,20 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod(nameof(GetTile), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PhysicsEngine)
             );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FloorChestPlacer.ConfigureOnPlacement Hook...."); }
+            floorChestPlacerConfigureOnPlacementHook = new Hook(
+                typeof(FloorChestPlacer).GetMethod(nameof(FloorChestPlacer.ConfigureOnPlacement), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(FloorChestPlacerConfigureOnPlacementHook)),
+                typeof(FloorChestPlacer)
+            );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ShrineBenefit.ApplyBenefit Hook...."); }
+            applyBenefitHook = new Hook(
+                typeof(ShrineBenefit).GetMethod(nameof(ShrineBenefit.ApplyBenefit), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(ApplyBenefit)),
+                typeof(ShrineBenefit)
+            );
             
             return;
         }
@@ -615,28 +631,6 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
             try {
-                /*float num = 0f;
-                List<DungeonFlow> list = new List<DungeonFlow>();
-                float num2 = 0f;
-                List<DungeonFlow> list2 = new List<DungeonFlow>();
-                for (int i = 0; i < self.flows.Count; i++) {
-                    if (GameStatsManager.Instance.QueryFlowDifferentiator(self.flows[i].name) > 0) {
-                        num += 1f;
-                        list.Add(self.flows[i]);
-                    } else {
-                        num2 += 1f;
-                        list2.Add(self.flows[i]);
-                    }
-                }
-                if (list2.Count <= 0 && list.Count > 0) { list2 = list; num2 = num; }
-                if (list2.Count <= 0) { return null; }
-                float num3 = BraveRandom.GenerationRandomValue() * num2;
-                float num4 = 0f;
-                for (int j = 0; j < list2.Count; j++) {
-                    num4 += 1f;
-                    if (num4 >= num3) { return list2[j]; }
-                }
-                return self.flows[BraveRandom.GenerationRandomRange(0, self.flows.Count)];*/
                 return orig(self);
             } catch (Exception ex) {
                 if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!"); }
@@ -835,18 +829,18 @@ namespace ExpandTheGungeon.ExpandMain {
 
             yield return null;
 
-            TileIndices tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+            TileIndices tileIndices = ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
 
             if (d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON || d.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.FINALGEON) {
                 for (int l = 0; l < d.data.Width; l++) {
                     for (int m = 0; m < d.data.Height; m++) {
                         CellData cellData = d.data.cellData[l][m];
-                        tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+                        tileIndices = ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
                         if (cellData != null) {
                             if (cellData.type == CellType.FLOOR) {
-                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildShadowIndex", self, new object[] { cellData, d, map, l, m });
+                                InvokeMethod(typeof(TK2DDungeonAssembler), "BuildShadowIndex", self, new object[] { cellData, d, map, l, m });
                             } else if (cellData.type == CellType.PIT) {
-                                ReflectionHelpers.InvokeMethod(typeof(TK2DDungeonAssembler), "BuildPitShadowIndex", self, new object[] { cellData, d, map, l, m });
+                                InvokeMethod(typeof(TK2DDungeonAssembler), "BuildPitShadowIndex", self, new object[] { cellData, d, map, l, m });
                             }
                         }
                     }
@@ -863,7 +857,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (i % 5 == 0) { yield return null; }
             }
             if ((d.data.rooms.Count - 1) % 5 != 0) { yield return null; }
-            tileIndices = ReflectionHelpers.ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
+            tileIndices = ReflectGetField<TileIndices>(typeof(TK2DDungeonAssembler), "t", self);
             map.Editor__SpriteCollection = tileIndices.dungeonCollection;
             if (d.ActuallyGenerateTilemap) {
                 IEnumerator BuildTracker = map.DeferredBuild(tk2dTileMap.BuildFlags.Default);
@@ -936,13 +930,9 @@ namespace ExpandTheGungeon.ExpandMain {
         // Buff Disarming Personality Item. Players holding the item can now shoot in Bello's shop without causing him to get angry/vanish.
         // (does not prevent getting caught stealing though. :P )
         private void PlayerFiredHook(Action<BaseShopController>orig, BaseShopController self){
-
             foreach (PlayerController player in GameManager.Instance.AllPlayers) {
-                if (player.IsFiring) {
-                    if (!player.HasPassiveItem(187)) { orig(self); } 
-                }
+                if (player && player.IsFiring && !player.HasPassiveItem(187)) { orig(self); }
             }
-
         }
 
         private static GameObject GenerateRoomDoorMeshHook(RuntimeExitDefinition exit, RoomHandler room, DungeonData dungeonData) {
@@ -1551,12 +1541,12 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         
         private bool IsDioramaRevealed(MainMenuFoyerController self, bool doReveal = false) {
-            TitleDioramaController m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
+            TitleDioramaController m_tdc = ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
             FieldInfo m_tdcfield = typeof(MainMenuFoyerController).GetField("m_tdc", BindingFlags.Instance | BindingFlags.NonPublic);
             if (m_tdc == null) {
                 m_tdc = UnityEngine.Object.FindObjectOfType<TitleDioramaController>();
                 m_tdcfield.SetValue(self, m_tdc);
-                m_tdc = ReflectionHelpers.ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
+                m_tdc = ReflectGetField<TitleDioramaController>(typeof(MainMenuFoyerController), "m_tdc", self);
             }
             return !m_tdc || m_tdc.IsRevealed(doReveal);
         }
@@ -1732,6 +1722,68 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 return null;
             }
+        }
+
+        public void FloorChestPlacerConfigureOnPlacementHook(Action<FloorChestPlacer, RoomHandler>orig, FloorChestPlacer self, RoomHandler room) {
+            if (!self.UseOverrideChest && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.REWARD 
+                 && UnityEngine.Random.value < 0.15f
+               ) {
+                Vector2 ChestPosition = self.transform.position.IntXY(VectorConversions.Round).ToVector3();
+                GameObject chestOBJ = UnityEngine.Object.Instantiate(BraveUtility.RandomElement(ExpandLists.CustomChests), ChestPosition, Quaternion.identity);
+                ExpandFakeChest fakeChest = null;
+                if (chestOBJ) { fakeChest = chestOBJ.GetComponent<ExpandFakeChest>(); }
+                if (fakeChest) {
+                    if (self.CenterChestInRegion) {
+                        SpeculativeRigidbody component = fakeChest.gameObject.GetComponent<SpeculativeRigidbody>();
+                        if (component) {
+                            Vector2 Base = component.UnitCenter - fakeChest.gameObject.transform.position.XY();
+                            Vector2 Offset = self.transform.position.XY() + new Vector2(self.xPixelOffset / 16f, self.yPixelOffset / 16f) + new Vector2((float)self.placeableWidth / 2f, (float)self.placeableHeight / 2f);
+                            Vector2 Vector = (Offset - Base);
+                            fakeChest.gameObject.transform.position = Vector.ToVector3ZisY(0f).Quantize(0.0625f);
+                            component.Reinitialize();
+                        }
+                    }
+                    if (fakeChest.chestType == ExpandFakeChest.ChestType.RickRoll | fakeChest.chestType == ExpandFakeChest.ChestType.SurpriseChest) {
+                        room.area.prototypeRoom.roomEvents = new List<RoomEventDefinition>() {
+                            new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
+                            new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
+                        };
+                    }
+                    fakeChest.ConfigureOnPlacement(room);
+                    room.RegisterInteractable(fakeChest);
+                    UnityEngine.Object.Destroy(self.gameObject);
+                    return;
+                } else {
+                    orig(self, room);
+                    return;
+                }
+            } else {
+                orig(self, room);
+            }
+        }
+
+        public void ApplyBenefit(Action<ShrineBenefit, PlayerController>orig, ShrineBenefit self, PlayerController interactor) {
+            float ItemOdds = 0.2f;
+            if (self.benefitType == ShrineBenefit.BenefitType.COMPANION && UnityEngine.Random.value < ItemOdds) {
+                PickupObject TurkeyItem = null;
+                GameStatsManager.Instance.RegisterStatChange(TrackedStats.TIMES_COMPANION_SHRINED, 1f);
+                if (GameStatsManager.Instance.GetPlayerStatValue(TrackedStats.TIMES_COMPANION_SHRINED) >= 2f) {
+                    GameStatsManager.Instance.SetFlag(GungeonFlags.ITEMSPECIFIC_TURKEY, true);
+                    if (GameStatsManager.Instance.GetPlayerStatValue(TrackedStats.TIMES_COMPANION_SHRINED) == 2f) {
+                        TurkeyItem = PickupObjectDatabase.GetById(self.TurkeyCompanionForCompanionShrine);
+                    }
+                }
+                if (GameStatsManager.Instance.IsRainbowRun) {
+                    LootEngine.SpawnBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, interactor.transform.position + new Vector3(0f, -0.5f, 0f), interactor.CurrentRoom, true);
+                } else if (TurkeyItem) {
+                    LootEngine.GivePrefabToPlayer(TurkeyItem.gameObject, interactor);
+                } else {
+                    LootEngine.GivePrefabToPlayer(BraveUtility.RandomElement(ExpandLists.CompanionItems.Shuffle()), interactor);
+                }
+            } else {
+                orig(self, interactor);
+            }
+            return;
         }
     }
 }

@@ -117,6 +117,8 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandUtility.AddAnimation(hammerAnimator, ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths_reversed, "HammerReturnSpawn", tk2dSpriteAnimationClip.WrapMode.Once);
 
             HammerPickupID = babyGoodHammer.PickupObjectId;
+
+            ExpandLists.CompanionItems.Add(hammerItemObject);
         }
         
 

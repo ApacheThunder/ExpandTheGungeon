@@ -1,4 +1,4 @@
-ExpandTheGungeon - v2.6.5 by Apache Thunder.
+ExpandTheGungeon - by Apache Thunder.
 
 Features:
 

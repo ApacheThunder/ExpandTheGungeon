@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2722293394
+CRC: 515676881
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 732ba4cbbd61a539ba55b75aedfbba7d
+    Hash: 622d487579516ed59e602aede26df3e9
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -524,6 +524,7 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/AIActors/HotShotShotgunMan.png
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera14.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular47.bytes
+- Assets/ExpandPrefabs/Items/Clown Friend.prefab
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Blue/roomCeilingBorderGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate29.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_SecretShopWarp.bytes
@@ -722,6 +723,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/The Lead Key.prefab
 - Assets/ExpandRooms/RoomBuilderData/GungeonProper/Expand_Neighborino_JumpInThePit_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny18.bytes
+- Assets/ExpandPrefabs/AIActors/ClownkinAlt.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/EXWestFloorBossIntroScreenFX.prefab
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport2_2.bytes
@@ -769,6 +771,7 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/AIActors/WestBros_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_tight4.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/EXShipwreck_Left.prefab
+- Assets/ExpandPrefabs/AIActors/Clownkin_NoFX.prefab
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Cross_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular21.bytes
 - Assets/ExpandRooms/RoomFactoryData/KPMHFAO_Expand_Achievement_Wingman.bytes
@@ -851,7 +854,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_ExitHub.bytes
 - Assets/ExpandPrefabs/Items/Baby Sitter.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Blobs.bytes
-- Assets/ExpandSerializedData/SpriteCollections/ClownKinCollection.txt
+- Assets/ExpandSerializedData/SpriteCollections/ClownkinCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_TinyPassage5.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera11.bytes
 - Assets/ExpandSerializedData/SpriteCollections/CultistCompanionCollection.txt

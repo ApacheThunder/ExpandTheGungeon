@@ -10148,14 +10148,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             WeightedRoom[] CustomTrapRooms = new WeightedRoom[] {
                 GenerateWeightedRoom(ThwompCrossingVertical),
                 GenerateWeightedRoom(ThwompCrossingHorizontal),
-                // GenerateWeightedRoom(Expand_Apache_FieldOfSaws), // Added only to Sewers and Abbey now
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
+                GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.2f)/*
+                GenerateWeightedRoom(Expand_Apache_FieldOfSaws), // Added only to Sewers and Abbey now
+                GenerateWeightedRoom(Trap_Expand_Turtlemelon),
                 GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.25f),
-                GenerateWeightedRoom(Expand_Apache_SurpriseChest, Weight: 0.35f),
-                GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.2f)
-                // GenerateWeightedRoom(Trap_Expand_Turtlemelon)
+                GenerateWeightedRoom(Expand_Apache_SurpriseChest, Weight: 0.35f),*/
             };
 
             foreach (WeightedRoom room in CustomTrapRooms) {
@@ -10167,7 +10167,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CatacombsRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.ForgeRoomTable.includedRooms.elements.Add(room);
-                if (room.room != Expand_Apache_RickRollChest) { ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room); }
+                // if (room.room != Expand_Apache_RickRollChest) { ExpandPrefabs.BulletHellRoomTable.includedRooms.elements.Add(room); }
                 ExpandPrefabs.CustomRoomTable.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTable2.includedRooms.elements.Add(room);
                 ExpandPrefabs.CustomRoomTableSecretGlitchFloor.includedRooms.elements.Add(room);

@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ItemBuilder.SetupItem(babysitItem, shortDesc, longDesc, "ex");
             babysitItem.quality = ItemQuality.B;
             if (!ExpandSettings.EnableEXItems) { babysitItem.quality = ItemQuality.EXCLUDED; }
+            ExpandLists.CompanionItems.Add(BabySitterObject);
         }
         
 
@@ -35,7 +36,7 @@ namespace ExpandTheGungeon.ItemAPI {
             };
 
             CompanionGuid = ExpandCustomEnemyDatabase.FriendlyCultistGUID;
-
+            
             m_PickedUp = false;
             m_HasDied = false;
             m_HasGivenStats = false;

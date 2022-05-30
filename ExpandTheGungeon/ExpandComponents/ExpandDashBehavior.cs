@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
+
     public class ExpandDashBehavior : BasicAttackBehavior {
 
         public ExpandDashBehavior() {

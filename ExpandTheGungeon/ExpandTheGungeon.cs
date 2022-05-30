@@ -97,7 +97,8 @@ namespace ExpandTheGungeon {
                 "Sonic Box",
                 "The Third Eye",
                 "Clown Bullets",
-                "Portable Elevator"
+                "Portable Elevator",
+                "Clown Friend"
             };
             
             ExpandAssets.InitCustomAssetBundles(ModName);
@@ -172,8 +173,9 @@ namespace ExpandTheGungeon {
                 // Post Init
                 // Things that need existing stuff created first have code run here
                 BootlegGuns.PostInit();
+                ClownFriend.PostInit();
                 // Dungeon Prefabs
-                ExpandCustomDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
+                ExpandCustomDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);                
                                 
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
@@ -239,6 +241,7 @@ namespace ExpandTheGungeon {
                     SonicBox.Init(expandSharedAssets1);
                     ThirdEye.Init(expandSharedAssets1);
                     ClownBullets.Init(expandSharedAssets1);
+                    ClownFriend.Init(expandSharedAssets1);
                     PortableElevator.Init(expandSharedAssets1);
                     PortableShip.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
@@ -474,18 +477,49 @@ namespace ExpandTheGungeon {
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
             }
-
-            if (consoleText.Length == 3/* | consoleText.Length == 4*/) {
-                string CollectionName = consoleText[0];
-                int X = int.Parse(consoleText[1]);
-                int Y = int.Parse(consoleText[2]);
-                string OverridePath = string.Empty;                
-                if (consoleText.Length == 4) { OverridePath = consoleText[3]; }
-                SpriteSerializer.SerializeSpriteCollection(CollectionName, ExpandLists.EXSpace_Collection, X, Y, OverridePath);                
+            if (ExpandLists.SpriteCollections == null) {
+                ExpandLists.SpriteCollections = new Dictionary<string, List<string>>() {
+                    ["EXTrapCollection"] = ExpandLists.EXTrapCollection,
+                    ["EXSpaceCollection"] = ExpandLists.EXSpaceCollection,
+                    ["EXOfficeCollection"] = ExpandLists.EXOfficeCollection,
+                    ["EXJungleCollection"] = ExpandLists.EXJungleCollection,
+                    ["EXPortableElevatorCollection"] = ExpandLists.EXPortableElevatorCollection,
+                    ["EXBalloonCollection"] = ExpandLists.EXBalloonCollection,
+                    ["EXItemCollection"] = ExpandLists.EXItemCollection,
+                    ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
+                };
+            }
+            int X = 2048;
+            int Y = 2048;
+            List<string> SpriteList = null;
+            string FallBackListName = "EXTrapCollection";
+            string CollectionName = FallBackListName;
+            string OverridePath = string.Empty;
+            if (!ExpandLists.SpriteCollections.TryGetValue(FallBackListName, out SpriteList)) {
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Default list not found!");
+                return;
+            }
+            if (consoleText.Length > 1) {
+                X = int.Parse(consoleText[0]);
+                Y = int.Parse(consoleText[1]);
             } else {
                 ETGModConsole.Log("[ExpandTheGungeon] Not enough commands or too many! Must provide atlas name and resolution! Please specify a name, width, and height!");
+                ETGModConsole.Log("[ExpandTheGungeon] Using default resolution and collection...");
+                SpriteSerializer.SerializeSpriteCollection(FallBackListName, SpriteList, X, Y);
+                return;
             }
-            
+            if (consoleText.Length > 2) {
+                CollectionName = consoleText[2];
+                if (!ExpandLists.SpriteCollections.TryGetValue(CollectionName, out SpriteList)) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Requested Collection not found! Using predefined list instead!");
+                    ExpandLists.SpriteCollections.TryGetValue(FallBackListName, out SpriteList);
+                }
+            } else {
+                ETGModConsole.Log("[ExpandTheGungeon] Collection name not specified! Using predefined fall back list...");
+            }
+            if (consoleText.Length > 3) { OverridePath = consoleText[3]; }
+            SpriteSerializer.SerializeSpriteCollection(CollectionName, SpriteList, X, Y, OverridePath);
+            ETGModConsole.Log("[ExpandTheGungeon] Sprite collection successfully built and exported!");
         }
 
         private void ExpandTestCommand(string[] consoleText) {

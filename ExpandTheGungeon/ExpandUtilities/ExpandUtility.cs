@@ -1922,6 +1922,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             ExpandFloorDecorator.PlaceFloorDecoration(dungeon, new List<RoomHandler>() { targetRoom });
 
+            HandleSpecificRoomAGDInjection(targetRoom, dungeon, dungeon2.tileIndices.tilesetId);
+
             if (addRoomToMinimap) {
                 if (RoomExploredOnMinimap) {
                     targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
@@ -2352,6 +2354,89 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
             if (flag) { positions.Add(currentCell.position - room.area.basePosition); }
             return flag;
+        }
+
+        private static void HandleSpecificRoomAGDInjection(RoomHandler TargetRoom, Dungeon dungeon, GlobalDungeonData.ValidTilesets tilesetID, RunData runData = null, List<AGDEnemyReplacementTier> TierList = null) {
+            List<AIActor> EnemyList1 = new List<AIActor>();
+            // RunData runData = GameManager.Instance.RunData;
+            if (runData == null) { runData = new RunData(); }
+            if (TierList == null) { TierList = GameManager.Instance.EnemyReplacementTiers; }
+            if (runData.AgdInjectionRunCounts == null || runData.AgdInjectionRunCounts.Length != TierList.Count) {
+                runData.AgdInjectionRunCounts = new int[TierList.Count];
+            }
+            int[] agdInjectionRunCounts = runData.AgdInjectionRunCounts;
+            for (int i = 0; i < TierList.Count; i++) {
+                AGDEnemyReplacementTier agdenemyReplacementTier = TierList[i];
+                int num = 0;
+                if (agdenemyReplacementTier != null && agdenemyReplacementTier.TargetTileset == tilesetID && !agdenemyReplacementTier.ExcludeForPrereqs()) {
+                    if (agdenemyReplacementTier.MaxPerRun <= 0 || agdInjectionRunCounts[i] < agdenemyReplacementTier.MaxPerRun) {   
+                        if (TargetRoom.EverHadEnemies && TargetRoom.IsStandardRoom && !agdenemyReplacementTier.ExcludeRoomForColumns(dungeon.data, TargetRoom) && !agdenemyReplacementTier.ExcludeRoom(TargetRoom)) {   
+                            TargetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All, ref EnemyList1);
+                            if (!agdenemyReplacementTier.ExcludeRoomForEnemies(TargetRoom, EnemyList1)) {
+                                for (int I = 0; I < EnemyList1.Count; I++) {
+                                    AIActor enemy = EnemyList1[I];
+                                    if (enemy && (enemy.AdditionalSimpleItemDrops == null || enemy.AdditionalSimpleItemDrops.Count <= 0) && (!enemy.healthHaver || !enemy.healthHaver.IsBoss)) {
+                                        if (((agdenemyReplacementTier.TargetAllSignatureEnemies && enemy.IsSignatureEnemy) || (agdenemyReplacementTier.TargetAllNonSignatureEnemies && !enemy.IsSignatureEnemy) || (agdenemyReplacementTier.TargetGuids != null && agdenemyReplacementTier.TargetGuids.Contains(enemy.EnemyGuid))) && UnityEngine.Random.value < agdenemyReplacementTier.ChanceToReplace) {
+                                            Vector2? vector = null;
+                                            if (agdenemyReplacementTier.RemoveAllOtherEnemies) {
+                                                vector = new Vector2?(TargetRoom.area.Center);
+                                                for (int J = EnemyList1.Count - 1; J >= 0; J--) {
+                                                    AIActor aiactor2 = EnemyList1[I];
+                                                    if (aiactor2) {
+                                                        TargetRoom.DeregisterEnemy(aiactor2, true);
+                                                        UnityEngine.Object.Destroy(aiactor2.gameObject);
+                                                    }
+                                                }
+                                            } else {
+                                                if (enemy.specRigidbody) {
+                                                    enemy.specRigidbody.Initialize();
+                                                    vector = new Vector2?(enemy.specRigidbody.UnitBottomLeft);
+                                                }
+                                                TargetRoom.DeregisterEnemy(enemy, true);
+                                                UnityEngine.Object.Destroy(enemy.gameObject);
+                                            }
+                                            RoomHandler roomHandler2 = TargetRoom;
+                                            string enemyGuid = BraveUtility.RandomElement(agdenemyReplacementTier.ReplacementGuids);
+                                            Vector2? goalPosition = vector;
+                                            roomHandler2.AddSpecificEnemyToRoomProcedurally(enemyGuid, false, goalPosition);
+                                            num++;
+                                            agdInjectionRunCounts[i]++;
+                                            if ((agdenemyReplacementTier.MaxPerFloor > 0 && num >= agdenemyReplacementTier.MaxPerFloor) || (agdenemyReplacementTier.MaxPerRun > 0 && agdInjectionRunCounts[i] >= agdenemyReplacementTier.MaxPerRun) || agdenemyReplacementTier.RemoveAllOtherEnemies) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if ((agdenemyReplacementTier.MaxPerFloor > 0 && num >= agdenemyReplacementTier.MaxPerFloor) || (agdenemyReplacementTier.MaxPerRun > 0 && agdInjectionRunCounts[i] >= agdenemyReplacementTier.MaxPerRun)) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            List<AIActor> EnemyList2 = new List<AIActor>();
+            float newPlayerEnemyCullFactor = GameStatsManager.Instance.NewPlayerEnemyCullFactor;
+            if (newPlayerEnemyCullFactor > 0f && TargetRoom.EverHadEnemies && TargetRoom.IsStandardRoom && !TargetRoom.IsGunslingKingChallengeRoom) {
+                if (TargetRoom.area.runtimePrototypeData != null && TargetRoom.area.runtimePrototypeData.roomEvents != null) {
+                    bool DarkRoom = false;
+                    for (int i = 0; i < TargetRoom.area.runtimePrototypeData.roomEvents.Count; i++) {
+                        if (TargetRoom.area.runtimePrototypeData.roomEvents[i].action == RoomEventTriggerAction.BECOME_TERRIFYING_AND_DARK) {
+                            DarkRoom = true;
+                        }
+                    }
+                    if (DarkRoom) { return; }
+                }
+                TargetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All, ref EnemyList2);
+                for (int j = 0; j < EnemyList2.Count; j++) {
+                    AIActor TargetEnemy = EnemyList2[j];
+                    if (TargetEnemy && (TargetEnemy.AdditionalSimpleItemDrops == null || TargetEnemy.AdditionalSimpleItemDrops.Count <= 0)) {
+                        if (TargetEnemy.IsNormalEnemy && !TargetEnemy.IsHarmlessEnemy && TargetEnemy.IsWorthShootingAt && (!TargetEnemy.healthHaver || !TargetEnemy.healthHaver.IsBoss) && UnityEngine.Random.value < newPlayerEnemyCullFactor) {
+                            UnityEngine.Object.Destroy(TargetEnemy.gameObject);
+                        }
+                    }
+                }
+            }
         }
         
         public static void ApplyCustomTexture(AIActor targetActor, Texture2D newTexture = null, List<Texture2D> spriteList = null, tk2dSpriteCollectionData prebuiltCollection = null, Shader overrideShader = null, bool disablePalette = false, bool makeStatic = false) {

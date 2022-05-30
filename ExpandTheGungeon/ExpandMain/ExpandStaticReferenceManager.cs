@@ -38,6 +38,7 @@ namespace ExpandTheGungeon.ExpandMain {
             // Jungle Grass Patches
             AllGrasses = new List<ExpandTallGrassPatchSystem>();
 
+            // Alarm Mushrooms
             AllAlarmMushrooms = new List<ExpandAlarmMushroomPlacable>();
         }
 
@@ -46,7 +47,7 @@ namespace ExpandTheGungeon.ExpandMain {
             FlippableCover[] Tables = Object.FindObjectsOfType<FlippableCover>();
             PathingTrapController[] MovingTraps = Object.FindObjectsOfType<PathingTrapController>();
             ConveyorBelt[] ConveyorBelts = Object.FindObjectsOfType<ConveyorBelt>();
-            ExpandAlarmMushroomPlacable[] AlarmMushrooms = Object.FindObjectsOfType<ExpandAlarmMushroomPlacable>();
+            ExpandAlarmMushroomPlacable[] Mushrooms = Object.FindObjectsOfType<ExpandAlarmMushroomPlacable>();
 
             if (BeholsterShrines != null) {
                 foreach (BeholsterShrineController BeholsterShrine in BeholsterShrines) { AllBeholsterShrines.Add(BeholsterShrine); }
@@ -58,8 +59,8 @@ namespace ExpandTheGungeon.ExpandMain {
                 foreach (ConveyorBelt conveyorBelt in ConveyorBelts) { AllConveyorBelts.Add(conveyorBelt); }
             }
 
-            if (AlarmMushrooms != null) {
-                foreach (ExpandAlarmMushroomPlacable alarmMushroom in AlarmMushrooms) { AllAlarmMushrooms.Add(alarmMushroom); }
+            if (Mushrooms != null) {
+                foreach (ExpandAlarmMushroomPlacable mushroom in Mushrooms) { AllAlarmMushrooms.Add(mushroom); }
             }
         } 
 

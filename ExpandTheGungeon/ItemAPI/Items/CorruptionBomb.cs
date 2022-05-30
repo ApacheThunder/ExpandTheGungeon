@@ -278,7 +278,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 List<GameObject> hammersToProcess = new List<GameObject>();
 
                 FlippableCover[] AllTables = FindObjectsOfType<FlippableCover>();
-                
+                ChallengeShrineController[] AllChallengeShrines = FindObjectsOfType<ChallengeShrineController>();
 
                 while (waveRemaining > 0f) {
                     waveRemaining -= BraveTime.DeltaTime;
@@ -383,6 +383,35 @@ namespace ExpandTheGungeon.ItemAPI {
                             }
                         }
                     }
+                    if (AllChallengeShrines != null && AllChallengeShrines.Length > 0) {
+                        for (int i = 0; i < AllChallengeShrines.Length; i++) {
+                            Vector2 unitCenter = AllChallengeShrines[i].gameObject.transform.PositionVector2();
+                            float RandomIntervalFloat = UnityEngine.Random.Range(0.02f, 0.06f);
+                            float RandomDispFloat = UnityEngine.Random.Range(0.07f, 0.09f);
+                            float RandomDispIntensityFloat = UnityEngine.Random.Range(0.085f, 0.2f);
+                            float RandomColorProbFloat = UnityEngine.Random.Range(0.04f, 0.15f);
+                            float RandomColorIntensityFloat = UnityEngine.Random.Range(0.08f, 0.14f);
+                            bool modified = false;
+                            string ObjectName = AllChallengeShrines[i].gameObject.name;
+                            float num = Vector2.Distance(unitCenter, lastPosition);
+                            if (AllChallengeShrines[i] != null && AllChallengeShrines[i].GetAbsoluteParentRoom() != null && AllChallengeShrines[i].GetAbsoluteParentRoom() == m_targetRoom) {
+                                if (!modified && (string.IsNullOrEmpty(ObjectName) | !ObjectName.StartsWith("Corrupted")) && num >= m_prevWaveDist - 0.25f && num <= waveDist + 0.25f) {
+                                    modified = true;
+                                    tk2dBaseSprite[] shrineSprites = AllChallengeShrines[i].gameObject.GetComponentsInChildren<tk2dBaseSprite>(true);
+                                    if (shrineSprites != null && !shrinesToProcess.Contains(AllChallengeShrines[i].gameObject)) {
+                                        shrinesToProcess.Add(AllChallengeShrines[i].gameObject);
+                                        foreach (tk2dBaseSprite baseSprite in shrineSprites) { ExpandShaders.Instance.ApplyGlitchShader(baseSprite, true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat); }
+                                        AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", AllChallengeShrines[i].gameObject);
+                                    } else if (AllChallengeShrines[i].gameObject.GetComponent<tk2dBaseSprite>() && !shrinesToProcess.Contains(AllChallengeShrines[i].gameObject)) {
+                                        shrinesToProcess.Add(AllChallengeShrines[i].gameObject);
+                                        ExpandShaders.Instance.ApplyGlitchShader(AllChallengeShrines[i].gameObject.GetComponent<tk2dBaseSprite>(), true, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                                        AkSoundEngine.PostEvent("Play_EX_CorruptedObjectTransform_01", AllChallengeShrines[i].gameObject);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     if (StaticReferenceManager.AllAdvancedShrineControllers != null && StaticReferenceManager.AllAdvancedShrineControllers.Count > 0) {
                         List<AdvancedShrineController> allAdvancedShrineControllers = StaticReferenceManager.AllAdvancedShrineControllers;
                         for (int i = 0; i < allAdvancedShrineControllers.Count; i++) {
@@ -860,6 +889,7 @@ namespace ExpandTheGungeon.ItemAPI {
                         if (shrineObject) {
                             AdvancedShrineController shrine = shrineObject.GetComponent<AdvancedShrineController>();
                             ShrineController shrine2 = shrineObject.GetComponent<ShrineController>();
+                            ChallengeShrineController shrine3 = shrineObject.GetComponent<ChallengeShrineController>();
                             BeholsterShrineController beholsterShrine = shrineObject.GetComponent<BeholsterShrineController>();
                             RoomHandler m_shrineParentRoom = shrineObject.transform.position.GetAbsoluteRoom();
                             if (!string.IsNullOrEmpty(shrineObject.gameObject.name)) {
@@ -878,6 +908,13 @@ namespace ExpandTheGungeon.ItemAPI {
                                 m_shrineParentRoom.DeregisterInteractable(shrine2);
                                 shrine2.GetRidOfMinimapIcon();
                                 Destroy(shrineObject.GetComponent<ShrineController>());
+                            }
+                            if (shrine3) {                                
+                                if (m_shrineParentRoom != null) {
+                                    m_shrineParentRoom.DeregisterInteractable(shrine);
+                                    shrine3.GetRidOfMinimapIcon();
+                                    Destroy(shrineObject.GetComponent<ChallengeShrineController>());
+                                }
                             }
                             if (beholsterShrine) {
                                 ExpandStaticReferenceManager.AllBeholsterShrines.Remove(beholsterShrine);

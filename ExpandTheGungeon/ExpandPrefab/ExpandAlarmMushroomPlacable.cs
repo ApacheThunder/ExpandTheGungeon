@@ -12,33 +12,44 @@ namespace ExpandTheGungeon.ExpandPrefab {
     public class ExpandAlarmMushroomPlacable : DungeonPlaceableBehaviour, IPlaceConfigurable {
 
         public ExpandAlarmMushroomPlacable() {
+            TriggerSFX = "Play_EXAlarmMushroom_01";
             TriggerAnimation = "alarm_mushroom_alarm";
             BreakAnimation = "alarm_mushroom_break";
-            TriggerSFX = "Play_EXAlarmMushroom_01";
-
+            DeadSpriteName = "alarm_mushroom2_dead_001";
             // EnemySpawnOffset = new Vector2(0, 2);
             useAirDropSpawn = true;
+            IsDead = false;
+
             m_triggered = false;
         }
 
+        [SerializeField]
         public GameObject TriggerVFX;
+        [SerializeField]
         public GameObject DestroyVFX;
-        
-        public string TriggerAnimation;
-        public string BreakAnimation;
+        [SerializeField]
         public string TriggerSFX;
-
+        [SerializeField]
+        public string TriggerAnimation;
+        [SerializeField]
+        public string BreakAnimation;
+        [SerializeField]
+        public string DeadSpriteName;
+        [SerializeField]
         public bool useAirDropSpawn;
-
+        [SerializeField]
         public Vector2? EnemySpawnOffset;
-
+        [SerializeField]
         public DungeonPlaceable EnemySpawnPlacableOverride;
 
+        [NonSerialized]
         public RoomHandler ParentRoom;
+        [NonSerialized]
+        public bool IsDead;
 
+        [NonSerialized]
         private bool m_triggered;
-        
-
+        [NonSerialized]
         private GameObject m_TriggerVFX;
 
         private void Start() {
@@ -51,7 +62,26 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
         }
 
-        public void ConfigureOnPlacement(RoomHandler room) { ParentRoom = room; }
+        private void Update() {
+            if (IsDead | GameManager.Instance.IsLoadingLevel | m_triggered | ParentRoom == null) { return; }
+            
+            if (!ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !ParentRoom.IsSealed) {
+                IsDead = true;
+                spriteAnimator.Stop();
+                sprite.SetSprite(DeadSpriteName);
+                Destroy(specRigidbody);
+                Destroy(this);
+            }
+        }
+
+        public void ConfigureOnPlacement(RoomHandler room) {
+            ParentRoom = room;
+            if (ExpandStaticReferenceManager.AllAlarmMushrooms != null) {
+                ExpandStaticReferenceManager.AllAlarmMushrooms.Add(this);
+            } else {
+                ExpandStaticReferenceManager.AllAlarmMushrooms = new List<ExpandAlarmMushroomPlacable>() { this };
+            }
+        }
 
         public void TriggerNow(bool DoSoundFX) {
             if (m_triggered) { return; }
@@ -62,8 +92,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (m_triggered) { return; }
             PlayerController player = specRigidbody.GetComponent<PlayerController>();
             if (player) {
-                foreach (ExpandAlarmMushroomPlacable alarmMushroom in ExpandStaticReferenceManager.AllAlarmMushrooms)  {
-                    if (alarmMushroom != this && alarmMushroom.ParentRoom == ParentRoom) { alarmMushroom.TriggerNow(false); }
+                ExpandAlarmMushroomPlacable[] AllMushrooms = FindObjectsOfType<ExpandAlarmMushroomPlacable>();
+                if (AllMushrooms != null && AllMushrooms.Length > 0) {
+                    foreach (ExpandAlarmMushroomPlacable alarmMushroom in AllMushrooms) {
+                        if (alarmMushroom && alarmMushroom != this && !alarmMushroom.IsDead && alarmMushroom.ParentRoom == ParentRoom) {
+                            alarmMushroom.TriggerNow(false);
+                        }
+                    }
                 }
                 StartCoroutine(Trigger(true));
             }

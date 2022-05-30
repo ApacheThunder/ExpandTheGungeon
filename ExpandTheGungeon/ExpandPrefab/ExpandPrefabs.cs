@@ -1935,8 +1935,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(reward_room, new Vector2(3, 1), NonEnemyBehaviour: Teleporter_Gungeon_01.GetComponent<DungeonPlaceableBehaviour>());
             // This Room Prefab didn't include a chest placer...lol. We'll use the one from gungeon_rewardroom_1. :P
             reward_room.additionalObjectLayers.Add(m_gungeon_rewardroom_1.additionalObjectLayers[1]);
-            reward_room.additionalObjectLayers[1].placedObjects[0].contentsBasePosition = new Vector2(4f, 7.5f);
-            reward_room.additionalObjectLayers[1].placedObjectBasePositions[0] = new Vector2(4f, 7.5f);
+            int m_rewardRoomObjectLayerIndex = (reward_room.additionalObjectLayers.Count - 1);
+            reward_room.additionalObjectLayers[m_rewardRoomObjectLayerIndex].placedObjects[0].contentsBasePosition = new Vector2(4f, 7.5f);
+            reward_room.additionalObjectLayers[m_rewardRoomObjectLayerIndex].placedObjectBasePositions[0] = new Vector2(4f, 7.5f);
 
 
             // Replace exit elevator with entrance elevator from normal elevator room. 
@@ -2468,7 +2469,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandUtility.DuplicateSprite(RickRollChestShadowSprite, m_RedChestReference.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>());
             }
             
-
             EX_GlitchPortal = expandSharedAssets1.LoadAsset<GameObject>("EX_GlitchPortal");
 
             GameObject m_ParadoxPortal = BraveResources.Load<GameObject>("Global Prefabs/VFX_ParadoxPortal");
@@ -2721,8 +2721,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SurpriseChestComponent.MinimapIconPrefab = m_BrownChestReference.GetComponent<Chest>().MinimapIconPrefab;
             SurpriseChestComponent.breakAnimName = "coop_chest_break";
             SurpriseChestComponent.openAnimName = "coop_chest_open";
-
-
+            
 
             ExpandThunderstormPlaceable = expandSharedAssets1.LoadAsset<GameObject>("ExpandThunderStorm");
             ExpandThunderstormPlaceable.AddComponent<ExpandThunderStormPlacable>();
@@ -4426,9 +4425,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             FXController.shaderType = ExpandGlitchScreenFXController.ShaderType.VHSOldFilm;
             FXController.enableVHSScanlineDistortion = false;
 
+
+
+            ExpandLists.CustomChests.Add(RickRollChestObject);
+            ExpandLists.CustomChests.Add(SurpriseChestObject);
             
             m_gungeon_rewardroom_1 = null;
-
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
             TutorialDungeonPrefab = null;
             CastleDungeonPrefab = null;

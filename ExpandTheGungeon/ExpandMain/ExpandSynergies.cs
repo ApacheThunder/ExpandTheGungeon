@@ -200,6 +200,23 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             );
 
+            m_TempSynergyList.Add(
+                new AdvancedSynergyEntry() {
+                    NameKey = "Clownin Around...",
+                    MandatoryItemIDs = new List<int>() { ClownBullets.ClownBulletsID, ClownFriend.ClownFriendID}, // Synergy for Clown Bullets and Clown Friend
+                    IgnoreLichEyeBullets = true,
+                    SuppressVFX = false,
+                    RequiresAtLeastOneGunAndOneItem = false,
+                    MandatoryGunIDs = new List<int>(0),
+                    OptionalGunIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>(0),
+                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
+                    ActiveWhenGunUnequipped = true,
+                    statModifiers = new List<StatModifier>(0),
+                    bonusSynergies = new List<CustomSynergyType>(0)
+                }
+            );
+
             GameManager.Instance.SynergyManager.synergies = m_TempSynergyList.ToArray();
             return;
         }

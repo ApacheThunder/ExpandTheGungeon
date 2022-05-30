@@ -168,6 +168,7 @@
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\ClownBullets.cs" />
+    <Compile Include="ItemAPI\Items\ClownFriend.cs" />
     <Compile Include="ItemAPI\Items\PortableElevator.cs" />
     <Compile Include="ItemAPI\Items\PortableShip.cs" />
     <Compile Include="ItemAPI\Items\SonicBox.cs" />
