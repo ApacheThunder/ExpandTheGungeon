@@ -819,6 +819,23 @@ namespace ExpandTheGungeon.ExpandUtilities {
             sprite.usesOverrideMaterial = usesOverrideMaterial;
         }
 
+        public static void ApplyHologramShader(tk2dSprite sprite, bool isGreen = false) {
+            Shader m_cachedShader = Shader.Find("Brave/Internal/HologramShader");
+            Material m_cachedMaterial = new Material(Shader.Find("Brave/Internal/HologramShader"));
+            m_cachedMaterial.name = "HologramMaterial";
+            Material m_cachedSharedMaterial = m_cachedMaterial;
+            			
+            m_cachedMaterial.SetTexture("_MainTex", sprite.renderer.material.GetTexture("_MainTex"));
+            m_cachedSharedMaterial.SetTexture("_MainTex", sprite.renderer.sharedMaterial.GetTexture("_MainTex"));
+            if (isGreen) {
+                m_cachedMaterial.SetFloat("_IsGreen", 1f);
+                m_cachedSharedMaterial.SetFloat("_IsGreen", 1f);
+            }
+            sprite.renderer.material.shader = m_cachedShader;
+            sprite.renderer.material = m_cachedMaterial;
+            sprite.renderer.sharedMaterial = m_cachedSharedMaterial;
+            sprite.usesOverrideMaterial = true;
+        }
 
         public static Material ApplyGlitchMaterial(Material originalMaterial, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
             if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }

@@ -95,6 +95,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Instantiate(ExpandPrefabs.Jungle_ExitLadder_Hole, TargetRoom.area.basePosition.ToVector3() + TargetPointInRoom.ToVector3ZUp() - new Vector2(0, 1).ToVector3ZUp(), Quaternion.identity);
                 
                 GameObject m_DestinationLadder = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.Jungle_ExitLadder_Destination, TargetRoom, TargetPointInRoom.ToIntVector2() - new IntVector2(0, 1), true);
+                m_DestinationLadder.transform.position -= new Vector3(0, 0.2f);
 
                 ExpandJungleExitLadderComponent m_DestinationLadderController = m_DestinationLadder.GetComponent<ExpandJungleExitLadderComponent>();
                 m_DestinationLadderController.IsDestinationWarp = true;

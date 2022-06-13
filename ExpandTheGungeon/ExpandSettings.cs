@@ -29,6 +29,7 @@ namespace ExpandTheGungeon {
         public static bool glitchElevatorHasBeenUsed = false;
         public static bool HasSpawnedSecretBoss = false;
         public static float randomSeed = 0.5f;
+        public static bool PlayingPunchoutArcade = false;
         
         public static void LoadSettings() {
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {

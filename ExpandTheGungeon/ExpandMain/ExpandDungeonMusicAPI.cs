@@ -23,8 +23,8 @@ namespace ExpandTheGungeon.ExpandMain {
 
         // Dictionary for custom level music available to the mod. string value is the track name, the bool is for if loop events were setup or not.
         public static readonly Dictionary<string, bool> CustomLevelMusic = new Dictionary<string, bool>() {
-            ["Play_EX_MUS_Belly_01"] = false,
-            ["Play_EX_MUS_Jungle_01"] = false
+            ["Play_EX_MUS_Belly_01"] = true,
+            ["Play_EX_MUS_Jungle_01"] = true
         };
 
         public static readonly List<string> CustomWestFloorMusic = new List<string>() {
@@ -255,9 +255,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 case DungeonFloorMusicController.DungeonMusicState.FLOOR_INTRO:
                     m_cooldownTimerRemainingField.SetValue(self, -1f);
                     AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
-                    // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Intro", self.gameObject);                    
+                    if (SupportsLoopSections) {
+                        AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Intro", self.gameObject);
+                    } else {
+                        AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Intro", self.gameObject);
+                    }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.FOYER_ELEVATOR:
                     m_cooldownTimerRemainingField.SetValue(self, -1f);

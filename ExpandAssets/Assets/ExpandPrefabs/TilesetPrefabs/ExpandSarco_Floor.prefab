@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4405289358319626}
-  m_Layer: 19
+  m_Layer: 20
   m_Name: ExpandSarco_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

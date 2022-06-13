@@ -208,8 +208,8 @@ namespace ExpandTheGungeon.ItemAPI {
             TempFXObject.transform.SetParent(dungeon.gameObject.transform);
             TempFXObject.SetActive(false);
             yield return null;
-            ExpandGlitchScreenFXController fxController = TempFXObject.AddComponent<ExpandGlitchScreenFXController>();
-            fxController.shaderType = ExpandGlitchScreenFXController.ShaderType.Glitch;
+            ExpandScreenFXController fxController = TempFXObject.AddComponent<ExpandScreenFXController>();
+            fxController.shaderType = ExpandScreenFXController.ShaderType.Glitch;
             fxController.GlitchAmount = 0;
             yield return null;
             TempFXObject.SetActive(true);
@@ -457,7 +457,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (m_CopyCurrentRoom) {
                 if (ExpandSettings.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
                     GameObject GlitchShaderObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, GlitchRoom.area.UnitCenter, Quaternion.identity);
-                    ExpandGlitchScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandGlitchScreenFXController>();
+                    ExpandScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandScreenFXController>();
                     FXController.isRoomSpecific = true;
                     FXController.ParentRoom = GlitchRoom;
                     FXController.UseCorruptionAmbience = m_CopyCurrentRoom;

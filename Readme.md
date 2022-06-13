@@ -74,3 +74,4 @@ Credits:
 * https://github.com/khalladay/GlitchFX - One of the shaders used for transition fx on The Lead Key item.
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.
 * C4ndy_cane for all the custom level music added to this mod!
+* luka712 (https://luka712.github.io/2018/07/21/CRT-effect-Shadertoy-Unity/) for the CRT shader used for the Punchout Arcade Game!

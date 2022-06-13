@@ -30,6 +30,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXPortableElevatorCollection;
         public static GameObject EXOfficeCollection;
         public static GameObject EXSpaceCollection;
+        public static GameObject EXFoyerCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -94,6 +95,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom big_entrance;
         public static PrototypeDungeonRoom Hell_Hath_No_Joery_009;
         public static PrototypeDungeonRoom[] gatlinggull_noTileVisualOverrides;
+        // Foyer Room
+        // public static PrototypeDungeonRoom GungeonFoyer;
 
         // Exposed as a static array to insure changes to them stick.
         public static PrototypeDungeonRoom[] winchesterrooms;
@@ -381,6 +384,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpace_Grass_03;
         public static GameObject EXSpace_Grass_04;
 
+        // Custom Foyer stuff
+        public static GameObject EXFoyerTrigger;
+        public static GameObject EXFoyerWarpDoor;
+        public static GameObject EXCasinoHub;
+        public static GameObject EXCasinoArcadeGameScanlineFX;
+
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
         public static GameObject Challenge_TripleTrouble;
@@ -416,7 +425,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXPortableElevatorCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXPortableElevatorCollection", "EXPortableElevator_Collection", "EXPortableElevatorCollection");
             EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
-
+            EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -710,6 +719,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             gatlinggull_noTileVisualOverrides = new PrototypeDungeonRoom[0];
 
+            // GungeonFoyer = sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow").AllNodes[0].overrideExactRoom;
+
+            // RoomBuilder.AddObjectToRoom(GungeonFoyer, new Vector2(38.9f, 49.8f), Jungle_ExitLadder, 15, 13);
+            
 
             MetalGearRatPrefab = enemiesBase.LoadAsset<GameObject>("MetalGearRat");
             ResourcefulRatBossPrefab = enemiesBase.LoadAsset<GameObject>("ResourcefulRat_Boss");
@@ -729,12 +742,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject SecretElevatorExitTileset_Roof = SecretElevatorExitTileset.transform.Find("Roof").gameObject;
             // SecretElevatorExitTileset_Roof.layer = LayerMask.NameToLayer("FG_Critical");
 
-            tk2dSprite m_SecretElevatorExitTilesetFloorSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Floor, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Floor");
-            m_SecretElevatorExitTilesetFloorSprite.HeightOffGround = -5;
+            tk2dSprite m_SecretElevatorExitTilesetFloorSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Floor, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Floor", tk2dBaseSprite.PerpendicularState.FLAT);
+            // m_SecretElevatorExitTilesetFloorSprite.HeightOffGround = -5;
+            m_SecretElevatorExitTilesetFloorSprite.HeightOffGround = -1.7f;
 
-            tk2dSprite m_SecretElevatorExitTilesetRoofSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Roof, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Roof");
-            m_SecretElevatorExitTilesetRoofSprite.HeightOffGround = 6f;
-            
+            tk2dSprite m_SecretElevatorExitTilesetRoofSprite = SpriteSerializer.AddSpriteToObject(SecretElevatorExitTileset_Roof, SecretElevatorExitTilesetCollection, "SecretElevatorExitTileset_Roof", tk2dBaseSprite.PerpendicularState.FLAT);
+            // m_SecretElevatorExitTilesetRoofSprite.HeightOffGround = 6f;
+            m_SecretElevatorExitTilesetRoofSprite.HeightOffGround = 2f;
+
 
             // Custom Trap Object for Rainbow room
             EXTrap_Apache = expandSharedAssets1.LoadAsset<GameObject>("EX_Trap_Apache");
@@ -957,10 +972,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_EXPortableElevator_DepartureSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
             m_EXPortableElevator_DepartureSprite.HeightOffGround = -4.75f;
 
-            tk2dSprite m_EXPortableElevator_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor_alt");
+            tk2dSprite m_EXPortableElevator_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor_alt", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPortableElevator_FloorSprite.HeightOffGround = -1.75f;
 
-            tk2dSprite m_EXPortableElevator_InteriorFloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            tk2dSprite m_EXPortableElevator_InteriorFloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPortableElevator_InteriorFloorSprite.HeightOffGround = -0.75f;
 
 
@@ -1036,7 +1051,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             EXPortableElevator_Reticle = expandSharedAssets1.LoadAsset<GameObject>("EXPortableElevator_Reticle");
-            SpriteSerializer.AddSpriteToObject(EXPortableElevator_Reticle, EXPortableElevatorCollection, "portable_elevator_reticle_green");
+            SpriteSerializer.AddSpriteToObject(EXPortableElevator_Reticle, EXPortableElevatorCollection, "portable_elevator_reticle_green", tk2dBaseSprite.PerpendicularState.FLAT);
 
             ExpandReticleRiserEffect m_PortableElevatorReticle = EXPortableElevator_Reticle.AddComponent<ExpandReticleRiserEffect>();
             m_PortableElevatorReticle.UpdateSpriteDefinitions = true;
@@ -1058,13 +1073,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_EXPortableElevator_Departure_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
             m_EXPortableElevator_Departure_PlacableChildSprite.HeightOffGround = -4.75f;
 
-            tk2dSprite m_EXPortableElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            tk2dSprite m_EXPortableElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPortableElevatorPlacable_FloorSprite.HeightOffGround = -1.7f;
 
-            tk2dSprite m_EXPortableElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            tk2dSprite m_EXPortableElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPortableElevatorPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
 
-            tk2dSprite m_EXPortableElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            tk2dSprite m_EXPortableElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPortableElevator_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
 
 
@@ -1101,13 +1116,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_EXJungleElevator_Departure_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
             m_EXJungleElevator_Departure_PlacableChildSprite.HeightOffGround = -4.75f;
 
-            tk2dSprite m_EXJungleElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            tk2dSprite m_EXJungleElevatorPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXJungleElevatorPlacable_FloorSprite.HeightOffGround = -1.7f;
 
-            tk2dSprite m_EXJungleElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            tk2dSprite m_EXJungleElevatorPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXJungleElevatorPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
 
-            tk2dSprite m_EXJungleElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            tk2dSprite m_EXJungleElevator_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_JunglePlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXJungleElevator_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
 
 
@@ -1146,13 +1161,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_EXElevator_Arrival_PlacableChildSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_Departure, EXPortableElevatorCollection, "portable_elevator_arrive_01");
             m_EXElevator_Arrival_PlacableChildSprite.HeightOffGround = -4.75f;
 
-            tk2dSprite m_EXElevatorArrivalPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor");
+            tk2dSprite m_EXElevatorArrivalPlacable_FloorSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_Floor, EXPortableElevatorCollection, "portable_elevator_floor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXElevatorArrivalPlacable_FloorSprite.HeightOffGround = -1.7f;
 
-            tk2dSprite m_EXElevatorArrivalPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border");
+            tk2dSprite m_EXElevatorArrivalPlacable_FloorBorderSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_FloorBorder, EXPortableElevatorCollection, "portable_elevator_floor_border", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXElevatorArrivalPlacable_FloorBorderSprite.HeightOffGround = -1.75f;
 
-            tk2dSprite m_EXPElevatorArrival_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor");
+            tk2dSprite m_EXPElevatorArrival_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPElevatorArrival_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
 
 
@@ -2306,7 +2321,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             EXAlarmMushroom = expandSharedAssets1.LoadAsset<GameObject>("EX Alarm Mushroom");
             tk2dSprite m_AlarmMushroomSprite = SpriteSerializer.AddSpriteToObject(EXAlarmMushroom, EXTrapCollection, "alarm_mushroom2_idle_001");
-            
+            m_AlarmMushroomSprite.HeightOffGround = -1;
+
             List<string> m_AlarmMushroom_idleSprites = new List<string>() {
                 "alarm_mushroom2_idle_001",
                 "alarm_mushroom2_idle_002",
@@ -2353,7 +2369,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_AlarmMushroomShadowSprite.renderer.materials = new Material[] { m_AlarmMushroomShadowSprite.renderer.material };
             m_AlarmushroomShadowSpriteCollection.spriteDefinitions[125].material = m_AlarmMushroomShadowSprite.renderer.material;
             m_AlarmMushroomShadowSprite.SetSprite(m_AlarmushroomShadowSpriteCollection, "alarm_mushroom2_shadow_001");
-            m_AlarmMushroomShadowSprite.HeightOffGround = -1.5f;
+            m_AlarmMushroomShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            m_AlarmMushroomShadowSprite.HeightOffGround = -1.7f;
             m_PlungerShadowSprite = null;
 
 
@@ -2839,7 +2856,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite TreeShadowSprite = SpriteSerializer.AddSpriteToObject(Jungle_Large_Tree_Shadow, EXJungleCollection, "Jungle_Tree_Large_Shadow");
             TreeShadowSprite.usesOverrideMaterial = true;
             TreeShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
-            TreeShadowSprite.HeightOffGround = -18;
+            // TreeShadowSprite.HeightOffGround = -18;
+            TreeShadowSprite.HeightOffGround = -1.7f;
 
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 20), offset: new IntVector2(84, 39)); // EntranceBlocker
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(10, 20), offset: new IntVector2(74, 39)); // SideCollisions
@@ -2873,8 +2891,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_ExitLadder_Destination.AddComponent<ExpandJungleExitLadderComponent>();
 
             Jungle_ExitLadder_Hole = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ExitLadder_Hole");
-            tk2dSprite m_jungleExitLadderHoleSprite = SpriteSerializer.AddSpriteToObject(Jungle_ExitLadder_Hole, EXJungleCollection, "Jungle_ExitLadder_Destination_Hole");
-            m_jungleExitLadderHoleSprite.HeightOffGround = -1;
+            tk2dSprite m_jungleExitLadderHoleSprite = SpriteSerializer.AddSpriteToObject(Jungle_ExitLadder_Hole, EXJungleCollection, "Jungle_ExitLadder_Destination_Hole", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_jungleExitLadderHoleSprite.HeightOffGround = -1.7f;
             Jungle_ExitLadder_Hole.SetLayerRecursively(LayerMask.NameToLayer("BG_Critical"));
 
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ExitLadder_Hole, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(30, 30), offset: IntVector2.One);
@@ -3145,14 +3163,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SarcophagusShotgunMaceKaliberShadowSprite.SetSprite(m_Sarcophagus_ShotgunBookSprite.Collection, "sarco_shadow_001");
             SarcophagusBulletSwordKaliberShadowSprite.SetSprite(m_Sarcophagus_ShotgunBookSprite.Collection, "sarco_shadow_001");
             SarcophagusBulletShieldKaliberShadowSprite.SetSprite(m_Sarcophagus_ShotgunBookSprite.Collection, "sarco_shadow_001");
+            SarcophagusShotgunBookKaliberShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            SarcophagusShotgunMaceKaliberShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            SarcophagusBulletSwordKaliberShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            SarcophagusBulletShieldKaliberShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
             SarcophagusShotgunBookKaliberSprite.HeightOffGround = -1;
             SarcophagusShotgunMaceKaliberSprite.HeightOffGround = -1;
             SarcophagusBulletSwordKaliberSprite.HeightOffGround = -1;
             SarcophagusBulletShieldKaliberSprite.HeightOffGround = -1;
-            SarcophagusShotgunBookKaliberShadowSprite.HeightOffGround = -2;
-            SarcophagusShotgunMaceKaliberShadowSprite.HeightOffGround = -2;
-            SarcophagusBulletSwordKaliberShadowSprite.HeightOffGround = -2;
-            SarcophagusBulletShieldKaliberShadowSprite.HeightOffGround = -2;
+            SarcophagusShotgunBookKaliberShadowSprite.HeightOffGround = -1.7f;
+            SarcophagusShotgunMaceKaliberShadowSprite.HeightOffGround = -1.7f;
+            SarcophagusBulletSwordKaliberShadowSprite.HeightOffGround = -1.7f;
+            SarcophagusBulletShieldKaliberShadowSprite.HeightOffGround = -1.7f;
 
             SpeculativeRigidbody SarcophagusShotgunBookKaliberRigidBody = Sarcophagus_ShotgunBook_Kaliber.AddComponent<SpeculativeRigidbody>();
             SpeculativeRigidbody SarcophagusShotgunMaceKaliberRigidBody = Sarcophagus_ShotgunMace_Kaliber.AddComponent<SpeculativeRigidbody>();
@@ -3248,8 +3270,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             Sarco_Floor = expandSharedAssets1.LoadAsset<GameObject>("ExpandSarco_Floor");
-            tk2dSprite m_SarcoFloorSprite = SpriteSerializer.AddSpriteToObject(Sarco_Floor, EXLargeMonsterCollection, "Belly_GungeonMonsterRoomFloor");
-            m_SarcoFloorSprite.HeightOffGround = -1.5f;
+            tk2dSprite m_SarcoFloorSprite = SpriteSerializer.AddSpriteToObject(Sarco_Floor, EXLargeMonsterCollection, "Belly_GungeonMonsterRoomFloor", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_SarcoFloorSprite.HeightOffGround = -1.7f;
 
             Sarco_MonsterObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandSarco_Monster");                        
             tk2dSprite Sarco_MonsterSprite = SpriteSerializer.AddSpriteToObject(Sarco_MonsterObject, EXLargeMonsterCollection, "Belly_Monster_Move_001");
@@ -3788,11 +3810,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             EXSpaceFloor_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloor_50x50");
             EXSpaceFloorPitBorder_50x50 = expandSharedAssets1.LoadAsset<GameObject>("EXSpaceFloorPitBorder_50x50");
-            tk2dSprite EXSpaceFloor50x50Sprite = SpriteSerializer.AddSpriteToObject(EXSpaceFloor_50x50, EXTrapCollection, "RainbowRoad");
-            tk2dSprite EXSpaceFloorPitBorder50x50Sprite = SpriteSerializer.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, EXTrapCollection, "RainbowRoad_PitBorders");
+            tk2dSprite EXSpaceFloor50x50Sprite = SpriteSerializer.AddSpriteToObject(EXSpaceFloor_50x50, EXTrapCollection, "RainbowRoad", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite EXSpaceFloorPitBorder50x50Sprite = SpriteSerializer.AddSpriteToObject(EXSpaceFloorPitBorder_50x50, EXTrapCollection, "RainbowRoad_PitBorders", tk2dBaseSprite.PerpendicularState.FLAT);
 
-            EXSpaceFloor50x50Sprite.HeightOffGround = -200;
-            EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -195;
+            // EXSpaceFloor50x50Sprite.HeightOffGround = -200;
+            // EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -195;
+            EXSpaceFloor50x50Sprite.HeightOffGround = -1.72f;
+            EXSpaceFloorPitBorder50x50Sprite.HeightOffGround = -1.6f;
             EXSpaceFloor50x50Sprite.renderer.material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
             EXSpaceFloor50x50Sprite.renderer.material.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("RainbowRoad");
             EXSpaceFloor50x50Sprite.usesOverrideMaterial = true;            
@@ -4277,6 +4301,182 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SpaceGrassSprite_04.usesOverrideMaterial = true;
             m_SpaceGrassSprite_04.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
 
+
+            EXFoyerWarpDoor = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerWarpDoor");
+            tk2dSprite m_EXFoyerWarpDoorSprite = SpriteSerializer.AddSpriteToObject(EXFoyerWarpDoor, EXFoyerCollection, "foyerdoor_open_01");
+            m_EXFoyerWarpDoorSprite.HeightOffGround = -2.25f;
+            
+            tk2dSpriteAnimator m_FoyerWarpDoorAnimator = ExpandUtility.GenerateSpriteAnimator(EXFoyerWarpDoor);
+
+            List<string> m_FoyerDoorOpen = new List<string>() {
+                "foyerdoor_open_01",
+                "foyerdoor_open_02",
+                "foyerdoor_open_03",
+                "foyerdoor_open_04",
+                "foyerdoor_open_05",
+                "foyerdoor_open_06",
+                "foyerdoor_open_07",
+                "foyerdoor_open_08",
+                "foyerdoor_open_09",
+                "foyerdoor_open_10",
+                "foyerdoor_open_11",
+                "foyerdoor_open_12",
+                "foyerdoor_open_13",
+            };
+
+            List<string> m_FoyerDoorClose = new List<string>() {
+                "foyerdoor_open_13",
+                "foyerdoor_open_12",
+                "foyerdoor_open_11",
+                "foyerdoor_open_10",
+                "foyerdoor_open_09",
+                "foyerdoor_open_08",
+                "foyerdoor_open_07",
+                "foyerdoor_open_06",
+                "foyerdoor_open_05",
+                "foyerdoor_open_04",
+                "foyerdoor_open_03",
+                "foyerdoor_open_02",
+                "foyerdoor_open_01",
+            };
+            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorOpen, "open", frameRate: 12);
+            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorClose, "close", frameRate: 12);
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24), offset: new IntVector2(48, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(0, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(48, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(31, 13), offset: new IntVector2(17, 18));
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().HasTriggerCollisions = true;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].IsTrigger = true;
+
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[0].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[1].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[2].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[3].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].Enabled = false;
+
+
+            EXFoyerWarpDoor.AddComponent<ExpandWarpManager>();
+
+
+            EXFoyerTrigger = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerTrigger");
+            tk2dSprite m_FoyerTriggerSprite = SpriteSerializer.AddSpriteToObject(EXFoyerTrigger, EXFoyerCollection, "floortrigger_idle_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_FoyerTriggerSprite.HeightOffGround = -1.74f;
+            EXFoyerTrigger.AddComponent<ExpandCasinoWarpTrigger>();
+
+
+            EXCasinoHub = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Hub");
+            GameObject m_EXCasinoHubRoomPrefab = EXCasinoHub.transform.Find("Room_Prefab").gameObject;
+            GameObject m_CasinoFloor = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_floor").gameObject;
+            GameObject m_CasinoWalls = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_backwall").gameObject;
+            GameObject m_CasinoBorder = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_border").gameObject;
+
+            tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoFloorSprite.HeightOffGround = -1.74f;
+            tk2dSprite m_CasinoWallsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoWalls, EXFoyerCollection, "casino_hub_backwall_001");
+            m_CasinoWallsSprite.HeightOffGround = -1.73f;
+            tk2dSprite m_CasinoBorderSprite = SpriteSerializer.AddSpriteToObject(m_CasinoBorder, EXFoyerCollection, "casino_hub_border_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoBorderSprite.HeightOffGround = 4;
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(-10, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(262, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(151, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(6, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(256, 16), offset: new IntVector2(6, 256));
+
+            ExpandCasinoRoomController m_CasinoRoomController = EXCasinoHub.AddComponent<ExpandCasinoRoomController>();
+
+            GameObject m_EXCasinoGame_Punchout = EXCasinoHub.transform.Find("casinogame_punchout").gameObject;
+            tk2dSprite m_EXCasinoGamePunchoutSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Punchout, EXFoyerCollection, "cabinet_covered_001");
+            m_EXCasinoGamePunchoutSprite.HeightOffGround = -1.65f;
+
+            GameObject m_EXCasinoGame_PunchoutShadow = m_EXCasinoGame_Punchout.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXCasinoGamePunchoutShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_PunchoutShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXCasinoGamePunchoutShadowSprite.HeightOffGround = -1.7f;
+            m_EXCasinoGamePunchoutShadowSprite.usesOverrideMaterial = true;
+            m_EXCasinoGamePunchoutShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
+            
+
+            List<string> m_PunchoutArcade_Idle = new List<string>() {
+                "cabinet_idle_001",
+                "cabinet_idle_002",
+                "cabinet_idle_003",
+                "cabinet_idle_004",
+                "cabinet_idle_005",
+                "cabinet_idle_006",
+                "cabinet_idle_007",
+                "cabinet_idle_008",
+                "cabinet_idle_009",
+                "cabinet_idle_010",
+                "cabinet_idle_011",
+                "cabinet_idle_012",
+            };
+            List<string> m_PunchoutArcade_Sleep = new List<string>() {
+                "cabinet_sleep_001",
+                "cabinet_sleep_002",
+                "cabinet_sleep_003",
+                "cabinet_sleep_004",
+                "cabinet_sleep_005",
+                "cabinet_sleep_006",
+                "cabinet_sleep_007",
+                "cabinet_sleep_008",
+                "cabinet_sleep_009",
+                "cabinet_sleep_010",
+                "cabinet_sleep_011",
+                "cabinet_sleep_012",
+                "cabinet_sleep_013",
+                "cabinet_sleep_014",
+            };
+            List<string> m_PunchoutArcade_Interact = new List<string>() {
+                "cabinet_interact_001",
+                "cabinet_interact_002",
+                "cabinet_interact_003",
+                "cabinet_interact_004",
+            };
+            List<string> m_PunchoutArcade_Fight = new List<string>() {
+                "cabinet_fight_001",
+                "cabinet_fight_002",
+                "cabinet_fight_003",
+                "cabinet_fight_004",
+                "cabinet_fight_005",
+                "cabinet_fight_006",
+                "cabinet_fight_007",
+                "cabinet_fight_008",
+                "cabinet_fight_009",
+                "cabinet_fight_010",
+                "cabinet_fight_011",
+                "cabinet_fight_012",
+                "cabinet_fight_013",
+                "cabinet_fight_014"
+            };
+
+            
+            tk2dSpriteAnimator m_EXCasinoArcadeGameAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXCasinoGame_Punchout, playAutomatically: true);
+
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Interact, "interact", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Fight, "fight", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Sleep, "sleep", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+
+            m_CasinoRoomController.CasinoGame_Punchout = m_EXCasinoGame_Punchout.AddComponent<ExpandCasinoGameController>();
+
+
+            EXCasinoArcadeGameScanlineFX = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGameScanlineFX");
+            ExpandScreenFXController m_EXCasinoArcadeGameScanlineFXController = EXCasinoArcadeGameScanlineFX.AddComponent<ExpandScreenFXController>();
+            m_EXCasinoArcadeGameScanlineFXController.UseCorruptionAmbience = false;
+            m_EXCasinoArcadeGameScanlineFXController.shaderType = ExpandScreenFXController.ShaderType.CRT;
+
+            GameObject m_EXCasinoArcadeGameScanlineFXAdditionalPass = EXCasinoArcadeGameScanlineFX.transform.Find("additionalPass").gameObject;
+            ExpandScreenFXController m_EXCasinoArcadeGameScanlineFXController2 = m_EXCasinoArcadeGameScanlineFXAdditionalPass.AddComponent<ExpandScreenFXController>();
+            m_EXCasinoArcadeGameScanlineFXController2.UseCorruptionAmbience = false;
+            m_EXCasinoArcadeGameScanlineFXController2.shaderType = ExpandScreenFXController.ShaderType.Scanlines;
+
+
+
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");
 
@@ -4417,15 +4617,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             EXGlitchFloorScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXGlitchFloorScreenFX");
-            EXGlitchFloorScreenFX.AddComponent<ExpandGlitchScreenFXController>();
+            EXGlitchFloorScreenFX.AddComponent<ExpandScreenFXController>();
 
             EXWestFloorBossIntroScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXWestFloorBossIntroScreenFX");
-            EXWestFloorBossIntroScreenFX.AddComponent<ExpandGlitchScreenFXController>();
-            ExpandGlitchScreenFXController FXController = EXWestFloorBossIntroScreenFX.GetComponent<ExpandGlitchScreenFXController>();
-            FXController.shaderType = ExpandGlitchScreenFXController.ShaderType.VHSOldFilm;
+            EXWestFloorBossIntroScreenFX.AddComponent<ExpandScreenFXController>();
+            ExpandScreenFXController FXController = EXWestFloorBossIntroScreenFX.GetComponent<ExpandScreenFXController>();
+            FXController.shaderType = ExpandScreenFXController.ShaderType.VHSOldFilm;
             FXController.enableVHSScanlineDistortion = false;
-
-
+            
 
             ExpandLists.CustomChests.Add(RickRollChestObject);
             ExpandLists.CustomChests.Add(SurpriseChestObject);

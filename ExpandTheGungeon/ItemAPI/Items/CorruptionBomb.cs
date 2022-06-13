@@ -1246,7 +1246,11 @@ namespace ExpandTheGungeon.ItemAPI {
             m_GlitchSprite.OverrideMaterialMode = tk2dBaseSprite.SpriteMaterialOverrideMode.NONE;
             m_GlitchSprite.independentOrientation = false;
             m_GlitchSprite.hasOffScreenCachedUpdate = false;
-            m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+            if (isWallCell) {
+                m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+            } else {
+                m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            }
             m_GlitchSprite.SortingOrder = 2;
             m_GlitchSprite.IsBraveOutlineSprite = false;
             m_GlitchSprite.IsZDepthDirty = false;
@@ -1294,8 +1298,10 @@ namespace ExpandTheGungeon.ItemAPI {
                 m_GlitchTile.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
             } else {
                 DepthLookupManager.ProcessRenderer(m_GlitchSprite.renderer, DepthLookupManager.GungeonSortingLayer.BACKGROUND);
+                m_GlitchTile.SetLayerRecursively(LayerMask.NameToLayer("BG_Critical"));
                 m_GlitchSprite.IsPerpendicular = false;
-                m_GlitchSprite.HeightOffGround = -4f;
+                // m_GlitchSprite.HeightOffGround = -4f;
+                m_GlitchSprite.HeightOffGround = -1.7f;
                 m_GlitchSprite.SortingOrder = 2;
                 m_GlitchSprite.UpdateZDepth();
             }

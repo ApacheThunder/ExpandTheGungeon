@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4077067004432032}
-  m_Layer: 22
+  m_Layer: 20
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

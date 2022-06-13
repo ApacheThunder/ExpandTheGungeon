@@ -94,8 +94,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
+    <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
+    <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
+    <Compile Include="ExpandComponents\ExpandPunchoutArcadeController.cs" />
     <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
@@ -123,7 +126,7 @@
     <Compile Include="ExpandComponents\ExpandEnableSpacePitOnEnterComponent.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchedEnemyStunManager.cs" />
     <Compile Include="ExpandComponents\ExpandGlitchPortalController.cs" />
-    <Compile Include="ExpandComponents\ExpandGlitchScreenFXController.cs" />
+    <Compile Include="ExpandComponents\ExpandScreenFXController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicBossController.cs" />
     <Compile Include="ExpandComponents\ExpandGungeoneerMimicDeathController.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="ExpandComponents\ExpandWesternBroDeathController.cs" />
     <Compile Include="ExpandComponents\ExpandWesternBroIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandWestPuzzleRoomController.cs" />
+    <Compile Include="ExpandComponents\ExpandCasinoRoomController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f0b_office_flows.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f0b_phobos_flows.cs" />

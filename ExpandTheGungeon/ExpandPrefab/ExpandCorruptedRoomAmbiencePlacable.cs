@@ -55,7 +55,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
                 if (!m_ScreenFXObject) {
                     m_ScreenFXObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, m_Room.area.UnitCenter, Quaternion.identity);
-                    ExpandGlitchScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandGlitchScreenFXController>();
+                    ExpandScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandScreenFXController>();
                     FXController.isRoomSpecific = true;
                     FXController.ParentRoomIsSecretGlitchRoom = true;
                     FXController.ParentRoom = m_Room;

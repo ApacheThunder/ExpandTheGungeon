@@ -1,0 +1,267 @@
+﻿using System;
+using System.Collections;
+using UnityEngine;
+using Dungeonator;
+using System.Reflection;
+using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
+using MonoMod.RuntimeDetour;
+using System.Collections.Generic;
+using ExpandTheGungeon.ExpandPrefab;
+
+namespace ExpandTheGungeon.ExpandComponents {
+
+    public class ExpandPunchoutArcadeController : BraveBehaviour {
+
+        public ExpandPunchoutArcadeController() {
+            m_Configured = false;
+            m_PunchOutEnded = false;
+        }
+        
+        [NonSerialized]
+        public static List<int> RewardIDs = new List<int>();
+        [NonSerialized]
+        public static int RatKeyCount = -1;
+        [NonSerialized]
+        public static bool WonRatGame = false;
+        [NonSerialized]
+        public GameObject ScanlineFX;
+
+        [NonSerialized]
+        public PlayerController Player;
+        [NonSerialized]
+        public ExpandCasinoGameController ParentGameController;
+
+        [NonSerialized]
+        private Hook doLoseFadeHook;
+        [NonSerialized]
+        private Hook dropRewardHook;
+        [NonSerialized]
+        private PunchoutController m_punchoutController;
+        [NonSerialized]
+        private bool m_Configured;
+        [NonSerialized]
+        private bool m_PunchOutEnded;
+        
+        public void StartPunchout(PlayerController player) {
+            Player = player;
+            RatKeyCount = -1;
+            WonRatGame = false;
+
+            RewardIDs = new List<int>();
+
+            doLoseFadeHook = new Hook(
+                typeof(PunchoutController).GetMethod("DoLoseFade", BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandPunchoutArcadeController).GetMethod("DoLoseFadeHook", BindingFlags.Public | BindingFlags.Instance),
+                typeof(PunchoutController)
+            );
+
+            dropRewardHook = new Hook(
+                typeof(PunchoutAIActor).GetMethod("DropReward", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandPunchoutArcadeController).GetMethod(nameof(DropRewardHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PunchoutAIActor)
+            );
+
+            ExpandSettings.PlayingPunchoutArcade = true;
+            RoomHandler CurrentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
+            GameObject MetalGearRatPrefab = ExpandAssets.LoadOfficialAsset<GameObject>("MetalGearRat", ExpandAssets.AssetSource.EnemiesBase);
+            MetalGearRatDeathController MetalGearRatDeathPrefab = MetalGearRatPrefab.GetComponent<MetalGearRatDeathController>();
+            
+            IntVector2 RoomPosition = CurrentRoom.area.basePosition;
+            Vector3 RoomPositionVec3 = RoomPosition.ToVector3() - new Vector3(5, 5);
+            Vector3 RoomPositionPunchoutVec3 = RoomPosition.ToVector3() + new Vector3(0, 10);
+
+            SuperReaperController.PreventShooting = true;
+            foreach (PlayerController playerController in GameManager.Instance.AllPlayers) { playerController.SetInputOverride("starting punchout"); }
+            GameObject punchoutMinigame = Instantiate(MetalGearRatDeathPrefab.PunchoutMinigamePrefab, RoomPositionPunchoutVec3, Quaternion.identity);
+            m_punchoutController = punchoutMinigame.GetComponent<PunchoutController>();
+            m_punchoutController.PlayerWonRatNPC = null;
+            StartCoroutine(StartPunchout());
+        }
+
+        private IEnumerator StartPunchout() {
+            m_punchoutController.Init();
+            if (!ScanlineFX) { ScanlineFX = Instantiate(ExpandPrefabs.EXCasinoArcadeGameScanlineFX, gameObject.transform.position, Quaternion.identity); }
+            for (int i = 0; i < 20; i++) { yield return null; }
+            Pixelator.Instance.FadeToColor(1f, Color.black, true, 0f);
+            m_Configured = true;
+            yield break;
+        }
+        
+        public void DoLoseFadeHook(Action<PunchoutController, bool>orig, PunchoutController self, bool skipDelay) {
+            GameManager.Instance.StartCoroutine(DoLoseFadeCR(self, skipDelay));
+        }
+
+        private static IEnumerator DoLoseFadeCR(PunchoutController self, bool skipDelay) {
+            if (!skipDelay) { yield return new WaitForSeconds(2f); }
+            float ela = 0f;
+            float duration = 3f;
+            Material vignetteMaterial = Pixelator.Instance.FadeMaterial;
+            while (ela < duration) {
+                ela += BraveTime.DeltaTime;
+                float t = Mathf.Lerp(0f, 1f, ela / duration);
+                vignetteMaterial.SetColor("_VignetteColor", Color.black);
+                vignetteMaterial.SetFloat("_VignettePower", Mathf.Lerp(0.5f, 10f, t));
+                t = Mathf.Lerp(0f, 1f, ela / 0.2f);
+                self.HideUiAmount = t;
+                self.UiManager.Invalidate();
+                yield return null;
+            }
+            Pixelator.Instance.FadeToColor(1f, Color.black, false, 0f);
+            yield return new WaitForSeconds(1.5f);
+            Pixelator.Instance.FadeToColor(1f, Color.black, true, 0f);
+            vignetteMaterial.SetColor("_VignetteColor", Color.black);
+            vignetteMaterial.SetFloat("_VignettePower", 1f);
+            InvokeMethod(typeof(PunchoutController), "TeardownPunchout", self);
+            yield break;
+        }
+
+
+        private void DropRewardHook(Action<PunchoutAIActor, bool, PickupObject.ItemQuality[]>orig, PunchoutAIActor self, bool isLeft, params PickupObject.ItemQuality[] targetQualities) {
+            GameManager.Instance.StartCoroutine(DropRewardCR(self, isLeft));
+        }
+
+        
+        private IEnumerator DropRewardCR(PunchoutAIActor punchoutAIActor, bool isLeft) {
+            int rewardId = -1;
+            if (UnityEngine.Random.value < 0.01f) {
+                rewardId = 74; // 50 casing
+            } else if (UnityEngine.Random.value < 0.2f) {
+                rewardId = 297; // Hegemony Credit
+            } else {
+                if (UnityEngine.Random.value < 0.1f) {
+                    rewardId = 70; // 5 casing
+                } else {
+                    rewardId = 68; // casing
+                }
+            }            
+            if (rewardId != -1) {
+                punchoutAIActor.DroppedRewardIds.Add(rewardId);
+                RewardIDs.Add(rewardId);
+                while (punchoutAIActor.state is PunchoutAIActor.ThrowAmmoState) { yield return null; }
+                GameObject droppedItem = SpawnManager.SpawnVFX(punchoutAIActor.DroppedItemPrefab, punchoutAIActor.transform.position + new Vector3(-0.25f, 2.5f), Quaternion.identity);
+                tk2dSprite droppedItemSprite = droppedItem.GetComponent<tk2dSprite>();
+                tk2dSprite rewardSprite = PickupObjectDatabase.GetById(rewardId).GetComponent<tk2dSprite>();
+                droppedItemSprite.SetSprite(rewardSprite.Collection, rewardSprite.spriteId);
+                droppedItem.GetComponent<PunchoutDroppedItem>().Init(isLeft);
+            }
+            yield break;
+        }
+        
+
+        private void Update() {
+            if (!m_Configured | m_PunchOutEnded | PunchoutController.IsActive) { return; }            
+            Minimap.Instance.TemporarilyPreventMinimap = false;
+            Pixelator.Instance.FadeToColor(1f, Color.white, true, 0f);
+            PickupObject.RatBeatenAtPunchout = false;
+            if (doLoseFadeHook != null) {
+                doLoseFadeHook.Dispose();
+                doLoseFadeHook = null;
+            }
+            if (dropRewardHook != null) {
+                dropRewardHook.Dispose();
+                dropRewardHook = null;
+            }
+            m_PunchOutEnded = true;
+            if (ScanlineFX) { Destroy(ScanlineFX); }
+            if (ParentGameController) { ParentGameController.Finished = true; }
+        }
+
+        public void MaybeGiveRewards(float Delay = 0.25f) { StartCoroutine(DelayedItemPickups(Delay)); }
+
+        private IEnumerator DelayedItemPickups(float delay) {
+            yield return new WaitForSeconds(delay);
+            if (WonRatGame) {
+                bool GainedHegemonyCurrency = false;
+                bool GainedCasings = false;
+                if (RatKeyCount != -1) {
+                    for (int K = 0; K < RatKeyCount; K++) {
+                        foreach (int ItemID in RewardIDs) {
+                            switch (ItemID) {
+                                case 68:
+                                    Player.carriedConsumables.Currency += 1;
+                                    if (!GainedCasings) { GainedCasings = true; }
+                                    break;
+                                case 70:
+                                    Player.carriedConsumables.Currency += 5;
+                                    if (!GainedCasings) { GainedCasings = true; }
+                                    break;
+                                case 74:
+                                    Player.carriedConsumables.Currency += 50;
+                                    if (!GainedCasings) { GainedCasings = true; }
+                                    break;
+                                case 297:
+                                    if (!GainedHegemonyCurrency) { GainedHegemonyCurrency = true; }
+                                    GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, 5);
+                                    break;
+                            }
+                        }
+                    }
+                } else {
+                    foreach (int ItemID in RewardIDs) {
+                        switch (ItemID) {
+                            case 68:
+                                Player.carriedConsumables.Currency += 1;
+                                if (!GainedCasings) { GainedCasings = true; }
+                                break;
+                            case 70:
+                                Player.carriedConsumables.Currency += 5;
+                                if (!GainedCasings) { GainedCasings = true; }
+                                break;
+                            case 74:
+                                Player.carriedConsumables.Currency += 50;
+                                if (!GainedCasings) { GainedCasings = true; }
+                                break;
+                            case 297:
+                                if (!GainedHegemonyCurrency) { GainedHegemonyCurrency = true; }
+                                GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, 1);
+                                break;
+                        }
+                    }
+                }
+                Player.carriedConsumables.ForceUpdateUI();
+                if (GainedHegemonyCurrency) {
+                    CurrencyPickup hegemonyCurrency = (PickupObjectDatabase.GetById(297) as CurrencyPickup);
+                    tk2dBaseSprite targetAutomaticSprite = hegemonyCurrency.gameObject.GetComponent<HologramDoer>().TargetAutomaticSprite;
+                    Player.BloopItemAboveHead(targetAutomaticSprite, hegemonyCurrency.overrideBloopSpriteName);
+                    GameObject gameOBJ = Instantiate((GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup"));
+                    tk2dSprite component = gameOBJ.GetComponent<tk2dSprite>();
+                    component.PlaceAtPositionByAnchor(Player.sprite.WorldCenter, tk2dBaseSprite.Anchor.MiddleCenter);
+                    component.UpdateZDepth();
+                    AkSoundEngine.PostEvent("Play_OBJ_metacoin_collect_01", gameObject);
+                }
+                if (GainedCasings) {
+                    CurrencyPickup casingCurrency = (PickupObjectDatabase.GetById(68) as CurrencyPickup);
+                    Player.BloopItemAboveHead(casingCurrency.sprite, casingCurrency.overrideBloopSpriteName);
+                    GameObject gameOBJ2 = Instantiate((GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup"));
+                    tk2dSprite component2 = gameOBJ2.GetComponent<tk2dSprite>();
+                    component2.PlaceAtPositionByAnchor(Player.sprite.WorldCenter, tk2dBaseSprite.Anchor.MiddleCenter);
+                    component2.UpdateZDepth();
+                    if (RatKeyCount > 2) {
+                        AkSoundEngine.PostEvent("Play_OBJ_coin_large_01", gameObject);
+                    } else {
+                        AkSoundEngine.PostEvent("Play_OBJ_coin_small_01", gameObject);
+                    }
+                }
+            } else {
+                AkSoundEngine.PostEvent("Play_OBJ_metronome_fail_01", gameObject);
+            }
+            RatKeyCount = -1;
+            RewardIDs = new List<int>();
+            WonRatGame = false;
+            yield break;
+        }
+
+        protected override void OnDestroy() {
+            if (doLoseFadeHook != null) {
+                doLoseFadeHook.Dispose();
+                doLoseFadeHook = null;
+            }
+            if (dropRewardHook != null) {
+                dropRewardHook.Dispose();
+                dropRewardHook = null;
+            }
+            base.OnDestroy();
+        }
+    }
+}
+

@@ -255,7 +255,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PunchoutController.TeardownPunchout Hook...."); }
             teardownPunchoutHook = new Hook(
                 typeof(PunchoutController).GetMethod("TeardownPunchout", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("TeardownPunchout_Hook", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(TeardownPunchout_Hook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PunchoutController)
             );
 
@@ -995,11 +995,10 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-                
         private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
-            if (!GameStatsManager.Instance.IsRainbowRun) { orig(self); return; }
+            if (!GameStatsManager.Instance.IsRainbowRun && !ExpandSettings.PlayingPunchoutArcade) { orig(self); return; }
             
-            if (ReflectionHelpers.ReflectGetField<bool>(typeof(PunchoutController), "m_isInitialized", self)) {
+            if (ReflectGetField<bool>(typeof(PunchoutController), "m_isInitialized", self)) {
                 Minimap.Instance.TemporarilyPreventMinimap = false;
                 GameUIRoot.Instance.ShowCoreUI("punchout");
                 GameUIRoot.Instance.ShowCoreUI(string.Empty);
@@ -1017,67 +1016,73 @@ namespace ExpandTheGungeon.ExpandMain {
                     playerController.CurrentPoisonMeterValue = 0f;
                 }
                 GameManager.Instance.DungeonMusicController.EndBossMusic();
-                MetalGearRatRoomController metalGearRatRoomController = UnityEngine.Object.FindObjectOfType<MetalGearRatRoomController>();
-                if (metalGearRatRoomController) {
-                    GameObject gameObject = PickupObjectDatabase.GetById(GlobalItemIds.RatKey).gameObject;
-                    Vector3 position = metalGearRatRoomController.transform.position;
-                    if (self.Opponent.NumKeysDropped >= 1) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 17f), Vector2.zero, 0f, true, false, false);
-                    }
-                    if (self.Opponent.NumKeysDropped >= 2) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(13.25f, 14.5f), Vector2.zero, 0f, true, false, false);
-                    }
-                    if (self.Opponent.NumKeysDropped >= 3) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 12f), Vector2.zero, 0f, true, false, false);
-                    }
-                    if (self.Opponent.NumKeysDropped >= 4) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 17f), Vector2.zero, 0f, true, false, false);
-                    }
-                    if (self.Opponent.NumKeysDropped >= 5) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(31.25f, 14.5f), Vector2.zero, 0f, true, false, false);
-                    }
-                    if (self.Opponent.NumKeysDropped >= 6) {
-                        LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 12f), Vector2.zero, 0f, true, false, false);
-                    }
-                    Vector2 a = position + new Vector3(22.25f, 14.5f);
+                if (!ExpandSettings.PlayingPunchoutArcade) {
+                    MetalGearRatRoomController metalGearRatRoomController = UnityEngine.Object.FindObjectOfType<MetalGearRatRoomController>();
+                    if (metalGearRatRoomController) {
+                        GameObject gameObject = PickupObjectDatabase.GetById(GlobalItemIds.RatKey).gameObject;
+                        Vector3 position = metalGearRatRoomController.transform.position;
+                        if (self.Opponent.NumKeysDropped >= 1) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 17f), Vector2.zero, 0f, true, false, false);
+                        }
+                        if (self.Opponent.NumKeysDropped >= 2) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(13.25f, 14.5f), Vector2.zero, 0f, true, false, false);
+                        }
+                        if (self.Opponent.NumKeysDropped >= 3) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(14.25f, 12f), Vector2.zero, 0f, true, false, false);
+                        }
+                        if (self.Opponent.NumKeysDropped >= 4) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 17f), Vector2.zero, 0f, true, false, false);
+                        }
+                        if (self.Opponent.NumKeysDropped >= 5) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(31.25f, 14.5f), Vector2.zero, 0f, true, false, false);
+                        }
+                        if (self.Opponent.NumKeysDropped >= 6) {
+                            LootEngine.SpawnItem(gameObject, position + new Vector3(30.25f, 12f), Vector2.zero, 0f, true, false, false);
+                        }
+                        Vector2 a = position + new Vector3(22.25f, 14.5f);
 
-                    List<int> m_AllowedItemsInRainbowMode = new List<int>() {
-                        GlobalItemIds.SmallHeart,
-                        GlobalItemIds.FullHeart,
-                        GlobalItemIds.AmmoPickup,
-                        GlobalItemIds.SpreadAmmoPickup,
-                        GlobalItemIds.Spice,
-                        GlobalItemIds.Junk,
-                        GlobalItemIds.GoldJunk,
-                        GlobalItemIds.Key,
-                        GlobalItemIds.GlassGuonStone,
-                        GlobalItemIds.Junk,
-                        GlobalItemIds.GoldJunk,
-                        GlobalItemIds.SackKnightBoon,
-                        GlobalItemIds.Blank,
-                        GlobalItemIds.RatKey,
-                        GlobalItemIds.Map,
-                        120, // armor
-                    };
+                        List<int> m_AllowedItemsInRainbowMode = new List<int>() {
+                            GlobalItemIds.SmallHeart,
+                            GlobalItemIds.FullHeart,
+                            GlobalItemIds.AmmoPickup,
+                            GlobalItemIds.SpreadAmmoPickup,
+                            GlobalItemIds.Spice,
+                            GlobalItemIds.Junk,
+                            GlobalItemIds.GoldJunk,
+                            GlobalItemIds.Key,
+                            GlobalItemIds.GlassGuonStone,
+                            GlobalItemIds.Junk,
+                            GlobalItemIds.GoldJunk,
+                            GlobalItemIds.SackKnightBoon,
+                            GlobalItemIds.Blank,
+                            GlobalItemIds.RatKey,
+                            GlobalItemIds.Map,
+                            120, // armor
+                        };
 
-                    foreach (int id in self.Opponent.DroppedRewardIds) {
-                        float degrees = ((!BraveUtility.RandomBool()) ? 180 : 0) + UnityEngine.Random.Range(-30f, 30f);
-                        // RoomHandler m_room = self.gameObject.transform.position.GetAbsoluteRoom();
-                        RoomHandler m_room = GameManager.Instance.PrimaryPlayer.transform.position.GetAbsoluteRoom();                        
-                        if (m_AllowedItemsInRainbowMode.Contains(id)) {
-                            GameObject gameObject2 = PickupObjectDatabase.GetById(id).gameObject;
-                            LootEngine.SpawnItem(gameObject2, (a + new Vector2(11f, 0f).Rotate(degrees)), Vector2.zero, 0f, true, false, false);
-                        } else {
-                            if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
-                                string[] CustomText = new string[] {
-                                    "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}",
-                                    "Rats are GROOOOOOSS!\n\n{wb}-Bowler{w}"
-                                };
-                                ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, BraveUtility.RandomElement(CustomText), false);
+                        foreach (int id in self.Opponent.DroppedRewardIds) {
+                            float degrees = ((!BraveUtility.RandomBool()) ? 180 : 0) + UnityEngine.Random.Range(-30f, 30f);
+                            // RoomHandler m_room = self.gameObject.transform.position.GetAbsoluteRoom();
+                            RoomHandler m_room = GameManager.Instance.PrimaryPlayer.transform.position.GetAbsoluteRoom();                        
+                            if (m_AllowedItemsInRainbowMode.Contains(id)) {
+                                GameObject gameObject2 = PickupObjectDatabase.GetById(id).gameObject;
+                                LootEngine.SpawnItem(gameObject2, (a + new Vector2(11f, 0f).Rotate(degrees)), Vector2.zero, 0f, true, false, false);
+                            } else {
+                                if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
+                                    string[] CustomText = new string[] {
+                                        "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}",
+                                        "Rats are GROOOOOOSS!\n\n{wb}-Bowler{w}"
+                                    };
+                                    ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, BraveUtility.RandomElement(CustomText), false);
+                                }
                             }
                         }
                     }
+                } else {
+                    if (self.Player.state is PunchoutPlayerController.WinState) { ExpandPunchoutArcadeController.WonRatGame = true; }
+                    ExpandPunchoutArcadeController.RatKeyCount = self.Opponent.NumKeysDropped;
                 }
+                ExpandSettings.PlayingPunchoutArcade = false;
                 GameStatsManager.Instance.SetFlag(GungeonFlags.ITEMSPECIFIC_BOXING_GLOVE, true);
                 BraveTime.ClearMultiplier(self.Player.gameObject);
                 UnityEngine.Object.Destroy(self.gameObject);
@@ -1401,8 +1406,8 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void OnContinueGameSelected(Action<MainMenuFoyerController, dfControl, dfMouseEventArgs> orig, MainMenuFoyerController self, dfControl control, dfMouseEventArgs mouseEvent) {
             MidGameSaveData.ContinuePressedDevice = InputManager.ActiveDevice;
-            bool m_faded = ReflectionHelpers.ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_faded", self);
-            bool m_wasFadedThisFrame = ReflectionHelpers.ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_wasFadedThisFrame", self);
+            bool m_faded = ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_faded", self);
+            bool m_wasFadedThisFrame = ReflectGetField<bool>(typeof(MainMenuFoyerController), "m_wasFadedThisFrame", self);
             if (m_faded || m_wasFadedThisFrame) { return; }
             if (!IsDioramaRevealed(self, true)) { return; }
             if (!Foyer.DoMainMenu) { return; }

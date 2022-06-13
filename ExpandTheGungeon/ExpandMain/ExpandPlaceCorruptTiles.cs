@@ -260,7 +260,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                         m_GlitchSprite.UpdateZDepth();
                                         m_GlitchTile.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
                                     }
-
+                                    
                                     if (roomHandler != null && !isCorruptedSecretRoom && !isLeadKeyRoom) {
                                         m_GlitchTile.AddComponent<DebrisObject>();
                                         DebrisObject m_GlitchDebris = m_GlitchTile.GetComponent<DebrisObject>();
@@ -342,6 +342,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         
                                 GameObject m_GlitchTile = UnityEngine.Object.Instantiate(GlitchedTileObject, (OpenAreaPosition.ToVector2()), Quaternion.identity);
                                 m_GlitchTile.name += ("_" + UnityEngine.Random.Range(100000, 999999).ToString());
+                                m_GlitchTile.SetLayerRecursively(LayerMask.NameToLayer("BG_Critical"));
 
                                 if (parentObject != null) {
                                     m_GlitchTile.transform.parent = parentObject.transform;
@@ -363,8 +364,9 @@ namespace ExpandTheGungeon.ExpandMain {
                                 }
                                 DepthLookupManager.ProcessRenderer(m_GlitchSprite.renderer, DepthLookupManager.GungeonSortingLayer.BACKGROUND);
                                 m_GlitchSprite.IsPerpendicular = false;
-                                m_GlitchSprite.HeightOffGround = -4f;
+                                m_GlitchSprite.HeightOffGround = -1.7f;
                                 m_GlitchSprite.SortingOrder = 2;
+                                m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
                                 m_GlitchSprite.UpdateZDepth();
 
                                 if (roomHandler != null && !isCorruptedSecretRoom) {

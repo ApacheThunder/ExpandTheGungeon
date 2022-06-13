@@ -44,8 +44,20 @@
 				<Event Id="2184586371" Name="Play_EX_Cronenberg_Spawn_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Spawn_01"/>
 				<Event Id="1687291301" Name="Play_EX_ElevatorBell_01" ObjectPath="\Events\Weapons\Play_EX_ElevatorBell_01"/>
 				<Event Id="3457196330" Name="Play_EX_MUS_Belly_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01"/>
+				<Event Id="2704630512" Name="Play_EX_MUS_Belly_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Calm"/>
+				<Event Id="620344165" Name="Play_EX_MUS_Belly_01_Intro" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Intro"/>
+				<Event Id="1141813920" Name="Play_EX_MUS_Belly_01_LoopA" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopA"/>
+				<Event Id="1141813923" Name="Play_EX_MUS_Belly_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopB"/>
+				<Event Id="1141813922" Name="Play_EX_MUS_Belly_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopC"/>
+				<Event Id="1141813925" Name="Play_EX_MUS_Belly_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopD"/>
 				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
 				<Event Id="1782047987" Name="Play_EX_MUS_Jungle_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01"/>
+				<Event Id="1013427843" Name="Play_EX_MUS_Jungle_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Calm"/>
+				<Event Id="3798939044" Name="Play_EX_MUS_Jungle_01_Intro" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Intro"/>
+				<Event Id="1504561825" Name="Play_EX_MUS_Jungle_01_LoopA" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopA"/>
+				<Event Id="1504561826" Name="Play_EX_MUS_Jungle_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopB"/>
+				<Event Id="1504561827" Name="Play_EX_MUS_Jungle_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopC"/>
+				<Event Id="1504561828" Name="Play_EX_MUS_Jungle_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopD"/>
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
@@ -91,6 +103,10 @@
 					<ShortName>GlitchObjectDestroy.wav</ShortName>
 					<Path>SFX\GlitchObjectDestroy_F7D0E330.wem</Path>
 				</File>
+				<File Id="122249576" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_LoopB.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_LoopB_AD29F36A.wem</Path>
+				</File>
 				<File Id="186141995" Language="SFX">
 					<ShortName>GlitchDestruct.wav</ShortName>
 					<Path>SFX\GlitchDestruct_F7D0E330.wem</Path>
@@ -107,6 +123,10 @@
 					<ShortName>TableAssassin.wav</ShortName>
 					<Path>SFX\TableAssassin_F7D0E330.wem</Path>
 				</File>
+				<File Id="216664074" Language="SFX">
+					<ShortName>Quiet_Forest_LoopA.wav</ShortName>
+					<Path>SFX\Quiet_Forest_LoopA_AD29F36A.wem</Path>
+				</File>
 				<File Id="270161796" Language="SFX">
 					<ShortName>Abomination_damage.wav</ShortName>
 					<Path>SFX\Abomination_damage_F7D0E330.wem</Path>
@@ -115,13 +135,13 @@
 					<ShortName>BootlegGungeonMusic.wav</ShortName>
 					<Path>SFX\BootlegGungeonMusic_AD29F36A.wem</Path>
 				</File>
-				<File Id="298799639" Language="SFX">
-					<ShortName>BellyMusic_Intro.wav</ShortName>
-					<Path>SFX\BellyMusic_Intro_AD29F36A.wem</Path>
-				</File>
 				<File Id="352764876" Language="SFX">
 					<ShortName>Balloonpop1.wav</ShortName>
 					<Path>SFX\Balloonpop1_F7D0E330.wem</Path>
+				</File>
+				<File Id="369781795" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_AD29F36A.wem</Path>
 				</File>
 				<File Id="376140418" Language="SFX">
 					<ShortName>SonicSpinDashCharge.wav</ShortName>
@@ -151,6 +171,10 @@
 					<ShortName>PowBlock.wav</ShortName>
 					<Path>SFX\PowBlock_F7D0E330.wem</Path>
 				</File>
+				<File Id="449996002" Language="SFX">
+					<ShortName>Quiet_Forest_LoopB.wav</ShortName>
+					<Path>SFX\Quiet_Forest_LoopB_AD29F36A.wem</Path>
+				</File>
 				<File Id="587730353" Language="SFX">
 					<ShortName>GlitchBombDrop.wav</ShortName>
 					<Path>SFX\GlitchBombDrop_F7D0E330.wem</Path>
@@ -171,6 +195,14 @@
 					<ShortName>CorruptionAmbience.wav</ShortName>
 					<Path>SFX\CorruptionAmbience_AD29F36A_5B8C7134.wem</Path>
 				</File>
+				<File Id="725215193" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_LoopA.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_LoopA_AD29F36A.wem</Path>
+				</File>
+				<File Id="735534369" Language="SFX">
+					<ShortName>Quiet_Forest_Intro.wav</ShortName>
+					<Path>SFX\Quiet_Forest_Intro_22BDB8A3.wem</Path>
+				</File>
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_F7D0E330.wem</Path>
@@ -179,9 +211,17 @@
 					<ShortName>SonicRingCollect.wav</ShortName>
 					<Path>SFX\SonicRingCollect_F7D0E330.wem</Path>
 				</File>
+				<File Id="836609844" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_Calm.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_Calm_AD29F36A.wem</Path>
+				</File>
 				<File Id="848029394" Language="SFX">
 					<ShortName>Balloonpop3.wav</ShortName>
 					<Path>SFX\Balloonpop3_F7D0E330.wem</Path>
+				</File>
+				<File Id="857608895" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_Intro.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_Intro_22BDB8A3.wem</Path>
 				</File>
 				<File Id="858414521" Language="SFX">
 					<ShortName>SonicSpinDashRelease.wav</ShortName>
@@ -222,6 +262,10 @@
 				<File Id="1005918670" Language="SFX">
 					<ShortName>Belly_Door_Lock.wav</ShortName>
 					<Path>SFX\Belly_Door_Lock_F7D0E330.wem</Path>
+				</File>
+				<File Id="1020991936" Language="SFX">
+					<ShortName>Quiet_Forest_Calm.wav</ShortName>
+					<Path>SFX\Quiet_Forest_Calm_AD29F36A.wem</Path>
 				</File>
 				<File Id="1026631834" Language="SFX">
 					<ShortName>BreachTransitionFast.wav</ShortName>

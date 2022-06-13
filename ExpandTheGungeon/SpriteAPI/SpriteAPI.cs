@@ -91,15 +91,16 @@ namespace ExpandTheGungeon.SpriteAPI {
         }
         
         // Use this to add a sprite to your object instead of the one from ItemBuilder/SpriteBuilder!
-        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, string mainSpriteDefinitionName) {
+        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, string mainSpriteDefinitionName, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), mainSpriteDefinitionName);
             m_tk2dSprite.SortingOrder = 0;
+            if (spriteAlignment != tk2dBaseSprite.PerpendicularState.UNDEFINED) { m_tk2dSprite.CachedPerpState = spriteAlignment; }
             obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
             return m_tk2dSprite;
         }
 
-        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, int spriteID) {
+        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, int spriteID, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), spriteID);
             m_tk2dSprite.SortingOrder = 0;
@@ -107,18 +108,20 @@ namespace ExpandTheGungeon.SpriteAPI {
             return m_tk2dSprite;
         }
 
-        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, string mainSpriteDefinitionName) {
+        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, string mainSpriteDefinitionName, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollection, mainSpriteDefinitionName);
             m_tk2dSprite.SortingOrder = 0;
+            if (spriteAlignment != tk2dBaseSprite.PerpendicularState.UNDEFINED) { m_tk2dSprite.CachedPerpState = spriteAlignment; }
             obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
             return m_tk2dSprite;
         }
 
-        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, int spriteID) {
+        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, int spriteID, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollection, spriteID);
             m_tk2dSprite.SortingOrder = 0;
+            if (spriteAlignment != tk2dBaseSprite.PerpendicularState.UNDEFINED) { m_tk2dSprite.CachedPerpState = spriteAlignment; }
             obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
             return m_tk2dSprite;
         }

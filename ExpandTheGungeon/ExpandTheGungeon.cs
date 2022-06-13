@@ -10,6 +10,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon {
 
@@ -60,7 +61,7 @@ namespace ExpandTheGungeon {
             return true;
         }
 
-        private GameObject m_FoyerCheckerOBJ;
+        private static GameObject m_FoyerCheckerOBJ;
 
         public override void Init() {
             
@@ -210,9 +211,11 @@ namespace ExpandTheGungeon {
         
         public override void Exit() {  }
         
-        public void CreateFoyerController() {
+        public static void CreateFoyerController() {
             if (!m_FoyerCheckerOBJ) {
                 m_FoyerCheckerOBJ = new GameObject("ExpandTheGungeon Foyer Checker", new Type[] { typeof(ExpandFoyer) });
+            } else {
+                return;
             }
         }
                 
@@ -262,7 +265,7 @@ namespace ExpandTheGungeon {
             
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
-            if (ExpandSettings.EnableTestDungeonFlow) { CreateFoyerController(); };
+            CreateFoyerController();
         }
 
         private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
@@ -487,7 +490,8 @@ namespace ExpandTheGungeon {
                     ["EXBalloonCollection"] = ExpandLists.EXBalloonCollection,
                     ["EXItemCollection"] = ExpandLists.EXItemCollection,
                     ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
-                };
+                    ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection
+                }; 
             }
             int X = 2048;
             int Y = 2048;
@@ -523,7 +527,8 @@ namespace ExpandTheGungeon {
         }
 
         private void ExpandTestCommand(string[] consoleText) {
-            
+
+
             // BraveMemory.EnsureHeapSize(204800);
             // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
 
@@ -537,7 +542,7 @@ namespace ExpandTheGungeon {
             }*/
 
             // ETGMod.Assets.Dump.DumpSpriteCollection(ExpandCustomDungeonPrefabs.Base_Space.GetComponent<Dungeon>().tileIndices.dungeonCollection);
-            
+
 
             /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
             SupriseChest.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
@@ -560,10 +565,20 @@ namespace ExpandTheGungeon {
 
             TestPortal.transform.position -= new Vector3(0, 0, -50);*/
 
-
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-
+            GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
+            GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
+            // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);
             
+            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            if (consoleText[0].StartsWith("-")) {
+                GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -int.Parse(consoleText[1]));
+            } else if (consoleText[0].StartsWith("+")) {
+                GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, +int.Parse(consoleText[1]));
+            }
+            
+
+            // ETGModConsole.Log("Unoccluded = " + LayerMask.NameToLayer("Unoccluded").ToString());
+
             // GameManager.Instance.StartCoroutine(SecondDungeonOBJ.GetComponent<Dungeon>().Regenerate(false));
             /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
             

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 515676881
+CRC: 2682597470
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 622d487579516ed59e602aede26df3e9
+    Hash: b4a2bb6cc201aca053f5b03b68f91ede
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -222,6 +222,7 @@ Assets:
 - Assets/ExpandPrefabs/TilesetPrefabs/Jungle Tree Frame.prefab
 - Assets/ExpandPrefabs/AIActors/HotShotCultist.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Squareish4.bytes
+- Assets/ExpandPrefabs/Foyer/EXArcadeGameScanlineFX.prefab
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXTrapCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter18.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular50.bytes
@@ -242,6 +243,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/EXCorruptionBomb.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular5.bytes
 - Assets/ExpandRooms/RoomBuilderData/Giant_Elevator_Room_Layout.png
+- Assets/ExpandTextures/Misc/PunchoutArcadeOverlay.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed16.bytes
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_04.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_Jungle.prefab
@@ -465,6 +467,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular19.bytes
 - Assets/ExpandPrefabs/Items/Corrupted Master Round.prefab
 - Assets/ExpandTextures/SpriteCollections/AIActors/HotShotCultist_Collection.png
+- Assets/ExpandPrefabs/Foyer/EXFoyerTrigger.prefab
 - Assets/ExpandRooms/RoomFactoryData/FB_Expand_Achievement_Day_Ruiner.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Square1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera21.bytes
@@ -527,6 +530,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/Clown Friend.prefab
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Blue/roomCeilingBorderGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate29.bytes
+- Assets/ExpandPrefabs/SpriteCollections/Misc/EXFoyerCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_SecretShopWarp.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Bar1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals12.bytes
@@ -599,6 +603,7 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/carpetGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny4.bytes
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
+- Assets/ExpandPrefabs/Shaders/ExpandCRT.shader
 - Assets/ExpandSerializedData/SpriteCollections/EXChestCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport2_1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular14.bytes
@@ -652,6 +657,7 @@ Assets:
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBulletManBandanaCollection.txt
 - Assets/ExpandPrefabs/Items/EXSonicBox.prefab
 - Assets/ExpandSerializedData/SpriteCollections/EXBootlegRoomCollection.txt
+- Assets/ExpandPrefabs/Foyer/EXCasino_Hub.prefab
 - Assets/ExpandPrefabs/Misc/DoppelgunnerMirrorFX 1.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular5.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_West.prefab
@@ -743,6 +749,7 @@ Assets:
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXChestCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Gapsniper.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal24.bytes
+- Assets/ExpandSerializedData/SpriteCollections/EXFoyerCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Agony.bytes
 - Assets/ExpandSerializedData/SpriteCollections/EXItemCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal21.bytes
@@ -780,6 +787,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_TribalNugget.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny10.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny20.bytes
+- Assets/ExpandTextures/SpriteCollections/Misc/EXFoyer_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals8.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera_HeartAttack.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera6.bytes
@@ -924,6 +932,7 @@ Assets:
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Tuc.prefab
 - Assets/ExpandPrefabs/AIActors/SonicCompanion.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal13.bytes
+- Assets/ExpandPrefabs/Foyer/EXFoyerWarpDoor.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Thin2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Entrance.bytes
 - Assets/ExpandPrefabs/Misc/ExpandChallenge_ChaosMode.prefab

@@ -1345,8 +1345,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightIntensity = 3;
             dungeon.PlayerLightRadius = 5;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];
-            dungeon.musicEventName = AbbeyPrefab.musicEventName;
-            // dungeon.musicEventName = "Play_EX_MUS_Belly_01";
+            dungeon.musicEventName = "Play_EX_MUS_Belly_01";
 
             MinesDungeonPrefab = null;
             GungeonPrefab = null;

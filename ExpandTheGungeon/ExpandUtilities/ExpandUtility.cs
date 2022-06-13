@@ -1037,7 +1037,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedAIAnimator;
         }
 
-        public static void GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
+        /*public static void GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
             if (targetObject.GetComponent<tk2dSpriteAnimator>()) { UnityEngine.Object.Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
             tk2dSpriteAnimator newAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
             newAnimator.Library = library;
@@ -1056,6 +1056,26 @@ namespace ExpandTheGungeon.ExpandUtilities {
             newAnimator.maximumDeltaOneFrame = maximumDeltaOneFrame;
 
             return;
+        }*/
+
+        public static tk2dSpriteAnimator GenerateSpriteAnimator(GameObject targetObject, tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
+            if (targetObject.GetComponent<tk2dSpriteAnimator>()) { UnityEngine.Object.Destroy(targetObject.GetComponent<tk2dSpriteAnimator>()); }
+            tk2dSpriteAnimator newAnimator = targetObject.AddComponent<tk2dSpriteAnimator>();
+            newAnimator.Library = library;
+            newAnimator.DefaultClipId = DefaultClipId;
+            newAnimator.AdditionalCameraVisibilityRadius = AdditionalCameraVisibilityRadius;
+            newAnimator.AnimateDuringBossIntros = AnimateDuringBossIntros;
+            newAnimator.AlwaysIgnoreTimeScale = AlwaysIgnoreTimeScale;
+            newAnimator.ignoreTimeScale = ignoreTimeScale;
+            newAnimator.ForceSetEveryFrame = ForceSetEveryFrame;
+            newAnimator.playAutomatically = playAutomatically;
+            newAnimator.IsFrameBlendedAnimation = IsFrameBlendedAnimation;
+            newAnimator.clipTime = clipTime;
+            newAnimator.ClipFps = ClipFps;
+            newAnimator.deferNextStartClip = deferNextStartClip;
+            newAnimator.alwaysUpdateOffscreen = alwaysUpdateOffscreen;
+            newAnimator.maximumDeltaOneFrame = maximumDeltaOneFrame;
+            return newAnimator;
         }
 
         public static tk2dSpriteAnimator GenerateSpriteAnimator(tk2dSpriteAnimation library = null, int DefaultClipId = 0, float AdditionalCameraVisibilityRadius = 0, bool AnimateDuringBossIntros = false, bool AlwaysIgnoreTimeScale = false, bool ignoreTimeScale = false, bool ForceSetEveryFrame = false, bool playAutomatically = false, bool IsFrameBlendedAnimation = false, float clipTime = 0, float ClipFps = 15, bool deferNextStartClip = false, bool alwaysUpdateOffscreen = false, bool maximumDeltaOneFrame = false) {
@@ -1387,6 +1407,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         if (isWallCell) {
                             // m_GlitchTile.layer = 22;
                             m_GlitchTile.layer = LayerMask.NameToLayer("FG_Critical");
+                        } else {
+                            m_GlitchTile.layer = LayerMask.NameToLayer("BG_Critical");
                         }
 
                         List<int> spriteIDs = new List<int>();
@@ -1406,7 +1428,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         m_GlitchSprite.OverrideMaterialMode = tk2dBaseSprite.SpriteMaterialOverrideMode.NONE;
                         m_GlitchSprite.independentOrientation = false;
                         m_GlitchSprite.hasOffScreenCachedUpdate = false;
-                        m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+                        if (isWallCell) {
+                            m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+                        } else {
+                            m_GlitchSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+                        }
                         m_GlitchSprite.SortingOrder = 2;
                         m_GlitchSprite.IsBraveOutlineSprite = false;
                         m_GlitchSprite.IsZDepthDirty = false;
@@ -1424,7 +1450,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                                 m_GlitchSprite.UpdateZDepth();
                             }
                         } else {
-                            m_GlitchSprite.HeightOffGround = -1.5f;
+                            m_GlitchSprite.HeightOffGround = -1.7f;
                             m_GlitchSprite.SortingOrder = 2;
                             m_GlitchSprite.UpdateZDepth();
                             /*FloorTypeOverrideDoer floorOverride = m_GlitchTile.AddComponent<FloorTypeOverrideDoer>();
@@ -1633,7 +1659,42 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public static RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true) {
+        public static RoomHandler AddCustomRuntimeRoom(Dungeon dungeon, IntVector2 dimensions, GameObject roomPrefab, IntVector2? roomWorldPositionOverride = null,  Vector3? roomPrefabPositionOverride = null) {
+            IntVector2 RoomPosition = new IntVector2(10, 10);
+            if (roomWorldPositionOverride.HasValue) { RoomPosition = roomWorldPositionOverride.Value; }
+            IntVector2 intVector = new IntVector2(dungeon.data.Width + RoomPosition.x, RoomPosition.y);
+            int newWidth = dungeon.data.Width + RoomPosition.x + dimensions.x;
+            int newHeight = Mathf.Max(dungeon.data.Height, dimensions.y + RoomPosition.y);
+            CellData[][] array = BraveUtility.MultidimensionalArrayResize(dungeon.data.cellData, dungeon.data.Width, dungeon.data.Height, newWidth, newHeight);
+            CellArea cellArea = new CellArea(intVector, dimensions, 0);
+            cellArea.IsProceduralRoom = true;
+            dungeon.data.cellData = array;
+            dungeon.data.ClearCachedCellData();
+            RoomHandler roomHandler = new RoomHandler(cellArea);
+            for (int i = 0; i < dimensions.x; i++) {
+                for (int j = 0; j < dimensions.y; j++) {
+                    IntVector2 p = new IntVector2(i, j) + intVector;
+                    CellData cellData = new CellData(p, CellType.FLOOR);
+                    cellData.parentArea = cellArea;
+                    cellData.parentRoom = roomHandler;
+                    cellData.nearestRoom = roomHandler;
+                    array[p.x][p.y] = cellData;
+                    roomHandler.RuntimeStampCellComplex(p.x, p.y, CellType.FLOOR, DiagonalWallType.NONE);
+                    
+                }
+            }
+            dungeon.data.rooms.Add(roomHandler);
+            if (roomPrefabPositionOverride.HasValue) {
+                float X = roomPrefabPositionOverride.Value.x;
+                float Y = roomPrefabPositionOverride.Value.x;
+                UnityEngine.Object.Instantiate(roomPrefab, new Vector3(intVector.x + X, intVector.y + Y, 0f), Quaternion.identity);
+            } else {
+                UnityEngine.Object.Instantiate(roomPrefab, new Vector3(intVector.x, intVector.y, 0f), Quaternion.identity);
+            }
+            DeadlyDeadlyGoopManager.ReinitializeData();
+            return roomHandler;
+        }
+        public static RoomHandler AddCustomRuntimeRoom(PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool suppressExceptionMessages = false) {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1643,8 +1704,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 return null;
             }
 
-            TK2DDungeonAssembler assembler = new TK2DDungeonAssembler();
-            assembler.Initialize(dungeon.tileIndices);
+            /*TK2DDungeonAssembler assembler = new TK2DDungeonAssembler();
+            assembler.Initialize(dungeon.tileIndices);*/
+            TK2DDungeonAssembler assembler = ReflectionHelpers.ReflectGetField<TK2DDungeonAssembler>(typeof(Dungeon), "assembler", dungeon);
 
             IntVector2 basePosition = IntVector2.Zero;
             IntVector2 basePosition2 = new IntVector2(50, 50);
@@ -1687,12 +1749,17 @@ namespace ExpandTheGungeon.ExpandUtilities {
             try {
                 targetRoom.WriteRoomData(dungeon.data);
             } catch (Exception) {
-                ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
+                if (!suppressExceptionMessages) {
+                    ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
+                }
             } try {
                 dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, targetRoom, GameObject.Find("_Lights").transform, lightStyle);
             } catch (Exception) {
-                ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + targetRoom.GetRoomName());
+                if (!suppressExceptionMessages) {
+                    ETGModConsole.Log("WARNING: Exception caused during GeernateLightsForRoom step on room: " + targetRoom.GetRoomName());
+                }
             }
+
             postProcessCellData?.Invoke(targetRoom);
 
             if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) { targetRoom.BuildSecretRoomCover(); }
@@ -1719,9 +1786,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 RenderMeshBuilder.CurrentCellYOffset = 0;
                 component.renderData.transform.position = new Vector3(intVector3.x - num2, intVector3.y - num2, intVector3.y - num2);
             } catch (Exception ex) {
-                ETGModConsole.Log("WARNING: Exception occured during RuntimeResizeTileMap / RenderMeshBuilder steps!");
-                Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
-                Debug.LogException(ex);
+                if (!suppressExceptionMessages) {
+                    ETGModConsole.Log("WARNING: Exception occured during RuntimeResizeTileMap / RenderMeshBuilder steps!");
+                    Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
+                    Debug.LogException(ex);
+                }
             }
             targetRoom.OverrideTilemap = component;
             if (allowProceduralLightFixtures) {
@@ -1743,7 +1812,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 try {
                     decorator.HandleRoomDecoration(targetRoom, dungeon, m_tilemap);
                 } catch (Exception ex) {
-                    if (ExpandSettings.debugMode) {
+                    if (ExpandSettings.debugMode && !suppressExceptionMessages) {
                         ETGModConsole.Log("WARNING: Exception occured during HandleRoomDecoration steps!");
                         Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
                         Debug.LogException(ex);
@@ -1947,7 +2016,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             RandomValue = TempObject.GetComponent<ExpandRandomVarGenerator>().GenerateRandomFloat();
             UnityEngine.Object.Destroy(TempObject);
 
-            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && RandomValue > 0.99f && MetaInjectionData.GetNumWallMimicsForFloor(dungeon.tileIndices.tilesetId) == 0) { return; }
+            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && RandomValue < 0.9f) { return; }
 
             string RoomName = "NULL";
 
@@ -2136,7 +2205,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             currentRoom.RuntimeStampCellComplex(Position.x + 1, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
                         }
                         AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(GameManager.Instance.RewardManager.WallMimicChances.EnemyGuid);
-                        AIActor WallMimic = AIActor.Spawn(orLoadByGuid, Position, currentRoom, true, AIActor.AwakenAnimationType.Default, false);
+                        AIActor WallMimic = AIActor.Spawn(orLoadByGuid, Position, currentRoom, true, AIActor.AwakenAnimationType.Default, true);
                         ExpandWallMimicManager wallMimicController = WallMimic.gameObject.GetComponent<ExpandWallMimicManager>();
                         if (wallMimicController) {
                             if (ExpandPlaceWallMimic.PlayerHasWallMimicItem) { wallMimicController.CursedBrickMode = true; }
@@ -4548,6 +4617,16 @@ namespace ExpandTheGungeon.ExpandUtilities {
     }
 
     public static class ExpandExtensions {
+
+        public static IntVector2 ToIntVector2(this Vector3 vector, VectorConversions convertMethod = VectorConversions.Round) {
+            if (convertMethod == VectorConversions.Ceil) {
+                return new IntVector2(Mathf.CeilToInt(vector.x), Mathf.CeilToInt(vector.y));
+            }
+            if (convertMethod == VectorConversions.Floor) {
+                return new IntVector2(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y));
+            }
+            return new IntVector2(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y));
+        }
 
         public static bool IsActuallyWildWestEntrance(this RoomHandler room){
             if (room?.GetRoomName() != null && ExpandRoomPrefabs.Expand_West_Entrance?.name != null) {

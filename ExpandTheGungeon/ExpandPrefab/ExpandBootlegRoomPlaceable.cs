@@ -38,24 +38,31 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_DoorBlockObject_South.transform.SetParent(ExpandPrefabs.EXBootlegRoomDoorTriggers.transform);
             m_DoorBlockObject_North.transform.SetParent(ExpandPrefabs.EXBootlegRoomDoorTriggers.transform);
 
-            SpriteSerializer.AddSpriteToObject(m_DoorFrameObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_TopLayer");
-            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_West");
-            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_East");
-            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_South");
-            SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_North");
-            
-            tk2dSprite m_BootlegRoomSprite = SpriteSerializer.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_BottomLayer");
-            m_BootlegRoomSprite.HeightOffGround = -3f;
-            tk2dSprite m_BorderSprite_West = SpriteSerializer.AddSpriteToObject(m_BorderObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_West");
-            m_BorderSprite_West.HeightOffGround = -3f;
-            tk2dSprite m_BorderSprite_East = SpriteSerializer.AddSpriteToObject(m_BorderObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_East");
-            m_BorderSprite_East.HeightOffGround = -3f;
-            tk2dSprite m_BorderSprite_North = SpriteSerializer.AddSpriteToObject(m_BorderObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_North");
-            m_BorderSprite_North.HeightOffGround = -3f;
-            tk2dSprite m_BorderSprite_South = SpriteSerializer.AddSpriteToObject(m_BorderObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_South");
-            m_BorderSprite_South.HeightOffGround = -3f;
-            tk2dSprite m_DoorSprites = SpriteSerializer.AddSpriteToObject(m_DoorObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_Doors");
-            m_DoorSprites.HeightOffGround = -2.5f;
+            tk2dSprite m_DoorFrameSprite = SpriteSerializer.AddSpriteToObject(m_DoorFrameObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_TopLayer", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_DoorBlockerSprite_West = SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_West", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_DoorBlockerSprite_East = SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_East", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_DoorBlockerSprite_South = SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_South", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_DoorBlockerSprite_North = SpriteSerializer.AddSpriteToObject(m_DoorBlockObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_DoorBlock_North", tk2dBaseSprite.PerpendicularState.FLAT);
+
+            tk2dSprite m_BootlegRoomSprite = SpriteSerializer.AddSpriteToObject(ExpandPrefabs.EXBootlegRoomObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_BottomLayer", tk2dBaseSprite.PerpendicularState.FLAT);            
+            tk2dSprite m_BorderSprite_West = SpriteSerializer.AddSpriteToObject(m_BorderObject_West, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_West", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_BorderSprite_East = SpriteSerializer.AddSpriteToObject(m_BorderObject_East, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_East", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_BorderSprite_North = SpriteSerializer.AddSpriteToObject(m_BorderObject_North, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_North", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_BorderSprite_South = SpriteSerializer.AddSpriteToObject(m_BorderObject_South, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_ExitTiles_South", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_DoorSprites = SpriteSerializer.AddSpriteToObject(m_DoorObject, ExpandPrefabs.EXBootlegRoomCollection, "BootlegRoom_Doors", tk2dBaseSprite.PerpendicularState.FLAT);
+
+            m_DoorFrameSprite.HeightOffGround = 2;
+            m_DoorBlockerSprite_West.HeightOffGround = -0.7f;
+            m_DoorBlockerSprite_East.HeightOffGround = -0.7f;
+            m_DoorBlockerSprite_South.HeightOffGround = -0.7f;
+            m_DoorBlockerSprite_North.HeightOffGround = -0.7f;
+
+            m_BootlegRoomSprite.HeightOffGround = -1.7f;
+            m_BorderSprite_West.HeightOffGround = -1.7f;
+            m_BorderSprite_East.HeightOffGround = -1.7f;
+            m_BorderSprite_North.HeightOffGround = -1.7f;
+            m_BorderSprite_South.HeightOffGround = -1.7f;
+            m_DoorSprites.HeightOffGround = -1f;
 
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: new IntVector2(1, 6));            
             ExpandUtility.GenerateOrAddToRigidBody(ExpandPrefabs.EXBootlegRoomObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, dimensions: new IntVector2(1, 6), offset: new IntVector2(0, 8));
@@ -120,14 +127,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (room.area.instanceUsedExits != null && room.area.instanceUsedExits.Count > 0) {
                 foreach (PrototypeRoomExit exit in room.area.instanceUsedExits) {
-                    if (exit.exitDirection == DungeonData.Direction.WEST) {
-                        ExitTiles_West.SetActive(true);
-                    } else if (exit.exitDirection == DungeonData.Direction.EAST) {
-                        ExitTiles_East.SetActive(true);
-                    } else if (exit.exitDirection == DungeonData.Direction.NORTH) {
-                        ExitTiles_North.SetActive(true);
-                    } else if (exit.exitDirection == DungeonData.Direction.SOUTH) {
-                        ExitTiles_South.SetActive(true);
+                    switch (exit.exitDirection) {
+                        case DungeonData.Direction.WEST:
+                            ExitTiles_West.SetActive(true);
+                            break;
+                        case DungeonData.Direction.EAST:
+                            ExitTiles_East.SetActive(true);
+                            break;
+                        case DungeonData.Direction.NORTH:
+                            ExitTiles_North.SetActive(true);
+                            break;
+                        case DungeonData.Direction.SOUTH:
+                            ExitTiles_South.SetActive(true);
+                            break;
                     }
                 }
             }
@@ -202,20 +214,20 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_ParentRoom = room;
 
             Doors.transform.parent = room.hierarchyParent;
-            Doors.GetComponent<tk2dSprite>().HeightOffGround = -2f;
+            Doors.GetComponent<tk2dSprite>().HeightOffGround = -1f;
             Doors.GetComponent<tk2dSprite>().UpdateZDepth();
 
             DoorBlocker_West.transform.parent = room.hierarchyParent;
             DoorBlocker_East.transform.parent = room.hierarchyParent;
             DoorBlocker_South.transform.parent = room.hierarchyParent;
             DoorBlocker_North.transform.parent = room.hierarchyParent;
-            DoorBlocker_West.GetComponent<tk2dSprite>().HeightOffGround = -1f;
+            DoorBlocker_West.GetComponent<tk2dSprite>().HeightOffGround = -0.7f;
             DoorBlocker_West.GetComponent<tk2dSprite>().UpdateZDepth();
-            DoorBlocker_East.GetComponent<tk2dSprite>().HeightOffGround = -1f;
+            DoorBlocker_East.GetComponent<tk2dSprite>().HeightOffGround = -0.7f;
             DoorBlocker_East.GetComponent<tk2dSprite>().UpdateZDepth();
-            DoorBlocker_South.GetComponent<tk2dSprite>().HeightOffGround = -1f;
+            DoorBlocker_South.GetComponent<tk2dSprite>().HeightOffGround = -0.7f;
             DoorBlocker_South.GetComponent<tk2dSprite>().UpdateZDepth();
-            DoorBlocker_North.GetComponent<tk2dSprite>().HeightOffGround = -1f;
+            DoorBlocker_North.GetComponent<tk2dSprite>().HeightOffGround = -0.7f;
             DoorBlocker_North.GetComponent<tk2dSprite>().UpdateZDepth();
             
 

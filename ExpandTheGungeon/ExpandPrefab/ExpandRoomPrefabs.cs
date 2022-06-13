@@ -442,6 +442,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_West_ShrineRoom;
         public static PrototypeDungeonRoom Expand_West_WestBrosBossRoom;
 
+        // Foyer Rooms
+        // public static PrototypeDungeonRoom Expand_Casino_Hub;
 
         // All Belly rooms except special ones will be stored here
         // public static PrototypeDungeonRoom[] Expand_Belly_Rooms;
@@ -1212,7 +1214,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GungeoneerMimicBossFoyerRoom = UnityEngine.Object.Instantiate(ExpandPrefabs.DragunBossFoyerRoom);
             GungeoneerMimicBossFoyerRoom.overrideRoomVisualType = 2;
             Expand_West_WestBrosBossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-
+            
             Expand_Explode = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_C_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_C_Gap = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -1296,6 +1298,56 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Apache_PitTraps = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_RickRollChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_Apache_SurpriseChest = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
+            /*Expand_Casino_Hub = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Expand_Casino_Hub.name = "Expand Casino Hub";
+            Expand_Casino_Hub.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
+            Expand_Casino_Hub.GUID = Guid.NewGuid().ToString();
+            Expand_Casino_Hub.PreventMirroring = false;
+            Expand_Casino_Hub.category = PrototypeDungeonRoom.RoomCategory.SECRET;
+            Expand_Casino_Hub.subCategoryBoss = PrototypeDungeonRoom.RoomBossSubCategory.FLOOR_BOSS;
+            Expand_Casino_Hub.subCategoryNormal = PrototypeDungeonRoom.RoomNormalSubCategory.COMBAT;
+            Expand_Casino_Hub.subCategorySpecial = PrototypeDungeonRoom.RoomSpecialSubCategory.STANDARD_SHOP;
+            Expand_Casino_Hub.subCategorySecret = PrototypeDungeonRoom.RoomSecretSubCategory.UNSPECIFIED_SECRET;
+            Expand_Casino_Hub.exitData = new PrototypeRoomExitData() { exits = new List<PrototypeRoomExit>() };
+            Expand_Casino_Hub.pits = new List<PrototypeRoomPitEntry>();
+            Expand_Casino_Hub.placedObjects = new List<PrototypePlacedObjectData>();
+            Expand_Casino_Hub.placedObjectPositions = new List<Vector2>();
+            Expand_Casino_Hub.eventTriggerAreas = new List<PrototypeEventTriggerArea>();
+            Expand_Casino_Hub.roomEvents = new List<RoomEventDefinition>(0);
+            Expand_Casino_Hub.overriddenTilesets = 0;
+            Expand_Casino_Hub.prerequisites = new List<DungeonPrerequisite>();
+            Expand_Casino_Hub.InvalidInCoop = false;
+            Expand_Casino_Hub.cullProceduralDecorationOnWeakPlatforms = false;
+            Expand_Casino_Hub.preventAddedDecoLayering = false;
+            Expand_Casino_Hub.preventBorders = false;
+            Expand_Casino_Hub.preventFacewallAO = false;
+            Expand_Casino_Hub.customAmbientLight = Color.white;
+            Expand_Casino_Hub.ForceAllowDuplicates = false;
+            Expand_Casino_Hub.injectionFlags = new RuntimeInjectionFlags() { CastleFireplace = false, ShopAnnexed = false };
+            Expand_Casino_Hub.IsLostWoodsRoom = false;
+            Expand_Casino_Hub.UseCustomMusic = false;
+            Expand_Casino_Hub.UseCustomMusicState = false;
+            Expand_Casino_Hub.CustomMusicEvent = string.Empty;
+            Expand_Casino_Hub.UseCustomMusicSwitch = false;
+            Expand_Casino_Hub.CustomMusicSwitch = string.Empty;
+            Expand_Casino_Hub.overrideRoomVisualTypeForSecretRooms = false;
+            Expand_Casino_Hub.rewardChestSpawnPosition = new IntVector2(5, 5);
+            Expand_Casino_Hub.overrideRoomVisualType = 0;
+            Expand_Casino_Hub.Width = 16;
+            Expand_Casino_Hub.Height = 20;
+            Expand_Casino_Hub.additionalObjectLayers = new List<PrototypeRoomObjectLayer>(0);
+            Expand_Casino_Hub.usesProceduralLighting = false;
+            Expand_Casino_Hub.usesCustomAmbientLight = true;
+            Expand_Casino_Hub.customAmbientLight = new Color(0.7f, 0.7f, 0.7f, 1);
+            Expand_Casino_Hub.allowFloorDecoration = false;
+            Expand_Casino_Hub.allowWallDecoration = false;
+            Expand_Casino_Hub.usesProceduralDecoration = false;
+            Expand_Casino_Hub.drawPrecludedCeilingTiles = false;
+            Expand_Casino_Hub.precludeAllTilemapDrawing = true;
+            RoomBuilder.AddObjectToRoom(Expand_Casino_Hub, Vector2.zero, ExpandPrefabs.EXCasinoHub);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_Casino_Hub);*/
+
 
             Expand_Apache_RainbowRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_RainbowRoom", true, false, assignDecorationSettings: true);
             Expand_Apache_RainbowRoom.overrideRoomVisualType = 0;
@@ -1737,7 +1789,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_West_WestBrosBossRoom, new Vector2(18, 18), EnemyBehaviourGuid: ExpandWesternBrosPrefabBuilder.WestBrosAngelGUID);
             RoomBuilder.AddObjectToRoom(Expand_West_WestBrosBossRoom, new Vector2(20, 15), EnemyBehaviourGuid: ExpandWesternBrosPrefabBuilder.WestBrosTucGUID);
             RoomBuilder.GenerateBasicRoomLayout(Expand_West_WestBrosBossRoom);
-
+                        
+            
             FakeBossRoom.name = "Fake Boss Room";
             FakeBossRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             FakeBossRoom.GUID = Guid.NewGuid().ToString();

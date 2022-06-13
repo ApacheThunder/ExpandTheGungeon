@@ -136,8 +136,8 @@ public class ExpandGlitchPortalController : DungeonPlaceableBehaviour, IPlayerIn
         TempFXObject.SetActive(false);
         yield return null;
         AkSoundEngine.PostEvent("Play_EX_CorruptionRoomTransition_01", targetPlayer.gameObject);
-        ExpandGlitchScreenFXController fxController = TempFXObject.AddComponent<ExpandGlitchScreenFXController>();
-        fxController.shaderType = ExpandGlitchScreenFXController.ShaderType.Glitch;
+        ExpandScreenFXController fxController = TempFXObject.AddComponent<ExpandScreenFXController>();
+        fxController.shaderType = ExpandScreenFXController.ShaderType.Glitch;
         fxController.GlitchAmount = 0;
         yield return null;
         TempFXObject.SetActive(true);
