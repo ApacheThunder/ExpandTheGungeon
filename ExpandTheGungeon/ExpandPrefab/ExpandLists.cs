@@ -29,6 +29,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "foyerdoor_open_11",
             "foyerdoor_open_12",
             "foyerdoor_open_13",
+            "casino_poker_table_shadow",
+            "casino_poker_table_001",
+            "casino_poker_table_cards_001",
             "cabinet_covered_001",
             "cabinet_idle_001",
             "cabinet_idle_002",
@@ -74,7 +77,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "cabinet_fight_012",
             "cabinet_fight_013",
             "cabinet_fight_014",
-            "cabinet_shadow_001"
+            "cabinet_shadow_001",
+            "punchout_coin_left",
+            "punchout_coin_right"
         };
 
         public static readonly List<string> EXItemCollection = new List<string> {

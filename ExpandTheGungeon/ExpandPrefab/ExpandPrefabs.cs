@@ -426,6 +426,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
             EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
+            ExpandPunchoutArcadeController.FoyerCollection = EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>();
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -4371,19 +4372,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject m_CasinoFloor = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_floor").gameObject;
             GameObject m_CasinoWalls = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_backwall").gameObject;
             GameObject m_CasinoBorder = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_border").gameObject;
+            GameObject m_CasinoPokerTable = EXCasinoHub.transform.Find("casino_poker_table").gameObject;
+            GameObject m_CasinoPokerTableProps = m_CasinoPokerTable.transform.Find("props").gameObject;
+            GameObject m_CasinoPokerTableShadow = m_CasinoPokerTable.transform.Find("shadow").gameObject;
+
+            
 
             tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoFloorSprite.HeightOffGround = -1.74f;
+            m_CasinoFloorSprite.HeightOffGround = -1.75f;
             tk2dSprite m_CasinoWallsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoWalls, EXFoyerCollection, "casino_hub_backwall_001");
             m_CasinoWallsSprite.HeightOffGround = -1.73f;
             tk2dSprite m_CasinoBorderSprite = SpriteSerializer.AddSpriteToObject(m_CasinoBorder, EXFoyerCollection, "casino_hub_border_001", tk2dBaseSprite.PerpendicularState.FLAT);
             m_CasinoBorderSprite.HeightOffGround = 4;
+
+            tk2dSprite m_CasinoPokerTableSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoPokerTableSprite.HeightOffGround = 0;
+            tk2dSprite m_CasinoPokerTablePropsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps, EXFoyerCollection, "casino_poker_table_cards_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoPokerTablePropsSprite.HeightOffGround = 0.2f;
+            tk2dSprite m_CasinoPokerTableShadowSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoPokerTableShadowSprite.HeightOffGround = -1.73f;
+            m_CasinoPokerTableShadowSprite.usesOverrideMaterial = true;
+            m_CasinoPokerTableShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
 
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(-10, -32));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(262, -32));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(151, -32));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(6, -32));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(256, 16), offset: new IntVector2(6, 256));
+            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
 
             ExpandCasinoRoomController m_CasinoRoomController = EXCasinoHub.AddComponent<ExpandCasinoRoomController>();
 

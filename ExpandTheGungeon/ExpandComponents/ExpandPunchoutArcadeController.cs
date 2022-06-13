@@ -3,10 +3,10 @@ using System.Collections;
 using UnityEngine;
 using Dungeonator;
 using System.Reflection;
-using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 using MonoMod.RuntimeDetour;
 using System.Collections.Generic;
 using ExpandTheGungeon.ExpandPrefab;
+using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -16,13 +16,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_Configured = false;
             m_PunchOutEnded = false;
         }
-        
+
+        [NonSerialized]
+        public static tk2dSpriteCollectionData FoyerCollection;
         [NonSerialized]
         public static List<int> RewardIDs = new List<int>();
         [NonSerialized]
         public static int RatKeyCount = -1;
         [NonSerialized]
         public static bool WonRatGame = false;
+
         [NonSerialized]
         public GameObject ScanlineFX;
 
@@ -35,6 +38,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         private Hook doLoseFadeHook;
         [NonSerialized]
         private Hook dropRewardHook;
+        [NonSerialized]
+        private Hook dropKeyHook;
         [NonSerialized]
         private PunchoutController m_punchoutController;
         [NonSerialized]
@@ -58,6 +63,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             dropRewardHook = new Hook(
                 typeof(PunchoutAIActor).GetMethod("DropReward", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandPunchoutArcadeController).GetMethod(nameof(DropRewardHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(PunchoutAIActor)
+            );
+
+            dropRewardHook = new Hook(
+                typeof(PunchoutAIActor).GetMethod("DropKey", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandPunchoutArcadeController).GetMethod(nameof(DropKeyHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(PunchoutAIActor)
             );
 
@@ -146,7 +157,23 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield break;
         }
-        
+
+        private void DropKeyHook(Action<PunchoutAIActor, bool>orig, PunchoutAIActor self, bool isLeft) {
+            GameManager.Instance.StartCoroutine(DropKeyCR(self, isLeft));
+        }
+
+        private IEnumerator DropKeyCR(PunchoutAIActor punchoutAIActor, bool isLeft) {
+            punchoutAIActor.NumKeysDropped++;
+            while (punchoutAIActor.state is PunchoutAIActor.ThrowAmmoState) { yield return null; }
+            string text = "left";
+            if (!isLeft) { text = "right"; }
+            punchoutAIActor.DroppedItemPrefab.GetComponent<tk2dSprite>().SetSprite(FoyerCollection, "punchout_coin_" + text);
+            yield return null;
+            GameObject droppedItem = SpawnManager.SpawnVFX(punchoutAIActor.DroppedItemPrefab, punchoutAIActor.transform.position + new Vector3(-0.25f, 2.5f), Quaternion.identity);
+            droppedItem.GetComponent<PunchoutDroppedItem>().Init(isLeft);
+            yield break;
+        }
+
 
         private void Update() {
             if (!m_Configured | m_PunchOutEnded | PunchoutController.IsActive) { return; }            
@@ -160,6 +187,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (dropRewardHook != null) {
                 dropRewardHook.Dispose();
                 dropRewardHook = null;
+            }
+            if (dropKeyHook != null) {
+                dropKeyHook.Dispose();
+                dropKeyHook = null;
             }
             m_PunchOutEnded = true;
             if (ScanlineFX) { Destroy(ScanlineFX); }
@@ -259,6 +290,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (dropRewardHook != null) {
                 dropRewardHook.Dispose();
                 dropRewardHook = null;
+            }
+            if (dropKeyHook != null) {
+                dropKeyHook.Dispose();
+                dropKeyHook = null;
             }
             base.OnDestroy();
         }

@@ -166,7 +166,7 @@
 				<Property Name="PluginUserAcknowledge\iZotope Trash Distortion" Type="bool" Value="True"/>
 				<Property Name="ProjectExplorer\FirstVisible_10_1" Type="string" Value="{4C96B38B-3DB4-40C7-91C9-665510E38993}"/>
 				<Property Name="ProjectExplorer\FirstVisible_11_1" Type="string" Value="{23EC2DE3-3ED8-4B82-AC99-92E25F2E4C6B}"/>
-				<Property Name="ProjectExplorer\FirstVisible_1_1" Type="string" Value="{3B5CF12D-6140-49B3-B448-D37D6F17A435}"/>
+				<Property Name="ProjectExplorer\FirstVisible_1_1" Type="string" Value="{D532CF84-88CC-4072-BB52-2F907F792888}"/>
 				<Property Name="ProjectExplorer\FirstVisible_3_1" Type="string" Value="{A4DBFF90-5E04-4FAD-AD08-F39A90B6D045}"/>
 				<Property Name="ProjectExplorer\FirstVisible_4_1" Type="string" Value="{CB6175F1-6080-4A23-92EF-0807E304D0C1}"/>
 				<Property Name="ProjectExplorer\FirstVisible_6_1" Type="string" Value="{C98E673F-A24C-48A8-960F-10565FFE70A0}"/>
@@ -192,7 +192,7 @@
 				<Property Name="ProjectExplorer\x64_Expanded_7_1" Type="string" Value=""/>
 				<Property Name="ProjectExplorer\x64_Expanded_8_1" Type="string" Value=""/>
 				<Property Name="Query\PreviousQuery" Type="string" Value="{52F6FBC8-499A-411D-A790-CB4FACBE6F6D}"/>
-				<Property Name="RTPC\GameParameterSimValue\{04885B81-FA4F-45AC-B986-FE2D17F94622}" Type="Real64" Value="100"/>
+				<Property Name="RTPC\GameParameterSimValue\{04885B81-FA4F-45AC-B986-FE2D17F94622}" Type="Real64" Value="49.9148211243612"/>
 				<Property Name="RTPC\GameParameterSimValue\{1B989754-E268-4E05-87F6-EF2E52876DD2}" Type="Real64" Value="50"/>
 				<Property Name="RTPC\GameParameterSimValue\{7A43AA89-AC8A-456C-934C-F1F81D3DDDEB}" Type="Real64" Value="50"/>
 				<Property Name="SoundBank Manager\x64_Expand States" Type="string" Value="8F3u/aYykUa3iALFdcwQWQ=="/>
