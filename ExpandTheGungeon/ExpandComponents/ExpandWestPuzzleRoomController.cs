@@ -288,7 +288,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ParentRoom.RegisterInteractable(PuzzleWestChest5Component);
                 m_ParentRoom.RegisterInteractable(PuzzleWestChest6Component);
 
-                Vector3 InfoSignPosition = (new Vector3(6, 4) + m_ParentRoom.area.basePosition.ToVector3());
+                Vector3 InfoSignPosition = (new Vector3(6, 8) + m_ParentRoom.area.basePosition.ToVector3());
 
                 GameObject ChestPuzzleInfoSign = Instantiate(ExpandPrefabs.Jungle_BlobLostSign, InfoSignPosition, Quaternion.identity);
                 ChestPuzzleInfoSign.name = "Lunk's Minigame Sign";

@@ -40,11 +40,17 @@ namespace ExpandTheGungeon.ItemAPI
             Add(true);
             Add(false);
 
-            Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
+            }
 
             ProjectileHookClass.AddHook();
 
-            Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
+            }
 
             foreach (var item in EnemyDatabase.Instance.Entries)
             {
@@ -52,23 +58,24 @@ namespace ExpandTheGungeon.ItemAPI
                 {
                     var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
 
-                    if (enemy.BlackPhantomProperties != null)
+                    if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
                     {
-                        if (enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
+                        float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
+
+                        if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
                         {
-                            float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
+                            var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
 
-                            if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
-                            {
-                                var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
-
-                                exceptionEnemies.Add(enemy.EnemyGuid, ratio);
-                            }
+                            exceptionEnemies.Add(enemy.EnemyGuid, ratio);
                         }
+                        
                     }
                 }
             }
-            Debug.Log("[ExpandTheGungeon] Done setting up black and golden revolver");
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[ExpandTheGungeon] Done setting up black and golden revolver");
+            }
         }
 
         private static void Add(bool isGoldenVersion)

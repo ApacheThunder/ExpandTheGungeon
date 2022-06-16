@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1922922359
+CRC: 3409992088
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 30f1ddcf4866153af30f4f4570a7e218
+    Hash: c78b469b3907d4aefe70e56bc7d3534d
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -136,6 +136,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_CornerBomb3.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/lavaGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal19.bytes
+- Assets/ExpandPrefabs/Foyer/EXCasino_Litter_Cans.prefab
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_2_grid.txt
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_MelonTurtle_Apache_Hub_Layout.png
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBulletManCollection.txt
@@ -418,6 +419,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter14.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/CultistCompanionCollection.prefab
 - Assets/ExpandSerializedData/TilesetData/Belly/pitLayoutGrid.txt
+- Assets/ExpandPrefabs/Misc/EXRatJailDoor4x.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed20.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal28.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Steps3.bytes
@@ -622,6 +624,7 @@ Assets:
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Flying_Gap_Layout.png
 - Assets/ExpandRooms/RoomBuilderData/Forge/Expand_Neighborino_FireRoom_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/HFAB_Expand_Achievement_Forger.bytes
+- Assets/ExpandPrefabs/Foyer/EXCasino_Litter_Paper.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_ice1.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/ENV_Tileset_Jungle_MaterialTable.txt
 - Assets/ExpandSerializedData/TilesetData/Belly/lavaGrid.txt
@@ -1159,6 +1162,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Tabled1.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BootlegShotgunManBlue_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/K_Expand_Achievement_Biggest_Wallet.bytes
+- Assets/ExpandPrefabs/Foyer/EXCasino_HatRack.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular17.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Thin1.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungle_ExitLadder.prefab

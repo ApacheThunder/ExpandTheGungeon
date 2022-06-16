@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 548883445
+CRC: 981155328
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 29dfdbb54bbe87b4a758fc469d3dc96e
+    Hash: 6e2e376c27c8ae1ed8157e9e08c2394f
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -17,6 +17,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_left_002.png
 - Assets/ExpandSprites/Misc/EXFoyer_Collection/cabinet_fight_011.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_SpindashCharge_Back_06.png
+- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_litter_cans_001.png
 - Assets/ExpandSprites/AIActors/GungeoneerMimic_Collection/PlayerMimicMirror_MimicCrack_04.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_right_002.png
 - Assets/ExpandSprites/Misc/EXBalloon_Collection/redballoon_pop_001.png
@@ -254,6 +255,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/BootlegBullat_Collection/bullat_die_004.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_20.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_run_right_002.png
+- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_litter_paper_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Left_007.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_spawn_001.png
 - Assets/ExpandSprites/Misc/EXJungle_Collection/junglecrest_minimapicon.png
@@ -617,6 +619,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_left_007.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_12.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_run_right_back_002.png
+- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_hatrack_001.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_angel_rev_enemy_pre_fire_003.png
 - Assets/ExpandSprites/AIActors/WestBrosCollection/gr_nome_rev_fire_001.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer_spawn_07.png
@@ -688,7 +691,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Spindash_01.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_07.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_pitfall_004.png
-- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_poker_table_cards_001.png
+- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_poker_table_props_001.png
 - Assets/ExpandSprites/AIActors/BootlegBulletMan_Collection/bulletman_idle_down_001.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_move_down_005.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_death_right_side_003.png
@@ -727,6 +730,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_front_right_005.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_13.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_pitfall_001.png
+- Assets/ExpandSprites/Misc/EXFoyer_Collection/casino_poker_table_props_002.png
 - Assets/ExpandSprites/Misc/EXPortableElevator_Collection/portable_elevator_open_03.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/babygoodhammer.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_12.png

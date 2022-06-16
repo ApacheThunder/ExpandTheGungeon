@@ -97,6 +97,8 @@
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
+    <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
+    <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
     <Compile Include="ExpandComponents\ExpandPunchoutArcadeController.cs" />
     <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="ExpandPrefab\ExpandCustomDungeonPrefabs.cs" />
     <Compile Include="ExpandPrefab\ExpandDungeonCollections.cs" />
     <Compile Include="ExpandPrefab\ExpandGungeoneerMimicBossPlacable.cs" />
+    <Compile Include="ExpandPrefab\ExpandMorePrefabs.cs" />
     <Compile Include="ExpandPrefab\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />

@@ -1749,10 +1749,24 @@ namespace ExpandTheGungeon.ExpandMain {
                         }
                     }
                     if (fakeChest.chestType == ExpandFakeChest.ChestType.RickRoll | fakeChest.chestType == ExpandFakeChest.ChestType.SurpriseChest) {
-                        room.area.prototypeRoom.roomEvents = new List<RoomEventDefinition>() {
-                            new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
-                            new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
-                        };
+                        if (room.area.prototypeRoom != null) {
+                            if (room.area.prototypeRoom.roomEvents == null) { room.area.prototypeRoom.roomEvents = new List<RoomEventDefinition>(); }
+                            if (!room.area.prototypeRoom.roomEvents.Contains(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM))) {
+                                room.area.prototypeRoom.roomEvents.Add(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM));
+                            }
+                            if (!room.area.prototypeRoom.roomEvents.Contains(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM))) {
+                                room.area.prototypeRoom.roomEvents.Add(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM));
+                            }
+                        }
+                        if (room.area.runtimePrototypeData != null) {
+                            if (room.area.runtimePrototypeData.roomEvents == null) { room.area.runtimePrototypeData.roomEvents = new List<RoomEventDefinition>(); }
+                            if (!room.area.runtimePrototypeData.roomEvents.Contains(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM))) {
+                                room.area.runtimePrototypeData.roomEvents.Add(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM));
+                            }
+                            if (!room.area.runtimePrototypeData.roomEvents.Contains(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM))) {
+                                room.area.runtimePrototypeData.roomEvents.Add(new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM));
+                            }
+                        }
                     }
                     fakeChest.ConfigureOnPlacement(room);
                     room.RegisterInteractable(fakeChest);

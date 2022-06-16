@@ -110,10 +110,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_Undead2;
         public static PrototypeDungeonRoom Expand_Undead3;
         public static PrototypeDungeonRoom Expand_Undead4;
-
-
-
-
+                
         // Rooms for floor 5.
         public static PrototypeDungeonRoom Expand_Arena;
         public static PrototypeDungeonRoom Expand_CaptainCrunch;
@@ -1160,29 +1157,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_SecretWarp = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretWarp", true);
             Expand_West_SecretWarp.usesProceduralDecoration = false;
             Expand_West_SecretWarp.overrideRoomVisualType = 1;
-            // RoomBuilder.AddObjectToRoom(Expand_West_SecretWarp1, new Vector2(4, 9), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
-
+            
             Expand_West_SecretHub = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
             Expand_West_SecretHub.overrideRoomVisualType = 1;
             Expand_West_SecretHub.usesProceduralDecoration = false;
-            // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub, new Vector2(10, 19), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
-            // Expand_West_SecretHub2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
-            Expand_West_SecretHub2 = UnityEngine.Object.Instantiate(Expand_West_SecretHub);
+            Expand_West_SecretHub2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretHub", true);
             Expand_West_SecretHub2.name = "Expand_West_SecretHub2";
             Expand_West_SecretHub2.overrideRoomVisualType = 2;
             Expand_West_SecretHub2.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
-            // RoomBuilder.AddObjectToRoom(Expand_West_SecretHub2, new Vector2(10, 19), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
 
             Expand_West_SecretShopWarp = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_West_SecretShopWarp", true);
             Expand_West_SecretShopWarp.overrideRoomVisualType = 2;
             Expand_West_SecretShopWarp.usesProceduralDecoration = false;
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 4), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 8), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 12), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(4, 16), ExpandPrefabs.RatJailDoor);
-            // RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(3, 22), ExpandObjectDatabase.GungeonWarpDoor, xOffset: 8, yOffset: 10);
+            RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(2, 5), ExpandPrefabs.EXRatDoor_4xLocks);
+            
 
             Expand_West_SecretKeyShop = UnityEngine.Object.Instantiate(ExpandPrefabs.shop_special_key_01);
             Expand_West_SecretKeyShop.overrideRoomVisualType = 0;
@@ -2192,19 +2182,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SecretRewardRoom.usesProceduralDecoration = false;
             SecretRewardRoom.overrideRoomVisualType = 2;
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 2), DungeonData.Direction.WEST);
-            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(10, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 2), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 31), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 31), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(0, 60), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(21, 60), DungeonData.Direction.EAST);
-            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(8, 67), DungeonData.Direction.NORTH);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 5), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 7), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 9), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 11), ExpandPrefabs.RatJailDoor);
-            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), ExpandPrefabs.RatJailDoor);
+            RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(10, 67), DungeonData.Direction.NORTH);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 2), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 10), ExpandPrefabs.EXRatDoor_4xLocks);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), ExpandPrefabs.RatJailDoor);

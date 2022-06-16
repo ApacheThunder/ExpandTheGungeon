@@ -44,6 +44,7 @@ namespace ExpandTheGungeon.SpriteAPI {
             } else {
                 SaveStringToFile(JsonUtility.ToJson(newCollection), ETGMod.ResourcesDirectory, CollectionName + ".txt");
             }
+            UnityEngine.Object.Destroy(m_TempObject);
             newCollection = null;
             AtlasPacker = null;
         }
@@ -367,7 +368,7 @@ namespace ExpandTheGungeon.SpriteAPI {
 			return tk2dSpriteDefinition;
 		}
 
-        private static T CopyFrom<T>(this Component comp, T other) where T : Component {
+        /*private static T CopyFrom<T>(this Component comp, T other) where T : Component {
 			Type type = comp.GetType();
 			bool flag = type != other.GetType();
 			T result;
@@ -387,8 +388,7 @@ namespace ExpandTheGungeon.SpriteAPI {
 			}
 			return result;
 		}
-
-        private static T AddComponent<T>(this GameObject go, T toAdd) where T : Component { return go.AddComponent<T>().CopyFrom(toAdd); }
+        private static T AddComponent<T>(this GameObject go, T toAdd) where T : Component { return go.AddComponent<T>().CopyFrom(toAdd); }*/
 	}
 }
 

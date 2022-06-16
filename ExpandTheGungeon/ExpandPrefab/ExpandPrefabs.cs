@@ -299,7 +299,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpaceFloorPitBorder_50x50;
         public static GameObject DoorOneWay_Vertical_Office;
         public static GameObject DoorOneWay_Horizontal_Office;
-
+        
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
         public static GameObject Sarcophagus_ShotgunMace_Kaliber;
@@ -383,13 +383,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpace_Grass_02;
         public static GameObject EXSpace_Grass_03;
         public static GameObject EXSpace_Grass_04;
-
-        // Custom Foyer stuff
-        public static GameObject EXFoyerTrigger;
-        public static GameObject EXFoyerWarpDoor;
-        public static GameObject EXCasinoHub;
-        public static GameObject EXCasinoArcadeGameScanlineFX;
-
+        
         // Custom Challenge Modifiers
         public static GameObject Challenge_ChaosMode;
         public static GameObject Challenge_TripleTrouble;
@@ -397,6 +391,20 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         // Modified Items
         public static GameObject ChamberGun;
+
+
+        // More Prefabs. (setup in second CS file to avoid lag due to size of main CS file)
+        public static GameObject EXRatDoor_4xLocks;
+
+        // Custom Foyer stuff
+        public static GameObject EXFoyerTrigger;
+        public static GameObject EXFoyerWarpDoor;
+        public static GameObject EXCasinoHub;
+        public static GameObject EXCasinoArcadeGameScanlineFX;
+        public static GameObject EXCasino_HatRack;
+        public static GameObject EXCasino_Litter_Cans;
+        public static GameObject EXCasino_Litter_Paper;
+
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1, AssetBundle sharedAssets) {
             ENV_Tileset_Jungle = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Jungle");
@@ -4303,197 +4311,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SpaceGrassSprite_04.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
 
 
-            EXFoyerWarpDoor = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerWarpDoor");
-            tk2dSprite m_EXFoyerWarpDoorSprite = SpriteSerializer.AddSpriteToObject(EXFoyerWarpDoor, EXFoyerCollection, "foyerdoor_open_01");
-            m_EXFoyerWarpDoorSprite.HeightOffGround = -2.25f;
             
-            tk2dSpriteAnimator m_FoyerWarpDoorAnimator = ExpandUtility.GenerateSpriteAnimator(EXFoyerWarpDoor);
-
-            List<string> m_FoyerDoorOpen = new List<string>() {
-                "foyerdoor_open_01",
-                "foyerdoor_open_02",
-                "foyerdoor_open_03",
-                "foyerdoor_open_04",
-                "foyerdoor_open_05",
-                "foyerdoor_open_06",
-                "foyerdoor_open_07",
-                "foyerdoor_open_08",
-                "foyerdoor_open_09",
-                "foyerdoor_open_10",
-                "foyerdoor_open_11",
-                "foyerdoor_open_12",
-                "foyerdoor_open_13",
-            };
-
-            List<string> m_FoyerDoorClose = new List<string>() {
-                "foyerdoor_open_13",
-                "foyerdoor_open_12",
-                "foyerdoor_open_11",
-                "foyerdoor_open_10",
-                "foyerdoor_open_09",
-                "foyerdoor_open_08",
-                "foyerdoor_open_07",
-                "foyerdoor_open_06",
-                "foyerdoor_open_05",
-                "foyerdoor_open_04",
-                "foyerdoor_open_03",
-                "foyerdoor_open_02",
-                "foyerdoor_open_01",
-            };
-            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorOpen, "open", frameRate: 12);
-            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorClose, "close", frameRate: 12);
-
-            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24));
-            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24), offset: new IntVector2(48, 0));
-            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(0, 24));
-            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(48, 24));
-            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(31, 13), offset: new IntVector2(17, 18));
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().HasTriggerCollisions = true;
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].IsTrigger = true;
-
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[0].Enabled = false;
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[1].Enabled = false;
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[2].Enabled = false;
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[3].Enabled = false;
-            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].Enabled = false;
-
-
-            EXFoyerWarpDoor.AddComponent<ExpandWarpManager>();
-
-
-            EXFoyerTrigger = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerTrigger");
-            tk2dSprite m_FoyerTriggerSprite = SpriteSerializer.AddSpriteToObject(EXFoyerTrigger, EXFoyerCollection, "floortrigger_idle_01", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_FoyerTriggerSprite.HeightOffGround = -1.74f;
-            EXFoyerTrigger.AddComponent<ExpandCasinoWarpTrigger>();
-
-
-            EXCasinoHub = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Hub");
-            GameObject m_EXCasinoHubRoomPrefab = EXCasinoHub.transform.Find("Room_Prefab").gameObject;
-            GameObject m_CasinoFloor = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_floor").gameObject;
-            GameObject m_CasinoWalls = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_backwall").gameObject;
-            GameObject m_CasinoBorder = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_border").gameObject;
-            GameObject m_CasinoPokerTable = EXCasinoHub.transform.Find("casino_poker_table").gameObject;
-            GameObject m_CasinoPokerTableProps = m_CasinoPokerTable.transform.Find("props").gameObject;
-            GameObject m_CasinoPokerTableShadow = m_CasinoPokerTable.transform.Find("shadow").gameObject;
-
-            
-
-            tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoFloorSprite.HeightOffGround = -1.75f;
-            tk2dSprite m_CasinoWallsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoWalls, EXFoyerCollection, "casino_hub_backwall_001");
-            m_CasinoWallsSprite.HeightOffGround = -1.73f;
-            tk2dSprite m_CasinoBorderSprite = SpriteSerializer.AddSpriteToObject(m_CasinoBorder, EXFoyerCollection, "casino_hub_border_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoBorderSprite.HeightOffGround = 4;
-
-            tk2dSprite m_CasinoPokerTableSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTableSprite.HeightOffGround = 0;
-            tk2dSprite m_CasinoPokerTablePropsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps, EXFoyerCollection, "casino_poker_table_cards_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTablePropsSprite.HeightOffGround = 0.2f;
-            tk2dSprite m_CasinoPokerTableShadowSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTableShadowSprite.HeightOffGround = -1.73f;
-            m_CasinoPokerTableShadowSprite.usesOverrideMaterial = true;
-            m_CasinoPokerTableShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
-
-
-            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(-10, -32));
-            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(262, -32));
-            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(151, -32));
-            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(6, -32));
-            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(256, 16), offset: new IntVector2(6, 256));
-            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
-
-            ExpandCasinoRoomController m_CasinoRoomController = EXCasinoHub.AddComponent<ExpandCasinoRoomController>();
-
-            GameObject m_EXCasinoGame_Punchout = EXCasinoHub.transform.Find("casinogame_punchout").gameObject;
-            tk2dSprite m_EXCasinoGamePunchoutSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Punchout, EXFoyerCollection, "cabinet_covered_001");
-            m_EXCasinoGamePunchoutSprite.HeightOffGround = -1.65f;
-
-            GameObject m_EXCasinoGame_PunchoutShadow = m_EXCasinoGame_Punchout.transform.Find("shadow").gameObject;
-            tk2dSprite m_EXCasinoGamePunchoutShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_PunchoutShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_EXCasinoGamePunchoutShadowSprite.HeightOffGround = -1.7f;
-            m_EXCasinoGamePunchoutShadowSprite.usesOverrideMaterial = true;
-            m_EXCasinoGamePunchoutShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
-
-            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
-            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
-            
-
-            List<string> m_PunchoutArcade_Idle = new List<string>() {
-                "cabinet_idle_001",
-                "cabinet_idle_002",
-                "cabinet_idle_003",
-                "cabinet_idle_004",
-                "cabinet_idle_005",
-                "cabinet_idle_006",
-                "cabinet_idle_007",
-                "cabinet_idle_008",
-                "cabinet_idle_009",
-                "cabinet_idle_010",
-                "cabinet_idle_011",
-                "cabinet_idle_012",
-            };
-            List<string> m_PunchoutArcade_Sleep = new List<string>() {
-                "cabinet_sleep_001",
-                "cabinet_sleep_002",
-                "cabinet_sleep_003",
-                "cabinet_sleep_004",
-                "cabinet_sleep_005",
-                "cabinet_sleep_006",
-                "cabinet_sleep_007",
-                "cabinet_sleep_008",
-                "cabinet_sleep_009",
-                "cabinet_sleep_010",
-                "cabinet_sleep_011",
-                "cabinet_sleep_012",
-                "cabinet_sleep_013",
-                "cabinet_sleep_014",
-            };
-            List<string> m_PunchoutArcade_Interact = new List<string>() {
-                "cabinet_interact_001",
-                "cabinet_interact_002",
-                "cabinet_interact_003",
-                "cabinet_interact_004",
-            };
-            List<string> m_PunchoutArcade_Fight = new List<string>() {
-                "cabinet_fight_001",
-                "cabinet_fight_002",
-                "cabinet_fight_003",
-                "cabinet_fight_004",
-                "cabinet_fight_005",
-                "cabinet_fight_006",
-                "cabinet_fight_007",
-                "cabinet_fight_008",
-                "cabinet_fight_009",
-                "cabinet_fight_010",
-                "cabinet_fight_011",
-                "cabinet_fight_012",
-                "cabinet_fight_013",
-                "cabinet_fight_014"
-            };
-
-            
-            tk2dSpriteAnimator m_EXCasinoArcadeGameAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXCasinoGame_Punchout, playAutomatically: true);
-
-            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Interact, "interact", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Fight, "fight", tk2dSpriteAnimationClip.WrapMode.Once, 10);
-            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Sleep, "sleep", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
-
-            m_CasinoRoomController.CasinoGame_Punchout = m_EXCasinoGame_Punchout.AddComponent<ExpandCasinoGameController>();
-
-
-            EXCasinoArcadeGameScanlineFX = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGameScanlineFX");
-            ExpandScreenFXController m_EXCasinoArcadeGameScanlineFXController = EXCasinoArcadeGameScanlineFX.AddComponent<ExpandScreenFXController>();
-            m_EXCasinoArcadeGameScanlineFXController.UseCorruptionAmbience = false;
-            m_EXCasinoArcadeGameScanlineFXController.shaderType = ExpandScreenFXController.ShaderType.CRT;
-
-            GameObject m_EXCasinoArcadeGameScanlineFXAdditionalPass = EXCasinoArcadeGameScanlineFX.transform.Find("additionalPass").gameObject;
-            ExpandScreenFXController m_EXCasinoArcadeGameScanlineFXController2 = m_EXCasinoArcadeGameScanlineFXAdditionalPass.AddComponent<ExpandScreenFXController>();
-            m_EXCasinoArcadeGameScanlineFXController2.UseCorruptionAmbience = false;
-            m_EXCasinoArcadeGameScanlineFXController2.shaderType = ExpandScreenFXController.ShaderType.Scanlines;
-
-
-
             ChallengeManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeManager");
             ChallengeMegaManagerObject = braveResources.LoadAsset<GameObject>("_ChallengeMegaManager");
 
@@ -4659,6 +4477,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ForgeDungeonPrefab = null;
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
+
+            ExpandMorePrefabs.InitMoreCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
         }
     }
 }
