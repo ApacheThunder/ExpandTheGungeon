@@ -400,6 +400,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXFoyerTrigger;
         public static GameObject EXFoyerWarpDoor;
         public static GameObject EXCasinoHub;
+        public static GameObject EXArcadeGame_Prop;
         public static GameObject EXCasinoArcadeGameScanlineFX;
         public static GameObject EXCasino_HatRack;
         public static GameObject EXCasino_Litter_Cans;

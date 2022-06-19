@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3409992088
+CRC: 2554357600
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c78b469b3907d4aefe70e56bc7d3534d
+    Hash: e074a7d4e76c77ec21c1452ffa989797
   TypeTreeHash:
     serializedVersion: 2
     Hash: a734282b602c78250c749649df8b8103
@@ -410,6 +410,7 @@ Assets:
 - Assets/ExpandPrefabs/SpriteCollections/Misc/BabyGoodHammerCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/MH_Expand_Achievement_Challenger.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera4.bytes
+- Assets/ExpandPrefabs/Foyer/EXArcadeGame_Prop.prefab
 - Assets/ExpandPrefabs/Misc/EX_ParadropAnchor.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_HUB_1wave.bytes
 - Assets/ExpandTextures/Misc/VHSAnimation.mp4

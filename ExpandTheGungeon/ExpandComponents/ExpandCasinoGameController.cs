@@ -64,7 +64,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public int Cost;
 
 
-        public enum Mode { LockedGame, PunchoutArcade, SlotMachine, ItemGumBallMachine };
+        public enum Mode { LockedGame, PunchoutArcade, SlotMachine, ItemGunBallMachine };
         public Mode mode;
         
         [NonSerialized]
@@ -113,6 +113,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                         }
                         StartCoroutine(HandleConversation(interactor));
                         break;
+                    case Mode.ItemGunBallMachine:
+                        StartCoroutine(HandleConversation(interactor));
+                        break;
                     default:
                         StartCoroutine(HandleConversation(interactor, "MODE NOT IMPLEMENTED YET"));
                         break;
@@ -146,8 +149,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_Interacted = false;
                     yield return null;
                     interactor.ClearInputOverride("gameConversation");
-                    yield break;
-                case Mode.ItemGumBallMachine:
                     yield break;
                 case Mode.PunchoutArcade:
                     bool IsBroke = false;
@@ -218,6 +219,39 @@ namespace ExpandTheGungeon.ExpandComponents {
                     yield break;
                 case Mode.SlotMachine:
                     yield break;
+                case Mode.ItemGunBallMachine:
+                    bool IsBroke_Gumball = false;
+                    if (GameStatsManager.Instance.GetPlayerStatValue(TrackedStats.META_CURRENCY) < Cost) {
+                        targetDisplayKey = insufficientFundsKey;
+                        IsBroke_Gumball = true;
+                    }
+                    if (m_Uses >= MaxUses) { targetDisplayKey = disabledDisplayTextKey; }
+                    TextBoxManager.ShowTextBox(interactor.transform.position + textBoxOffset, interactor.transform, -1f, targetDisplayKey, instant: true, slideOrientation: TextBoxManager.BoxSlideOrientation.FORCE_RIGHT, showContinueText: false);
+                    selectedResponse = -1;
+                    interactor.SetInputOverride("gameConversation");
+                    if (m_Uses < MaxUses && !IsBroke_Gumball) {
+                        GameUIRoot.Instance.DisplayPlayerConversationOptions(interactor, null, acceptOptionKey, declineOptionKey);
+                    } else if (m_Uses >= MaxUses | IsBroke_Gumball) {
+                        GameUIRoot.Instance.DisplayPlayerConversationOptions(interactor, null, basicLeaveKey, string.Empty);
+                    }
+                    yield return null;
+                    while (!GameUIRoot.Instance.GetPlayerConversationResponse(out selectedResponse)) { yield return null; }
+                    TextBoxManager.ClearTextBox(interactor.transform);
+                    if (m_Uses < MaxUses && selectedResponse == 0 && !IsBroke_Gumball) {
+                        /*if (!string.IsNullOrEmpty(ActivateGameAnimation)) {
+                            m_NewAnimation = ActivateGameAnimation;
+                            animationState = AnimationState.SwitchingAnimation;
+                        }
+                        while (animationState != AnimationState.Idle) { yield return null; }*/
+                        GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -Cost);
+                        DoGunBallRoll(interactor);
+                        m_Uses++;
+                        yield return null;
+                        if (m_Uses >= MaxUses) { sprite.SetSprite("casino_gunball_empty_001"); }
+                    }
+                    interactor.ClearInputOverride("gameConversation");
+                    m_Interacted = false;
+                    yield break;
                 default:
                     yield break;
             }
@@ -235,6 +269,41 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_PunchoutArcadeController.StartPunchout(player);
         }
 
+        private void DoGunBallRoll(PlayerController player) {
+            if (UnityEngine.Random.value < 0.35f) {
+                PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.B;
+                if (UnityEngine.Random.value < 0.2f) {
+                    targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.A;
+                } else if (UnityEngine.Random.value < 0.01f) {
+                    targetQuality = PickupObject.ItemQuality.S;
+                }
+                GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
+                PickupObject ItemOrGun = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
+                LootEngine.GivePrefabToPlayer(ItemOrGun.gameObject, player);
+                if (ItemOrGun is Gun){
+                    AkSoundEngine.PostEvent("Play_OBJ_weapon_pickup_01", gameObject);
+                } else {
+                    AkSoundEngine.PostEvent("Play_OBJ_item_pickup_01", gameObject);
+                }
+                GameObject original = (GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup");
+                GameObject gameOBJ = Instantiate(original);
+                tk2dSprite component = gameOBJ.GetComponent<tk2dSprite>();
+                component.PlaceAtPositionByAnchor(player.sprite.WorldCenter, tk2dBaseSprite.Anchor.MiddleCenter);
+                component.HeightOffGround = -1.5f;
+                component.UpdateZDepth();
+            } else {
+                KeyBulletPickup keyBullet = (PickupObjectDatabase.GetById(67) as KeyBulletPickup);
+                player.BloopItemAboveHead(keyBullet.sprite, keyBullet.overrideBloopSpriteName);
+                GameObject gameOBJ2 = Instantiate((GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup"));
+                tk2dSprite component2 = gameOBJ2.GetComponent<tk2dSprite>();
+                component2.PlaceAtPositionByAnchor(player.sprite.WorldCenter, tk2dBaseSprite.Anchor.MiddleCenter);
+                component2.UpdateZDepth();
+                AkSoundEngine.PostEvent("Play_OBJ_key_pickup_01", gameObject);
+                player.carriedConsumables.KeyBullets += 1;
+                player.carriedConsumables.ForceUpdateUI();
+            }
+        }
+
         public void ConfigureOnPlacement(RoomHandler room) {
             switch (mode) {
                 case Mode.PunchoutArcade:
@@ -245,7 +314,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     break;
                 case Mode.SlotMachine:
                     break;
-                case Mode.ItemGumBallMachine:
+                case Mode.ItemGunBallMachine:
                     break;
                 case Mode.LockedGame:
                     break;
@@ -254,6 +323,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void LateUpdate() {
+            if (mode == Mode.ItemGunBallMachine) { return; }
             switch (animationState) {
                 case AnimationState.SwitchingAnimation:
                     if (!string.IsNullOrEmpty(m_NewAnimation)) {
@@ -288,11 +358,14 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void Update() {
             switch (mode) {
+                default:
+                    return;
                 case Mode.LockedGame:
                     return;
                 case Mode.PunchoutArcade:
                     if (!Finished) { return; }
-
+                    m_PunchoutArcadeController.DestroyOverlayUI();
+                    GameUIRoot.Instance.PauseMenuPanel.GetComponent<PauseMenuController>().metaCurrencyPanel.IsVisible = true;
                     if (!DoingResults) {
                         string Text = "You didn't beat the rat so you won nothing!";
                         if (ExpandPunchoutArcadeController.WonRatGame) {
@@ -350,16 +423,16 @@ namespace ExpandTheGungeon.ExpandComponents {
                     foreach (PlayerController player in GameManager.Instance.AllPlayers) {
                         player.ClearInputOverride("gameConversation");
                     }
+                    ResultsGiven = false;
+                    DoingResults = false;
+                    Finished = false;
                     break;
-                case Mode.ItemGumBallMachine:
+                case Mode.ItemGunBallMachine:
                     break;
                 case Mode.SlotMachine:
                     break;
             }
-            ResultsGiven = false;
-            DoingResults = false;
             m_CurrentPlayer = null;
-            Finished = false;
         }
         
         public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {

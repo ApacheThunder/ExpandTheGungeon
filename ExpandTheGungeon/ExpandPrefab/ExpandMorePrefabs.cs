@@ -9,7 +9,7 @@ using ExpandTheGungeon.SpriteAPI;
 namespace ExpandTheGungeon.ExpandPrefab {
 
     public class ExpandMorePrefabs : ExpandPrefabs {
-
+        
         public static void InitMoreCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
             /*Dungeon TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
@@ -87,7 +87,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_FoyerTriggerSprite.HeightOffGround = -1.74f;
             EXFoyerTrigger.AddComponent<ExpandCasinoWarpTrigger>();
 
-
+            
             EXCasinoHub = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Hub");
             EXCasino_HatRack = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_HatRack");
             EXCasino_Litter_Cans = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Litter_Cans");
@@ -97,11 +97,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject m_CasinoFloor = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_floor").gameObject;
             GameObject m_CasinoWalls = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_backwall").gameObject;
             GameObject m_CasinoBorder = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_border").gameObject;
-            GameObject m_CasinoPokerTable = EXCasinoHub.transform.Find("casino_poker_table").gameObject;
-            GameObject m_CasinoPokerTableProps = m_CasinoPokerTable.transform.Find("tableprops").gameObject;
-            GameObject m_CasinoPokerTableProps2 = m_CasinoPokerTable.transform.Find("tableprops2").gameObject;
-            GameObject m_CasinoPokerTableShadow = m_CasinoPokerTable.transform.Find("shadow").gameObject;
-                        
+            GameObject m_CasinoPokerTable_01 = EXCasinoHub.transform.Find("casino_poker_table_01").gameObject;
+            GameObject m_CasinoPokerTable_02 = EXCasinoHub.transform.Find("casino_poker_table_02").gameObject;
+            GameObject m_CasinoPokerTableProps = m_CasinoPokerTable_01.transform.Find("tableprops").gameObject;
+            GameObject m_CasinoPokerTableProps2 = m_CasinoPokerTable_02.transform.Find("tableprops").gameObject;
+            GameObject m_CasinoPokerTableShadow = m_CasinoPokerTable_01.transform.Find("shadow").gameObject;
+            GameObject m_CasinoPokerTableShadow2 = m_CasinoPokerTable_02.transform.Find("shadow").gameObject;
+            GameObject m_CasinoCarpet1 = EXCasinoHub.transform.Find("casino_carpet_01").gameObject;
+            GameObject m_CasinoCarpet2 = EXCasinoHub.transform.Find("casino_carpet_02").gameObject;
 
             tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
             m_CasinoFloorSprite.HeightOffGround = -1.75f;
@@ -110,17 +113,28 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_CasinoBorderSprite = SpriteSerializer.AddSpriteToObject(m_CasinoBorder, EXFoyerCollection, "casino_hub_border_001", tk2dBaseSprite.PerpendicularState.FLAT);
             m_CasinoBorderSprite.HeightOffGround = 4;
 
-            tk2dSprite m_CasinoPokerTableSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTableSprite.HeightOffGround = 0;
-            tk2dSprite m_CasinoPokerTablePropsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps, EXFoyerCollection, "casino_poker_table_props_001", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTablePropsSprite.HeightOffGround = 0.2f;
-            m_CasinoPokerTableProps.SetActive(false);
-            tk2dSprite m_CasinoPokerTableProps2Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps2, EXFoyerCollection, "casino_poker_table_props_002", tk2dBaseSprite.PerpendicularState.FLAT);
-            m_CasinoPokerTableProps2Sprite.HeightOffGround = 0.2f;
+            tk2dSprite m_CasinoCarpet1Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoCarpet1, EXFoyerCollection, "casino_carpet_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoCarpet2Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoCarpet2, EXFoyerCollection, "casino_carpet_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoCarpet1Sprite.HeightOffGround = -1.74f;
+            m_CasinoCarpet2Sprite.HeightOffGround = -1.74f;
+            
+
+            tk2dSprite m_CasinoPokerTableSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable_01, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableSprite2 = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable_02, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTablePropsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps, EXFoyerCollection, "casino_poker_table_props_002", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableProps2Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps2, EXFoyerCollection, "casino_poker_table_props_001", tk2dBaseSprite.PerpendicularState.FLAT);
             tk2dSprite m_CasinoPokerTableShadowSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableShadowSprite2 = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow2, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoPokerTableSprite.HeightOffGround = 0;
+            m_CasinoPokerTableSprite2.HeightOffGround = 0;
+            m_CasinoPokerTablePropsSprite.HeightOffGround = 0.2f;
+            m_CasinoPokerTableProps2Sprite.HeightOffGround = 0.2f;
             m_CasinoPokerTableShadowSprite.HeightOffGround = -1.73f;
+            m_CasinoPokerTableShadowSprite2.HeightOffGround = -1.73f;
             m_CasinoPokerTableShadowSprite.usesOverrideMaterial = true;
+            m_CasinoPokerTableShadowSprite2.usesOverrideMaterial = true;
             m_CasinoPokerTableShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+            m_CasinoPokerTableShadowSprite2.renderer.material.shader = m_CasinoPokerTableShadowSprite.renderer.material.shader;
 
 
             tk2dSprite m_EXCasino_HatRackSprite = SpriteSerializer.AddSpriteToObject(EXCasino_HatRack, EXFoyerCollection, "casino_hatrack_001");
@@ -144,10 +158,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(256, 16), offset: new IntVector2(6, 256));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasino_HatRack, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(12, 13), offset: new IntVector2(5, 2));
             ExpandUtility.GenerateOrAddToRigidBody(EXCasino_HatRack, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(12, 9), offset: new IntVector2(5, 15));
-            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
-            
+            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable_01, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable_02, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
+
 
             ExpandCasinoRoomController m_CasinoRoomController = EXCasinoHub.AddComponent<ExpandCasinoRoomController>();
+            m_CasinoRoomController.Table = EXCasinoHub.transform.Find("casino_poker_table_01").gameObject;
+            m_CasinoRoomController.Table2 = EXCasinoHub.transform.Find("casino_poker_table_02").gameObject;
 
             GameObject m_EXCasinoGame_Punchout = EXCasinoHub.transform.Find("casinogame_punchout").gameObject;
             tk2dSprite m_EXCasinoGamePunchoutSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Punchout, EXFoyerCollection, "cabinet_covered_001");
@@ -225,7 +242,47 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Sleep, "sleep", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
 
             m_CasinoRoomController.CasinoGame_Punchout = m_EXCasinoGame_Punchout.AddComponent<ExpandCasinoGameController>();
-            
+
+            EXArcadeGame_Prop = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGame_Prop");
+            GameObject m_EXArcadeGamePropShadow = EXArcadeGame_Prop.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXArcadeGamePropSprite = SpriteSerializer.AddSpriteToObject(EXArcadeGame_Prop, EXFoyerCollection, "cabinet_decorative_001");
+            tk2dSprite m_EXArcadeGamePropShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXArcadeGamePropShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXArcadeGamePropSprite.HeightOffGround = -1.65f;
+            m_EXArcadeGamePropShadowSprite.HeightOffGround = -1.7f;
+            m_EXArcadeGamePropShadowSprite.usesOverrideMaterial = true;
+            m_EXArcadeGamePropShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
+
+
+            GameObject m_EXCasinoGame_Gunball = EXCasinoHub.transform.Find("casinogame_gunball").gameObject;
+            tk2dSprite m_EXCasinoGameGunballSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Gunball, EXFoyerCollection, "casino_gunball_idle_001");
+            m_EXCasinoGameGunballSprite.HeightOffGround = -1.65f;
+
+            GameObject m_EXCasinoGame_GunballShadow = m_EXCasinoGame_Gunball.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXCasinoGame_GunballShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_GunballShadow, EXFoyerCollection, "casino_gunball_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXCasinoGame_GunballShadowSprite.HeightOffGround = -1.7f;
+            m_EXCasinoGame_GunballShadowSprite.usesOverrideMaterial = true;
+            m_EXCasinoGame_GunballShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Gunball, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(30, 16), offset: new IntVector2(3, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Gunball, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(30, 20), offset: new IntVector2(3, 16));
+
+            m_CasinoRoomController.CasinoGame_GunBall = m_EXCasinoGame_Gunball.AddComponent<ExpandCasinoGameController>();
+            m_CasinoRoomController.CasinoGame_GunBall.mode = ExpandCasinoGameController.Mode.ItemGunBallMachine;
+            m_CasinoRoomController.CasinoGame_GunBall.Cost = 25;
+            m_CasinoRoomController.CasinoGame_GunBall.MaxUses = 3;
+            m_CasinoRoomController.CasinoGame_GunBall.displayTextKey = "It's a gunball machine that has items and guns inside...";
+            m_CasinoRoomController.CasinoGame_GunBall.disabledDisplayTextKey = "It's a gunball machine that has items and guns inside.\nIt appears to be empty now though...";
+            m_CasinoRoomController.CasinoGame_GunBall.lockedDisplayTextKey = "There is something under the covers.\nIt doesn't appear to be ready yet...";
+            m_CasinoRoomController.CasinoGame_GunBall.acceptOptionKey = "Spend 25 Hegemony Credits and find out what item it gives you?";
+            m_CasinoRoomController.CasinoGame_GunBall.declineOptionKey = "Leave...";
+            m_CasinoRoomController.CasinoGame_GunBall.insufficientFundsDeclineOptionKey = "Too broke to find out what this thing will give you...";
+            m_CasinoRoomController.CasinoGame_GunBall.insufficientFundsKey = "It's a gunball machine that has items and guns inside.\nYou don't have enough credits to use this one...";
+            m_CasinoRoomController.CasinoGame_GunBall.basicLeaveKey = "Leave...";
+
+
             EXCasinoArcadeGameScanlineFX = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGameScanlineFX");
             ExpandScreenFXController m_EXCasinoArcadeGameScanlineFXController = EXCasinoArcadeGameScanlineFX.AddComponent<ExpandScreenFXController>();
             m_EXCasinoArcadeGameScanlineFXController.UseCorruptionAmbience = false;
@@ -236,7 +293,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_EXCasinoArcadeGameScanlineFXController2.UseCorruptionAmbience = false;
             m_EXCasinoArcadeGameScanlineFXController2.shaderType = ExpandScreenFXController.ShaderType.Scanlines;
 
-            
+
             EXRatDoor_4xLocks = expandSharedAssets1.LoadAsset<GameObject>("EXRatJailDoor4x");
             tk2dSprite EXRatDoor4xLocksSprite = SpriteSerializer.AddSpriteToObject(EXRatDoor_4xLocks, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<tk2dSprite>().Collection, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<tk2dSprite>().spriteId, tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
             EXRatDoor4xLocksSprite.HeightOffGround = -1.5f;

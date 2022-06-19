@@ -43,6 +43,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         [NonSerialized]
         private PunchoutController m_punchoutController;
         [NonSerialized]
+        private dfTextureSprite m_PunchoutOverlay;
+        [NonSerialized]
         private bool m_Configured;
         [NonSerialized]
         private bool m_PunchOutEnded;
@@ -94,10 +96,65 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!ScanlineFX) { ScanlineFX = Instantiate(ExpandPrefabs.EXCasinoArcadeGameScanlineFX, gameObject.transform.position, Quaternion.identity); }
             for (int i = 0; i < 20; i++) { yield return null; }
             Pixelator.Instance.FadeToColor(1f, Color.black, true, 0f);
+            yield return null;
+            SetupUI();
             m_Configured = true;
             yield break;
         }
-        
+
+        private void SetupUI(float ZoomLevel = 0.8f) {
+            CameraController mainCameraController = GameManager.Instance.MainCameraController;
+            mainCameraController.SetZoomScaleImmediate(ZoomLevel);
+            // mainCameraController.OverridePosition -= new Vector3(0, 16, 0);
+            FieldInfo m_cameraCenterPosField = typeof(PunchoutController).GetField("m_cameraCenterPos", BindingFlags.Instance | BindingFlags.NonPublic);
+            Vector2 m_cameraCenterPos = (Vector2)m_cameraCenterPosField.GetValue(m_punchoutController);
+            m_cameraCenterPosField.SetValue(m_punchoutController, (m_cameraCenterPos - new Vector2(1, 0)));
+
+            m_punchoutController.UiPanel.Size -= new Vector2(290, 0);
+            m_punchoutController.UiPanel.Position += new Vector3(145, 10);
+            // m_PunchoutOverlay = m_punchoutController.UiManager.AddControl<dfTextureSprite>();
+            m_PunchoutOverlay = GameUIRoot.Instance.Manager.AddControl<dfTextureSprite>();
+            m_PunchoutOverlay.Anchor = dfAnchorStyle.CenterHorizontal | dfAnchorStyle.CenterVertical;
+            m_PunchoutOverlay.IsInteractive = true;
+            m_PunchoutOverlay.Tooltip = string.Empty;
+            m_PunchoutOverlay.Pivot = dfPivotPoint.MiddleCenter;
+            m_PunchoutOverlay.zindex = 8;
+            m_PunchoutOverlay.Color = new Color32(255, 255, 255, 255);
+            m_PunchoutOverlay.DisabledColor = new Color32(255, 255, 255, 255);
+            m_PunchoutOverlay.Size = new Vector2(1440, 810);
+            m_PunchoutOverlay.MinimumSize = Vector2.zero;
+            m_PunchoutOverlay.MinimumSize = Vector2.zero;
+            m_PunchoutOverlay.ClipChildren = false;
+            m_PunchoutOverlay.InverseClipChildren = false;
+            m_PunchoutOverlay.TabIndex = -1;
+            m_PunchoutOverlay.CanFocus = false;
+            m_PunchoutOverlay.AutoFocus = false;
+            m_PunchoutOverlay.IsLocalized = false;
+            m_PunchoutOverlay.HotZoneScale = Vector2.one;
+            m_PunchoutOverlay.AllowSignalEvents = true;
+            m_PunchoutOverlay.PrecludeUpdateCycle = false;
+            m_PunchoutOverlay.Texture = ExpandAssets.LoadAsset<Texture2D>("PunchoutArcadeOverlay");
+            m_PunchoutOverlay.Opacity = 1;
+            m_PunchoutOverlay.Flip = dfSpriteFlip.None;
+            m_PunchoutOverlay.FillDirection = dfFillDirection.Horizontal;
+            m_PunchoutOverlay.CropRect = new Rect(Vector2.zero, Vector2.one);
+            m_PunchoutOverlay.CropTexture = false;
+            m_PunchoutOverlay.Position = new Vector3(-720, 405, 0);
+            m_PunchoutOverlay.IsEnabled = true;
+            m_PunchoutOverlay.IsVisible = true;
+            
+            GameUIRoot.Instance.PauseMenuPanel.GetComponent<PauseMenuController>().metaCurrencyPanel.IsVisible = false;
+        }
+
+        public void DestroyOverlayUI() {
+            if (m_PunchoutOverlay) {
+                m_PunchoutOverlay.Opacity = 0;
+                m_PunchoutOverlay.IsEnabled = false;
+                m_PunchoutOverlay.IsVisible = true;
+                Destroy(m_PunchoutOverlay);
+            }
+        }
+
         public void DoLoseFadeHook(Action<PunchoutController, bool>orig, PunchoutController self, bool skipDelay) {
             GameManager.Instance.StartCoroutine(DoLoseFadeCR(self, skipDelay));
         }
@@ -174,9 +231,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield break;
         }
 
+        private void LateUpdate() {
+            if (!m_Configured | !PunchoutController.IsActive | !m_PunchoutOverlay) { return; }
+            m_PunchoutOverlay.IsVisible = !GameManager.Instance.IsPaused;
+        }
 
         private void Update() {
-            if (!m_Configured | m_PunchOutEnded | PunchoutController.IsActive) { return; }            
+            if (!m_Configured | m_PunchOutEnded | PunchoutController.IsActive) { return; }
             Minimap.Instance.TemporarilyPreventMinimap = false;
             Pixelator.Instance.FadeToColor(1f, Color.white, true, 0f);
             PickupObject.RatBeatenAtPunchout = false;

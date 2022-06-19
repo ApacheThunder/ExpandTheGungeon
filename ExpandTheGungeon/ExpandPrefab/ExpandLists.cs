@@ -13,6 +13,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "casino_hub_floor_001",
             "casino_hub_backwall_001",
             "casino_hub_border_001",
+            "casino_carpet_001",
             "floortrigger_idle_01",
             "floortrigger_active_01",
             "foyerdoor_field_01",
@@ -37,6 +38,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "casino_litter_paper_001",
             "casino_litter_cans_001",
             "cabinet_covered_001",
+            "cabinet_decorative_001",
             "cabinet_idle_001",
             "cabinet_idle_002",
             "cabinet_idle_003",
@@ -83,7 +85,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "cabinet_fight_014",
             "cabinet_shadow_001",
             "punchout_coin_left",
-            "punchout_coin_right"
+            "punchout_coin_right",
+            "casino_gunball_idle_001",
+            "casino_gunball_empty_001",
+            "casino_gunball_shadow"
         };
 
         public static readonly List<string> EXItemCollection = new List<string> {
