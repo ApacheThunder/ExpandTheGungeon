@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4221308691071854}
+  - component: {fileID: 114635877142202898}
   m_Layer: 20
   m_Name: EXFoyerTrigger
   m_TagString: Untagged
@@ -39,3 +40,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114635877142202898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1155326625321570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1492b7fe0995e1f4b861785c3d23f832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeableWidth: 1
+  placeableHeight: 1
+  difficulty: 0
+  isPassable: 1
+  TargetDoorOpenAnim: open
+  TargetDoorCloseAnim: close
+  TargetSpawnObject: {fileID: 1881814426266938, guid: 95da5f9c38f6cbe4d8245dbaa1091fa9,
+    type: 2}
+  TargetSpawnPosition: {x: -3, y: 2, z: 0}
+  TargetSpawnPosition2: {x: 6, y: 1, z: 0}

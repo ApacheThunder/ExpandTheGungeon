@@ -55,6 +55,10 @@ namespace ExpandTheGungeon {
                     m_State = State.SpawnObjects;
                     return;
                 case State.SpawnObjects:
+                    if (!GameStatsManager.Instance.GetFlag(GungeonFlags.BLACKSMITH_BULLET_COMPLETE)) {
+                        m_State = State.Exit;
+                        return;
+                    }
                     GameObject FoyerButton = Instantiate(ExpandPrefabs.EXFoyerTrigger, new Vector3(50.2f, 60.7f, 61.8f), Quaternion.identity);
                     RoomHandler FoyerRoom = FoyerButton.transform.position.GetAbsoluteRoom();
                     ExpandCasinoWarpTrigger CasinoWarpTrigger = FoyerButton.GetComponent<ExpandCasinoWarpTrigger>();

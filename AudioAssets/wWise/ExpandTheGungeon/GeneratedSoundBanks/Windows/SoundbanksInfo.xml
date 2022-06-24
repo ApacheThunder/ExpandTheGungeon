@@ -58,6 +58,8 @@
 				<Event Id="1504561826" Name="Play_EX_MUS_Jungle_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopB"/>
 				<Event Id="1504561827" Name="Play_EX_MUS_Jungle_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopC"/>
 				<Event Id="1504561828" Name="Play_EX_MUS_Jungle_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopD"/>
+				<Event Id="761530598" Name="Play_EX_MUS_Jungle_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Secret"/>
+				<Event Id="145544202" Name="Play_EX_MUS_Jungle_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Shop"/>
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
@@ -111,6 +113,10 @@
 					<ShortName>GlitchDestruct.wav</ShortName>
 					<Path>SFX\GlitchDestruct_F7D0E330.wem</Path>
 				</File>
+				<File Id="187584435" Language="SFX">
+					<ShortName>Quiet_Forest_Secret.wav</ShortName>
+					<Path>SFX\Quiet_Forest_Secret_AD29F36A.wem</Path>
+				</File>
 				<File Id="193116416" Language="SFX">
 					<ShortName>SonicBrake.wav</ShortName>
 					<Path>SFX\SonicBrake_F7D0E330.wem</Path>
@@ -126,6 +132,10 @@
 				<File Id="216664074" Language="SFX">
 					<ShortName>Quiet_Forest_LoopA.wav</ShortName>
 					<Path>SFX\Quiet_Forest_LoopA_AD29F36A.wem</Path>
+				</File>
+				<File Id="235313123" Language="SFX">
+					<ShortName>Quiet_Forest_Shop.wav</ShortName>
+					<Path>SFX\Quiet_Forest_Shop_AD29F36A.wem</Path>
 				</File>
 				<File Id="270161796" Language="SFX">
 					<ShortName>Abomination_damage.wav</ShortName>
@@ -201,7 +211,7 @@
 				</File>
 				<File Id="735534369" Language="SFX">
 					<ShortName>Quiet_Forest_Intro.wav</ShortName>
-					<Path>SFX\Quiet_Forest_Intro_22BDB8A3.wem</Path>
+					<Path>SFX\Quiet_Forest_Intro_AD29F36A.wem</Path>
 				</File>
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
@@ -221,7 +231,7 @@
 				</File>
 				<File Id="857608895" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Intro.wav</ShortName>
-					<Path>SFX\Tummy_Full_of_Gunpowder_Intro_22BDB8A3.wem</Path>
+					<Path>SFX\Tummy_Full_of_Gunpowder_Intro_AD29F36A.wem</Path>
 				</File>
 				<File Id="858414521" Language="SFX">
 					<ShortName>SonicSpinDashRelease.wav</ShortName>

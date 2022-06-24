@@ -1,6 +1,7 @@
 Event	ID	Name			Wwise Object Path	Notes
 	26753908	Play_EX_CorruptionAmbience_02			\Weapons\Play_EX_CorruptionAmbience_02	
 	26753911	Play_EX_CorruptionAmbience_01			\Weapons\Play_EX_CorruptionAmbience_01	
+	145544202	Play_EX_MUS_Jungle_01_Shop			\Weapons\Play_EX_MUS_Jungle_01_Shop	
 	184349599	Play_EX_CorruptionBombFire_01			\Weapons\Play_EX_CorruptionBombFire_01	
 	301805658	Stop_EXAlarmMushroom_01			\Weapons\Stop_EXAlarmMushroom_01	
 	304406506	Play_EX_SonicLoseRings_01			\Weapons\Play_EX_SonicLoseRings_01	
@@ -10,6 +11,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	587415615	Play_EX_TableAssassin_01			\Weapons\Play_EX_TableAssassin_01	
 	620344165	Play_EX_MUS_Belly_01_Intro			\Weapons\Play_EX_MUS_Belly_01_Intro	
 	633823961	Stop_EX_TableAssassin_01			\Weapons\Stop_EX_TableAssassin_01	
+	761530598	Play_EX_MUS_Jungle_01_Secret			\Weapons\Play_EX_MUS_Jungle_01_Secret	
 	797577896	Play_EX_CorruptedObjectDamage_01			\Weapons\Play_EX_CorruptedObjectDamage_01	
 	975922376	Play_EX_BalloonPop_01			\Weapons\Play_EX_BalloonPop_01	
 	975922378	Play_EX_BalloonPop_03			\Weapons\Play_EX_BalloonPop_03	
@@ -79,12 +81,14 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	15010807	MushroomAlarm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\MushroomAlarm_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\MushroomAlarm		30859
 	118216860	GlitchObjectDestroy	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchObjectDestroy_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchObjectDestroy		11569
-	122249576	Tummy_Full_of_Gunpowder_LoopB	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_LoopB_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_LoopB		1423619
+	122249576	Tummy_Full_of_Gunpowder_LoopB	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_LoopB_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_LoopB		1421219
 	186141995	GlitchDestruct	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchDestruct_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchDestruct		8848
+	187584435	Quiet_Forest_Secret	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_Secret_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Secret		661638
 	193116416	SonicBrake	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicBrake_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicBrake		11497
 	197226656	Quiet_Forest	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest		3109370
 	210760446	TableAssassin	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\TableAssassin_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\TableAssassin		22183
 	216664074	Quiet_Forest_LoopA	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_LoopA_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_LoopA		888689
+	235313123	Quiet_Forest_Shop	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_Shop_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Shop		1968535
 	270161796	Abomination_Damage	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Abomination_damage_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Damage		6414
 	282880781	BootlegGungeonMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BootlegGungeonMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\BootlegGungeonMusic		1462202
 	352764876	Balloonpop1	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Balloonpop1_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop1		4365
@@ -102,13 +106,13 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	632808090	GlitchBombFire	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombFire_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombFire		42152
 	666310335	DeVito_TrashMan	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\EX_DeVito_TrashMan_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\DeVito_TrashMan		30902
 	719081646	CorruptionAmbience_02	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\CorruptionAmbience_AD29F36A_5B8C7134.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_02		46688
-	725215193	Tummy_Full_of_Gunpowder_LoopA	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_LoopA_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_LoopA		2165273
-	735534369	Quiet_Forest_Intro	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_Intro_22BDB8A3.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Intro		6773824
+	725215193	Tummy_Full_of_Gunpowder_LoopA	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_LoopA_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_LoopA		2159272
+	735534369	Quiet_Forest_Intro	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Quiet_Forest_Intro_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Intro		482640
 	737519471	Belly_Door_Unlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Belly_Door_Unlock_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Unlock		2288
 	737636557	SonicRingCollect	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicRingCollect_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicRingCollect		8956
 	836609844	Tummy_Full_of_Gunpowder_Calm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Calm_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Calm		888293
 	848029394	Balloonpop3	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Balloonpop3_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop3		3213
-	857608895	Tummy_Full_of_Gunpowder_Intro	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Intro_22BDB8A3.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Intro		6773824
+	857608895	Tummy_Full_of_Gunpowder_Intro	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Intro_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Intro		546016
 	858414521	SonicSpinDashRelease	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\SonicSpinDashRelease_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashRelease		18888
 	861146735	BreachTransition	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\BreachTransition_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransition		92512
 	900807623	GlitchBombExplode	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\SFX\GlitchBombExplode_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombExplode		42566

@@ -62,7 +62,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             }*/
         }
         public void ConfigureOnPlacement(RoomHandler room) {
-            TargetSpawnObject = ExpandPrefabs.EXFoyerWarpDoor;
             m_ParentRoom = room;
         }
 

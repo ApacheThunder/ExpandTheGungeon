@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator StartPunchout() {
             m_punchoutController.Init();
-            if (!ScanlineFX) { ScanlineFX = Instantiate(ExpandPrefabs.EXCasinoArcadeGameScanlineFX, gameObject.transform.position, Quaternion.identity); }
+            if (!ScanlineFX) { ScanlineFX = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXArcadeGameScanlineFX"), gameObject.transform.position, Quaternion.identity); }
             for (int i = 0; i < 20; i++) { yield return null; }
             Pixelator.Instance.FadeToColor(1f, Color.black, true, 0f);
             yield return null;

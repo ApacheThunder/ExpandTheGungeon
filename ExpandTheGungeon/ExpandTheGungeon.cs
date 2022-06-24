@@ -569,14 +569,14 @@ namespace ExpandTheGungeon {
             GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
             // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);
             
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
+            
             if (consoleText[0].StartsWith("-")) {
                 GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -int.Parse(consoleText[1]));
             } else if (consoleText[0].StartsWith("+")) {
                 GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, +int.Parse(consoleText[1]));
             }
             
-
+            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
             // ETGModConsole.Log("Unoccluded = " + LayerMask.NameToLayer("Unoccluded").ToString());
 
             // GameManager.Instance.StartCoroutine(SecondDungeonOBJ.GetComponent<Dungeon>().Regenerate(false));

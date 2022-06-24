@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2554357600
+CRC: 3611940050
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e074a7d4e76c77ec21c1452ffa989797
+    Hash: dad51e2b18eaefe1609409e44f2308be
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a734282b602c78250c749649df8b8103
+    Hash: 2241b0dac22d22b9de2222ad79842819
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,9 +31,31 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 108
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 77e01a6014b97064fa53925969f884ae, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 85a95b2198074e1459671337ed25c270, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ffe832c3889be3440813e901b0c5bb7c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f7bb4f266d52c6a48a9a775c8bd76088, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 28b65d5b95d0b4a40a7a7201db270bd3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc2113fcf63fa844fb279f6c948947f3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3e28b02e5c933fa4ab0c744e1976b693, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0159916ecce839b46a8148e75dacab83, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1492b7fe0995e1f4b861785c3d23f832, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 - Class: 198
   Script: {instanceID: 0}
 - Class: 199
+  Script: {instanceID: 0}
+- Class: 328
   Script: {instanceID: 0}
 - Class: 329
   Script: {instanceID: 0}
@@ -67,6 +89,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter10.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Jungle_Exit.bytes
+- Assets/ExpandPrefabs/Misc/EXSecretRoomGlitchFX.prefab
 - Assets/ExpandPrefabs/Items/EXBootlegGunAnimations.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular13.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/Woods/carpetGrid.txt
@@ -171,6 +194,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed20.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_FishBats.bytes
 - Assets/ExpandSerializedData/SpriteCollections/CronenbergCollection.txt
+- Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungleThunderStorm.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed12.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate7.bytes
@@ -749,6 +773,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_HunterSporge.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular10.bytes
+- Assets/ExpandPrefabs/Misc/EXLeadKeyGlitchScreenFX.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera_EyeDiagram.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXChestCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Gapsniper.bytes
@@ -790,6 +815,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals24.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_TribalNugget.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny10.bytes
+- Assets/ExpandPrefabs/Misc/EXRoomCorruptionFX.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny20.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXFoyer_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals8.bytes
@@ -1119,6 +1145,7 @@ Assets:
 - Assets/ExpandTextures/Misc/EX_GlitchPortalDefaultTexture.png
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Passage_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals13.bytes
+- Assets/ExpandPrefabs/Foyer/EXArcadeGame_Prop_Depressed.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny3.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Trapped2.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/EXJungle_TreeMinimapIcon.prefab

@@ -35,14 +35,14 @@ namespace ExpandTheGungeon {
             if (!GameManager.Instance | !dungeon) { return; }
             
             if (ExpandSettings.EnableJungleRain && dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
-                GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
+                // GameObject JungleRainPlacable = new GameObject("ExpandJungleThunderStorm", new System.Type[] { typeof(ExpandThunderStormPlacable) }) { layer = 0 };
+                GameObject JungleRainPlacable = Object.Instantiate(ExpandAssets.LoadAsset<GameObject>("ExpandJungleThunderStorm"));
                 JungleRainPlacable.transform.parent = dungeon.gameObject.transform;
                 ExpandThunderStormPlacable ThunderstormPlacable = JungleRainPlacable.GetComponent<ExpandThunderStormPlacable>();
-                ThunderstormPlacable.useCustomIntensity = true;
-                ThunderstormPlacable.RainIntensity = ExpandSettings.JungleRainIntensity;
-                ThunderstormPlacable.enableLightning = true;
-                ThunderstormPlacable.isSecretFloor = false;
-                ThunderstormPlacable.ConfigureOnPlacement(null);
+                if (ThunderstormPlacable) {
+                    ThunderstormPlacable.RainIntensity = ExpandSettings.JungleRainIntensity;
+                    ThunderstormPlacable.ConfigureOnPlacement(null);
+                }
             }
 
             if (GameManager.Instance.CurrentFloor == 1) { ExpandSettings.HasSpawnedSecretBoss = false; }
@@ -108,7 +108,7 @@ namespace ExpandTheGungeon {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
 
                     if (ExpandSettings.EnableGlitchFloorScreenShader) {
-                        GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
+                        GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandAssets.LoadAsset<GameObject>("EXGlitchFloorScreenFX"));
                         EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
                     }
                     

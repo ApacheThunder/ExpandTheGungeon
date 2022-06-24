@@ -42,6 +42,10 @@ namespace ExpandTheGungeon.ExpandMain {
             "Stop_EX_MUS_BootlegMusic_01",
             "Stop_EX_UnicornMusic_01"
         };
+
+        public static readonly List<GlobalDungeonData.ValidTilesets> TilesetsWithCustomShopSecretMusic = new List<GlobalDungeonData.ValidTilesets>() {
+            GlobalDungeonData.ValidTilesets.JUNGLEGEON
+        };
         
         // Normal Action delegate doesn't support 5 arguments needed for SwitchToCustomMusic hook.
         public delegate void Action5X<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
@@ -113,15 +117,12 @@ namespace ExpandTheGungeon.ExpandMain {
             string m_cachedMusicEventCore = ReflectGetField<string>(typeof(DungeonFloorMusicController), "m_cachedMusicEventCore", self);
             bool SupportsLoopSections = false;
 
-            
-
             float m_changedToArcadeTimer = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_changedToArcadeTimer", self);
             float m_cooldownTimerRemaining = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_cooldownTimerRemaining", self);
             uint m_coreMusicEventID = ReflectGetField<uint>(typeof(DungeonFloorMusicController), "m_coreMusicEventID", self);
             DungeonFloorMusicController.DungeonMusicState m_currentState = ReflectGetField<DungeonFloorMusicController.DungeonMusicState>(typeof(DungeonFloorMusicController), "m_currentState", self);
             bool m_overrideMusic = ReflectGetField<bool>(typeof(DungeonFloorMusicController), "m_overrideMusic", self);
-
-
+            
             if (string.IsNullOrEmpty(m_cachedMusicEventCore) | !CustomLevelMusic.TryGetValue(m_cachedMusicEventCore, out SupportsLoopSections)) {
                 if (m_currentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
                     AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
@@ -283,17 +284,23 @@ namespace ExpandTheGungeon.ExpandMain {
                     m_cooldownTimerRemainingField.SetValue(self, -1f);
                     AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
                     AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Secret", self.gameObject);
-                    // if (SupportsLoopSections) { AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Secret", self.gameObject); }
+                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Secret", self.gameObject);
+                    } else {
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Secret", self.gameObject);
+                    }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.SHOP:
                     m_cooldownTimerRemainingField.SetValue(self, -1f);
                     AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
                     AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Shop", self.gameObject);
-                    // if (SupportsLoopSections) { AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Shop", self.gameObject); }
+                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Shop", self.gameObject);
+                    } else {
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Shop", self.gameObject);
+                    }
                     break;
             }
             Debug.Log("(EX) Successfully switched to state: " + targetState.ToString());

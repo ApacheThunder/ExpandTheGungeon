@@ -57,14 +57,14 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_SetupComplete = false;
             m_MaterialRegistered = false;
         }
-
-        public Material ScreenMaterial;
-
+        
         // This only used for VHS Shader currently
         public VideoClip VHSClip;
         public VideoClip OldFilmClip;
-        public VideoPlayer TexturePlayer;
         public Texture2D VHSScreenTexture;
+        [System.NonSerialized]
+        public VideoPlayer TexturePlayer;
+
 
         public bool enableVHSScanlineDistortion;
         public bool enableVHSColorBleed;
@@ -99,7 +99,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         public Vector2 blueOffset;
         public Vector2 greenOffset;
 
-
+        [System.NonSerialized]
+        public Material ScreenMaterial;
+        [System.NonSerialized]
         public RoomHandler ParentRoom;
 
         public ShaderType shaderType;
@@ -123,7 +125,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 case ShaderType.VHS:
                     ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
-                    VHSClip = ExpandAssets.LoadAsset<VideoClip>("VHSAnimation");
+                    // VHSClip = ExpandAssets.LoadAsset<VideoClip>("VHSAnimation");
                     m_colorBleedToggle = 0;
                     if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
@@ -136,7 +138,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 case ShaderType.VHSOldFilm:
                     ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
-                    OldFilmClip = ExpandAssets.LoadAsset<VideoClip>("OldFilm");
+                    // OldFilmClip = ExpandAssets.LoadAsset<VideoClip>("OldFilm");
                     m_colorBleedToggle = 0;
                     if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);

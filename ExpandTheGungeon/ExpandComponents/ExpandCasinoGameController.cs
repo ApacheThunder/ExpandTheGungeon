@@ -8,6 +8,8 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandCasinoGameController : DungeonPlaceableBehaviour, IPlayerInteractable, IPlaceConfigurable {
 
         public ExpandCasinoGameController() {
+            GameRewardOnAnimationEvent = false;
+            GameRewardAnimationEventName = "itempop";
             MaxUses = 1;
             Cost = 100;
             mode = Mode.PunchoutArcade;
@@ -25,6 +27,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             InteractAnimation = "interact";
             ActivateGameAnimation = "fight";
             SleepAnimation = "sleep";
+            SleepFrame = string.Empty;
             WonAnimation = string.Empty;
             LostAnimation = string.Empty;
             LockedSpriteFrame = "cabinet_covered_001";
@@ -39,7 +42,10 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_Interacted = false;
             m_Uses = 0;
         }
-        
+
+        public bool GameRewardOnAnimationEvent;
+        public string GameRewardAnimationEventName;
+
         public string displayTextKey;
         public string disabledDisplayTextKey;
         public string lockedDisplayTextKey;
@@ -54,6 +60,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public string ActivateGameAnimation;
         public string LockedAnimation;
         public string SleepAnimation;
+        public string SleepFrame;
         public string WonAnimation;
         public string LostAnimation;
         public string LockedSpriteFrame;
@@ -97,7 +104,29 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         [NonSerialized]
         private PlayerController m_CurrentPlayer;
-        
+
+        private void Awake() {
+            switch (mode) {
+                default:
+                    return;
+                case Mode.ItemGunBallMachine:
+                    spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
+                    return;
+            }
+        }
+
+        private void AnimationEventTriggered(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip, int frame) {
+            if (clip.GetFrame(frame).eventInfo == GameRewardAnimationEventName) {
+               switch (mode) {
+                    default:
+                        return;
+                    case Mode.ItemGunBallMachine:
+                        DoGunBallRoll(m_CurrentPlayer);
+                        return;
+                }
+            }
+        }
+
         public void Interact(PlayerController interactor) {
             if (!m_Interacted) {
                 m_CurrentPlayer = interactor;
@@ -114,6 +143,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         StartCoroutine(HandleConversation(interactor));
                         break;
                     case Mode.ItemGunBallMachine:
+                        if (!string.IsNullOrEmpty(InteractAnimation) && animationState != AnimationState.Sleep && animationState != AnimationState.Locked) {
+                            m_NewAnimation = InteractAnimation;
+                            animationState = AnimationState.SwitchingAnimation;
+                        }
                         StartCoroutine(HandleConversation(interactor));
                         break;
                     default:
@@ -157,7 +190,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                         IsBroke = true;
                     }
                     if (m_Uses >= MaxUses && !IsGameOverConversation) { targetDisplayKey = disabledDisplayTextKey; }
-                    // TextBoxManager.ShowInfoBox(talkPoint.position, talkPoint, -1f, targetDisplayKey, true, false);
                     TextBoxManager.ShowTextBox(interactor.transform.position + textBoxOffset, interactor.transform, -1f, targetDisplayKey, instant: true, slideOrientation: TextBoxManager.BoxSlideOrientation.FORCE_RIGHT, showContinueText: false);
                     selectedResponse = -1;
                     interactor.SetInputOverride("gameConversation");
@@ -238,16 +270,16 @@ namespace ExpandTheGungeon.ExpandComponents {
                     while (!GameUIRoot.Instance.GetPlayerConversationResponse(out selectedResponse)) { yield return null; }
                     TextBoxManager.ClearTextBox(interactor.transform);
                     if (m_Uses < MaxUses && selectedResponse == 0 && !IsBroke_Gumball) {
-                        /*if (!string.IsNullOrEmpty(ActivateGameAnimation)) {
+                        GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -Cost);
+                        if (!string.IsNullOrEmpty(ActivateGameAnimation)) {
                             m_NewAnimation = ActivateGameAnimation;
                             animationState = AnimationState.SwitchingAnimation;
                         }
-                        while (animationState != AnimationState.Idle) { yield return null; }*/
-                        GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -Cost);
-                        DoGunBallRoll(interactor);
+                        AkSoundEngine.PostEvent("Play_NPC_gunball_dispense_01", gameObject);
+                        while (animationState != AnimationState.Idle) { yield return null; }
                         m_Uses++;
                         yield return null;
-                        if (m_Uses >= MaxUses) { sprite.SetSprite("casino_gunball_empty_001"); }
+                        if (m_Uses >= MaxUses) { animationState = AnimationState.Sleep; }
                     }
                     interactor.ClearInputOverride("gameConversation");
                     m_Interacted = false;
@@ -270,7 +302,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void DoGunBallRoll(PlayerController player) {
-            if (UnityEngine.Random.value < 0.35f) {
+            if (UnityEngine.Random.value < 0.6f) {
                 PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.B;
                 if (UnityEngine.Random.value < 0.2f) {
                     targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.A;
@@ -292,7 +324,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 component.HeightOffGround = -1.5f;
                 component.UpdateZDepth();
             } else {
-                KeyBulletPickup keyBullet = (PickupObjectDatabase.GetById(67) as KeyBulletPickup);
+                KeyBulletPickup keyBullet = (KeyBulletPickup)PickupObjectDatabase.GetById(67);
                 player.BloopItemAboveHead(keyBullet.sprite, keyBullet.overrideBloopSpriteName);
                 GameObject gameOBJ2 = Instantiate((GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup"));
                 tk2dSprite component2 = gameOBJ2.GetComponent<tk2dSprite>();
@@ -323,7 +355,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void LateUpdate() {
-            if (mode == Mode.ItemGunBallMachine) { return; }
             switch (animationState) {
                 case AnimationState.SwitchingAnimation:
                     if (!string.IsNullOrEmpty(m_NewAnimation)) {
@@ -341,7 +372,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (!spriteAnimator.IsPlaying(IdleAnimation)) { spriteAnimator.Play(IdleAnimation); }
                     return;
                 case AnimationState.Sleep:
-                    if (!string.IsNullOrEmpty(SleepAnimation) && !spriteAnimator.IsPlaying(SleepAnimation)) { spriteAnimator.Play(SleepAnimation); }
+                    if (!string.IsNullOrEmpty(SleepFrame)) {
+                        spriteAnimator.Stop();
+                        if (sprite.CurrentSprite.name != SleepFrame) { sprite.SetSprite(SleepFrame); }
+                    } else if (!string.IsNullOrEmpty(SleepAnimation) && !spriteAnimator.IsPlaying(SleepAnimation)) {
+                        spriteAnimator.Play(SleepAnimation);
+                    }
                     return;
                 case AnimationState.Locked:
                     if (!string.IsNullOrEmpty(LockedAnimation)) {
@@ -426,13 +462,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ResultsGiven = false;
                     DoingResults = false;
                     Finished = false;
+                    m_CurrentPlayer = null;
                     break;
                 case Mode.ItemGunBallMachine:
                     break;
                 case Mode.SlotMachine:
                     break;
             }
-            m_CurrentPlayer = null;
         }
         
         public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {

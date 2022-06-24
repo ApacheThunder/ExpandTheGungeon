@@ -19,6 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4664512744914342}
+  - component: {fileID: 328251150178154114}
+  - component: {fileID: 114024144230000432}
   m_Layer: 0
   m_Name: EXGlitchFloorScreenFX
   m_TagString: Untagged
@@ -39,3 +41,77 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114024144230000432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1913931391855736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe832c3889be3440813e901b0c5bb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VHSClip: {fileID: 32900000, guid: eaa6b755b6de78a418d1dee2cea0058e, type: 3}
+  OldFilmClip: {fileID: 32900000, guid: fdfb7d0095b80d9458b0597e0849d43b, type: 3}
+  VHSScreenTexture: {fileID: 2800000, guid: 780f73c421847b843bfe6742b0f14de2, type: 3}
+  enableVHSScanlineDistortion: 0
+  enableVHSColorBleed: 0
+  isRoomSpecific: 0
+  ParentRoomIsSecretGlitchRoom: 0
+  UseCorruptionAmbience: 1
+  GlitchUpdatedExternally: 1
+  GlitchIntensityIsRandom: 0
+  GlitchUpdateFrequencyIsRandom: 0
+  GlitchAmount: 0.5
+  GlitchRandom: 0.1
+  GlitchUpdateFrequency: 0.05
+  GlitchMapTexture: EX_GlitchMap
+  ScanlineThickness: 2
+  ScanlineIntensity: 0.4
+  bend: 3.5
+  scanlineSize1: 6
+  scanlineSpeed1: -5
+  scanlineSize2: 3
+  scanlineSpeed2: -2
+  scanlineAmount: 0.0095
+  vignetteSize: 1.5
+  vignetteSmoothness: 0.6
+  vignetteEdgeRound: 8
+  noiseSize: 200
+  noiseAmount: 0.045
+  redOffset: {x: 0, y: -0.002}
+  blueOffset: {x: 0, y: 0}
+  greenOffset: {x: 0, y: 0.002}
+  shaderType: 2
+--- !u!328 &328251150178154114
+VideoPlayer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1913931391855736}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: eaa6b755b6de78a418d1dee2cea0058e, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: _MainTex
+  m_RenderMode: 4
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 0
+  m_TargetAudioSources: []
+  m_DirectAudioVolumes: []
+  m_Url: 
+  m_EnabledAudioTracks: 
+  m_DirectAudioMutes: 
+  m_ControlledAudioTrackCount: 0
+  m_PlayOnAwake: 0
+  m_SkipOnDrop: 1
+  m_Looping: 1
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0

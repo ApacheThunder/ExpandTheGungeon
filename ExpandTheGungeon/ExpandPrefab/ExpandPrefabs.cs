@@ -313,11 +313,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         
         public static GameObject Sarco_MonsterObject;
         public static GameObject Sarco_Skeleton;
-
-        // Custom Object for Glitch Floor Screen FX controller
-        public static GameObject EXGlitchFloorScreenFX;
-        public static GameObject EXWestFloorBossIntroScreenFX;
-
+        
         // Belly Pit VFX to account for non functional pit bubble animations. (tileset sprites seems to suggets it has one but the animations don't work?)
         public static GameObject Belly_PitVFX1;
         public static GameObject Belly_PitVFX2;
@@ -401,7 +397,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXFoyerWarpDoor;
         public static GameObject EXCasinoHub;
         public static GameObject EXArcadeGame_Prop;
-        public static GameObject EXCasinoArcadeGameScanlineFX;
+        public static GameObject EXArcadeGame_Prop_Depressed;
         public static GameObject EXCasino_HatRack;
         public static GameObject EXCasino_Litter_Cans;
         public static GameObject EXCasino_Litter_Paper;
@@ -4450,18 +4446,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 UnityEngine.Object.Destroy(ChamberGun.gameObject.GetComponent<ChamberGunProcessor>());
                 ChamberGun.gameObject.AddComponent<ExpandChamberGunProcessor>();
             }
-
-
-            EXGlitchFloorScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXGlitchFloorScreenFX");
-            EXGlitchFloorScreenFX.AddComponent<ExpandScreenFXController>();
-
-            EXWestFloorBossIntroScreenFX = expandSharedAssets1.LoadAsset<GameObject>("EXWestFloorBossIntroScreenFX");
-            EXWestFloorBossIntroScreenFX.AddComponent<ExpandScreenFXController>();
-            ExpandScreenFXController FXController = EXWestFloorBossIntroScreenFX.GetComponent<ExpandScreenFXController>();
-            FXController.shaderType = ExpandScreenFXController.ShaderType.VHSOldFilm;
-            FXController.enableVHSScanlineDistortion = false;
-            
-
+                        
             ExpandLists.CustomChests.Add(RickRollChestObject);
             ExpandLists.CustomChests.Add(SurpriseChestObject);
             

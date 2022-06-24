@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\AssetImporter.cs" />
      <Compile Include="Assets\Editor\BlockDamageMapTool.cs" />
      <Compile Include="Assets\Editor\BuildAssetBundles.cs" />
  <Reference Include="UnityEngine.CoreModule">
@@ -272,6 +273,10 @@
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/Users/Spenser/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp.csproj">
+      <Project>{EECC0E8A-F8F8-14BF-3F20-7CB64B538361}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

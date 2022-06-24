@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4726914235634900}
+  - component: {fileID: 114705181989722570}
   m_Layer: 22
   m_Name: casinogame_punchout
   m_TagString: Untagged
@@ -154,6 +155,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4831102401546562}
+  - component: {fileID: 114049900592216274}
   m_Layer: 22
   m_Name: casinogame_gunball
   m_TagString: Untagged
@@ -169,6 +171,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4407510437619608}
+  - component: {fileID: 114843548839489392}
   m_Layer: 0
   m_Name: EXCasino_Hub
   m_TagString: Untagged
@@ -389,7 +392,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1270146249800550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4831102401546562}
@@ -503,3 +506,106 @@ Transform:
   m_Father: {fileID: 4407510437619608}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114049900592216274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1615001514998848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0159916ecce839b46a8148e75dacab83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeableWidth: 1
+  placeableHeight: 1
+  difficulty: 0
+  isPassable: 1
+  GameRewardOnAnimationEvent: 1
+  GameRewardAnimationEventName: itempop
+  displayTextKey: It's a gunball machine that has items and guns inside...
+  disabledDisplayTextKey: It's a gunball machine that has items and guns inside.\nIt
+    appears to be empty now though...
+  lockedDisplayTextKey: There is something under the covers.\nIt doesn't appear to
+    be ready yet...
+  acceptOptionKey: Spend 25 Hegemony Credits and find out what item it gives you?
+  declineOptionKey: Leave...
+  insufficientFundsDeclineOptionKey: Too broke to find out what this thing will give
+    you...
+  insufficientFundsKey: It's a gunball machine that has items and guns inside.\nYou
+    don't have enough credits to use this one...
+  basicLeaveKey: Leave...
+  IdleAnimation: idle
+  InteractAnimation: interact
+  ActivateGameAnimation: spin
+  LockedAnimation: 
+  SleepAnimation: 
+  SleepFrame: gunball_empty_001
+  WonAnimation: 
+  LostAnimation: 
+  LockedSpriteFrame: cabinet_covered_001
+  textBoxOffset: {x: 1, y: 3.8, z: 0}
+  MaxUses: 3
+  Cost: 25
+  mode: 3
+--- !u!114 &114705181989722570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1092234221811126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0159916ecce839b46a8148e75dacab83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeableWidth: 1
+  placeableHeight: 1
+  difficulty: 0
+  isPassable: 1
+  GameRewardOnAnimationEvent: 0
+  GameRewardAnimationEventName: itempop
+  displayTextKey: It's a punchout arcade game featuring the Resourceful Rat.
+  disabledDisplayTextKey: 'It''s a punchout arcade game featuring the Resourceful
+    Rat.
+
+    It appears to be out of order however.'
+  lockedDisplayTextKey: 'There is something under the covers.
+
+    It doesn''t appear to be ready yet...'
+  acceptOptionKey: Spend 100 Hegemony Credits and play the game.
+  declineOptionKey: You got better things to spend money on and decide to leave.
+  insufficientFundsDeclineOptionKey: Too broke to play this game so leaving is the
+    only option.
+  insufficientFundsKey: 'It''s a punchout arcade game featuring the Resourceful Rat.
+
+    It costs 100 Hegemony to play but you lack the funds!'
+  basicLeaveKey: Leave...
+  IdleAnimation: idle
+  InteractAnimation: interact
+  ActivateGameAnimation: fight
+  LockedAnimation: 
+  SleepAnimation: sleep
+  SleepFrame: 
+  WonAnimation: 
+  LostAnimation: 
+  LockedSpriteFrame: cabinet_covered_001
+  textBoxOffset: {x: 1, y: 3.8, z: 0}
+  MaxUses: 1
+  Cost: 100
+  mode: 1
+--- !u!114 &114843548839489392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1696761148394334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7bb4f266d52c6a48a9a775c8bd76088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CasinoGame_Punchout: {fileID: 114705181989722570}
+  CasinoGame_GunBall: {fileID: 114049900592216274}
+  Table: {fileID: 1883203389652908}
+  Table2: {fileID: 1782564851428964}

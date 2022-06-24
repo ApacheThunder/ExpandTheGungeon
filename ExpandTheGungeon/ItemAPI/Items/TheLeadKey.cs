@@ -204,15 +204,9 @@ namespace ExpandTheGungeon.ItemAPI {
             AkSoundEngine.PostEvent("Play_EX_CorruptionRoomTransition_01", gameObject);
             ExpandShaders.Instance.GlitchScreenForDuration(1, 1.4f, 0.1f);
 
-            GameObject TempFXObject = new GameObject("EXScreenFXTemp") { };
+            GameObject TempFXObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXLeadKeyGlitchScreenFX"), transform.position, Quaternion.identity);
             TempFXObject.transform.SetParent(dungeon.gameObject.transform);
-            TempFXObject.SetActive(false);
-            yield return null;
-            ExpandScreenFXController fxController = TempFXObject.AddComponent<ExpandScreenFXController>();
-            fxController.shaderType = ExpandScreenFXController.ShaderType.Glitch;
-            fxController.GlitchAmount = 0;
-            yield return null;
-            TempFXObject.SetActive(true);
+            ExpandScreenFXController fxController = TempFXObject.GetComponent<ExpandScreenFXController>();
             while (fxController.GlitchAmount < 1) {
                 fxController.GlitchAmount += (BraveTime.DeltaTime / 0.5f);
                 yield return null;
@@ -456,9 +450,8 @@ namespace ExpandTheGungeon.ItemAPI {
             
             if (m_CopyCurrentRoom) {
                 if (ExpandSettings.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
-                    GameObject GlitchShaderObject = Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX, GlitchRoom.area.UnitCenter, Quaternion.identity);
+                    GameObject GlitchShaderObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXRoomCorruptionFX"), GlitchRoom.area.UnitCenter, Quaternion.identity);
                     ExpandScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandScreenFXController>();
-                    FXController.isRoomSpecific = true;
                     FXController.ParentRoom = GlitchRoom;
                     FXController.UseCorruptionAmbience = m_CopyCurrentRoom;
                     GlitchShaderObject.transform.SetParent(dungeon.gameObject.transform);

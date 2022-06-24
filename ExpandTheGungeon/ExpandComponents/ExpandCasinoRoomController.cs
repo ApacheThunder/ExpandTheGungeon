@@ -65,7 +65,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             Vector3 DecorativeArcadePosition2 = (RoomPosition + new Vector3(13.5f, 8));
             Vector3 DecorativeArcadePosition3 = (RoomPosition + new Vector3(13.5f, 11));
 
-            GameObject m_Arcade01 = Instantiate(ExpandPrefabs.EXArcadeGame_Prop, DecorativeArcadePosition1, Quaternion.identity);
+            GameObject m_Arcade01 = Instantiate(ExpandPrefabs.EXArcadeGame_Prop_Depressed, DecorativeArcadePosition1, Quaternion.identity);
             m_Arcade01.transform.parent = m_ParentRoom.hierarchyParent;
             GameObject m_Arcade02 = Instantiate(ExpandPrefabs.EXArcadeGame_Prop, DecorativeArcadePosition2, Quaternion.identity);
             m_Arcade02.transform.parent = m_ParentRoom.hierarchyParent;

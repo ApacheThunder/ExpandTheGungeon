@@ -2,104 +2,106 @@
 using Dungeonator;
 using UnityEngine;
 
-public class ExpandNoteDoer : DungeonPlaceableBehaviour, IPlayerInteractable {
+namespace ExpandTheGungeon.ExpandComponents {
 
-    public ExpandNoteDoer() {
-        stringKey = "Insert String Here";
-        useAdditionalStrings = false;
-        additionalStrings = new string[0];
-        isNormalNote = true;
-        useItemsTable = false;
-        alreadyLocalized = true;
-        DestroyedOnFinish = false;
-        noteBackgroundType = NoteBackgroundType.WOOD;
-    }
-
-    public NoteBackgroundType noteBackgroundType;
-
-    public string stringKey;
-
-    public bool useAdditionalStrings;
-
-    public string[] additionalStrings;
-
-    public bool isNormalNote;
-
-    public bool useItemsTable;
+    public class ExpandNoteDoer : DungeonPlaceableBehaviour, IPlayerInteractable {
     
-    public bool alreadyLocalized;
-
-    public Transform textboxSpawnPoint;
-
-    private bool m_boxIsExtant;
-
-    public bool DestroyedOnFinish;
-
-    private string m_selectedDisplayString;
-
-    public enum NoteBackgroundType { LETTER, STONE, WOOD, NOTE }
-
-    public void Start() {
-        if (base.majorBreakable != null) {
-            MajorBreakable majorBreakable = base.majorBreakable;
-            majorBreakable.OnBreak = (Action)Delegate.Combine(majorBreakable.OnBreak, new Action(OnBroken));
+        public ExpandNoteDoer() {
+            stringKey = "Insert String Here";
+            useAdditionalStrings = false;
+            additionalStrings = new string[0];
+            isNormalNote = true;
+            useItemsTable = false;
+            alreadyLocalized = true;
+            DestroyedOnFinish = false;
+            noteBackgroundType = NoteBackgroundType.WOOD;
         }
-    }
-
-    private void OnBroken() {
-        GameManager.Instance.Dungeon.data.GetAbsoluteRoomFromPosition(transform.position.IntXY(VectorConversions.Floor)).DeregisterInteractable(this);
-    }
-
-    private void OnDisable() {
-        if (m_boxIsExtant) {
+    
+        public NoteBackgroundType noteBackgroundType;
+    
+        public string stringKey;
+    
+        public bool useAdditionalStrings;
+    
+        public string[] additionalStrings;
+    
+        public bool isNormalNote;
+    
+        public bool useItemsTable;
+        
+        public bool alreadyLocalized;
+    
+        public Transform textboxSpawnPoint;
+    
+        private bool m_boxIsExtant;
+    
+        public bool DestroyedOnFinish;
+    
+        private string m_selectedDisplayString;
+    
+        public enum NoteBackgroundType { LETTER, STONE, WOOD, NOTE }
+    
+        public void Start() {
+            if (base.majorBreakable != null) {
+                MajorBreakable majorBreakable = base.majorBreakable;
+                majorBreakable.OnBreak = (Action)Delegate.Combine(majorBreakable.OnBreak, new Action(OnBroken));
+            }
+        }
+    
+        private void OnBroken() {
+            GameManager.Instance.Dungeon.data.GetAbsoluteRoomFromPosition(transform.position.IntXY(VectorConversions.Floor)).DeregisterInteractable(this);
+        }
+    
+        private void OnDisable() {
+            if (m_boxIsExtant) {
+                GameUIRoot.Instance.ShowCoreUI(string.Empty);
+                m_boxIsExtant = false;
+                TextBoxManager.ClearTextBoxImmediate(textboxSpawnPoint);
+            }
+        }
+    
+        public float GetDistanceToPoint(Vector2 point) {
+            if (!sprite) {
+                if (m_boxIsExtant) { ClearBox(); }
+                return 1000f;
+            }
+            Bounds bounds = sprite.GetBounds();
+            bounds.SetMinMax(bounds.min + transform.position, bounds.max + transform.position);
+            float num = Mathf.Max(Mathf.Min(point.x, bounds.max.x), bounds.min.x);
+            float num2 = Mathf.Max(Mathf.Min(point.y, bounds.max.y), bounds.min.y);
+            return Mathf.Sqrt((point.x - num) * (point.x - num) + (point.y - num2) * (point.y - num2));
+        }
+    
+        public float GetOverrideMaxDistance() { return -1f; }
+    
+        public void OnEnteredRange(PlayerController interactor) {
+            if (!this) { return; }
+            SpriteOutlineManager.RemoveOutlineFromSprite(sprite, false);
+            SpriteOutlineManager.AddOutlineToSprite(sprite, Color.white, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
+            sprite.UpdateZDepth();
+        }
+    
+        public void OnExitRange(PlayerController interactor) {
+            if (!this) { return; }
+            if (m_boxIsExtant) { ClearBox(); }
+            SpriteOutlineManager.RemoveOutlineFromSprite(sprite, true);
+            SpriteOutlineManager.AddOutlineToSprite(sprite, Color.black, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
+            sprite.UpdateZDepth();
+        }
+    
+        private void ClearBox() {
             GameUIRoot.Instance.ShowCoreUI(string.Empty);
             m_boxIsExtant = false;
-            TextBoxManager.ClearTextBoxImmediate(textboxSpawnPoint);
+            TextBoxManager.ClearTextBox(textboxSpawnPoint);
+            if (DestroyedOnFinish) {
+                GetAbsoluteParentRoom().DeregisterInteractable(this);
+                RoomHandler.unassignedInteractableObjects.Remove(this);
+                LootEngine.DoDefaultItemPoof(sprite.WorldCenter, false, false);
+                Destroy(gameObject);
+            }
         }
-    }
-
-    public float GetDistanceToPoint(Vector2 point) {
-        if (!sprite) {
-            if (m_boxIsExtant) { ClearBox(); }
-            return 1000f;
-        }
-        Bounds bounds = sprite.GetBounds();
-        bounds.SetMinMax(bounds.min + transform.position, bounds.max + transform.position);
-        float num = Mathf.Max(Mathf.Min(point.x, bounds.max.x), bounds.min.x);
-        float num2 = Mathf.Max(Mathf.Min(point.y, bounds.max.y), bounds.min.y);
-        return Mathf.Sqrt((point.x - num) * (point.x - num) + (point.y - num2) * (point.y - num2));
-    }
-
-    public float GetOverrideMaxDistance() { return -1f; }
-
-    public void OnEnteredRange(PlayerController interactor) {
-        if (!this) { return; }
-        SpriteOutlineManager.RemoveOutlineFromSprite(sprite, false);
-        SpriteOutlineManager.AddOutlineToSprite(sprite, Color.white, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
-        sprite.UpdateZDepth();
-    }
-
-    public void OnExitRange(PlayerController interactor) {
-        if (!this) { return; }
-        if (m_boxIsExtant) { ClearBox(); }
-        SpriteOutlineManager.RemoveOutlineFromSprite(sprite, true);
-        SpriteOutlineManager.AddOutlineToSprite(sprite, Color.black, 0.1f, 0f, SpriteOutlineManager.OutlineType.NORMAL);
-        sprite.UpdateZDepth();
-    }
-
-    private void ClearBox() {
-        GameUIRoot.Instance.ShowCoreUI(string.Empty);
-        m_boxIsExtant = false;
-        TextBoxManager.ClearTextBox(textboxSpawnPoint);
-        if (DestroyedOnFinish) {
-            GetAbsoluteParentRoom().DeregisterInteractable(this);
-            RoomHandler.unassignedInteractableObjects.Remove(this);
-            LootEngine.DoDefaultItemPoof(sprite.WorldCenter, false, false);
-            Destroy(gameObject);
-        }
-    }
-
-    public void Interact(PlayerController interactor) {
+    
+        public void Interact(PlayerController interactor) {
         if (m_boxIsExtant) {
             ClearBox();
         } else {
@@ -135,13 +137,14 @@ public class ExpandNoteDoer : DungeonPlaceableBehaviour, IPlayerInteractable {
             if (useAdditionalStrings && !isNormalNote) { GameStatsManager.Instance.SetFlag(GungeonFlags.SECRET_NOTE_ENCOUNTERED, true); }
         }
     }
-
-    public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
-        shouldBeFlipped = false;
-        return string.Empty;
+    
+        public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
+            shouldBeFlipped = false;
+            return string.Empty;
+        }
+    
+        protected override void OnDestroy() { base.OnDestroy(); }
+    
     }
-
-    protected override void OnDestroy() { base.OnDestroy(); }
-
 }
 

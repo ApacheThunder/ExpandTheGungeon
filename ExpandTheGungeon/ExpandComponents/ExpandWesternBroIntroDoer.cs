@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents
             if (gameObject.GetComponent<AIActor>() && !m_ScreenFXObject)
             {
                 RoomHandler parentRoom = this.gameObject.GetComponent<AIActor>().GetAbsoluteParentRoom();
-                m_ScreenFXObject = Instantiate(ExpandPrefabs.EXWestFloorBossIntroScreenFX, parentRoom.area.UnitCenter, Quaternion.identity);
+                m_ScreenFXObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXWestFloorBossIntroScreenFX"), parentRoom.area.UnitCenter, Quaternion.identity);
                 m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
             }
 

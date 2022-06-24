@@ -1,0 +1,11 @@
+{
+    "name": "ExpandTheGungeon",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "LinuxStandalone32",
+        "LinuxStandalone64",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ]
+}

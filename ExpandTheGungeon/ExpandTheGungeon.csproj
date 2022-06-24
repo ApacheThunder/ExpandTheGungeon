@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
+    <Compile Include="ExpandComponents\ExpandCasinoPropAnimationHandler.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />

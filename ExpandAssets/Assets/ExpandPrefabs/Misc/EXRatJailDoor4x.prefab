@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4467847889527534}
+  - component: {fileID: 114326534226088866}
   m_Layer: 22
   m_Name: Lock1
   m_TagString: Untagged
@@ -34,6 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4648675396005892}
+  - component: {fileID: 114295718051146056}
   m_Layer: 22
   m_Name: EXRatJailDoor4x
   m_TagString: Untagged
@@ -49,6 +51,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4675689352397670}
+  - component: {fileID: 114800685916148242}
   m_Layer: 22
   m_Name: Lock3
   m_TagString: Untagged
@@ -64,6 +67,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4157161811336048}
+  - component: {fileID: 114283409453422996}
   m_Layer: 22
   m_Name: Lock2
   m_TagString: Untagged
@@ -79,6 +83,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4026869399814374}
+  - component: {fileID: 114056471369548440}
   m_Layer: 22
   m_Name: Lock0
   m_TagString: Untagged
@@ -155,3 +160,105 @@ Transform:
   m_Father: {fileID: 4648675396005892}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114056471369548440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1908257942181986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e28b02e5c933fa4ab0c744e1976b693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyItemID: -1
+  Suppress: 0
+  SuppressOutline: 0
+  lockMode: 2
+  IdleAnimName: rat_lock_open_idle
+  UnlockAnimName: rat_lock_open
+  NoKeyAnimName: 
+  SpitAnimName: 
+  BustedAnimName: 
+--- !u!114 &114283409453422996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1897082150140098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e28b02e5c933fa4ab0c744e1976b693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyItemID: -1
+  Suppress: 0
+  SuppressOutline: 0
+  lockMode: 2
+  IdleAnimName: rat_lock_open_idle
+  UnlockAnimName: rat_lock_open
+  NoKeyAnimName: 
+  SpitAnimName: 
+  BustedAnimName: 
+--- !u!114 &114295718051146056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1138556606793916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a95b2198074e1459671337ed25c270, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeableWidth: 2
+  placeableHeight: 2
+  difficulty: 0
+  isPassable: 1
+  OpensAutomaticallyOnUnlocked: 1
+  OutlineSpriteIsOnDoorOnly: 0
+  Locks:
+  - {fileID: 114056471369548440}
+  - {fileID: 114326534226088866}
+  - {fileID: 114283409453422996}
+  - {fileID: 114800685916148242}
+--- !u!114 &114326534226088866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1105850574336982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e28b02e5c933fa4ab0c744e1976b693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyItemID: -1
+  Suppress: 0
+  SuppressOutline: 0
+  lockMode: 2
+  IdleAnimName: rat_lock_open_idle
+  UnlockAnimName: rat_lock_open
+  NoKeyAnimName: 
+  SpitAnimName: 
+  BustedAnimName: 
+--- !u!114 &114800685916148242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1498125795279722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e28b02e5c933fa4ab0c744e1976b693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyItemID: -1
+  Suppress: 0
+  SuppressOutline: 0
+  lockMode: 2
+  IdleAnimName: rat_lock_open_idle
+  UnlockAnimName: rat_lock_open
+  NoKeyAnimName: 
+  SpitAnimName: 
+  BustedAnimName: 

@@ -49,7 +49,7 @@ namespace ExpandTheGungeon {
 
             ExpandCachedStats cachedStats = ScriptableObject.CreateInstance<ExpandCachedStats>();
 
-            CachedJSONText = JsonUtility.ToJson(cachedStats);
+            CachedJSONText = JsonUtility.ToJson(cachedStats, true);
 
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {
                 File.Delete(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName));

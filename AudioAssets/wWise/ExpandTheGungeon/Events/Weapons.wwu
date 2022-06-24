@@ -294,6 +294,7 @@
 						<Action Name="" ID="{93EF982D-9571-4738-9480-E666ABBA066E}" ShortID="927763525">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -305,6 +306,7 @@
 						<Action Name="" ID="{F2A756A1-FF62-49E7-A702-624E7C800E45}" ShortID="289823740">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -313,20 +315,10 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
-						<Action Name="" ID="{C0CE385E-2942-46BE-86C5-2B1DD101C174}" ShortID="542798905">
-							<PropertyList>
-								<Property Name="ActionType" Type="int16" Value="2"/>
-								<Property Name="Scope" Type="int16" Value="1"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="Tummy_Full_of_Gunpowder" ID="{AFF4B534-3CD0-43D6-B40B-F3BBC5DCE816}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
 						<Action Name="" ID="{9FBA6CFB-0DEF-4E4E-A788-8BB1C1698B4E}" ShortID="666078366">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -338,6 +330,7 @@
 						<Action Name="" ID="{EBDDDD71-6DDB-4FEE-97A2-A179172DA845}" ShortID="106723206">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -346,9 +339,22 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{188DD908-E174-4932-B884-C75E9CAA6B6A}" ShortID="634205538">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest_Intro" ID="{8A61F028-7637-440D-A310-7F9971D84400}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 						<Action Name="" ID="{AEF20E55-42AA-4E48-B1B9-28C68EC2D02D}" ShortID="257837799">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -360,6 +366,7 @@
 						<Action Name="" ID="{57C9EC69-AA6B-4FA9-B304-21FC7E327892}" ShortID="1008553111">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -368,20 +375,58 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
-						<Action Name="" ID="{188DD908-E174-4932-B884-C75E9CAA6B6A}" ShortID="634205538">
+						<Action Name="" ID="{84731D5F-80EC-4328-ADBD-C87C45577937}" ShortID="181796878">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Quiet_Forest_Intro" ID="{8A61F028-7637-440D-A310-7F9971D84400}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+									<ObjectRef Name="Quiet_Forest_Secret" ID="{82C7C77A-B400-4610-B0F9-430001D77076}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{52B6B0AD-FF7C-42E9-9EA7-7C9E2495DC94}" ShortID="154689471">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest_Shop" ID="{941DD912-C476-4B8E-B877-AF7C710CB1C8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{C0CE385E-2942-46BE-86C5-2B1DD101C174}" ShortID="542798905">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder" ID="{AFF4B534-3CD0-43D6-B40B-F3BBC5DCE816}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{3C78A349-9C69-4450-9E3A-4725FA6D3C9A}" ShortID="503543987">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Intro" ID="{252DEAB1-6516-4EF2-B336-2459CD2BBB6D}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
 						<Action Name="" ID="{EA4533F7-9191-496A-836A-47BA73961957}" ShortID="876579872">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -393,6 +438,7 @@
 						<Action Name="" ID="{A3D2E320-0E6D-4809-8BF8-7AEC70071447}" ShortID="451541904">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
@@ -404,22 +450,12 @@
 						<Action Name="" ID="{1C0F6EAD-7739-4DD6-A38B-9C90CDF0AC86}" ShortID="503370172">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 								<Property Name="Scope" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Tummy_Full_of_Gunpowder_LoopB" ID="{033611BC-BDBD-470C-BAA2-2EEE2EDE471B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
-						<Action Name="" ID="{3C78A349-9C69-4450-9E3A-4725FA6D3C9A}" ShortID="503543987">
-							<PropertyList>
-								<Property Name="ActionType" Type="int16" Value="2"/>
-								<Property Name="Scope" Type="int16" Value="1"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="Tummy_Full_of_Gunpowder_Intro" ID="{252DEAB1-6516-4EF2-B336-2459CD2BBB6D}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -1148,6 +1184,36 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Quiet_Forest_Intro" ID="{8A61F028-7637-440D-A310-7F9971D84400}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Jungle_01_Shop" ID="{436EC010-1CCA-4066-BA27-C9F43480BD84}">
+					<ChildrenList>
+						<Action Name="" ID="{04AD444F-6F50-4F69-95FA-65DE60457B6F}" ShortID="754657774">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest_Shop" ID="{941DD912-C476-4B8E-B877-AF7C710CB1C8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Jungle_01_Secret" ID="{09DA59B6-B0CF-4D4E-8C1B-51542A55BAB7}">
+					<ChildrenList>
+						<Action Name="" ID="{01E7A3CA-45D7-48EA-82C1-99A93D760246}" ShortID="1054229750">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Quiet_Forest_Secret" ID="{82C7C77A-B400-4610-B0F9-430001D77076}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
