@@ -1,6 +1,8 @@
 ﻿using Dungeonator;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -238,6 +240,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                         if (IsGameOverConversation && targetDisplayKey != "MODE NOT IMPLEMENTED YET") {
                             if (ExpandPunchoutArcadeController.WonRatGame && m_PunchoutArcadeController) {
                                 m_PunchoutArcadeController.MaybeGiveRewards(0.5f);
+                            } else if (!ExpandPunchoutArcadeController.WonRatGame) {
+                                AkSoundEngine.PostEvent("Play_OBJ_metronome_fail_01", gameObject);
                             }
                             yield return new WaitForSeconds(0.2f);
                             ResultsGiven = true;
@@ -246,6 +250,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         } else {
                             interactor.ClearInputOverride("gameConversation");
                         }
+                        ExpandSettings.PlayingPunchoutArcade = false;
                         m_Interacted = false;
                     }
                     yield break;
@@ -364,6 +369,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         return;
                     }
                     if (!string.IsNullOrEmpty(m_CurrentAnimation) && !spriteAnimator.IsPlaying(m_CurrentAnimation)) {
+                        if (mode == Mode.PunchoutArcade && m_CurrentAnimation == ActivateGameAnimation) { IdleAnimation = (IdleAnimation + "2"); }
                         m_CurrentAnimation = string.Empty;
                         animationState = AnimationState.Idle;
                     }
@@ -494,6 +500,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         protected override void OnDestroy() {
+            ExpandSettings.PlayingPunchoutArcade = false;
             base.OnDestroy();
         }
     }

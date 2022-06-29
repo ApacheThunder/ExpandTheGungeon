@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3611940050
+CRC: 1024662149
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dad51e2b18eaefe1609409e44f2308be
+    Hash: 0dec629fc068f993526f3634a73c0af8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -686,6 +686,7 @@ Assets:
 - Assets/ExpandPrefabs/Items/EXSonicBox.prefab
 - Assets/ExpandSerializedData/SpriteCollections/EXBootlegRoomCollection.txt
 - Assets/ExpandPrefabs/Foyer/EXCasino_Hub.prefab
+- Assets/ExpandPrefabs/Foyer/EXPunchoutArcadeCoin.prefab
 - Assets/ExpandPrefabs/Misc/DoppelgunnerMirrorFX 1.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular5.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_West.prefab

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}" SchemaVersion="85">
+	<GameParameters>
+		<WorkUnit Name="Default Work Unit" ID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}" PersistMode="Standalone">
+			<ChildrenList>
+				<GameParameter Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}"/>
+				<GameParameter Name="VOL_SND" ID="{7A43AA89-AC8A-456C-934C-F1F81D3DDDEB}"/>
+				<GameParameter Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}"/>
+			</ChildrenList>
+		</WorkUnit>
+	</GameParameters>
+</WwiseDocument>

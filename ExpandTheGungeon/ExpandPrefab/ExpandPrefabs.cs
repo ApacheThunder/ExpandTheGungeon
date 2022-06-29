@@ -175,7 +175,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
         // Object Prefabs
-        private static GameObject MetalGearRatPrefab;
+        public static GameObject MetalGearRatPrefab;
         private static GameObject ResourcefulRatBossPrefab;
 
 
@@ -396,6 +396,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXFoyerTrigger;
         public static GameObject EXFoyerWarpDoor;
         public static GameObject EXCasinoHub;
+        public static GameObject EXPunchoutArcadeCoin;
         public static GameObject EXArcadeGame_Prop;
         public static GameObject EXArcadeGame_Prop_Depressed;
         public static GameObject EXCasino_HatRack;
@@ -431,7 +432,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
             EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
-            ExpandPunchoutArcadeController.FoyerCollection = EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>();
 
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);

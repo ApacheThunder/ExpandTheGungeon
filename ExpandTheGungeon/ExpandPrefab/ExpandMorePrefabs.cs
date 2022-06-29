@@ -76,6 +76,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             
             EXCasinoHub = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Hub");
+            EXPunchoutArcadeCoin = expandSharedAssets1.LoadAsset<GameObject>("EXPunchoutArcadeCoin");
             EXCasino_HatRack = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_HatRack");
             EXCasino_Litter_Cans = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Litter_Cans");
             EXCasino_Litter_Paper = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Litter_Paper");
@@ -92,6 +93,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject m_CasinoPokerTableShadow2 = m_CasinoPokerTable_02.transform.Find("shadow").gameObject;
             GameObject m_CasinoCarpet1 = EXCasinoHub.transform.Find("casino_carpet_01").gameObject;
             GameObject m_CasinoCarpet2 = EXCasinoHub.transform.Find("casino_carpet_02").gameObject;
+
+            SpriteSerializer.AddSpriteToObject(EXPunchoutArcadeCoin, EXFoyerCollection, "punchout_coin_left");
+
+            ExpandUtility.DuplicateComponent(EXPunchoutArcadeCoin.AddComponent<PunchoutDroppedItem>(), MetalGearRatPrefab.GetComponent<MetalGearRatDeathController>().PunchoutMinigamePrefab.GetComponent<PunchoutController>().Opponent.DroppedItemPrefab.GetComponent<PunchoutDroppedItem>());
 
             tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
             m_CasinoFloorSprite.HeightOffGround = -1.75f;
@@ -215,13 +220,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "cabinet_fight_013",
                 "cabinet_fight_014"
             };
-
+            List<string> m_PunchoutArcade_FightIdle = new List<string>() { "cabinet_fight_014", "cabinet_fight_014", };
             
+
             tk2dSpriteAnimator m_EXCasinoArcadeGameAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXCasinoGame_Punchout, playAutomatically: true);
 
             ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
             ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Interact, "interact", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Fight, "fight", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_FightIdle, "idle2", tk2dSpriteAnimationClip.WrapMode.Loop, 1);
             ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Sleep, "sleep", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
                         
             EXArcadeGame_Prop = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGame_Prop");

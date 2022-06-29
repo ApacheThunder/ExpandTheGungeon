@@ -15,8 +15,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         [NonSerialized]
-        public static tk2dSpriteCollectionData FoyerCollection;
-        [NonSerialized]
         public static List<int> RewardIDs = new List<int>();
         [NonSerialized]
         public static int RatKeyCount = -1;

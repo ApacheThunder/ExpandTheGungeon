@@ -27,6 +27,9 @@ bld/
 [Oo]bj/
 [Ll]og/
 ExpandAssets/Library/*
+ExpandAssets/Audio/.cache/*
+ExpandAssets/Audio/ExpandTheGungeon.Spenser.validationcache
+ExpandAssets/Audio/Originals/SFX/*.akd
 
 # Visual Studio 2015 cache/options directory
 .vs/
