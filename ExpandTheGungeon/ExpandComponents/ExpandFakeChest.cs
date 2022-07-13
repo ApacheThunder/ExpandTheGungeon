@@ -245,7 +245,31 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Enemy.IgnoreForRoomClear = false;
                 GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
                 PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
-                if (item) { Enemy.AdditionalSafeItemDrops.Add(item); }
+                if (item) {
+                    List<int> m_AllowedItemsInRainbowMode = new List<int>() {
+                        GlobalItemIds.SmallHeart,
+                        GlobalItemIds.FullHeart,
+                        GlobalItemIds.AmmoPickup,
+                        GlobalItemIds.SpreadAmmoPickup,
+                        GlobalItemIds.Spice,
+                        GlobalItemIds.Junk,
+                        GlobalItemIds.GoldJunk,
+                        GlobalItemIds.Key,
+                        GlobalItemIds.GlassGuonStone,
+                        GlobalItemIds.Junk,
+                        GlobalItemIds.GoldJunk,
+                        GlobalItemIds.SackKnightBoon,
+                        GlobalItemIds.Blank,
+                        GlobalItemIds.RatKey,
+                        GlobalItemIds.Map,
+                        120, // armor
+                    };
+                    if (!GameStatsManager.Instance.IsRainbowRun | m_AllowedItemsInRainbowMode.Contains(item.PickupObjectId)) {
+                        Enemy.AdditionalSafeItemDrops.Add(item);
+                    } else {
+                        Enemy.gameObject.AddComponent<ExpandSpawnBowlerNoteOnDeath>();
+                    }
+                }
                 ExpandParadropController paraDropController = Enemy.gameObject.AddComponent<ExpandParadropController>();
                 paraDropController.Configured = true;
             }
@@ -286,7 +310,34 @@ namespace ExpandTheGungeon.ExpandComponents {
             PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.B;
             GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
             PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
-            if (item) { LootEngine.SpawnItem(item.gameObject, sprite.WorldCenter, Vector2.zero, 0f, true, true, false); }
+            if (item) {
+                List<int> m_AllowedItemsInRainbowMode = new List<int>() {
+                    GlobalItemIds.SmallHeart,
+                    GlobalItemIds.FullHeart,
+                    GlobalItemIds.AmmoPickup,
+                    GlobalItemIds.SpreadAmmoPickup,
+                    GlobalItemIds.Spice,
+                    GlobalItemIds.Junk,
+                    GlobalItemIds.GoldJunk,
+                    GlobalItemIds.Key,
+                    GlobalItemIds.GlassGuonStone,
+                    GlobalItemIds.Junk,
+                    GlobalItemIds.GoldJunk,
+                    GlobalItemIds.SackKnightBoon,
+                    GlobalItemIds.Blank,
+                    GlobalItemIds.RatKey,
+                    GlobalItemIds.Map,
+                    120, // armor
+                };
+                if (!GameStatsManager.Instance.IsRainbowRun | m_AllowedItemsInRainbowMode.Contains(item.PickupObjectId)) {
+                    LootEngine.SpawnItem(item.gameObject, sprite.WorldCenter, Vector2.zero, 0f, true, true, false);
+                } else {
+                    if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
+                        string CustomText = "Fake {wb}Rainbow Chests{w} don't count.\n\nNo real RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}";
+                        ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, sprite.WorldCenter, m_room, CustomText, false);
+                    }
+                }
+            }
             yield break;
         }
 

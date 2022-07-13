@@ -2191,6 +2191,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(SecretRewardRoom, new Vector2(10, 67), DungeonData.Direction.NORTH);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(8, 2), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Teleporter_Gungeon_01, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 10), ExpandPrefabs.EXRatDoor_4xLocks);
+            RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 21), ExpandPrefabs.RatJailDoor);
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 34), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.DoorsVertical, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(SecretRewardRoom, new Vector2(9, 46), ExpandPrefabs.RatJailDoor);

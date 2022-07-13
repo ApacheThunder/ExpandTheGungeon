@@ -104,6 +104,7 @@
     <Compile Include="ExpandComponents\ExpandPunchoutArcadeController.cs" />
     <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
+    <Compile Include="ExpandComponents\ExpandSpawnBowlerNoteOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandCompanionManager.cs" />
