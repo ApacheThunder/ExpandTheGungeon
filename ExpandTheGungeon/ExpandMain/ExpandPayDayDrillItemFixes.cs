@@ -12,7 +12,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
     public class ExpandPaydayDrillItemFixes {
                
-        private IEnumerator HandleCombatWavesHook(Action<PaydayDrillItem, Dungeon, RoomHandler, Chest>orig, PaydayDrillItem self, Dungeon d, RoomHandler newRoom, Chest sourceChest) {
+        private IEnumerator HandleCombatWavesHook(Func<PaydayDrillItem, Dungeon, RoomHandler, Chest, IEnumerator>orig, PaydayDrillItem self, Dungeon d, RoomHandler newRoom, Chest sourceChest) {
             DrillWaveDefinition[] wavesToUse = self.D_Quality_Waves;
             switch (GameManager.Instance.RewardManager.GetQualityFromChest(sourceChest)) {
                 case PickupObject.ItemQuality.C:
@@ -59,7 +59,7 @@ namespace ExpandTheGungeon.ExpandMain {
             yield break;
         }
         
-        protected IEnumerator ExpandHandleSeamlessTransitionToCombatRoomHook(Action<PaydayDrillItem, RoomHandler, Chest>orig, PaydayDrillItem self, RoomHandler sourceRoom, Chest sourceChest) {
+        protected IEnumerator ExpandHandleSeamlessTransitionToCombatRoomHook(Func<PaydayDrillItem, RoomHandler, Chest, IEnumerator>orig, PaydayDrillItem self, RoomHandler sourceRoom, Chest sourceChest) {
             Dungeon dungeon = GameManager.Instance.Dungeon;
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 GameManager.Instance.StartCoroutine(ExpandHandleTransitionToFallbackCombatRoom(self, sourceRoom, sourceChest));

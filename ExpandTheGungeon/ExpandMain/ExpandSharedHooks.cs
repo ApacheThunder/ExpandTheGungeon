@@ -712,7 +712,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         
         // Fix exception if Rat Corpse is kicked into a pit in a room that doesn't have TargetPitFallRoom setup.
-        public IEnumerator HandlePitfallHook(Action<GetKicked, SpeculativeRigidbody>orig, GetKicked self, SpeculativeRigidbody srb) {
+        public IEnumerator HandlePitfallHook(Func<GetKicked, SpeculativeRigidbody, IEnumerator> orig, GetKicked self, SpeculativeRigidbody srb) {
             FieldInfo field = typeof(GetKicked).GetField("m_isFalling", BindingFlags.Instance | BindingFlags.NonPublic);
             field.SetValue(self, true);
                         
@@ -812,7 +812,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (!self.gameObject.transform.position.GetAbsoluteRoom().HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { orig(self); }
         }
         
-        public IEnumerator ConstructTK2DDungeonHook(Action<TK2DDungeonAssembler, Dungeon, tk2dTileMap>orig, TK2DDungeonAssembler self, Dungeon d, tk2dTileMap map) {
+        public IEnumerator ConstructTK2DDungeonHook(Func<TK2DDungeonAssembler, Dungeon, tk2dTileMap, IEnumerator>orig, TK2DDungeonAssembler self, Dungeon d, tk2dTileMap map) {
             for (int j = 0; j < d.data.Width; j++) {
                 for (int k = 0; k < d.data.Height; k++) {
                     try {
@@ -869,7 +869,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         // Make the HellDragZone thing actually take player to direct to bullet hell instead of using normal DelayedLoadNextLevel().
         // Since if the EndTimes room is loaded from a different level other then Forge, this could cause issues. :P
-        private IEnumerator HandleGrabbyGrabHook(Action<HellDragZoneController, PlayerController>orig, HellDragZoneController self, PlayerController grabbedPlayer) {
+        private IEnumerator HandleGrabbyGrabHook(Func<HellDragZoneController, PlayerController, IEnumerator>orig, HellDragZoneController self, PlayerController grabbedPlayer) {
             FsmBool m_cryoBool = ReflectionHelpers.ReflectGetField<FsmBool>(typeof(HellDragZoneController), "m_cryoBool", self);
             grabbedPlayer.specRigidbody.Velocity = Vector2.zero;
             grabbedPlayer.specRigidbody.CapVelocity = true;
@@ -1312,7 +1312,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private IEnumerator HandleBulletDeletionFrames(Action<Exploder, Vector3, float, float>orig, Exploder self, Vector3 centerPosition, float bulletDeletionSqrRadius, float duration) {
+        private IEnumerator HandleBulletDeletionFrames(Func<Exploder, Vector3, float, float, IEnumerator>orig, Exploder self, Vector3 centerPosition, float bulletDeletionSqrRadius, float duration) {
             float elapsed = 0f;
             /*if (GameManager.HasInstance && GameManager.Instance.Dungeon) {
                 Dungeon dungeon = GameManager.Instance.Dungeon;

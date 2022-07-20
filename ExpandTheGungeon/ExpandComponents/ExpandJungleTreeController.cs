@@ -33,7 +33,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             while (GameManager.Instance.IsLoadingLevel && Dungeon.IsGenerating) { yield return null; }
             yield return null;
             Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Jungle");
-            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, false, false, RoomExploredOnMinimap: false);
+            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, false, false, RoomExploredOnMinimap: false, RunTimeTileMapName: "JungleRuntime_");
             dungeon2 = null;
 
             IntVector2 baseCellPosition = (transform.position.IntXY(VectorConversions.Floor) + new IntVector2(4, 2));

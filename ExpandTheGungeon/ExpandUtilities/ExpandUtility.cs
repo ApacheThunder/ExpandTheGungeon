@@ -1833,7 +1833,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return targetRoom;
         }
 
-        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true, string RunTimeTileMapName = "Glitch") {
+        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true, string RunTimeTileMapName = "Glitch", bool SpawnWallMimic = false) {
             Dungeon dungeon = GameManager.Instance.Dungeon;           
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
@@ -1905,9 +1905,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
             
             if (targetRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET) { targetRoom.BuildSecretRoomCover(); }
 
-            MaybeSpawnWallMimics(dungeon, targetRoom, dungeon2.tileIndices.tilesetId, dungeon2.tileIndices.dungeonCollection);
+            MaybeSpawnWallMimics(dungeon, targetRoom, GuranteedWallMimic: SpawnWallMimic);
             
-
             GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(BraveResources.Load("RuntimeTileMap", ".prefab"));
             tk2dTileMap component = gameObject.GetComponent<tk2dTileMap>();
             string str = UnityEngine.Random.Range(10000, 99999).ToString();
@@ -2010,13 +2009,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static void MaybeSpawnWallMimics(Dungeon dungeon, RoomHandler currentRoom, GlobalDungeonData.ValidTilesets TilesetOverride = GlobalDungeonData.ValidTilesets.CASTLEGEON, bool GuranteedWallMimic = false, int OverrideWallMimicCount = -1, tk2dSpriteCollectionData FakeWallDungeonCollectionOverride = null) {
-            float RandomValue = 0;
 
-            GameObject TempObject = new GameObject("TempObject", new Type[] { typeof(ExpandRandomVarGenerator) });
-            RandomValue = TempObject.GetComponent<ExpandRandomVarGenerator>().GenerateRandomFloat();
-            UnityEngine.Object.Destroy(TempObject);
-
-            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && RandomValue < 0.9f) { return; }
+            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && UnityEngine.Random.value < 0.85f) { return; }
 
             string RoomName = "NULL";
 
