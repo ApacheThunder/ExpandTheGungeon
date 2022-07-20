@@ -243,8 +243,9 @@ namespace ExpandTheGungeon.ItemAPI
             base.OnPostFired(player, gun);
         }
 
-        protected void Update()
+        public override void Update()
         {
+            base.Update();
             if (gun.CurrentOwner)
             {
                 if (!gun.IsReloading && !HasReloaded)

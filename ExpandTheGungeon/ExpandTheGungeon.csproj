@@ -21,6 +21,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Dependencies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\Dependencies\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -29,12 +33,20 @@
       <HintPath>..\Dependencies\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp.Base.mm">
-      <HintPath>..\Dependencies\Assembly-CSharp.Base.mm.dll</HintPath>
+    <Reference Include="BepInEx">
+      <HintPath>..\Dependencies\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\Dependencies\Ionic.Zip.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ModTheGungeonAPI">
+      <HintPath>..\Dependencies\ModTheGungeonAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\Dependencies\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
@@ -260,6 +272,195 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandSharedAuto" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_machinepistol_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_pistol_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_shotgun_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bulletkin_gun_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_angel_rev_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_black_revolver_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_golden_revolver_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_nome_rev_idle_001.png" />
+    <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_tuc_rev_idle_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_005.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_006.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_005.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_006.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_004.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_idle_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_001.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.json" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinegun_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_pistol_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_shotgun_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\bulletkin_gun_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_enemy_pre_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_angel_rev_reload_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_idle_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_005.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_black_revolver_reload_006.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_idle_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_005.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_golden_revolver_reload_006.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_enemy_pre_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_nome_rev_reload_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_enemy_pre_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_fire_004.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_idle_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_001.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.png" />
+    <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

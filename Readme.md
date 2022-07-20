@@ -1,4 +1,4 @@
-ExpandTheGungeon - by Apache Thunder.
+ExpandTheGungeon (BepInEx Version) - by Apache Thunder.
 
 Features:
 
@@ -61,6 +61,7 @@ This mod is intended for post AG&D versions of Enter the Gungeon and the Farewel
 
 Credits:
 
+* SpecialAPI for helping port the mod to the BepInEx version of MTG. (and for making MTG possible with BepInEx!)
 * KyleTheScientist, Zatherz, Abe Clancy, and PlaguedPixel for their help/code for improving/making certain features possible.
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
 * Retrash for the Baby Good Hammer item sprite, Wooden Crest sprite, improvements to Jungle tree sprite, and for some room designs on Belly floor.

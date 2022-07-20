@@ -10,18 +10,20 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using ExpandTheGungeon.ExpandComponents;
+using BepInEx;
 
 namespace ExpandTheGungeon {
-
-    public class ExpandTheGungeon : ETGModule {
-                
+    [BepInDependency("etgmodding.etg.mtgapi")]
+    [BepInPlugin(GUID, ModName, VERSION)]
+    public class ExpandTheGungeon : BaseUnityPlugin {
         
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
         public static Hook MainMenuFoyerUpdateHook;
 
-        public static string ModName;
+        public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
+        public const string ModName = "ExpandTheGungeon";
+        public const string VERSION = "2.7.1";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -63,14 +65,13 @@ namespace ExpandTheGungeon {
 
         private static GameObject m_FoyerCheckerOBJ;
 
-        public override void Init() {
-            
+        public void Start() {
             ExceptionText = string.Empty;
             ExceptionText2 = string.Empty;
 
-            ModName = Metadata.Name;
-            ZipFilePath = Metadata.Archive;
-            FilePath = Metadata.Directory;
+            FilePath = this.FolderPath();
+            ZipFilePath = this.FolderPath();
+            
             ResourcesPath = ETGMod.ResourcesDirectory;
 
             try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
@@ -107,7 +108,12 @@ namespace ExpandTheGungeon {
             if (!string.IsNullOrEmpty(ExceptionText)) { return; }
 
             if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
+            
+            ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
+        }
 
+
+        public void GMStart(GameManager gameManager) {
             try {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
                 if (ExpandSettings.EnableLogo) {
@@ -117,17 +123,14 @@ namespace ExpandTheGungeon {
                         typeof(MainMenuFoyerController)
                     );
                 }
-                GameManager.Instance.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
+                gameManager.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             } catch (Exception ex) {
                 // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
                 ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
                 Debug.LogException(ex);
                 return;
             }
-        }
 
-        public override void Start() {
-            
             if (!string.IsNullOrEmpty(ExceptionText) | !string.IsNullOrEmpty(ExceptionText2)) {
                 if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
                 if (!string.IsNullOrEmpty(ExceptionText2)) { ETGModConsole.Log(ExceptionText2); }
@@ -209,8 +212,6 @@ namespace ExpandTheGungeon {
             enemiesBase = null;
         }
         
-        public override void Exit() {  }
-        
         public static void CreateFoyerController() {
             if (!m_FoyerCheckerOBJ) {
                 m_FoyerCheckerOBJ = new GameObject("ExpandTheGungeon Foyer Checker", new Type[] { typeof(ExpandFoyer) });
@@ -222,6 +223,7 @@ namespace ExpandTheGungeon {
         private void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ItemAPISetup) {
                 try {
+                    ETGMod.Assets.SetupSpritesFromAssembly(Assembly.GetExecutingAssembly(), "ExpandTheGungeon/Sprites");
                     Tools.Init();
                     ItemBuilder.Init();
                     BabyGoodHammer.Init(expandSharedAssets1);

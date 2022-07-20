@@ -238,8 +238,6 @@ namespace ExpandTheGungeon {
                 return null;
             }
         }
-
-
 	}
 }
 
