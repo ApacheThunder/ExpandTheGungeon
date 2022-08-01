@@ -2586,7 +2586,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             spriteData.boundsDataExtents = new Vector2(num, num2);
                             spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
                         } else {
-                            ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                            // ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                            ETGMod.ReplaceTexture(spriteData, texture2D);
                         }
                     }
                 }
@@ -2696,7 +2697,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             spriteData.boundsDataExtents = new Vector2(Width, Height);
                             spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
                         } else {
-                            ETGMod.ReplaceTexture(spriteData, texture, true);
+                            ETGMod.ReplaceTexture(spriteData, texture);
                         }
                     }
                 }
@@ -2770,7 +2771,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             spriteData.boundsDataExtents = new Vector2(num, num2);
                             spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
                         } else {
-                            ETGMod.ReplaceTexture(spriteData, texture2D, true);
+                            ETGMod.ReplaceTexture(spriteData, texture2D);
                         }
                     }
                 }
@@ -2959,7 +2960,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                             spriteData.boundsDataExtents = new Vector2(width, height);
                             spriteData.untrimmedBoundsDataExtents = spriteData.boundsDataExtents;
                         } else {
-                            ETGMod.ReplaceTexture(spriteData, spriteTexture, true);
+                            ETGMod.ReplaceTexture(spriteData, spriteTexture);
                         }
                     }
                 }

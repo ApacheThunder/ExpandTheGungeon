@@ -77,36 +77,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             InitPhobosDungeon(expandSharedAuto1, sharedAssets2, Base_Phobos, LoadOfficialDungeonPrefab("Base_Gungeon"));
             InitOfficeDungeon(expandSharedAuto1, sharedAssets2, Base_Office, LoadOfficialDungeonPrefab("Base_Gungeon"));
         }
-
-        public void DungeonStart_Hook(Action<ItemDB>orig, ItemDB self) {
-            List<WeightedGameObject> collection;
-            if (self.ModLootPerFloor.TryGetValue("ANY", out collection)) {
-                GameManager.Instance.Dungeon.baseChestContents.defaultItemDrops.elements.AddRange(collection);
-            }
-            string dungeonFloorName = GameManager.Instance.Dungeon.DungeonFloorName;
-            if (!string.IsNullOrEmpty(dungeonFloorName) && dungeonFloorName.StartsWith("#")) {
-                string key = dungeonFloorName.Substring(1, dungeonFloorName.IndexOf('_') - 1);
-                if (self.ModLootPerFloor.TryGetValue(key, out collection)) {
-                    GameManager.Instance.Dungeon.baseChestContents.defaultItemDrops.elements.AddRange(collection);
-                }
-            }
-        }
-
-        public static void InitCustomGameLevelDefinitions(AssetBundle braveResources) {
+        
+        public static void InitCustomGameLevelDefinitions(AssetBundle braveResources, GameManager gameManager) {
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDatabase.GetOrLoadByName Hook..."); }
             getOrLoadByName_Hook = new Hook(
                 typeof(DungeonDatabase).GetMethod("GetOrLoadByName", BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandCustomDungeonPrefabs).GetMethod("GetOrLoadByNameHook", BindingFlags.Static | BindingFlags.Public)
             );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ItemDB.DungeonStart Hook..."); }
-            dungeonStartHook = new Hook(
-                typeof(ItemDB).GetMethod("DungeonStart", BindingFlags.Instance | BindingFlags.Public),
-                typeof(ExpandCustomDungeonPrefabs).GetMethod("DungeonStart_Hook", BindingFlags.Instance | BindingFlags.Public),
-                typeof(ItemDB)
-            );
-            
-            ReInitFloorDefinitions(GameManager.Instance);
+            ReInitFloorDefinitions(gameManager);
         }
         
         public static void ReInitFloorDefinitions(GameManager gameManager) {

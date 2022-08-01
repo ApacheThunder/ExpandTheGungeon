@@ -132,7 +132,7 @@ namespace ExpandTheGungeon.ItemAPI
 
             var defaultGun = PickupObjectDatabase.GetById(22) as Gun;
             
-            gun.AddProjectileModuleFrom(defaultGun, true, false);
+            gun.AddProjectileModuleFrom(defaultGun, true);
             
             // move the gun up with the hand in the second frame of the shooting animation (hand movement was done in GAE with a y offset of 1)
             //gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames[1].FrameToDefinition().MakeOffset(new Vector2(0, 1));
@@ -194,7 +194,7 @@ namespace ExpandTheGungeon.ItemAPI
             var comp = projectile.gameObject.AddComponent<SkullRevolverBullet>();
             comp.jamsEnemies = true;
 
-            ETGMod.Databases.Items.Add(gun, null, "ANY");
+            ETGMod.Databases.Items.Add((gun as PickupObject));
 
             if (isGoldenVersion)
             {

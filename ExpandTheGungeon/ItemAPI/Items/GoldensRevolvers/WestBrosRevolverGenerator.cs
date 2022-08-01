@@ -61,7 +61,7 @@ namespace ExpandTheGungeon.ItemAPI
             // The gun names are the names from the JSON dump! While most are the same, some guns named completely different things. If you need help finding gun names, ask a modder on the Gungeon discord.
             // which means its the ETGMod.Databases.Items / PickupObjectDatabase.Instance.InternalGetByName name, aka the pickupobject.name
 
-            gun.AddProjectileModuleFrom(baseGun, true, false);
+            gun.AddProjectileModuleFrom(baseGun, true);
 
             gun.gunSwitchGroup = baseGun.gunSwitchGroup;
             gun.muzzleFlashEffects = baseGun.muzzleFlashEffects;
@@ -101,7 +101,7 @@ namespace ExpandTheGungeon.ItemAPI
             var comp = projectile.gameObject.AddComponent<SkullRevolverBullet>();
             comp.jamsEnemies = false;
 
-            ETGMod.Databases.Items.Add(gun, null, "ANY");
+            ETGMod.Databases.Items.Add((gun as PickupObject));
 
             switch (whichBro)
             {

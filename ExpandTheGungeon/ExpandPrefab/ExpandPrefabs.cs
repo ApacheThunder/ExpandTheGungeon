@@ -2662,6 +2662,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), EXTrapCollection.GetComponent<tk2dSpriteCollectionData>(), m_RickRollMusicSwitchTurnOnFrames, "RickRollSwitch_TurnOn", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), EXTrapCollection.GetComponent<tk2dSpriteCollectionData>(), m_RickRollMusicSwitchTurnOffFrames, "RickRollSwitch_TurnOff", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
 
+            ETGModConsole.ModdedShrines.Add("RickRollChest", RickRollChestObject);
+
             ExpandFakeChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandFakeChest>();
             RickRollChest_SwitchComponent.chestType = ExpandFakeChest.ChestType.MusicSwitch;
             
@@ -2744,7 +2746,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SurpriseChestComponent.MinimapIconPrefab = m_BrownChestReference.GetComponent<Chest>().MinimapIconPrefab;
             SurpriseChestComponent.breakAnimName = "coop_chest_break";
             SurpriseChestComponent.openAnimName = "coop_chest_open";
-            
+
+
+            ETGModConsole.ModdedShrines.Add("SurpriseChest", SurpriseChestObject);
 
             ExpandThunderstormPlaceable = expandSharedAssets1.LoadAsset<GameObject>("ExpandThunderStorm");
             ExpandThunderstormPlaceable.AddComponent<ExpandThunderStormPlacable>();
@@ -4210,9 +4214,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MajorBreakable chestWestBreakable = EX_Chest_West.AddComponent<MajorBreakable>();
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<MajorBreakable>()), chestWestBreakable);
             chestWestBreakable.spriteNameToUseAtZeroHP = "chest_west_break_001";
-            
-            
-            
+
+            ETGModConsole.ModdedChests.Add("West", m_chestWest);
+
             EX_RedBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_RedBalloon");
             tk2dSprite m_RedBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_RedBalloon, EXBalloonCollection, "redballoon_idle_001");
             m_RedBalloonSprite.HeightOffGround = 1;

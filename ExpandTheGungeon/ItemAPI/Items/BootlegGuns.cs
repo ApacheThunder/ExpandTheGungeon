@@ -29,8 +29,9 @@ namespace ExpandTheGungeon.ItemAPI {
             Game.Items.Rename("outdated_gun_mods:bootleg_pistol", "ex:bootleg_pistol");
             pistol.SetShortDescription("Of questionable quality...");
             pistol.SetLongDescription("It's a counterfeit gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
-            GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);            
-            pistol.AddProjectileModuleFrom("Magnum", true, false);
+            GunExt.SetupSprite(pistol, null, "bootleg_pistol_idle_001", 18);
+            // pistol.AddProjectileModuleFrom("Magnum", true, false);
+            pistol.AddProjectileModuleFrom("Magnum", true);
             pistol.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             pistol.DefaultModule.ammoCost = 1;
             pistol.PreventOutlines = true;
@@ -45,7 +46,7 @@ namespace ExpandTheGungeon.ItemAPI {
             pistol.encounterTrackable.EncounterGuid = "baad9dd6d005458daf02933f6a1ba926";            
             pistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             pistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
-            ETGMod.Databases.Items.Add(pistol);
+            ETGMod.Databases.Items.Add((pistol as PickupObject));
             BootlegPistolID = pistol.PickupObjectId;
 
             PistolProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegPistolProjectile");
@@ -63,7 +64,7 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.SetShortDescription("Of questionable quality...");
             machinepistol.SetLongDescription("It's a counterfeit machine gun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(machinepistol, null, "bootleg_machinepistol_idle_001", 30);
-            machinepistol.AddProjectileModuleFrom(PickupObjectDatabase.GetById(43).name, true, false);
+            machinepistol.AddProjectileModuleFrom(PickupObjectDatabase.GetById(43).name, true);
             machinepistol.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             machinepistol.PreventOutlines = true;
             machinepistol.reloadTime = 1.2f;
@@ -78,7 +79,7 @@ namespace ExpandTheGungeon.ItemAPI {
             machinepistol.encounterTrackable.EncounterGuid = "e56adda5081347e5b9e0cf2556689b0e";
             machinepistol.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             machinepistol.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
-            ETGMod.Databases.Items.Add(machinepistol);
+            ETGMod.Databases.Items.Add((machinepistol as PickupObject));
             BootlegMachinePistolID = machinepistol.PickupObjectId;
 
             MachinePistolProjectile = expandSharedAssets1.LoadAsset<GameObject>("EXBootlegMachinePistolProjectile");
@@ -96,7 +97,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.SetShortDescription("Of questionable quality...");
             shotgun.SetLongDescription("It's a counterfeit shotgun.\n\nDue to low quality standards, this weapon may be prone to exploding under certain circumstances...");
             GunExt.SetupSprite(shotgun, null, "bootleg_shotgun_idle_001", 18);
-            shotgun.AddProjectileModuleFrom(PickupObjectDatabase.GetById(51).name, true, false);
+            shotgun.AddProjectileModuleFrom(PickupObjectDatabase.GetById(51).name, true);
             shotgun.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             shotgun.PreventOutlines = true;
             shotgun.reloadTime = 1.8f;
@@ -112,7 +113,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.gameObject.AddComponent<ExpandRemoveGunOnAmmoDepletion>();
             shotgun.gameObject.AddComponent<ExpandMaybeLoseAmmoOnDamage>();
             shotgun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.SHOTGUN;
-            ETGMod.Databases.Items.Add(shotgun);
+            ETGMod.Databases.Items.Add((shotgun as PickupObject));
             BootlegShotgunID = shotgun.PickupObjectId;
             
 

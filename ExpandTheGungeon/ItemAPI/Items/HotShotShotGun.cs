@@ -17,7 +17,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.SetShortDescription("You aren't supposed to have this...");
             shotgun.SetLongDescription("The gun used by Hot Shot Shotgun Kin.");
             // GunExt.SetupSprite(shotgun, null, "bootleg_shotgun_idle_001", 18);
-            shotgun.AddProjectileModuleFrom(PickupObjectDatabase.GetById(51).name, true, false);
+            shotgun.AddProjectileModuleFrom(PickupObjectDatabase.GetById(51).name, true);
             // shotgun.barrelOffset.localPosition -= new Vector3(0.3f, 0.2f, 0);
             shotgun.barrelOffset.localPosition = (PickupObjectDatabase.GetById(51) as Gun).barrelOffset.localPosition;
             if ((PickupObjectDatabase.GetById(51) as Gun).muzzleOffset && shotgun.muzzleOffset) {
@@ -30,7 +30,7 @@ namespace ExpandTheGungeon.ItemAPI {
             shotgun.quality = PickupObject.ItemQuality.EXCLUDED;
             shotgun.gunSwitchGroup = "Shotgun";
             shotgun.encounterTrackable.EncounterGuid = "dc52f8e79c7c4a679238643a5bcb49c3";
-            ETGMod.Databases.Items.Add(shotgun);
+            ETGMod.Databases.Items.Add((shotgun as PickupObject));
             HotShotShotGunID = shotgun.PickupObjectId;
 
             Projectile ShotgunProjectileComponent = EnemyDatabase.GetOrLoadByGuid("128db2f0781141bcb505d8f00f9e4d47").gameObject.GetComponent<AIBulletBank>().Bullets[0].BulletObject.GetComponent<Projectile>();

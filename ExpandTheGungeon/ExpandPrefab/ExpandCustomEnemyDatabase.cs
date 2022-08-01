@@ -165,9 +165,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {
-            // Unlock Gungeon class so I can add my enemies to spawn pool for spawn command.
-            HashSet<string> _LockedNamespaces = ReflectionHelpers.ReflectGetField<HashSet<string>>(typeof(IDPool<AIActor>), "_LockedNamespaces", Game.Enemies);
-            _LockedNamespaces.Remove("gungeon");
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
             loadEnemyGUIDHook = new Hook(
@@ -210,8 +207,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
             UpdateMTGSpawnPool();
-            
-            Game.Enemies.LockNamespace("gungeon");
         }
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {

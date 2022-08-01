@@ -37,7 +37,6 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook arrivalElevatorUpdateHook;
         public static Hook constructTK2DDungeonHook;
         public static Hook handleGrabbyGrabHook;
-        public static Hook dungeonStartHook;
         public static Hook sellPitConfigureOnPlacementHook;
         public static Hook playerFiredHook;
         public static Hook flagCellsHook;
@@ -209,13 +208,6 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(HellDragZoneController).GetMethod("HandleGrabbyGrab", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandSharedHooks).GetMethod("HandleGrabbyGrabHook", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(HellDragZoneController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ItemDB.DungeonStart Hook...."); }
-            dungeonStartHook = new Hook(
-                typeof(ItemDB).GetMethod("DungeonStart", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandSharedHooks).GetMethod("DungeonStartHook", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ItemDB)
             );
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing SellCellController.ConfigureOnPlacement Hook...."); }
@@ -890,27 +882,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
             yield break;
         }
-
-        public void DungeonStartHook(Action<ItemDB>orig, ItemDB self) {
-            List<WeightedGameObject> collection;
-            if (self.ModLootPerFloor.TryGetValue("ANY", out collection)) {
-                GameManager.Instance.Dungeon.baseChestContents.defaultItemDrops.elements.AddRange(collection);
-            }
-            string dungeonFloorName = GameManager.Instance.Dungeon.DungeonFloorName;
-            string key = string.Empty;
-            try {
-                key = dungeonFloorName.Substring(1, dungeonFloorName.IndexOf('_') - 1);
-            } catch (Exception ex) {
-                if (ExpandSettings.debugMode) { ETGModConsole.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!"); }
-                Debug.Log("WARNING: dungoenFloorname.SubString() returned a negative or 0 length value!");
-                Debug.LogException(ex);
-                if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) { key = "TEST"; } else { key = "???"; }
-            }
-            if (self.ModLootPerFloor.TryGetValue(key, out collection)) {
-                GameManager.Instance.Dungeon.baseChestContents.defaultItemDrops.elements.AddRange(collection);
-            }
-        }        
-        
+                
         // Fix Pit size + make sure it only creates pit on the special room from Catacombs. Creating pit under all instances of sell pit makes selling items difficult post FTA update.
         public void SellPitConfigureOnPlacementHook(Action<SellCellController, RoomHandler>orig, SellCellController self, RoomHandler room) {
             if (room != null && room.GetRoomName().StartsWith("SubShop_SellCreep_CatacombsSpecial")) {
@@ -1731,10 +1703,18 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public void FloorChestPlacerConfigureOnPlacementHook(Action<FloorChestPlacer, RoomHandler>orig, FloorChestPlacer self, RoomHandler room) {
             if (!self.UseOverrideChest && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.REWARD 
-                 && UnityEngine.Random.value < 0.15f
+                 && UnityEngine.Random.value < 0.1f
                ) {
                 Vector2 ChestPosition = self.transform.position.IntXY(VectorConversions.Round).ToVector3();
-                GameObject chestOBJ = UnityEngine.Object.Instantiate(BraveUtility.RandomElement(ExpandLists.CustomChests), ChestPosition, Quaternion.identity);
+                GameObject ChestReference = BraveUtility.RandomElement(ExpandLists.CustomChests);
+                if (ChestReference.name == ExpandPrefabs.RickRollChestObject.name && UnityEngine.Random.value < 0.8f) {
+                    List<GameObject> ChestsWithoutRickRoll = new List<GameObject>();
+                    foreach (GameObject chest in ExpandLists.CustomChests) {
+                        if (chest.name != ExpandPrefabs.RickRollChestObject.name) { ChestsWithoutRickRoll.Add(ChestReference); }
+                    }
+                    ChestReference = BraveUtility.RandomElement(ChestsWithoutRickRoll);
+                }
+                GameObject chestOBJ = UnityEngine.Object.Instantiate(ChestReference, ChestPosition, Quaternion.identity);
                 ExpandFakeChest fakeChest = null;
                 if (chestOBJ) { fakeChest = chestOBJ.GetComponent<ExpandFakeChest>(); }
                 if (fakeChest) {

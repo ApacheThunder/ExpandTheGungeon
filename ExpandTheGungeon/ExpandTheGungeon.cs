@@ -113,7 +113,7 @@ namespace ExpandTheGungeon {
         }
 
 
-        public void GMStart(GameManager gameManager) {
+        public void GMStart(GameManager gameManager) {            
             try {
                 ExpandSharedHooks.InstallMidGameSaveHooks();
                 if (ExpandSettings.EnableLogo) {
@@ -146,7 +146,6 @@ namespace ExpandTheGungeon {
                 Debug.LogException(ex);
                 return;
             }
-
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
@@ -154,10 +153,8 @@ namespace ExpandTheGungeon {
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
 
             ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
-            
             // Init Custom GameLevelDefinitions
-            ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources);
-
+            ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
             // Init Custom Sprite Collections
             ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
             ExpandCustomEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
@@ -198,12 +195,10 @@ namespace ExpandTheGungeon {
             InitConsoleCommands(ConsoleCommandName);
 
             CreateFoyerController();
-            
             if (ExpandSettings.EnableLanguageFix) {
                 GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
                 StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
             }
-            
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
             sharedAssets = null;

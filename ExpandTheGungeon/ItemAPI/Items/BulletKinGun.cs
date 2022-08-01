@@ -17,7 +17,7 @@ namespace ExpandTheGungeon.ItemAPI {
             bulletkinGun.SetShortDescription("Fires Bullet Kin...");
             bulletkinGun.SetLongDescription("This gun fires Bullet Kins....Don't ask questions. Just accept it.");
             GunExt.SetupSprite(bulletkinGun, null, "bulletkin_gun_idle_001", 18);
-            bulletkinGun.AddProjectileModuleFrom("Magnum", true, false);
+            bulletkinGun.AddProjectileModuleFrom("Magnum", true);
             bulletkinGun.DefaultModule.ammoCost = 1;
             bulletkinGun.DefaultModule.angleVariance = 0;
             bulletkinGun.DefaultModule.numberOfShotsInClip = 1;
@@ -36,7 +36,7 @@ namespace ExpandTheGungeon.ItemAPI {
             bulletkinGun.encounterTrackable.EncounterGuid = "43a080b46fa448ef8d2be35f93ab6e64";
             bulletkinGun.gameObject.AddComponent<ExpandFireEnemiesGunMod>();
 
-            ETGMod.Databases.Items.Add(bulletkinGun);
+            ETGMod.Databases.Items.Add((bulletkinGun as PickupObject));
 
             BulletKinGunID = bulletkinGun.PickupObjectId;
         }
