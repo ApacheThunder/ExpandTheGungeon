@@ -35,11 +35,11 @@ namespace ExpandTheGungeon {
         public static string ExceptionText;
         public static string ExceptionText2;
 
-        public static readonly string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
-        public static readonly string ModAssetBundleName = "ExpandSharedAuto";
-        public static readonly string ModSpriteAssetBundleName = "ExpandSpritesBase";
-        public static readonly string ModSoundBankName = "EX_SFX";
-        public static readonly string ConsoleCommandName = "expand";
+        public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
+        public const string ModAssetBundleName = "ExpandSharedAuto";
+        public const string ModSpriteAssetBundleName = "ExpandSpritesBase";
+        public const string ModSoundBankName = "EX_SFX";
+        public const string ConsoleCommandName = "expand";
 
         
         private static List<string> itemList;
@@ -98,9 +98,10 @@ namespace ExpandTheGungeon {
                 "Golden Revolver",
                 "Sonic Box",
                 "The Third Eye",
+                "Clown Friend",
                 "Clown Bullets",
                 "Portable Elevator",
-                "Clown Friend"
+                "Portable Ship"
             };
             
             ExpandAssets.InitCustomAssetBundles(ModName);

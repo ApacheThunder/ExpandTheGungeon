@@ -192,8 +192,8 @@ namespace ExpandTheGungeon.ItemAPI {
                         ExpandShaders.Instance.ApplyGlitchShader(baseSprite);
                     }
                 }
+                m_ElevatorController.IsGlitchElevator = true;
             }
-            m_ElevatorController.IsGlitchElevator = true;
         }
 
         protected override void OnDestroy() {
