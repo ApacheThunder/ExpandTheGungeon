@@ -79,6 +79,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void Update() {
+            if (Dungeon.IsGenerating | (GameManager.Instance && GameManager.Instance.IsLoadingLevel)) { return; }
             if (m_PickedUp) { foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) { room.SetRoomActive(true); } }
             if (Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) {
                 if (m_owner && m_owner.CurrentRoom != null && !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) &&

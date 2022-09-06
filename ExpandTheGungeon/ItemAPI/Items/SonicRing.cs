@@ -47,7 +47,7 @@ namespace ExpandTheGungeon.ItemAPI {
             string shortDesc = "A Ring";
             string longDesc = "A Simple Ring. Equilivent to one casing.";
             ItemBuilder.SetupEXItem(sonicRing, name, shortDesc, longDesc, "ex", false);
-            sonicRing.quality = ItemQuality.COMMON;
+            sonicRing.quality = ItemQuality.EXCLUDED;
             sonicRing.ItemSpansBaseQualityTiers = false;
             sonicRing.additionalMagnificenceModifier = 0;
             sonicRing.ItemRespectsHeartMagnificence = false;

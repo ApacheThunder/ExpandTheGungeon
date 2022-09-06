@@ -364,7 +364,14 @@ namespace ExpandTheGungeon.ItemAPI {
                     player.OnReceivedDamage -= HandlePlayerDamaged;
                 }
                 if (itemState == ItemState.Active) {
-                    if (player.healthHaver.Armor > 0) { player.healthHaver.Armor -= 1; }
+                    if (player.healthHaver.Armor > 0) {
+                        player.healthHaver.Armor -= 1;
+                    }
+                    /*if (player.healthHaver.Armor > 0 && !player.ForceZeroHealthState) {
+                        player.healthHaver.Armor -= 1;
+                    } else if (player.ForceZeroHealthState && player.healthHaver.Armor > 1) {
+                        player.healthHaver.Armor -= 1;
+                    }*/
                 }
             }
             if (ExpandSettings.debugMode) {

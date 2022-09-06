@@ -39,11 +39,20 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_AIActor.aiShooter.handObject.sprite.SetSprite(player.primaryHand.sprite.Collection, player.primaryHand.sprite.GetCurrentSpriteDef().name);
             
             // Generate BossCard based on current Player.
-            Texture2D BossCardForeground = ExpandUtility.FlipTexture(Instantiate(player.BosscardSprites[0]));
+            Texture2D BossCardForeground = null;
+            if (player.BosscardSprites != null && player.BosscardSprites.Count > 0) {
+                BossCardForeground = ExpandUtility.FlipTexture(player.BosscardSprites[0]);
+            }
             // Mirror thing will be used as static background. (will be the same for all possible boss cards)
             Texture2D BossCardBackground = ExpandAssets.LoadAsset<Texture2D>("MimicInMirror_BossCardBackground");
             // Combine foreground boss card generated from PlayerController onto the static background image loased in earlier. Resolutions must match!
-            Texture2D BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
+            Texture2D BossCardTexture = null;
+
+            if (BossCardForeground) {
+                BossCardTexture = ExpandUtility.CombineTextures(BossCardBackground, BossCardForeground);
+            } else {
+                BossCardTexture = BossCardBackground;
+            }
 
             GenericIntroDoer miniBossIntroDoer = gameObject.GetComponent<GenericIntroDoer>();
             if (BossCardTexture) { miniBossIntroDoer.portraitSlideSettings.bossArtSprite = BossCardTexture; }
