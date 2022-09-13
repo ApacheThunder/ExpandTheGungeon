@@ -218,7 +218,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 SpeculativeRigidbody targetRigidBody = targetObject.GetComponent<SpeculativeRigidbody>();
                 tk2dSprite targetSprite = targetObject.GetComponent<tk2dSprite>();
 
-                targetRigidBody.Reinitialize();
+                // targetRigidBody.Reinitialize();
                 if (customColliders == null && targetSprite) { targetRigidBody.PixelColliders[1].Sprite = targetSprite; }
             }
                         
@@ -663,7 +663,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedObject;
         }
 
-        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false, PlayerHandController overrideHandObject = null) {
+        public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false, PlayerHandController overrideHandObject = null, bool BuildRigidBody = true) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }
 
@@ -712,24 +712,27 @@ namespace ExpandTheGungeon.ExpandUtilities {
             tk2dSprite targetSprite = targetObject.GetComponent<tk2dSprite>();
             if (!targetSprite) { return; }
 
-            if (!targetObject.GetComponent<SpeculativeRigidbody>()) {
-                if (customColliders != null) {
-                    foreach (PixelCollider collider in customColliders) {
-                        int SizeX = collider.ManualWidth;
-                        int SizeY = collider.ManualHeight;
-                        int OffsetX = collider.ManualOffsetX;
-                        int OffsetY = collider.ManualOffsetY;
-                        GenerateOrAddToRigidBody(targetObject, collider.CollisionLayer, collider.ColliderGenerationMode, RigidBodyCollidesWithTileMap, RigidBodyCollidesWithOthers, RigidBodyCanBeCarried, RigidBodyCanBePushed, false, collider.IsTrigger, false, true, new IntVector2(SizeX, SizeY), new IntVector2(OffsetX, OffsetY));
+            if (BuildRigidBody) {
+                if (!targetObject.GetComponent<SpeculativeRigidbody>()) {
+                    if (customColliders != null) {
+                        foreach (PixelCollider collider in customColliders) {
+                            int SizeX = collider.ManualWidth;
+                            int SizeY = collider.ManualHeight;
+                            int OffsetX = collider.ManualOffsetX;
+                            int OffsetY = collider.ManualOffsetY;
+                            GenerateOrAddToRigidBody(targetObject, collider.CollisionLayer, collider.ColliderGenerationMode, RigidBodyCollidesWithTileMap, RigidBodyCollidesWithOthers, RigidBodyCanBeCarried, RigidBodyCanBePushed, false, collider.IsTrigger, false, true, new IntVector2(SizeX, SizeY), new IntVector2(OffsetX, OffsetY));
+                        }
+                    } else {
+                        GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyCollider, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 4), new IntVector2(5, 0));
+                        GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyHitBox, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 23), new IntVector2(5, 0));
                     }
-                } else {
-                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyCollider, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 4), new IntVector2(5, 0));
-                    GenerateOrAddToRigidBody(targetObject, CollisionLayer.EnemyHitBox, PixelCollider.PixelColliderGeneration.Manual, true, true, true, false, false, false, false, true, new IntVector2(12, 23), new IntVector2(5, 0));
-                }
 
-                SpeculativeRigidbody targetRigidBody = targetObject.GetComponent<SpeculativeRigidbody>();
-                targetRigidBody.Reinitialize();
-                if (customColliders == null) { targetRigidBody.PixelColliders[1].Sprite = targetSprite; }
+                    SpeculativeRigidbody targetRigidBody = targetObject.GetComponent<SpeculativeRigidbody>();
+                    // targetRigidBody.Reinitialize();
+                    if (customColliders == null) { targetRigidBody.PixelColliders[1].Sprite = targetSprite; }
+                }
             }
+            
                         
             if (!targetObject.GetComponent<tk2dSpriteAnimator>()) {
                 GenerateSpriteAnimator(targetObject, null, 0, 0, false, false, false, false, true, false, 0, 0, false);

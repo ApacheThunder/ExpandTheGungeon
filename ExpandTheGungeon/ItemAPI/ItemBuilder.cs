@@ -63,7 +63,13 @@ namespace ExpandTheGungeon.ItemAPI {
 				item.encounterTrackable = null;
 				ETGMod.Databases.Items.SetupItem(item, item.name);
 				SpriteBuilder.AddToAmmonomicon(item.sprite.GetCurrentSpriteDef());
-				item.encounterTrackable.journalData.AmmonomiconSprite = item.sprite.GetCurrentSpriteDef().name;
+                if (item.encounterTrackable && item.encounterTrackable.journalData != null && item.sprite && item.sprite.GetCurrentSpriteDef() != null &&
+                    !string.IsNullOrEmpty(item.sprite.GetCurrentSpriteDef().name))
+                {
+                    item.encounterTrackable.journalData.AmmonomiconSprite = item.sprite.GetCurrentSpriteDef().name;
+                } else if (item.encounterTrackable && item.encounterTrackable.journalData != null) {
+                    item.encounterTrackable.journalData.AmmonomiconSprite = "BROKEN_SPRITE";
+                }
 				GunExt.SetName(item, item.name);
 				GunExt.SetShortDescription(item, shortDesc);
 				GunExt.SetLongDescription(item, longDesc);

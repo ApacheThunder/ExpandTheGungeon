@@ -3638,7 +3638,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_Exploder.shardClusters = new ShardCluster[0];
             m_Exploder.spawnShardsOnDeath = false;
             m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
-            
+
 
             ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Explody_Boy", ExplodyBoyGUID, null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
                         
@@ -3678,6 +3678,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     ManualRightY = 0
                 }
             );
+
             m_CachedAIActor.specRigidbody.PixelColliders.Add(
                 new PixelCollider() {
                     ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
@@ -3697,7 +3698,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     ManualRightY = 0
                 }
             );
-                        
+            
             if (m_CachedAIActor.aiAnimator) {
                 m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
                 m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
