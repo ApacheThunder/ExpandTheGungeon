@@ -108,7 +108,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public override BehaviorResult Update() {
-            if (m_shadowSprite == null) { m_shadowSprite = m_aiActor.ShadowObject.GetComponent<tk2dBaseSprite>(); }
+            if (hideShadow && !m_shadowSprite && m_aiActor.ShadowObject) { m_shadowSprite = m_aiActor.ShadowObject.GetComponent<tk2dBaseSprite>(); }
             BehaviorResult behaviorResult = base.Update();
             if (behaviorResult != BehaviorResult.Continue) {
                 return behaviorResult;
@@ -330,8 +330,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (hideGun && m_aiShooter) { m_aiShooter.ToggleGunAndHandRenderers(false, "ExpandDashBehavior"); }
                 if (hideGun && gunHands != null && gunHands.Count > 0) {
                     foreach (GunHandController gunHand in gunHands) {
-                        if (gunHand.Gun) { gunHand.Gun.sprite.renderer.enabled = false; }
-                        if (gunHand.handObject) { gunHand.handObject.sprite.renderer.enabled = false; }
+                        if (gunHand.Gun && gunHand.Gun.sprite) {
+                            gunHand.Gun.sprite.renderer.enabled = false;
+                            SpriteOutlineManager.ToggleOutlineRenderers(gunHand.Gun.sprite, false);
+                        }
+                        if (gunHand.handObject && gunHand.handObject.sprite) {
+                            gunHand.handObject.sprite.renderer.enabled = false;
+                            SpriteOutlineManager.ToggleOutlineRenderers(gunHand.handObject.sprite, false);
+                        }
                     }
                 }
                 if (toggleTrailRenderer && m_trailRenderer) { m_trailRenderer.enabled = true; }
@@ -357,8 +363,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (hideGun && m_aiShooter) { m_aiShooter.ToggleGunAndHandRenderers(true, "ExpandDashBehavior"); }
                 if (hideGun && gunHands != null && gunHands.Count > 0) {
                     foreach (GunHandController gunHand in gunHands) {
-                        if (gunHand.Gun) { gunHand.Gun.sprite.renderer.enabled = true; }
-                        if (gunHand.handObject) { gunHand.handObject.sprite.renderer.enabled = true; }
+                        if (gunHand.Gun && gunHand.Gun.sprite) {
+                            gunHand.Gun.sprite.renderer.enabled = true;
+                            SpriteOutlineManager.ToggleOutlineRenderers(gunHand.Gun.sprite, true);
+                        }
+                        if (gunHand.handObject && gunHand.handObject.sprite) {
+                            gunHand.handObject.sprite.renderer.enabled = true;
+                            SpriteOutlineManager.ToggleOutlineRenderers(gunHand.handObject.sprite, true);
+                        }
                     }
                 }
                 if (toggleTrailRenderer && m_trailRenderer) { m_trailRenderer.enabled = false; }

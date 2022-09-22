@@ -352,10 +352,10 @@ namespace ExpandTheGungeon.ItemAPI {
                 player.SetIsFlying(false, "PlayerIsShip", false, false);
                 player.IsVisible = true;
                 player.ToggleShadowVisiblity(true);
-                player.IsGunLocked = false;
-                LastOwner.ToggleRenderer(true);
-                LastOwner.ToggleGunRenderers(true);
-                LastOwner.ToggleHandRenderers(true);
+                player.IsGunLocked = false;                
+                player.ToggleRenderer(true);
+                player.ToggleGunRenderers(true);
+                player.ToggleHandRenderers(true);
                 // player.AdditionalCanDodgeRollWhileFlying.RemoveOverride("IsAFlyingShip");
                 if (!ShipWasDestroyed) {
                     SpeculativeRigidbody specRigidbody3 = player.specRigidbody;
@@ -373,6 +373,10 @@ namespace ExpandTheGungeon.ItemAPI {
                         player.healthHaver.Armor -= 1;
                     }*/
                 }
+            } else if (LastOwner) {
+                LastOwner.ToggleRenderer(true);
+                LastOwner.ToggleGunRenderers(true);
+                LastOwner.ToggleHandRenderers(true);
             }
             if (ExpandSettings.debugMode) {
                 sprite.SetSprite(ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), "portableship_alt");
@@ -382,11 +386,19 @@ namespace ExpandTheGungeon.ItemAPI {
             
             itemState = ItemState.Inactive;            
             if (ShipWasDestroyed) {
-                AkSoundEngine.PostEvent("Play_OBJ_metronome_fail_01", player.gameObject);
+                if (player) {
+                    AkSoundEngine.PostEvent("Play_OBJ_metronome_fail_01", player.gameObject);
+                } else {
+                    AkSoundEngine.PostEvent("Play_OBJ_metronome_fail_01", gameObject);
+                }
                 Exploder.Explode(m_ShipPrefabInstance.transform.position, ShipExplosionData, Vector2.zero, null, true, CoreDamageTypes.None, false);
                 m_ShipPrefabInstance.SetActive(false);
-                timeCooldown = m_DamageCooldown;                
-                ApplyCooldown(player);
+                timeCooldown = m_DamageCooldown;
+                if (player) {
+                    ApplyCooldown(player);
+                } else if (LastOwner) {
+                    ApplyCooldown(LastOwner);
+                }
                 return;
             }
             m_HasCoopSynergy = false;
