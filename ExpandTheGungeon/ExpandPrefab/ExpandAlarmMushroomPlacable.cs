@@ -51,6 +51,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         private bool m_triggered;
         [NonSerialized]
         private GameObject m_TriggerVFX;
+        [NonSerialized]
+        private tk2dSprite m_ShadowSprite;
 
         private void Start() {
             if (ParentRoom == null) { ParentRoom = GetAbsoluteParentRoom(); }
@@ -60,6 +62,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     SpecRigidbody.OnTriggerCollision = (SpeculativeRigidbody.OnTriggerDelegate)Delegate.Combine(SpecRigidbody.OnTriggerCollision, new SpeculativeRigidbody.OnTriggerDelegate(HandleTriggerCollision));
                 }
             }
+            if (gameObject.transform.Find("Shadow")) { m_ShadowSprite = gameObject.transform.Find("Shadow").GetComponent<tk2dSprite>(); }
         }
 
         private void Update() {
@@ -69,6 +72,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 IsDead = true;
                 spriteAnimator.Stop();
                 sprite.SetSprite(DeadSpriteName);
+                if (BraveUtility.RandomBool()) {
+                    sprite.FlipX = true;
+                    if (m_ShadowSprite) { m_ShadowSprite.FlipX = true; }
+                }
                 Destroy(specRigidbody);
                 Destroy(this);
             }

@@ -166,7 +166,7 @@ namespace ExpandTheGungeon.ItemAPI {
 			return tk2dSpriteCollectionData;
 		}
 
-		public static T CopyFrom<T>(this Component comp, T other) where T : Component {
+		/*public static T CopyFrom<T>(this Component comp, T other) where T : Component {
 			Type type = comp.GetType();
 			bool flag = type != other.GetType();
 			T result;
@@ -187,7 +187,7 @@ namespace ExpandTheGungeon.ItemAPI {
 			return result;
 		}
 
-		public static T AddComponent<T>(this GameObject go, T toAdd) where T : Component { return go.AddComponent<T>().CopyFrom(toAdd); }
+		public static T AddComponent<T>(this GameObject go, T toAdd) where T : Component { return go.AddComponent<T>().CopyFrom(toAdd); }*/
 	}
 }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Gungeon;
 using UnityEngine;
-using HutongGames.Utility;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -18,20 +17,20 @@ namespace ExpandTheGungeon.ItemAPI {
             None
         }
 
-        private static Assembly baseAssembly;
+        /*private static Assembly baseAssembly;
 
-        public static void SetAssembly(Type t) { baseAssembly = t.Assembly; }
+        public static void SetAssembly(Type t) { baseAssembly = t.Assembly; }*/
         
         public static void Init() {
 			FakePrefabHooks.Init();
-			try {
+			/*try {
 				MethodBase method = new StackFrame(1, false).GetMethod();
 				Type declaringType = method.DeclaringType;
 				SetAssembly(declaringType);
 			} catch (Exception ex) {
 				ETGModConsole.Log(ex.Message, false);
 				ETGModConsole.Log(ex.StackTrace, false);
-			}
+			}*/
 		}
         
         public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture) {

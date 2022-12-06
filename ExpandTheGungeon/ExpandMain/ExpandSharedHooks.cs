@@ -1703,11 +1703,11 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public void FloorChestPlacerConfigureOnPlacementHook(Action<FloorChestPlacer, RoomHandler>orig, FloorChestPlacer self, RoomHandler room) {
             if (!self.UseOverrideChest && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.REWARD 
-                 && UnityEngine.Random.value < 0.1f
+                 && UnityEngine.Random.value < 0.045f
                ) {
                 Vector2 ChestPosition = self.transform.position.IntXY(VectorConversions.Round).ToVector3();
                 GameObject ChestReference = BraveUtility.RandomElement(ExpandLists.CustomChests);
-                if (ChestReference.name == ExpandPrefabs.RickRollChestObject.name && UnityEngine.Random.value < 0.8f) {
+                if (ChestReference.name == ExpandPrefabs.RickRollChestObject.name && UnityEngine.Random.value > 0.004f) {
                     List<GameObject> ChestsWithoutRickRoll = new List<GameObject>();
                     foreach (GameObject chest in ExpandLists.CustomChests) {
                         if (chest.name != ExpandPrefabs.RickRollChestObject.name) { ChestsWithoutRickRoll.Add(ChestReference); }

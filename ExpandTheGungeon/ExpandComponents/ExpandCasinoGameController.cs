@@ -187,7 +187,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     yield break;
                 case Mode.PunchoutArcade:
                     bool IsBroke = false;
-                    if (GameStatsManager.Instance.GetPlayerStatValue(TrackedStats.META_CURRENCY) < Cost) {
+                    if (!IsGameOverConversation && GameStatsManager.Instance.GetPlayerStatValue(TrackedStats.META_CURRENCY) < Cost) {
                         targetDisplayKey = insufficientFundsKey;
                         IsBroke = true;
                     }

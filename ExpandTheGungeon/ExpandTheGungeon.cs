@@ -23,7 +23,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.7.4";
+        public const string VERSION = "2.7.7";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -283,7 +283,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -524,45 +524,8 @@ namespace ExpandTheGungeon {
             ETGModConsole.Log("[ExpandTheGungeon] Sprite collection successfully built and exported!");
         }
 
-        private void ExpandTestCommand(string[] consoleText) {
-
-
-            // BraveMemory.EnsureHeapSize(204800);
-            // ETGModConsole.Log(SystemInfo.systemMemorySize.ToString());
-
-            /*GameObject AlarmMushroom = UnityEngine.Object.Instantiate(ExpandPrefabs.EXAlarmMushroom, CurrentPlayer.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
-            AlarmMushroom.GetComponent<ExpandAlarmMushroomPlacable>().ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
-
-            if (consoleText.Length > 1) {
-                float X = float.Parse(consoleText[0]);
-                float Y = float.Parse(consoleText[1]);
-                AlarmMushroom.transform.Find("Shadow").localPosition = new Vector3(X, Y);
-            }*/
-
-            // ETGMod.Assets.Dump.DumpSpriteCollection(ExpandCustomDungeonPrefabs.Base_Space.GetComponent<Dungeon>().tileIndices.dungeonCollection);
-
-
-            /*ExpandComponents.ExpandFakeChest SupriseChest = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity).GetComponent<ExpandComponents.ExpandFakeChest>();
-            SupriseChest.ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
-            CurrentPlayer.CurrentRoom.RegisterInteractable(SupriseChest);*/
-
-            // ExpandUtility.SpawnParaDrop(CurrentPlayer.CurrentRoom, CurrentPlayer.specRigidbody.GetUnitCenter(ColliderType.HitBox), DropHorizontalOffset: 0);
-
-            // GameObject AlarmMushRoomTest = UnityEngine.Object.Instantiate(ExpandPrefabs.EXAlarmMushroom, CurrentPlayer.transform.position + new Vector3(0, 2), Quaternion.identity);
-
-            // AlarmMushRoomTest.GetComponent<ExpandAlarmMushroomPlacable>().ConfigureOnPlacement(CurrentPlayer.CurrentRoom);
-
-            /*GameObject TestPortal = UnityEngine.Object.Instantiate(ExpandPrefabs.EX_RainbowRoomFloor, CurrentPlayer.transform.position, Quaternion.identity);
-
-            if (consoleText.Length > 1) {
-                float X = float.Parse(consoleText[0]);
-                float Y = float.Parse(consoleText[1]);
-                TestPortal.transform.localScale = new Vector3(X, Y);
-                // ExpandPrefabs.EX_Chest_West.gameObject.transform.Find("Shadow").localPosition = new Vector3(X, Y);
-            }
-
-            TestPortal.transform.position -= new Vector3(0, 0, -50);*/
-
+        /*private void ExpandTestCommand(string[] consoleText) {
+        
             GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
             GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
             // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);
@@ -574,105 +537,8 @@ namespace ExpandTheGungeon {
                 GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, +int.Parse(consoleText[1]));
             }
             
-            // PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-            // ETGModConsole.Log("Unoccluded = " + LayerMask.NameToLayer("Unoccluded").ToString());
-
-            // GameManager.Instance.StartCoroutine(SecondDungeonOBJ.GetComponent<Dungeon>().Regenerate(false));
-            /*Chest TestChest = Chest.Spawn(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>(), CurrentPlayer.transform.PositionVector2().ToIntVector2() + new IntVector2(0, 2), CurrentPlayer.CurrentRoom);
-            
-
-
-            Material shade = new Material(ShaderCache.Acquire("Brave/ItemSpecific/LootGlintAdditivePass"));
-            shade.SetColor("_OverrideColor", new Color(1f, 0.77f, 0f));
-
-            TestChest.sprite.usesOverrideMaterial = true;
-            TestChest.sprite.renderer.material.shader = shade.shader;
-            TestChest.sprite.renderer.material.SetColor("_OverrideColor", new Color(1.3f, 0.8f, 0f, 1));*/
-
-
-
-            // GameObject EXGlitchFloorScreenFX = UnityEngine.Object.Instantiate(ExpandPrefabs.EXGlitchFloorScreenFX);
-            // EXGlitchFloorScreenFX.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
-            // ExpandGlitchedEnemies m_GlitchedEnemies = new ExpandGlitchedEnemies();
-            // GameObject TestEnemy = m_GlitchedEnemies.SpawnRandomGlitchEnemy(CurrentPlayer.CurrentRoom, new IntVector2(2, 2), true);
-
-            /*BlinkPassiveItem m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
-
-            AIActor[] AllEnemies = UnityEngine.Object.FindObjectsOfType<AIActor>();
-            ScarfAttachmentDoer m_Scarf = m_BlinkPassive.ScarfPrefab;
-
-            if (AllEnemies != null && AllEnemies.Length > 0) {
-                foreach (AIActor enemy in AllEnemies) {                    
-
-                    GameObject m_ExpandScarfObject = new GameObject("VFX_EXScarf");
-                    ExpandComponents.ExpandScarfComponent m_ExpandScarf = m_ExpandScarfObject.AddComponent<ExpandComponents.ExpandScarfComponent>();
-
-                    m_ExpandScarf.StartWidth = m_Scarf.StartWidth;
-                    m_ExpandScarf.EndWidth = m_Scarf.EndWidth;
-                    m_ExpandScarf.AnimationSpeed = m_Scarf.AnimationSpeed;
-                    m_ExpandScarf.ScarfLength = m_Scarf.ScarfLength;
-                    m_ExpandScarf.AngleLerpSpeed = m_Scarf.AngleLerpSpeed;
-                    m_ExpandScarf.BackwardZOffset = m_Scarf.BackwardZOffset;
-                    m_ExpandScarf.CatchUpScale = m_Scarf.CatchUpScale;
-                    m_ExpandScarf.SinSpeed = m_Scarf.SinSpeed;
-                    m_ExpandScarf.AmplitudeMod = m_Scarf.AmplitudeMod;
-                    m_ExpandScarf.WavelengthMod = m_Scarf.WavelengthMod;
-                    m_ExpandScarf.ScarfMaterial = Material.Instantiate(m_Scarf.ScarfMaterial);
-                    m_ExpandScarf.ScarfMaterial.SetColor("_OverrideColor", new Color(0.1f, 0.7f, 0.1f));
-
-                    m_ExpandScarf.Initialize(enemy);
-                }
-            }*/
-
-            // UnityEngine.Object.Instantiate(ExpandPrefabs.BlankRewardPedestal, (CurrentPlayer.transform.position + new Vector3(-2, 2)), Quaternion.identity);
-            /* 
-            // UnityEngine.Object.Instantiate(ExpandPrefabs.RatKeyRewardPedestal, (CurrentPlayer.transform.position + new Vector3(2, 2)), Quaternion.identity);
-            Dungeon m_dungeonPrefab = DungeonDatabase.GetOrLoadByName("finalscenario_guide");
-            DungeonFlow dungeonFlowPrefab = m_dungeonPrefab.PatternSettings.flows[0];
-            PrototypeDungeonRoom GuidePastRoom = dungeonFlowPrefab.AllNodes[0].overrideExactRoom;
-            GameObject GuidePastRoomObject = GuidePastRoom.placedObjects[0].nonenemyBehaviour.gameObject;
-            GameObject m_RainPrefab = GuidePastRoomObject.transform.Find("Rain").gameObject;
-
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            AssetBundle SharedAssets1 = ResourceManager.LoadAssetBundle("shared_auto_001");
-
-            GameObject TestObject = expandSharedAssets1.LoadAsset<GameObject>("ExpandDustStormFX");
-
-            ParticleSystemRenderer testSystem = TestObject.GetComponent<ParticleSystemRenderer>();
-            // testSystem.materials[0].shader = m_RainPrefab.GetComponent<ThunderstormController>().RainSystemTransform.gameObject.GetComponent<ParticleSystemRenderer>().materials[0].shader;
-            // testSystem.materials[0].shader = SharedAssets1.LoadAsset<Shader>("BlendVertexColorTilted");
-            testSystem.materials[0].shader = SharedAssets1.LoadAsset<Shader>("BraveParticlesAdditive");
-            testSystem.materials[0].mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("ExpandDustFXSprite_001");
-            testSystem.allowOcclusionWhenDynamic = true;
-
-            GameObject NewTestObject = UnityEngine.Object.Instantiate(TestObject, CurrentPlayer.transform.position.GetAbsoluteRoom().area.basePosition.ToVector3(), Quaternion.identity);*/
-
-
-
-            /*RoomHandler SelectedRoom = null;
-            foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
-                if (!string.IsNullOrEmpty(room.GetRoomName()) && room.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Gungeon_BellyEntranceRoom.name)) {
-                    SelectedRoom = room;
-                    break;
-                }
-            }
-
-
-            if (SelectedRoom != null) {
-                IntVector2 targetPoint = SelectedRoom.area.basePosition + new IntVector2(8, 6);
-                CurrentPlayer.WarpToPoint(targetPoint.ToVector2(), false, false);
-            } else {
-                GameManager.Instance.LoadNextLevel();
-            }*/
-
-            // LootEngine.SpawnItem(CorruptedJunk.CorruptedJunkObject, (CurrentPlayer.transform.position + Vector3.one), Vector2.zero, 0, doDefaultItemPoof: true);
-            // Rooms for floor 4.
-            // GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(1, "SecretGlitchFloor_Flow", true));
-
-            // 
-            return;
-        }
-        
+            //return;
+        }*/
     }
 }
 

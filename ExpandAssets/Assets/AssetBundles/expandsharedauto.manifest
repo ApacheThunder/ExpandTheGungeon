@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3117697334
+CRC: 172982175
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c4428d1aba579a2f55ae216093a501c8
+    Hash: b9c4ef6c1b4bc5b4c83419121408159f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -830,6 +830,7 @@ Assets:
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/SonicCompanionCollection.prefab
 - Assets/ExpandSerializedData/SpriteCollections/EXParadropCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman9.bytes
+- Assets/ExpandRooms/RoomFactoryData/TrapRooms/Expand_TheCrushZone.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera23.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXChest_Collection.png
 - Assets/ExpandPrefabs/Shaders/ExpandVHSPostProcessEffect.shader
@@ -1032,7 +1033,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/roomFloorBorderGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Brother9.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Chain_Gap_Layout.png
-- Assets/ExpandRooms/RoomBuilderData/TrapRooms/Expand_Apache_TheCrushZone_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_Weird2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular9.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BootlegBullat_Collection.png
@@ -1081,6 +1081,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed15.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Singer_Gap_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_ConfirmedSnakes.bytes
+- Assets/ExpandRooms/RoomFactoryData/TrapRooms/Expand_PitTraps.bytes
 - Assets/ExpandTextures/SpriteCollections/GunsAndItems/EXGun_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman10.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_CornerBomb4.bytes
@@ -1098,7 +1099,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman4.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/CronenbergTallCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal7.bytes
-- Assets/ExpandRooms/RoomBuilderData/TrapRooms/Expand_Apache_PitTraps_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Witch3.bytes
 - Assets/ExpandPrefabs/SpriteCollections/GunsAndItems/EXGunCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal3.bytes
