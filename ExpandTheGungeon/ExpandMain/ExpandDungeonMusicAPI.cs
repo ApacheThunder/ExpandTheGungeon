@@ -9,6 +9,8 @@ namespace ExpandTheGungeon.ExpandMain {
     
     public class ExpandDungeonMusicAPI {
 
+        public static string TempCustomBossMusic = string.Empty;
+
         public static Hook switchToStateHook;
         // public static Hook notifyEnteredNewRoomHook;
         public static Hook switchToCustomMusicHook;
@@ -17,6 +19,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook switchToDragunTwoHook;
         public static Hook flushMusicAudioHook;
         public static Hook flushAudioHook;
+        public static Hook endBossMusicHook;
 
         // Event for stopping all custom music. Ensure you defined this in your sound bank and put the string for it here.
         public static readonly string StopAllMusicEventName = "Stop_EX_MUS_All";
@@ -97,7 +100,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToDragunTwo)),
                 typeof(DungeonFloorMusicController)
             );
-            
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.EndBossMusic Hook...."); }
+            endBossMusicHook = new Hook(
+                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.EndBossMusic), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(EndBossMusic)),
+                typeof(DungeonFloorMusicController)
+            );
+
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
             flushMusicAudioHook = new Hook(
                 typeof(GameManager).GetMethod("FlushMusicAudio", BindingFlags.Public | BindingFlags.Instance),
@@ -358,6 +368,13 @@ namespace ExpandTheGungeon.ExpandMain {
             orig(self);
         }
         
+
+        // Ensures any custom boss music is cleared.
+        public void EndBossMusic(Action<DungeonFloorMusicController>orig, DungeonFloorMusicController self) {
+            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
+            orig(self);
+        }
+
         // These hooks ensure our custom music/audio gets stopped properly when leaving a floor.
         public void FlushMusicAudio(Action<GameManager> orig, GameManager self) {
             AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);

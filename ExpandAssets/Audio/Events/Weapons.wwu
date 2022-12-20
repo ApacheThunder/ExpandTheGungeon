@@ -459,6 +459,18 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{0C48C6F8-2DA6-4098-95BC-BBB646AA3576}" ShortID="762889479">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Shots Fired!" ID="{C8395933-DCA7-4D46-B690-4960F2991E5A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -1214,6 +1226,36 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Quiet_Forest_Secret" ID="{82C7C77A-B400-4610-B0F9-430001D77076}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_ShotsFired_01" ID="{7E2171C2-4AF5-4E56-AE19-80A5693598BB}">
+					<ChildrenList>
+						<Action Name="" ID="{F0037F2B-3C79-4B74-B5A0-219CF929FE49}" ShortID="1027299367">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Shots Fired!" ID="{C8395933-DCA7-4D46-B690-4960F2991E5A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_ShotsFired_01" ID="{C75785E4-43D2-4A50-A386-D0B2E26D3A50}">
+					<ChildrenList>
+						<Action Name="" ID="{33DFE77D-9A68-4564-BF3C-D22281DA932F}" ShortID="818967966">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Shots Fired!" ID="{C8395933-DCA7-4D46-B690-4960F2991E5A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

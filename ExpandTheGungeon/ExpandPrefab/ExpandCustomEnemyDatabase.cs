@@ -5526,6 +5526,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             bossIntroDoer.portraitSlideSettings.bossNameString = "Com4nd0";
             bossIntroDoer.portraitSlideSettings.bossSubtitleString= "Temple Defence";
             bossIntroDoer.portraitSlideSettings.bossQuoteString = string.Empty;
+            // bossIntroDoer.BossMusicEvent = "Play_EX_MUS_ShotsFired_01";
 
 
 

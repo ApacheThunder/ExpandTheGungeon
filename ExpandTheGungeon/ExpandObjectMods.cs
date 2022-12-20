@@ -154,6 +154,18 @@ namespace ExpandTheGungeon {
                     MaybeSetupGlitchEnemyStun(dungeon);
                 }
             }
+
+            if (!string.IsNullOrEmpty(ExpandDungeonMusicAPI.TempCustomBossMusic)) {
+                AIActor[] enemies = Object.FindObjectsOfType<AIActor>();
+                if (enemies != null && enemies.Length > 0) {
+                    foreach (AIActor enemy in enemies) {
+                        if (enemy.healthHaver && enemy.healthHaver.HasHealthBar && enemy.healthHaver.IsBoss && enemy.gameObject.GetComponent<GenericIntroDoer>()) {
+                            enemy.gameObject.GetComponent<GenericIntroDoer>().BossMusicEvent = ExpandDungeonMusicAPI.TempCustomBossMusic;
+                            ExpandDungeonMusicAPI.TempCustomBossMusic = string.Empty;
+                        }
+                    }
+                }
+            }
         }
 
         private static void MaybeSetupGlitchEnemyStun(Dungeon dungeon, bool forceRun = false) {

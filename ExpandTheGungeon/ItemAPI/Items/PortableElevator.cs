@@ -183,6 +183,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private void DoElevatorDrop(Vector2 currentTarget, RoomHandler targetRoom) {
             GameObject m_ElevatorOBJ = Instantiate(ExpandPrefabs.EXPortableElevator_Departure, currentTarget, Quaternion.identity);
             ExpandNewElevatorController m_ElevatorController = m_ElevatorOBJ.GetComponent<ExpandNewElevatorController>();
+            m_ElevatorController.OverrideBossMusic = "Play_EX_MUS_ShotsFired_01";
             m_ElevatorController.OverrideFloorName = BraveUtility.RandomElement(ValidDestinations.Shuffle());
             m_ElevatorController.ConfigureOnPlacement(targetRoom);
 

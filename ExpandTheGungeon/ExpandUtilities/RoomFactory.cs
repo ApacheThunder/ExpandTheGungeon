@@ -36,7 +36,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static PrototypeDungeonRoom BuildFromAssetBundle(AssetBundle[] Bundles, string assetPath, bool setRoomCategory = false, bool autoAssignToFloor = false, bool assignDecorationSettings = false) {
-            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath); ;
+            TextAsset m_Asset = ExpandAssets.LoadAsset<TextAsset>(assetPath);
             if (m_Asset) {
                 RoomData roomData = ExtractRoomDataFromTextAssetBytes(m_Asset);
                 return Build(Bundles, ExpandUtility.BytesToTexture(m_Asset.bytes, m_Asset.name), roomData, setRoomCategory, autoAssignToFloor, assignDecorationSettings, roomData.weight);

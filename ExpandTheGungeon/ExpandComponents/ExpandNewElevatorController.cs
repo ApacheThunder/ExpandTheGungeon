@@ -6,6 +6,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using System.Collections.Generic;
+using ExpandTheGungeon.ExpandMain;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -25,6 +26,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             floorBrokenSpriteName = "portable_elevator_floor_broken";
             floorBrokenAltSpriteName = "portable_elevator_floor_broken_alt";
 
+            OverrideBossMusic = string.Empty;
             OverrideFloorName = "tt_phobos";
 
             DropHeight = 20;
@@ -85,7 +87,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool IsArrivalElevator;
         public bool IsGlitchElevator;
 
-
+        public string OverrideBossMusic;
         public string OverrideFloorName;
 
         public string elevatorArriveAnimName;
@@ -303,6 +305,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void DoDeparture() {
             m_isArrived = true;
             m_DepartureTriggered = true;
+            if (!string.IsNullOrEmpty(OverrideBossMusic)) { ExpandDungeonMusicAPI.TempCustomBossMusic = OverrideBossMusic; }
             if (!IsArrivalElevator) {
                 if (Minimap.Instance) { Minimap.Instance.PreventAllTeleports = true; }
                 if (GameManager.HasInstance && GameManager.Instance.AllPlayers != null) {

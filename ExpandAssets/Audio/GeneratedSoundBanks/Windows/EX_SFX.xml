@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="128">
 	<RootPaths>
-		<ProjectRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\</ProjectRoot>
-		<SourceFilesRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\.cache\Windows\</SourceFilesRoot>
-		<SoundBanksRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ProjectRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\GeneratedSoundBanks\Windows\</SoundBanksRoot>
 		<ExternalSourcesInputFile></ExternalSourcesInputFile>
-		<ExternalSourcesOutputRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\AudioAssets\wWise\ExpandTheGungeon\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+		<ExternalSourcesOutputRoot>C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
 		<SoundBank Id="3825169110" Language="SFX">
@@ -52,6 +52,7 @@
 				<Event Id="1504561828" Name="Play_EX_MUS_Jungle_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_LoopD"/>
 				<Event Id="761530598" Name="Play_EX_MUS_Jungle_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Secret"/>
 				<Event Id="145544202" Name="Play_EX_MUS_Jungle_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Shop"/>
+				<Event Id="3842873489" Name="Play_EX_MUS_ShotsFired_01" ObjectPath="\Events\Weapons\Play_EX_MUS_ShotsFired_01"/>
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
@@ -76,6 +77,7 @@
 				<Event Id="1036099946" Name="Stop_EX_CorruptionRoomTransition_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_02"/>
 				<Event Id="3570814999" Name="Stop_EX_MUS_All" ObjectPath="\Events\Weapons\Stop_EX_MUS_All"/>
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
+				<Event Id="45318251" Name="Stop_EX_MUS_ShotsFired_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_ShotsFired_01"/>
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
 				<Event Id="2623135779" Name="Stop_EX_SFX_All" ObjectPath="\Events\Weapons\Stop_EX_SFX_All"/>
 				<Event Id="1444952135" Name="Stop_EX_SonicBrake_01" ObjectPath="\Events\Weapons\Stop_EX_SonicBrake_01"/>
@@ -212,6 +214,10 @@
 				<File Id="737636557" Language="SFX">
 					<ShortName>SonicRingCollect.wav</ShortName>
 					<Path>SFX\SonicRingCollect_F7D0E330.wem</Path>
+				</File>
+				<File Id="777371175" Language="SFX">
+					<ShortName>Shots Fired!.wav</ShortName>
+					<Path>SFX\Shots Fired!_AD29F36A.wem</Path>
 				</File>
 				<File Id="836609844" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Calm.wav</ShortName>
