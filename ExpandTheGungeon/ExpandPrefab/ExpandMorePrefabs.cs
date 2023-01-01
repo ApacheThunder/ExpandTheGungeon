@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Dungeonator;
-using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.SpriteAPI;
 

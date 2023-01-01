@@ -23,7 +23,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.7.8";
+        public const string VERSION = "2.7.9";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -525,7 +525,6 @@ namespace ExpandTheGungeon {
         }
 
         /*private void ExpandTestCommand(string[] consoleText) {
-        
             GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
             GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
             // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);

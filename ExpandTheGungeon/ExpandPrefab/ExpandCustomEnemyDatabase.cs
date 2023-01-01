@@ -206,7 +206,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildJungleBossPrefab(out com4nd0BossPrefab);
             
             // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
-            UpdateMTGSpawnPool();
+            // UpdateMTGSpawnPool();
         }
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
@@ -321,7 +321,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.DuplicateSpriteAnimation(BulletManEyepatchCollection, BulletManEyepatchCollection.AddComponent<tk2dSpriteAnimation>(), BulletManEyepatchEnemy.spriteAnimator.Library, BulletManEyepatchCollectionData);
             BulletManEyepatchEnemy.spriteAnimator.Library = BulletManEyepatchCollection.GetComponent<tk2dSpriteAnimation>();
             BulletManEyepatchEnemy.optionalPalette = null;
-
         }
         
         public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false, bool AddToMTGSpawnPool = true) {
@@ -3106,6 +3105,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
+            m_CachedAIActor.IsHarmlessEnemy = true;
             m_CachedAIActor.HasShadow = false;
             m_CachedAIActor.MovementSpeed = 0.65f;
             m_CachedAIActor.PathableTiles = CellTypes.FLOOR;

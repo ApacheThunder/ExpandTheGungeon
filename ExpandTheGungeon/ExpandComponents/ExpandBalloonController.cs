@@ -313,6 +313,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Destroy(gameObject);
                 return;
             }
+
+            /*if (!AttachTarget && !AlternateAttachTarget && !DoDetachAndFloatAfterTargetDeath && !DestroyOnDeath) {
+                Destroy(m_BalloonString);
+                Destroy(gameObject);
+                return;
+            }*/
         }
 
         

@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace ExpandTheGungeon.SpriteAPI {
 
-	public static class SpriteSerializer {
-        
+    public static class SpriteSerializer {
+
         private static tk2dSpriteCollectionData newCollection;
         private static RuntimeAtlasPacker AtlasPacker;
         

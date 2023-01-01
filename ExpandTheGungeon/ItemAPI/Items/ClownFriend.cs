@@ -143,6 +143,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private void DestroyCompanion() {
             if (!m_extantCompanion) { return; }
+            if (m_extantCompanion.GetComponent<ExpandClownKinBalloonManager>() && m_extantCompanion.GetComponent<ExpandClownKinBalloonManager>().m_Balloon) {
+                Destroy(m_extantCompanion.GetComponent<ExpandClownKinBalloonManager>().m_Balloon);
+                Destroy(m_extantCompanion.GetComponent<ExpandClownKinBalloonManager>());
+            }
             Destroy(m_extantCompanion);
             m_extantCompanion = null;
         }

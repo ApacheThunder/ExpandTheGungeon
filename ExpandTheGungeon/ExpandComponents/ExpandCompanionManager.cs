@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dungeonator;
+using System;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -19,9 +20,12 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             Scale = 0.65f;
             m_WasRescaled = false;
+            m_Awake = false;
 
             UpdateTimer = 1.5f;
+
             m_Timer = UpdateTimer;
+            m_AwakeTimer = 1;
         }
         
         public AIAnimator.FacingType NoTargetFaceType;
@@ -34,6 +38,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool SwapFaceTypesOnTarget;
         public bool ToggleFaceSouthWhenStopped;
         public bool HideGunsWhenNoTarget;
+        
 
         [NonSerialized]
         private AIActor m_AIActor;
@@ -42,19 +47,44 @@ namespace ExpandTheGungeon.ExpandComponents {
         [NonSerialized]
         private bool m_WasRescaled;
         [NonSerialized]
+        private bool m_Awake;
+        [NonSerialized]
         private float m_Timer;
+        [NonSerialized]
+        private float m_AwakeTimer;
 
         private void Awake() {
-            m_AIActor = aiActor;
-            m_AIShooter = aiShooter;
-            if (HideGunsWhenNoTarget && (!m_AIActor | !m_AIShooter | m_AIActor.TargetRigidbody)) { return; }
-            m_AIShooter.ToggleGunAndHandRenderers(false, "Companion gun toggle for target change");
+            m_Awake = false;
+            m_AwakeTimer = 1f;
         }
 
         private void Start() { }
 
+        private void LateUpdate() {
+            if (Dungeon.IsGenerating | GameManager.Instance.IsLoadingLevel | m_Awake) { return; }
+                       
+            m_AwakeTimer -= BraveTime.DeltaTime;
+
+            if (m_AwakeTimer < 0) {
+                m_Awake = true;
+                m_AIActor = aiActor;
+                m_AIShooter = aiShooter;
+                if (HideGunsWhenNoTarget && (!m_AIActor | !m_AIShooter | m_AIActor.TargetRigidbody)) { return; }
+                try {
+                    m_AIShooter.ToggleGunAndHandRenderers(false, "Companion gun toggle for target change");
+                } catch (Exception ex) {
+                    if (ExpandSettings.debugMode) { Debug.LogException(ex); }
+                }
+            }
+        }
+
         private void Update() {
+            if (!m_Awake) { return; }
             if (!m_AIActor) { Destroy(this); return; }
+            
+            if (m_Awake && (!m_AIShooter | !m_AIActor)) {
+                
+            }
 
             if (Rescale && !m_WasRescaled) {
                 m_WasRescaled = true;
@@ -63,6 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_AIActor.EnemyScale = new Vector2(Scale, Scale);
                 sprite.UpdateZDepth();
             }
+
 
             if (UpdateTimer != -1 && m_AIActor && !m_AIActor.TargetRigidbody) {
                 m_Timer -= BraveTime.DeltaTime;

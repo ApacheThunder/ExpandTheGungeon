@@ -456,15 +456,14 @@ namespace ExpandTheGungeon.ItemAPI {
                     FXController.UseCorruptionAmbience = m_CopyCurrentRoom;
                     GlitchShaderObject.transform.SetParent(dungeon.gameObject.transform);
                 }
-
-                GameObject[] Objects = FindObjectsOfType<GameObject>();
-
+                                
                 try {
-                    foreach (GameObject Object in Objects) {
-                        if (Object && Object.transform.parent == currentRoom.hierarchyParent && IsValidObject(Object)) {
-                            Vector3 OrigPosition = (Object.transform.position - currentRoom.area.basePosition.ToVector3());
+                    for(int i = 0; i < currentRoom.hierarchyParent.childCount; i++) {
+                        Transform childTransform = currentRoom.hierarchyParent.GetChild(i);
+                        if (childTransform?.gameObject && IsValidObject(childTransform.gameObject)) {
+                            Vector3 OrigPosition = (childTransform.position - currentRoom.area.basePosition.ToVector3());
                             Vector3 NewPosition = (OrigPosition + GlitchRoom.area.basePosition.ToVector3());
-                            GameObject newObject = Instantiate(Object, NewPosition, Quaternion.identity);
+                            GameObject newObject = Instantiate(childTransform.gameObject, NewPosition, Quaternion.identity);
                             newObject.transform.SetParent(GlitchRoom.hierarchyParent);
 
                             if (newObject.GetComponent<BaseShopController>()) { Destroy(newObject.GetComponent<BaseShopController>()); }
@@ -496,7 +495,7 @@ namespace ExpandTheGungeon.ItemAPI {
                                     ExpandShaders.Instance.BecomeGlitched(newObject, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
                                 }
                             }
-                        }                    
+                        }
                     }
                 } catch (Exception ex) {
                     if (ExpandSettings.debugMode) {

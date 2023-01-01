@@ -228,6 +228,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject CandleGuy;
         public static GameObject WallMimic;
         public static GameObject AK47BulletKin;
+        public static GameObject PirateShotgunKin;
+        public static GameObject PirateShotgunKinHat;
+        public static GameObject PirateBulletKin;
+        public static GameObject PirateBulletKinHat;
 
         public static GameObject RatJailDoor;
         public static GameObject CurrsedMirror;
@@ -1370,9 +1374,25 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SerManuel = EnemyDatabase.GetOrLoadByGuid("fc809bd43a4d41738a62d7565456622c").gameObject;
             SkusketHead = EnemyDatabase.GetOrLoadByGuid("c2f902b7cbe745efb3db4399927eab34").gameObject;
             AK47BulletKin = EnemyDatabase.GetOrLoadByGuid("db35531e66ce41cbb81d507a34366dfe").gameObject;
+            PirateShotgunKin = EnemyDatabase.GetOrLoadByGuid("86dfc13486ee4f559189de53cfb84107").gameObject;
+            PirateShotgunKinHat = PirateShotgunKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].effect;
+            PirateBulletKin = EnemyDatabase.GetOrLoadByGuid("6f818f482a5c47fd8f38cce101f6566c").gameObject;
+            PirateBulletKinHat = PirateBulletKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].effect;
+
 
             // Fix missing death sound
             AK47BulletKin.GetComponent<AIActor>().EnemySwitchState = EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").EnemySwitchState;
+
+
+            // Fix corpse hat zDepth
+            PirateShotgunKinHat.GetComponent<tk2dSprite>().CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            PirateShotgunKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].usesZHeight = true;
+            PirateShotgunKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].zHeight = -1.5f;
+
+            PirateBulletKinHat.GetComponent<tk2dSprite>().CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            PirateBulletKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].usesZHeight = true;
+            PirateBulletKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].zHeight = -1.5f;
+
 
             RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
             CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;

@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4816379484175378}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Clownkin_Wig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
