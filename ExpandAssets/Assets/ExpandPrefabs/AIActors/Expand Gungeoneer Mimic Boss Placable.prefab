@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4510291407970264}
-  m_Layer: 0
+  m_Layer: 28
   m_Name: Expand Gungeoneer Mimic Boss Placable
   m_TagString: Untagged
   m_Icon: {fileID: 0}

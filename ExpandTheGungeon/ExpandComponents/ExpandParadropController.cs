@@ -16,6 +16,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UseLandingVFX = false;
             UseObjectSizeOverride = false;
             IsItemCrate = false;
+            IsToadie = false;
 
             LandingPositionOffset = -1;
             DropHeightHorizontalOffset = 0;
@@ -50,6 +51,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public Vector2 OverrideObjectSize;
         public int ItemDropID;
         public bool IsItemCrate;
+        public bool IsToadie;
 
         private bool m_ParadropStarted;
         private bool m_Initialized;
@@ -326,9 +328,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                             m_ParentEnemy.ShadowObject.GetComponent<tk2dSprite>().renderer.enabled = true;
                         }
                         if (m_ParentEnemy.aiShooter) { m_ParentEnemy.aiShooter.ToggleGunAndHandRenderers(true, "ParaDrop"); }
-                        m_ParentEnemy.behaviorSpeculator.enabled = true;
-                        m_ParentEnemy.HasBeenEngaged = true;
-                        m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
+                        if (!IsToadie) {
+                            m_ParentEnemy.behaviorSpeculator.enabled = true;
+                            m_ParentEnemy.HasBeenEngaged = true;
+                            m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
+                        }
                         m_ParentEnemy.behaviorSpeculator.RemoveDelayOnReinforce = true;
                     }
                     if (healthHaver) {

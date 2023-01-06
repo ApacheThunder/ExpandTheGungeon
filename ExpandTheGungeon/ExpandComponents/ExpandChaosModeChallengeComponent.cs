@@ -64,6 +64,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             };
 
             RoomEnemyGUIDList = new List<string> {
+                ExpandCustomEnemyDatabase.ClownkinAngryGUID,
+                ExpandCustomEnemyDatabase.ClownkinNoFXGUID,
+                ExpandCustomEnemyDatabase.BootlegBulletManGUID,
+                ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
+                ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID,
+                ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
+                ExpandCustomEnemyDatabase.AggressiveCronenbergGUID,
+                ExpandCustomEnemyDatabase.HotShotBulletKinGUID,
+                ExpandCustomEnemyDatabase.HotShotCultistGUID,
+                ExpandCustomEnemyDatabase.HotShotShotgunKinGUID,
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 "d4a9836f8ab14f3fadd0f597438b1f1f", // mutant_bullet_kin
                 "05891b158cd542b1a5f3df30fb67a7ff", // arrow_head

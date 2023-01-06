@@ -746,7 +746,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MouseTrap1 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[0];
             MouseTrap2 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[1];
             MouseTrap3 = ResourcefulRatBossPrefab.GetComponent<ResourcefulRatController>().MouseTraps[2];
-
+            
             SecretElevatorExitTileset = expandSharedAssets1.LoadAsset<GameObject>("SecretElevatorExitTileset");
             GameObject SecretElevatorExitTileset_Floor = SecretElevatorExitTileset.transform.Find("Floor").gameObject;
             GameObject SecretElevatorExitTileset_Roof = SecretElevatorExitTileset.transform.Find("Roof").gameObject;

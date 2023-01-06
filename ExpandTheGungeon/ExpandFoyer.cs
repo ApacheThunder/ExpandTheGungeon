@@ -44,10 +44,6 @@ namespace ExpandTheGungeon {
                         StaticReferenceManager.AllEnemies.Clear();
                         ExpandTheGungeon.ListsCleared = true;
                     }
-                    if (ExpandSettings.EnableLanguageFix) {
-                        GameManager.Options.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
-                        StringTableManager.CurrentLanguage = ExpandUtility.IntToLanguage(ExpandSettings.GameLanguage);
-                    }
                     if (ExpandSettings.EnableTestDungeonFlow) {
                         GameManager.Instance.InjectedFlowPath = ExpandSettings.TestFlow;
                         GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;

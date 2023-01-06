@@ -62,6 +62,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getTileHook;
         public static Hook floorChestPlacerConfigureOnPlacementHook;
         public static Hook applyBenefitHook;
+        public static Hook flameTrapHook;
 
         public static bool IsHooksInstalled = false;
         
@@ -374,7 +375,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod(nameof(ApplyBenefit)),
                 typeof(ShrineBenefit)
             );
-            
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ShrineBenefit.ApplyBenefit Hook...."); }
+            flagCellsHook = new Hook(
+                typeof(FlameTrapChallengeModifier).GetMethod("OnDestroy", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(FlameTrapOnDestroyHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(FlameTrapChallengeModifier)
+            );
+
             return;
         }
 
@@ -1783,6 +1791,19 @@ namespace ExpandTheGungeon.ExpandMain {
                 orig(self, interactor);
             }
             return;
+        }
+
+        private void FlameTrapOnDestroyHook(Action<FlameTrapChallengeModifier>orig, FlameTrapChallengeModifier self) {
+            List<BasicTrapController> m_activeTraps = ReflectGetField<List<BasicTrapController>>(typeof(FlameTrapChallengeModifier), "m_activeTraps");
+            if (m_activeTraps != null && m_activeTraps.Count > 0) {
+                for (int i = 0; i < m_activeTraps.Count; i++) {
+                    if (m_activeTraps[i]) {
+                        // m_activeTraps[i].triggerMethod = BasicTrapController.TriggerMethod.Script;
+                        m_activeTraps[i].Trigger();
+                    }
+                }
+                m_activeTraps.Clear();
+            }
         }
     }
 }

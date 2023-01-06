@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 67696902
+CRC: 415357097
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9deb45a9503e598885a647facfc500e6
+    Hash: cdb815b58ce6c2e71dfd1b80eb2605b4
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -194,6 +194,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed20.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_FishBats.bytes
 - Assets/ExpandSerializedData/SpriteCollections/CronenbergCollection.txt
+- Assets/ExpandPrefabs/AIActors/Clownkin_Angry.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandJungleThunderStorm.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed12.bytes

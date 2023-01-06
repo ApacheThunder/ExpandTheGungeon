@@ -15,7 +15,6 @@ namespace ExpandTheGungeon {
         public static bool RestoreOldRooms = false;
         public static bool EnableJungleRain = true;
         public static bool EnableBloodiedScarfFix = true;
-        public static bool EnableLanguageFix = false;
         public static bool EnableExpandedGlitchFloors = true;
         public static bool EnableGlitchFloorScreenShader = true;
         public static bool EnableEXItems = true;
@@ -67,7 +66,6 @@ namespace ExpandTheGungeon {
             debugMode = stats.debugMode;
             youtubeSafeMode = stats.youtubeSafeMode;
             IsHardModeBuild = stats.IsHardModeBuild;
-            EnableLanguageFix = stats.EnableLanguageFix;
             EnableJungleRain = stats.EnableJungleRain;
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
             GameLanguage = stats.GameLanguage;
@@ -89,7 +87,6 @@ namespace ExpandTheGungeon {
         public bool RestoreOldRooms;
         public bool EnableJungleRain;
         public bool EnableBloodiedScarfFix;
-        public bool EnableLanguageFix;
         public bool EnableExpandedGlitchFloors;
         public bool EnableGlitchFloorScreenShader;
         public bool EnableEXItems;
@@ -107,7 +104,6 @@ namespace ExpandTheGungeon {
             RestoreOldRooms = ExpandSettings.RestoreOldRooms;
             EnableJungleRain = ExpandSettings.EnableJungleRain;
             EnableBloodiedScarfFix = ExpandSettings.EnableBloodiedScarfFix;
-            EnableLanguageFix = ExpandSettings.EnableLanguageFix;
             EnableExpandedGlitchFloors = ExpandSettings.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = ExpandSettings.EnableGlitchFloorScreenShader;
             EnableEXItems = ExpandSettings.EnableEXItems;

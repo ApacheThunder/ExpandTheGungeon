@@ -13,6 +13,7 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 using BepInEx;
 
 namespace ExpandTheGungeon {
+
     [BepInDependency("etgmodding.etg.mtgapi")]
     [BepInPlugin(GUID, ModName, VERSION)]
     public class ExpandTheGungeon : BaseUnityPlugin {
@@ -23,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.7.9";
+        public const string VERSION = "2.8.0";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -196,10 +197,7 @@ namespace ExpandTheGungeon {
             InitConsoleCommands(ConsoleCommandName);
 
             CreateFoyerController();
-            if (ExpandSettings.EnableLanguageFix) {
-                GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-            }
+
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
             sharedAssets = null;
@@ -282,7 +280,6 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("togglelanguagefix", ExpandToggleLanguageFix);
             // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
@@ -450,24 +447,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
             return;
         }
-
-        private void ExpandToggleLanguageFix(string[] consoleText) {
-            if (ExpandSettings.EnableLanguageFix) {
-                ExpandSettings.EnableLanguageFix = false;
-                GameManager.Options.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                StringTableManager.CurrentLanguage = StringTableManager.GungeonSupportedLanguages.ENGLISH;
-                ETGModConsole.Log("[ExpandTheGungeon] Language override disabled!");
-                ETGModConsole.Log("[ExpandTheGungeon] Game Language set back to English!\n\nSet game language back to your desired language before re-enabling this feature!");
-            } else {
-                ExpandSettings.EnableLanguageFix = true;
-                ETGModConsole.Log("[ExpandTheGungeon] Language override enabled!");
-            }
-
-            ExpandSettings.GameLanguage = ExpandUtility.LanguageToInt(GameManager.Options.CurrentLanguage);
-
-            ExpandExportSettings(consoleText);
-        }
-
+        
         // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: EXItem_Collection 256 256)
         // If you wish to manually specify path of output files add path as 4th parameter.
         public void ExpandSerializeCollection(string[] consoleText) {

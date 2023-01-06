@@ -663,6 +663,29 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedObject;
         }
 
+        public static AIActor SpawnEnemyParaDrop(RoomHandler currentRoom, Vector3 landingPosition, string EnemyDrop, bool AutoEngage = true, bool IsToadie = false, AIActor.AwakenAnimationType awakenType = AIActor.AwakenAnimationType.Default, Vector2 ? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false) {
+            AIActor m_CachedAIActor = null;
+            if (!string.IsNullOrEmpty(EnemyDrop) && !string.IsNullOrEmpty(EnemyDrop) && EnemyDatabase.GetOrLoadByGuid(EnemyDrop)) {
+                m_CachedAIActor = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(EnemyDrop), landingPosition, currentRoom, false, awakenType, AutoEngage);
+            }
+            if (!m_CachedAIActor) { return null; }            
+            ExpandParadropController paraDropController = m_CachedAIActor.gameObject.AddComponent<ExpandParadropController>();
+            if (CustomObjectSize.HasValue) {
+                paraDropController.UseObjectSizeOverride = true;
+                paraDropController.OverrideObjectSize = CustomObjectSize.Value;
+            }
+            paraDropController.ParentObjectExplodyBarrel = false;
+            paraDropController.UseLandingVFX = useLandingVFX;
+            paraDropController.LandingPositionOffset = LandingPositionOffset;
+            paraDropController.DropSpeed = DropSpeed;
+            paraDropController.DropHeightHorizontalOffset = DropHorizontalOffset;
+            paraDropController.StartHeight = DropHeight;
+            paraDropController.StartsIntheAir = true;
+            paraDropController.IsToadie = IsToadie;
+            if (!DeferParaDropStart) { paraDropController.Configured = true; }
+            return m_CachedAIActor;
+        }
+
         public static void GenerateAIActorTemplate(GameObject targetObject, out GameObject corpseObject, string EnemyName, string EnemyGUID, tk2dSprite spriteSource = null, GameObject gunAttachObjectOverride = null, Vector3? GunAttachOffset = null, int StartingGunID = 38, List<PixelCollider> customColliders = null, bool RigidBodyCollidesWithTileMap = true, bool RigidBodyCollidesWithOthers = true, bool RigidBodyCanBeCarried = true, bool RigidBodyCanBePushed = false, bool isFakePrefab = false, bool instantiateCorpseObject = true, GameObject ExternalCorpseObject = null, bool EnemyHasNoShooter = false, bool EnemyHasNoCorpse = false, PlayerHandController overrideHandObject = null, bool BuildRigidBody = true) {
 
             if (!targetObject) { targetObject = new GameObject(EnemyName) { layer = 28 }; }

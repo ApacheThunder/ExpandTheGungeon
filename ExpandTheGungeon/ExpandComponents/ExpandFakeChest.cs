@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             SurpriseChestEnemySpawnPool = new List<string>() {
                 ExpandCustomEnemyDatabase.ClownkinNoFXGUID, // Clown Kin (no FX/Balloon version)
+                ExpandCustomEnemyDatabase.ClownkinAngryGUID, // Angry Clownkin (no FX/Balloon and holds balloon gun)
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 "05891b158cd542b1a5f3df30fb67a7ff", // arrow_head
                 "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
