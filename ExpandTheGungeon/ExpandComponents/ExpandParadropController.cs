@@ -2,6 +2,7 @@
 using System.Collections;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
+using System;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -55,7 +56,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private bool m_ParadropStarted;
         private bool m_Initialized;
-        private enum State { Wait, PopIntoAir, ParaDrop, End };
+        private enum State { Wait, PopIntoAir, ParaDrop, End, Exception };
         private State switchState;
         private float m_CachedSpriteZDepth;
         private AIActor m_ParentEnemy;
@@ -226,13 +227,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             int cachedOutlineLayer = cachedLayer;
             while (elapsed < PopupSpeed) {
                 elapsed += BraveTime.DeltaTime;
+                if (switchState == State.Exception) { break; }
                 if (!StartsIntheAir) { m_Anchor.position = Vector2.Lerp(startOffset, HeighestPointPosition, (elapsed / PopupSpeed)); }
                 SetObjectScale(Vector2.Lerp(new Vector2(m_startScale, m_startScale), m_cachedScale, (elapsed / PopupSpeed)));
                 yield return null;
             }
+            if (switchState == State.Exception) { yield break; }
             gameObject.layer = cachedLayer;
             SpriteOutlineManager.ChangeOutlineLayer(sprite, cachedOutlineLayer);
-            switchState = State.ParaDrop;
+            if (switchState != State.Exception) { switchState = State.ParaDrop; }
             yield break;
         }
 
@@ -245,121 +248,142 @@ namespace ExpandTheGungeon.ExpandComponents {
             while (m_ParachuteSpriteAnimator.IsPlaying("ParachuteDeploy")) { yield return null; }
             while (elapsed < DropSpeed) {
                 elapsed += BraveTime.DeltaTime;
+                if (switchState == State.Exception) { break; }
                 m_Anchor.position = Vector2.Lerp(startPosition, landingPosition, (elapsed / DropSpeed));
                 yield return null;
             }
+            if (switchState == State.Exception) { yield break; }
             if (m_LandingVFX) { SpawnManager.Despawn(m_LandingVFX); }
-            switchState = State.End;
+            if (switchState != State.Exception) { switchState = State.End; }
             yield break;
         }
         
         private void Update() {
             if (!Configured) { return; }
-            if (m_Initialized && healthHaver && healthHaver.IsDead) {
-                StopAllCoroutines();
-                if (m_LandingVFX) { SpawnManager.Despawn(m_LandingVFX); }
-                m_Anchor.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
-                m_Anchor.gameObject.SetLayerRecursively(m_CachedLayer);
-                m_Parachute.transform.DetachChildren();
-                m_Anchor.DetachChildren();
-                sprite.DetachRenderer(m_ParachuteSprite);
-                m_ParachuteSpriteAnimator.PlayAndDestroyObject("ParachuteLanded");
-                Destroy(m_Anchor.gameObject);
-                switchState = State.Wait;
-            }
-            switch (switchState) {
-                case State.Wait:
-                    return;
-                case State.PopIntoAir:
-                    sprite.renderer.enabled = true;                
-                    if (UseLandingVFX) {
-                        Vector3 m_VFXPosition = (m_cachedPosition + new Vector2(m_CachedPositionOffset.x, m_CachedPositionOffset.y + LandingPositionOffset));
-                        m_LandingVFX = SpawnManager.SpawnVFX(ExpandAssets.LoadOfficialAsset<GameObject>("EmergencyCrate", ExpandAssets.AssetSource.BraveResources).GetComponent<EmergencyCrateController>().landingTargetSprite, m_VFXPosition, Quaternion.identity);
-                        m_LandingVFX.transform.position -= new Vector3(0, m_LandingVFX.GetComponentInChildren<tk2dSprite>().GetBounds().size.y / 2);
-                        m_LandingVFX.GetComponentInChildren<tk2dSprite>().UpdateZDepth();
-                        UseLandingVFX = false;
-                    }
+            try { 
+                if (m_Initialized && healthHaver && healthHaver.IsDead) {
+                    StopAllCoroutines();
+                    if (m_LandingVFX) { SpawnManager.Despawn(m_LandingVFX); }
                     m_Anchor.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
-                    if (StartsIntheAir) { m_Anchor.position += new Vector3(DropHeightHorizontalOffset, StartHeight); }
-                    StartCoroutine(HandlePopup());
-                    switchState = State.Wait;
-                    return;
-                case State.ParaDrop:
-                    if (!m_ParadropStarted) {
-                        m_ParadropStarted = true;
-                        m_ParachuteSprite.SetSprite("EX_Parachute_Open_01"); 
-                        m_ParachuteSpriteAnimator.Play("ParachuteDeploy");
-                        m_ParachuteSprite.renderer.enabled = true;
-                        StartCoroutine(HandleDrop());
-                    }
-                    Quaternion Clockwise = Quaternion.Euler(new Vector3(0, 0, m_maxSway));
-                    Quaternion CounterClockwise = Quaternion.Euler(new Vector3(0, 0, -m_maxSway));
-                    float Lerp = 0.5F * (1.0F + Mathf.Sin(Mathf.PI * Time.realtimeSinceStartup * SwaySpeed));
-                    m_Anchor.localRotation = Quaternion.Lerp(Clockwise, CounterClockwise, Lerp);
-                    if (IsItemCrate) {                        
-                        Quaternion BoxClockwise = Quaternion.Euler(new Vector3(0, 0, -(m_maxSway / 1.75f)));
-                        Quaternion BoxCounterClockwise = Quaternion.Euler(new Vector3(0, 0, (m_maxSway / 1.75f)));
-                        m_ItemBoxAnchor.transform.localRotation = Quaternion.Lerp(BoxClockwise, BoxCounterClockwise, Lerp);
-                    }
-                    return;
-                case State.End:
-                    switchState = State.Wait; // Do this first encase somehow there's an exception. Will stay in wait state instead of endlessly causing exceptions. :P
-                    if (knockbackDoer) { knockbackDoer.SetImmobile(false, "Paradrop Protection"); }
                     m_Anchor.gameObject.SetLayerRecursively(m_CachedLayer);
                     m_Parachute.transform.DetachChildren();
-                    if (IsItemCrate) {
-                        m_Parachute.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
-                        m_ItemBoxAnchor.transform.DetachChildren();
-                        Destroy(m_ItemBoxAnchor);
-                    }
                     m_Anchor.DetachChildren();
                     sprite.DetachRenderer(m_ParachuteSprite);
                     m_ParachuteSpriteAnimator.PlayAndDestroyObject("ParachuteLanded");
-                    transform.rotation = m_CachedRotation;
-                    if (specRigidbody) {
-                        // Item crate's collision only used to help with setting up correct offsets for parent objects.
-                        // If it's item crate this setting will be left to it's starting value of false.
-                        if (!IsItemCrate) { specRigidbody.CollideWithOthers = true; }
-                        specRigidbody.UpdateColliderPositions();
-                        specRigidbody.Reinitialize();
-                    }
-                    if (m_ParentEnemy) {
-                        if (m_ParentEnemy.HasShadow && m_ParentEnemy.ShadowObject) {
-                            m_ParentEnemy.ShadowObject.GetComponent<tk2dSprite>().renderer.enabled = true;
-                        }
-                        if (m_ParentEnemy.aiShooter) { m_ParentEnemy.aiShooter.ToggleGunAndHandRenderers(true, "ParaDrop"); }
-                        if (!IsToadie) {
-                            m_ParentEnemy.behaviorSpeculator.enabled = true;
-                            m_ParentEnemy.HasBeenEngaged = true;
-                            m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
-                        }
-                        m_ParentEnemy.behaviorSpeculator.RemoveDelayOnReinforce = true;
-                    }
-                    if (healthHaver) {
-                        healthHaver.PreventAllDamage = false;
-                        healthHaver.IsVulnerable = true;
-                    }
                     Destroy(m_Anchor.gameObject);
-                    if (ParentObjectExplodyBarrel && !IsItemCrate) {
-                        spriteAnimator.PlayAndDestroyObject("explode");
-                        if (m_CachedExplosionData != null) {
-                            Exploder.Explode(sprite.WorldCenter, m_CachedExplosionData, Vector2.zero, null, true, CoreDamageTypes.None, false);
+                    switchState = State.Wait;
+                }
+                switch (switchState) {
+                    case State.Wait:
+                        return;
+                    case State.PopIntoAir:
+                        sprite.renderer.enabled = true;                
+                        if (UseLandingVFX) {
+                            Vector3 m_VFXPosition = (m_cachedPosition + new Vector2(m_CachedPositionOffset.x, m_CachedPositionOffset.y + LandingPositionOffset));
+                            m_LandingVFX = SpawnManager.SpawnVFX(ExpandAssets.LoadOfficialAsset<GameObject>("EmergencyCrate", ExpandAssets.AssetSource.BraveResources).GetComponent<EmergencyCrateController>().landingTargetSprite, m_VFXPosition, Quaternion.identity);
+                            m_LandingVFX.transform.position -= new Vector3(0, m_LandingVFX.GetComponentInChildren<tk2dSprite>().GetBounds().size.y / 2);
+                            m_LandingVFX.GetComponentInChildren<tk2dSprite>().UpdateZDepth();
+                            UseLandingVFX = false;
                         }
-                    }
-                    if (!ParentObjectExplodyBarrel && !IsItemCrate) { Destroy(this); }
-                    if (IsItemCrate) {
-                        sprite.renderer.sortingLayerName = "Background";
-                        sprite.HeightOffGround = -1.5f;
-                        sprite.UpdateZDepth();
-                        StartCoroutine(SpawnItem(ItemDropID));
-                    }
-                    return;
+                        m_Anchor.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
+                        if (StartsIntheAir) { m_Anchor.position += new Vector3(DropHeightHorizontalOffset, StartHeight); }
+                        StartCoroutine(HandlePopup());
+                        switchState = State.Wait;
+                        return;
+                    case State.ParaDrop:
+                        if (!m_ParadropStarted) {
+                            m_ParadropStarted = true;
+                            m_ParachuteSprite.SetSprite("EX_Parachute_Open_01"); 
+                            m_ParachuteSpriteAnimator.Play("ParachuteDeploy");
+                            m_ParachuteSprite.renderer.enabled = true;
+                            StartCoroutine(HandleDrop());
+                        }
+                        Quaternion Clockwise = Quaternion.Euler(new Vector3(0, 0, m_maxSway));
+                        Quaternion CounterClockwise = Quaternion.Euler(new Vector3(0, 0, -m_maxSway));
+                        float Lerp = 0.5F * (1.0F + Mathf.Sin(Mathf.PI * Time.realtimeSinceStartup * SwaySpeed));
+                        m_Anchor.localRotation = Quaternion.Lerp(Clockwise, CounterClockwise, Lerp);
+                        if (IsItemCrate) {                        
+                            Quaternion BoxClockwise = Quaternion.Euler(new Vector3(0, 0, -(m_maxSway / 1.75f)));
+                            Quaternion BoxCounterClockwise = Quaternion.Euler(new Vector3(0, 0, (m_maxSway / 1.75f)));
+                            m_ItemBoxAnchor.transform.localRotation = Quaternion.Lerp(BoxClockwise, BoxCounterClockwise, Lerp);
+                        }
+                        return;
+                    case State.End:
+                        switchState = State.Wait;
+                        if (knockbackDoer) { knockbackDoer.SetImmobile(false, "Paradrop Protection"); }
+                        m_Anchor.gameObject.SetLayerRecursively(m_CachedLayer);
+                        m_Parachute.transform.DetachChildren();
+                        if (IsItemCrate) {
+                            m_Parachute.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
+                            m_ItemBoxAnchor.transform.DetachChildren();
+                            Destroy(m_ItemBoxAnchor);
+                        }
+                        m_Anchor.DetachChildren();
+                        sprite.DetachRenderer(m_ParachuteSprite);
+                        m_ParachuteSpriteAnimator.PlayAndDestroyObject("ParachuteLanded");
+                        transform.rotation = m_CachedRotation;
+                        if (specRigidbody) {
+                            // Item crate's collision only used to help with setting up correct offsets for parent objects.
+                            // If it's item crate this setting will be left to it's starting value of false.
+                            if (!IsItemCrate) { specRigidbody.CollideWithOthers = true; }
+                            specRigidbody.UpdateColliderPositions();
+                            specRigidbody.Reinitialize();
+                        }
+                        if (m_ParentEnemy) {
+                            if (m_ParentEnemy.HasShadow && m_ParentEnemy.ShadowObject) {
+                                m_ParentEnemy.ShadowObject.GetComponent<tk2dSprite>().renderer.enabled = true;
+                            }
+                            if (m_ParentEnemy.aiShooter) { m_ParentEnemy.aiShooter.ToggleGunAndHandRenderers(true, "ParaDrop"); }
+                            if (!IsToadie) {
+                                m_ParentEnemy.behaviorSpeculator.enabled = true;
+                                m_ParentEnemy.HasBeenEngaged = true;
+                                m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
+                            }
+                            m_ParentEnemy.behaviorSpeculator.RemoveDelayOnReinforce = true;
+                        }
+                        if (healthHaver) {
+                            healthHaver.PreventAllDamage = false;
+                            healthHaver.IsVulnerable = true;
+                        }
+                        Destroy(m_Anchor.gameObject);
+                        if (ParentObjectExplodyBarrel && !IsItemCrate) {
+                            spriteAnimator.PlayAndDestroyObject("explode");
+                            if (m_CachedExplosionData != null) {
+                                Exploder.Explode(sprite.WorldCenter, m_CachedExplosionData, Vector2.zero, null, true, CoreDamageTypes.None, false);
+                            }
+                        }
+                        if (!ParentObjectExplodyBarrel && !IsItemCrate) { Destroy(this); }
+                        if (IsItemCrate) {
+                            sprite.renderer.sortingLayerName = "Background";
+                            sprite.HeightOffGround = -1.5f;
+                            sprite.UpdateZDepth();
+                            StartCoroutine(SpawnItem(ItemDropID));
+                        }
+                        return;
+                    case State.Exception:
+                        // Do this encase somehow there's an exception. If triggered, all child objects are destroyed and coroutines stopped. 
+                        // Better then endlessly causing exceptions and possibly locking player into a room this occured in if the child object was an AIActor. :P
+                        if (m_ParentEnemy) {
+                            if (m_ParentEnemy.ParentRoom != null) { m_ParentEnemy.ParentRoom.DeregisterEnemy(m_ParentEnemy); }
+                            Destroy(m_ParentEnemy);
+                        }
+                        if (m_Parachute) { Destroy(m_Parachute); }
+                        if (m_LandingVFX) { Destroy(m_LandingVFX); }
+                        if (m_ItemBoxAnchor) { Destroy(m_ItemBoxAnchor);  }
+                        Destroy(gameObject);
+                        return;
+                }
+            } catch (Exception ex) {
+                StopAllCoroutines();
+                switchState = State.Exception;
+                if (ExpandSettings.debugMode) {
+                    Debug.LogException(ex);
+                    ETGModConsole.Log("[ExpandTheGungeon] ExpandParadropController: Exception caught in Update! Child objects destroyed and parent self terminated to prevent breaking things!");
+                }
             }
         }
-
-
+        
         protected override void OnDestroy() { base.OnDestroy(); }
-
     }
 }
 

@@ -574,6 +574,137 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             ForgePrefab = null;
             BulletHellPrefab = null;
         }
+
+        public static void BuildJungleInjectionData() {
+            JungleInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+            JungleInjectionData.name = "Jungle Common Injection Data";
+            JungleInjectionData.UseInvalidWeightAsNoInjection = true;
+            JungleInjectionData.PreventInjectionOfFailedPrerequisites = false;
+            JungleInjectionData.IsNPCCell = false;
+            JungleInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+            JungleInjectionData.OnlyOne = false;
+            JungleInjectionData.ChanceToSpawnOne = 0.5f;
+            JungleInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+            JungleInjectionData.InjectionData = new List<ProceduralFlowModifierData>() {
+                new ProceduralFlowModifierData() {
+                    annotation = "Jungle Crest Room",
+                    DEBUG_FORCE_SPAWN = false,
+                    OncePerRun = false,
+                    placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                        ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
+                    },
+                    roomTable = null,
+                    exactRoom = ExpandRoomPrefabs.Expand_Jungle_OldCrest,
+                    IsWarpWing = false,
+                    RequiresMasteryToken = false,
+                    chanceToLock = 0.5f,
+                    selectionWeight = 1,
+                    chanceToSpawn = 1,
+                    RequiredValidPlaceable = null,
+                    CanBeForcedSecret = true,
+                    RandomNodeChildMinDistanceFromEntrance = 0,
+                    exactSecondaryRoom = null,
+                    framedCombatNodes = 0,
+                    prerequisites = new DungeonPrerequisite[] {
+                        new DungeonPrerequisite() {
+                            prerequisiteType = DungeonPrerequisite.PrerequisiteType.DEMO_MODE,
+                            prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.GREATER_THAN,
+                            statToCheck = TrackedStats.TIMES_REACHED_GUNGEON,
+                            maxToCheck = 0,
+                            comparisonValue = 0,
+                            encounteredObjectGuid = string.Empty,
+                            encounteredRoom = null,
+                            requiredNumberOfEncounters = 0,
+                            requiredCharacter = PlayableCharacters.Pilot,
+                            requireCharacter = false,
+                            requiredTileset = 0,
+                            requireTileset = false,
+                            saveFlagToCheck = 0,
+                            requireFlag = false,
+                            requireDemoMode = false
+                        }
+                    }
+                },
+                new ProceduralFlowModifierData() {
+                    annotation = "Bonus Chest Room",
+                    DEBUG_FORCE_SPAWN = false,
+                    OncePerRun = false,
+                    placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                        ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
+                    },
+                    roomTable = null,
+                    exactRoom = ExpandPrefabs.gungeon_rewardroom_1,
+                    IsWarpWing = false,
+                    RequiresMasteryToken = false,
+                    chanceToLock = 0,
+                    selectionWeight = 1,
+                    chanceToSpawn = 1,
+                    RequiredValidPlaceable = null,
+                    CanBeForcedSecret = true,
+                    RandomNodeChildMinDistanceFromEntrance = 0,
+                    exactSecondaryRoom = null,
+                    framedCombatNodes = 0,
+                    prerequisites = new DungeonPrerequisite[] {
+                        new DungeonPrerequisite() {
+                            prerequisiteType = DungeonPrerequisite.PrerequisiteType.DEMO_MODE,
+                            prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.GREATER_THAN,
+                            statToCheck = TrackedStats.TIMES_REACHED_GUNGEON,
+                            maxToCheck = 0,
+                            comparisonValue = 0,
+                            encounteredObjectGuid = string.Empty,
+                            encounteredRoom = null,
+                            requiredNumberOfEncounters = 0,
+                            requiredCharacter = PlayableCharacters.Pilot,
+                            requireCharacter = false,
+                            requiredTileset = 0,
+                            requireTileset = false,
+                            saveFlagToCheck = 0,
+                            requireFlag = false,
+                            requireDemoMode = false
+                        }
+                    }
+                },
+                new ProceduralFlowModifierData() {
+                    annotation = "Lost Baby Dragun",
+                    DEBUG_FORCE_SPAWN = false,
+                    OncePerRun = false,
+                    placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                        ProceduralFlowModifierData.FlowModifierPlacementType.RANDOM_NODE_CHILD
+                    },
+                    roomTable = null,
+                    exactRoom = ExpandRoomPrefabs.Expand_Jungle_SecretDragun,
+                    IsWarpWing = false,
+                    RequiresMasteryToken = false,
+                    chanceToLock = 1,
+                    selectionWeight = 1,
+                    chanceToSpawn = 1,
+                    RequiredValidPlaceable = null,
+                    CanBeForcedSecret = true,
+                    RandomNodeChildMinDistanceFromEntrance = 0,
+                    exactSecondaryRoom = null,
+                    framedCombatNodes = 0,
+                    prerequisites = new DungeonPrerequisite[] {
+                        new DungeonPrerequisite() {
+                            prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                            prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                            statToCheck = TrackedStats.TIMES_REACHED_GUNGEON,
+                            maxToCheck = 0,
+                            comparisonValue = 0,
+                            encounteredObjectGuid = string.Empty,
+                            encounteredRoom = null,
+                            requiredNumberOfEncounters = 0,
+                            requiredCharacter = PlayableCharacters.Pilot,
+                            requireCharacter = false,
+                            requiredTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
+                            requireTileset = true,
+                            saveFlagToCheck = 0,
+                            requireFlag = false,
+                            requireDemoMode = false
+                        }
+                    }
+                }
+            };
+        }
     }
 }
 

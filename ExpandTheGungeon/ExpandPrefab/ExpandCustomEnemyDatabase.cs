@@ -5721,14 +5721,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             BehaviorSpeculator bossBehaviorSpeculator = m_CachedTargetObject.GetComponent<BehaviorSpeculator>();
             
-            m_TargetAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            m_TargetAIActor.PathableTiles = CellTypes.FLOOR;
             
             foreach (AttackBehaviorBase attackBehavior in bossBehaviorSpeculator.AttackBehaviors) {
                 if (attackBehavior is SummonEnemyBehavior) {
                     (attackBehavior as SummonEnemyBehavior).ManuallyDefineRoom = false;
                     (attackBehavior as SummonEnemyBehavior).roomMin = Vector2.zero;
                     (attackBehavior as SummonEnemyBehavior).roomMax = Vector2.zero;
-                    (attackBehavior as SummonEnemyBehavior).EnemeyGuids = new List<string>() { "e861e59012954ab2b9b6977da85cb83c", "4b21a913e8c54056bc05cafecf9da880", "a9cc6a4e9b3d46ea871e70a03c9f77d4", "80ab6cd15bfc46668a8844b2975c6c26" };
+                    (attackBehavior as SummonEnemyBehavior).EnemeyGuids = new List<string>() { "4b21a913e8c54056bc05cafecf9da880", "a9cc6a4e9b3d46ea871e70a03c9f77d4", "05891b158cd542b1a5f3df30fb67a7ff", "6b7ef9e5d05b4f96b04f05ef4a0d1b18", "98fdf153a4dd4d51bf0bafe43f3c77ff" };
                 } 
             }
             
@@ -5748,8 +5748,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             bossBehaviorSpeculator.RegenerateCache();
 
 
-            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(1000);
-            m_TargetAIActor.healthHaver.SetHealthMaximum(1000);
+            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(850);
+            m_TargetAIActor.healthHaver.SetHealthMaximum(850);
 
             m_TargetAIActor.RegenerateCache();
 
