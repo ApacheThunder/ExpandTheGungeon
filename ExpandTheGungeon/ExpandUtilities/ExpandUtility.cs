@@ -629,7 +629,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         // if ObjectDrop and Enemydrop are left null this will spawn a explosive barrel paradrop.
-        public static GameObject SpawnParaDrop(RoomHandler currentRoom, Vector3 landingPosition, GameObject ObjectDrop = null, string EnemyDrop = "NULL", Vector2? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false) {
+        public static GameObject SpawnParaDrop(RoomHandler currentRoom, Vector3 landingPosition, GameObject ObjectDrop = null, string EnemyDrop = "NULL", Vector2? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false, bool DoScaleChange = true) {
             GameObject m_CachedObject = null;
             bool isExplodyBarrel = false;
 
@@ -638,16 +638,16 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 if (!m_CachedObject) { isExplodyBarrel = true; }
             } else if (ObjectDrop) {
                 m_CachedObject = ObjectDrop;
-            } else {                
+            } else {
                 isExplodyBarrel = true;
             }
 
             if (isExplodyBarrel) {
                 m_CachedObject = UnityEngine.Object.Instantiate(ExpandPrefabs.EX_ExplodyBarrelDummy, landingPosition, Quaternion.identity);
-                // if (m_CachedObject.GetComponent<SpeculativeRigidbody>()) { m_CachedObject.GetComponent<SpeculativeRigidbody>().Reinitialize(); }
             }
 
             ExpandParadropController paraDropController = m_CachedObject.AddComponent<ExpandParadropController>();
+            if (isExplodyBarrel) { paraDropController.ChangeScaleOnPopup = true; }
             if (CustomObjectSize.HasValue) {
                 paraDropController.UseObjectSizeOverride = true;
                 paraDropController.OverrideObjectSize = CustomObjectSize.Value;
@@ -659,11 +659,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
             paraDropController.DropHeightHorizontalOffset = DropHorizontalOffset;
             paraDropController.StartHeight = DropHeight;
             paraDropController.StartsIntheAir = true;
+            paraDropController.ChangeScaleOnPopup = DoScaleChange;
             if (!DeferParaDropStart) { paraDropController.Configured = true; }
             return m_CachedObject;
         }
 
-        public static AIActor SpawnEnemyParaDrop(RoomHandler currentRoom, Vector3 landingPosition, string EnemyDrop, bool AutoEngage = true, bool IsToadie = false, AIActor.AwakenAnimationType awakenType = AIActor.AwakenAnimationType.Default, Vector2 ? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false) {
+        public static AIActor SpawnEnemyParaDrop(RoomHandler currentRoom, Vector3 landingPosition, string EnemyDrop, bool AutoEngage = true, bool IsToadie = false, AIActor.AwakenAnimationType awakenType = AIActor.AwakenAnimationType.Default, Vector2? CustomObjectSize = null, float LandingPositionOffset = 0, float DropSpeed = 2.5f, float DropHeight = 10, float DropHorizontalOffset = 5, bool useLandingVFX = true, bool DeferParaDropStart = false, bool DoScaleChange = false) {
             AIActor m_CachedAIActor = null;
             if (!string.IsNullOrEmpty(EnemyDrop) && !string.IsNullOrEmpty(EnemyDrop) && EnemyDatabase.GetOrLoadByGuid(EnemyDrop)) {
                 m_CachedAIActor = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(EnemyDrop), landingPosition, currentRoom, false, awakenType, AutoEngage);
@@ -682,6 +683,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             paraDropController.StartHeight = DropHeight;
             paraDropController.StartsIntheAir = true;
             paraDropController.IsToadie = IsToadie;
+            paraDropController.ChangeScaleOnPopup = DoScaleChange;
             if (!DeferParaDropStart) { paraDropController.Configured = true; }
             return m_CachedAIActor;
         }

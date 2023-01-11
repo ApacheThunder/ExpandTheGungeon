@@ -148,11 +148,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         GameObject ParaDroppedObject = Instantiate(selectedVarient.nonDatabasePlaceable, SpawnPosition, Quaternion.identity);
                         ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, ParaDroppedObject, DropHorizontalOffset: 10, useLandingVFX: false);
                     } else {
-                        ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                        ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false, DoScaleChange: true);
                         isExplodyBarrel = true;
                     }
                 } else {
-                    ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false);
+                    ExpandUtility.SpawnParaDrop(ParentRoom, SpawnPosition, DropHorizontalOffset: 10, useLandingVFX: false, DoScaleChange: true);
                     isExplodyBarrel = true;
                 }
                 if (!ParentRoom.IsSealed && !isExplodyBarrel) { ParentRoom.SealRoom(); }

@@ -18,6 +18,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UseObjectSizeOverride = false;
             IsItemCrate = false;
             IsToadie = false;
+            ChangeScaleOnPopup = false;
 
             LandingPositionOffset = -1;
             DropHeightHorizontalOffset = 0;
@@ -53,6 +54,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public int ItemDropID;
         public bool IsItemCrate;
         public bool IsToadie;
+        public bool ChangeScaleOnPopup;
 
         private bool m_ParadropStarted;
         private bool m_Initialized;
@@ -89,13 +91,26 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
-        private void Start() {
-            // Delay initial configuration for ItemCrate version to avoid possible misalignment since GameObjects get instantiated initially from zero position.
-            // Item crate object comes with this controller pre-attached. So position may not be correct frame 1. ;)
-            if (!Configured && IsItemCrate) {
-                StartCoroutine(DelayedAutoConfiguration());
-                return;
+
+        private IEnumerator Start() {
+            while (!Configured) {
+                if (IsItemCrate) {
+                    // Delay initial configuration for ItemCrate version to avoid possible misalignment since GameObjects get instantiated initially from zero position.
+                    // Item crate object comes with this controller pre-attached. So position may not be correct on frame 1. ;)
+                    // This version also auto configures after the delay.
+                    yield return new WaitForSeconds(0.01f);
+                    Configured = true;
+                    break;
+                }
+                yield return null;
             }
+            yield return null;
+            Init();
+            yield break;
+        }
+
+        private void Init() {
+            
             m_ParentEnemy = aiActor;
             m_CachedRotation = transform.rotation;
             m_cachedPosition = transform.position;
@@ -105,7 +120,11 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (knockbackDoer) { knockbackDoer.SetImmobile(true, "Paradrop Protection"); }
 
-            if (m_ParentEnemy) { m_cachedScale = m_ParentEnemy.EnemyScale; } else { m_cachedScale = Vector2.one; }
+            if (m_ParentEnemy && ChangeScaleOnPopup) {
+                m_cachedScale = m_ParentEnemy.EnemyScale;
+            } else if (ChangeScaleOnPopup) {
+                m_cachedScale = Vector2.one;
+            }
 
             if (m_ParentEnemy && m_ParentEnemy.HasShadow && m_ParentEnemy.ShadowObject) {
                 m_ParentEnemy.ShadowObject.GetComponent<tk2dSprite>().renderer.enabled = false;
@@ -180,14 +199,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             switchState = State.PopIntoAir;
             m_Initialized = true;
         }
-
-        private IEnumerator DelayedAutoConfiguration() {
-            Configured = true;
-            yield return new WaitForSeconds(0.01f);
-            Start(); // Call Start() again but this time Configured is set first so it will finish Start() as usual.
-            yield break;
-        }
-        
+                
         private IEnumerator SpawnItem(int itemID) {
             GameObject ItemToSpawn = PickupObjectDatabase.GetById(itemID).gameObject;
             Vector3? SpawnPosition = null;
@@ -229,7 +241,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 elapsed += BraveTime.DeltaTime;
                 if (switchState == State.Exception) { break; }
                 if (!StartsIntheAir) { m_Anchor.position = Vector2.Lerp(startOffset, HeighestPointPosition, (elapsed / PopupSpeed)); }
-                SetObjectScale(Vector2.Lerp(new Vector2(m_startScale, m_startScale), m_cachedScale, (elapsed / PopupSpeed)));
+                if (ChangeScaleOnPopup) { SetObjectScale(Vector2.Lerp(new Vector2(m_startScale, m_startScale), m_cachedScale, (elapsed / PopupSpeed))); }
                 yield return null;
             }
             if (switchState == State.Exception) { yield break; }
@@ -363,13 +375,16 @@ namespace ExpandTheGungeon.ExpandComponents {
                     case State.Exception:
                         // Do this encase somehow there's an exception. If triggered, all child objects are destroyed and coroutines stopped. 
                         // Better then endlessly causing exceptions and possibly locking player into a room this occured in if the child object was an AIActor. :P
-                        if (m_ParentEnemy) {
-                            if (m_ParentEnemy.ParentRoom != null) { m_ParentEnemy.ParentRoom.DeregisterEnemy(m_ParentEnemy); }
-                            Destroy(m_ParentEnemy);
-                        }
                         if (m_Parachute) { Destroy(m_Parachute); }
                         if (m_LandingVFX) { Destroy(m_LandingVFX); }
                         if (m_ItemBoxAnchor) { Destroy(m_ItemBoxAnchor);  }
+                        if (gameObject.GetComponent<AIActor>()?.ParentRoom != null) {
+                            gameObject.GetComponent<AIActor>().ParentRoom.DeregisterEnemy(gameObject.GetComponent<AIActor>());
+                        }
+                        if (m_ParentEnemy) {
+                            if (m_ParentEnemy.ParentRoom != null) { m_ParentEnemy.ParentRoom.DeregisterEnemy(m_ParentEnemy); }
+                            Destroy(m_ParentEnemy.gameObject);
+                        }
                         Destroy(gameObject);
                         return;
                 }
