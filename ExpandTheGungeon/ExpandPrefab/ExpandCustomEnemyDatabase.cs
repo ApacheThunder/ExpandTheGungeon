@@ -5728,7 +5728,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     (attackBehavior as SummonEnemyBehavior).ManuallyDefineRoom = false;
                     (attackBehavior as SummonEnemyBehavior).roomMin = Vector2.zero;
                     (attackBehavior as SummonEnemyBehavior).roomMax = Vector2.zero;
-                    (attackBehavior as SummonEnemyBehavior).EnemeyGuids = new List<string>() { "4b21a913e8c54056bc05cafecf9da880", "a9cc6a4e9b3d46ea871e70a03c9f77d4", "05891b158cd542b1a5f3df30fb67a7ff", "6b7ef9e5d05b4f96b04f05ef4a0d1b18", "98fdf153a4dd4d51bf0bafe43f3c77ff" };
+                    (attackBehavior as SummonEnemyBehavior).EnemeyGuids = new List<string>() { "39e6f47a16ab4c86bec4b12984aece4c", "05891b158cd542b1a5f3df30fb67a7ff", "6b7ef9e5d05b4f96b04f05ef4a0d1b18", "98fdf153a4dd4d51bf0bafe43f3c77ff" };
                 } 
             }
             
@@ -5748,8 +5748,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             bossBehaviorSpeculator.RegenerateCache();
 
 
-            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(850);
-            m_TargetAIActor.healthHaver.SetHealthMaximum(850);
+            m_TargetAIActor.healthHaver.ForceSetCurrentHealth(725);
+            m_TargetAIActor.healthHaver.SetHealthMaximum(725);
 
             m_TargetAIActor.RegenerateCache();
 

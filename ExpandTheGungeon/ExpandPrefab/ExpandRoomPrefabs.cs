@@ -9576,7 +9576,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.NPCMonsterManuel, useExternalPrefab: true),
+                            placeableContents = ExpandPrefabs.CorruptedSecretRoomNPCs2,
                             contentsBasePosition = new Vector2(2, 6),
                             layer = 0,
                             xMPxOffset = 0,
@@ -9587,7 +9587,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.NPCVampire, useExternalPrefab: true),
+                            placeableContents = ExpandPrefabs.CorruptedSecretRoomNPCs,
                             contentsBasePosition = new Vector2(9, 10),
                             layer = 0,
                             xMPxOffset = 0,
@@ -9598,7 +9598,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            placeableContents = ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.NPCMonsterManuel, useExternalPrefab: true, spawnChance: 0.4f),
+                            placeableContents = ExpandPrefabs.CorruptedSecretRoomNPCs2,
                             contentsBasePosition = new Vector2(6, 13),
                             layer = 0,
                             xMPxOffset = 0,

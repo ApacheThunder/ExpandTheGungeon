@@ -215,6 +215,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable TinySecretRoomJunkReward;
         public static DungeonPlaceable RatTrapPlacable;
         public static DungeonPlaceable CorruptedSecretRoomSpecialItem;
+        public static DungeonPlaceable CorruptedSecretRoomNPCs;
+        public static DungeonPlaceable CorruptedSecretRoomNPCs2;
         public static DungeonPlaceable Jungle_Doors;
         public static DungeonPlaceable Jungle_OneWayDoors;
         public static DungeonPlaceable Belly_Doors;
@@ -1209,6 +1211,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             TinySecretRoomRewards = ScriptableObject.CreateInstance<DungeonPlaceable>();
             TinySecretRoomJunkReward = ScriptableObject.CreateInstance<DungeonPlaceable>();
             CorruptedSecretRoomSpecialItem = ScriptableObject.CreateInstance<DungeonPlaceable>();
+            CorruptedSecretRoomNPCs = ScriptableObject.CreateInstance<DungeonPlaceable>();
+            CorruptedSecretRoomNPCs2 = ScriptableObject.CreateInstance<DungeonPlaceable>();
+
+
 
             TinySecretRoomRewards.name = "Tiny Secret Room Reward";
             TinySecretRoomRewards.width = 1;
@@ -1368,6 +1374,121 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     prerequisites = new DungeonPrerequisite[0],
                     materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
                 }
+            };
+
+
+            CorruptedSecretRoomNPCs.name = "Corrupted Secret Room NPCs";
+            CorruptedSecretRoomNPCs.width = 1;
+            CorruptedSecretRoomNPCs.height = 1;
+            CorruptedSecretRoomNPCs.isPassable = true;
+            CorruptedSecretRoomNPCs.roomSequential = false;
+            CorruptedSecretRoomNPCs.respectsEncounterableDifferentiator = false;
+            CorruptedSecretRoomNPCs.UsePrefabTransformOffset = false;
+            CorruptedSecretRoomNPCs.MarkSpawnedItemsAsRatIgnored = true;
+            CorruptedSecretRoomNPCs.DebugThisPlaceable = false;
+            CorruptedSecretRoomNPCs.IsAnnexTable = false;
+            CorruptedSecretRoomNPCs.variantTiers = new List<DungeonPlaceableVariant>() {
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.3f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCMonsterManuel,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.3f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCOldMan,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.3f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCVampire,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.4f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+            };
+
+            CorruptedSecretRoomNPCs2.name = "Corrupted Secret Room NPCs Alt";
+            CorruptedSecretRoomNPCs2.width = 1;
+            CorruptedSecretRoomNPCs2.height = 1;
+            CorruptedSecretRoomNPCs2.isPassable = true;
+            CorruptedSecretRoomNPCs2.roomSequential = false;
+            CorruptedSecretRoomNPCs2.respectsEncounterableDifferentiator = false;
+            CorruptedSecretRoomNPCs2.UsePrefabTransformOffset = false;
+            CorruptedSecretRoomNPCs2.MarkSpawnedItemsAsRatIgnored = true;
+            CorruptedSecretRoomNPCs2.DebugThisPlaceable = false;
+            CorruptedSecretRoomNPCs2.IsAnnexTable = false;
+            CorruptedSecretRoomNPCs2.variantTiers = new List<DungeonPlaceableVariant>() {
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.3f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCMonsterManuel,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.3f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCOldMan,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.2f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = ExpandObjectDatabase.NPCGunMuncher,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
+                new DungeonPlaceableVariant() {
+                    percentChance = 0.4f,
+                    unitOffset = Vector2.zero,
+                    nonDatabasePlaceable = null,
+                    enemyPlaceableGuid = string.Empty,
+                    pickupObjectPlaceableId = -1,
+                    forceBlackPhantom = false,
+                    addDebrisObject = false,
+                    prerequisites = new DungeonPrerequisite[0],
+                    materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0]
+                },
             };
 
             MetalCubeGuy = EnemyDatabase.GetOrLoadByGuid("ba928393c8ed47819c2c5f593100a5bc").gameObject;

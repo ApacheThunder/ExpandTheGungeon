@@ -272,6 +272,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
                 ExpandParadropController paraDropController = Enemy.gameObject.AddComponent<ExpandParadropController>();
+                paraDropController.ChangeScaleOnPopup = true;
                 paraDropController.Configured = true;
             }
             yield return null;
