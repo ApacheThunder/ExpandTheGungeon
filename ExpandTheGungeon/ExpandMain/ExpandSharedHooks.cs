@@ -1711,18 +1711,15 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public void FloorChestPlacerConfigureOnPlacementHook(Action<FloorChestPlacer, RoomHandler>orig, FloorChestPlacer self, RoomHandler room) {
             if (!self.UseOverrideChest && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.REWARD 
-                 && UnityEngine.Random.value < 0.03f
+                 && UnityEngine.Random.value < 0.015f
                ) {
                 Vector2 ChestPosition = self.transform.position.IntXY(VectorConversions.Round).ToVector3();
-                GameObject ChestReference = BraveUtility.RandomElement(ExpandLists.CustomChests);
-                if (ChestReference.name == ExpandPrefabs.RickRollChestObject.name && UnityEngine.Random.value < 0.004f) {
-                    List<GameObject> ChestsWithoutRickRoll = new List<GameObject>();
-                    foreach (GameObject chest in ExpandLists.CustomChests) {
-                        if (chest.name != ExpandPrefabs.RickRollChestObject.name) { ChestsWithoutRickRoll.Add(ChestReference); }
-                    }
-                    ChestReference = BraveUtility.RandomElement(ChestsWithoutRickRoll);
+                GameObject chestOBJ;
+                if (UnityEngine.Random.value < 0.009f) {
+                    chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.RickRollChestObject, ChestPosition, Quaternion.identity);
+                } else {
+                    chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, ChestPosition, Quaternion.identity);
                 }
-                GameObject chestOBJ = UnityEngine.Object.Instantiate(ChestReference, ChestPosition, Quaternion.identity);
                 ExpandFakeChest fakeChest = null;
                 if (chestOBJ) { fakeChest = chestOBJ.GetComponent<ExpandFakeChest>(); }
                 if (fakeChest) {

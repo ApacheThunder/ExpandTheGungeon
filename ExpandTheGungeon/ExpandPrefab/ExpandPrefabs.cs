@@ -4592,9 +4592,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ChamberGun.gameObject.AddComponent<ExpandChamberGunProcessor>();
             }
                         
-            ExpandLists.CustomChests.Add(RickRollChestObject);
+            /*ExpandLists.CustomChests.Add(RickRollChestObject);
             ExpandLists.CustomChests.Add(SurpriseChestObject);
-            
+            ExpandLists.CustomChestsWithoutRickRoll.Add(SurpriseChestObject);*/
+
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
             TutorialDungeonPrefab = null;

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 800733443
+CRC: 2188649648
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c7d04bb770fca9e965b1bda3035f8819
+    Hash: 74230730d4581abc07d2bd7f42defc79
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -621,7 +621,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular14.bytes
 - Assets/ExpandSerializedData/TilesetData/West/Canyon/floorGrid1.txt
-- Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Falsechest.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal27.bytes
 - Assets/ExpandPrefabs/Items/Cursed Brick.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular38.bytes

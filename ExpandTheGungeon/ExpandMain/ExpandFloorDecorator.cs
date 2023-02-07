@@ -185,35 +185,30 @@ namespace ExpandTheGungeon.ExpandMain {
                 return;
             }
             
-
             if (Random.value <= 0.8f | currentRoom.GetRoomName().ToLower().StartsWith("expand_west_entrance")) {
                 List<IntVector2> m_CachedPositions = new List<IntVector2>();
                 int MaxCactiCount = 12;
                 int MinCactiCount = 6;
-                if (Random.value <= 0.3f){
-                    MaxCactiCount = 20;
-                } else if (roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
-                    MaxCactiCount = 10;
-                }
-
                 int X = currentRoom.area.dimensions.x;
                 int Y = currentRoom.area.dimensions.y;
-                
-                if (X * Y < 100) {
-                    MinCactiCount = 3;
-                    MaxCactiCount = 6;
-                }
 
                 if (!string.IsNullOrEmpty(currentRoom.GetRoomName()) && currentRoom.GetRoomName().ToLower().StartsWith("expand_west_canyon1_tiny")) {
                     MinCactiCount = 1;
                     MaxCactiCount = 3;
+                } else if (roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                    MaxCactiCount = 10;
+                } else if (X * Y >= 400 && Random.value <= 0.3f) {
+                    MaxCactiCount = 20;
+                } else if (X * Y <= 256) {
+                    MinCactiCount = 2;
+                    MaxCactiCount = 4;
                 }
-                
+                                
                 int CactusCount = Random.Range(MinCactiCount, MaxCactiCount);
 
                 if (!currentRoom.GetRoomName().ToLower().StartsWith("expand_west_entrance")) {
                     for (int i = 0; i < CactusCount; i++) {
-                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 3, avoidExits: true);
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, ExitClearence: 4, avoidExits: true);
 
                         List<GameObject> CactiList = new List<GameObject>() { ExpandPrefabs.Cactus_A, ExpandPrefabs.Cactus_B };
                         CactiList = CactiList.Shuffle();
@@ -288,19 +283,17 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (Random.value <= 0.6f) {
             
                     List<IntVector2> m_CachedPositions = new List<IntVector2>();
-                    int MinMushroomCount = 2;
-                    int MaxMushroomCount = 6;
-                    if (Random.value <= 0.3f) {
-                        MinMushroomCount = 6;
-                        MaxMushroomCount = 12;
-                    }
-
+                    int MinMushroomCount = 4;
+                    int MaxMushroomCount = 8;
                     int X = currentRoom.area.dimensions.x;
                     int Y = currentRoom.area.dimensions.y;
-                    
-                    if (X * Y < 100) {
-                        MinMushroomCount = 1;
-                        MaxMushroomCount = 3;
+
+                    if (X * Y <= 225) {
+                        MinMushroomCount = 3;
+                        MaxMushroomCount = 5;
+                    } else if (X * Y >= 400 && Random.value <= 0.3f) {
+                        MinMushroomCount = 8;
+                        MaxMushroomCount = 18;
                     }
 
                     int MushroomCount = Random.Range(MinMushroomCount, MaxMushroomCount);
@@ -309,7 +302,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         if (DebugMode) { Debug.Log("[ExpandTheGungeon] Test Mushroom Iteration: " + i.ToString()); }
                         if (DebugMode) { if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { ETGModConsole.Log("[ExpandTheGungeon] On Room: " + currentRoom.GetRoomName()); } }
 
-                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 1, 4, avoidExits: true, PositionRelativeToRoom: true);
+                        IntVector2? RandomVector = GetRandomAvailableCell(dungeon, currentRoom, m_CachedPositions, 1, 6, avoidExits: true, PositionRelativeToRoom: true);
 
                         if (RandomVector.HasValue) {
                             if (DebugMode) { ETGModConsole.Log("[ExpandTheGungeon] Valid Location found. Placing Mushroom..."); }
@@ -411,14 +404,14 @@ namespace ExpandTheGungeon.ExpandMain {
                                         }
                                     }
                                 }
-                                for (int x = 0; x < ExitClearence; x++) {
-                                    for (int y = 0; y < ExitClearence; y++) {
-                                        IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
-                                        if (dungeon.data.CheckInBoundsAndValid(intVector)) {
-                                            CellData cellData = dungeon.data[intVector];
-                                            if (cellData.isExitCell) { isInvalid = true; }
-                                        } else {
-                                            isInvalid = true;
+                                if (!isInvalid && avoidExits) {
+                                    for (int x = 0; x < ExitClearence; x++) {
+                                        for (int y = 0; y < ExitClearence; y++) {
+                                            IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
+                                            if (dungeon.data.CheckInBoundsAndValid(intVector)) {
+                                                CellData cellData = dungeon.data[intVector];
+                                                if (cellData.isExitCell) { isInvalid = true; }
+                                            }
                                         }
                                     }
                                 }

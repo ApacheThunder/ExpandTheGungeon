@@ -163,7 +163,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_GlitchedSecret;
         public static PrototypeDungeonRoom Expand_SecretElevatorEntranceRoom;
         public static PrototypeDungeonRoom Expand_RickRollSecret;
-        public static PrototypeDungeonRoom Expand_Secret_Falsechest;
 
         // Custom Rooms for handling entrance to custom secret floor on Hollows
         public static PrototypeDungeonRoom SecretExitRoom2;
@@ -8572,10 +8571,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Shotgun = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Shotgun");
             Expand_Smallcentral = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Smallcentral");
 
-            Expand_Secret_Falsechest = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Falsechest");
-            Expand_Secret_Falsechest.category = PrototypeDungeonRoom.RoomCategory.SECRET;
-            Expand_Secret_Falsechest.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
-
             Expand_Secret_Brother10 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother10", true);
             Expand_Secret_Brother9 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother9", true);
             Expand_Secret_Brother8 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Secret_Brother8", true);
@@ -9888,7 +9883,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 GenerateWeightedRoom(Expand_TinySecret, 4),
                 GenerateWeightedRoom(Expand_GlitchedSecret, 0.45f),
                 GenerateWeightedRoom(Expand_RickRollSecret, 0.8f),
-                GenerateWeightedRoom(Expand_Secret_Falsechest, 1),
             };
 
             WeightedRoom[] CustomAlbernRooms = new WeightedRoom[] {
@@ -9969,7 +9963,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 GenerateWeightedRoom(Expand_Mutant),
                 GenerateWeightedRoom(Expand_Oddshroom),
                 GenerateWeightedRoom(Expand_Pitzag),
-                GenerateWeightedRoom(Expand_Secret_Falsechest),
                 GenerateWeightedRoom(Expand_Shotgun),
                 GenerateWeightedRoom(Expand_Smallcentral)
             };

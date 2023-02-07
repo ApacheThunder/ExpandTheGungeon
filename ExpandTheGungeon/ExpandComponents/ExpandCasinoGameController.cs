@@ -1,8 +1,7 @@
 ﻿using Dungeonator;
-using MonoMod.RuntimeDetour;
 using System;
 using System.Collections;
-using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -307,7 +306,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void DoGunBallRoll(PlayerController player) {
-            if (UnityEngine.Random.value < 0.6f) {
+            if (UnityEngine.Random.value < 0.7f) {
                 PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.D) : PickupObject.ItemQuality.B;
                 if (UnityEngine.Random.value < 0.2f) {
                     targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.B : PickupObject.ItemQuality.C) : PickupObject.ItemQuality.A;
@@ -329,15 +328,33 @@ namespace ExpandTheGungeon.ExpandComponents {
                 component.HeightOffGround = -1.5f;
                 component.UpdateZDepth();
             } else {
-                KeyBulletPickup keyBullet = (KeyBulletPickup)PickupObjectDatabase.GetById(67);
-                player.BloopItemAboveHead(keyBullet.sprite, keyBullet.overrideBloopSpriteName);
-                GameObject gameOBJ2 = Instantiate((GameObject)ResourceCache.Acquire("Global VFX/VFX_Item_Pickup"));
-                tk2dSprite component2 = gameOBJ2.GetComponent<tk2dSprite>();
-                component2.PlaceAtPositionByAnchor(player.sprite.WorldCenter, tk2dBaseSprite.Anchor.MiddleCenter);
-                component2.UpdateZDepth();
-                AkSoundEngine.PostEvent("Play_OBJ_key_pickup_01", gameObject);
-                player.carriedConsumables.KeyBullets += 1;
-                player.carriedConsumables.ForceUpdateUI();
+                List<string> itemPickup = new List<string>() { "key", "ratkey", "casings", "armor", "blank" };
+                itemPickup = itemPickup.Shuffle();
+                string selectedPickup = BraveUtility.RandomElement(itemPickup);
+                switch (selectedPickup) {
+                    default:
+                        LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(67).gameObject, player);
+                        break;
+                    case "key":
+                        LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(67).gameObject, player);
+                        break;
+                    case "ratkey":
+                        LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(727).gameObject, player);
+                        break;
+                    case "casings":
+                        LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(74).gameObject, player);
+                        break;
+                    case "armor":
+                        HealthPickup Armor = (HealthPickup)PickupObjectDatabase.GetById(120);
+                        LootEngine.GivePrefabToPlayer(Armor.gameObject, player);
+                        player.BloopItemAboveHead(Armor.sprite);
+                        break;
+                    case "blank":
+                        SilencerItem blank = (SilencerItem)PickupObjectDatabase.GetById(224);
+                        LootEngine.GivePrefabToPlayer(blank.gameObject, player);
+                        player.BloopItemAboveHead(blank.sprite);
+                        break;
+                }
             }
         }
 

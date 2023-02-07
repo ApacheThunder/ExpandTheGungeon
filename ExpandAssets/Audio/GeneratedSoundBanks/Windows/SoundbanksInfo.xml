@@ -211,10 +211,6 @@
 					<ShortName>Tummy_Full_of_Gunpowder_LoopA.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpowder_LoopA_AD29F36A.wem</Path>
 				</File>
-				<File Id="735534369" Language="SFX">
-					<ShortName>Quiet_Forest_Intro.wav</ShortName>
-					<Path>SFX\Quiet_Forest_Intro_AD29F36A.wem</Path>
-				</File>
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
 					<Path>SFX\Belly_Door_Unlock_F7D0E330.wem</Path>

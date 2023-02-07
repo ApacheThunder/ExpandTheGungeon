@@ -5,7 +5,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
     public static class ExpandLists {
 
-        public static List<GameObject> CustomChests = new List<GameObject>();
+        /*public static List<GameObject> CustomChests = new List<GameObject>();
+        public static List<GameObject> CustomChestsWithoutRickRoll = new List<GameObject>();*/
+
         public static List<GameObject> CompanionItems = new List<GameObject>();
         public static Dictionary<string, List<string>> SpriteCollections;
 
