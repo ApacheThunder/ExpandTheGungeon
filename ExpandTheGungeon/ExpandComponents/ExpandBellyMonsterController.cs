@@ -29,6 +29,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public RoomHandler m_ParentRoom;
+        public PlayerController m_Player;
         public GameObject[] ImpactVFXObjects;
 
         public ScreenShakeSettings SlamScreenShakeSettings;
@@ -38,10 +39,16 @@ namespace ExpandTheGungeon.ExpandComponents {
         
         private bool m_Triggered;
         private bool PlayerEaten;
+        private float m_RoomCheckTimer;
+
 
         private GameObject m_EntranceTriggerObject;
 
         private void Start() {
+
+            m_RoomCheckTimer = 1;
+
+            if (GameManager.Instance.PrimaryPlayer) { m_Player = GameManager.Instance.PrimaryPlayer; }
 
             sprite.HeightOffGround = -7;
             sprite.UpdateZDepth();
@@ -155,7 +162,28 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (!specRigidbody.CanPush) { specRigidbody.CanPush = true; }
 
-            if (m_Triggered) { GameManager.Instance.MainCameraController.OverridePosition = (transform.position - new Vector3(3, 0) + new Vector3(0, 6)); }
+            if (m_Triggered) {
+                GameManager.Instance.MainCameraController.OverridePosition = (transform.position - new Vector3(3, 0) + new Vector3(0, 6));
+                m_RoomCheckTimer -= BraveTime.DeltaTime;
+                if (m_RoomCheckTimer <= 0) {
+                    m_RoomCheckTimer = 1;
+                    if (m_Player) {
+                        if (Vector3.Distance(transform.position, m_Player.gameObject.transform.position) > 60) {
+                            PlayerEaten = true;
+                            GameManager.Instance.PrimaryPlayer.SetInputOverride("got eaten");
+                            if (GameManager.Instance.SecondaryPlayer) {
+                                GameManager.Instance.SecondaryPlayer.SetInputOverride("got eaten");
+                            }
+                            specRigidbody.Velocity = Vector2.zero;
+                            spriteAnimator.Stop();
+                            if (GameManager.Instance.PrimaryPlayer) {
+                                StartCoroutine(HandleTransitionToBellyFloor(GameManager.Instance.PrimaryPlayer));
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
 

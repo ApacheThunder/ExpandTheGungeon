@@ -3449,6 +3449,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             ExpandUtility.GenerateOrAddToRigidBody(Sarco_MonsterObject, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(57, 0), dimensions: new IntVector2(243, 1024), CanBeCarried: false);
             bellyMonsterRigidBody.MaxVelocity = new Vector2(-1.5f, 0);
+            bellyMonsterRigidBody.CanBePushed = false;
+
 
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].eventInfo = "slam";
             Sarco_MonsterObject.GetComponent<tk2dSpriteAnimator>().Library.clips[0].frames[6].triggerEvent = true;
@@ -3459,6 +3461,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 sharedAssets.LoadAsset<GameObject>("VFX_Tombstone_Impact"),
                 sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof")
             };
+
+
+
 
             Sarco_Skeleton = expandSharedAssets1.LoadAsset<GameObject>("ExpandDeadSkeleton");
             Sarco_Skeleton.AddComponent<tk2dSprite>();
