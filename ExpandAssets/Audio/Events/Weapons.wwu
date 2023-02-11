@@ -471,6 +471,30 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{E7DFC672-B673-4E00-8FAD-8AA34BFCB719}" ShortID="822688687">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Entrance" ID="{FDFDA323-44A7-4BC1-B5ED-900BE3FB7A18}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{F959DB51-FCA3-4069-B57B-E5BA92CF1C31}" ShortID="859328525">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Devour" ID="{60342814-4BCA-4B9C-BFDA-FAA6570C68E8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -1256,6 +1280,68 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Shots Fired!" ID="{C8395933-DCA7-4D46-B690-4960F2991E5A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_BellyMonster_Devour_01" ID="{D7D5E954-305A-4269-B58D-F4B5C915ED4F}">
+					<ChildrenList>
+						<Action Name="" ID="{F6303F22-5657-4C7B-8D08-79C006B84B6A}" ShortID="589252908">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Devour" ID="{60342814-4BCA-4B9C-BFDA-FAA6570C68E8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_BellyMonster_Entrance_01" ID="{695AE525-DA8B-4193-ABF5-EB91C6139391}">
+					<ChildrenList>
+						<Action Name="" ID="{0BF547C0-7F17-4D56-869E-1A7CE242715E}" ShortID="558186405">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Entrance" ID="{FDFDA323-44A7-4BC1-B5ED-900BE3FB7A18}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_BellyEntrance_01" ID="{A7C6A315-220D-4D36-B74E-52342A3533AE}">
+					<ChildrenList>
+						<Action Name="" ID="{042F1FC8-74F5-4A1E-8AE4-C4A70B0E307D}" ShortID="1052086292">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Entrance" ID="{FDFDA323-44A7-4BC1-B5ED-900BE3FB7A18}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_BellyDevour_01" ID="{22F1A676-7A41-45A1-9F9E-C009FCF3075B}">
+					<ChildrenList>
+						<Action Name="" ID="{835F313A-55F4-42C3-9EE2-D2F7B2EBCE64}" ShortID="1030452122">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Devour" ID="{60342814-4BCA-4B9C-BFDA-FAA6570C68E8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

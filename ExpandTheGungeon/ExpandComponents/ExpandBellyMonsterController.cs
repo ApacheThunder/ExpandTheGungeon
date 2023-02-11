@@ -156,6 +156,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 spriteAnimator.AnimationEventTriggered = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>)Delegate.Combine(spriteAnimator.AnimationEventTriggered, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip, int>(AnimationEventTriggered));
                 spriteAnimator.Play("MonsterChase");
                 specRigidbody.OnPreRigidbodyCollision += OnPreRigidBodyCollision;
+                AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
+                AkSoundEngine.PostEvent("Stop_EX_MUS_All", gameObject);
+                AkSoundEngine.PostEvent("Play_EX_MUS_BellyDevour_01", gameObject);
             }
 
             if (specRigidbody.Velocity.x <= 0) { specRigidbody.Velocity = new Vector2(-1.5f, 0); }
@@ -261,6 +264,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetSprite.SetSprite(player.sprite.spriteId);
             yield return null;
             AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
+            AkSoundEngine.PostEvent("Stop_EX_MUS_BellyMonster_Devour_01", gameObject);
             while (elapsed < duration) {
                 elapsed += BraveTime.DeltaTime;
                 if (!targetSprite || !targetSprite.transform) { break; }

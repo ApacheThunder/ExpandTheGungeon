@@ -1113,6 +1113,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Gungeon_HiddenMonsterRoom.allowWallDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.usesProceduralDecoration = false;
             Expand_Gungeon_HiddenMonsterRoom.precludeAllTilemapDrawing = true;
+            Expand_Gungeon_HiddenMonsterRoom.UseCustomMusic = true;
+            Expand_Gungeon_HiddenMonsterRoom.UseCustomMusicState = false;
+            Expand_Gungeon_HiddenMonsterRoom.CustomMusicEvent = "Play_MUS_Dungeon_State_Winner";
+            Expand_Gungeon_HiddenMonsterRoom.UseCustomMusicSwitch = true;
+            Expand_Gungeon_HiddenMonsterRoom.CustomMusicSwitch = "Play_EX_MUS_BellyEntrance_01";
 
 
             Expand_Belly_Connector_01 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Connector_01", true);

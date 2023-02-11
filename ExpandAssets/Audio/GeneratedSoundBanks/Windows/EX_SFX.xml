@@ -42,6 +42,8 @@
 				<Event Id="1141813923" Name="Play_EX_MUS_Belly_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopB"/>
 				<Event Id="1141813922" Name="Play_EX_MUS_Belly_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopC"/>
 				<Event Id="1141813925" Name="Play_EX_MUS_Belly_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopD"/>
+				<Event Id="2195148189" Name="Play_EX_MUS_BellyDevour_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyDevour_01"/>
+				<Event Id="3939060724" Name="Play_EX_MUS_BellyEntrance_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyEntrance_01"/>
 				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
 				<Event Id="1782047987" Name="Play_EX_MUS_Jungle_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01"/>
 				<Event Id="1013427843" Name="Play_EX_MUS_Jungle_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Calm"/>
@@ -76,6 +78,8 @@
 				<Event Id="1036099945" Name="Stop_EX_CorruptionRoomTransition_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_01"/>
 				<Event Id="1036099946" Name="Stop_EX_CorruptionRoomTransition_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_02"/>
 				<Event Id="3570814999" Name="Stop_EX_MUS_All" ObjectPath="\Events\Weapons\Stop_EX_MUS_All"/>
+				<Event Id="3980046948" Name="Stop_EX_MUS_BellyMonster_Devour_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Devour_01"/>
+				<Event Id="2561576157" Name="Stop_EX_MUS_BellyMonster_Entrance_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Entrance_01"/>
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
 				<Event Id="45318251" Name="Stop_EX_MUS_ShotsFired_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_ShotsFired_01"/>
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
@@ -223,6 +227,10 @@
 					<ShortName>Balloonpop3.wav</ShortName>
 					<Path>SFX\Balloonpop3_F7D0E330.wem</Path>
 				</File>
+				<File Id="854678633" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_Devour.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_Devour_AD29F36A.wem</Path>
+				</File>
 				<File Id="857608895" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Intro.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpowder_Intro_AD29F36A.wem</Path>
@@ -266,6 +274,10 @@
 				<File Id="1005918670" Language="SFX">
 					<ShortName>Belly_Door_Lock.wav</ShortName>
 					<Path>SFX\Belly_Door_Lock_F7D0E330.wem</Path>
+				</File>
+				<File Id="1020036941" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpowder_Entrance.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpowder_Entrance_AD29F36A.wem</Path>
 				</File>
 				<File Id="1020991936" Language="SFX">
 					<ShortName>Quiet_Forest_Calm.wav</ShortName>
