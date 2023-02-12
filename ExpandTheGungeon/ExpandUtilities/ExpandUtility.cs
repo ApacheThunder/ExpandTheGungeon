@@ -4482,16 +4482,30 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static Texture2D FlipTexture(Texture2D original) {
             if (!original) { return null; }
-            Texture2D flipped = new Texture2D(original.width, original.height);
-            int xN = original.width;
-            int yN = original.height;
-            for (int X = 0; X < xN; X++) {
-                for (int Y = 0; Y < yN; Y++) {
-                    flipped.SetPixel((xN - X - 1), Y, original.GetPixel(X, Y));
+            if (!original.IsReadable()) {
+                Texture2D readableOriginal = original.GetRW();
+                Texture2D flipped = new Texture2D(readableOriginal.width, readableOriginal.height);
+                int xN = readableOriginal.width;
+                int yN = readableOriginal.height;
+                for (int X = 0; X < xN; X++) {
+                    for (int Y = 0; Y < yN; Y++) {
+                        flipped.SetPixel((xN - X - 1), Y, readableOriginal.GetPixel(X, Y));
+                    }
                 }
+                flipped.Apply();
+                return flipped;
+            } else {
+                Texture2D flipped = new Texture2D(original.width, original.height);
+                int xN = original.width;
+                int yN = original.height;
+                for (int X = 0; X < xN; X++) {
+                    for (int Y = 0; Y < yN; Y++) {
+                        flipped.SetPixel((xN - X - 1), Y, original.GetPixel(X, Y));
+                    }
+                }
+                flipped.Apply();
+                return flipped;
             }
-            flipped.Apply();
-            return flipped;
         }
         
         public static Texture2D CombineTextures(Texture2D aBottom, Texture2D aTop) {
