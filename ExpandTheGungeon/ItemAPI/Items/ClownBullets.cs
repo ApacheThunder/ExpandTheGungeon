@@ -5,6 +5,9 @@ using UnityEngine;
 using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandPrefab;
 using System.Collections.Generic;
+using tk2dRuntime.TileMap;
+using ExpandTheGungeon.ExpandUtilities;
+using System.Reflection;
 
 namespace ExpandTheGungeon.ItemAPI {
     
@@ -77,7 +80,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
             }
         }
-        
+
         public override DebrisObject Drop(PlayerController player) {
             DebrisObject debrisObject = base.Drop(player);
             m_player = null;

@@ -521,8 +521,14 @@ namespace ExpandTheGungeon.ItemAPI {
             } else {
                 ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
-                        
-            TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom);
+
+            bool IsWinchesterRoom = false;
+
+            if (!string.IsNullOrEmpty(GlitchRoom.GetRoomName()) && GlitchRoom.GetRoomName().ToLower().Contains("winchesterroom")) {
+                IsWinchesterRoom = true;
+            }
+
+            TeleportToRoom(user, GlitchRoom, false, m_CopyCurrentRoom, isWinchesterRoom: IsWinchesterRoom);
             
             yield return null;
             while (m_IsTeleporting) { yield return null; }
@@ -578,15 +584,29 @@ namespace ExpandTheGungeon.ItemAPI {
             return true;
         }
 
-        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false, bool isCorruptedRoomCopy = false, Vector2? overridePosition = null) {
-           m_IsTeleporting = true;
+        public void TeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, bool isSecondaryPlayer = false, bool isCorruptedRoomCopy = false, Vector2? overridePosition = null, bool isWinchesterRoom = false) {
+            m_IsTeleporting = true;
             bool m_NeedsNewPosition = false;
             Vector2 OldPosition = (targetPlayer.transform.position - targetPlayer.CurrentRoom.area.basePosition.ToVector3());
             IntVector2 OldPositionIntVec2 = (targetPlayer.CenterPosition.ToIntVector2() - targetPlayer.CurrentRoom.area.basePosition);
             Vector2 NewPosition = (OldPosition + targetRoom.area.basePosition.ToVector2());
+            if (isWinchesterRoom && targetRoom != null && targetRoom.hierarchyParent) {
+                int ChildCount = targetRoom.hierarchyParent.childCount;
+                for(int i = 0; i < ChildCount; i++) {
+                    Transform childTransform = targetRoom.hierarchyParent.GetChild(i);
+                    if (childTransform && childTransform.gameObject && childTransform.gameObject.GetComponent<TalkDoerLite>()) {
+                        overridePosition = (childTransform.PositionVector2() - new Vector2(1, 0.5f));
+                        break;
+                    }
+                }
+            }
 
             if (overridePosition.HasValue) {
-                NewPosition = (overridePosition.Value + targetRoom.area.basePosition.ToVector2());
+                if (isWinchesterRoom) {
+                    NewPosition = overridePosition.Value;
+                } else {
+                    NewPosition = (overridePosition.Value + targetRoom.area.basePosition.ToVector2());
+                }
             } else {
                 if (isCorruptedRoomCopy && !GameManager.Instance.Dungeon.data.isPlainEmptyCell(OldPositionIntVec2.x + targetRoom.area.basePosition.x, OldPositionIntVec2.y + targetRoom.area.basePosition.y)) {
                     m_NeedsNewPosition = true;
@@ -598,7 +618,8 @@ namespace ExpandTheGungeon.ItemAPI {
                     if (randomAvailableCell.HasValue) {
                         NewPosition = randomAvailableCell.Value.ToVector3();
                     } else {
-                        randomAvailableCell = ExpandUtility.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 3));                    
+                        // randomAvailableCell = ExpandUtility.GetRandomAvailableCellSmart(targetRoom, new IntVector2(2, 3));
+                        randomAvailableCell = GetRandomAvailableCell(targetRoom, new IntVector2(2, 2));
                     }
                     if (!randomAvailableCell.HasValue) {
                         m_IsTeleporting = false;
@@ -607,11 +628,37 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
             }
 
+            
+            List<AIActor> targetRoomEnemies = GetEnemiesFromNewRoom(targetRoom);
+            List<AIActor> targetRoomEnemies2 = targetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);
+
+            if (targetRoomEnemies != null && targetRoomEnemies.Count > 0) {
+                for (int I = 0; I < targetRoomEnemies.Count; I++) {
+                    if (Vector2.Distance(NewPosition, targetRoomEnemies[I].gameObject.transform.PositionVector2()) < 2.5f) {
+                        if (targetRoomEnemies[I].healthHaver && !targetRoomEnemies[I].healthHaver.IsBoss) {
+                            targetRoomEnemies[I].EraseFromExistenceWithRewards();
+                            if (ExpandSettings.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] TheLeadKey: Enemy too close to spawn point. Enemy removed from room!", true); }
+                        }
+                    }
+                }
+            }
+            if (targetRoomEnemies2 != null && targetRoomEnemies2.Count > 0) {
+                for (int I = 0; I < targetRoomEnemies2.Count; I++) {
+                    if (Vector2.Distance(NewPosition, targetRoomEnemies2[I].gameObject.transform.PositionVector2()) < 2.5f) {
+                        if (targetRoomEnemies2[I].healthHaver && !targetRoomEnemies2[I].healthHaver.IsBoss) {
+                            targetRoomEnemies2[I].EraseFromExistenceWithRewards();
+                            if (ExpandSettings.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] TheLeadKey: Enemy too close to spawn point. Enemy removed from room!", true); }
+                        }
+                    }
+                }
+            }
+
             if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER && !isSecondaryPlayer) {
                 PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(targetPlayer);
                 if (otherPlayer) { TeleportToRoom(otherPlayer, targetRoom, true, true); }
             }
-            targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);            
+
+            targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);
             GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, NewPosition));
             targetPlayer.specRigidbody.Velocity = Vector2.zero;
             targetPlayer.knockbackDoer.TriggerTemporaryKnockbackInvulnerability(1f);
@@ -837,6 +884,45 @@ namespace ExpandTheGungeon.ItemAPI {
             }
         }
 
+        private IntVector2? GetRandomAvailableCell(RoomHandler CurrentRoom, IntVector2 Clearence, bool relativeToRoom = false) {            
+            CellValidator cellValidator = delegate (IntVector2 c) {
+                for (int X = 0; X < Clearence.x; X++) {
+                    for (int Y = 0; Y < Clearence.y; Y++) {
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + X, c.y + Y)) { return false; }
+                        if (GameManager.Instance.Dungeon.data.isTopWall(X, Y)) { return false; }
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.PIT |                            
+                            GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.WALL |
+                            GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].isOccupied) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+            if (relativeToRoom) {
+                return CurrentRoom.GetRandomAvailableCell(Clearence, new CellTypes?(CellTypes.FLOOR), false, cellValidator) - CurrentRoom.area.basePosition;
+            } else {
+                return CurrentRoom.GetRandomAvailableCell(Clearence, new CellTypes?(CellTypes.FLOOR), false, cellValidator);
+            }            
+        }
+
+        private List<AIActor> GetEnemiesFromNewRoom(RoomHandler CurrentRoom, RoomHandler.ActiveEnemyType enemyType = RoomHandler.ActiveEnemyType.All) {
+            List<AIActor> m_Enemies = new List<AIActor>();
+            if (CurrentRoom.hierarchyParent && CurrentRoom.hierarchyParent.childCount > 0) {
+                for (int I = 0; I < CurrentRoom.hierarchyParent.childCount; I++) {
+                    if (CurrentRoom.hierarchyParent.GetChild(I).gameObject && CurrentRoom.hierarchyParent.gameObject.GetComponent<AIActor>()) {
+                        AIActor enemy = CurrentRoom.hierarchyParent.gameObject.GetComponent<AIActor>();
+                        if (enemyType == RoomHandler.ActiveEnemyType.RoomClear && !enemy.IgnoreForRoomClear) {
+                            m_Enemies.Add(enemy);
+                        } else if (enemyType == RoomHandler.ActiveEnemyType.All) {
+                            m_Enemies.Add(enemy);
+                        }
+                    }
+                }
+            }
+            return m_Enemies;
+        }
+
         protected override void OnDestroy() { base.OnDestroy(); }
     }
 
@@ -848,12 +934,32 @@ namespace ExpandTheGungeon.ItemAPI {
         
         public RoomHandler ParentRoom;
 
-        private void Start() { }
+        private float m_Timer;
 
+        private void Start() { m_Timer = 5f; }
+        
         private void Update() {
             if (Activated) {
                 if (ParentRoom != null) {
                     if (ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
+
+                        m_Timer -= BraveTime.DeltaTime;
+
+                        if (m_Timer <= 0) {
+                            m_Timer = 5;
+                            List<AIActor> m_Enemies = ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear);
+                            if (m_Enemies != null && m_Enemies.Count > 0) {
+                                for (int i = 0; i < m_Enemies.Count; i++) {
+                                    if (m_Enemies[i].GetAbsoluteParentRoom() == null | m_Enemies[i].GetAbsoluteParentRoom() != ParentRoom |
+                                        Vector2.Distance(m_Enemies[i].gameObject.transform.PositionVector2(), ParentRoom.area.Center) > (ParentRoom.area.dimensions.x + ParentRoom.area.dimensions.y)
+                                       ) {
+                                        m_Enemies[i].EraseFromExistence();
+                                        if (ExpandSettings.debugMode) { ETGModConsole.Log("[ExpandTheGungeon] TheLeadKey: Enemy outside of generated room detected! It has been removed to prevent softlocks!", true); }
+                                    }
+                                }
+                            }
+                        }
+
                         if (!ParentRoom.CompletelyPreventLeaving) {
                             ParentRoom.CompletelyPreventLeaving = true;
                             ParentRoom.SealRoom();
@@ -873,7 +979,6 @@ namespace ExpandTheGungeon.ItemAPI {
         }
                 
         protected override void OnDestroy() { base.OnDestroy(); }
-
     }
 }
 

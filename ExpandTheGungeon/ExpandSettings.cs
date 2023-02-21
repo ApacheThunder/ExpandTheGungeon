@@ -10,7 +10,7 @@ namespace ExpandTheGungeon {
         public static string TestFlow = "Test_CustomRoom_Flow";
         public static string TestFloor = "tt_phobos";
         public static bool debugMode = false;        
-        public static bool youtubeSafeMode = false;
+        public static bool youtubeSafeMode = true;
         public static bool IsHardModeBuild = false;
         public static bool RestoreOldRooms = false;
         public static bool EnableJungleRain = true;
@@ -20,7 +20,7 @@ namespace ExpandTheGungeon {
         public static bool EnableEXItems = true;
         public static float JungleRainIntensity = 400f;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
-        public static int GameLanguage = 0;
+        // public static int GameLanguage = 0;
 
         // These are set during GamePlay, don't read/write them from JSON text.
         public static bool spritesBundlePresent = false;
@@ -68,7 +68,7 @@ namespace ExpandTheGungeon {
             IsHardModeBuild = stats.IsHardModeBuild;
             EnableJungleRain = stats.EnableJungleRain;
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
-            GameLanguage = stats.GameLanguage;
+            // GameLanguage = stats.GameLanguage;
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             EnableEXItems = stats.EnableEXItems;
@@ -108,7 +108,7 @@ namespace ExpandTheGungeon {
             EnableGlitchFloorScreenShader = ExpandSettings.EnableGlitchFloorScreenShader;
             EnableEXItems = ExpandSettings.EnableEXItems;
             JungleRainIntensity = ExpandSettings.JungleRainIntensity;
-            GameLanguage = ExpandSettings.GameLanguage;
+            // GameLanguage = ExpandSettings.GameLanguage;
         }
     }
 }

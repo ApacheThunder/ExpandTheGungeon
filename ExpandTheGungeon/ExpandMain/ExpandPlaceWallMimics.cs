@@ -44,15 +44,6 @@ namespace ExpandTheGungeon.ExpandMain {
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }
 
             try {
-                /*if (ExpandTheGungeon.GameManagerHook == null) {
-                    if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
-                    ExpandTheGungeon.GameManagerHook = new Hook(
-                        typeof(GameManager).GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance),
-                        typeof(ExpandTheGungeon).GetMethod("GameManager_Awake", BindingFlags.NonPublic | BindingFlags.Instance),
-                        typeof(GameManager)
-                    );
-                }*/
-
                 if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Number of Wall Mimics RewardManager wants to spawn: " + numWallMimicsForFloor, false); }
                 
                 if (levelOverrideState != GameManager.LevelOverrideState.NONE | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL | levelOverrideState == GameManager.LevelOverrideState.FOYER | dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) {
