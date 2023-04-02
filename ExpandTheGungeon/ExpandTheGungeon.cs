@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.5";
+        public const string VERSION = "2.9.6";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -280,7 +280,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -504,8 +504,8 @@ namespace ExpandTheGungeon {
             ETGModConsole.Log("[ExpandTheGungeon] Sprite collection successfully built and exported!");
         }
 
-        /*private void ExpandTestCommand(string[] consoleText) {
-            GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
+        private void ExpandTestCommand(string[] consoleText) {
+            /*GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
             GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
             // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);
             
@@ -514,10 +514,16 @@ namespace ExpandTheGungeon {
                 GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -int.Parse(consoleText[1]));
             } else if (consoleText[0].StartsWith("+")) {
                 GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, +int.Parse(consoleText[1]));
-            }
-            
+            }*/
+
             //return;
-        }*/
+
+            // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
+            GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0,2,0)), Quaternion.identity);
+
+            GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
+
+        }
     }
 }
 

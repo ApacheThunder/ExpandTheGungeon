@@ -105,6 +105,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpandComponents\ExpandArkController.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoPropAnimationHandler.cs" />

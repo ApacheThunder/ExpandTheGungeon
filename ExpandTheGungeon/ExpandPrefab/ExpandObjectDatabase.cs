@@ -97,6 +97,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // public static GameObject GungeonWarpDoor;
         // public static GameObject CastleWarpDoor;
         public static readonly GameObject EndTimes;
+        public static readonly GameObject EndTimesChest;
         // R&G Floor Objects
         public static readonly GameObject TableHorizontalSteel;
         public static readonly GameObject TableVerticalSteel;
@@ -213,6 +214,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
             // CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
             EndTimes = ExpandAssets.LoadOfficialAsset<GameObject>("EndTimes", ExpandAssets.AssetSource.BraveResources);
+            EndTimesChest = forgeDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("EndTimes_Xform").Find("G_CacheOfTheAmmulich").gameObject;
+
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {

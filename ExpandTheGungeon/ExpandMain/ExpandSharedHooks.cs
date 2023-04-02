@@ -1715,21 +1715,37 @@ namespace ExpandTheGungeon.ExpandMain {
                ) {
                 Vector2 ChestPosition = self.transform.position.IntXY(VectorConversions.Round).ToVector3();
                 GameObject chestOBJ;
-                if (UnityEngine.Random.value < 0.009f) {
-                    chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.RickRollChestObject, ChestPosition, Quaternion.identity);
+                bool spawnFakePastChest = false;
+                if (!ExpandSettings.HasSpawnedFakePastChest && DateTime.Today.Month == 4 && DateTime.Today.Day == 01) {
+                    ExpandSettings.HasSpawnedFakePastChest = true;
+                    spawnFakePastChest = true;
+                }
+                if (spawnFakePastChest) {
+                    chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.FakePastChest, (ChestPosition - new Vector2(1.95f,1.45f)), Quaternion.identity);
                 } else {
-                    chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, ChestPosition, Quaternion.identity);
+                    if (UnityEngine.Random.value < 0.009f) {
+                        chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.RickRollChestObject, ChestPosition, Quaternion.identity);
+                    } else {
+                        chestOBJ = UnityEngine.Object.Instantiate(ExpandPrefabs.SurpriseChestObject, ChestPosition, Quaternion.identity);
+                    }
+                }
+                if (spawnFakePastChest) {
+                    ExpandArkController m_ArkController = null;
+                    if (chestOBJ) { m_ArkController = chestOBJ.GetComponent<ExpandArkController>(); }
+                    if (m_ArkController) { m_ArkController.ConfigureOnPlacement(room); }
+                    UnityEngine.Object.Destroy(self.gameObject);
+                    return;
                 }
                 ExpandFakeChest fakeChest = null;
                 if (chestOBJ) { fakeChest = chestOBJ.GetComponent<ExpandFakeChest>(); }
                 if (fakeChest) {
                     if (self.CenterChestInRegion) {
-                        SpeculativeRigidbody component = fakeChest.gameObject.GetComponent<SpeculativeRigidbody>();
+                        SpeculativeRigidbody component = chestOBJ.GetComponent<SpeculativeRigidbody>();
                         if (component) {
-                            Vector2 Base = component.UnitCenter - fakeChest.gameObject.transform.position.XY();
-                            Vector2 Offset = self.transform.position.XY() + new Vector2(self.xPixelOffset / 16f, self.yPixelOffset / 16f) + new Vector2((float)self.placeableWidth / 2f, (float)self.placeableHeight / 2f);
+                            Vector2 Base = component.UnitCenter - chestOBJ.transform.position.XY();
+                            Vector2 Offset = self.transform.position.XY() + new Vector2(self.xPixelOffset / 16f, self.yPixelOffset / 16f) + new Vector2(self.placeableWidth / 2f, self.placeableHeight / 2f);
                             Vector2 Vector = (Offset - Base);
-                            fakeChest.gameObject.transform.position = Vector.ToVector3ZisY(0f).Quantize(0.0625f);
+                            chestOBJ.transform.position = Vector.ToVector3ZisY(0f).Quantize(0.0625f);
                             component.Reinitialize();
                         }
                     }

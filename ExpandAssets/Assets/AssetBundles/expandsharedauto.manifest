@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1595023069
+CRC: 4037480594
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 600f3d66294f2bd443446ad1a73e7fb0
+    Hash: a7168a278c52302407b96741ddf7f159
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -172,6 +172,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular17.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/RedBulletShotgunMan.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular12.bytes
+- Assets/ExpandPrefabs/Misc/Expand_FakePastChest.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate14.bytes
 - Assets/ExpandRooms/RoomFactoryData/BulletHell/BHell_TheReunion.bytes
 - Assets/ExpandRooms/RoomBuilderData/Creepy_Glitched_Room_Layout.png

@@ -276,6 +276,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject RickRollAnimationObject;
         public static GameObject RickRollMusicSwitchObject;
         public static GameObject SurpriseChestObject;
+        public static GameObject FakePastChest;
         public static GameObject ExpandThunderstormPlaceable;
         public static GameObject Door_Horizontal_Jungle;
         public static GameObject Door_Vertical_Jungle;
@@ -2803,7 +2804,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), EXTrapCollection.GetComponent<tk2dSpriteCollectionData>(), m_RickRollMusicSwitchTurnOnFrames, "RickRollSwitch_TurnOn", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
             ExpandUtility.AddAnimation(RickRollMusicSwitchObject.GetComponent<tk2dSpriteAnimator>(), EXTrapCollection.GetComponent<tk2dSpriteCollectionData>(), m_RickRollMusicSwitchTurnOffFrames, "RickRollSwitch_TurnOff", tk2dSpriteAnimationClip.WrapMode.Once, frameRate: 12);
 
-            ETGModConsole.ModdedShrines.Add("RickRollChest", RickRollChestObject);
+            ETGModConsole.ModdedShrines.Add("EX:RickRollChest", RickRollChestObject);
 
             ExpandFakeChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandFakeChest>();
             RickRollChest_SwitchComponent.chestType = ExpandFakeChest.ChestType.MusicSwitch;
@@ -2889,12 +2890,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SurpriseChestComponent.openAnimName = "coop_chest_open";
 
 
-            ETGModConsole.ModdedShrines.Add("SurpriseChest", SurpriseChestObject);
+            ETGModConsole.ModdedShrines.Add("EX:SurpriseChest", SurpriseChestObject);
+            
+            FakePastChest = expandSharedAssets1.LoadAsset<GameObject>("Expand_FakePastChest");
+
+            ExpandUtility.DuplicateSprite(FakePastChest.AddComponent<tk2dSprite>(), ExpandObjectDatabase.EndTimesChest.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateSprite(FakePastChest.transform.Find("G_Lid").gameObject.AddComponent<tk2dSprite>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Lid").gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateSprite(FakePastChest.transform.Find("G_Shadow").gameObject.AddComponent<tk2dSprite>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Shadow").gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateSprite(FakePastChest.transform.Find("G_Poof").gameObject.AddComponent<tk2dSprite>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Poof").gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateSprite(FakePastChest.transform.Find("G_Light").gameObject.AddComponent<tk2dSprite>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Light").gameObject.GetComponent<tk2dSprite>());
+            FakePastChest.transform.Find("G_Light").gameObject.GetComponent<tk2dSprite>().renderer.enabled = false;
+            FakePastChest.transform.Find("G_Shadow").gameObject.GetComponent<tk2dSprite>().usesOverrideMaterial = true;
+            FakePastChest.transform.Find("G_Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+            ExpandUtility.DuplicateSpriteAnimator(FakePastChest.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.EndTimesChest.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateSpriteAnimator(FakePastChest.transform.Find("G_Lid").gameObject.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Lid").gameObject.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateSpriteAnimator(FakePastChest.transform.Find("G_Shadow").gameObject.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Shadow").gameObject.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateSpriteAnimator(FakePastChest.transform.Find("G_Poof").gameObject.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Poof").gameObject.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateSpriteAnimator(FakePastChest.transform.Find("G_Light").gameObject.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.EndTimesChest.transform.Find("G_Light").gameObject.GetComponent<tk2dSpriteAnimator>());
+
+            ExpandUtility.DuplicateRigidBody(FakePastChest.AddComponent<SpeculativeRigidbody>(), ExpandObjectDatabase.EndTimesChest.GetComponent<SpeculativeRigidbody>());
+
+            ExpandArkController m_ExpandArkController = FakePastChest.AddComponent<ExpandArkController>();
+
+            ETGModConsole.ModdedShrines.Add("EX:FakePastChest", FakePastChest);
 
             ExpandThunderstormPlaceable = expandSharedAssets1.LoadAsset<GameObject>("ExpandThunderStorm");
             ExpandThunderstormPlaceable.AddComponent<ExpandThunderStormPlacable>();
             
-
 
             Door_Horizontal_Jungle = UnityEngine.Object.Instantiate(ForgeDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
             Door_Horizontal_Jungle.SetActive(false);
@@ -4361,7 +4385,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<MajorBreakable>()), chestWestBreakable);
             chestWestBreakable.spriteNameToUseAtZeroHP = "chest_west_break_001";
 
-            ETGModConsole.ModdedChests.Add("West", m_chestWest);
+            ETGModConsole.ModdedChests.Add("EX:West", m_chestWest);
 
             EX_RedBalloon = expandSharedAssets1.LoadAsset<GameObject>("EX_RedBalloon");
             tk2dSprite m_RedBalloonSprite = SpriteSerializer.AddSpriteToObject(EX_RedBalloon, EXBalloonCollection, "redballoon_idle_001");
