@@ -52,10 +52,10 @@ namespace ExpandTheGungeon.ExpandPrefab
             Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
             Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
 
-            Shades = ExpandCustomEnemyDatabase.GetOfficialEnemyByGuid("c00390483f394a849c36143eb878998f");
+            Shades = ExpandEnemyDatabase.GetOfficialEnemyByGuid("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
-            SetupHand(assetBundle, out WestBrosHandPrefab, ExpandCustomEnemyDatabase.WestBrosCollection.GetComponent<tk2dSpriteCollectionData>());
+            SetupHand(assetBundle, out WestBrosHandPrefab, ExpandEnemyDatabase.WestBrosCollection.GetComponent<tk2dSpriteCollectionData>());
 
             BuildWestBrosHatPrefab(assetBundle, out WestBrosAngelHatPrefab, WestBros.Angel, Collection, ShadesDebris);
             BuildWestBrosHatPrefab(assetBundle, out WestBrosNomeHatPrefab, WestBros.Nome, Collection, ShadesDebris);
@@ -86,7 +86,7 @@ namespace ExpandTheGungeon.ExpandPrefab
 
             handPrefab = assetBundle.LoadAsset<GameObject>("WestBroHandObject");
 
-            var sprite = SpriteSerializer.AddSpriteToObject(handPrefab, ExpandCustomEnemyDatabase.WestBrosCollection, spriteDefinition.name);
+            var sprite = SpriteSerializer.AddSpriteToObject(handPrefab, ExpandEnemyDatabase.WestBrosCollection, spriteDefinition.name);
             handPrefab.AddComponent<PlayerHandController>();
         }
 
@@ -142,7 +142,7 @@ namespace ExpandTheGungeon.ExpandPrefab
 
         private static void BuildWestBrosBossPrefab(AssetBundle assetBundle, out GameObject outObject, WestBros whichBro, bool isSmiley, tk2dSpriteCollectionData sourceSpriteCollection, tk2dSpriteAnimation sourceAnimations, bool keepIntroDoer = false)
         {
-            GameObject prefab = ExpandCustomEnemyDatabase.GetOfficialEnemyByGuid(isSmiley
+            GameObject prefab = ExpandEnemyDatabase.GetOfficialEnemyByGuid(isSmiley
                 ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
                 : "c00390483f394a849c36143eb878998f").gameObject; // Shades
 
@@ -482,7 +482,7 @@ namespace ExpandTheGungeon.ExpandPrefab
 
                 actor.RegenerateCache();
 
-                ExpandCustomEnemyDatabase.AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
+                ExpandEnemyDatabase.AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
                 FakePrefab.MarkAsFakePrefab(outObject);
                 UnityEngine.Object.DontDestroyOnLoad(outObject);
             }

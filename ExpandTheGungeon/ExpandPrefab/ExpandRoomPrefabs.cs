@@ -962,7 +962,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(30, 30), ExpandObjectDatabase.DefaultTorch, xOffset: 8);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 25), ExpandObjectDatabase.DefaultTorch, xOffset: 8);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(22, 14), ExpandObjectDatabase.GodRays);
-            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.com4nd0GUID);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandEnemyDatabase.com4nd0GUID);
 
 
             Expand_Belly_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Entrance", true);
@@ -1002,7 +1002,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(17, 12),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1013,7 +1013,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(15, 18),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1024,7 +1024,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(11, 12),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1035,7 +1035,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(19, 27),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1046,7 +1046,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(27, 15),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1057,7 +1057,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.AggressiveCronenbergGUID, // 
+                            enemyBehaviourGuid = ExpandEnemyDatabase.AggressiveCronenbergGUID, // 
                             contentsBasePosition = new Vector2(29, 19),
                             layer = 0,
                             xMPxOffset = 0,
@@ -1086,7 +1086,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(20, 19), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.ParasiteBossGUID);
+            RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(20, 19), EnemyBehaviourGuid: ExpandEnemyDatabase.ParasiteBossGUID);
             // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(1, 30), ExpandPrefab.Belly_Shipwreck_Left);
             // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(26, 31), ExpandPrefab.Belly_Shipwreck_Right);
 
@@ -1152,8 +1152,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(34, 25), ExpandPrefabs.Door_Horizontal_West);
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(25, 17), ExpandPrefabs.Door_Vertical_West);
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(25, 35), ExpandPrefabs.Door_Vertical_West);
-            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(9, 42), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
-            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(41, 10), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.MetalCubeGuyWestGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(9, 42), EnemyBehaviourGuid: ExpandEnemyDatabase.MetalCubeGuyWestGUID);
+            RoomBuilder.AddObjectToRoom(Expand_West_Entrance, new Vector2(41, 10), EnemyBehaviourGuid: ExpandEnemyDatabase.MetalCubeGuyWestGUID);
             RoomBuilder.AddObjectToRoom(Expand_West_Entrance, Vector2.one, ExpandPrefabs.West_PuzzleSetupPlacable);
 
 
@@ -9751,7 +9751,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new PrototypeRoomObjectLayer() {
                     placedObjects = new List<PrototypePlacedObjectData>() {
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID, // bootleg_shotgunmanred
+                            enemyBehaviourGuid = ExpandEnemyDatabase.BootlegShotgunManRedGUID, // bootleg_shotgunmanred
                             contentsBasePosition = new Vector2(12, 11),
                             layer = 0,
                             xMPxOffset = 0,
@@ -9762,7 +9762,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegBullatGUID, // bootleg_bullat
+                            enemyBehaviourGuid = ExpandEnemyDatabase.BootlegBullatGUID, // bootleg_bullat
                             contentsBasePosition = new Vector2(4, 6),
                             layer = 0,
                             xMPxOffset = 0,
@@ -9773,7 +9773,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             assignedPathStartNode = 0
                         },
                         new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID, // bootleg_shotgunmanblue
+                            enemyBehaviourGuid = ExpandEnemyDatabase.BootlegShotgunManBlueGUID, // bootleg_shotgunmanblue
                             contentsBasePosition = new Vector2(10, 6),
                             layer = 0,
                             xMPxOffset = 0,
@@ -9811,10 +9811,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(Expand_BootlegRoom, new Vector2(10, 14), DungeonData.Direction.NORTH, ContainsDoor: false);
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomObject, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(0, 0), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.EXBootlegRoomDoorTriggers, useExternalPrefab: true));
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
-            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandCustomEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(8, 8), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(7, 11), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBulletManGUID); // Bootleg BulletMan
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
+            RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
 
 
             List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();

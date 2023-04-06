@@ -174,7 +174,7 @@ namespace ExpandTheGungeon.ItemAPI
 
             Projectile projectile = isGoldenVersion ? WestBrosGoldenRevolverProjectile.AddComponent<Projectile>() : WestBrosBlackRevolverProjectile.AddComponent<Projectile>();
             GameObject projectileChild = projectile.transform.Find("Sprite").gameObject;
-            tk2dSprite projetileSprite = SpriteSerializer.AddSpriteToObject(projectileChild, ExpandCustomEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
+            tk2dSprite projetileSprite = SpriteSerializer.AddSpriteToObject(projectileChild, ExpandEnemyDatabase.WestBrosCollection, "gr_black_revolver_projectile_001");
             ExpandUtility.GenerateSpriteAnimator(projectileChild, playAutomatically: true);
             ExpandUtility.AddAnimation(projectileChild.GetComponent<tk2dSpriteAnimator>(), projetileSprite.Collection, ProjectileSpriteList, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 13);
             

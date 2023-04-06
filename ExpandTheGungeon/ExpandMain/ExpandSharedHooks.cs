@@ -63,6 +63,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook floorChestPlacerConfigureOnPlacementHook;
         public static Hook applyBenefitHook;
         public static Hook flameTrapHook;
+        // public static Hook pixelatorStartHook;
 
         public static bool IsHooksInstalled = false;
         
@@ -383,6 +384,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(FlameTrapChallengeModifier)
             );
 
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
+            pixelatorStartHook = new Hook(
+                typeof(Pixelator).GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandSharedHooks).GetMethod(nameof(PixelatorStartHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(Pixelator)
+            );*/
             return;
         }
 
@@ -870,7 +877,7 @@ namespace ExpandTheGungeon.ExpandMain {
         // Make the HellDragZone thing actually take player to direct to bullet hell instead of using normal DelayedLoadNextLevel().
         // Since if the EndTimes room is loaded from a different level other then Forge, this could cause issues. :P
         private IEnumerator HandleGrabbyGrabHook(Func<HellDragZoneController, PlayerController, IEnumerator>orig, HellDragZoneController self, PlayerController grabbedPlayer) {
-            FsmBool m_cryoBool = ReflectionHelpers.ReflectGetField<FsmBool>(typeof(HellDragZoneController), "m_cryoBool", self);
+            FsmBool m_cryoBool = ReflectGetField<FsmBool>(typeof(HellDragZoneController), "m_cryoBool", self);
             grabbedPlayer.specRigidbody.Velocity = Vector2.zero;
             grabbedPlayer.specRigidbody.CapVelocity = true;
             grabbedPlayer.specRigidbody.MaxVelocity = Vector2.zero;
@@ -1073,7 +1080,6 @@ namespace ExpandTheGungeon.ExpandMain {
         
         private void BuildOcclusionLayerCenterJungleHook(TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
             if (current == null | !d | !map) { return; }
-
             if (!IsValidJungleOcclusionCell(self, current, d, ix, iy)) { return; }
             bool flag = true;
             bool flag2 = true;
@@ -1123,7 +1129,6 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void BuildBorderLayerCenterJungleHook(TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
             if (current == null | !d | !map) { return; }
-
             if (!IsValidJungleBorderCell(current, d, ix, iy)) { return; }
             bool flag = true;
             bool flag2 = true;
@@ -1214,15 +1219,23 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private bool IsCardinalBorder(CellData current, Dungeon d, int ix, int iy) {
-            bool flag = d.data.isTopWall(ix, iy);
-            flag = (flag && !d.data[ix, iy + 1].cellVisualData.shouldIgnoreBorders);
-            bool flag2 = (!d.data.isWallRight(ix, iy) && !d.data.isRightTopWall(ix, iy)) || d.data.isFaceWallHigher(ix + 1, iy) || d.data.isFaceWallLower(ix + 1, iy);
-            flag2 = (flag2 && !d.data[ix + 1, iy].cellVisualData.shouldIgnoreBorders);
-            bool flag3 = iy > 3 && d.data.isFaceWallHigher(ix, iy - 1);
-            flag3 = (flag3 && !d.data[ix, iy - 1].cellVisualData.shouldIgnoreBorders);
-            bool flag4 = (!d.data.isWallLeft(ix, iy) && !d.data.isLeftTopWall(ix, iy)) || d.data.isFaceWallHigher(ix - 1, iy) || d.data.isFaceWallLower(ix - 1, iy);
-            flag4 = (flag4 && !d.data[ix - 1, iy].cellVisualData.shouldIgnoreBorders);
-            return flag || flag2 || flag3 || flag4;
+            try {
+                bool flag = d.data.isTopWall(ix, iy);
+                flag = (flag && !d.data[ix, iy + 1].cellVisualData.shouldIgnoreBorders);
+                bool flag2 = (!d.data.isWallRight(ix, iy) && !d.data.isRightTopWall(ix, iy)) || d.data.isFaceWallHigher(ix + 1, iy) || d.data.isFaceWallLower(ix + 1, iy);
+                flag2 = (flag2 && !d.data[ix + 1, iy].cellVisualData.shouldIgnoreBorders);
+                bool flag3 = iy > 3 && d.data.isFaceWallHigher(ix, iy - 1);
+                flag3 = (flag3 && !d.data[ix, iy - 1].cellVisualData.shouldIgnoreBorders);
+                bool flag4 = (!d.data.isWallLeft(ix, iy) && !d.data.isLeftTopWall(ix, iy)) || d.data.isFaceWallHigher(ix - 1, iy) || d.data.isFaceWallLower(ix - 1, iy);
+                flag4 = (flag4 && !d.data[ix - 1, iy].cellVisualData.shouldIgnoreBorders);
+                return flag || flag2 || flag3 || flag4;
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsCardinalBorder!");
+                    Debug.LogException(ex);
+                }
+                return false;
+            }
         }
         
         private TileIndexGrid GetTypeBorderGridForBorderIndexHook(TK2DDungeonAssembler self, CellData current, Dungeon d, out int usedVisualType) {
@@ -1540,10 +1553,10 @@ namespace ExpandTheGungeon.ExpandMain {
             float elapsed = 0f;
             float startValue = 0f;
             if (startAtCurrent) { startValue = self.FadeMaterial.GetColor("_Color").a; }
-            bool m_skipCycle = ReflectionHelpers.ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
+            bool m_skipCycle = ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
             while (elapsed < duration) {
                 if (!force && m_skipCycle) { yield break; }
-                m_skipCycle = ReflectionHelpers.ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
+                m_skipCycle = ReflectGetField<bool>(typeof(FinalIntroSequenceManager), "m_skipCycle", self);
                 elapsed += Time.deltaTime;
                 float t = elapsed / duration;
                 self.FadeMaterial.SetColor("_Color", new Color(0f, 0f, 0f, Mathf.Lerp(startValue, 1f, t)));
@@ -1818,6 +1831,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 m_activeTraps.Clear();
             }
         }
+
+        /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
+            if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
+                // self.UseTexturedOcclusion = true;
+                self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+            }
+            orig(self);
+        }*/
     }
 }
 

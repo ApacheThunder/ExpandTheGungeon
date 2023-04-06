@@ -35,7 +35,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 modifyType = StatModifier.ModifyMethod.MULTIPLICATIVE,
             };
 
-            CompanionGuid = ExpandCustomEnemyDatabase.FriendlyCultistGUID;
+            CompanionGuid = ExpandEnemyDatabase.FriendlyCultistGUID;
             
             m_PickedUp = false;
             m_HasDied = false;

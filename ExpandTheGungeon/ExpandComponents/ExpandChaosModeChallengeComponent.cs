@@ -64,16 +64,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             };
 
             RoomEnemyGUIDList = new List<string> {
-                ExpandCustomEnemyDatabase.ClownkinAngryGUID,
-                ExpandCustomEnemyDatabase.ClownkinNoFXGUID,
-                ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID,
-                ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                ExpandCustomEnemyDatabase.AggressiveCronenbergGUID,
-                ExpandCustomEnemyDatabase.HotShotBulletKinGUID,
-                ExpandCustomEnemyDatabase.HotShotCultistGUID,
-                ExpandCustomEnemyDatabase.HotShotShotgunKinGUID,
+                ExpandEnemyDatabase.ClownkinAngryGUID,
+                ExpandEnemyDatabase.ClownkinNoFXGUID,
+                ExpandEnemyDatabase.BootlegBulletManGUID,
+                ExpandEnemyDatabase.BootlegShotgunManBlueGUID,
+                ExpandEnemyDatabase.BootlegShotgunManRedGUID,
+                ExpandEnemyDatabase.BootlegBulletManBandanaGUID,
+                ExpandEnemyDatabase.AggressiveCronenbergGUID,
+                ExpandEnemyDatabase.HotShotBulletKinGUID,
+                ExpandEnemyDatabase.HotShotCultistGUID,
+                ExpandEnemyDatabase.HotShotShotgunKinGUID,
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 "d4a9836f8ab14f3fadd0f597438b1f1f", // mutant_bullet_kin
                 "05891b158cd542b1a5f3df30fb67a7ff", // arrow_head
@@ -185,12 +185,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             BulletManMonochromeCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManMonochromeTexture, null, ShaderCache.Acquire("tk2d/BlendVertexColorUnlitTilted"), false);
             BulletManUpsideDownCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("01972dee89fc4404a5c408d50007dad5").sprite.Collection, ExpandPrefabs.BulletManUpsideDownTexture, null, null, false);
 
-            AlreadyIgnoredForRoomClearList.Add(ExpandCustomEnemyDatabase.RatGrenadeGUID); // rat_granade
+            AlreadyIgnoredForRoomClearList.Add(ExpandEnemyDatabase.RatGrenadeGUID); // rat_granade
             
             PotPestGUIDList = new List<string>() {
                 "6ad1cafc268f4214a101dca7af61bc91", // rat
                 "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
-                ExpandCustomEnemyDatabase.RatGrenadeGUID,
+                ExpandEnemyDatabase.RatGrenadeGUID,
                 "1386da0f42fb4bcabc5be8feb16a7c38", // snake
                 "8b43a5c59b854eb780f9ab669ec26b7a", // dragun_egg_slimeguy
                 "d1c9781fdac54d9e8498ed89210a0238", // tiny_blobulord
@@ -199,7 +199,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             PotEnemiesList = new List<string> {
                 "6ad1cafc268f4214a101dca7af61bc91", // rat
                 "14ea47ff46b54bb4a98f91ffcffb656d", // rat_candle
-                ExpandCustomEnemyDatabase.RatGrenadeGUID,
+                ExpandEnemyDatabase.RatGrenadeGUID,
                 "76bc43539fc24648bff4568c75c686d1", // chicken
                 "1386da0f42fb4bcabc5be8feb16a7c38", // snake
                 "2feb50a6a40f4f50982e89fd276f6f15", // bullat
@@ -1024,11 +1024,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2());
 
                 if (targetActor.EnemyGuid == "128db2f0781141bcb505d8f00f9e4d47") {	        		
-                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.BootlegShotgunManRedGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
                     Destroy(targetActor.gameObject);
 	        	} else {
-                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                    AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.BootlegShotgunManBlueGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
                     Destroy(targetActor.gameObject);
                 }
@@ -1052,9 +1052,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                     // IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
                     IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2());
                     if (targetActor.EnemyGuid == "db35531e66ce41cbb81d507a34366dfe") {
-                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     } else {
-                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                        AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.BootlegBulletManGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                     }
                     targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
                     Destroy(targetActor.gameObject);
@@ -1063,7 +1063,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
 	        if (targetActor.EnemyGuid == "88b6b6a93d4b4234a67844ef4728382c") {
                 IntVector2 targetSpawnPosition = (targetActor.gameObject.transform.PositionVector2().ToIntVector2() - targetActor.GetAbsoluteParentRoom().area.basePosition);
-                AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
+                AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.BootlegBulletManBandanaGUID), targetSpawnPosition, targetActor.GetAbsoluteParentRoom(), true, AIActor.AwakenAnimationType.Spawn, true);
                 targetActor.GetAbsoluteParentRoom().DeregisterEnemy(targetActor);
                 Destroy(targetActor.gameObject);
                 return;

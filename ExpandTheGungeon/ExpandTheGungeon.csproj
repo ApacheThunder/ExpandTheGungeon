@@ -180,8 +180,8 @@
     <Compile Include="ExpandMain\ExpandSynergies.cs" />
     <Compile Include="ExpandPrefab\ExpandAlarmMushroomPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandBootlegRoomPlaceable.cs" />
-    <Compile Include="ExpandPrefab\ExpandCustomEnemyDatabase.cs" />
-    <Compile Include="ExpandPrefab\ExpandCustomDungeonPrefabs.cs" />
+    <Compile Include="ExpandPrefab\ExpandEnemyDatabase.cs" />
+    <Compile Include="ExpandPrefab\ExpandDungeonPrefabs.cs" />
     <Compile Include="ExpandPrefab\ExpandDungeonCollections.cs" />
     <Compile Include="ExpandPrefab\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandMorePrefabs.cs" />

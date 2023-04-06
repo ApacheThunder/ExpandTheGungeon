@@ -36,7 +36,7 @@ namespace ExpandTheGungeon.ItemAPI {
         
 
         public SonicBox() {
-            CompanionGuid = ExpandCustomEnemyDatabase.SonicCompanionGUID;
+            CompanionGuid = ExpandEnemyDatabase.SonicCompanionGUID;
 
             DeathStatModifier = new StatModifier() {
                 amount = 1.5f,

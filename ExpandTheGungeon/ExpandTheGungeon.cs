@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.6";
+        public const string VERSION = "2.9.7";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -156,10 +156,10 @@ namespace ExpandTheGungeon {
 
             ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
             // Init Custom GameLevelDefinitions
-            ExpandCustomDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
+            ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
             // Init Custom Sprite Collections
             ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
-            ExpandCustomEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
+            ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
 
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
@@ -168,7 +168,7 @@ namespace ExpandTheGungeon {
                 // Init Prefab Databases
                 ExpandPrefabs.InitCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom Enemy Prefabs
-                ExpandCustomEnemyDatabase.InitPrefabs(expandSharedAssets1);
+                ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
                 // Init Custom Room Prefabs
                 ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom DungeonFlow(s)
@@ -178,7 +178,7 @@ namespace ExpandTheGungeon {
                 BootlegGuns.PostInit();
                 ClownFriend.PostInit();
                 // Dungeon Prefabs
-                ExpandCustomDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);                
+                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);                
                                 
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
@@ -260,7 +260,7 @@ namespace ExpandTheGungeon {
             orig(self);
             
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
-            ExpandCustomDungeonPrefabs.ReInitFloorDefinitions(self);
+            ExpandDungeonPrefabs.ReInitFloorDefinitions(self);
             CreateFoyerController();
         }
 
@@ -280,7 +280,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
@@ -448,7 +448,7 @@ namespace ExpandTheGungeon {
             return;
         }
         
-        // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: EXItem_Collection 256 256)
+        // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: 512 512 EXItemCollection)
         // If you wish to manually specify path of output files add path as 4th parameter.
         public void ExpandSerializeCollection(string[] consoleText) {
             try {
@@ -504,26 +504,12 @@ namespace ExpandTheGungeon {
             ETGModConsole.Log("[ExpandTheGungeon] Sprite collection successfully built and exported!");
         }
 
-        private void ExpandTestCommand(string[] consoleText) {
-            /*GameStatsManager.Instance.ClearStatValueGlobal(TrackedStats.META_CURRENCY);
-            GameStatsManager.Instance.SetStat(TrackedStats.META_CURRENCY, float.Parse(consoleText[0]));
-            // GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY_SPENT_AT_META_SHOP, 0);
-            
-            
-            if (consoleText[0].StartsWith("-")) {
-                GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, -int.Parse(consoleText[1]));
-            } else if (consoleText[0].StartsWith("+")) {
-                GameStatsManager.Instance.RegisterStatChange(TrackedStats.META_CURRENCY, +int.Parse(consoleText[1]));
-            }*/
-
-            //return;
-
+        /*private void ExpandTestCommand(string[] consoleText) {
             // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
             GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0,2,0)), Quaternion.identity);
 
             GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
-
-        }
+        }*/
     }
 }
 

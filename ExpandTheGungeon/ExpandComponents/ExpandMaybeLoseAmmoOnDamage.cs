@@ -46,8 +46,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 
                 if (TransfmorgifyTargetGUIDs != null && TransfmorgifyTargetGUIDs.Count <= 0 && IsBootlegShotgun) {
                     List<string> m_GUIDlist = new List<string>() {
-                        ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                        ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                        ExpandEnemyDatabase.BootlegShotgunManBlueGUID,
+                        ExpandEnemyDatabase.BootlegShotgunManRedGUID
                     };
                     m_GUIDlist = m_GUIDlist.Shuffle();
                     TransfmorgifyTargetGUIDs.Add(BraveUtility.RandomElement(m_GUIDlist));

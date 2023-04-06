@@ -22,8 +22,8 @@ namespace ExpandTheGungeon.ExpandComponents {
             };
 
             SurpriseChestEnemySpawnPool = new List<string>() {
-                ExpandCustomEnemyDatabase.ClownkinNoFXGUID, // Clown Kin (no FX/Balloon version)
-                ExpandCustomEnemyDatabase.ClownkinAngryGUID, // Angry Clownkin (no FX/Balloon and holds balloon gun)
+                ExpandEnemyDatabase.ClownkinNoFXGUID, // Clown Kin (no FX/Balloon version)
+                ExpandEnemyDatabase.ClownkinAngryGUID, // Angry Clownkin (no FX/Balloon and holds balloon gun)
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 "05891b158cd542b1a5f3df30fb67a7ff", // arrow_head
                 "4d37ce3d666b4ddda8039929225b7ede", // grenade_kin
@@ -163,11 +163,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                         "01972dee89fc4404a5c408d50007dad5" // red_shotgun_kin
                     };
                     List<string> AltEnemyGUIDs = new List<string>() {
-                        ExpandCustomEnemyDatabase.ClownkinNoFXGUID,
-                        ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                        ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                        ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID,
-                        ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID
+                        ExpandEnemyDatabase.ClownkinNoFXGUID,
+                        ExpandEnemyDatabase.BootlegBulletManGUID,
+                        ExpandEnemyDatabase.BootlegBulletManBandanaGUID,
+                        ExpandEnemyDatabase.BootlegShotgunManRedGUID,
+                        ExpandEnemyDatabase.BootlegShotgunManBlueGUID
                     };
                     EnemyGUIDs = EnemyGUIDs.Shuffle();
                     for (int i = 0; i < EnemyGUIDs.Count; i++) {

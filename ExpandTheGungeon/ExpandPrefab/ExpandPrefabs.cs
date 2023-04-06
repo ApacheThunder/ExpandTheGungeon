@@ -2413,7 +2413,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             DoppelgunnerMirror = expandSharedAssets1.LoadAsset<GameObject>("DoppelgunnerMirror");
             
-            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirror, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
+            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirror, ExpandEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
 
             List<string> m_MirrorMimicFadeInSprites = new List<string>() {
                 "PlayerMimicMirror_MimicFadeIn_01",
@@ -2450,17 +2450,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             ExpandUtility.GenerateSpriteAnimator(DoppelgunnerMirror, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(DoppelgunnerMirror.GetComponent<tk2dSpriteAnimator>(), ExpandEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
 
             DoppelgunnerMirrorFX = expandSharedAssets1.LoadAsset<GameObject>("DoppelgunnerMirrorFX");
 
-            tk2dSprite MimicMirrorFXSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirrorFX, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_ShatterDebris_01");
+            tk2dSprite MimicMirrorFXSprite = SpriteSerializer.AddSpriteToObject(DoppelgunnerMirrorFX, ExpandEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_ShatterDebris_01");
             MimicMirrorFXSprite.HeightOffGround = 3.5f;
 
             ExpandUtility.GenerateSpriteAnimator(DoppelgunnerMirrorFX, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(DoppelgunnerMirrorFX.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ExpandUtility.AddAnimation(DoppelgunnerMirrorFX.GetComponent<tk2dSpriteAnimator>(), ExpandEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
 
 
             RoomCorruptionAmbience = expandSharedAssets1.LoadAsset<GameObject>("RoomCorruptionAmbience_Placable");

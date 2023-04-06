@@ -34,11 +34,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     string EnemyGUID = d.GetWeightedProceduralEnemy().enemyGuid;
                     if (string.IsNullOrEmpty(EnemyGUID)) {
                         List<string> FallbackGUIDs = new List<string>() {
-                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                            ExpandEnemyDatabase.BootlegBullatGUID,
+                            ExpandEnemyDatabase.BootlegBulletManGUID,
+                            ExpandEnemyDatabase.BootlegBulletManBandanaGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManBlueGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManRedGUID
                         };
                         FallbackGUIDs = FallbackGUIDs.Shuffle();
                         EnemyGUID = BraveUtility.RandomElement(FallbackGUIDs);
@@ -241,11 +241,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     string EnemyGUID = d.GetWeightedProceduralEnemy().enemyGuid;
                     if (string.IsNullOrEmpty(EnemyGUID)) {
                         List<string> FallbackGUIDs = new List<string>() {
-                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                            ExpandEnemyDatabase.BootlegBullatGUID,
+                            ExpandEnemyDatabase.BootlegBulletManGUID,
+                            ExpandEnemyDatabase.BootlegBulletManBandanaGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManBlueGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManRedGUID
                         };
                         FallbackGUIDs = FallbackGUIDs.Shuffle();
                         EnemyGUID = BraveUtility.RandomElement(FallbackGUIDs);
@@ -274,11 +274,11 @@ namespace ExpandTheGungeon.ExpandMain {
             AIActor orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(enemyGuid);
             if (!orLoadByGuid) {
                 List<string> FallbackGUIDs = new List<string>() {
-                            ExpandCustomEnemyDatabase.BootlegBullatGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManGUID,
-                            ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManBlueGUID,
-                            ExpandCustomEnemyDatabase.BootlegShotgunManRedGUID
+                            ExpandEnemyDatabase.BootlegBullatGUID,
+                            ExpandEnemyDatabase.BootlegBulletManGUID,
+                            ExpandEnemyDatabase.BootlegBulletManBandanaGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManBlueGUID,
+                            ExpandEnemyDatabase.BootlegShotgunManRedGUID
                 };
                 FallbackGUIDs = FallbackGUIDs.Shuffle();
                 orLoadByGuid = EnemyDatabase.GetOrLoadByGuid(BraveUtility.RandomElement(FallbackGUIDs));

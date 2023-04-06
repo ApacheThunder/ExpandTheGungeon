@@ -161,12 +161,12 @@ namespace ExpandTheGungeon.ItemAPI {
         public static void PostInit() {
             if (BootlegPistol && BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
                 BootlegPistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
-                    ExpandCustomEnemyDatabase.BootlegBulletManGUID
+                    ExpandEnemyDatabase.BootlegBulletManGUID
                 };
             }
             if (BootlegMachinePistol && BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {
                 BootlegMachinePistol.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>().TransfmorgifyTargetGUIDs = new List<string>() {
-                    ExpandCustomEnemyDatabase.BootlegBulletManBandanaGUID
+                    ExpandEnemyDatabase.BootlegBulletManBandanaGUID
                 };
             }
             if (BootlegShotgun && BootlegShotgun.gameObject.GetComponent<ExpandMaybeLoseAmmoOnDamage>()) {

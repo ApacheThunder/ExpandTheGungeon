@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4037480594
+CRC: 3937097182
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a7168a278c52302407b96741ddf7f159
+    Hash: 48c1897f0032b2a33fbef7c72666f38d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2241b0dac22d22b9de2222ad79842819
@@ -1053,6 +1053,7 @@ Assets:
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXOfficeCollection.prefab
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_2_grid.txt
 - Assets/ExpandSerializedData/SpriteCollections/EXPortableElevatorCollection.txt
+- Assets/ExpandTextures/Misc/JungleOcclusionTest.png
 - Assets/ExpandSerializedData/SpriteCollections/EXSecretDoorCollection.txt
 - Assets/ExpandSerializedData/SpriteCollections/GungeoneerMimicCollection.txt
 - Assets/ExpandTextures/SpriteCollections/Misc/EXLargeMonster_Collection.png

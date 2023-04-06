@@ -59,7 +59,7 @@ namespace ExpandTheGungeon.ItemAPI {
             m_player = player;
             base.Pickup(player);
             player.PostProcessProjectile += PostProcessProjectile;
-            if (string.IsNullOrEmpty(TargetGUID)) { TargetGUID = ExpandCustomEnemyDatabase.ClownkinGUID; }
+            if (string.IsNullOrEmpty(TargetGUID)) { TargetGUID = ExpandEnemyDatabase.ClownkinGUID; }
         }
         
         

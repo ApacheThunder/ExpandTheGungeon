@@ -19,7 +19,7 @@ namespace ExpandTheGungeon.ItemAPI {
             SpriteSerializer.AddSpriteToObject(ClownFriendObject, ExpandPrefabs.EXItemCollection, "clownfriend");
 
             ClownFriend clownFriendItem = ClownFriendObject.AddComponent<ClownFriend>();
-            clownFriendItem.CompanionGuid = ExpandCustomEnemyDatabase.ClownkinAltGUID;
+            clownFriendItem.CompanionGuid = ExpandEnemyDatabase.ClownkinAltGUID;
             // clownFriendItem.CompanionPastGuid = string.Empty;
             // clownFriendItem.UsesAlternatePastPrefab = false;
             // clownFriendItem.Synergies = new CompanionTransformSynergy[0];
@@ -48,7 +48,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         public ClownFriend() {
-            CompanionGuid = ExpandCustomEnemyDatabase.ClownkinAltGUID;
+            CompanionGuid = ExpandEnemyDatabase.ClownkinAltGUID;
             BalloonRespawnTimer = 30;
             BalloonWasPopped = false;
 

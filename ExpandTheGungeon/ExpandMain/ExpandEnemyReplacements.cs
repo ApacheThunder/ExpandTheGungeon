@@ -27,9 +27,9 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private static void InitHotShotReplacements(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers) {
-            List<string> hotShotShotGuns = new List<string>() { ExpandCustomEnemyDatabase.HotShotShotgunKinGUID };
-            List<string> hotShotBulletKins = new List<string>() { ExpandCustomEnemyDatabase.HotShotBulletKinGUID };
-            List<string> hotShotCultist = new List<string>() { ExpandCustomEnemyDatabase.HotShotCultistGUID };
+            List<string> hotShotShotGuns = new List<string>() { ExpandEnemyDatabase.HotShotShotgunKinGUID };
+            List<string> hotShotBulletKins = new List<string>() { ExpandEnemyDatabase.HotShotBulletKinGUID };
+            List<string> hotShotCultist = new List<string>() { ExpandEnemyDatabase.HotShotCultistGUID };
 
             string nameAppend = "EXHotShot";
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {
@@ -75,7 +75,7 @@ namespace ExpandTheGungeon.ExpandMain {
         private static void InitReplacementEnemiesForBelly(List<AGDEnemyReplacementTier> agdEnemyReplacementTiers) {            
             GlobalDungeonData.ValidTilesets TargetTileset = GlobalDungeonData.ValidTilesets.BELLYGEON;
             string nameAppend = "_EXBelly";
-            agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, new List<string>() { "01972dee89fc4404a5c408d50007dad5" }, new List<string>() { ExpandCustomEnemyDatabase.AggressiveCronenbergGUID } ));
+            agdEnemyReplacementTiers.Add(GenerateEnemyReplacementTier("bulletKinReplacement" + nameAppend, new DungeonPrerequisite[0], TargetTileset, new List<string>() { "01972dee89fc4404a5c408d50007dad5" }, new List<string>() { ExpandEnemyDatabase.AggressiveCronenbergGUID } ));
             return;
         }
 

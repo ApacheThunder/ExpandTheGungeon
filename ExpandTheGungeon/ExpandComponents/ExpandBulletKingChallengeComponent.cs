@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 "d4dd2b2bbda64cc9bcec534b4e920518", // bullet_kings_toadie_revenge
                 "02a14dec58ab45fb8aacde7aacd25b01", // old_kings_toadie
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
-                ExpandCustomEnemyDatabase.ClownkinAngryGUID
+                ExpandEnemyDatabase.ClownkinAngryGUID
             };
 
             MinTimeBetweenSpawns = 10f;
@@ -93,7 +93,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             IntVector2? DropLocation = ExpandUtility.GetRandomAvailableCellSmart(currentRoom, Clearence.Value, false);
             if (DropLocation.HasValue) {
                 bool isToadie = false;
-                if (EnemyGUID.ToLower() != ExpandCustomEnemyDatabase.ClownkinAngryGUID && EnemyGUID.ToLower() != "01972dee89fc4404a5c408d50007dad5") {
+                if (EnemyGUID.ToLower() != ExpandEnemyDatabase.ClownkinAngryGUID && EnemyGUID.ToLower() != "01972dee89fc4404a5c408d50007dad5") {
                     isToadie = true;
                 }
                 ExpandUtility.SpawnEnemyParaDrop(currentRoom, DropLocation.Value.ToVector3(), EnemyGUID, IsToadie: isToadie);

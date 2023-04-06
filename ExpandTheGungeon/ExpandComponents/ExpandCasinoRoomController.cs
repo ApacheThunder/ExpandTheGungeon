@@ -74,7 +74,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             
             // Misc Props
-            Dungeon NakatomiPrefab = ExpandCustomDungeonPrefabs.LoadOfficialDungeonPrefab("Base_Nakatomi");
+            Dungeon NakatomiPrefab = ExpandDungeonPrefabs.LoadOfficialDungeonPrefab("Base_Nakatomi");
 
             Vector3 WaterCoolerOffset1 = (RoomPosition + new Vector3(0.25f, 12));
             Vector3 WaterCoolerOffset2 = (RoomPosition + new Vector3(15.5f, 3));

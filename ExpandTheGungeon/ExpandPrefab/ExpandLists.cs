@@ -405,8 +405,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "Jungle_TreeStump",
             "Jungle_ExitLadder",
             "Jungle_ExitLadder_Destination",
-            "Jungle_ExitLadder_Destination_Hole"
+            "Jungle_ExitLadder_Destination_Hole",
+            "Jungle_Tree_Medium",
+            "Jungle_Tree_Medium_Stump",
+            "Jungle_Tree_Medium_Stump_Shadow",
+            "Jungle_Tree_Small",
+            "Jungle_Tree_Small_Shadow",
+            "Jungle_Tree_Medium_Shadow",
+            "Jungle_Tree_Debris_03",
+            "Jungle_Tree_Debris_02",
+            "Jungle_Tree_Debris_01",
         };
+
         public static readonly List<string> EXOfficeCollection = new List<string>() {
             "office_one_way_blocker_vertical_top_001",
             "office_one_way_blocker_vertical_bottom_001",

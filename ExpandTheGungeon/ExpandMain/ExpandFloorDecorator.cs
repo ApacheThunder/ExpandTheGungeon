@@ -332,7 +332,7 @@ namespace ExpandTheGungeon.ExpandMain {
         private static void PlaceRandomOfficeSupplies(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
-            Dungeon NakatomiPrefab = ExpandCustomDungeonPrefabs.LoadOfficialDungeonPrefab("Base_Nakatomi");
+            Dungeon NakatomiPrefab = ExpandDungeonPrefabs.LoadOfficialDungeonPrefab("Base_Nakatomi");
 
             List<GameObject> m_ObjectList = new List<GameObject>();
 
