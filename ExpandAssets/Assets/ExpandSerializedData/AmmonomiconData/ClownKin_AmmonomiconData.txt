@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 0,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+    "TabSpriteIsTexture": false,
+	"EnemyDifficulty": 0,
+    "TabSprite": "clownkin_idle_right_001",
+    "FullArtSprite": "clownkin_ammonomicon",
+    "EnemyName": "Clown Kin",
+    "smallDescription": "All the world's a circus",
+    "bigDescription": "Although few in number, some Gundead choose to lay down their arms in favour of the deadliest weapon of them all: contagious laughter.\n\nHighly valued at Gundead parties."
+}

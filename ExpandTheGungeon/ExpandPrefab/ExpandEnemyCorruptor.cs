@@ -8,19 +8,19 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    public class ExpandGlitchedEnemies {        
+    public class ExpandEnemyCorruptor {        
 
-        public static ExpandGlitchedEnemies Instance {
+        public static ExpandEnemyCorruptor Instance {
             get {
-                if (m_instance == null) { m_instance = new ExpandGlitchedEnemies(); }
+                if (m_instance == null) { m_instance = new ExpandEnemyCorruptor(); }
                 return m_instance;
             }
         }
 
-        private static ExpandGlitchedEnemies m_instance;
+        private static ExpandEnemyCorruptor m_instance;
 
 
-        public ExpandGlitchedEnemies() {
+        public ExpandEnemyCorruptor() {
             GrenadeGuyPrefab = EnemyDatabase.GetOrLoadByGuid("4d37ce3d666b4ddda8039929225b7ede").gameObject;
             IceCubeGuyPrefab = EnemyDatabase.GetOrLoadByGuid("f155fd2759764f4a9217db29dd21b7eb").gameObject;
             KeybulletManPrefab = EnemyDatabase.GetOrLoadByGuid("699cd24270af4cd183d671090d8323a1").gameObject;

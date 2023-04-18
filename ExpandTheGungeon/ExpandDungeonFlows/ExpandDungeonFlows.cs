@@ -633,7 +633,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                         ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
                     },
                     roomTable = null,
-                    exactRoom = ExpandPrefabs.gungeon_rewardroom_1,
+                    exactRoom = ExpandRoomPrefabs.Expand_Jungle_RewardRoom,
                     IsWarpWing = false,
                     RequiresMasteryToken = false,
                     chanceToLock = 0,

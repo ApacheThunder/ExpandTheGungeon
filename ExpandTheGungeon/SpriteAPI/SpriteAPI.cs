@@ -92,11 +92,12 @@ namespace ExpandTheGungeon.SpriteAPI {
         }
         
         // Use this to add a sprite to your object instead of the one from ItemBuilder/SpriteBuilder!
-        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, string mainSpriteDefinitionName, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
+        public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, string mainSpriteDefinitionName, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED, float HeightOffGround = 1) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), mainSpriteDefinitionName);
             m_tk2dSprite.SortingOrder = 0;
             if (spriteAlignment != tk2dBaseSprite.PerpendicularState.UNDEFINED) { m_tk2dSprite.CachedPerpState = spriteAlignment; }
+            if (HeightOffGround != 1) { m_tk2dSprite.HeightOffGround = HeightOffGround; }
             obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
             return m_tk2dSprite;
         }

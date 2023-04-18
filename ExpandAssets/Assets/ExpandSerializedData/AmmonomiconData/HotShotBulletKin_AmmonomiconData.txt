@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 0,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 0,
+    "TabSprite": "hotshotbulletkin_icon",
+    "FullArtSprite": "hotshotbulletkin_ammonomicon",
+    "EnemyName": "HotShot Bullet Kin",
+    "smallDescription": "9000 .cal",
+    "bigDescription": "Equipped with state-of-the-art power analysers, these hotshots are able to duel-wield revolvers and fire them with pin-point accuracy.\n\nFew are able to beat them in a duel."
+}

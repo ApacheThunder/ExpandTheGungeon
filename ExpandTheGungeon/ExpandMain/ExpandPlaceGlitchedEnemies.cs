@@ -61,22 +61,22 @@ namespace ExpandTheGungeon.ExpandMain {
                             
                             
                             if (RandomGlitchEnemyVector.HasValue) {
-                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandEnemyCorruptor.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn);
                             } else { RandomEnemiesSkipped++; }
 
                             if (RandomGlitchEnemyVector2.HasValue && Random.value <= BonusGlitchEnemyOdds) {
-                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector2.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandEnemyCorruptor.Instance.SpawnRandomGlitchEnemy(currentRoom, RandomGlitchEnemyVector2.Value, false, AIActor.AwakenAnimationType.Spawn);
                             } else { RandomEnemiesSkipped++; }
 
                             if (RandomGlitchEnemyVector3.HasValue && Random.value <= GlitchedBossOdds) {
-                                ExpandGlitchedEnemies.Instance.SpawnRandomGlitchBoss(currentRoom, RandomGlitchEnemyVector3.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                ExpandEnemyCorruptor.Instance.SpawnRandomGlitchBoss(currentRoom, RandomGlitchEnemyVector3.Value, false, AIActor.AwakenAnimationType.Spawn);
                             }
 
                             if (RandomGlitchEnemyVector4.HasValue && Random.value <= GlitchedBossOdds) {
                                 if (Random.value <= 0.65f) {
-                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedObjectAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedObjectAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
                                 } else {
-                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedPlayerAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
+                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedPlayerAsEnemy(currentRoom, RandomGlitchEnemyVector4.Value, false, AIActor.AwakenAnimationType.Spawn);
                                 }
                             }
 

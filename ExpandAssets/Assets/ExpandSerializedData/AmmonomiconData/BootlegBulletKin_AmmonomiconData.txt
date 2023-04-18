@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 0,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": false,
+    "EnemyDifficulty": 0,
+    "TabSprite": "bulletman_run_down_001",
+    "FullArtSprite": "bootlegbulletman_ammonomicon",
+    "EnemyName": "Bootleg Bullet Kin",
+    "smallDescription": "8 Bit Bullet",
+    "bigDescription": "This bullet kin is not supposed to exist. It does not belong to the Gungeon, and even less so to this dimension.\n\nIts body is composed of but a few, indivisible atoms, squared and jagged, unlike anything I've ever seen. What is happening?\n\nViktor Nogov"
+}

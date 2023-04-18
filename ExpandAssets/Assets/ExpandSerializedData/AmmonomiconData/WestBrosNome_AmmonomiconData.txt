@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 2,
+    "IsNormalEnemy": true,
+    "IsInBossTab": true,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 3,
+    "TabSprite": "boss_icon_Western_Bros_Nome",
+    "FullArtSprite": "boss_photo_Western_Bros_Nome",
+    "EnemyName": "West Brothers (Nome)",
+    "smallDescription": "Every gun makes its own tune",
+    "bigDescription": "A mysterious and taciturn bounty hunter, searching for buried gold in a grave somewhere in the westernmost chamber of the Gungeon.\n\nCompassionate, though unyielding, many men and Gundead have been felled by the draw of his revolver."
+}

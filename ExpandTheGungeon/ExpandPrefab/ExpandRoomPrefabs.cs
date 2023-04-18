@@ -399,6 +399,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_Jungle_Exit;
         public static PrototypeDungeonRoom Expand_Jungle_SecretDragun;
         public static PrototypeDungeonRoom Expand_Jungle_Boss;
+        public static PrototypeDungeonRoom Expand_Jungle_RewardRoom;
         // All jungle rooms except special ones will be stored here
         public static PrototypeDungeonRoom[] Expand_Jungle_Rooms;
         public static List<string> Expand_Jungle_RoomList;
@@ -915,7 +916,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Jungle_OldCrest.associatedMinimapIcon = ExpandPrefabs.EXJungleCrest_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(5, 7), ExpandObjectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_OldCrest, new Vector2(7, 8), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_ItemStump, useExternalPrefab: true), xOffset: 6);
+
+            Expand_Jungle_RewardRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_RewardRoom", true, false, true);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_RewardRoom, new Vector2(4, 7), ExpandObjectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_RewardRoom, new Vector2(4, 6), ExpandPrefabs.ExpandJungleTree_Medium);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_RewardRoom, new Vector2(4, 11), ExpandPrefabs.ExpandJungleTree_Medium);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_RewardRoom, new Vector2(9, 6), ExpandPrefabs.ExpandJungleTree_Medium);
+            RoomBuilder.AddObjectToRoom(Expand_Jungle_RewardRoom, new Vector2(9, 11), ExpandPrefabs.ExpandJungleTree_Medium);
             
+
 
             Expand_Jungle_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Jungle_Exit", true);
             Expand_Jungle_Exit.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;

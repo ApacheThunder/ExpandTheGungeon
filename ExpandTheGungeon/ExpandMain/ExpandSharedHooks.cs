@@ -14,6 +14,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
+using tk2dRuntime.TileMap;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -390,6 +391,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandSharedHooks).GetMethod(nameof(PixelatorStartHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Pixelator)
             );*/
+            
             return;
         }
 
@@ -1191,53 +1193,30 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         
         private bool IsValidJungleBorderCell(CellData current, Dungeon d, int ix, int iy) {
-            bool isValid = false;
-            try {
-                isValid = !current.cellVisualData.ceilingHasBeenProcessed && !IsCardinalBorder(current, d, ix, iy) && current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy);
-            } catch (Exception ex) {
-                if (ExpandSettings.debugMode) {
-                    Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsValidJungleBorderCell!");
-                    Debug.LogException(ex);
-                }
-                return false;
-            }
-            return isValid;
+            return !current.cellVisualData.ceilingHasBeenProcessed && !IsCardinalBorder(current, d, ix, iy) && current.type == CellType.WALL && (iy < 2 || !d.data.isFaceWallLower(ix, iy)) && !d.data.isTopDiagonalWall(ix, iy);
         }
 
         private bool IsValidJungleOcclusionCell(TK2DDungeonAssembler assembler, CellData current, Dungeon d, int ix, int iy) {
-            bool isValid = false;
-            try {
-                isValid = assembler.BCheck(d, ix, iy, 1) && (!current.cellVisualData.ceilingHasBeenProcessed && !current.cellVisualData.occlusionHasBeenProcessed) && (current.type != CellType.WALL || IsCardinalBorder(current, d, ix, iy) || (iy > 2 && (d.data.isFaceWallLower(ix, iy) || d.data.isFaceWallHigher(ix, iy))));
-            } catch (Exception ex) {
-                if (ExpandSettings.debugMode) {
-                    Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsValidJungleOcclusionCell!");
-                    Debug.LogException(ex);
-                }
-                return false;
-            }
-            return isValid;
+            return assembler.BCheck(d, ix, iy, 1) && (!current.cellVisualData.ceilingHasBeenProcessed && !current.cellVisualData.occlusionHasBeenProcessed) && (current.type != CellType.WALL || IsCardinalBorder(current, d, ix, iy) || (iy > 2 && (d.data.isFaceWallLower(ix, iy) || d.data.isFaceWallHigher(ix, iy))));
         }
 
         private bool IsCardinalBorder(CellData current, Dungeon d, int ix, int iy) {
-            try {
-                bool flag = d.data.isTopWall(ix, iy);
-                flag = (flag && !d.data[ix, iy + 1].cellVisualData.shouldIgnoreBorders);
-                bool flag2 = (!d.data.isWallRight(ix, iy) && !d.data.isRightTopWall(ix, iy)) || d.data.isFaceWallHigher(ix + 1, iy) || d.data.isFaceWallLower(ix + 1, iy);
-                flag2 = (flag2 && !d.data[ix + 1, iy].cellVisualData.shouldIgnoreBorders);
-                bool flag3 = iy > 3 && d.data.isFaceWallHigher(ix, iy - 1);
-                flag3 = (flag3 && !d.data[ix, iy - 1].cellVisualData.shouldIgnoreBorders);
-                bool flag4 = (!d.data.isWallLeft(ix, iy) && !d.data.isLeftTopWall(ix, iy)) || d.data.isFaceWallHigher(ix - 1, iy) || d.data.isFaceWallLower(ix - 1, iy);
-                flag4 = (flag4 && !d.data[ix - 1, iy].cellVisualData.shouldIgnoreBorders);
-                return flag || flag2 || flag3 || flag4;
-            } catch (Exception ex) {
-                if (ExpandSettings.debugMode) {
-                    Debug.Log("[ExpandTheGungeon] Excpetion caught in TK2DDungeonAssembler.IsCardinalBorder!");
-                    Debug.LogException(ex);
-                }
-                return false;
-            }
+            // Something changed in AG&D floor generation. Some of these border cells are null on Jungle for unknown reasons. 
+            // Returning true if any are null avoids future exceptions in IsValidJungleBorderCell!
+            // Seems to impact hidden tree top ceiling sprites at the edge of the tilemap. 
+            // The visual difference is subtle and impossible for the player to even see if the occlusion system is active.
+            if (d.data[ix, iy + 1] == null | d.data[ix + 1, iy] == null | d.data[ix, iy - 1] == null | d.data[ix - 1, iy] == null) { return true; }
+            bool Cell1 = d.data.isTopWall(ix, iy);
+            bool Cell2 = (!d.data.isWallRight(ix, iy) && !d.data.isRightTopWall(ix, iy)) || d.data.isFaceWallHigher(ix + 1, iy) || d.data.isFaceWallLower(ix + 1, iy);
+            bool Cell3 = iy > 3 && d.data.isFaceWallHigher(ix, iy - 1);
+            bool Cell4 = (!d.data.isWallLeft(ix, iy) && !d.data.isLeftTopWall(ix, iy)) || d.data.isFaceWallHigher(ix - 1, iy) || d.data.isFaceWallLower(ix - 1, iy);
+            Cell1 = (Cell1 && !d.data[ix, iy + 1].cellVisualData.shouldIgnoreBorders);
+            Cell2 = (Cell2 && !d.data[ix + 1, iy].cellVisualData.shouldIgnoreBorders);
+            Cell3 = (Cell3 && !d.data[ix, iy - 1].cellVisualData.shouldIgnoreBorders);
+            Cell4 = (Cell4 && !d.data[ix - 1, iy].cellVisualData.shouldIgnoreBorders);
+            return Cell1 || Cell2 || Cell3 || Cell4;
         }
-        
+
         private TileIndexGrid GetTypeBorderGridForBorderIndexHook(TK2DDungeonAssembler self, CellData current, Dungeon d, out int usedVisualType) {
             TileIndexGrid roomCeilingBorderGrid;
 
@@ -1831,7 +1810,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 m_activeTraps.Clear();
             }
         }
-
+        
         /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 // self.UseTexturedOcclusion = true;

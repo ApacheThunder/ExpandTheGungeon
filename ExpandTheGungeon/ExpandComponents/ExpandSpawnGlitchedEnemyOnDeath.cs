@@ -108,7 +108,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         if (transform.position.GetAbsoluteRoom() != null) {
                             RoomHandler CurrentRoom = transform.position.GetAbsoluteRoom();
                             IntVector2 actorPosition = specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor) - CurrentRoom.area.basePosition;
-                            ExpandGlitchedEnemies.Instance.SpawnGlitchedSuperReaper(CurrentRoom, actorPosition);
+                            ExpandEnemyCorruptor.Instance.SpawnGlitchedSuperReaper(CurrentRoom, actorPosition);
                             return;
                         }              
                     } else {
@@ -120,7 +120,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         bool spawnsGlitchedObjectOnDeath = false;
                         if (UnityEngine.Random.value <= 0.25f) { ExplodesOnDeath = true; }
                         if (UnityEngine.Random.value <= 0.15f) { spawnsGlitchedObjectOnDeath = true; }
-                        aiactor = AIActor.Spawn(ExpandGlitchedEnemies.Instance.GenerateGlitchedActorPrefab(CachedTargetActorObject, ActorOverrideSource, ExplodesOnDeath, spawnsGlitchedObjectOnDeath), specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor), roomFromPosition, true, AnimationType, true);
+                        aiactor = AIActor.Spawn(ExpandEnemyCorruptor.Instance.GenerateGlitchedActorPrefab(CachedTargetActorObject, ActorOverrideSource, ExplodesOnDeath, spawnsGlitchedObjectOnDeath), specRigidbody.UnitCenter.ToIntVector2(VectorConversions.Floor), roomFromPosition, true, AnimationType, true);
                         if (aiactor == null) { return; }
                         if (aiActor.IsBlackPhantom) { aiactor.BecomeBlackPhantom(); }
                         if (aiactor) {

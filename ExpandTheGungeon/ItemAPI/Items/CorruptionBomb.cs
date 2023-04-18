@@ -725,7 +725,7 @@ namespace ExpandTheGungeon.ItemAPI {
                                         }
                                         
                                         if (enemy.EnemyGuid == "0239c0680f9f467dbe5c4aab7dd1eca6" | enemy.EnemyGuid == "e61cab252cfb435db9172adc96ded75f" | enemy.EnemyGuid == "1a4872dafdb34fd29fe8ac90bd2cea67") {
-                                            ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
+                                            ExpandEnemyCorruptor.GlitchExistingEnemy(enemy);
                                         } else {
                                             if (enemy.gameObject.GetComponent<SpawnEnemyOnDeath>() != null) { Destroy(enemy.gameObject.GetComponent<SpawnEnemyOnDeath>()); }
 

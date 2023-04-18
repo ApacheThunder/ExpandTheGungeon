@@ -42,7 +42,8 @@ namespace ExpandTheGungeon {
         public const string ModSoundBankName = "EX_SFX";
         public const string ConsoleCommandName = "expand";
 
-        
+        public static AdvancedStringDB Strings;
+
         private static List<string> itemList;
         
         private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
@@ -117,6 +118,8 @@ namespace ExpandTheGungeon {
 
         public void GMStart(GameManager gameManager) {            
             try {
+                Strings = new AdvancedStringDB();
+
                 ExpandSharedHooks.InstallMidGameSaveHooks();
                 if (ExpandSettings.EnableLogo) {
                     MainMenuFoyerUpdateHook = new Hook(
@@ -166,7 +169,9 @@ namespace ExpandTheGungeon {
 
             try {
                 // Init Prefab Databases
-                ExpandPrefabs.InitCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+                ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+                // Init Custom Enemy Ammonomicon Data
+                ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
                 // Init Custom Enemy Prefabs
                 ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
                 // Init Custom Room Prefabs
@@ -284,6 +289,15 @@ namespace ExpandTheGungeon {
             return;
         }
 
+        /*private void ExpandTestCommand(string[] consoleText) {
+            // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
+            // Tools.DumpSpecificSpriteCollection(ExpandWesternBrosPrefabBuilder.Collection);
+            GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0, 2, 0)), Quaternion.identity);
+
+            GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
+            
+        }*/
+
         private void ExpandConsoleInfo(string[] consoleText) {
             if (ETGModConsole.Commands.GetGroup(ConsoleCommandName) != null && ETGModConsole.Commands.GetGroup(ConsoleCommandName).GetAllUnitNames() != null) {
                 List<string> m_CommandList = new List<string>();
@@ -307,14 +321,14 @@ namespace ExpandTheGungeon {
         }
         
         private void ExpandDebug(string[] consoleText) {
-            string validSubCommands = "toggledebugstats\nclearroom\nunsealroom\nfixplayerinput";
+            string validSubCommands = "stats\nclearroom\nunsealroom\nfixplayerinput";
             
             if (!m_IsCommandValid(consoleText, validSubCommands, "debug")) { return; }
 
             RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
 
             switch (consoleText[0].ToLower()) {
-                case "toggledebugstats":
+                case "stats":
                     if (!ExpandSettings.debugMode) {
                         ExpandSettings.debugMode = true;
                         ETGModConsole.Log("[ExpandTheGungeon] Installing RoomHandler.OnEntered Hook....");
@@ -503,13 +517,6 @@ namespace ExpandTheGungeon {
             SpriteSerializer.SerializeSpriteCollection(CollectionName, SpriteList, X, Y, OverridePath);
             ETGModConsole.Log("[ExpandTheGungeon] Sprite collection successfully built and exported!");
         }
-
-        /*private void ExpandTestCommand(string[] consoleText) {
-            // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
-            GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0,2,0)), Quaternion.identity);
-
-            GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
-        }*/
     }
 }
 

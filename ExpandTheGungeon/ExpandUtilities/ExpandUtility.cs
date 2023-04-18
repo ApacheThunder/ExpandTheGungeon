@@ -17,6 +17,72 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static List<IntVector2> FindAllValidLocations(Dungeon dungeon, RoomHandler currentRoom, int Clearence = 1, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false) {
+            List<IntVector2> m_ValidCellsCached = new List<IntVector2>();
+            if (dungeon == null | currentRoom == null) { return m_ValidCellsCached; }
+            
+            for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
+                for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
+                    try {
+                        bool isInvalid = false;
+                        IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
+                        if (!m_ValidCellsCached.Contains(TargetPosition)) {
+                            RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
+                            for (int x = 0; x < Clearence; x++) {
+                                for (int y = 0; y < Clearence; y++) {
+                                    IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
+                                    if (dungeon.data.CheckInBoundsAndValid(intVector)) {
+                                        CellData cellData = dungeon.data[intVector];
+                                        if (cellData.parentRoom == null | cellData.type != CellType.FLOOR | cellData.isOccupied | !cellData.IsPassable) { isInvalid = true; }
+                                        if (ActualRoom != currentRoom | cellData.HasPitNeighbor(dungeon.data)) { isInvalid = true; }
+                                        if (cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Water) { isInvalid = true; }
+                                        if (cellData.HasWallNeighbor()) { isInvalid = true; }
+                                    } else {
+                                        isInvalid = true;
+                                    }
+                                }
+                            }
+                            if (!isInvalid && avoidExits) {
+                                for (int x = 0; x < ExitClearence; x++) {
+                                    for (int y = 0; y < ExitClearence; y++) {
+                                        IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
+                                        if (dungeon.data.CheckInBoundsAndValid(intVector)) {
+                                            CellData cellData = dungeon.data[intVector];
+                                            if (cellData.isExitCell) { isInvalid = true; }
+                                        }
+                                    }
+                                }
+                            }
+                            if (!isInvalid) {
+                                if (PositionRelativeToRoom) {
+                                    m_ValidCellsCached.Add(new IntVector2(X, Y));
+                                } else {
+                                    m_ValidCellsCached.Add(TargetPosition);
+                                }
+                            }
+                        }
+                    } catch (Exception EX) {
+                        if (ExpandSettings.debugMode) {
+                            Debug.Log("[ExpandFloorDecorator.FindAllValidLocations] Exception while looking for valid cells in current room.");
+                            Debug.LogException(EX);
+                        }
+                    }
+                }
+            }
+            if (m_ValidCellsCached.Count > 1) {
+                for (int I = 0; I < m_ValidCellsCached.Count; I++) {
+                    Vector2 m_Position1 = m_ValidCellsCached[I].ToVector2();
+                    for (int I2 = (I + 1); I2 < m_ValidCellsCached.Count; I2++) {
+                        Vector2 m_Position2 = m_ValidCellsCached[I2].ToVector2();
+                        if (Vector2.Distance(m_Position1, m_Position2) < Clearence) {
+                            m_ValidCellsCached.Remove(m_ValidCellsCached[I2]);
+                        }
+                    }
+                }
+            }
+            return m_ValidCellsCached;
+        }
+
         public static DungeonPlaceable DuplicateDungoenPlaceable(DungeonPlaceable sourcePlaceable) {
             DungeonPlaceable m_cachedPlaceable = ScriptableObject.CreateInstance<DungeonPlaceable>();
             m_cachedPlaceable.width = sourcePlaceable.width;

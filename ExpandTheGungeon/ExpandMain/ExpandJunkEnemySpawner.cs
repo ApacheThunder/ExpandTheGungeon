@@ -49,9 +49,9 @@ namespace ExpandTheGungeon.ExpandMain {
 
                             if (RandomGlitchEnemyVector.HasValue) {
                                 if (Random.value <= 0.5f) {
-                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
                                 } else {
-                                    ExpandGlitchedEnemies.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
                                 }
                             } else { RandomEnemiesSkipped++; }
 

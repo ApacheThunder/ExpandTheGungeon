@@ -56,6 +56,10 @@ namespace ExpandTheGungeon.ItemAPI {
 			return AddSpriteToCollection(spriteDefinition, ammonomiconCollection);
 		}
 
+        public static int AddToAmmonomicon(Texture2D spriteTexture) {
+            return AddSpriteToCollection(spriteTexture, ammonomiconCollection);
+        }
+
         public static int AddToAmmonomicon(tk2dSpriteDefinition spriteDefinition, Material overrideMaterial) {
             int m_spriteDefinition = AddSpriteToCollection(spriteDefinition, ammonomiconCollection);
             ammonomiconCollection.GetSpriteDefinition(spriteDefinition.name).material = overrideMaterial;

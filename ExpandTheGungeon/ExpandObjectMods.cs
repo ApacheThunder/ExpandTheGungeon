@@ -91,7 +91,7 @@ namespace ExpandTheGungeon {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid) && enemy.GetAbsoluteParentRoom() != null && !string.IsNullOrEmpty(enemy.GetAbsoluteParentRoom().GetRoomName()) && enemy.GetAbsoluteParentRoom().GetRoomName().ToLower().StartsWith("corrupted")) {
                                     if (Random.value <= 0.6f) {
                                         ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
-                                        ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
+                                        ExpandEnemyCorruptor.GlitchExistingEnemy(enemy);
                                     }
                                     if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
                                         enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
@@ -124,7 +124,7 @@ namespace ExpandTheGungeon {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
                                     if (Random.value <= 0.6f) {
                                         ExpandShaders.Instance.BecomeGlitched(enemy, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
-                                        ExpandGlitchedEnemies.GlitchExistingEnemy(enemy);
+                                        ExpandEnemyCorruptor.GlitchExistingEnemy(enemy);
                                     }
                                     if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
                                         enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();

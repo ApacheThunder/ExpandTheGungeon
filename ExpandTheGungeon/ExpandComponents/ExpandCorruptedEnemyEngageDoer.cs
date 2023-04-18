@@ -155,7 +155,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             GameObject newEnemy = null;
             
             try {
-                newEnemy = ExpandGlitchedEnemies.Instance.SpawnRandomGlitchEnemy(currentRoom, cachedPosition, true);
+                newEnemy = ExpandEnemyCorruptor.Instance.SpawnRandomGlitchEnemy(currentRoom, cachedPosition, true);
             } catch (Exception) {
                 // If something broke, destroy broken Enemy (if it exist) to prevent possible softlocks.
                 if (newEnemy) {

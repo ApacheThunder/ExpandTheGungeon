@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 70,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+    "TabSpriteIsTexture": false,
+	"EnemyDifficulty": 0,
+    "TabSprite": "bullat_idle_001",
+    "FullArtSprite": "bootlegbullat_ammonomicon",
+    "EnemyName": "Bootleg Bullat",
+    "smallDescription": "Pixel Rated",
+    "bigDescription": "I have stumbled upon a place that defies all logic known to me.\nIt seems barely as though a real place! Everything is flat, as though every furniture, torch or detail were painted upon the floors and walls...\n\nViktor Nogov"
+}

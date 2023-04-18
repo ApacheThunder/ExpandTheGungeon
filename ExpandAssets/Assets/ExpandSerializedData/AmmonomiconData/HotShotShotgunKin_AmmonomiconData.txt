@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 19,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 0,
+    "TabSprite": "hotshotshotgunkin_icon",
+    "FullArtSprite": "hotshotshotgunkin_ammonomicon",
+    "EnemyName": "HotShot Shotgun Kin",
+    "smallDescription": "Bullet Hell's Aimgels",
+    "bigDescription": "These dangerous and rowdy shotgun kin are shunned by most of the Gungeon society, and are often found picking fights against other gundead or consuming copious amounts of shotga-cola in loud estabilishments.\n\nThough they stylise themselves after the imagery of hot lead, they are not, in fact, resistant to actual fire."
+}

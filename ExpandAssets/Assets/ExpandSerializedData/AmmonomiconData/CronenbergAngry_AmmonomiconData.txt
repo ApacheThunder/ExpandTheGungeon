@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 80,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": false,
+    "EnemyDifficulty": 0,
+    "TabSprite": "berg_tall_idle_front_001",
+    "FullArtSprite": "cronenberg_tall_ammonomicon",
+    "EnemyName": "Cronenberg (Angry)",
+    "smallDescription": "Of the Flesh",
+    "bigDescription": "A strange, mutated creature in the vague similitude of a shotgun kin.\n\nWrought entirely of flesh, it is known for charging at its enemies with mindless abandon and unbridled ferocity, with surprising agility for its misshapen body and unsteady gait.\n\nA horrible growl is often heard at its time of death, as though a last, pitiful cry before its body combusts under its own metabolism."
+}

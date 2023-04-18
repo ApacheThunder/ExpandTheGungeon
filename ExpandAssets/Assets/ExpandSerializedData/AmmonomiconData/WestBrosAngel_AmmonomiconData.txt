@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 2,
+    "IsNormalEnemy": true,
+    "IsInBossTab": true,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 3,
+    "TabSprite": "boss_icon_Western_Bros_Angel",
+    "FullArtSprite": "boss_photo_Western_Bros_Angel",
+    "EnemyName": "West Brothers (Angel)",
+    "smallDescription": "Follow the job through",
+    "bigDescription": "A cruel and ruthless mercenary, willing to stop at nothing in his search for profit.\n\nFinding great pleasure in hunting his prey, his search for buried gold offers but another opportunity for the spilling of blood; if for a profit margin that could never be ignored."
+}

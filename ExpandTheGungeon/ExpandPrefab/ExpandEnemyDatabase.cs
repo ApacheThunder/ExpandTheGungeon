@@ -208,9 +208,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildMetalCubeGuyWestPrefab(expandSharedAssets1, out MetalCubeGuyWestPrefab);
             BuildParasiteBossPrefab(out MonsterParasitePrefab);
             BuildJungleBossPrefab(out com4nd0BossPrefab);
-            
-            // Add R&G enemies to MTG spawn command because Zatherz hasn't done it. :P
-            // UpdateMTGSpawnPool();
+
+            // Add some existing enemies to Ammonomicon
+            AddEnemyToAmmonomicon(GetOfficialEnemyByGuid("c2f902b7cbe745efb3db4399927eab34"), ExpandAmmonomiconDatabase.Skusketling);
+            AddEnemyToAmmonomicon(GetOfficialEnemyByGuid("80ab6cd15bfc46668a8844b2975c6c26"), ExpandAmmonomiconDatabase.Chameleon);
         }
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
@@ -219,49 +220,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         public static AIActor GetOfficialEnemyByGuid(string guid) { return EnemyDatabase.Instance.InternalGetByGuid(guid); }
-
-        public static void UpdateMTGSpawnPool() {
-            // This entry doesn't work. Forge hammers do not have AIActor components.
-            if (Game.Enemies.ContainsID("hammer")) { Game.Enemies.Remove("hammer"); }
-
-            List<Tuple<string, string>> FTAEnemyPool = new List<Tuple<string, string>>() {
-                new Tuple<string, string>("226fd90be3a64958a5b13cb0a4f43e97", "musket_kin"),
-                new Tuple<string, string>("df4e9fedb8764b5a876517431ca67b86", "bullet_kin_gal_titan_boss"),
-                new Tuple<string, string>("1f290ea06a4c416cabc52d6b3cf47266", "bullet_kin_titan_boss"),
-                new Tuple<string, string>("c4cf0620f71c4678bb8d77929fd4feff", "bullet_kin_titan"),
-                new Tuple<string, string>("6f818f482a5c47fd8f38cce101f6566c", "bullet_kin_pirate"),
-                new Tuple<string, string>("143be8c9bbb84e3fb3ab98bcd4cf5e5b", "bullet_kin_fish"),
-                new Tuple<string, string>("06f5623a351c4f28bc8c6cda56004b80", "bullet_kin_fish_blue"),
-                new Tuple<string, string>("ff4f54ce606e4604bf8d467c1279be3e", "bullet_kin_broccoli"),
-                new Tuple<string, string>("39e6f47a16ab4c86bec4b12984aece4c", "bullet_kin_knight"),
-                new Tuple<string, string>("f020570a42164e2699dcf57cac8a495c", "bullet_kin_kaliber"),
-                new Tuple<string, string>("37de0df92697431baa47894a075ba7e9", "bullet_kin_candle"),
-                new Tuple<string, string>("5861e5a077244905a8c25c2b7b4d6ebb", "bullet_kin_cowboy"),
-                new Tuple<string, string>("906d71ccc1934c02a6f4ff2e9c07c9ec", "bullet_kin_officetie"),
-                new Tuple<string, string>("9eba44a0ea6c4ea386ff02286dd0e6bd", "bullet_kin_officesuit"),
-                new Tuple<string, string>("2b6854c0849b4b8fb98eb15519d7db1c", "bullet_kin_mech"),
-                new Tuple<string, string>("05cb719e0178478685dc610f8b3e8bfc", "bullet_kin_vest"),
-                new Tuple<string, string>("5f15093e6f684f4fb09d3e7e697216b4", "dynamite_kin_office"),
-                new Tuple<string, string>("d4f4405e0ff34ab483966fd177f2ece3", "cylinder"),
-                new Tuple<string, string>("534f1159e7cf4f6aa00aeea92459065e", "cylinder_red"),
-                new Tuple<string, string>("80ab6cd15bfc46668a8844b2975c6c26", "gunzookie_office"),
-                new Tuple<string, string>("981d358ffc69419bac918ca1bdf0c7f7", "bullat_gargoyle"),
-                new Tuple<string, string>("e861e59012954ab2b9b6977da85cb83c", "snake_office"),
-                new Tuple<string, string>("41ee1c8538e8474a82a74c4aff99c712", "agunim_helicopter"),
-                new Tuple<string, string>("3b0bd258b4c9432db3339665cc61c356", "cactus_kin"),
-                new Tuple<string, string>("4b21a913e8c54056bc05cafecf9da880", "gigi_parrot"),
-                new Tuple<string, string>("78e0951b097b46d89356f004dda27c42", "tablet_bookllet"),
-                new Tuple<string, string>("216fd3dfb9da439d9bd7ba53e1c76462", "necronomicon_bookllet"),
-                new Tuple<string, string>("ddf12a4881eb43cfba04f36dd6377abb", "cowboy_shotgun_kin"),
-                new Tuple<string, string>("86dfc13486ee4f559189de53cfb84107", "pirate_shotgun_kin"),
-                new Tuple<string, string>("9215d1a221904c7386b481a171e52859", "lead_maiden_fridge"),
-                new Tuple<string, string>("3f40178e10dc4094a1565cd4fdc4af56", "baby_shelleton")
-            };
-
-            foreach (Tuple<string, string> tuple in FTAEnemyPool) {
-                if (!Game.Enemies.ContainsID(tuple.Second)) { Game.Enemies.Add(tuple.Second, GetOfficialEnemyByGuid(tuple.First)); }
-            }
-        }
 
         public static void PaletteFixEnemies(AssetBundle expandSharedAssets1) {
 
@@ -341,7 +299,146 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 if (!Game.Enemies.ContainsID(EnemyName)) { Game.Enemies.Add(EnemyName, EnemyPrefab.GetComponent<AIActor>()); }
             }
         }
-        
+
+        public static void AddEnemyToDatabaseAndAmmonomicon(AIActor targetEnemy, string EnemyGUID, ExpandAmmonomiconDatabase.EnemyEntryData enemyEntryData, bool AddToMTGSpawnPool = true) {
+
+            if (!targetEnemy) { return; }
+
+            if (enemyEntryData.TabSpriteIsTexture) {
+                SpriteBuilder.AddToAmmonomicon(ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite));
+            } else if (targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite) != null) {
+                SpriteBuilder.AddToAmmonomicon(targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite));
+            }
+            
+            // if (targetEnemy.GetComponent<EncounterTrackable>()) { UnityEngine.Object.Destroy(targetEnemy.GetComponent<EncounterTrackable>()); }
+            
+            string m_EnemyNameCode = string.Empty;
+
+            if (!string.IsNullOrEmpty(targetEnemy.ActorName)) { m_EnemyNameCode = targetEnemy.ActorName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower(); }
+
+            targetEnemy.encounterTrackable = targetEnemy.gameObject.GetOrAddComponent<EncounterTrackable>();
+            targetEnemy.encounterTrackable.EncounterGuid = EnemyGUID;
+            targetEnemy.encounterTrackable.prerequisites = new DungeonPrerequisite[0];
+            targetEnemy.encounterTrackable.ProxyEncounterGuid = string.Empty;
+            targetEnemy.encounterTrackable.journalData = new JournalEntry() {
+                AmmonomiconSprite = enemyEntryData.TabSprite,
+                enemyPortraitSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite),
+                PrimaryDisplayName = "#THE_" + m_EnemyNameCode,
+                NotificationPanelDescription = "#THE_" + m_EnemyNameCode + "_SHORTDESC",
+                AmmonomiconFullEntry = "#THE_" + m_EnemyNameCode + "_LONGDESC",
+                SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE,
+                SuppressKnownState = false,
+                SuppressInAmmonomicon = false,
+                IsEnemy = true,
+                DisplayOnLoadingScreen = false,
+                RequiresLightBackgroundInLoadingScreen = false
+            };
+            
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_LONGDESC", enemyEntryData.bigDescription);
+
+            EnemyDatabaseEntry item = new EnemyDatabaseEntry {
+                path = EnemyGUID,
+                encounterGuid = EnemyGUID,
+                difficulty = enemyEntryData.EnemyDifficulty,
+                myGuid = EnemyGUID,
+                placeableWidth = 2,
+                placeableHeight = 2,
+                isNormalEnemy = enemyEntryData.IsNormalEnemy,
+                ForcedPositionInAmmonomicon = enemyEntryData.ForcedPositionInAmmonomicon,
+                isInBossTab = enemyEntryData.IsInBossTab,
+            };
+
+            EnemyDatabase.Instance.Entries.Add(item);
+            enemyPrefabDictionary.Add(EnemyGUID, targetEnemy);
+
+            EncounterDatabaseEntry item2 = new EncounterDatabaseEntry(targetEnemy.encounterTrackable) {
+                path = EnemyGUID,
+                myGuid = targetEnemy.encounterTrackable.EncounterGuid,
+            };
+
+            EncounterDatabase.Instance.Entries.Add(item2);
+
+            if (AddToMTGSpawnPool && !string.IsNullOrEmpty(m_EnemyNameCode)) {
+                if (!Game.Enemies.ContainsID(m_EnemyNameCode)) { Game.Enemies.Add(m_EnemyNameCode, targetEnemy); }
+            }
+        }
+
+        public static void AddEnemyToAmmonomicon(AIActor targetEnemy, ExpandAmmonomiconDatabase.EnemyEntryData enemyEntryData) {
+
+            if (!targetEnemy) { return; }
+
+            if (enemyEntryData.TabSpriteIsTexture) {
+                SpriteBuilder.AddToAmmonomicon(ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite));
+            } else if (targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite) != null) {
+                SpriteBuilder.AddToAmmonomicon(targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite));
+            }
+            
+            string m_EnemyNameCode = string.Empty;
+
+            if (!string.IsNullOrEmpty(targetEnemy.ActorName)) { m_EnemyNameCode = targetEnemy.ActorName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower(); }
+
+            bool AlreadyHasEncounterTrackable = true;
+            bool AlreadyHasJournalData = true;
+
+            if (!targetEnemy.gameObject.GetComponent<EncounterTrackable>()) {
+                AlreadyHasEncounterTrackable = false;
+                targetEnemy.gameObject.AddComponent<EncounterTrackable>();
+                targetEnemy.encounterTrackable.EncounterGuid = targetEnemy.EnemyGuid;
+                targetEnemy.encounterTrackable.prerequisites = new DungeonPrerequisite[0];
+                targetEnemy.encounterTrackable.ProxyEncounterGuid = string.Empty;
+            } 
+
+            if (targetEnemy.encounterTrackable.journalData == null) {
+                AlreadyHasJournalData = false;
+                targetEnemy.encounterTrackable.journalData = new JournalEntry() {
+                    PrimaryDisplayName = "#THE_" + m_EnemyNameCode,
+                    NotificationPanelDescription = "#THE_" + m_EnemyNameCode + "_SHORTDESC",
+                    AmmonomiconFullEntry = "#THE_" + m_EnemyNameCode + "_LONGDESC",
+                    SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE,
+                    SuppressKnownState = false,
+                    SuppressInAmmonomicon = false,
+                    IsEnemy = true,
+                    DisplayOnLoadingScreen = false,
+                    RequiresLightBackgroundInLoadingScreen = false
+                };
+            }
+            targetEnemy.encounterTrackable.journalData.AmmonomiconSprite = enemyEntryData.TabSprite;
+            targetEnemy.encounterTrackable.journalData.enemyPortraitSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite);
+            targetEnemy.encounterTrackable.journalData.SuppressKnownState = false;
+            targetEnemy.encounterTrackable.journalData.SuppressInAmmonomicon = false;
+
+            if (!AlreadyHasJournalData) {
+                targetEnemy.encounterTrackable.journalData.PrimaryDisplayName = "#THE_" + m_EnemyNameCode;
+                targetEnemy.encounterTrackable.journalData.NotificationPanelDescription = "#THE_" + m_EnemyNameCode + "_SHORTDESC";
+                targetEnemy.encounterTrackable.journalData.AmmonomiconFullEntry = "#THE_" + m_EnemyNameCode + "_LONGDESC";
+            }
+            if (!AlreadyHasEncounterTrackable) {
+                ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
+                ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);
+                ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_LONGDESC", enemyEntryData.bigDescription);
+            }
+
+            EnemyDatabaseEntry existingEntry = EnemyDatabase.GetEntry(targetEnemy.EnemyGuid);
+
+            if (existingEntry != null) {
+                existingEntry.difficulty = enemyEntryData.EnemyDifficulty;
+                existingEntry.isNormalEnemy = enemyEntryData.IsNormalEnemy;
+                existingEntry.ForcedPositionInAmmonomicon = enemyEntryData.ForcedPositionInAmmonomicon;
+                existingEntry.isInBossTab = enemyEntryData.IsInBossTab;
+            }
+            
+            if (EncounterDatabase.GetEntry(targetEnemy.encounterTrackable.EncounterGuid) == null) {
+                EncounterDatabase.Instance.Entries.Add(
+                    new EncounterDatabaseEntry(targetEnemy.encounterTrackable) {
+                        path = targetEnemy.EnemyGuid,
+                        myGuid = targetEnemy.encounterTrackable.EncounterGuid
+                    }
+                );
+            }
+        }
+
         public static void BuildHotShotCultistPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
             AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("57255ed50ee24794b7aac1ac3cfb8a95");
 
@@ -629,7 +726,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, HotShotCultistGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, HotShotCultistGUID, ExpandAmmonomiconDatabase.HotShotCultist);
 
             m_CachedEnemyActor = null;
             return;
@@ -827,7 +924,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, HotShotShotgunKinGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, HotShotShotgunKinGUID, ExpandAmmonomiconDatabase.HotShotShotgunKin);
 
             m_CachedEnemyActor = null;
             return;
@@ -1007,7 +1104,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, HotShotBulletKinGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, HotShotBulletKinGUID, ExpandAmmonomiconDatabase.HotShotBulletKin);
 
             m_CachedEnemyActor = null;
             return;
@@ -1405,7 +1502,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // Loading a custom script from text file in place of one from an existing prefab..
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
 
-            AddEnemyToDatabase(m_CachedTargetObject, BootlegBullatGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BootlegBullatGUID, ExpandAmmonomiconDatabase.BootlegBullat);
             return;
         }
 
@@ -1837,8 +1934,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
             m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
-            
-            AddEnemyToDatabase(m_CachedTargetObject, BootlegBulletManGUID, true);
+
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BootlegBulletManGUID, ExpandAmmonomiconDatabase.BootlegBulletKin);
 
             m_CachedEnemyActor = null;
             return;
@@ -2602,8 +2699,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // Loading a custom script from text file in place of one from an existing prefab..
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, BootlegShotgunManRedGUID, true);
-            
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BootlegShotgunManRedGUID, ExpandAmmonomiconDatabase.BootlegShotgunKinRed);
+
             m_CachedEnemyActor = null;
             return;
         }
@@ -2951,7 +3048,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // Loading a custom script from text file in place of one from an existing prefab..
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, BootlegShotgunManBlueGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BootlegShotgunManBlueGUID, ExpandAmmonomiconDatabase.BootlegShotgunKinBlue);
             m_CachedEnemyActor = null;
             return;
         }
@@ -3223,8 +3320,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
             CronenbergBullets.m_CachedCronenbergBulletsItem.TransmogTargetGuid = CronenbergGUID;
-
-            AddEnemyToDatabase(m_CachedTargetObject, CronenbergGUID, true);
+                        
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, CronenbergGUID, ExpandAmmonomiconDatabase.Cronenberg);
             return;
         }
 
@@ -3559,7 +3656,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // Loading a custom script from text file in place of one from an existing prefab..
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
             
-            AddEnemyToDatabase(m_CachedTargetObject, AggressiveCronenbergGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, AggressiveCronenbergGUID, ExpandAmmonomiconDatabase.CronenbergAngry);
             return;
         }
 
@@ -4657,7 +4754,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_WigTosser.helmetForce = 5;
             
 
-            AddEnemyToDatabase(m_CachedTargetObject, ClownkinGUID, true);
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, ClownkinGUID, ExpandAmmonomiconDatabase.ClownKin);
             m_CachedEnemyActor = null;
 
             return;

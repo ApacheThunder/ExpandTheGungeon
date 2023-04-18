@@ -306,7 +306,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpaceFloorPitBorder_50x50;
         public static GameObject DoorOneWay_Vertical_Office;
         public static GameObject DoorOneWay_Horizontal_Office;
+
+        // Custom Objects for Jungle
+
+
+        public static GameObject ExpandJungleTree_Medium;
+        public static GameObject ExpandJungleTree_Small;
+        public static GameObject ExpandJungleTreeMedium_Stump;
+        public static GameObject ExpandJungleTreeSmall_Stump;
+        public static GameObject ExpandJungleTree_Shard_01;
+        public static GameObject ExpandJungleTree_Shard_02;
+        public static GameObject ExpandJungleTree_Shard_03;
         
+
+
+
         // Sarcophagus Objects with Kaliber sprites set.
         public static GameObject Sarcophagus_ShotgunBook_Kaliber;
         public static GameObject Sarcophagus_ShotgunMace_Kaliber;
@@ -417,11 +431,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ENV_Tileset_West = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_West");
             ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
             ENV_Tileset_Office = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Office");
-            ExpandDungeonCollections.ENV_Tileset_Jungle(ENV_Tileset_Jungle, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Jungle"), sharedAssets, expandSharedAssets1);
-            ExpandDungeonCollections.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
-            ExpandDungeonCollections.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
-            ExpandDungeonCollections.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
-            ExpandDungeonCollections.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_Jungle(ENV_Tileset_Jungle, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Jungle"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
 
             EXItemCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXItemCollection", "EXItem_Collection", "EXItemCollection");
             EXGunCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXGunCollection", "EXGun_Collection", "EXGunCollection");
@@ -444,7 +458,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
         }
 
-        public static void InitCustomPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
+        public static void InitPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
 
             Dungeon TutorialDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Tutorial");
             Dungeon CastleDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Castle");
@@ -3077,12 +3091,383 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.BuildNewCustomSign(Jungle_BlobLostSign, Teleporter_Info_Sign, "Lost Blob Note", "This poor fella got lost on his way home.");
                         
             Jungle_ItemStump = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_ItemStump");
-            tk2dSprite m_jungleItemStumpSprite = SpriteSerializer.AddSpriteToObject(Jungle_ItemStump, EXJungleCollection, "Jungle_TreeStump");
+            tk2dSprite m_jungleItemStumpSprite = SpriteSerializer.AddSpriteToObject(Jungle_ItemStump, EXJungleCollection, "Jungle_TreeStump", HeightOffGround: -1f);
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_ItemStump, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(3, 2), dimensions: new IntVector2(26, 24));
             ExpandJungleTreeStumpItemPedestal StumpPedestal = Jungle_ItemStump.AddComponent<ExpandJungleTreeStumpItemPedestal>();
             StumpPedestal.ItemID = WoodenCrest.WoodCrestID;
+
             
+            ExpandJungleTree_Shard_01 = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTree_Shard_01");
+            ExpandJungleTree_Shard_02 = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTree_Shard_02");
+            ExpandJungleTree_Shard_03 = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTree_Shard_03");
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTree_Shard_01, EXJungleCollection, "Jungle_Tree_Debris_01", tk2dBaseSprite.PerpendicularState.FLAT, -1);
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTree_Shard_02, EXJungleCollection, "Jungle_Tree_Debris_02", tk2dBaseSprite.PerpendicularState.FLAT, -1);
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTree_Shard_03, EXJungleCollection, "Jungle_Tree_Debris_03", tk2dBaseSprite.PerpendicularState.FLAT, -1);
+
+            ExpandJungleTree_Shard_01.AddComponent<DebrisObject>();
+            ExpandJungleTree_Shard_02.AddComponent<DebrisObject>();
+            ExpandJungleTree_Shard_03.AddComponent<DebrisObject>();
+
+            DebrisObject ExpandJungleTreeChard1Debris = ExpandJungleTree_Shard_01.GetComponent<DebrisObject>();
+            ExpandJungleTreeChard1Debris.Priority = EphemeralObject.EphemeralPriority.Minor;
+            ExpandJungleTreeChard1Debris.audioEventName = string.Empty;
+            ExpandJungleTreeChard1Debris.playAnimationOnTrigger = false;
+            ExpandJungleTreeChard1Debris.usesDirectionalFallAnimations = false;
+            ExpandJungleTreeChard1Debris.directionalAnimationData = new DebrisDirectionalAnimationInfo() {
+                fallUp = string.Empty,
+                fallRight = string.Empty,
+                fallDown = string.Empty,
+                fallLeft = string.Empty
+            };
+            ExpandJungleTreeChard1Debris.breaksOnFall = true;
+            ExpandJungleTreeChard1Debris.breakOnFallChance = 1;
+            ExpandJungleTreeChard1Debris.changesCollisionLayer = false;
+            ExpandJungleTreeChard1Debris.groundedCollisionLayer = CollisionLayer.LowObstacle;
+            ExpandJungleTreeChard1Debris.followupBehavior = DebrisObject.DebrisFollowupAction.None;
+            ExpandJungleTreeChard1Debris.collisionStopsBullets = false;
+            ExpandJungleTreeChard1Debris.animatePitFall = false;
+            ExpandJungleTreeChard1Debris.pitFallSplash = false;
+            ExpandJungleTreeChard1Debris.inertialMass = 1;
+            ExpandJungleTreeChard1Debris.motionMultiplier = 1;
+            ExpandJungleTreeChard1Debris.canRotate = true;
+            ExpandJungleTreeChard1Debris.angularVelocity = 1080;
+            ExpandJungleTreeChard1Debris.angularVelocityVariance = 0;
+            ExpandJungleTreeChard1Debris.bounceCount = 1;
+            ExpandJungleTreeChard1Debris.additionalBounceEnglish = 0;
+            ExpandJungleTreeChard1Debris.decayOnBounce = 0.5f;
+            ExpandJungleTreeChard1Debris.killTranslationOnBounce = false;
+            ExpandJungleTreeChard1Debris.usesLifespan = false;
+            ExpandJungleTreeChard1Debris.lifespanMin = 1;
+            ExpandJungleTreeChard1Debris.lifespanMax = 1;
+            ExpandJungleTreeChard1Debris.shouldUseSRBMotion = false;
+            ExpandJungleTreeChard1Debris.placementOptions = new DebrisObject.DebrisPlacementOptions() {
+                canBeRotated = false,
+                canBeFlippedHorizontally = false,
+                canBeFlippedVertically = false
+            };
+            ExpandJungleTreeChard1Debris.DoesGoopOnRest = false;
+            ExpandJungleTreeChard1Debris.GoopRadius = 1;
+            ExpandJungleTreeChard1Debris.additionalHeightBoost = 0;
+            ExpandJungleTreeChard1Debris.AssignFinalWorldDepth(-1.5f);
+
+            DebrisObject ExpandJungleTreeChard2Debris = ExpandJungleTree_Shard_02.GetComponent<DebrisObject>();
+            ExpandJungleTreeChard2Debris.Priority = EphemeralObject.EphemeralPriority.Minor;
+            ExpandJungleTreeChard2Debris.audioEventName = string.Empty;
+            ExpandJungleTreeChard2Debris.playAnimationOnTrigger = false;
+            ExpandJungleTreeChard2Debris.usesDirectionalFallAnimations = false;
+            ExpandJungleTreeChard2Debris.directionalAnimationData = new DebrisDirectionalAnimationInfo() {
+                fallUp = string.Empty,
+                fallRight = string.Empty,
+                fallDown = string.Empty,
+                fallLeft = string.Empty
+            };
+            ExpandJungleTreeChard2Debris.breaksOnFall = true;
+            ExpandJungleTreeChard2Debris.breakOnFallChance = 1;
+            ExpandJungleTreeChard2Debris.changesCollisionLayer = false;
+            ExpandJungleTreeChard2Debris.groundedCollisionLayer = CollisionLayer.LowObstacle;
+            ExpandJungleTreeChard2Debris.followupBehavior = DebrisObject.DebrisFollowupAction.None;
+            ExpandJungleTreeChard2Debris.collisionStopsBullets = false;
+            ExpandJungleTreeChard2Debris.animatePitFall = false;
+            ExpandJungleTreeChard2Debris.pitFallSplash = false;
+            ExpandJungleTreeChard2Debris.inertialMass = 1;
+            ExpandJungleTreeChard2Debris.motionMultiplier = 1;
+            ExpandJungleTreeChard2Debris.canRotate = true;
+            ExpandJungleTreeChard2Debris.angularVelocity = 1080;
+            ExpandJungleTreeChard2Debris.angularVelocityVariance = 0;
+            ExpandJungleTreeChard2Debris.bounceCount = 1;
+            ExpandJungleTreeChard2Debris.additionalBounceEnglish = 0;
+            ExpandJungleTreeChard2Debris.decayOnBounce = 0.5f;
+            ExpandJungleTreeChard2Debris.killTranslationOnBounce = false;
+            ExpandJungleTreeChard2Debris.usesLifespan = false;
+            ExpandJungleTreeChard2Debris.lifespanMin = 1;
+            ExpandJungleTreeChard2Debris.lifespanMax = 1;
+            ExpandJungleTreeChard2Debris.shouldUseSRBMotion = false;
+            ExpandJungleTreeChard2Debris.placementOptions = new DebrisObject.DebrisPlacementOptions() {
+                canBeRotated = false,
+                canBeFlippedHorizontally = false,
+                canBeFlippedVertically = false
+            };
+            ExpandJungleTreeChard2Debris.DoesGoopOnRest = false;
+            ExpandJungleTreeChard2Debris.GoopRadius = 1;
+            ExpandJungleTreeChard2Debris.additionalHeightBoost = 0;
+            ExpandJungleTreeChard2Debris.AssignFinalWorldDepth(-1.5f);
+
+            DebrisObject ExpandJungleTreeChard3Debris = ExpandJungleTree_Shard_03.GetComponent<DebrisObject>();
+            ExpandJungleTreeChard3Debris.Priority = EphemeralObject.EphemeralPriority.Minor;
+            ExpandJungleTreeChard3Debris.audioEventName = string.Empty;
+            ExpandJungleTreeChard3Debris.playAnimationOnTrigger = false;
+            ExpandJungleTreeChard3Debris.usesDirectionalFallAnimations = false;
+            ExpandJungleTreeChard3Debris.directionalAnimationData = new DebrisDirectionalAnimationInfo() {
+                fallUp = string.Empty,
+                fallRight = string.Empty,
+                fallDown = string.Empty,
+                fallLeft = string.Empty
+            };
+            ExpandJungleTreeChard3Debris.breaksOnFall = true;
+            ExpandJungleTreeChard3Debris.breakOnFallChance = 1;
+            ExpandJungleTreeChard3Debris.changesCollisionLayer = false;
+            ExpandJungleTreeChard3Debris.groundedCollisionLayer = CollisionLayer.LowObstacle;
+            ExpandJungleTreeChard3Debris.followupBehavior = DebrisObject.DebrisFollowupAction.None;
+            ExpandJungleTreeChard3Debris.collisionStopsBullets = false;
+            ExpandJungleTreeChard3Debris.animatePitFall = false;
+            ExpandJungleTreeChard3Debris.pitFallSplash = false;
+            ExpandJungleTreeChard3Debris.inertialMass = 1;
+            ExpandJungleTreeChard3Debris.motionMultiplier = 1;
+            ExpandJungleTreeChard3Debris.canRotate = true;
+            ExpandJungleTreeChard3Debris.angularVelocity = 1080;
+            ExpandJungleTreeChard3Debris.angularVelocityVariance = 0;
+            ExpandJungleTreeChard3Debris.bounceCount = 1;
+            ExpandJungleTreeChard3Debris.additionalBounceEnglish = 0;
+            ExpandJungleTreeChard3Debris.decayOnBounce = 0.5f;
+            ExpandJungleTreeChard3Debris.killTranslationOnBounce = false;
+            ExpandJungleTreeChard3Debris.usesLifespan = false;
+            ExpandJungleTreeChard3Debris.lifespanMin = 1;
+            ExpandJungleTreeChard3Debris.lifespanMax = 1;
+            ExpandJungleTreeChard3Debris.shouldUseSRBMotion = false;
+            ExpandJungleTreeChard3Debris.placementOptions = new DebrisObject.DebrisPlacementOptions() {
+                canBeRotated = false,
+                canBeFlippedHorizontally = false,
+                canBeFlippedVertically = false
+            };
+            ExpandJungleTreeChard3Debris.DoesGoopOnRest = false;
+            ExpandJungleTreeChard3Debris.GoopRadius = 1;
+            ExpandJungleTreeChard3Debris.additionalHeightBoost = 0;
+            ExpandJungleTreeChard3Debris.AssignFinalWorldDepth(-1.5f);
+
+                        
+            ExpandJungleTreeMedium_Stump = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTreeMedium_Stump");
+            ExpandJungleTreeSmall_Stump = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTreeSmall_Stump");
+
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTreeMedium_Stump.transform.Find("stump").gameObject, EXJungleCollection, "Jungle_Tree_Medium_Stump", tk2dBaseSprite.PerpendicularState.FLAT, -1.65f);
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTreeSmall_Stump.transform.Find("stump").gameObject, EXJungleCollection, "Jungle_Tree_Medium_Stump", tk2dBaseSprite.PerpendicularState.FLAT, -1.65f);
+
+            GameObject m_exJungleTreeMediumStump_Shadow = ExpandJungleTreeMedium_Stump.transform.Find("shadow").gameObject;
+            GameObject m_exJungleTreeSmallStump_Shadow = ExpandJungleTreeSmall_Stump.transform.Find("shadow").gameObject;
+
+            tk2dSprite m_exJungleTreeMediumStump_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_exJungleTreeMediumStump_Shadow, EXJungleCollection, "Jungle_Tree_Medium_Stump_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_exJungleTreeMediumStump_ShadowSprite.usesOverrideMaterial = true;
+            m_exJungleTreeMediumStump_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+                        
+            tk2dSprite m_exJungleTreeSmallStump_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_exJungleTreeSmallStump_Shadow, EXJungleCollection, "Jungle_Tree_Medium_Stump_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_exJungleTreeSmallStump_ShadowSprite.usesOverrideMaterial = true;
+            m_exJungleTreeSmallStump_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+            ExpandJungleTree_Medium = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTree_Medium");
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTree_Medium, EXJungleCollection, "Jungle_Tree_Medium", HeightOffGround: -1);
+            GameObject m_exJungleTreeMedium_Shadow = ExpandJungleTree_Medium.transform.Find("shadow").gameObject;
+            tk2dSprite m_exJungleTreeMedium_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_exJungleTreeMedium_Shadow, EXJungleCollection, "Jungle_Tree_Medium_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_exJungleTreeMedium_ShadowSprite.usesOverrideMaterial = true;
+            m_exJungleTreeMedium_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+
+            ExpandJungleTree_Small = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungleTree_Small");
+            SpriteSerializer.AddSpriteToObject(ExpandJungleTree_Small, EXJungleCollection, "Jungle_Tree_Small", HeightOffGround: -1);
+            GameObject m_exJungleTreeSmall_Shadow = ExpandJungleTree_Small.transform.Find("shadow").gameObject;
+            tk2dSprite m_exJungleTreeSmall_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_exJungleTreeSmall_Shadow, EXJungleCollection, "Jungle_Tree_Small_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_exJungleTreeSmall_ShadowSprite.usesOverrideMaterial = true;
+            m_exJungleTreeSmall_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Medium, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(17, 2), dimensions: new IntVector2(12, 10));
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Medium, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(17, 12), dimensions: new IntVector2(12, 23));
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Small, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(9, 2), dimensions: new IntVector2(13, 8));
+            ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Small, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(9, 10), dimensions: new IntVector2(13, 13));
+
+
+            MajorBreakable ExpandJungleTree_MediumBreakable = ExpandJungleTree_Medium.AddComponent<MajorBreakable>();
+            ExpandJungleTree_MediumBreakable.HitPoints = 40;
+            ExpandJungleTree_MediumBreakable.MinHits = 2;
+            ExpandJungleTree_MediumBreakable.EnemyDamageOverride = -1;
+            ExpandJungleTree_MediumBreakable.ImmuneToBeastMode = false;
+            ExpandJungleTree_MediumBreakable.ScaleWithEnemyHealth = false;
+            ExpandJungleTree_MediumBreakable.OnlyExplosions = false;
+            ExpandJungleTree_MediumBreakable.IgnoreExplosions = false;
+            ExpandJungleTree_MediumBreakable.GameActorMotionBreaks = false;
+            ExpandJungleTree_MediumBreakable.PlayerRollingBreaks = false;
+            ExpandJungleTree_MediumBreakable.spawnShards = true;
+            ExpandJungleTree_MediumBreakable.distributeShards = true;
+            ExpandJungleTree_MediumBreakable.shardClusters = new ShardCluster[] {
+                new ShardCluster() {
+                    minFromCluster = 2,
+                    maxFromCluster = 4,
+                    forceMultiplier = 1f,
+                    rotationMultiplier = 1,
+                    forceAxialMultiplier = Vector3.one,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[0].clusterObjects[0],
+                        ExpandJungleTreeChard1Debris,
+                        ExpandJungleTreeChard2Debris,
+                        ExpandJungleTreeChard3Debris
+                    }
+                },
+                new ShardCluster() {
+                    minFromCluster = 3,
+                    maxFromCluster = 6,
+                    forceMultiplier = 1f,
+                    rotationMultiplier = 1,
+                    forceAxialMultiplier = Vector3.one,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[0].clusterObjects[0]
+                    }
+                },
+                new ShardCluster() {
+                    minFromCluster = 3,
+                    maxFromCluster = 6,
+                    forceMultiplier = 1f,
+                    forceAxialMultiplier = Vector3.one,
+                    rotationMultiplier = 1,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[1].clusterObjects[0]
+                    }
+                }
+            };
+            ExpandJungleTree_MediumBreakable.minShardPercentSpeed = 0.01f;
+            ExpandJungleTree_MediumBreakable.maxShardPercentSpeed = 0.03f;
+            ExpandJungleTree_MediumBreakable.shardBreakStyle = MinorBreakable.BreakStyle.BURST;
+            ExpandJungleTree_MediumBreakable.usesTemporaryZeroHitPointsState = false;
+            ExpandJungleTree_MediumBreakable.spriteNameToUseAtZeroHP = string.Empty;
+            ExpandJungleTree_MediumBreakable.destroyedOnBreak = true;
+            ExpandJungleTree_MediumBreakable.childrenToDestroy = new List<GameObject>(0);
+            ExpandJungleTree_MediumBreakable.playsAnimationOnNotBroken = false;
+            ExpandJungleTree_MediumBreakable.notBreakAnimation = string.Empty;
+            ExpandJungleTree_MediumBreakable.handlesOwnBreakAnimation = false;
+            ExpandJungleTree_MediumBreakable.breakAnimation = string.Empty;
+            ExpandJungleTree_MediumBreakable.handlesOwnPrebreakFrames = false;
+            ExpandJungleTree_MediumBreakable.prebreakFrames = new BreakFrame[0];
+            ExpandJungleTree_MediumBreakable.damageVfx = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            ExpandJungleTree_MediumBreakable.damageVfxMinTimeBetween = 0.2f;
+            ExpandJungleTree_MediumBreakable.breakVfx = new VFXPool() {
+                type = VFXPoolType.Single,
+                effects = new VFXComplex[] {
+                    new VFXComplex() {
+                        effects = new VFXObject[] {
+                            new VFXObject() {
+                                effect = ExpandJungleTreeMedium_Stump,
+                                alignment = VFXAlignment.Fixed,
+                                attached = true,
+                                destructible = false,
+                                orphaned = true,
+                                persistsOnDeath = true,
+                                usesZHeight = true,
+                                zHeight = -1f
+                            },
+                            new VFXObject() {
+                                effect = sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof"),
+                                alignment = VFXAlignment.Fixed,
+                                attached = false,
+                                destructible = false,
+                                orphaned = true,
+                                persistsOnDeath = false,
+                                usesZHeight = false,
+                                zHeight = 1
+                            }
+                        },
+                    }
+                }
+            };
+            ExpandJungleTree_MediumBreakable.delayDamageVfx = false;
+            ExpandJungleTree_MediumBreakable.SpawnItemOnBreak = false;
+            ExpandJungleTree_MediumBreakable.HandlePathBlocking = false;
+
+
+            MajorBreakable ExpandJungleTree_SmallBreakable = ExpandJungleTree_Small.AddComponent<MajorBreakable>();
+            ExpandJungleTree_SmallBreakable.HitPoints = 35;
+            ExpandJungleTree_SmallBreakable.MinHits = 2;
+            ExpandJungleTree_SmallBreakable.EnemyDamageOverride = -1;
+            ExpandJungleTree_SmallBreakable.ImmuneToBeastMode = false;
+            ExpandJungleTree_SmallBreakable.ScaleWithEnemyHealth = false;
+            ExpandJungleTree_SmallBreakable.OnlyExplosions = false;
+            ExpandJungleTree_SmallBreakable.IgnoreExplosions = false;
+            ExpandJungleTree_SmallBreakable.GameActorMotionBreaks = false;
+            ExpandJungleTree_SmallBreakable.PlayerRollingBreaks = false;
+            ExpandJungleTree_SmallBreakable.spawnShards = true;
+            ExpandJungleTree_SmallBreakable.distributeShards = true;
+            ExpandJungleTree_SmallBreakable.shardClusters = new ShardCluster[] {
+                new ShardCluster() {
+                    minFromCluster = 1,
+                    maxFromCluster = 3,
+                    forceMultiplier = 1f,
+                    rotationMultiplier = 1,
+                    forceAxialMultiplier = Vector3.one,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[0].clusterObjects[0],
+                        ExpandJungleTreeChard1Debris,
+                        ExpandJungleTreeChard2Debris,
+                        ExpandJungleTreeChard3Debris
+                    }
+                },
+                new ShardCluster() {
+                    minFromCluster = 2,
+                    maxFromCluster = 5,
+                    forceMultiplier = 1f,
+                    rotationMultiplier = 1,
+                    forceAxialMultiplier = Vector3.one,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[0].clusterObjects[0]
+                    }
+                },
+                new ShardCluster() {
+                    minFromCluster = 2,
+                    maxFromCluster = 5,
+                    forceMultiplier = 1f,
+                    forceAxialMultiplier = Vector3.one,
+                    rotationMultiplier = 1,
+                    clusterObjects = new DebrisObject[] {
+                        ExpandObjectDatabase.Bush.variantTiers[0].nonDatabasePlaceable.transform.Find("default bush").gameObject.GetComponent<MinorBreakable>().shardClusters[1].clusterObjects[0]
+                    }
+                }
+            };
+            ExpandJungleTree_SmallBreakable.minShardPercentSpeed = 0.01f;
+            ExpandJungleTree_SmallBreakable.maxShardPercentSpeed = 0.03f;
+            ExpandJungleTree_SmallBreakable.shardBreakStyle = MinorBreakable.BreakStyle.BURST;
+            ExpandJungleTree_SmallBreakable.usesTemporaryZeroHitPointsState = false;
+            ExpandJungleTree_SmallBreakable.spriteNameToUseAtZeroHP = string.Empty;
+            ExpandJungleTree_SmallBreakable.destroyedOnBreak = true;
+            ExpandJungleTree_SmallBreakable.childrenToDestroy = new List<GameObject>(0);
+            ExpandJungleTree_SmallBreakable.playsAnimationOnNotBroken = false;
+            ExpandJungleTree_SmallBreakable.notBreakAnimation = string.Empty;
+            ExpandJungleTree_SmallBreakable.handlesOwnBreakAnimation = false;
+            ExpandJungleTree_SmallBreakable.breakAnimation = string.Empty;
+            ExpandJungleTree_SmallBreakable.handlesOwnPrebreakFrames = false;
+            ExpandJungleTree_SmallBreakable.prebreakFrames = new BreakFrame[0];
+            ExpandJungleTree_SmallBreakable.damageVfx = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
+            ExpandJungleTree_SmallBreakable.damageVfxMinTimeBetween = 0.2f;
+            ExpandJungleTree_SmallBreakable.breakVfx = new VFXPool() {
+                type = VFXPoolType.Single,
+                effects = new VFXComplex[] {
+                    new VFXComplex() {
+                        effects = new VFXObject[] {
+                            new VFXObject() {
+                                effect = ExpandJungleTreeSmall_Stump,
+                                alignment = VFXAlignment.Fixed,
+                                attached = true,
+                                destructible = false,
+                                orphaned = true,
+                                persistsOnDeath = true,
+                                usesZHeight = true,
+                                zHeight = -1f
+                            },
+                            new VFXObject() {
+                                effect = sharedAssets.LoadAsset<GameObject>("VFX_Big_Dust_Poof"),
+                                alignment = VFXAlignment.Fixed,
+                                attached = false,
+                                destructible = false,
+                                orphaned = true,
+                                persistsOnDeath = false,
+                                usesZHeight = false,
+                                zHeight = 1
+                            }
+                        },
+                    }
+                }
+            };
+            ExpandJungleTree_SmallBreakable.delayDamageVfx = false;
+            ExpandJungleTree_SmallBreakable.SpawnItemOnBreak = false;
+            ExpandJungleTree_SmallBreakable.HandlePathBlocking = false;
+
 
             Door_Horizontal_Belly = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
             Door_Vertical_Belly = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[1].nonDatabasePlaceable);
@@ -4620,10 +5005,351 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 UnityEngine.Object.Destroy(ChamberGun.gameObject.GetComponent<ChamberGunProcessor>());
                 ChamberGun.gameObject.AddComponent<ExpandChamberGunProcessor>();
             }
+            
+            // Foyer Prefabs
+            EXFoyerWarpDoor = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerWarpDoor");
+            tk2dSprite m_EXFoyerWarpDoorSprite = SpriteSerializer.AddSpriteToObject(EXFoyerWarpDoor, EXFoyerCollection, "foyerdoor_open_01");
+            m_EXFoyerWarpDoorSprite.HeightOffGround = -2.25f;
+            
+            tk2dSpriteAnimator m_FoyerWarpDoorAnimator = ExpandUtility.GenerateSpriteAnimator(EXFoyerWarpDoor);
+
+            List<string> m_FoyerDoorOpen = new List<string>() {
+                "foyerdoor_open_01",
+                "foyerdoor_open_02",
+                "foyerdoor_open_03",
+                "foyerdoor_open_04",
+                "foyerdoor_open_05",
+                "foyerdoor_open_06",
+                "foyerdoor_open_07",
+                "foyerdoor_open_08",
+                "foyerdoor_open_09",
+                "foyerdoor_open_10",
+                "foyerdoor_open_11",
+                "foyerdoor_open_12",
+                "foyerdoor_open_13",
+            };
+
+            List<string> m_FoyerDoorClose = new List<string>() {
+                "foyerdoor_open_13",
+                "foyerdoor_open_12",
+                "foyerdoor_open_11",
+                "foyerdoor_open_10",
+                "foyerdoor_open_09",
+                "foyerdoor_open_08",
+                "foyerdoor_open_07",
+                "foyerdoor_open_06",
+                "foyerdoor_open_05",
+                "foyerdoor_open_04",
+                "foyerdoor_open_03",
+                "foyerdoor_open_02",
+                "foyerdoor_open_01",
+            };
+            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorOpen, "open", frameRate: 12);
+            ExpandUtility.AddAnimation(m_FoyerWarpDoorAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_FoyerDoorClose, "close", frameRate: 12);
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(17, 24), offset: new IntVector2(48, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(0, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 8), offset: new IntVector2(48, 24));
+            ExpandUtility.GenerateOrAddToRigidBody(EXFoyerWarpDoor, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(31, 13), offset: new IntVector2(17, 18));
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().HasTriggerCollisions = true;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].IsTrigger = true;
+
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[0].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[1].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[2].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[3].Enabled = false;
+            EXFoyerWarpDoor.GetComponent<SpeculativeRigidbody>().PixelColliders[4].Enabled = false;
+
+            
+            EXFoyerTrigger = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerTrigger");
+            tk2dSprite m_FoyerTriggerSprite = SpriteSerializer.AddSpriteToObject(EXFoyerTrigger, EXFoyerCollection, "floortrigger_idle_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_FoyerTriggerSprite.HeightOffGround = -1.74f;
+            // EXFoyerTrigger.AddComponent<ExpandCasinoWarpTrigger>();
+
+            
+            EXCasinoHub = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Hub");
+            EXPunchoutArcadeCoin = expandSharedAssets1.LoadAsset<GameObject>("EXPunchoutArcadeCoin");
+            EXCasino_HatRack = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_HatRack");
+            EXCasino_Litter_Cans = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Litter_Cans");
+            EXCasino_Litter_Paper = expandSharedAssets1.LoadAsset<GameObject>("EXCasino_Litter_Paper");
+
+            GameObject m_EXCasinoHubRoomPrefab = EXCasinoHub.transform.Find("Room_Prefab").gameObject;
+            GameObject m_CasinoFloor = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_floor").gameObject;
+            GameObject m_CasinoWalls = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_backwall").gameObject;
+            GameObject m_CasinoBorder = m_EXCasinoHubRoomPrefab.transform.Find("casino_hub_border").gameObject;
+            GameObject m_CasinoPokerTable_01 = EXCasinoHub.transform.Find("casino_poker_table_01").gameObject;
+            GameObject m_CasinoPokerTable_02 = EXCasinoHub.transform.Find("casino_poker_table_02").gameObject;
+            GameObject m_CasinoPokerTableProps = m_CasinoPokerTable_01.transform.Find("tableprops").gameObject;
+            GameObject m_CasinoPokerTableProps2 = m_CasinoPokerTable_02.transform.Find("tableprops").gameObject;
+            GameObject m_CasinoPokerTableShadow = m_CasinoPokerTable_01.transform.Find("shadow").gameObject;
+            GameObject m_CasinoPokerTableShadow2 = m_CasinoPokerTable_02.transform.Find("shadow").gameObject;
+            GameObject m_CasinoCarpet1 = EXCasinoHub.transform.Find("casino_carpet_01").gameObject;
+            GameObject m_CasinoCarpet2 = EXCasinoHub.transform.Find("casino_carpet_02").gameObject;
+
+            SpriteSerializer.AddSpriteToObject(EXPunchoutArcadeCoin, EXFoyerCollection, "punchout_coin_left");
+
+            ExpandUtility.DuplicateComponent(EXPunchoutArcadeCoin.AddComponent<PunchoutDroppedItem>(), MetalGearRatPrefab.GetComponent<MetalGearRatDeathController>().PunchoutMinigamePrefab.GetComponent<PunchoutController>().Opponent.DroppedItemPrefab.GetComponent<PunchoutDroppedItem>());
+
+            tk2dSprite m_CasinoFloorSprite = SpriteSerializer.AddSpriteToObject(m_CasinoFloor, EXFoyerCollection, "casino_hub_floor_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoFloorSprite.HeightOffGround = -1.75f;
+            tk2dSprite m_CasinoWallsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoWalls, EXFoyerCollection, "casino_hub_backwall_001");
+            m_CasinoWallsSprite.HeightOffGround = -1.73f;
+            tk2dSprite m_CasinoBorderSprite = SpriteSerializer.AddSpriteToObject(m_CasinoBorder, EXFoyerCollection, "casino_hub_border_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoBorderSprite.HeightOffGround = 4;
+
+            tk2dSprite m_CasinoCarpet1Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoCarpet1, EXFoyerCollection, "casino_carpet_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoCarpet2Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoCarpet2, EXFoyerCollection, "casino_carpet_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoCarpet1Sprite.HeightOffGround = -1.74f;
+            m_CasinoCarpet2Sprite.HeightOffGround = -1.74f;
+            
+
+            tk2dSprite m_CasinoPokerTableSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable_01, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableSprite2 = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTable_02, EXFoyerCollection, "casino_poker_table_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTablePropsSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps, EXFoyerCollection, "casino_poker_table_props_002", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableProps2Sprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableProps2, EXFoyerCollection, "casino_poker_table_props_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableShadowSprite = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_CasinoPokerTableShadowSprite2 = SpriteSerializer.AddSpriteToObject(m_CasinoPokerTableShadow2, EXFoyerCollection, "casino_poker_table_shadow", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_CasinoPokerTableSprite.HeightOffGround = 0;
+            m_CasinoPokerTableSprite2.HeightOffGround = 0;
+            m_CasinoPokerTablePropsSprite.HeightOffGround = 0.2f;
+            m_CasinoPokerTableProps2Sprite.HeightOffGround = 0.2f;
+            m_CasinoPokerTableShadowSprite.HeightOffGround = -1.73f;
+            m_CasinoPokerTableShadowSprite2.HeightOffGround = -1.73f;
+            m_CasinoPokerTableShadowSprite.usesOverrideMaterial = true;
+            m_CasinoPokerTableShadowSprite2.usesOverrideMaterial = true;
+            m_CasinoPokerTableShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+            m_CasinoPokerTableShadowSprite2.renderer.material.shader = m_CasinoPokerTableShadowSprite.renderer.material.shader;
+
+
+            tk2dSprite m_EXCasino_HatRackSprite = SpriteSerializer.AddSpriteToObject(EXCasino_HatRack, EXFoyerCollection, "casino_hatrack_001");
+            tk2dSprite m_EXCasino_LitterCansSprite = SpriteSerializer.AddSpriteToObject(EXCasino_Litter_Cans, EXFoyerCollection, "casino_litter_cans_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_EXCasino_LitterPaperSprite = SpriteSerializer.AddSpriteToObject(EXCasino_Litter_Paper, EXFoyerCollection, "casino_litter_paper_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXCasino_HatRackSprite.HeightOffGround = -1.25f;
+            m_EXCasino_LitterCansSprite.HeightOffGround = -1.7f;
+            m_EXCasino_LitterPaperSprite.HeightOffGround = -1.7f;
+            m_EXCasino_HatRackSprite.usesOverrideMaterial = true;
+            m_EXCasino_HatRackSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+            m_EXCasino_LitterCansSprite.usesOverrideMaterial = true;
+            m_EXCasino_LitterCansSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+            m_EXCasino_LitterPaperSprite.usesOverrideMaterial = true;
+            m_EXCasino_LitterPaperSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(-10, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(16, 304), offset: new IntVector2(262, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(151, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(111, 48), offset: new IntVector2(6, -32));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasinoHub, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(256, 16), offset: new IntVector2(6, 256));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasino_HatRack, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(12, 13), offset: new IntVector2(5, 2));
+            ExpandUtility.GenerateOrAddToRigidBody(EXCasino_HatRack, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(12, 9), offset: new IntVector2(5, 15));
+            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable_01, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_CasinoPokerTable_02, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 45), offset: new IntVector2(2, 0));
+            
+
+            GameObject m_EXCasinoGame_Punchout = EXCasinoHub.transform.Find("casinogame_punchout").gameObject;
+            tk2dSprite m_EXCasinoGamePunchoutSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Punchout, EXFoyerCollection, "cabinet_covered_001");
+            m_EXCasinoGamePunchoutSprite.HeightOffGround = -1.65f;
+
+            GameObject m_EXCasinoGame_PunchoutShadow = m_EXCasinoGame_Punchout.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXCasinoGamePunchoutShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_PunchoutShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXCasinoGamePunchoutShadowSprite.HeightOffGround = -1.7f;
+            m_EXCasinoGamePunchoutShadowSprite.usesOverrideMaterial = true;
+            m_EXCasinoGamePunchoutShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Punchout, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
+            
+
+            List<string> m_PunchoutArcade_Idle = new List<string>() {
+                "cabinet_idle_001",
+                "cabinet_idle_002",
+                "cabinet_idle_003",
+                "cabinet_idle_004",
+                "cabinet_idle_005",
+                "cabinet_idle_006",
+                "cabinet_idle_007",
+                "cabinet_idle_008",
+                "cabinet_idle_009",
+                "cabinet_idle_010",
+                "cabinet_idle_011",
+                "cabinet_idle_012",
+            };
+            List<string> m_PunchoutArcade_Sleep = new List<string>() {
+                "cabinet_sleep_001",
+                "cabinet_sleep_002",
+                "cabinet_sleep_003",
+                "cabinet_sleep_004",
+                "cabinet_sleep_005",
+                "cabinet_sleep_006",
+                "cabinet_sleep_007",
+                "cabinet_sleep_008",
+                "cabinet_sleep_009",
+                "cabinet_sleep_010",
+                "cabinet_sleep_011",
+                "cabinet_sleep_012",
+                "cabinet_sleep_013",
+                "cabinet_sleep_014",
+            };
+            List<string> m_PunchoutArcade_Interact = new List<string>() {
+                "cabinet_interact_001",
+                "cabinet_interact_002",
+                "cabinet_interact_003",
+                "cabinet_interact_004",
+            };
+            List<string> m_PunchoutArcade_Fight = new List<string>() {
+                "cabinet_fight_001",
+                "cabinet_fight_002",
+                "cabinet_fight_003",
+                "cabinet_fight_004",
+                "cabinet_fight_005",
+                "cabinet_fight_006",
+                "cabinet_fight_007",
+                "cabinet_fight_008",
+                "cabinet_fight_009",
+                "cabinet_fight_010",
+                "cabinet_fight_011",
+                "cabinet_fight_012",
+                "cabinet_fight_013",
+                "cabinet_fight_014"
+            };
+            List<string> m_PunchoutArcade_FightIdle = new List<string>() { "cabinet_fight_014", "cabinet_fight_014", };
+            
+
+            tk2dSpriteAnimator m_EXCasinoArcadeGameAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXCasinoGame_Punchout, playAutomatically: true);
+
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Interact, "interact", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Fight, "fight", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_FightIdle, "idle2", tk2dSpriteAnimationClip.WrapMode.Loop, 1);
+            ExpandUtility.AddAnimation(m_EXCasinoArcadeGameAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_PunchoutArcade_Sleep, "sleep", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
                         
-            /*ExpandLists.CustomChests.Add(RickRollChestObject);
-            ExpandLists.CustomChests.Add(SurpriseChestObject);
-            ExpandLists.CustomChestsWithoutRickRoll.Add(SurpriseChestObject);*/
+            EXArcadeGame_Prop = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGame_Prop");
+            GameObject m_EXArcadeGamePropShadow = EXArcadeGame_Prop.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXArcadeGamePropSprite = SpriteSerializer.AddSpriteToObject(EXArcadeGame_Prop, EXFoyerCollection, "cabinet_decorative_001");
+            tk2dSprite m_EXArcadeGamePropShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXArcadeGamePropShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXArcadeGamePropSprite.HeightOffGround = -1.65f;
+            m_EXArcadeGamePropShadowSprite.HeightOffGround = -1.7f;
+            m_EXArcadeGamePropShadowSprite.usesOverrideMaterial = true;
+            m_EXArcadeGamePropShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
+
+
+            EXArcadeGame_Prop_Depressed = expandSharedAssets1.LoadAsset<GameObject>("EXArcadeGame_Prop_Depressed");
+            GameObject m_EXArcadeGamePropDepressedShadow = EXArcadeGame_Prop.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXArcadeGamePropDepressedSprite = SpriteSerializer.AddSpriteToObject(EXArcadeGame_Prop_Depressed, EXFoyerCollection, "cabinet_decorative_001");
+            tk2dSprite m_EXArcadeGamePropDepressedShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXArcadeGamePropDepressedShadow, EXFoyerCollection, "cabinet_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXArcadeGamePropDepressedSprite.HeightOffGround = -1.65f;
+            m_EXArcadeGamePropDepressedShadowSprite.HeightOffGround = -1.7f;
+            m_EXArcadeGamePropDepressedShadowSprite.usesOverrideMaterial = true;
+            m_EXArcadeGamePropDepressedShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop_Depressed, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 15), offset: new IntVector2(4, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXArcadeGame_Prop_Depressed, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 9), offset: new IntVector2(6, 15));
+            
+            List<string> m_Cabinet_Blink = new List<string>() { "depressedcabinet_blink_001" , "depressedcabinet_blink_002", "depressedcabinet_blink_003" };
+            List<string> m_Cabinet_Idle = new List<string>() { "depressedcabinet_idle_001", "depressedcabinet_idle_001" };
+            List<string> m_Cabinet_Sigh = new List<string>() {
+                "depressedcabinet_sigh_001",
+                "depressedcabinet_sigh_002",
+                "depressedcabinet_sigh_003",
+                "depressedcabinet_sigh_004",
+                "depressedcabinet_sigh_005",
+                "depressedcabinet_sigh_006",
+                "depressedcabinet_sigh_007",
+            };
+
+            tk2dSpriteAnimator m_EXArcadeGamePropDepressedAnimator = ExpandUtility.GenerateSpriteAnimator(EXArcadeGame_Prop_Depressed, playAutomatically: true);
+
+            ExpandUtility.AddAnimation(m_EXArcadeGamePropDepressedAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Cabinet_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 1);
+            ExpandUtility.AddAnimation(m_EXArcadeGamePropDepressedAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Cabinet_Blink, "blink", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            ExpandUtility.AddAnimation(m_EXArcadeGamePropDepressedAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Cabinet_Sigh, "sigh", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+
+            
+            GameObject m_EXCasinoGame_Gunball = EXCasinoHub.transform.Find("casinogame_gunball").gameObject;
+            tk2dSprite m_EXCasinoGameGunballSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_Gunball, EXFoyerCollection, "gunball_idle_001");
+            m_EXCasinoGameGunballSprite.HeightOffGround = -1.6f;
+
+            GameObject m_EXCasinoGame_GunballShadow = m_EXCasinoGame_Gunball.transform.Find("shadow").gameObject;
+            tk2dSprite m_EXCasinoGame_GunballShadowSprite = SpriteSerializer.AddSpriteToObject(m_EXCasinoGame_GunballShadow, EXFoyerCollection, "gunball_shadow_001", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXCasinoGame_GunballShadowSprite.HeightOffGround = -1.7f;
+            m_EXCasinoGame_GunballShadowSprite.usesOverrideMaterial = true;
+            m_EXCasinoGame_GunballShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Gunball, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 17), offset: new IntVector2(2, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(m_EXCasinoGame_Gunball, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(27, 13), offset: new IntVector2(2, 17));
+
+            List<string> m_Gunball_Idle = new List<string>() { "gunball_idle_001", "gunball_idle_002", "gunball_idle_003", "gunball_idle_004" };
+            List<string> m_Gunball_Interact = new List<string>() {
+                "gunball_interact_001",
+                "gunball_interact_002",
+                "gunball_interact_003",
+                "gunball_interact_004",
+                "gunball_interact_005",
+                "gunball_interact_006"
+            };
+            List<string> m_Gunball_Spin = new List<string>() {
+                "gunball_use_001",
+                "gunball_use_002",
+                "gunball_use_003",
+                "gunball_use_004",
+                "gunball_use_005",
+                "gunball_use_006",
+                "gunball_use_007",
+                "gunball_use_008",
+                "gunball_use_009",
+                "gunball_use_010",
+                "gunball_use_011",
+                "gunball_use_012",
+                "gunball_use_013",
+                "gunball_use_014",
+                "gunball_use_015",
+                "gunball_use_016",
+                "gunball_use_017",
+                "gunball_use_018",
+                "gunball_use_019",
+                "gunball_use_020",
+                "gunball_use_021",
+                "gunball_use_022",
+                "gunball_use_023",
+                "gunball_use_024",
+                "gunball_use_025",
+                "gunball_use_026",
+                "gunball_use_027",
+                "gunball_use_028",
+            };
+
+            tk2dSpriteAnimator m_EXCasinoGameGunBallAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXCasinoGame_Gunball, playAutomatically: true);
+
+            ExpandUtility.AddAnimation(m_EXCasinoGameGunBallAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Gunball_Idle, "idle", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_EXCasinoGameGunBallAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Gunball_Interact, "interact", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_GunBallUseAnimation = ExpandUtility.AddAnimation(m_EXCasinoGameGunBallAnimator, EXFoyerCollection.GetComponent<tk2dSpriteCollectionData>(), m_Gunball_Spin, "spin", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            m_GunBallUseAnimation.frames[23].triggerEvent = true;
+            m_GunBallUseAnimation.frames[23].eventInfo = "itempop";
+            
+            EXRatDoor_4xLocks = expandSharedAssets1.LoadAsset<GameObject>("EXRatJailDoor4x");
+            tk2dSprite EXRatDoor4xLocksSprite = SpriteSerializer.AddSpriteToObject(EXRatDoor_4xLocks, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<tk2dSprite>().Collection, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<tk2dSprite>().spriteId, tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            EXRatDoor4xLocksSprite.HeightOffGround = -1.5f;
+            ExpandUtility.GenerateSpriteAnimator(EXRatDoor_4xLocks, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<tk2dSpriteAnimator>().Library, 143);
+
+            SpeculativeRigidbody m_EXRatDoor4xLocksRigidBody = EXRatDoor_4xLocks.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateComponent(m_EXRatDoor4xLocksRigidBody, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.GetComponent<SpeculativeRigidbody>());
+            m_EXRatDoor4xLocksRigidBody.PixelColliders = new List<PixelCollider>();
+            ExpandUtility.GenerateOrAddToRigidBody(EXRatDoor_4xLocks, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, true, true, false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 16), offset: IntVector2.Zero);
+            ExpandUtility.GenerateOrAddToRigidBody(EXRatDoor_4xLocks, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, true, true, false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 16), offset: new IntVector2(0, 16));
+            
+            for (int i = 0; i < 4; i++) {
+                GameObject m_ChildLock = EXRatDoor_4xLocks.transform.Find("Lock" + i).gameObject;
+                tk2dSprite m_ChildLockSprite = SpriteSerializer.AddSpriteToObject(m_ChildLock, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSprite>().Collection, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSprite>().spriteId, tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+                if (i == 0 | i == 2) {
+                    m_ChildLockSprite.HeightOffGround = 1;
+                } else {
+                    m_ChildLockSprite.HeightOffGround = -1.5f;
+                }
+                ExpandUtility.GenerateSpriteAnimator(m_ChildLock, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSpriteAnimator>().Library, 53, playAutomatically: true);
+            }
 
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
@@ -4638,8 +5364,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ForgeDungeonPrefab = null;
             CatacombsDungeonPrefab = null;
             NakatomiDungeonPrefab = null;
-
-            ExpandMorePrefabs.InitMoreCustomPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
         }
     }
 }

@@ -481,8 +481,19 @@ namespace ExpandTheGungeon.ExpandPrefab
                 actor.healthHaver.SetHealthMaximum(600);
 
                 actor.RegenerateCache();
-
-                ExpandEnemyDatabase.AddEnemyToDatabase(outObject, actor.EnemyGuid, true);
+                
+                switch (whichBro)
+                {
+                    case WestBros.Angel:
+                        ExpandEnemyDatabase.AddEnemyToDatabaseAndAmmonomicon(actor, actor.EnemyGuid, ExpandAmmonomiconDatabase.WestBrosAngel);
+                        break;
+                    case WestBros.Nome:
+                        ExpandEnemyDatabase.AddEnemyToDatabaseAndAmmonomicon(actor, actor.EnemyGuid, ExpandAmmonomiconDatabase.WestBrosNome);
+                        break;
+                    case WestBros.Tuc:
+                        ExpandEnemyDatabase.AddEnemyToDatabaseAndAmmonomicon(actor, actor.EnemyGuid, ExpandAmmonomiconDatabase.WestBrosTuc);
+                        break;
+                }
                 FakePrefab.MarkAsFakePrefab(outObject);
                 UnityEngine.Object.DontDestroyOnLoad(outObject);
             }
