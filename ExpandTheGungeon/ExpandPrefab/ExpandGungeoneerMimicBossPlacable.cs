@@ -255,57 +255,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             
             IntVector2 SpawnPosition = (gameObject.transform.PositionVector2().ToIntVector2() - room.area.basePosition);
-
-            /*PlayerController CurrentPlayer = GameManager.Instance.PrimaryPlayer;
-
-            GameObject m_CachedNewObject = new GameObject("Gungeoneer Mimic") { layer = 28 };
-
-            GenerateGungeoneerMimicBoss(expandSharedAssets1, m_CachedNewObject, CurrentPlayer);
             
-            GameObject SpawnedBossObject = m_CachedNewObject.GetComponent<AIActor>().InstantiateObject(room, SpawnPosition, false);
-            SpawnedBossObject.transform.parent = room.hierarchyParent;
-            Destroy(m_CachedNewObject);
-
-            PickupObject MimiclayItem = PickupObjectDatabase.GetById(Mimiclay.MimiclayPickupID);
-
-            if (MimiclayItem) {
-                SpawnedBossObject.GetComponent<AIActor>().AdditionalSafeItemDrops.Add(MimiclayItem);
-            }*/
-            /*
-            MirrorController mirror = ExpandPrefabs.CurrsedMirror.GetComponent<MirrorController>();
-
-            GameObject MimicMirrorObject = new GameObject("MimicMirrorBase");
-            // MimicMirrorObject.transform.position = (SpawnedBossObject.transform.position - new Vector3(0.25f, 1));
-            MimicMirrorObject.transform.position = (SpawnPosition.ToVector3() - new Vector3(0.25f, 1));
-
-            MimicMirrorObject.transform.parent = gameObject.transform;
-            
-            tk2dSprite MirrorBaseSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_Base");
-            
-            ExpandUtility.GenerateSpriteAnimator(MimicMirrorObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorMimicFadeInSprites, "PlayerMimicFadeIn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
-            ExpandUtility.AddAnimation(MimicMirrorObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorCrackSprites, "MirrorGlassCrack", tk2dSpriteAnimationClip.WrapMode.Once, 6);
-            
-            ExpandGungeoneerMimicIntroDoer playerMimicBossIntroDoer = SpawnedBossObject.GetComponent<ExpandGungeoneerMimicIntroDoer>();
-            playerMimicBossIntroDoer.MirrorBase = MimicMirrorObject;
-            playerMimicBossIntroDoer.ShatterSystem = Instantiate(mirror.ShatterSystem, MimicMirrorObject.transform.position, Quaternion.identity);
-            playerMimicBossIntroDoer.ShatterSystem.SetActive(false);
-            playerMimicBossIntroDoer.ShatterSystem.transform.parent = MimicMirrorObject.transform;
-
-            GameObject MimicMirrorFXObject = new GameObject("MirrorShatterFX");
-            MimicMirrorFXObject.transform.position = (MimicMirrorObject.transform.position - Vector3.one);
-            MimicMirrorFXObject.transform.parent = gameObject.transform.parent;
-
-            tk2dSprite MimicMirrorFXSprite = SpriteSerializer.AddSpriteToObject(MimicMirrorFXObject, ExpandCustomEnemyDatabase.GungeoneerMimicCollection, "PlayerMimicMirror_ShatterDebris_01");
-            MimicMirrorFXSprite.HeightOffGround = 3.5f;
-            MimicMirrorFXSprite.UpdateZDepth();
-            
-            ExpandUtility.GenerateSpriteAnimator(MimicMirrorFXObject, AnimateDuringBossIntros: true, AlwaysIgnoreTimeScale: true, ignoreTimeScale: true);
-            ExpandUtility.AddAnimation(MimicMirrorFXObject.GetComponent<tk2dSpriteAnimator>(), ExpandCustomEnemyDatabase.GungeoneerMimicCollection.GetComponent<tk2dSpriteCollectionData>(), m_MirrorShatterFXSprites, "PlayerMimicShatter", tk2dSpriteAnimationClip.WrapMode.Once, 12);
-            
-            playerMimicBossIntroDoer.MirrorShatterFX = MimicMirrorFXObject;
-            MimicMirrorFXObject.SetActive(false);*/
-
             expandSharedAssets1 = null;
         }
 

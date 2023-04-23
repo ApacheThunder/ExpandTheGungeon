@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2023508650
+CRC: 83329940
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 75a0642d52778f3f56fd3e7d286054b8
+    Hash: 68281908f6df989accc4cfe64367e5d6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f4241535d4e8d4e11acb786dda0ad105
+    Hash: e07db27c83368901a660c5a67ad09cfb
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -36,6 +36,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: dcb4fda0513fcf24a93207e0ed520ae2, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: c59f4fb058392d745a690e85b4feba5d, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 85a95b2198074e1459671337ed25c270, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: ffe832c3889be3440813e901b0c5bb7c, type: 3}
@@ -51,8 +53,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 0159916ecce839b46a8148e75dacab83, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 1492b7fe0995e1f4b861785c3d23f832, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: c59f4fb058392d745a690e85b4feba5d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 198
@@ -287,6 +287,7 @@ Assets:
 - Assets/ExpandRooms/RoomBuilderData/Giant_Elevator_Room_Layout.png
 - Assets/ExpandTextures/Misc/PunchoutArcadeOverlay.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed16.bytes
+- Assets/ExpandTextures/Misc/JungleOcclusionTestTile.png
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_04.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_Jungle.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular43.bytes
@@ -297,6 +298,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorBlocker_East.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Jungle_Boss.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/lavaGrids.txt
+- Assets/ExpandTextures/AmmonomiconTextures/boss_icon_Doppelgunner_001.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals26.bytes
 - Assets/ExpandPrefabs/Misc/EX_GlitchPortal.prefab
 - Assets/ExpandPrefabs/Misc/DoppelgunnerMirrorFX.prefab
@@ -321,6 +323,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular12.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandBelly_ExitWarp.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular28.bytes
+- Assets/ExpandSerializedData/AmmonomiconData/BootlegBandanaBulletKin_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman3.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Blocks_Layout.png
 - Assets/ExpandSerializedData/TilesetData/West/RedInterior/exteriorFacadeBorderGrid.txt
@@ -367,6 +370,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter6.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXPortableElevatorCollection.prefab
 - Assets/ExpandPrefabs/Items/Mimiclay.prefab
+- Assets/ExpandTextures/AmmonomiconTextures/bootlegshotgunmanblue_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_Weird3.bytes
 - Assets/ExpandPrefabs/AIActors/Clownkin.prefab
 - Assets/ExpandSerializedData/SpriteCollections/CronenbergTallCollection.txt
@@ -394,9 +398,9 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Boxes1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed8.bytes
 - Assets/ExpandRooms/RoomBuilderData/Hollow/Expand_Neighborino_IceIsNice_Layout.png
-- Assets/ExpandSerializedData/AmmonomiconData/Dopplegunner_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular42.bytes
 - Assets/ExpandRooms/RoomFactoryData/K_Expand_MasterRound1.bytes
+- Assets/ExpandTextures/AmmonomiconTextures/bootlegshotgunmanred_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_BoomLine1.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_ImportantBusiness.bytes
 - Assets/ExpandRooms/RoomFactoryData/PM_Expand_Achievement_Reverence_for_the_Dead.bytes
@@ -497,6 +501,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/PM_Expand_Achievement_Patron.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Space.prefab
 - Assets/ExpandPrefabs/AIActors/Bootleg Bullat.prefab
+- Assets/ExpandTextures/AmmonomiconTextures/bootlegbulletmanbandana_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/B_Expand_demon_onehand.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_MelonTurtle_Enclose_Hub_Layout.png
 - Assets/ExpandSerializedData/TilesetData/Jungle/Woods/pitLayoutGrid.txt
@@ -567,7 +572,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed9.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/carpetGrids_1.txt
-- Assets/ExpandTextures/AmmonomiconTextures/bootlegshotgunman_ammonomicon.png
 - Assets/ExpandPrefabs/Dungeons/Base_Belly.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals27.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport2_3.bytes
@@ -830,6 +834,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular46.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Bush.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_C_Hub_Layout.png
+- Assets/ExpandTextures/AmmonomiconTextures/doppelgunner_ammonomicon.png
 - Assets/ExpandRooms/RoomBuilderData/Hollow/Expand_Neighborino_MrPresident_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/H_Expand_Planar_Lead.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_4wave.bytes
@@ -891,6 +896,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera25.bytes
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Angel.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman8.bytes
+- Assets/ExpandSerializedData/AmmonomiconData/Doppelgunner_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/MA_Expand_Achievement_Dungeon_Diver.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal18.bytes
 - Assets/ExpandSerializedData/SpriteCollections/EXJungleCollection.txt
@@ -998,6 +1004,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/Expand_RickRollAnimation.prefab
 - Assets/ExpandRooms/RoomFactoryData/MA_Expand_Achievement_Double_Jeopardy.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_AP_Passage.bytes
+- Assets/ExpandTextures/AmmonomiconTextures/bootlegbullat_icon.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Squareish8.bytes
 - Assets/ExpandPrefabs/Misc/EX_Secret_Door.prefab
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Tuc.prefab

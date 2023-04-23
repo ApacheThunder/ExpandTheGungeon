@@ -114,6 +114,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly GameObject GlassWall_Side;
         public static readonly GameObject GlassWall_Front;
         public static readonly GameObject BossOfficeDesk;
+        public static readonly GameObject GungeonSewersExit;
 
 
 
@@ -215,6 +216,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             // CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
             EndTimes = ExpandAssets.LoadOfficialAsset<GameObject>("EndTimes", ExpandAssets.AssetSource.BraveResources);
             EndTimesChest = forgeDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("EndTimes_Xform").Find("G_CacheOfTheAmmulich").gameObject;
+            GungeonSewersExit = castleDungeon.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
+
 
 
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {

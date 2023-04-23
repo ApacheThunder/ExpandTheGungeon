@@ -1,0 +1,12 @@
+{
+    "ForcedPositionInAmmonomicon": 0,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": false,
+    "EnemyDifficulty": 0,
+    "TabSprite": "bulletmanbandana_run_down_001",
+    "FullArtSprite": "bootlegbulletmanbandana_ammonomicon",
+    "EnemyName": "Bootleg Bandana Bullet Kin",
+    "smallDescription": "Blow Resolution",
+    "bigDescription": "These corrupted bullet kin... do they remember what they once were? Their fellow gundead cower before their sight.\n\nBut it is useless: soon, I fear, they will also become like their fallen brothers. And then... woe to us!\n\nViktor Nogov"
+}

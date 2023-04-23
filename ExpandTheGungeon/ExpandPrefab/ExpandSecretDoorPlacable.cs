@@ -166,10 +166,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SecretDoorComponent.DoorBottomBorderObject = EXSecretDoor_Frame_Bottom;
             m_SecretDoorComponent.DoorBackgroundObject = EXSecretDoor_Background;
             m_SecretDoorComponent.DoorLightObject = EXSecretDoor_Light;
-
-            Dungeon Base_Castle = DungeonDatabase.GetOrLoadByName("Base_Castle");
-            GameObject m_NormalLock = (Base_Castle.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom.placedObjects[0].nonenemyBehaviour as SecretFloorInteractableController).WorldLocks[0].gameObject;
-
+                        
+            GameObject m_NormalLock = ExpandObjectDatabase.GungeonSewersExit.GetComponent<SecretFloorInteractableController>().WorldLocks[0].gameObject;
+            
             tk2dSprite EXLockNormalSprite = EXSecretDoor_Lock.AddComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(EXLockNormalSprite, m_NormalLock.GetComponent<tk2dSprite>());
             ExpandUtility.DuplicateSpriteAnimator(EXSecretDoor_Lock, m_NormalLock.GetComponent<tk2dSpriteAnimator>());
@@ -188,7 +187,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SecretDoorComponent.Lock = m_EXLockNormal;
             EXSecretDoor.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
                         
-            Base_Castle = null;
             m_NormalLock = null;
             
             EXSecretDoor_Unlocked = expandSharedAssets1.LoadAsset<GameObject>("EX_Secret_Door_Unlocked");

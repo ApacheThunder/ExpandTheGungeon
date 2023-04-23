@@ -115,6 +115,10 @@ namespace ExpandTheGungeon {
 			File.WriteAllBytes(Path.Combine(ETGMod.ResourcesDirectory, texture.name + ".png"), ImageConversion.EncodeToPNG((Texture2D)texture));
 		}
 
+        public static void ExportTexture(Texture2D texture) {
+			File.WriteAllBytes(Path.Combine(ETGMod.ResourcesDirectory, texture.name + ".png"), ImageConversion.EncodeToPNG(texture));
+		}
+
         // public static T GetEnumValue<T>(string val) where T : Enum { return (T)Enum.Parse(typeof(T), val.ToUpper()); }
 
         // This came from KyleTheScientest's SpriteWork mod.

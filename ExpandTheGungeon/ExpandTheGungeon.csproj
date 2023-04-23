@@ -99,6 +99,10 @@
       <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\Dependencies\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.VideoModule">
       <HintPath>..\Dependencies\UnityEngine.VideoModule.dll</HintPath>
       <Private>False</Private>

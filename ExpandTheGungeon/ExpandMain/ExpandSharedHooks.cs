@@ -1812,11 +1812,16 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         
         /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
-            if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
+            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.JUNGLEGEON) {
                 // self.UseTexturedOcclusion = true;
+                // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
                 self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                // m_vignetteMaterial
             }
             orig(self);
+            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                self.UseTexturedOcclusion = false;
+            }
         }*/
     }
 }

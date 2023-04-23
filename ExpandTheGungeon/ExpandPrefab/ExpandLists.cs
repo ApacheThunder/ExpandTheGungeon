@@ -11,6 +11,36 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<GameObject> CompanionItems = new List<GameObject>();
         public static Dictionary<string, List<string>> SpriteCollections;
 
+        public static readonly List<string> EXGungeoneerMimicCollection = new List<string>() {
+            "PlayerMimicMirror_Base",
+            "PlayerMimicMirror_Broken",
+            "PlayerMimicMirror_MimicCrack_01",
+            "PlayerMimicMirror_MimicCrack_02",
+            "PlayerMimicMirror_MimicCrack_03",
+            "PlayerMimicMirror_MimicCrack_04",
+            "PlayerMimicMirror_MimicCrack_05",
+            "PlayerMimicMirror_MimicFadeIn_01",
+            "PlayerMimicMirror_MimicFadeIn_02",
+            "PlayerMimicMirror_MimicFadeIn_03",
+            "PlayerMimicMirror_MimicFadeIn_04",
+            "PlayerMimicMirror_MimicFadeIn_05",
+            "PlayerMimicMirror_MimicFadeIn_06",
+            "PlayerMimicMirror_MimicFadeIn_07",
+            "PlayerMimicMirror_MimicFadeIn_08",
+            "PlayerMimicMirror_MimicFadeIn_09",
+            "PlayerMimicMirror_MimicFadeIn_10",
+            "PlayerMimicMirror_ShatterDebris_01",
+            "PlayerMimicMirror_ShatterDebris_02",
+            "PlayerMimicMirror_ShatterDebris_03",
+            "PlayerMimicMirror_ShatterDebris_04",
+            "PlayerMimicMirror_ShatterDebris_05",
+            "PlayerMimicMirror_ShatterDebris_06",
+            "PlayerMimicMirror_ShatterDebris_07",
+            "PlayerMimicMirror_ShatterDebris_08",
+            "PlayerMimicMirror_ShatterDebris_09",
+            "PlayerMimicMirror_ShatterDebris_10"
+        };
+
         public static readonly List<string> EXFoyerCollection = new List<string> {
             "casino_hub_floor_001",
             "casino_hub_backwall_001",

@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.7";
+        public const string VERSION = "2.9.8";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -32,10 +32,7 @@ namespace ExpandTheGungeon {
         public static bool ItemAPISetup = false;
         public static bool LogoEnabled = false;
         public static bool ListsCleared = false;
-
-        public static string ExceptionText;
-        public static string ExceptionText2;
-
+        
         public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         public const string ModAssetBundleName = "ExpandSharedAuto";
         public const string ModSpriteAssetBundleName = "ExpandSpritesBase";
@@ -43,10 +40,10 @@ namespace ExpandTheGungeon {
         public const string ConsoleCommandName = "expand";
 
         public static AdvancedStringDB Strings;
-
-        private static List<string> itemList;
+        public static List<string> ExceptionText;
         
-        private enum WaitType { ShotgunSecret, LanguageFix, DebugFlow };
+        private static GameObject m_FoyerCheckerOBJ;
+        private static List<string> itemList;
 
         private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
@@ -65,19 +62,17 @@ namespace ExpandTheGungeon {
             return true;
         }
 
-        private static GameObject m_FoyerCheckerOBJ;
-
         public void Start() {
-            ExceptionText = string.Empty;
-            ExceptionText2 = string.Empty;
-
+            
             FilePath = this.FolderPath();
             ZipFilePath = this.FolderPath();
             
             ResourcesPath = ETGMod.ResourcesDirectory;
 
-            try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText2 = ex.ToString(); }
-           
+            ExceptionText = new List<string>();
+
+            try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText.Add(ex.ToString()); }
+            
             itemList = new List<string>() {
                 "Baby Good Hammer",
                 "Corruption Bomb",
@@ -106,9 +101,7 @@ namespace ExpandTheGungeon {
                 "Portable Ship"
             };
             
-            ExpandAssets.InitCustomAssetBundles(ModName);
-
-            if (!string.IsNullOrEmpty(ExceptionText)) { return; }
+            ExpandAssets.InitCustomAssetBundles(ModName);            
 
             if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
             
@@ -116,7 +109,12 @@ namespace ExpandTheGungeon {
         }
 
 
-        public void GMStart(GameManager gameManager) {            
+        public void GMStart(GameManager gameManager) {
+            if (ExceptionText.Count > 0) {
+                foreach (string text in ExceptionText) { ETGModConsole.Log(text); }
+                return;
+            }
+
             try {
                 Strings = new AdvancedStringDB();
 
@@ -130,18 +128,11 @@ namespace ExpandTheGungeon {
                 }
                 gameManager.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             } catch (Exception ex) {
-                // ETGModConsole can't be called by anything that occurs in Init(), so write message to static strinng and check it later.
-                ExceptionText = "[ExpandTheGungeon] ERROR: Exception occured while installing hooks!";
+                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
                 Debug.LogException(ex);
                 return;
             }
-
-            if (!string.IsNullOrEmpty(ExceptionText) | !string.IsNullOrEmpty(ExceptionText2)) {
-                if (!string.IsNullOrEmpty(ExceptionText)) { ETGModConsole.Log(ExceptionText); }
-                if (!string.IsNullOrEmpty(ExceptionText2)) { ETGModConsole.Log(ExceptionText2); }
-                return;
-            }
-
+            
             try {
                 ExpandSharedHooks.InstallRequiredHooks();
                 ExpandDungeonMusicAPI.InitHooks();
@@ -151,6 +142,7 @@ namespace ExpandTheGungeon {
                 Debug.LogException(ex);
                 return;
             }
+
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
@@ -178,21 +170,19 @@ namespace ExpandTheGungeon {
                 ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
                 // Init Custom DungeonFlow(s)
                 ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
-                // Post Init
                 // Things that need existing stuff created first have code run here
                 BootlegGuns.PostInit();
                 ClownFriend.PostInit();
                 // Dungeon Prefabs
-                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);                
-                                
+                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
                 Debug.LogException(ex);
                 expandSharedAssets1 = null;
                 sharedAssets = null;
                 sharedAssets2 = null;
-                braveResources = null;
                 enemiesBase = null;
+                braveResources = null;
                 return;
             }
             
@@ -203,12 +193,21 @@ namespace ExpandTheGungeon {
 
             CreateFoyerController();
 
+            ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
+            ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
+            ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
+            ETGModConsole.DungeonDictionary.Add("office", "tt_office");
+            ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
+            ETGModConsole.DungeonDictionary.Add("space", "tt_space");
+            ETGModConsole.DungeonDictionary.Add("west", "tt_west");
+            ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
+
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
             sharedAssets = null;
             sharedAssets2 = null;
-            braveResources = null;
             enemiesBase = null;
+            braveResources = null;
         }
         
         public static void CreateFoyerController() {
@@ -274,7 +273,71 @@ namespace ExpandTheGungeon {
             if (ExpandSettings.EnableLogo && ((dfTextureSprite)self.TitleCard).Texture.name != ModLogo.name) {
                 ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
                 LogoEnabled = true;
+                SetupLabel(new Vector3(564f, -28, 0), self.TitleCard);
             }
+        }
+
+        private void SetupLabel(Vector3 UIPosition, dfControl logoControl) {
+            dfTiledSprite referenceLabel = ExpandAssets.LoadOfficialAsset<GameObject>("Weapon Skull Ammo FG", ExpandAssets.AssetSource.SharedAuto1).GetComponent<dfTiledSprite>();
+            dfFont referenceFont = ExpandAssets.LoadOfficialAsset<GameObject>("04b03_df40", ExpandAssets.AssetSource.SharedAuto1).GetComponent<dfFont>();
+            dfLabel m_NewLabel = logoControl.AddControl<dfLabel>();
+            m_NewLabel.name = "EXVersionLabel";
+            m_NewLabel.Atlas = referenceLabel.Atlas;
+            m_NewLabel.Font = referenceFont;
+            m_NewLabel.Anchor = dfAnchorStyle.Right;
+            m_NewLabel.IsEnabled = true;
+            m_NewLabel.IsVisible = true;
+            m_NewLabel.IsInteractive = true;
+            m_NewLabel.Tooltip = string.Empty;
+            m_NewLabel.Pivot = dfPivotPoint.BottomRight;
+            m_NewLabel.zindex = 29;
+            m_NewLabel.Opacity = 1f;
+            m_NewLabel.Color = Color.black;
+            m_NewLabel.DisabledColor = Color.gray;
+            m_NewLabel.Size = new Vector2(64, 16);
+            m_NewLabel.MinimumSize = m_NewLabel.Size;
+            m_NewLabel.MaximumSize = new Vector2(74, 16);
+            m_NewLabel.ClipChildren = false;
+            m_NewLabel.InverseClipChildren = false;
+            m_NewLabel.TabIndex = -1;
+            m_NewLabel.CanFocus = false;
+            m_NewLabel.AutoFocus = false;
+            m_NewLabel.IsLocalized = false;
+            m_NewLabel.HotZoneScale = Vector2.one;
+            m_NewLabel.AllowSignalEvents = true;
+            m_NewLabel.PrecludeUpdateCycle = false;
+            m_NewLabel.PerCharacterOffset = Vector2.zero;
+            m_NewLabel.PreventFontChanges = true;
+            m_NewLabel.BackgroundSprite = string.Empty;
+            m_NewLabel.BackgroundColor = Color.white;
+            m_NewLabel.AutoSize = true;
+            m_NewLabel.AutoHeight = false;
+            m_NewLabel.WordWrap = false;
+            m_NewLabel.Text = "v" + VERSION;
+            m_NewLabel.BottomColor = Color.white;
+            m_NewLabel.TextAlignment = TextAlignment.Right;
+            m_NewLabel.VerticalAlignment = dfVerticalAlignment.Top;
+            m_NewLabel.TextScale = 0.5f;
+            m_NewLabel.TextScaleMode = dfTextScaleMode.None;
+            m_NewLabel.CharacterSpacing = 0;
+            m_NewLabel.ColorizeSymbols = false;
+            m_NewLabel.ProcessMarkup = false;
+            m_NewLabel.Outline = false;
+            m_NewLabel.OutlineSize = 0;
+            m_NewLabel.ShowGradient = false;
+            m_NewLabel.OutlineColor = Color.white;
+            m_NewLabel.Shadow = false;
+            m_NewLabel.ShadowColor = Color.gray;
+            m_NewLabel.ShadowOffset = new Vector2(1, -1);
+            m_NewLabel.Padding = new RectOffset() { left = 0, right = 0, top = 0, bottom = 0 };
+            m_NewLabel.TabSize = 48;
+            m_NewLabel.MaintainJapaneseFont = false;
+            m_NewLabel.MaintainKoreanFont = false;
+            m_NewLabel.MaintainRussianFont = false;
+            m_NewLabel.Position = UIPosition;
+
+            referenceFont = null;
+            referenceLabel = null;
         }
 
         private void InitConsoleCommands(string MainCommandName) {
@@ -292,10 +355,11 @@ namespace ExpandTheGungeon {
         /*private void ExpandTestCommand(string[] consoleText) {
             // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
             // Tools.DumpSpecificSpriteCollection(ExpandWesternBrosPrefabBuilder.Collection);
-            GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0, 2, 0)), Quaternion.identity);
+            // GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0, 2, 0)), Quaternion.identity);
 
-            GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
-            
+            // GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
+
+            Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
         }*/
 
         private void ExpandConsoleInfo(string[] consoleText) {
@@ -482,7 +546,8 @@ namespace ExpandTheGungeon {
                     ["EXBalloonCollection"] = ExpandLists.EXBalloonCollection,
                     ["EXItemCollection"] = ExpandLists.EXItemCollection,
                     ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
-                    ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection
+                    ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection,
+                    ["GungeoneerMimicCollection"] = ExpandLists.EXGungeoneerMimicCollection
                 }; 
             }
             int X = 2048;

@@ -67,14 +67,14 @@ namespace ExpandTheGungeon {
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
                     Debug.Log(ErrorMessage);
-                    ExpandTheGungeon.ExceptionText = ErrorMessage;
+                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
                     return;
                 }
             } catch (Exception ex) {
                 string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading custom asset bundles! Possible GUID conflict with other custom AssetBundles?";
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
-                ExpandTheGungeon.ExceptionText = ErrorMessage;
+                ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
                 return;
             }
         }

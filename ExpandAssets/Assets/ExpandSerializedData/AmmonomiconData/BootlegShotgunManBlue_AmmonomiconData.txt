@@ -5,8 +5,8 @@
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
     "TabSprite": "shotgunman_blue_move_down_001",
-    "FullArtSprite": "bootlegshotgunman_ammonomicon",
+    "FullArtSprite": "bootlegshotgunmanblue_ammonomicon",
     "EnemyName": "Bootleg Shotgun Kin (Blue)",
-    "smallDescription": "Sprite Right",
-    "bigDescription": "I can take this no longer! This... this is an infection!\n\nThe Gungeon itself is infected with something, with this plague, that is devouring it, remaking it! Even my own guns have degenerated into one of these squared, resolutionless things...\n\nI fear if I remain in this place any longer, I will myself become like these unfortunate gundead!\n\nViktor Nogov"
+    "smallDescription": "Out and Dated",
+    "bigDescription": "My very journal! My very hands... I was not fast enough, I could not escape this accursed chamber...!\n\nIt is doomed, there is no more hope for it. May the hidden masters of the Gungeon fire it before it is too late... before the corruption escapes it, before it devours all else.\n\nMy Past... I have failed you.\n\nViktor Nogov"
 }

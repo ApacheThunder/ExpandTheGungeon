@@ -5,7 +5,7 @@
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
     "TabSprite": "shotgunman_red_move_down_001",
-    "FullArtSprite": "bootlegshotgunman_ammonomicon",
+    "FullArtSprite": "bootlegshotgunmanred_ammonomicon",
     "EnemyName": "Bootleg Shotgun Kin (Red)",
     "smallDescription": "Sprite Right",
     "bigDescription": "I can take this no longer! This... this is an infection!\n\nThe Gungeon itself is infected with something, with this plague, that is devouring it, remaking it! Even my own guns have degenerated into one of these squared, resolutionless things...\n\nI fear if I remain in this place any longer, I will myself become like these unfortunate gundead!\n\nViktor Nogov"

@@ -19,6 +19,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static EnemyEntryData BootlegBullat;
         public static EnemyEntryData BootlegBulletKin;
+        public static EnemyEntryData BootlegBandanaBulletKin;
         public static EnemyEntryData BootlegShotgunKinRed;
         public static EnemyEntryData BootlegShotgunKinBlue;
         public static EnemyEntryData HotShotBulletKin;
@@ -32,11 +33,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static EnemyEntryData WestBrosAngel;
         public static EnemyEntryData WestBrosNome;
         public static EnemyEntryData WestBrosTuc;
+        public static EnemyEntryData Doppelgunner;
 
 
         public static void Init(AssetBundle expandSharedAssets1) {
             BootlegBullat = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBullat_AmmonomiconData").text);
             BootlegBulletKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBulletKin_AmmonomiconData").text);
+            BootlegBandanaBulletKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBandanaBulletKin_AmmonomiconData").text);
             BootlegShotgunKinRed = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegShotgunManRed_AmmonomiconData").text);
             BootlegShotgunKinBlue = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegShotgunManBlue_AmmonomiconData").text);
             HotShotBulletKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("HotShotBulletKin_AmmonomiconData").text);
@@ -50,6 +53,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             WestBrosAngel = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosAngel_AmmonomiconData").text);
             WestBrosNome = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosNome_AmmonomiconData").text);
             WestBrosTuc = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosTuc_AmmonomiconData").text);
+            Doppelgunner = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Doppelgunner_AmmonomiconData").text);
         }
     }
 }

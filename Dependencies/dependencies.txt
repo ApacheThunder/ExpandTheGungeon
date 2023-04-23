@@ -1,11 +1,8 @@
 The following files need to be present here. Be sure Assembly-CSharp.dll is from a copy of the game that hasn't had MTG installed.
 
-Assembly-CSharp.Base.mm.dll
-Assembly-CSharp.dll
-Assembly-CSharp-firstpass.dll
-MonoMod.RuntimeDetour.dll
-MonoMod.Utils.dll
-PlayMaker.dll
+ModTheGungeonAPI.dll
+0Harmony.dll
+BepInEx.dll
 UnityEngine.CoreModule.Base.mm.dll
 UnityEngine.CoreModule.dll
 UnityEngine.dll
@@ -15,6 +12,12 @@ UnityEngine.JSONSerializeModule.dll
 UnityEngine.ParticleSystemModule.dll
 UnityEngine.Physics2DModule.dll
 UnityEngine.PhysicsModule.dll
+UnityEngine.TextRenderingModule
+Assembly-CSharp.dll
+Assembly-CSharp-firstpass.dll
+MonoMod.RuntimeDetour.dll
+MonoMod.Utils.dll
+PlayMaker.dll
 Ionic.Zip.dll
 
 

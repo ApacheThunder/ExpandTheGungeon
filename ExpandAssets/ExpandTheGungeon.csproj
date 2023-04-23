@@ -102,6 +102,7 @@
      <None Include="Assets\ExpandSerializedData\AmmonomiconData\WestBrosTuc_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Phobos\ENV_Tileset_Phobos_MaterialTable.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Belly\ENV_Tileset_Belly.txt" />
+     <None Include="Assets\ExpandSerializedData\AmmonomiconData\BootlegBandanaBulletKin_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\RedInterior\exteriorFacadeBorderGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Phobos\Phobos_Gold\pitLayoutGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Woods\roomCeilingBorderGrid.txt" />
@@ -110,7 +111,6 @@
      <None Include="Assets\ExpandSerializedData\SpriteCollections\CronenbergTallCollection.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Bamboo\outerCeilingBorderGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\RedInterior\roomCeilingBorderGrid.txt" />
-     <None Include="Assets\ExpandSerializedData\AmmonomiconData\Dopplegunner_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Bamboo\facewallGrids_0.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\Canyon\roomCeilingBorderGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\Canyon\carpetGrid1.txt" />
@@ -171,6 +171,7 @@
      <None Include="Assets\ExpandPrefabs\Shaders\ExpandVHSPostProcessEffect.shader" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Bamboo\facewallGrids_2_grid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Woods\facewallGrids_1.txt" />
+     <None Include="Assets\ExpandSerializedData\AmmonomiconData\Doppelgunner_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\EXJungleCollection.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Bamboo\pitLayoutGrid.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\ClownkinCollection.txt" />
