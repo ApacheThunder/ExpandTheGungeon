@@ -1,5 +1,5 @@
 {
-    "ForcedPositionInAmmonomicon": 78,
+    "ForcedPositionInAmmonomicon": 75,
     "IsNormalEnemy": true,
     "IsInBossTab": false,
 	"TabSpriteIsTexture": false,

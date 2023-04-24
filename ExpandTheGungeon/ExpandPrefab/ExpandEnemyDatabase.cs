@@ -142,7 +142,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ClownkinWig;
 
         public static Texture2D[] RatGrenadeTextures;
-        
+
+        private static EnemyDatabaseEntry ChameleonEntry;
+        private static AIActor Chameleon;
+
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
@@ -209,9 +212,47 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildParasiteBossPrefab(out MonsterParasitePrefab);
             BuildJungleBossPrefab(out com4nd0BossPrefab);
 
-            // Add some existing enemies to Ammonomicon
-            AddEnemyToAmmonomicon(GetOfficialEnemyByGuid("c2f902b7cbe745efb3db4399927eab34"), "c2f902b7cbe745efb3db4399927eab34", ExpandAmmonomiconDatabase.Skusketling);
-            AddEnemyToAmmonomicon(GetOfficialEnemyByGuid("80ab6cd15bfc46668a8844b2975c6c26"), "80ab6cd15bfc46668a8844b2975c6c26", ExpandAmmonomiconDatabase.Chameleon);
+            UpdateAmmonoiconDatabase(expandSharedAssets1);
+        }
+
+        public static void UpdateAmmonoiconDatabase(AssetBundle expandSharedAssets1) {
+            string chameleonName = EnemyDatabase.GetOrLoadByGuid("80ab6cd15bfc46668a8844b2975c6c26").ActorName;
+            Chameleon = GetOfficialEnemyByGuid("80ab6cd15bfc46668a8844b2975c6c26");
+            ChameleonEntry = EnemyDatabase.GetEntry("80ab6cd15bfc46668a8844b2975c6c26");
+            ChameleonEntry.ForcedPositionInAmmonomicon = ExpandAmmonomiconDatabase.Chameleon.ForcedPositionInAmmonomicon;
+            EncounterDatabaseEntry ChameleonEncounter = EncounterDatabase.GetEntry("db3272f41ce04413a6ead84368291ead");
+
+            ChameleonEncounter.journalData.AmmonomiconSprite = ExpandAmmonomiconDatabase.Chameleon.TabSprite;
+            ChameleonEncounter.journalData.enemyPortraitSprite = expandSharedAssets1.LoadAsset<Texture2D>(ExpandAmmonomiconDatabase.Chameleon.FullArtSprite);
+            ChameleonEncounter.journalData.PrimaryDisplayName = "#THE_" + chameleonName;
+            ChameleonEncounter.journalData.NotificationPanelDescription = "#THE_" + chameleonName + "_SHORTDESC";
+            ChameleonEncounter.journalData.AmmonomiconFullEntry = "#THE_" + chameleonName + "_LONGDESC";
+            ChameleonEncounter.journalData.SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE;
+            ChameleonEncounter.journalData.SuppressKnownState = false;
+            ChameleonEncounter.journalData.SuppressInAmmonomicon = false;
+
+            if (!Chameleon.gameObject.GetComponent<EncounterTrackable>()) {
+                Chameleon.gameObject.AddComponent<EncounterTrackable>();
+                Chameleon.encounterTrackable.journalData = new JournalEntry();
+                Chameleon.encounterTrackable.EncounterGuid = Chameleon.EnemyGuid;
+                Chameleon.encounterTrackable.SuppressInInventory = false;
+                Chameleon.encounterTrackable.DoNotificationOnEncounter = true;
+            }
+
+            Chameleon.encounterTrackable.journalData.AmmonomiconSprite = ExpandAmmonomiconDatabase.Chameleon.TabSprite;
+            Chameleon.encounterTrackable.journalData.enemyPortraitSprite = expandSharedAssets1.LoadAsset<Texture2D>(ExpandAmmonomiconDatabase.Chameleon.FullArtSprite);
+            Chameleon.encounterTrackable.journalData.PrimaryDisplayName = "#THE_" + chameleonName;
+            Chameleon.encounterTrackable.journalData.NotificationPanelDescription = "#THE_" + chameleonName + "_SHORTDESC";
+            Chameleon.encounterTrackable.journalData.AmmonomiconFullEntry = "#THE_" + chameleonName + "_LONGDESC";
+            Chameleon.encounterTrackable.journalData.SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE;
+            Chameleon.encounterTrackable.journalData.SuppressKnownState = false;
+            Chameleon.encounterTrackable.journalData.SuppressInAmmonomicon = false;
+            
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName, ExpandAmmonomiconDatabase.Chameleon.EnemyName);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName + "_SHORTDESC", ExpandAmmonomiconDatabase.Chameleon.smallDescription);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName + "_LONGDESC", ExpandAmmonomiconDatabase.Chameleon.bigDescription);
+
+            SpriteBuilder.AddToAmmonomicon(Chameleon.sprite.Collection.GetSpriteDefinition(ExpandAmmonomiconDatabase.Chameleon.TabSprite));
         }
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
@@ -365,84 +406,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (AddToMTGSpawnPool && !string.IsNullOrEmpty(m_EnemyNameCode)) {
                 if (!Game.Enemies.ContainsID(m_EnemyNameCode)) { Game.Enemies.Add(m_EnemyNameCode, targetEnemy); }
             }
-        }
-
-        public static void AddEnemyToAmmonomicon(AIActor targetEnemy, string EnemyGUID, ExpandAmmonomiconDatabase.EnemyEntryData enemyEntryData) {
-
-            if (!targetEnemy) { return; }
-            
-            string m_EnemyNameCode = string.Empty;
-
-            if (!string.IsNullOrEmpty(targetEnemy.ActorName)) {
-                m_EnemyNameCode = targetEnemy.ActorName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower();
-            } else {
-                return;
-            }
-
-            Texture2D FullArtSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite);
-            if (!FullArtSprite) { return; }
-
-            if (enemyEntryData.TabSpriteIsTexture) {
-                SpriteBuilder.AddToAmmonomicon(ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite));
-            } else if (targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite) != null) {
-                SpriteBuilder.AddToAmmonomicon(targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite));
-            }
-            
-            if (targetEnemy.gameObject.GetComponent<EncounterTrackable>()) {
-                UnityEngine.Object.Destroy(targetEnemy.gameObject.GetComponent<EncounterTrackable>());
-            }
-
-            EncounterTrackable TargetEncounterable = targetEnemy.gameObject.AddComponent<EncounterTrackable>();
-            TargetEncounterable.EncounterGuid = EnemyGUID;
-            TargetEncounterable.prerequisites = new DungeonPrerequisite[0];
-            TargetEncounterable.ProxyEncounterGuid = string.Empty;
-            TargetEncounterable.journalData = new JournalEntry() {
-                AmmonomiconSprite = enemyEntryData.TabSprite,
-                enemyPortraitSprite = FullArtSprite,
-                PrimaryDisplayName = "#THE_" + m_EnemyNameCode,
-                NotificationPanelDescription = "#THE_" + m_EnemyNameCode + "_SHORTDESC",
-                AmmonomiconFullEntry = "#THE_" + m_EnemyNameCode + "_LONGDESC",
-                SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE,
-                SuppressKnownState = false,
-                SuppressInAmmonomicon = false,
-                IsEnemy = true,
-                DisplayOnLoadingScreen = false,
-                RequiresLightBackgroundInLoadingScreen = false
-            };
-
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_LONGDESC", enemyEntryData.bigDescription);
-
-            EnemyDatabaseEntry existingEntry = EnemyDatabase.GetEntry(EnemyGUID);
-
-            if (existingEntry != null) { EnemyDatabase.Instance.Entries.Remove(existingEntry); }
-
-            existingEntry = new EnemyDatabaseEntry {
-                path = EnemyGUID,
-                encounterGuid = EnemyGUID,
-                difficulty = enemyEntryData.EnemyDifficulty,
-                myGuid = EnemyGUID,
-                placeableWidth = 2,
-                placeableHeight = 2,
-                isNormalEnemy = enemyEntryData.IsNormalEnemy,
-                ForcedPositionInAmmonomicon = enemyEntryData.ForcedPositionInAmmonomicon,
-                isInBossTab = enemyEntryData.IsInBossTab,
-            };
-
-            EnemyDatabase.Instance.Entries.Add(existingEntry);
-
-            if (EncounterDatabase.GetEntry(targetEnemy.encounterTrackable.EncounterGuid) != null) {
-                EncounterDatabase.Instance.Entries.Remove(EncounterDatabase.GetEntry(targetEnemy.encounterTrackable.EncounterGuid));
-            }
-
-            EncounterDatabase.Instance.Entries.Add(
-                new EncounterDatabaseEntry(TargetEncounterable) {
-                    path = EnemyGUID,
-                    myGuid = EnemyGUID,
-                    // journalData = TargetEncounterable.journalData
-                }
-            );
         }
 
         public static void BuildHotShotCultistPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {

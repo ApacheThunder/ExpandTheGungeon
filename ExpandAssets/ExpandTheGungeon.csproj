@@ -117,7 +117,6 @@
      <None Include="Assets\ExpandSerializedData\SpriteCollections\EXBalloonCollection.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\EXTrapCollection.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Nakatomi\Nakatomi_Blue\roomFloorBorderGrid.txt" />
-     <None Include="Assets\ExpandSerializedData\AmmonomiconData\Skusketling_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Belly\pitLayoutGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\RedInterior\carpetGrid1.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\BootlegBullatCollection.txt" />

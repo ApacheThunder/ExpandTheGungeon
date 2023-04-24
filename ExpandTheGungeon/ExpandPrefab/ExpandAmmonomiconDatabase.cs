@@ -29,7 +29,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static EnemyEntryData CronenbergAngry;
         public static EnemyEntryData ClownKin;
         public static EnemyEntryData Chameleon;
-        public static EnemyEntryData Skusketling;
         public static EnemyEntryData WestBrosAngel;
         public static EnemyEntryData WestBrosNome;
         public static EnemyEntryData WestBrosTuc;
@@ -49,7 +48,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CronenbergAngry = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("CronenbergAngry_AmmonomiconData").text);
             ClownKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("ClownKin_AmmonomiconData").text);
             Chameleon = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Chameleon_AmmonomiconData").text);
-            Skusketling = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Skusketling_AmmonomiconData").text);
             WestBrosAngel = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosAngel_AmmonomiconData").text);
             WestBrosNome = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosNome_AmmonomiconData").text);
             WestBrosTuc = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosTuc_AmmonomiconData").text);

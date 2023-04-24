@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 83329940
+CRC: 2327393800
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 68281908f6df989accc4cfe64367e5d6
+    Hash: c7d5677d8063d9fbf0a0e8ed3fa179a0
   TypeTreeHash:
     serializedVersion: 2
     Hash: e07db27c83368901a660c5a67ad09cfb
@@ -88,7 +88,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_1.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter12.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_GunFairy.bytes
-- Assets/ExpandTextures/AmmonomiconTextures/skusketling_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals9.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_Weird1.bytes
 - Assets/ExpandPrefabs/Items/Portable Elevator.prefab
@@ -456,7 +455,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Trap_Expand_Turtlemelon.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/BabyGoodHammerCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/MH_Expand_Achievement_Challenger.bytes
-- Assets/ExpandSerializedData/AmmonomiconData/Skusketling_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera4.bytes
 - Assets/ExpandPrefabs/Foyer/EXArcadeGame_Prop.prefab
 - Assets/ExpandPrefabs/Misc/EX_ParadropAnchor.prefab
