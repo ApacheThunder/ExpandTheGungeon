@@ -91,7 +91,7 @@ namespace ExpandTheGungeon {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid) && enemy.GetAbsoluteParentRoom() != null && !string.IsNullOrEmpty(enemy.GetAbsoluteParentRoom().GetRoomName()) && enemy.GetAbsoluteParentRoom().GetRoomName().ToLower().StartsWith("corrupted")) {
                                     if (Random.value <= 0.6f) {
                                         ExpandShaders.Instance.BecomeGlitched(enemy, 0.04f, 0.07f, 0.05f, 0.07f, 0.05f);
-                                        ExpandEnemyCorruptor.GlitchExistingEnemy(enemy);
+                                        ExpandEnemyCorruptor.CorruptExistingEnemy(enemy);
                                     }
                                     if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
                                         enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
@@ -124,7 +124,7 @@ namespace ExpandTheGungeon {
                                 if (!ExpandLists.DontGlitchMeList.Contains(enemy.EnemyGuid)) {
                                     if (Random.value <= 0.6f) {
                                         ExpandShaders.Instance.BecomeGlitched(enemy, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
-                                        ExpandEnemyCorruptor.GlitchExistingEnemy(enemy);
+                                        ExpandEnemyCorruptor.CorruptExistingEnemy(enemy);
                                     }
                                     if (Random.value <= 0.25f && !ExpandLists.blobsAndCritters.Contains(enemy.EnemyGuid) && enemy.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
                                         enemy.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
@@ -149,9 +149,37 @@ namespace ExpandTheGungeon {
                         }
                     }
                     
-                    ExpandPlaceGlitchedEnemies.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
+                    ExpandPlaceCorruptedEnemies.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
                     // Destroy(m_GlitchEnemyRandomizer);
                     MaybeSetupGlitchEnemyStun(dungeon);
+
+                    GameObject[] m_GameObjects = Object.FindObjectsOfType<GameObject>();
+
+                    List<GameObject> m_ExplodyBoyz = new List<GameObject>();
+
+                    if (m_GameObjects != null && m_GameObjects.Length > 0) {
+                        foreach (GameObject gameObject in m_GameObjects) {
+                            if (!string.IsNullOrEmpty(gameObject.name) && (gameObject.name.ToLower().StartsWith("red barrel")) &&
+                                gameObject.transform.childCount > 0 && gameObject.transform.Find("Red Barrel") != null && Random.value <= 0.45f)
+                            {
+                                m_ExplodyBoyz.Add(gameObject);
+                            }
+                        }
+                        if (m_ExplodyBoyz.Count > 0) {
+                            for (int i = 0; i < m_ExplodyBoyz.Count; i++) {
+                                Vector2 explodyPosition = (m_ExplodyBoyz[i].transform.PositionVector2() + new Vector2(0.5f, 0.5f));
+                                RoomHandler currentRoom = explodyPosition.GetAbsoluteRoom();
+                                Object.Destroy(m_ExplodyBoyz[i]);
+                                AIActor explodyboy = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(ExpandEnemyDatabase.ExplodyBoyGUID), explodyPosition, currentRoom, true);
+                                float RandomIntervalFloat = Random.Range(0.02f, 0.04f);
+                                float RandomDispFloat = Random.Range(0.06f, 0.08f);
+                                float RandomDispIntensityFloat = Random.Range(0.07f, 0.1f);
+                                float RandomColorProbFloat = Random.Range(0.035f, 0.1f);
+                                float RandomColorIntensityFloat = Random.Range(0.05f, 0.1f);
+                                ExpandShaders.Instance.BecomeGlitched(explodyboy, RandomIntervalFloat, RandomDispFloat, RandomDispIntensityFloat, RandomColorProbFloat, RandomColorIntensityFloat);
+                            }
+                        }
+                    }
                 }
             }
 

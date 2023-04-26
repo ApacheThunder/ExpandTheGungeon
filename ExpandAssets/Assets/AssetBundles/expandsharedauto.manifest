@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2327393800
+CRC: 3332585724
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c7d5677d8063d9fbf0a0e8ed3fa179a0
+    Hash: 6851e7497663bc1701052f829a4fe78f
   TypeTreeHash:
     serializedVersion: 2
     Hash: e07db27c83368901a660c5a67ad09cfb
@@ -364,7 +364,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Batsmall.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Pit_Passage_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Square2.bytes
-- Assets/ExpandPrefabs/AIActors/Expand Gungeoneer Mimic Boss Placable.prefab
 - Assets/ExpandSerializedData/TilesetData/Belly/roomFloorBorderGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter6.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXPortableElevatorCollection.prefab
@@ -691,6 +690,7 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/West/WoodInterior/facadeTopGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_SniperTotemBuff.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXBalloonCollection.prefab
+- Assets/ExpandSerializedData/AmmonomiconData/Skusketling_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Jungle_RewardRoom.bytes
 - Assets/ExpandPrefabs/Items/Projectiles/WestBrosGoldenRevolverProjectile.prefab
 - Assets/ExpandRooms/RoomFactoryData/MHF_Expand_Achievement_Great_Hall.bytes
@@ -1248,6 +1248,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Tabled1.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BootlegShotgunManBlue_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/K_Expand_Achievement_Biggest_Wallet.bytes
+- Assets/ExpandTextures/AmmonomiconTextures/skusketling_ammonomicon.png
 - Assets/ExpandPrefabs/Foyer/EXCasino_HatRack.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular17.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Thin1.bytes

@@ -4,9 +4,13 @@
     "IsInBossTab": false,
     "TabSpriteIsTexture": true,
 	"EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "bootlegbullat_icon",
     "FullArtSprite": "bootlegbullat_ammonomicon",
     "EnemyName": "Bootleg Bullat",
     "smallDescription": "Pixel Rated",
-    "bigDescription": "I have stumbled upon a place that defies all logic known to me.\nIt seems barely as though a real place! Everything is flat, as though every furniture, torch or detail were painted upon the floors and walls...\n\nViktor Nogov"
+    "bigDescription": "I have stumbled upon a place that defies all logic known to me.\nIt seems barely as though a real place! Everything is flat, as though every furniture, torch or detail were painted upon the floors and walls...\n\nViktor Nogov",
+	"encounterGUID": "fba1d5283e3a440e854688d1bec297d0",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Bootleg Bullat.prefab"
 }

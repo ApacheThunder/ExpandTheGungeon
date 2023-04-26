@@ -4,9 +4,13 @@
     "IsInBossTab": true,
 	"TabSpriteIsTexture": true,
     "EnemyDifficulty": 3,
+	"placeableWidth": 2,
+	"placeableHeight": 2,
     "TabSprite": "boss_icon_Western_Bros_Angel",
     "FullArtSprite": "boss_photo_Western_Bros_Angel",
     "EnemyName": "West Brothers (Angel)",
     "smallDescription": "Follow the job through",
-    "bigDescription": "A cruel and ruthless mercenary, willing to stop at nothing in his search for profit.\n\nFinding great pleasure in hunting his prey, his search for buried gold offers but another opportunity for the spilling of blood; if for a profit margin that could never be ignored."
+    "bigDescription": "A cruel and ruthless mercenary, willing to stop at nothing in his search for profit.\n\nFinding great pleasure in hunting his prey, his search for buried gold offers but another opportunity for the spilling of blood; if for a profit margin that could never be ignored.",
+	"encounterGUID": "bc6fbbab1f5747849c2a79bde70f09a6",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Angel.prefab"
 }

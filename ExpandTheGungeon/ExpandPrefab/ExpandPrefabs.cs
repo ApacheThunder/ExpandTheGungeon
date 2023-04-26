@@ -3370,7 +3370,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             ExpandJungleTree_MediumBreakable.delayDamageVfx = false;
             ExpandJungleTree_MediumBreakable.SpawnItemOnBreak = false;
-            ExpandJungleTree_MediumBreakable.HandlePathBlocking = false;
+            ExpandJungleTree_MediumBreakable.HandlePathBlocking = true;
 
 
             MajorBreakable ExpandJungleTree_SmallBreakable = ExpandJungleTree_Small.AddComponent<MajorBreakable>();
@@ -3466,7 +3466,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             ExpandJungleTree_SmallBreakable.delayDamageVfx = false;
             ExpandJungleTree_SmallBreakable.SpawnItemOnBreak = false;
-            ExpandJungleTree_SmallBreakable.HandlePathBlocking = false;
+            ExpandJungleTree_SmallBreakable.HandlePathBlocking = true;
 
 
             Door_Horizontal_Belly = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);
@@ -4257,7 +4257,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Cactus_A_Braakable.breakVfx = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
             Cactus_A_Braakable.delayDamageVfx = false;
             Cactus_A_Braakable.SpawnItemOnBreak = false;
-            Cactus_A_Braakable.HandlePathBlocking = false;
+            Cactus_A_Braakable.HandlePathBlocking = true;
 
 
 
@@ -4320,7 +4320,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Cactus_B_Braakable.breakVfx = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
             Cactus_B_Braakable.delayDamageVfx = false;
             Cactus_B_Braakable.SpawnItemOnBreak = false;
-            Cactus_B_Braakable.HandlePathBlocking = false;
+            Cactus_B_Braakable.HandlePathBlocking = true;
 
 
             CorruptionBombRewardPedestal = expandSharedAssets1.LoadAsset<GameObject>("EXReward_Pedestal_CorruptionBomb");

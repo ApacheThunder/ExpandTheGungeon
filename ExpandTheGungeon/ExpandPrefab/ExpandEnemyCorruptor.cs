@@ -213,7 +213,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public GameObject KillPillarsPrefab;
 
 
-        public static void GlitchExistingEnemy(AIActor aiActor, bool overrideGUIDCheck = false) { 
+        public static void CorruptExistingEnemy(AIActor aiActor, bool overrideGUIDCheck = false) { 
             if (string.IsNullOrEmpty(aiActor.EnemyGuid)) { return; }
             if (aiActor.GetActorName().ToLower().StartsWith("glitched")) { return; }
             if (aiActor.name.ToLower().StartsWith("glitched")) { return; }
@@ -235,7 +235,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 aiActor.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>();
             }
         }                
-        public static void StunGlitchedEnemiesInRoom(RoomHandler targetRoom, float StunDuration) {
+        public static void StunCorruptedEnemiesInRoom(RoomHandler targetRoom, float StunDuration) {
             List<AIActor> activeEnemies = targetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);
             if (activeEnemies == null | activeEnemies.Count == 0) { return; }
             for (int i = 0; i < activeEnemies.Count; i++) {
@@ -243,13 +243,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     // Vector2 vector = (!activeEnemies[i].specRigidbody) ? activeEnemies[i].sprite.WorldBottomLeft : activeEnemies[i].specRigidbody.UnitBottomLeft;
                     // Vector2 vector2 = (!activeEnemies[i].specRigidbody) ? activeEnemies[i].sprite.WorldTopRight : activeEnemies[i].specRigidbody.UnitTopRight;
                     if (activeEnemies[i].name.ToLower().StartsWith("glitched") | activeEnemies[i].GetActorName().ToLower().StartsWith("glitched")) {
-                        StunGlitchedEnemy(activeEnemies[i], StunDuration);
+                        StunCorruptedEnemy(activeEnemies[i], StunDuration);
                     }                    
                 }
             }
         }
         
-        protected static void StunGlitchedEnemy(AIActor target, float StunDuration) {
+        protected static void StunCorruptedEnemy(AIActor target, float StunDuration) {
             if (target && target.behaviorSpeculator) {
                 target.behaviorSpeculator.Stun(StunDuration, true);
             }

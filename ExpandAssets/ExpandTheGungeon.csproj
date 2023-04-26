@@ -147,6 +147,7 @@
      <None Include="Assets\ExpandPrefabs\Shaders\ExpandGlitchScreen.shader" />
      <None Include="Assets\ExpandSerializedData\AmmonomiconData\HotShotShotgunKin_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\West\WoodInterior\facadeTopGrid.txt" />
+     <None Include="Assets\ExpandSerializedData\AmmonomiconData\Skusketling_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Phobos\Phobos_Grey\roomCeilingBorderGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Nakatomi\ENV_Tileset_Nakatomi_MaterialTable.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\BootlegBulletManBandanaCollection.txt" />

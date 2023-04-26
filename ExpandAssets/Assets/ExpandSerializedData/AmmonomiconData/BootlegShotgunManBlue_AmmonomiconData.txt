@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 2,
     "TabSprite": "shotgunman_blue_move_down_001",
     "FullArtSprite": "bootlegshotgunmanblue_ammonomicon",
     "EnemyName": "Bootleg Shotgun Kin (Blue)",
     "smallDescription": "Out and Dated",
-    "bigDescription": "My very journal! My very hands... I was not fast enough, I could not escape this accursed chamber...!\n\nIt is doomed, there is no more hope for it. May the hidden masters of the Gungeon fire it before it is too late... before the corruption escapes it, before it devours all else.\n\nMy Past... I have failed you.\n\nViktor Nogov"
+    "bigDescription": "My very journal! My very hands... I was not fast enough, I could not escape this accursed chamber...!\n\nIt is doomed, there is no more hope for it. May the hidden masters of the Gungeon fire it before it is too late... before the corruption escapes it, before it devours all else.\n\nMy Past... I have failed you.\n\nViktor Nogov",
+	"encounterGUID": "1bd5372904de4f52ae0f09c63e79fba3",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Bootleg ShotgunMan Blue.prefab"
 }

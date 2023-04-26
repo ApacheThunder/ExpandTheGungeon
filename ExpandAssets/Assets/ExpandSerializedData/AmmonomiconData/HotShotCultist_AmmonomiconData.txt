@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": true,
     "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "hotshotcultist_icon",
     "FullArtSprite": "hotshotcultist_ammonomicon",
     "EnemyName": "HotShot Cultist",
     "smallDescription": "Rest of the Order",
-    "bigDescription": "Even among the Gungeoneers that have descended into insanity and fallen to the worship of the Gun, some still manage to become more fanatical than the rest.\n\nDonning skulls in the likeness of their new Master, these Cultists have mastered not only the art of the dodge roll, but that of dual-wielding too.\n\nFeared by even their fellows, these zealots will indiscriminately attack any that poses a threat to the Gungeon and its relics."
+    "bigDescription": "Even among the Gungeoneers that have descended into insanity and fallen to the worship of the Gun, some still manage to become more fanatical than the rest.\n\nDonning skulls in the likeness of their new Master, these Cultists have mastered not only the art of the dodge roll, but that of dual-wielding too.\n\nFeared by even their fellows, these zealots will indiscriminately attack any that poses a threat to the Gungeon and its relics.",
+	"encounterGUID": "ca663d2c75fa4b5ab8dce630addc7c79",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/HotShotCultist.prefab"
 }

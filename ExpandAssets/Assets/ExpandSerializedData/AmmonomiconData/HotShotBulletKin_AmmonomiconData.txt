@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": true,
     "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "hotshotbulletkin_icon",
     "FullArtSprite": "hotshotbulletkin_ammonomicon",
     "EnemyName": "HotShot Bullet Kin",
     "smallDescription": "9000 .cal",
-    "bigDescription": "Equipped with state-of-the-art power analysers, these hotshots are able to duel-wield revolvers and fire them with pin-point accuracy.\n\nFew are able to beat them in a duel."
+    "bigDescription": "Equipped with state-of-the-art power analysers, these hotshots are able to duel-wield revolvers and fire them with pin-point accuracy.\n\nFew are able to beat them in a duel.",
+	"encounterGUID": "20db6b49a3fb4582bb1e290cbdbc7143",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/HotShotBulletKin.prefab"
 }

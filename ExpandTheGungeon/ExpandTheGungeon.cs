@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.9";
+        public const string VERSION = "2.9.10";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -39,7 +39,7 @@ namespace ExpandTheGungeon {
         public const string ModSoundBankName = "EX_SFX";
         public const string ConsoleCommandName = "expand";
 
-        public static AdvancedStringDB Strings;
+        public static StringDB Strings;
         public static List<string> ExceptionText;
         
         private static GameObject m_FoyerCheckerOBJ;
@@ -116,9 +116,9 @@ namespace ExpandTheGungeon {
             }
 
             try {
-                Strings = new AdvancedStringDB();
+                Strings = new StringDB();
 
-                ExpandSharedHooks.InstallMidGameSaveHooks();
+                ExpandHooks.InstallMidGameSaveHooks();
                 if (ExpandSettings.EnableLogo) {
                     MainMenuFoyerUpdateHook = new Hook(
                         typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -134,7 +134,7 @@ namespace ExpandTheGungeon {
             }
             
             try {
-                ExpandSharedHooks.InstallRequiredHooks();
+                ExpandHooks.InstallRequiredHooks();
                 ExpandDungeonMusicAPI.InitHooks();
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
@@ -359,7 +359,9 @@ namespace ExpandTheGungeon {
 
             // GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(NewChestTest.GetComponent<ArkController>());
 
-            Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
+            // Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
+
+            // m_texturedOcclusionTarget
         }*/
 
         private void ExpandConsoleInfo(string[] consoleText) {
@@ -396,18 +398,18 @@ namespace ExpandTheGungeon {
                     if (!ExpandSettings.debugMode) {
                         ExpandSettings.debugMode = true;
                         ETGModConsole.Log("[ExpandTheGungeon] Installing RoomHandler.OnEntered Hook....");
-                        ExpandSharedHooks.enterRoomHook = new Hook(
+                        ExpandHooks.enterRoomHook = new Hook(
                             typeof(RoomHandler).GetMethod("OnEntered", BindingFlags.NonPublic | BindingFlags.Instance),
-                            typeof(ExpandSharedHooks).GetMethod("EnteredNewRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
+                            typeof(ExpandHooks).GetMethod("EnteredNewRoomHook", BindingFlags.NonPublic | BindingFlags.Instance),
                             typeof(RoomHandler)
                         );
                     } else {
                         if (ExpandSettings.debugMode) {
                             ExpandSettings.debugMode = false;
-                            if (ExpandSharedHooks.enterRoomHook != null) {
+                            if (ExpandHooks.enterRoomHook != null) {
                                 ETGModConsole.Log("[ExpandTheGungeon] Uninstalling RoomHandler.OnEntered Hook....");
-                                ExpandSharedHooks.enterRoomHook.Dispose();
-                                ExpandSharedHooks.enterRoomHook = null;
+                                ExpandHooks.enterRoomHook.Dispose();
+                                ExpandHooks.enterRoomHook = null;
                             }
                         }
                     }                

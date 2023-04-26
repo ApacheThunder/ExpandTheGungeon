@@ -4,9 +4,13 @@
     "IsInBossTab": true,
 	"TabSpriteIsTexture": true,
     "EnemyDifficulty": 3,
+	"placeableWidth": 2,
+	"placeableHeight": 2,
     "TabSprite": "boss_icon_Western_Bros_Tuc",
     "FullArtSprite": "boss_photo_Western_Bros_Tuc",
     "EnemyName": "West Brothers (Tuc)",
     "smallDescription": "There's two kinds of people",
-    "bigDescription": "A mysterious and taciturn bounty hunter, searching for buried gold in a grave somewhere in the westernmost chamber of the Gungeon.\n\nCompassionate, though unyielding, many men and Gundead have been felled by the draw of his revolver."
+    "bigDescription": "A mysterious and taciturn bounty hunter, searching for buried gold in a grave somewhere in the westernmost chamber of the Gungeon.\n\nCompassionate, though unyielding, many men and Gundead have been felled by the draw of his revolver.",
+	"encounterGUID": "c49b95b4a95a4021ac448157a52c1781",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab"
 }

@@ -523,7 +523,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         }
                         ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, room, isCorruptedJunkRoom: true);
                     }
-                    ExpandPlaceGlitchedEnemies.PlaceRandomEnemies(dungeon, currentFloor, room);
+                    ExpandPlaceCorruptedEnemies.PlaceRandomEnemies(dungeon, currentFloor, room);
                 } catch (Exception ex) {
                     string RoomName = room.GetRoomName();
                     string ExceptionText = string.Empty;
@@ -561,7 +561,7 @@ namespace ExpandTheGungeon.ExpandMain {
                         if (targetActor.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null) {
                             if (UnityEngine.Random.value <= 0.25) { targetActor.gameObject.AddComponent<ExpandSpawnGlitchObjectOnDeath>(); }
                         }
-                        ExpandEnemyCorruptor.GlitchExistingEnemy(targetActor);
+                        ExpandEnemyCorruptor.CorruptExistingEnemy(targetActor);
 
                         if (UnityEngine.Random.value <= 0.1f && targetActor.EnemyGuid != "4d37ce3d666b4ddda8039929225b7ede" && targetActor.EnemyGuid != "19b420dec96d4e9ea4aebc3398c0ba7a" && targetActor.GetComponent<ExplodeOnDeath>() == null && targetActor.GetComponent<ExpandSpawnGlitchObjectOnDeath>() == null && targetActor.GetComponent<ExpandSpawnGlitchEnemyOnDeath>() == null) {
                             try { targetActor.gameObject.AddComponent<ExpandExplodeOnDeath>(); } catch (Exception) { }

@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
+	"placeableWidth": 4,
+	"placeableHeight": 2,
     "TabSprite": "Cronenberg_Idle_001",
     "FullArtSprite": "cronenberg_big_ammonomicon",
     "EnemyName": "Cronenberg",
     "smallDescription": "Bullet Horror",
-    "bigDescription": "A vile abomination of flesh and lead, far too large to maintain any semblance of a proper shape as its mass shifts and contorts under the strain of its senseless musculature.\n\nShould any consciousness remain in the few heads whose forms are yet recognizable, then such a consciousness knows little more than pain."
+    "bigDescription": "A vile abomination of flesh and lead, far too large to maintain any semblance of a proper shape as its mass shifts and contorts under the strain of its senseless musculature.\n\nShould any consciousness remain in the few heads whose forms are yet recognizable, then such a consciousness knows little more than pain.",
+	"encounterGUID": "7c8c56a047e345358c7d76a9d3fa998a",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Cronenberg Abomination.prefab"
 }

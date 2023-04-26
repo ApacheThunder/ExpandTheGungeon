@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "chameleon_idle_right_001",
     "FullArtSprite": "chameleon_ammonomicon",
     "EnemyName": "Chameleon",
     "smallDescription": "Chammoeleon",
-    "bigDescription": "Well adapted to prey on the smaller bullat species native to the Gungeon, the Chameleon is able to store their prey's shells inside their multi-chambered stomachs, so as to vomit them at anything that threatens them.\n\nThis is an important step of the Gungeon's bulletrient cycle, allowing ammunition to be reused, making them easier to break down.\n\nUnfortunately, they are extremely skittish, and the novel sight of a Gungeoneer is more than enough to prompt them to defend themselves."
+    "bigDescription": "Well adapted to prey on the smaller bullat species native to the Gungeon, the Chameleon is able to store their prey's shells inside their multi-chambered stomachs, so as to vomit them at anything that threatens them.\n\nThis is an important step of the Gungeon's bulletrient cycle, allowing ammunition to be reused, making them easier to break down.\n\nUnfortunately, they are extremely skittish, and the novel sight of a Gungeoneer is more than enough to prompt them to defend themselves.",
+	"encounterGUID": "db3272f41ce04413a6ead84368291ead",
+	"encounterPath": "Assets/Data/Enemies/Chameleon.prefab"
 }

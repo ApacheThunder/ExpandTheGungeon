@@ -871,7 +871,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
             m_CachedAIActor.difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
             m_CachedAIActor.isPassable = true;
             m_CachedAIActor.ActorName = EnemyName;
-            m_CachedAIActor.OverrideDisplayName = EnemyName;
+            m_CachedAIActor.OverrideDisplayName = "EXEnemyString_" + EnemyName.Replace(" ", "_").Replace("(", "_").Replace(")", string.Empty).ToLower();
+
+            ExpandTheGungeon.Strings.Enemies.Set(m_CachedAIActor.OverrideDisplayName, EnemyName);
+
             m_CachedAIActor.actorTypes = 0;
             m_CachedAIActor.HasShadow = true;
             m_CachedAIActor.ShadowHeightOffGround = 0;

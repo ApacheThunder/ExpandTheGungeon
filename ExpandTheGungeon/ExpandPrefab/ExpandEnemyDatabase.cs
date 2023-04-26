@@ -142,9 +142,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ClownkinWig;
 
         public static Texture2D[] RatGrenadeTextures;
-
-        private static EnemyDatabaseEntry ChameleonEntry;
+        
         private static AIActor Chameleon;
+        private static AIActor Skusketling;
 
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
@@ -216,43 +216,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         public static void UpdateAmmonoiconDatabase(AssetBundle expandSharedAssets1) {
-            string chameleonName = EnemyDatabase.GetOrLoadByGuid("80ab6cd15bfc46668a8844b2975c6c26").ActorName;
             Chameleon = GetOfficialEnemyByGuid("80ab6cd15bfc46668a8844b2975c6c26");
-            ChameleonEntry = EnemyDatabase.GetEntry("80ab6cd15bfc46668a8844b2975c6c26");
-            ChameleonEntry.ForcedPositionInAmmonomicon = ExpandAmmonomiconDatabase.Chameleon.ForcedPositionInAmmonomicon;
-            EncounterDatabaseEntry ChameleonEncounter = EncounterDatabase.GetEntry("db3272f41ce04413a6ead84368291ead");
-
-            ChameleonEncounter.journalData.AmmonomiconSprite = ExpandAmmonomiconDatabase.Chameleon.TabSprite;
-            ChameleonEncounter.journalData.enemyPortraitSprite = expandSharedAssets1.LoadAsset<Texture2D>(ExpandAmmonomiconDatabase.Chameleon.FullArtSprite);
-            ChameleonEncounter.journalData.PrimaryDisplayName = "#THE_" + chameleonName;
-            ChameleonEncounter.journalData.NotificationPanelDescription = "#THE_" + chameleonName + "_SHORTDESC";
-            ChameleonEncounter.journalData.AmmonomiconFullEntry = "#THE_" + chameleonName + "_LONGDESC";
-            ChameleonEncounter.journalData.SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE;
-            ChameleonEncounter.journalData.SuppressKnownState = false;
-            ChameleonEncounter.journalData.SuppressInAmmonomicon = false;
-
-            if (!Chameleon.gameObject.GetComponent<EncounterTrackable>()) {
-                Chameleon.gameObject.AddComponent<EncounterTrackable>();
-                Chameleon.encounterTrackable.journalData = new JournalEntry();
-                Chameleon.encounterTrackable.EncounterGuid = Chameleon.EnemyGuid;
-                Chameleon.encounterTrackable.SuppressInInventory = false;
-                Chameleon.encounterTrackable.DoNotificationOnEncounter = true;
-            }
-
-            Chameleon.encounterTrackable.journalData.AmmonomiconSprite = ExpandAmmonomiconDatabase.Chameleon.TabSprite;
-            Chameleon.encounterTrackable.journalData.enemyPortraitSprite = expandSharedAssets1.LoadAsset<Texture2D>(ExpandAmmonomiconDatabase.Chameleon.FullArtSprite);
-            Chameleon.encounterTrackable.journalData.PrimaryDisplayName = "#THE_" + chameleonName;
-            Chameleon.encounterTrackable.journalData.NotificationPanelDescription = "#THE_" + chameleonName + "_SHORTDESC";
-            Chameleon.encounterTrackable.journalData.AmmonomiconFullEntry = "#THE_" + chameleonName + "_LONGDESC";
-            Chameleon.encounterTrackable.journalData.SpecialIdentifier = JournalEntry.CustomJournalEntryType.NONE;
-            Chameleon.encounterTrackable.journalData.SuppressKnownState = false;
-            Chameleon.encounterTrackable.journalData.SuppressInAmmonomicon = false;
+            Skusketling = GetOfficialEnemyByGuid("c2f902b7cbe745efb3db4399927eab34");
             
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName, ExpandAmmonomiconDatabase.Chameleon.EnemyName);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName + "_SHORTDESC", ExpandAmmonomiconDatabase.Chameleon.smallDescription);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + chameleonName + "_LONGDESC", ExpandAmmonomiconDatabase.Chameleon.bigDescription);
-
-            SpriteBuilder.AddToAmmonomicon(Chameleon.sprite.Collection.GetSpriteDefinition(ExpandAmmonomiconDatabase.Chameleon.TabSprite));
+            ExpandAmmonomiconDatabase.AddExistingEnemyToAmmonomicon(Chameleon, ExpandAmmonomiconDatabase.Chameleon, false);
+            ExpandAmmonomiconDatabase.AddExistingEnemyToAmmonomicon(Skusketling, ExpandAmmonomiconDatabase.Skusketling);
         }
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
@@ -329,8 +297,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false, bool AddToMTGSpawnPool = true) {
             EnemyDatabaseEntry entry = new EnemyDatabaseEntry {
                 myGuid = EnemyGUID,
-                placeableWidth = 2,
-                placeableHeight = 2,
+                placeableWidth = 1,
+                placeableHeight = 1,
                 isNormalEnemy = IsNormalEnemy
             };
             EnemyDatabase.Instance.Entries.Add(entry);
@@ -352,18 +320,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             } else {
                 return;
             }
-            
+
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);
+            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_LONGDESC", enemyEntryData.bigDescription);
+
             if (enemyEntryData.TabSpriteIsTexture) {
                 SpriteBuilder.AddToAmmonomicon(ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite));
             } else if (targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite) != null) {
                 SpriteBuilder.AddToAmmonomicon(targetEnemy.sprite.Collection.GetSpriteDefinition(enemyEntryData.TabSprite));
             }
 
-            targetEnemy.encounterTrackable = targetEnemy.gameObject.GetOrAddComponent<EncounterTrackable>();
-            targetEnemy.encounterTrackable.EncounterGuid = EnemyGUID;
-            targetEnemy.encounterTrackable.prerequisites = new DungeonPrerequisite[0];
-            targetEnemy.encounterTrackable.ProxyEncounterGuid = string.Empty;
-            targetEnemy.encounterTrackable.journalData = new JournalEntry() {
+            EncounterTrackable encounterTrackable = targetEnemy.gameObject.GetOrAddComponent<EncounterTrackable>();
+            encounterTrackable.EncounterGuid = EnemyGUID;
+            encounterTrackable.prerequisites = new DungeonPrerequisite[0];
+            encounterTrackable.ProxyEncounterGuid = string.Empty;
+            encounterTrackable.journalData = new JournalEntry() {
                 AmmonomiconSprite = enemyEntryData.TabSprite,
                 enemyPortraitSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite),
                 PrimaryDisplayName = "#THE_" + m_EnemyNameCode,
@@ -376,32 +348,39 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 DisplayOnLoadingScreen = false,
                 RequiresLightBackgroundInLoadingScreen = false
             };
-            
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);
-            ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_LONGDESC", enemyEntryData.bigDescription);
-
-            EnemyDatabaseEntry item = new EnemyDatabaseEntry {
+                        
+            EnemyDatabaseEntry enemyEntry = new EnemyDatabaseEntry {
+                myGuid = EnemyGUID,
                 path = EnemyGUID,
                 encounterGuid = EnemyGUID,
                 difficulty = enemyEntryData.EnemyDifficulty,
-                myGuid = EnemyGUID,
-                placeableWidth = 2,
-                placeableHeight = 2,
+                placeableWidth = enemyEntryData.placeableWidth,
+                placeableHeight = enemyEntryData.placeableHeight,
                 isNormalEnemy = enemyEntryData.IsNormalEnemy,
                 ForcedPositionInAmmonomicon = enemyEntryData.ForcedPositionInAmmonomicon,
                 isInBossTab = enemyEntryData.IsInBossTab,
             };
-
-            EnemyDatabase.Instance.Entries.Add(item);
-            enemyPrefabDictionary.Add(EnemyGUID, targetEnemy);
-
-            EncounterDatabaseEntry item2 = new EncounterDatabaseEntry(targetEnemy.encounterTrackable) {
+            
+            EncounterDatabaseEntry encounterEntry = new EncounterDatabaseEntry(encounterTrackable) {
                 path = EnemyGUID,
-                myGuid = targetEnemy.encounterTrackable.EncounterGuid,
+                myGuid = EnemyGUID,
+                journalData = encounterTrackable.journalData,
+                doNotificationOnEncounter = false
             };
+            
+            if (!string.IsNullOrEmpty(enemyEntryData.encounterPath)) {
+                encounterEntry.path = enemyEntryData.encounterPath;
+                enemyEntry.path = enemyEntryData.encounterPath;
+            }
+            if (!string.IsNullOrEmpty(enemyEntryData.encounterGUID)) {
+                encounterEntry.myGuid = enemyEntryData.encounterGUID;
+                encounterTrackable.EncounterGuid = enemyEntryData.encounterGUID;
+                enemyEntry.encounterGuid = enemyEntryData.encounterGUID;
+            }
 
-            EncounterDatabase.Instance.Entries.Add(item2);
+            EnemyDatabase.Instance.Entries.Add(enemyEntry);
+            EncounterDatabase.Instance.Entries.Add(encounterEntry);
+            enemyPrefabDictionary.Add(EnemyGUID, targetEnemy);
 
             if (AddToMTGSpawnPool && !string.IsNullOrEmpty(m_EnemyNameCode)) {
                 if (!Game.Enemies.ContainsID(m_EnemyNameCode)) { Game.Enemies.Add(m_EnemyNameCode, targetEnemy); }
@@ -1159,7 +1138,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BabyGoodHammerCollection.GetComponent<tk2dSpriteCollectionData>(), MoveLeftSpriteList, "Hammer_Move_Left", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, BabyGoodHammerCollection.GetComponent<tk2dSpriteCollectionData>(), MoveRightSpriteList, "Hammer_Move_Right", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
             
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, HammerCompanionGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Baby Good Hammer", HammerCompanionGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -1671,7 +1650,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegPistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, BootlegBulletManGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Bootleg Bullet Kin", BootlegBulletManGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2102,7 +2081,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegMachinePistolID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, BootlegBulletManBandanaGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Bootleg Bandana Bullet Kin", BootlegBulletManBandanaGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2465,7 +2444,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, BootlegShotgunManRedGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Bootleg Red Shogun Kin", BootlegShotgunManRedGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -2814,7 +2793,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), BootlegGuns.BootlegShotgunID, m_CachedGunAttachPoint.transform);
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, BootlegShotgunManBlueGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "Bootleg Blue Shogun Kin", BootlegShotgunManBlueGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: GetOfficialEnemyByGuid("88b6b6a93d4b4234a67844ef4728382c").CorpseObject, EnemyHasNoShooter: true);
 
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 

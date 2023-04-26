@@ -52,9 +52,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             sprite.HeightOffGround = -7;
             sprite.UpdateZDepth();
-
-            // ExpandObjectDatabase objectDatabase = new ExpandObjectDatabase();
-
+            
             Vector3 NoteSpawnPoint = (new Vector3(7, 3) + m_ParentRoom.area.basePosition.ToVector3());
 
             GameObject DeadGuyNote = Instantiate(ExpandPrefabs.PlayerLostRatNote, NoteSpawnPoint, Quaternion.identity);

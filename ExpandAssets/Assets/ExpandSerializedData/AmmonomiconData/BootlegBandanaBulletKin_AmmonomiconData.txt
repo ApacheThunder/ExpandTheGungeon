@@ -4,9 +4,13 @@
     "IsInBossTab": false,
 	"TabSpriteIsTexture": false,
     "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "bulletmanbandana_run_down_001",
     "FullArtSprite": "bootlegbulletmanbandana_ammonomicon",
     "EnemyName": "Bootleg Bandana Bullet Kin",
     "smallDescription": "Blow Resolution",
-    "bigDescription": "These corrupted bullet kin... do they remember what they once were? Their fellow gundead cower before their sight.\n\nBut it is useless: soon, I fear, they will also become like their fallen brothers. And then... woe to us!\n\nViktor Nogov"
+    "bigDescription": "These corrupted bullet kin... do they remember what they once were? Their fellow gundead cower before their sight.\n\nBut it is useless: soon, I fear, they will also become like their fallen brothers. And then... woe to us!\n\nViktor Nogov",
+	"encounterGUID": "233b3adbe51642eea1ab21eed88446b9",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Bootleg BulletMan Bandana.prefab"
 }

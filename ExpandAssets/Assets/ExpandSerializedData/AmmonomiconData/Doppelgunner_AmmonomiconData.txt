@@ -4,9 +4,13 @@
     "IsInBossTab": true,
 	"TabSpriteIsTexture": true,
     "EnemyDifficulty": 3,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
     "TabSprite": "boss_icon_Doppelgunner_001",
     "FullArtSprite": "doppelgunner_ammonomicon",
     "EnemyName": "Doppelgunner",
     "smallDescription": "Look inside... and Awake.",
-    "bigDescription": "Beneath the shine of strange and unearthly moons manifested a strange reflection, painted upon the perene waters of Gunymede.\n\nDancing as did its surface, of shapes melding and convulsing, without form and without reason, given only the cosmos as a model to follow and replicate. Yet, orbs and lights, stars and shades: all were without consciousness, without purpose nor aim.\n\nIt jumped, from reflection to reflection, from pond to pond, then from pond to the looking-glass. There, much did it find to copy: Gungeoneers, striken with purpose, of shapes unchanging, of body and history to hold fast and have forever.\n\nAnd soon it was that the Doppelgunner realized... it wanted to be a reflection no more."
+    "bigDescription": "Beneath the shine of strange and unearthly moons manifested a strange reflection, painted upon the perene waters of Gunymede.\n\nDancing as did its surface, of shapes melding and convulsing, without form and without reason, given only the cosmos as a model to follow and replicate. Yet, orbs and lights, stars and shades: all were without consciousness, without purpose nor aim.\n\nIt jumped, from reflection to reflection, from pond to pond, then from pond to the looking-glass. There, much did it find to copy: Gungeoneers, striken with purpose, of shapes unchanging, of body and history to hold fast and have forever.\n\nAnd soon it was that the Doppelgunner realized... it wanted to be a reflection no more.",
+	"encounterGUID": "692397b2d2a74143b390da47101f917e",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Doppelgunner/Doppelgunner.prefab"
 }
