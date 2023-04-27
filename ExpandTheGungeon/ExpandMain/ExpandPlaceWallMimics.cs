@@ -32,8 +32,6 @@ namespace ExpandTheGungeon.ExpandMain {
             int currentFloor = GameManager.Instance.CurrentFloor;
 
             if (roomHandler != null) { goto IL_SKIP; }
-            
-            if (ExpandTheGungeon.LogoEnabled && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.FOYER) { ExpandTheGungeon.LogoEnabled = false; }
                         
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {                
                 ExpandSettings.glitchElevatorHasBeenUsed = false;

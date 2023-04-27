@@ -20,17 +20,16 @@ namespace ExpandTheGungeon {
         
         public static Texture2D ModLogo;
         public static Hook GameManagerHook;
-        public static Hook MainMenuFoyerUpdateHook;
+        public static Hook initializeMainMenuHook;
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.10";
+        public const string VERSION = "2.9.11";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
         
         public static bool ItemAPISetup = false;
-        public static bool LogoEnabled = false;
         public static bool ListsCleared = false;
         
         public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
@@ -102,9 +101,7 @@ namespace ExpandTheGungeon {
             };
             
             ExpandAssets.InitCustomAssetBundles(ModName);            
-
-            if (ExpandSettings.EnableLogo) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
-            
+                        
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }
 
@@ -120,9 +117,9 @@ namespace ExpandTheGungeon {
 
                 ExpandHooks.InstallMidGameSaveHooks();
                 if (ExpandSettings.EnableLogo) {
-                    MainMenuFoyerUpdateHook = new Hook(
-                        typeof(MainMenuFoyerController).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance),
-                        typeof(ExpandTheGungeon).GetMethod(nameof(MainMenuUpdateHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                    initializeMainMenuHook = new Hook(
+                        typeof(MainMenuFoyerController).GetMethod("InitializeMainMenu", BindingFlags.Public | BindingFlags.Instance),
+                        typeof(ExpandTheGungeon).GetMethod(nameof(InitializeMainMenuHook), BindingFlags.Public| BindingFlags.Instance),
                         typeof(MainMenuFoyerController)
                     );
                 }
@@ -268,19 +265,29 @@ namespace ExpandTheGungeon {
             CreateFoyerController();
         }
 
-        private void MainMenuUpdateHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
+        public void InitializeMainMenuHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
             orig(self);
-            if (ExpandSettings.EnableLogo && ((dfTextureSprite)self.TitleCard).Texture.name != ModLogo.name) {
-                ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
-                LogoEnabled = true;
-                SetupLabel(new Vector3(564f, -28, 0), self.TitleCard);
+            if (ExpandSettings.EnableLogo) {
+                bool frostfireInstalled = false;
+                if (FindObjectsOfType<BaseUnityPlugin>() != null) {
+                    foreach (BaseUnityPlugin plugin in FindObjectsOfType<BaseUnityPlugin>()) {
+                        if (plugin.Info.Metadata.GUID.ToLower().Contains("frostandgunfire")) { frostfireInstalled = true; }
+                    }
+                }
+                if (frostfireInstalled) {
+                    SetupLabel(self.TitleCard, ("ExpandTheGungeon: " + "v" + VERSION), Color.white, new Vector2(380f, 22), new Vector2(264, 22), new Vector2(276, 22));
+                } else {
+                    if (ModLogo == null) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
+                    ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
+                    SetupLabel(self.TitleCard, ("v" + VERSION), Color.black, new Vector2(564f, -28), new Vector2(64, 16), new Vector2(74, 16));
+                }
             }
         }
 
-        private void SetupLabel(Vector3 UIPosition, dfControl logoControl) {
+        private void SetupLabel(dfControl controlParent, string TextString, Color TextColor, Vector3 UIPosition, Vector2 Size, Vector2 MaxSize) {
             dfTiledSprite referenceLabel = ExpandAssets.LoadOfficialAsset<GameObject>("Weapon Skull Ammo FG", ExpandAssets.AssetSource.SharedAuto1).GetComponent<dfTiledSprite>();
             dfFont referenceFont = ExpandAssets.LoadOfficialAsset<GameObject>("04b03_df40", ExpandAssets.AssetSource.SharedAuto1).GetComponent<dfFont>();
-            dfLabel m_NewLabel = logoControl.AddControl<dfLabel>();
+            dfLabel m_NewLabel = controlParent.AddControl<dfLabel>();
             m_NewLabel.name = "EXVersionLabel";
             m_NewLabel.Atlas = referenceLabel.Atlas;
             m_NewLabel.Font = referenceFont;
@@ -290,13 +297,13 @@ namespace ExpandTheGungeon {
             m_NewLabel.IsInteractive = true;
             m_NewLabel.Tooltip = string.Empty;
             m_NewLabel.Pivot = dfPivotPoint.BottomRight;
-            m_NewLabel.zindex = 29;
+            m_NewLabel.zindex = 9;
             m_NewLabel.Opacity = 1f;
-            m_NewLabel.Color = Color.black;
+            m_NewLabel.Color = TextColor;
             m_NewLabel.DisabledColor = Color.gray;
-            m_NewLabel.Size = new Vector2(64, 16);
+            m_NewLabel.Size = Size;
             m_NewLabel.MinimumSize = m_NewLabel.Size;
-            m_NewLabel.MaximumSize = new Vector2(74, 16);
+            m_NewLabel.MaximumSize = MaxSize;
             m_NewLabel.ClipChildren = false;
             m_NewLabel.InverseClipChildren = false;
             m_NewLabel.TabIndex = -1;
@@ -310,11 +317,13 @@ namespace ExpandTheGungeon {
             m_NewLabel.PreventFontChanges = true;
             m_NewLabel.BackgroundSprite = string.Empty;
             m_NewLabel.BackgroundColor = Color.white;
+            if (TextColor == Color.white) { m_NewLabel.BackgroundColor = Color.black; }
             m_NewLabel.AutoSize = true;
             m_NewLabel.AutoHeight = false;
             m_NewLabel.WordWrap = false;
-            m_NewLabel.Text = "v" + VERSION;
+            m_NewLabel.Text = TextString;
             m_NewLabel.BottomColor = Color.white;
+            if (TextColor == Color.white) { m_NewLabel.BottomColor = Color.black; }
             m_NewLabel.TextAlignment = TextAlignment.Right;
             m_NewLabel.VerticalAlignment = dfVerticalAlignment.Top;
             m_NewLabel.TextScale = 0.5f;
@@ -326,6 +335,7 @@ namespace ExpandTheGungeon {
             m_NewLabel.OutlineSize = 0;
             m_NewLabel.ShowGradient = false;
             m_NewLabel.OutlineColor = Color.white;
+            if (TextColor == Color.white) { m_NewLabel.OutlineColor = Color.black; }
             m_NewLabel.Shadow = false;
             m_NewLabel.ShadowColor = Color.gray;
             m_NewLabel.ShadowOffset = new Vector2(1, -1);
@@ -335,7 +345,6 @@ namespace ExpandTheGungeon {
             m_NewLabel.MaintainKoreanFont = false;
             m_NewLabel.MaintainRussianFont = false;
             m_NewLabel.Position = UIPosition;
-
             referenceFont = null;
             referenceLabel = null;
         }
@@ -362,6 +371,7 @@ namespace ExpandTheGungeon {
             // Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
 
             // m_texturedOcclusionTarget
+            
         }*/
 
         private void ExpandConsoleInfo(string[] consoleText) {

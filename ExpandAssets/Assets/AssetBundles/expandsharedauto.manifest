@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3332585724
+CRC: 2331154675
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6851e7497663bc1701052f829a4fe78f
+    Hash: 7f59dc0b56e2fbcf0065c0093642644d
   TypeTreeHash:
     serializedVersion: 2
     Hash: e07db27c83368901a660c5a67ad09cfb
@@ -1179,6 +1179,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/EX_SecretDoor_Animation.prefab
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosAnimations_Nome.prefab
 - Assets/ExpandRooms/RoomBuilderData/GungeonProper/Expand_Neighborino_LongSpikeTrap_Layout.png
+- Assets/ExpandTextures/EXLogoMini.png
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandSarco_Floor.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Squareish6.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/GungeoneerMimicCollection.prefab
