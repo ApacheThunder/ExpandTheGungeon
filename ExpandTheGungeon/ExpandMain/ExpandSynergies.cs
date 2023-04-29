@@ -7,9 +7,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public static void Init() {
             List<AdvancedSynergyEntry> m_TempSynergyList = new List<AdvancedSynergyEntry>();
-
-            foreach (AdvancedSynergyEntry entry in GameManager.Instance.SynergyManager.synergies) { m_TempSynergyList.Add(entry); }
-
+            
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "Master of Unlocking",
@@ -48,11 +46,11 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "Master Chambers",
-                    MandatoryItemIDs = new List<int>() { 647, CustomMasterRounds.GtlichFloorMasterRoundID }, // Synergy Notification for Chamber Gun and custom master round for Base_Canyon
-                    IgnoreLichEyeBullets = false,
+                    MandatoryItemIDs = new List<int>() { CustomMasterRounds.GtlichFloorMasterRoundID }, // Synergy Notification for Chamber Gun and custom master round for Base_Canyon
+                    IgnoreLichEyeBullets = true,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,
-                    MandatoryGunIDs = new List<int>(0),
+                    MandatoryGunIDs = new List<int>() { 647 },
                     OptionalGunIDs = new List<int>(0),
                     OptionalItemIDs = new List<int>(0),
                     ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
@@ -66,28 +64,11 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "It fires Grenade Kin now...",
-                    MandatoryItemIDs = new List<int>() { 39, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + RPG
+                    MandatoryItemIDs = new List<int>() { 39 }, // Synergy for The Bullet Kin Gun + RPG
                     IgnoreLichEyeBullets = false,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,
-                    MandatoryGunIDs = new List<int>(0),
-                    OptionalGunIDs = new List<int>(0),
-                    OptionalItemIDs = new List<int>(0),
-                    ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
-                    ActiveWhenGunUnequipped = true,
-                    statModifiers = new List<StatModifier>(0),
-                    bonusSynergies = new List<CustomSynergyType>(0)
-                }
-            );
-            
-             m_TempSynergyList.Add(
-                new AdvancedSynergyEntry() {
-                    NameKey = string.Empty,
-                    MandatoryItemIDs = new List<int>() { 815, BulletKinGun.BulletKinGunID }, // Lich Eyes Synergy for this gun.
-                    IgnoreLichEyeBullets = true,
-                    SuppressVFX = false,
-                    RequiresAtLeastOneGunAndOneItem = false,
-                    MandatoryGunIDs = new List<int>(0),
+                    MandatoryGunIDs = new List<int>() { BulletKinGun.BulletKinGunID },
                     OptionalGunIDs = new List<int>(0),
                     OptionalItemIDs = new List<int>(0),
                     ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
@@ -100,11 +81,11 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "It fires Shotgun Kin now...",
-                    MandatoryItemIDs = new List<int>() { 51, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + Regular Shotgun
+                    MandatoryItemIDs = new List<int>() { 51 }, // Synergy for The Bullet Kin Gun + Regular Shotgun
                     IgnoreLichEyeBullets = false,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,
-                    MandatoryGunIDs = new List<int>(0),
+                    MandatoryGunIDs = new List<int>() { BulletKinGun.BulletKinGunID },
                     OptionalGunIDs = new List<int>(0),
                     OptionalItemIDs = new List<int>(0),
                     ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
@@ -117,11 +98,11 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "It fires jammed things now...",
-                    MandatoryItemIDs = new List<int>() { 407, BulletKinGun.BulletKinGunID }, // Synergy for The Bullet Kin Gun + Sixth Chamber
+                    MandatoryItemIDs = new List<int>() { 407 }, // Synergy for The Bullet Kin Gun + Sixth Chamber
                     IgnoreLichEyeBullets = false,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,
-                    MandatoryGunIDs = new List<int>(0),
+                    MandatoryGunIDs = new List<int>() { BulletKinGun.BulletKinGunID },
                     OptionalGunIDs = new List<int>(0),
                     OptionalItemIDs = new List<int>(0),
                     ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
@@ -225,6 +206,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     ExpandTheGungeon.Strings.Synergy.Set(m_NameCode, m_NameCodeLocalized);
                 }
             }
+
+            foreach (AdvancedSynergyEntry entry in GameManager.Instance.SynergyManager.synergies) { m_TempSynergyList.Add(entry); }
 
             GameManager.Instance.SynergyManager.synergies = m_TempSynergyList.ToArray();
             return;
