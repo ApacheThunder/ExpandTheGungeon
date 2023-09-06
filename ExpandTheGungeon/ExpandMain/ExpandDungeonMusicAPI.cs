@@ -12,7 +12,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static string TempCustomBossMusic = string.Empty;
 
         public static Hook switchToStateHook;
-        // public static Hook notifyEnteredNewRoomHook;
+        public static Hook notifyEnteredNewRoomHook;
         public static Hook switchToCustomMusicHook;
         public static Hook switchToEndTimesMusicHook;
         public static Hook switchToBossMusicHook;
@@ -66,12 +66,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToState), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(DungeonFloorMusicController)
             );
-            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.NotifyEnteredNewRoom Hook...."); }
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.NotifyEnteredNewRoom Hook...."); }
             notifyEnteredNewRoomHook = new Hook(
                 typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.NotifyEnteredNewRoom), BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandDungeonMusicAPI).GetMethod(nameof(NotifyEnteredNewRoom)),
                 typeof(DungeonFloorMusicController)
-            );*/
+            );
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToCustomMusic Hook...."); }
             switchToCustomMusicHook = new Hook(
@@ -324,7 +324,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         
         // This is specific to ExpandTheGungeon's Old West floor currently.
-        /*public void NotifyEnteredNewRoom(Action<DungeonFloorMusicController, RoomHandler> orig, DungeonFloorMusicController self, RoomHandler newRoom) {
+        public void NotifyEnteredNewRoom(Action<DungeonFloorMusicController, RoomHandler> orig, DungeonFloorMusicController self, RoomHandler newRoom) {
             if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
                 self.UpdateCoreMusicEvent();
                 FieldInfo m_cachedMusicEventCore = typeof(DungeonFloorMusicController).GetField("m_cachedMusicEventCore", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -350,7 +350,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
             orig(self, newRoom);
-        }*/
+        }
 
         // These Hooks ensure custom floor music ends when boss/endtimes musics starts.
         public void SwitchToEndTimesMusic(Action<DungeonFloorMusicController> orig, DungeonFloorMusicController self) {

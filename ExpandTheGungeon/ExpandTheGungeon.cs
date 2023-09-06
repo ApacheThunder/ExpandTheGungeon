@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.12";
+        public const string VERSION = "2.9.13";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -97,7 +97,8 @@ namespace ExpandTheGungeon {
                 "Clown Friend",
                 "Clown Bullets",
                 "Portable Elevator",
-                "Portable Ship"
+                "Portable Ship",
+                "Old Key"
             };
             
             ExpandAssets.InitCustomAssetBundles(ModName);            
@@ -246,6 +247,7 @@ namespace ExpandTheGungeon {
                     PortableShip.Init(expandSharedAssets1);
                     WestBrosRevolverGenerator.Init();
                     HotShotShotGun.Init();
+                    ExpandKeyBulletPickup.Init(expandSharedAssets1);
 
                     // Setup Custom Synergies. Do this after all custom items have been Init!;
                     ExpandSynergies.Init();
@@ -559,8 +561,9 @@ namespace ExpandTheGungeon {
                     ["EXItemCollection"] = ExpandLists.EXItemCollection,
                     ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
                     ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection,
-                    ["GungeoneerMimicCollection"] = ExpandLists.EXGungeoneerMimicCollection
-                }; 
+                    ["GungeoneerMimicCollection"] = ExpandLists.EXGungeoneerMimicCollection,
+                    ["EXSecretDoorCollection"] = ExpandLists.EXSecretDoorCollection
+                };
             }
             int X = 2048;
             int Y = 2048;

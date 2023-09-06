@@ -76,7 +76,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_TargetRigidBody = m_SpawnedObject.GetComponent<SpeculativeRigidbody>();
                     m_FoyerDoorWarp.TargetPoint = (new IntVector2(1, 2) + TargetSpawnPosition2.ToIntVector2());
                     if (m_TargetRoom == null) {
-                        m_TargetRoom = ExpandUtility.AddCustomRuntimeRoom(GameManager.Instance.Dungeon, new IntVector2(17, 20), ExpandPrefabs.EXCasinoHub, roomWorldPositionOverride: new IntVector2(0, 60));
+                        m_TargetRoom = ExpandUtility.AddCustomRuntimeRoom(GameManager.Instance.Dungeon, new IntVector2(17, 20), ExpandPrefabs.EXCasinoHub, roomWorldPositionOverride: new IntVector2(0, 60), RoomName: "Expand_Casino");
                     }
                     m_FoyerDoorWarp.TargetRoom = m_TargetRoom;
                     m_FoyerDoorWarp.ConfigureOnPlacement(m_ParentRoom);

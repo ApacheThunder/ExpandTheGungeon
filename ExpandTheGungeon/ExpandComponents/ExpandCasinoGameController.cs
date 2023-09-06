@@ -1,4 +1,5 @@
 ﻿using Dungeonator;
+using ExpandTheGungeon.ItemAPI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -328,7 +329,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 component.HeightOffGround = -1.5f;
                 component.UpdateZDepth();
             } else {
-                List<string> itemPickup = new List<string>() { "key", "ratkey", "casings", "armor", "blank" };
+                List<string> itemPickup = new List<string>() { "key", "bigwestkey", "casings", "armor", "blank" };
                 itemPickup = itemPickup.Shuffle();
                 string selectedPickup = BraveUtility.RandomElement(itemPickup);
                 switch (selectedPickup) {
@@ -338,8 +339,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                     case "key":
                         LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(67).gameObject, player);
                         break;
-                    case "ratkey":
-                        LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(727).gameObject, player);
+                    case "bigwestkey":
+                        LootEngine.GivePrefabToPlayer(ExpandKeyBulletPickup.OldKeyObject, player);
                         break;
                     case "casings":
                         LootEngine.GivePrefabToPlayer(PickupObjectDatabase.GetById(74).gameObject, player);

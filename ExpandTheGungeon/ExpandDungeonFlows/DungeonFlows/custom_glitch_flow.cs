@@ -441,6 +441,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 guidAsString = Guid.NewGuid().ToString(),
                 flow = m_CachedFlow,
             };
+            
+            if (ExpandPrefabs.doublebeholstertable) {
+                GlitchFlowNode_12.overrideRoomTable = ExpandPrefabs.doublebeholstertable;
+            } else {
+                GlitchFlowNode_12.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
+            }
+
             DungeonFlowNode GlitchFlowNode_13 = new DungeonFlowNode(m_CachedFlow) {
                 isSubchainStandin = false,
                 nodeType = DungeonFlowNode.ControlNodeType.ROOM,

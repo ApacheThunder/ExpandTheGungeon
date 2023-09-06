@@ -56,33 +56,47 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             GenericIntroDoer miniBossIntroDoer = gameObject.GetComponent<GenericIntroDoer>();
             if (BossCardTexture) { miniBossIntroDoer.portraitSlideSettings.bossArtSprite = BossCardTexture; }
-
-            if (player.characterIdentity == PlayableCharacters.Bullet) {
-                m_AIActor.EnemySwitchState = "Metal_Bullet_Man";
-            } else if (player.characterIdentity == PlayableCharacters.Convict) {
-                m_AIActor.EnemySwitchState = "Convict";
-            } else if (player.characterIdentity == PlayableCharacters.CoopCultist) {
-                m_AIActor.EnemySwitchState = "Cultist";
-            } else if (player.characterIdentity == PlayableCharacters.Cosmonaut) {
-                m_AIActor.EnemySwitchState = "Cosmonaut";
-            } else if (player.characterIdentity == PlayableCharacters.Guide) {
-                m_AIActor.EnemySwitchState = "Guide";
-            } else if (player.characterIdentity == PlayableCharacters.Gunslinger) {
-                m_AIActor.EnemySwitchState = "Gunslinger";
-            } else if (player.characterIdentity == PlayableCharacters.Ninja) {
-                m_AIActor.EnemySwitchState = "Ninja";
-            } else if (player.characterIdentity == PlayableCharacters.Pilot) {
-                m_AIActor.EnemySwitchState = "Rogue";
-            } else if (player.characterIdentity == PlayableCharacters.Robot) {
-                m_AIActor.EnemySwitchState = "Robot";
-            } else if (player.characterIdentity == PlayableCharacters.Soldier) {
-                m_AIActor.EnemySwitchState = "Marine";
-            } else if (player.characterIdentity == PlayableCharacters.Eevee) {
-                m_AIActor.EnemySwitchState = "Convict";
-                ExpandShaders.ApplyParadoxPlayerShader(m_AIActor.sprite);
-            } else {
-                m_AIActor.EnemySwitchState = "Gun Cultist";
+            
+            switch (player.characterIdentity) {
+                case PlayableCharacters.Bullet:
+                    m_AIActor.EnemySwitchState = "Metal_Bullet_Man";
+                    break;
+                case PlayableCharacters.Convict:
+                    m_AIActor.EnemySwitchState = "Convict";
+                    break;
+                case PlayableCharacters.CoopCultist:
+                    m_AIActor.EnemySwitchState = "Cultist";
+                    break;
+                case PlayableCharacters.Cosmonaut:
+                    m_AIActor.EnemySwitchState = "Cosmonaut";
+                    break;
+                case PlayableCharacters.Eevee:
+                    m_AIActor.EnemySwitchState = "Convict";
+                    ExpandShaders.ApplyParadoxPlayerShader(m_AIActor.sprite);
+                    break;
+                case PlayableCharacters.Guide:
+                    m_AIActor.EnemySwitchState = "Guide";
+                    break;
+                case PlayableCharacters.Gunslinger:
+                    m_AIActor.EnemySwitchState = "Gunslinger";
+                    break;
+                case PlayableCharacters.Ninja:
+                    m_AIActor.EnemySwitchState = "Ninja";
+                    break;
+                case PlayableCharacters.Pilot:
+                    m_AIActor.EnemySwitchState = "Rogue";
+                    break;
+                case PlayableCharacters.Robot:
+                    m_AIActor.EnemySwitchState = "Robot";
+                    break;
+                case PlayableCharacters.Soldier:
+                    m_AIActor.EnemySwitchState = "Marine";
+                    break;
+                default:
+                    m_AIActor.EnemySwitchState = "Gun Cultist";
+                    break;
             }
+
             List<tk2dSpriteAnimationClip> m_AnimationClips = new List<tk2dSpriteAnimationClip>();
             
             foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips) {

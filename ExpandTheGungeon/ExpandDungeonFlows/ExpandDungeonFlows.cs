@@ -50,8 +50,15 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             dungeon = null;
             foreach (DungeonFlowNode node in m_AssignedFlow.AllNodes) {
                 if (node.roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
-                    node.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
-                    useFallBack = false;
+                    // If doublebeholstertable isn't null that means player has custom glitch chest rooms installed!
+                    // Will use them instead of original room intended for glitch chest floor.
+                    if (ExpandPrefabs.doublebeholstertable) {
+                        node.overrideRoomTable = ExpandPrefabs.doublebeholstertable;
+                        useFallBack = false;
+                    } else if (ExpandPrefabs.doublebeholsterroom01) {
+                        node.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
+                        useFallBack = false;
+                    }
                     break;
                 }
             }
@@ -241,7 +248,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             SewersInjectionData = SewerPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             HollowsInjectionData = CatacombsPrefab.PatternSettings.flows[0].sharedInjectionData[1];
             CastleInjectionData = CastlePrefab.PatternSettings.flows[0].sharedInjectionData[0];
-            
+
             JunkSecretRoomInjector = new ProceduralFlowModifierData() {
                 annotation = "Tiny Secret Room",
                 DEBUG_FORCE_SPAWN = false,

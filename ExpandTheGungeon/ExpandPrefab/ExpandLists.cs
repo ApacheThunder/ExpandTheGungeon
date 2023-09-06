@@ -11,6 +11,46 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<GameObject> CompanionItems = new List<GameObject>();
         public static Dictionary<string, List<string>> SpriteCollections;
 
+        public static readonly List<string> EXSecretDoorCollection = new List<string>() {
+            "EXSecretDoor_Background",
+            "EXSecretDoor_Close_00",
+            "EXSecretDoor_Close_01",
+            "EXSecretDoor_Close_02",
+            "EXSecretDoor_Close_03",
+            "EXSecretDoor_Close_04",
+            "EXSecretDoor_Close_05",
+            "EXSecretDoor_Close_06",
+            "EXSecretDoor_Close_07",
+            "EXSecretDoor_Frame_Bottom",
+            "EXSecretDoor_Frame_NoDecal_Top",
+            "EXSecretDoor_Frame_Top",
+            "EXSecretDoor_Light_Green",
+            "EXSecretDoor_Light_Red",
+            "EXSecretDoor_MinimapIcon",
+            "EXSecretDoor_Open_00",
+            "EXSecretDoor_Open_01",
+            "EXSecretDoor_Open_02",
+            "EXSecretDoor_Open_03",
+            "EXSecretDoor_Open_04",
+            "EXSecretDoor_Open_05",
+            "EXSecretDoor_Open_06",
+            "EXSecretDoor_Open_07",
+            "west_biglock_001",
+            "west_biglock_open_001",
+            "west_biglock_open_002",
+            "west_biglock_open_003",
+            "west_biglock_open_004",
+            "west_biglock_open_005",
+            "west_biglock_open_006",
+            "west_biglock_open_007",
+            "west_biglock_open_008",
+            "west_biglock_open_009",
+            "west_biglock_open_010",
+            "west_biglock_open_011",
+            "west_biglock_open_012",
+            "west_biglock_open_013"
+        };
+
         public static readonly List<string> EXGungeoneerMimicCollection = new List<string>() {
             "PlayerMimicMirror_Base",
             "PlayerMimicMirror_Broken",
@@ -277,7 +317,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "portable_elevator",
             "portableship",
             "portableship_alt",
-            "clownfriend"
+            "clownfriend",
+            "west_key_001",
+            "west_key_minimap"
         };
 
         public static readonly List<string> ClownkinCollection = new List<string> {

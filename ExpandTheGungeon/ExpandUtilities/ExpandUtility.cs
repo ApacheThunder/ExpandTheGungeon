@@ -1756,7 +1756,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return;
         }
 
-        public static RoomHandler AddCustomRuntimeRoom(Dungeon dungeon, IntVector2 dimensions, GameObject roomPrefab, IntVector2? roomWorldPositionOverride = null,  Vector3? roomPrefabPositionOverride = null) {
+        public static RoomHandler AddCustomRuntimeRoom(Dungeon dungeon, IntVector2 dimensions, GameObject roomPrefab, IntVector2? roomWorldPositionOverride = null,  Vector3? roomPrefabPositionOverride = null, string RoomName = null) {
             IntVector2 RoomPosition = new IntVector2(10, 10);
             if (roomWorldPositionOverride.HasValue) { RoomPosition = roomWorldPositionOverride.Value; }
             IntVector2 intVector = new IntVector2(dungeon.data.Width + RoomPosition.x, RoomPosition.y);
@@ -1776,8 +1776,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     cellData.parentRoom = roomHandler;
                     cellData.nearestRoom = roomHandler;
                     array[p.x][p.y] = cellData;
+                    if (!string.IsNullOrEmpty(RoomName)) { roomHandler.area.PrototypeRoomName = RoomName; }
                     roomHandler.RuntimeStampCellComplex(p.x, p.y, CellType.FLOOR, DiagonalWallType.NONE);
-                    
                 }
             }
             dungeon.data.rooms.Add(roomHandler);

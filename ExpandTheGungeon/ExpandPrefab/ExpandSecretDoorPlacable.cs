@@ -5,6 +5,8 @@ using Dungeonator;
 using ExpandTheGungeon.ExpandUtilities;
 using UnityEngine;
 using ExpandTheGungeon.SpriteAPI;
+using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -40,6 +42,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "EXSecretDoor_Close_07",
         };
 
+        private static readonly List<string> m_EXLockUnlockSprites = new List<string>() {
+            "west_biglock_open_001",
+            "west_biglock_open_002",
+            "west_biglock_open_003",
+            "west_biglock_open_004",
+            "west_biglock_open_005",
+            "west_biglock_open_006",
+            "west_biglock_open_007",
+            "west_biglock_open_008",
+            "west_biglock_open_009",
+            "west_biglock_open_010",
+            "west_biglock_open_011",
+            "west_biglock_open_012",
+            "west_biglock_open_013"
+        };
+
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {
 
             EXSecretDoorAnimation = expandSharedAssets1.LoadAsset<GameObject>("EX_SecretDoor_Animation");
@@ -48,7 +66,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorOpenSprites, "door_open", frameRate: 10);
             ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorCloseSprites, "door_close", frameRate: 10);
-
+            
             EXSecretDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretDoor_MinimapIcon");
             SpriteSerializer.AddSpriteToObject(EXSecretDoorMinimapIcon, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_MinimapIcon");
 
@@ -82,27 +100,35 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SecretDoorHollowComponent.DoorBottomBorderObject = EXSecretDoorHollow_Frame_Bottom;
             m_SecretDoorHollowComponent.DoorBackgroundObject = EXSecretDoorHollow_Background;
             m_SecretDoorHollowComponent.DoorLightObject = EXSecretDoorHollow_Light;
-            
-            GameObject m_RatLock = ExpandPrefabs.RatJailDoor.GetComponent<InteractableDoorController>().WorldLocks[0].gameObject;
-            
-            tk2dSprite EXLockSprite = EXSecretDoorHollow_Lock.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(EXLockSprite, m_RatLock.GetComponent<tk2dSprite>());
-            ExpandUtility.DuplicateSpriteAnimator(EXSecretDoorHollow_Lock, m_RatLock.GetComponent<tk2dSpriteAnimator>());
-            EXLockSprite.HeightOffGround = -0.3f;
+
+
+            tk2dSprite EXLockSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorHollow_Lock, ExpandPrefabs.EXSecretDoorCollection, "west_biglock_001");
+
+            tk2dSpriteAnimator EXLockAnimator = ExpandUtility.GenerateSpriteAnimator(EXSecretDoorHollow_Lock, playAutomatically: true, ClipFps: 10);
+
+            ExpandUtility.AddAnimation(EXLockAnimator, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), new List<string>() { "west_biglock_001" }, "west_biglock_idle", minFidgetDuration: 1, maxFidgetDuration: 2, frameRate: 10);
+            ExpandUtility.AddAnimation(EXLockAnimator, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_EXLockUnlockSprites, "west_biglock_unlock", minFidgetDuration: 1, maxFidgetDuration: 2, frameRate: 10);
+            EXLockAnimator.DefaultClipId = 0;
+            EXLockAnimator.Library.clips[1].frames[0].triggerEvent = true;
+            EXLockAnimator.Library.clips[1].frames[0].eventAudio = "Play_OBJ_chest_unlock_01";
+
+            EXLockSprite.HeightOffGround = -0.25f;
             
 
-            InteractableLock m_EXLockHollow = EXSecretDoorHollow_Lock.AddComponent<InteractableLock>();
-            m_EXLockHollow.Suppress = m_RatLock.GetComponent<InteractableLock>().Suppress;
-            m_EXLockHollow.lockMode = InteractableLock.InteractableLockMode.RAT_REWARD;
-            m_EXLockHollow.JailCellKeyId = m_RatLock.GetComponent<InteractableLock>().JailCellKeyId;
-            m_EXLockHollow.IdleAnimName = m_RatLock.GetComponent<InteractableLock>().IdleAnimName;
-            m_EXLockHollow.UnlockAnimName = m_RatLock.GetComponent<InteractableLock>().UnlockAnimName;
-            m_EXLockHollow.NoKeyAnimName = m_RatLock.GetComponent<InteractableLock>().NoKeyAnimName;
-            m_EXLockHollow.SpitAnimName = m_RatLock.GetComponent<InteractableLock>().SpitAnimName;
-            m_EXLockHollow.BustedAnimName = m_RatLock.GetComponent<InteractableLock>().BustedAnimName;
-            m_SecretDoorHollowComponent.Lock = m_EXLockHollow;
+            ExpandInteractableLock m_EXLockHollow = EXSecretDoorHollow_Lock.AddComponent<ExpandInteractableLock>();
+            m_EXLockHollow.Suppress = false;
+            m_EXLockHollow.lockMode = ExpandInteractableLock.InteractableLockMode.CUSTOMKEY;
+            m_EXLockHollow.KeyItemID = ExpandKeyBulletPickup.OldKeyID;
+            m_EXLockHollow.IdleAnimName = "west_lock_idle";
+            m_EXLockHollow.UnlockAnimName = "west_biglock_unlock";
+            m_EXLockHollow.NoKeyAnimName = string.Empty;
+            m_EXLockHollow.SpitAnimName = string.Empty;
+            m_EXLockHollow.BustedAnimName = string.Empty;
+            m_SecretDoorHollowComponent.EXLock = m_EXLockHollow;
             EXSecretDoor_Hollow.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
-            
+
+            m_SecretDoorHollowComponent.UsesEXLock = true;
+
             EXSecretDoor_Hollow_Unlocked = expandSharedAssets1.LoadAsset<GameObject>("EX_Secret_Door_Hollow_Unlocked");
             GameObject EXSecretDoorHollowUnlocked_Frame_Top = EXSecretDoor_Hollow_Unlocked.transform.Find("FrameTop").gameObject;
             GameObject EXSecretDoorHollowUnlocked_Frame_Bottom = EXSecretDoor_Hollow_Unlocked.transform.Find("FrameBottom").gameObject;
@@ -231,7 +257,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             isPassable = true;
 
             ManuallyAssigned = false;
-            
+            UsesEXLock = false;
+
             m_IsRecievingPlayer = false;
             m_Disabled = false;
             m_InUse = false;
@@ -240,6 +267,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         public bool ManuallyAssigned;
+        public bool UsesEXLock;
 
         [NonSerialized]
         public bool m_IsRecievingPlayer;
@@ -253,6 +281,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         [NonSerialized]
         public bool m_WaitingForPlayer;
 
+        public ExpandInteractableLock EXLock;
         public InteractableLock Lock;
         public GameObject MinimapIcon;
         public GameObject DoorTopBorderObject;
@@ -280,7 +309,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         private bool m_IsLocked {
             get {
-                if (m_spawnUnlocked) { return false; } else if (Lock && (Lock.IsBusted | Lock.IsLocked)) { return true; }
+                if (m_spawnUnlocked) {
+                    return false;
+                } else if (!UsesEXLock && Lock && (Lock.IsBusted | Lock.IsLocked)) {
+                    return true;
+                } else if (UsesEXLock && EXLock && (EXLock.IsBusted | EXLock.IsLocked)) {
+                    return true;
+                }
                 return false;
             }    
         }
@@ -300,9 +335,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (!specRigidbody) { m_Disabled = true; yield break; }
 
-            if (!m_spawnUnlocked && Lock) {
-                m_parentRoom.RegisterInteractable(Lock);
-                Lock.OnUnlocked = MakeReadyForPlayer;
+            if (!m_spawnUnlocked) {
+                if (Lock) {
+                    m_parentRoom.RegisterInteractable(Lock);
+                    Lock.OnUnlocked = MakeReadyForPlayer;
+                } else if (EXLock) {
+                    m_parentRoom.RegisterInteractable(EXLock);
+                    EXLock.OnUnlocked = MakeReadyForPlayer;
+                }
             }
 
             if (MinimapIcon) {
@@ -347,7 +387,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             DoorBottomBorderObject.transform.SetParent(room.hierarchyParent, true);
             DoorBackgroundObject.transform.SetParent(room.hierarchyParent, true);
 
-            if (!Lock) { m_spawnUnlocked = true; }
+            if (!Lock && !EXLock) { m_spawnUnlocked = true; }
 
             m_doorLightSprite = DoorLightObject.GetComponent<tk2dSprite>();
 
@@ -429,6 +469,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         private IEnumerator HandleOpen() {
+            if (UsesEXLock && EXLock) {
+                while (EXLock.gameObject.activeSelf) { yield return null; }
+            } else if (Lock) {
+                while (Lock.gameObject.activeSelf) { yield return null; }
+            }
             if (spriteAnimator) {
                 spriteAnimator.Play("door_open");
                 while (spriteAnimator.IsPlaying("door_open")) { yield return null; }

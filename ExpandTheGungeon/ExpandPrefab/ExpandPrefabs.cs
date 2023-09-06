@@ -132,6 +132,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable basic_special_rooms;
         public static GenericRoomTable winchesterroomtable;
         public static GenericRoomTable boss_foyertable;
+        public static GenericRoomTable doublebeholstertable;
 
         // Dungeon Specific Room Tables (from Dungeon AssetBundles)
         public static GenericRoomTable SewersRoomTable;
@@ -492,6 +493,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             paradox_04_copy = sharedAssets2.LoadAsset<PrototypeDungeonRoom>("paradox_04 copy");
             blobulordroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("BlobulordRoom01");
             doublebeholsterroom01 = ExpandDungeonFlow.LoadOfficialFlow("Secret_DoubleBeholster_Flow").AllNodes[2].overrideExactRoom;
+            // Always null check this. New version of RAT allows players to create custom glitch floor boss rooms and this is only valid if they have those rooms installed!
+            doublebeholstertable = ExpandDungeonFlow.LoadOfficialFlow("Secret_DoubleBeholster_Flow").AllNodes[2].overrideRoomTable;
             bossstatuesroom01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("bossstatuesroom01");
             oldbulletking_room_01 = sharedAssets.LoadAsset<PrototypeDungeonRoom>("oldbulletking_room_01");
             DragunBossFoyerRoom = ForgeDungeonPrefab.PatternSettings.flows[0].AllNodes[1].overrideExactRoom;

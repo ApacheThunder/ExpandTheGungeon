@@ -33,9 +33,9 @@ namespace ExpandTheGungeon.ItemAPI {
 			}*/
 		}
         
-        public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture) {
+        /*public static void AddSpriteToObject(GameObject targetObject, Texture2D sourceTexture) {
             SpriteBuilder.SpriteFromTexture(sourceTexture, targetObject);
-        }
+        }*/
 
         public static void SetupItem(PickupObject item, string shortDesc, string longDesc, string AmmonomiconSpriteName, string idPool = "expandItems") {
 			try {

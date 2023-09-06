@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Dungeonator;
 using UnityEngine;
 
 
@@ -86,12 +83,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     break;
                 case InteractableLockMode.CUSTOMKEY:
-                    for (int j = 0; j < player.additionalItems.Count; j++) {
-                        if (player.additionalItems[j].PickupObjectId == KeyItemID) {
-                            HasRequiredKey = true;
-                            Destroy(player.additionalItems[j].gameObject);
-                            player.additionalItems.RemoveAt(j);
-                        }
+                    if (player.HasPassiveItem(KeyItemID)) {
+                        player.RemovePassiveItem(KeyItemID);
+                        HasRequiredKey = true;
                     }
                     break;
             }

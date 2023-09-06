@@ -945,7 +945,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };
-            Expand_Jungle_Boss.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            Expand_Jungle_Boss.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
             Expand_Jungle_Boss.usesProceduralLighting = false;
             Expand_Jungle_Boss.usesProceduralDecoration = false;
             Expand_Jungle_Boss.rewardChestSpawnPosition = new IntVector2(25, 20);
@@ -1004,7 +1004,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENTER_WITH_ENEMIES, RoomEventTriggerAction.SEAL_ROOM),
                 new RoomEventDefinition(RoomEventTriggerCondition.ON_ENEMIES_CLEARED, RoomEventTriggerAction.UNSEAL_ROOM),
             };
-            Expand_Belly_BossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            Expand_Belly_BossRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
             Expand_Belly_BossRoom.usesProceduralDecoration = false;
             Expand_Belly_BossRoom.rewardChestSpawnPosition = new IntVector2(18, 23);
             Expand_Belly_BossRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
@@ -1781,7 +1781,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     numberTimesEncounteredRequired = 0
                 }
             };
-            Expand_West_WestBrosBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            Expand_West_WestBrosBossRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
             RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(0, 14), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(39, 14), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(Expand_West_WestBrosBossRoom, new Vector2(19, 0), DungeonData.Direction.SOUTH);
@@ -2517,7 +2517,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CreepyGlitchRoom.rewardChestSpawnPosition = new IntVector2(12, 19);
             CreepyGlitchRoom.Width = 26;
             CreepyGlitchRoom.Height = 26;
-            CreepyGlitchRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            CreepyGlitchRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(0, 13), DungeonData.Direction.WEST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(27, 13), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(CreepyGlitchRoom, new Vector2(13, 1), DungeonData.Direction.SOUTH);
@@ -2611,7 +2611,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GungeoneerMimicBossRoom.Width = 32;
             GungeoneerMimicBossRoom.Height = 32;
             GungeoneerMimicBossRoom.overrideRoomVisualType = 2;
-            GungeoneerMimicBossRoom.associatedMinimapIcon = ExpandPrefabs.doublebeholsterroom01.associatedMinimapIcon;
+            GungeoneerMimicBossRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
             // RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(0, 16), DungeonData.Direction.WEST);
             // RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(33, 16), DungeonData.Direction.EAST);
             RoomBuilder.AddExitToRoom(GungeoneerMimicBossRoom, new Vector2(16, 33), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);

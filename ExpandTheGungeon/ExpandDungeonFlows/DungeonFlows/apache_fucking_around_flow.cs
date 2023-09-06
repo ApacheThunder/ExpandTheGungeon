@@ -32,7 +32,13 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             DungeonFlowNode m_EntranceNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.ENTRANCE, ExpandPrefabs.elevator_entrance);
             DungeonFlowNode m_ExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.tiny_exit);
-            DungeonFlowNode m_BossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandPrefabs.doublebeholsterroom01);
+            // DungeonFlowNode m_BossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandPrefabs.doublebeholsterroom01);
+            DungeonFlowNode m_BossNode;
+            if (ExpandPrefabs.doublebeholstertable) {
+                m_BossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, overrideTable: ExpandPrefabs.doublebeholstertable);
+            } else {
+                m_BossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandPrefabs.doublebeholsterroom01);
+            }
             DungeonFlowNode m_BossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandPrefabs.boss_foyer);
 
             // First chain of nodes starting off Entrance

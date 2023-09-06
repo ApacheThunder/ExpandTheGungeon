@@ -111,7 +111,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             clockhair.hourAnimator.GetComponent<Renderer>().enabled = false;
             clockhair.minuteAnimator.GetComponent<Renderer>().enabled = false;
             clockhair.secondAnimator.GetComponent<Renderer>().enabled = false;
-            //Setup Daeth Animation Here;
+            //Setup Death Animation Here;
             if (m_GungeoneerMimicBossController && m_GungeoneerMimicBossController.m_Player) {
                 // aiActor.aiAnimator.enabled = false;
                 if (m_GungeoneerMimicBossController.m_Player.UseArmorlessAnim) {

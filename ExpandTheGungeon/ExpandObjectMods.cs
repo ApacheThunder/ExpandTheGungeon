@@ -7,6 +7,7 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon {
 
@@ -17,12 +18,6 @@ namespace ExpandTheGungeon {
                         
             if (!GameManager.Instance | !GameManager.Instance.Dungeon) { return; }
             
-            if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.CASTLEGEON) {
-                List<AGDEnemyReplacementTier> m_cachedReplacementTiers = GameManager.Instance.EnemyReplacementTiers;
-                // Add some of the new FTA enemies to the old secret floors
-                if (m_cachedReplacementTiers != null) { ExpandEnemyReplacements.Init(m_cachedReplacementTiers); }
-            }
-
             ExpandStaticReferenceManager.PopulateLists();
 
             InitObjectMods(GameManager.Instance.Dungeon);
@@ -42,6 +37,20 @@ namespace ExpandTheGungeon {
                 if (ThunderstormPlacable) {
                     ThunderstormPlacable.RainIntensity = ExpandSettings.JungleRainIntensity;
                     ThunderstormPlacable.ConfigureOnPlacement(null);
+                }
+            }
+
+            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON && dungeon.data != null && dungeon.data.rooms != null) {
+                foreach (RoomHandler room in dungeon.data.rooms) {
+                    if (room != null && room.area != null && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                        foreach (AIActor enemy in room.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) {
+                            if (enemy && enemy.EnemyGuid == ExpandEnemyDatabase.ParasiteBossGUID) {
+                                enemy.AdditionalSafeItemDrops = new List<PickupObject>() { ExpandKeyBulletPickup.OldKeyObject.GetComponent<ExpandKeyBulletPickup>() };
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
 

@@ -8,11 +8,11 @@ namespace ExpandTheGungeon.ItemAPI {
 
 	public static class SpriteBuilder {
 
-        private static tk2dSpriteCollectionData itemCollection = PickupObjectDatabase.GetByEncounterName("singularity").sprite.Collection;
+        // private static tk2dSpriteCollectionData itemCollection = PickupObjectDatabase.GetByEncounterName("singularity").sprite.Collection;
 
         public static tk2dSpriteCollectionData ammonomiconCollection = AmmonomiconController.ForceInstance.EncounterIconCollection;
         
-        public static GameObject SpriteFromTexture(Texture2D existingTexture, GameObject obj = null) {
+        /*public static GameObject SpriteFromTexture(Texture2D existingTexture, GameObject obj = null) {
 			bool flag = obj == null;
 			if (flag) { obj = new GameObject(); }
 			tk2dSprite tk2dSprite = obj.AddComponent<tk2dSprite>();
@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ItemAPI {
 			tk2dSprite.SortingOrder = 0;
 			obj.GetComponent<BraveBehaviour>().sprite = tk2dSprite;
 			return obj;
-		}
+		}*/
         
         public static int AddSpriteToCollection(Texture2D existingTexture, tk2dSpriteCollectionData collection) {
 			tk2dSpriteDefinition tk2dSpriteDefinition = ConstructDefinition(existingTexture);

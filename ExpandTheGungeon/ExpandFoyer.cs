@@ -1,7 +1,7 @@
 ﻿using Dungeonator;
 using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
-using ExpandTheGungeon.ExpandUtilities;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using UnityEngine;
@@ -47,7 +47,8 @@ namespace ExpandTheGungeon {
                     if (ExpandSettings.EnableTestDungeonFlow) {
                         GameManager.Instance.InjectedFlowPath = ExpandSettings.TestFlow;
                         GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
-                    }
+                    }                    
+                    if (GameManager.Instance.EnemyReplacementTiers != null) { ExpandEnemyReplacements.Init(GameManager.Instance.EnemyReplacementTiers); }
                     m_State = State.SpawnObjects;
                     return;
                 case State.SpawnObjects:

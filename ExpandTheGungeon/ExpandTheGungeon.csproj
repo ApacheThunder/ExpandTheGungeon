@@ -189,13 +189,13 @@
     <Compile Include="ExpandPrefab\ExpandBootlegRoomPlaceable.cs" />
     <Compile Include="ExpandPrefab\ExpandEnemyDatabase.cs" />
     <Compile Include="ExpandPrefab\ExpandDungeonPrefabs.cs" />
-    <Compile Include="ExpandPrefab\ExpandGungeoneerMimicBossPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandSawBladeTrapPlaceable.cs" />
     <Compile Include="ExpandPrefab\ExpandSecretDoorPlacable.cs" />
     <Compile Include="ExpandPrefab\ExpandWesternBrosPrefabBuilder.cs" />
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\ClownBullets.cs" />
     <Compile Include="ItemAPI\Items\ClownFriend.cs" />
+    <Compile Include="ItemAPI\Items\OldKey.cs" />
     <Compile Include="ItemAPI\Items\PortableElevator.cs" />
     <Compile Include="ItemAPI\Items\PortableShip.cs" />
     <Compile Include="ItemAPI\Items\SonicBox.cs" />

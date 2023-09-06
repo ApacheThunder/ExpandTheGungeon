@@ -88,7 +88,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 roomCategory = PrototypeDungeonRoom.RoomCategory.CONNECTOR,
                 percentChance = 1f,
                 priority = DungeonFlowNode.NodePriority.MANDATORY,
-                overrideExactRoom = ExpandPrefabs.doublebeholsterroom01,
+                overrideExactRoom = null,
                 capSubchain = false,
                 limitedCopiesOfSubchain = false,
                 maxCopiesOfSubchain = 1,
@@ -112,6 +112,12 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 loopTargetIsOneWay = false,
                 guidAsString = "a0098d24-7733-4baf-82c0-11ce3e068261"
             };
+
+            if (ExpandPrefabs.doublebeholstertable) {
+                GlitchFlowNode_02.overrideRoomTable = ExpandPrefabs.doublebeholstertable;
+            } else {
+                GlitchFlowNode_02.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
+            }
 
             DungeonFlowNode GlitchFlowNode_03 = new DungeonFlowNode(m_CachedFlow) {
                 isSubchainStandin = false,

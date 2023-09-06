@@ -5721,7 +5721,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetAIActor.healthHaver.SetHealthMaximum(1200);
 
             m_TargetAIActor.RegenerateCache();
-
+            
             if (isFakePrefab) {
                 AddEnemyToDatabase(m_CachedTargetObject, ParasiteBossGUID, true);
                 FakePrefab.MarkAsFakePrefab(m_CachedTargetObject);
