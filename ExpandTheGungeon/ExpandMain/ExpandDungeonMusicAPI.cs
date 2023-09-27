@@ -27,7 +27,8 @@ namespace ExpandTheGungeon.ExpandMain {
         // Dictionary for custom level music available to the mod. string value is the track name, the bool is for if loop events were setup or not.
         public static readonly Dictionary<string, bool> CustomLevelMusic = new Dictionary<string, bool>() {
             ["Play_EX_MUS_Belly_01"] = true,
-            ["Play_EX_MUS_Jungle_01"] = true
+            ["Play_EX_MUS_Jungle_01"] = true,
+            ["Play_EX_MUS_DeepDungeon_01"] = false
         };
 
         public static readonly List<string> CustomWestFloorMusic = new List<string>() {
@@ -43,7 +44,8 @@ namespace ExpandTheGungeon.ExpandMain {
         // All individual stop events for custom room music.
         public static readonly List<string> CustomRoomMusicStopEvents = new List<string>() {
             "Stop_EX_MUS_BootlegMusic_01",
-            "Stop_EX_UnicornMusic_01"
+            "Stop_EX_UnicornMusic_01",
+            "Stop_EX_MUS_DeepDungeon_01"
         };
 
         public static readonly List<GlobalDungeonData.ValidTilesets> TilesetsWithCustomShopSecretMusic = new List<GlobalDungeonData.ValidTilesets>() {

@@ -3086,6 +3086,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             targetActor.CanTargetPlayers = false;
             targetActor.CanTargetEnemies = true;
             targetActor.IgnoreForRoomClear = true;
+            targetActor.CanDropCurrency = false;
             targetActor.HitByEnemyBullets = blocksEnemyBullets;
             if (!targetIsNewAIActor) { targetActor.name = "CompanionPet"; }
             if (ApplyCharmedColorOverride) { targetActor.RegisterOverrideColor(new Color(0.5f, 0, 0.5f), "Chaos Charm Effect"); }

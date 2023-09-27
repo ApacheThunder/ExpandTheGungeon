@@ -45,6 +45,7 @@
 				<Event Id="2195148189" Name="Play_EX_MUS_BellyDevour_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyDevour_01"/>
 				<Event Id="3939060724" Name="Play_EX_MUS_BellyEntrance_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyEntrance_01"/>
 				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
+				<Event Id="3099192838" Name="Play_EX_MUS_DeepDungeon_01" ObjectPath="\Events\Weapons\Play_EX_MUS_DeepDungeon_01"/>
 				<Event Id="1782047987" Name="Play_EX_MUS_Jungle_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01"/>
 				<Event Id="1013427843" Name="Play_EX_MUS_Jungle_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Calm"/>
 				<Event Id="3798939044" Name="Play_EX_MUS_Jungle_01_Intro" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Intro"/>
@@ -81,6 +82,7 @@
 				<Event Id="3980046948" Name="Stop_EX_MUS_BellyMonster_Devour_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Devour_01"/>
 				<Event Id="2561576157" Name="Stop_EX_MUS_BellyMonster_Entrance_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Entrance_01"/>
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
+				<Event Id="866377016" Name="Stop_EX_MUS_DeepDungeon_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_DeepDungeon_01"/>
 				<Event Id="45318251" Name="Stop_EX_MUS_ShotsFired_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_ShotsFired_01"/>
 				<Event Id="3333407891" Name="Stop_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Stop_EX_RickRollMusic_01"/>
 				<Event Id="2623135779" Name="Stop_EX_SFX_All" ObjectPath="\Events\Weapons\Stop_EX_SFX_All"/>
@@ -150,6 +152,10 @@
 				<File Id="369781795" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpowder_AD29F36A.wem</Path>
+				</File>
+				<File Id="373051574" Language="SFX">
+					<ShortName>Deep_Dark_Dungeon.wav</ShortName>
+					<Path>SFX\Deep_Dark_Dungeon_AD29F36A.wem</Path>
 				</File>
 				<File Id="376140418" Language="SFX">
 					<ShortName>SonicSpinDashCharge.wav</ShortName>

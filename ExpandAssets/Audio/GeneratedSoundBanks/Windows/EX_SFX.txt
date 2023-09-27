@@ -14,6 +14,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	633823961	Stop_EX_TableAssassin_01			\Weapons\Stop_EX_TableAssassin_01	
 	761530598	Play_EX_MUS_Jungle_01_Secret			\Weapons\Play_EX_MUS_Jungle_01_Secret	
 	797577896	Play_EX_CorruptedObjectDamage_01			\Weapons\Play_EX_CorruptedObjectDamage_01	
+	866377016	Stop_EX_MUS_DeepDungeon_01			\Weapons\Stop_EX_MUS_DeepDungeon_01	
 	975922376	Play_EX_BalloonPop_01			\Weapons\Play_EX_BalloonPop_01	
 	975922378	Play_EX_BalloonPop_03			\Weapons\Play_EX_BalloonPop_03	
 	975922379	Play_EX_BalloonPop_02			\Weapons\Play_EX_BalloonPop_02	
@@ -57,6 +58,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	2950242728	Play_EX_CorruptionRoomTransition_02			\Weapons\Play_EX_CorruptionRoomTransition_02	
 	2950242731	Play_EX_CorruptionRoomTransition_01			\Weapons\Play_EX_CorruptionRoomTransition_01	
 	3031994881	Stop_EX_SonicSpinDashRelease_01			\Weapons\Stop_EX_SonicSpinDashRelease_01	
+	3099192838	Play_EX_MUS_DeepDungeon_01			\Weapons\Play_EX_MUS_DeepDungeon_01	
 	3112632927	Play_EX_CorruptedObjectTransform_01			\Weapons\Play_EX_CorruptedObjectTransform_01	
 	3121071097	Play_EX_BellyDoor_Unseal			\Weapons\Play_EX_BellyDoor_Unseal	
 	3333407891	Stop_EX_RickRollMusic_01			\Weapons\Stop_EX_RickRollMusic_01	
@@ -99,6 +101,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	282880781	BootlegGungeonMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\BootlegGungeonMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\BootlegGungeonMusic		1462202
 	352764876	Balloonpop1	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Balloonpop1_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop1		4365
 	369781795	Tummy_Full_of_Gunpowder	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder		5016997
+	373051574	Deep_Dark_Dungeon	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Deep_Dark_Dungeon_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Deep_Dark_Dungeon		3232535
 	376140418	SonicSpinDashCharge	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicSpinDashCharge_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashCharge		20888
 	385469871	Balloonpop2	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Balloonpop2_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop2		1734
 	389740606	UnicornMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\UnicornMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\UnicornMusic		745599

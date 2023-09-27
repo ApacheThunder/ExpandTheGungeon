@@ -1150,6 +1150,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.MovementSpeed = 5;
             // m_CachedAIActor.PreventFallingInPitsEver = true;
             m_CachedAIActor.SetIsFlying(true, "Flying Enemy", true, true);
+            m_CachedAIActor.IgnoreForRoomClear = true;
+
 
             m_CachedAIActor.specRigidbody.PixelColliders.Clear();
             m_CachedAIActor.specRigidbody.PixelColliders.Add(
@@ -4737,6 +4739,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.specRigidbody.PixelColliders[1].ManualOffsetX = 8;
             m_CachedAIActor.aiShooter.AllowTwoHands = true;
             m_CachedAIActor.aiShooter.handObject = m_CachedEnemyActor2.aiShooter.handObject;
+            m_CachedAIActor.CanDropCurrency = false;
 
             if (!m_CachedEnemyActor) {
                 if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
@@ -5525,6 +5528,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 CachedCultistCompanion.aiShooter.AllowTwoHands = true;
             }
 
+            CachedCultistCompanion.CanDropCurrency = false;
+            CachedCultistCompanion.IgnoreForRoomClear = true;
             CachedCultistCompanion.DoDustUps = true;
             CachedCultistCompanion.DustUpInterval = 0.4f;
             CachedCultistCompanion.MovementSpeed = 3.5f;

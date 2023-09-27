@@ -266,6 +266,7 @@
 						<Action Name="" ID="{357442A9-6BF7-4009-90DC-5055508E30BA}" ShortID="23703235">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -495,6 +496,17 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{44ABFFFF-9ACB-4E81-BF3E-34C583B31E0A}" ShortID="801667695">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Deep_Dark_Dungeon" ID="{35887BD4-85E9-4427-B6F9-502EED84346F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -684,6 +696,7 @@
 						<Action Name="" ID="{9FF6A201-8441-45AE-A89B-2034B433D2CB}" ShortID="738005227">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -1342,6 +1355,37 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Tummy_Full_of_Gunpowder_Devour" ID="{60342814-4BCA-4B9C-BFDA-FAA6570C68E8}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_DeepDungeon_01" ID="{2725FE75-29F6-4F12-B1A3-0A8459FEC86D}">
+					<ChildrenList>
+						<Action Name="" ID="{CFD5B1AA-698D-4E3D-AACB-FEA20F054B4E}" ShortID="217598111">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Deep_Dark_Dungeon" ID="{35887BD4-85E9-4427-B6F9-502EED84346F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_DeepDungeon_01" ID="{409F1015-8330-40C4-A094-1032E8446F03}">
+					<ChildrenList>
+						<Action Name="" ID="{3A6ECACD-6F2C-4B42-8977-9F2D1C5E44B2}" ShortID="465699783">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Deep_Dark_Dungeon" ID="{35887BD4-85E9-4427-B6F9-502EED84346F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

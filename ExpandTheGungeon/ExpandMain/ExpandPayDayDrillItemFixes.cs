@@ -52,7 +52,9 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (newRoom.GetActiveEnemiesCount(RoomHandler.ActiveEnemyType.All) > 0) {
                     List<AIActor> activeEnemies = newRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);
                     for (int j = 0; j < activeEnemies.Count; j++) {
-                        if (activeEnemies[j].IsNormalEnemy) { activeEnemies[j].EraseFromExistence(false); }
+                        if (activeEnemies[j].IsNormalEnemy | (activeEnemies[j].gameObject.GetComponent<CompanionController>() && !activeEnemies[j].CompanionOwner)) {
+                            activeEnemies[j].EraseFromExistence(false);
+                        }
                     }
                 }
             }

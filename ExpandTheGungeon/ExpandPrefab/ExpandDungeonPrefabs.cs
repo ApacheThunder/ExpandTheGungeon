@@ -697,7 +697,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightIntensity = 4;
             dungeon.PlayerLightRadius = 4;
             dungeon.PrefabsToAutoSpawn = new GameObject[0];            
-            dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
+            dungeon.musicEventName = "Play_EX_MUS_DeepDungeon_01";
             
             FinalScenarioPilotPrefab = null;
             MinesDungeonPrefab = null;
@@ -2494,7 +2494,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightColor = new Color(0.985294f, 0.719884f, 0.383975f, 1);
             dungeon.PlayerLightIntensity = 3.8f;
             dungeon.PlayerLightRadius = 4.5f;
-            dungeon.musicEventName = "Play_MUS_sewer_theme_01";
+            dungeon.musicEventName = "Play_EX_MUS_DeepDungeon_01";
 
             NakatomiPrefab = null;
             SewersPrefab = null;
