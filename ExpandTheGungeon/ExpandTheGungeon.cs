@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.13";
+        public const string VERSION = "2.9.14";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -34,6 +34,7 @@ namespace ExpandTheGungeon {
         
         public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         public const string ModAssetBundleName = "ExpandSharedAuto";
+        public const string ModAudioAssetBundleName = "ExpandAudio";
         public const string ModSpriteAssetBundleName = "ExpandSpritesBase";
         public const string ModSoundBankName = "EX_SFX";
         public const string ConsoleCommandName = "expand";
@@ -142,12 +143,13 @@ namespace ExpandTheGungeon {
             }
 
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
+            AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ModAudioAssetBundleName);
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
 
-            ExpandAssets.InitAudio(expandSharedAssets1, ModSoundBankName);
+            ExpandAssets.InitAudio(expandAudio, ModSoundBankName);
             // Init Custom GameLevelDefinitions
             ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
             // Init Custom Sprite Collections

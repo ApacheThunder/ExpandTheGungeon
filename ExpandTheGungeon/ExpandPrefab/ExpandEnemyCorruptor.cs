@@ -5718,7 +5718,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                if (CachedEnemyActor.EnemyGuid == "4d37ce3d666b4ddda8039929225b7ede") {
                     CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
                     ExpandExplodeOnDeath CachedExploder = CachedGlitchEnemyActor.healthHaver.GetComponent<ExpandExplodeOnDeath>();
-                    CachedExploder.deathType = OnDeathBehavior.DeathType.Death;
+					CachedExploder.deathType = OnDeathBehavior.DeathType.Death;
                 } else {
                     if (UnityEngine.Random.value <= 0.2f) { CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>(); }
                     ExpandExplodeOnDeath CachedExploder = CachedGlitchEnemyActor.healthHaver.GetComponent<ExpandExplodeOnDeath>();
@@ -5747,7 +5747,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.healthHaver.minimumHealth = CachedEnemyActor.healthHaver.minimumHealth;
             CachedGlitchEnemyActor.healthHaver.OnlyAllowSpecialBossDamage = false;
             CachedGlitchEnemyActor.healthHaver.PreventAllDamage = false;
-            CachedGlitchEnemyActor.IsNormalEnemy = true;
+			CachedGlitchEnemyActor.IsNormalEnemy = true;
             CachedGlitchEnemyActor.ImmuneToAllEffects = false;
             CachedGlitchEnemyActor.healthHaver.spawnBulletScript = CachedEnemyActor.healthHaver.spawnBulletScript;
             CachedGlitchEnemyActor.healthHaver.SuppressDeathSounds = CachedEnemyActor.healthHaver.SuppressDeathSounds;

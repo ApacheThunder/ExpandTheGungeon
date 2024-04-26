@@ -2118,7 +2118,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>7</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2322,7 +2322,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>7</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2355,13 +2355,13 @@
 						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 						<Property Name="Volume" Type="Real64">
 							<RTPCList>
-								<RTPC Name="" ID="{7E326CB4-1D0A-4E27-A248-B34AFAB2BC72}" ShortID="779675501">
+								<RTPC Name="" ID="{69C87036-5034-48D6-B0E2-BCE851254424}" ShortID="379142602">
 									<ReferenceList>
 										<Reference Name="ControlInput">
 											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
 										</Reference>
 									</ReferenceList>
-									<Curve Name="" ID="{EB94EE59-DEE8-45CA-9FE4-91BDAC3E6203}">
+									<Curve Name="" ID="{6583F161-FE6B-4249-8739-151C54052972}">
 										<PropertyList>
 											<Property Name="Flags" Type="int32" Value="3"/>
 										</PropertyList>
@@ -2373,7 +2373,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>6.99999999999997</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2406,13 +2406,13 @@
 						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 						<Property Name="Volume" Type="Real64">
 							<RTPCList>
-								<RTPC Name="" ID="{C6AE814D-02DB-4C39-AFAF-975C05AF178A}" ShortID="560677287">
+								<RTPC Name="" ID="{83DC9A13-A72E-4DBA-AFCF-5CAF6DB2829E}" ShortID="74903819">
 									<ReferenceList>
 										<Reference Name="ControlInput">
 											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
 										</Reference>
 									</ReferenceList>
-									<Curve Name="" ID="{5BF239B9-626D-4B94-86CD-D61C9B0CC855}">
+									<Curve Name="" ID="{7FE4BD47-506C-4560-83FA-FC5957ADAB5C}">
 										<PropertyList>
 											<Property Name="Flags" Type="int32" Value="3"/>
 										</PropertyList>
@@ -2424,7 +2424,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>6.99999999999997</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2456,13 +2456,13 @@
 						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 						<Property Name="Volume" Type="Real64">
 							<RTPCList>
-								<RTPC Name="" ID="{13DD39A7-C6A3-449F-86BD-B202786FADE3}" ShortID="770875367">
+								<RTPC Name="" ID="{3000046B-CE04-4608-AD5B-F3481F8E3AF6}" ShortID="61325296">
 									<ReferenceList>
 										<Reference Name="ControlInput">
 											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
 										</Reference>
 									</ReferenceList>
-									<Curve Name="" ID="{F1AD48BD-1E6D-4DE5-BBA5-9115A0EDCEE9}">
+									<Curve Name="" ID="{8E70B14E-A964-435C-9D06-8E2BDD2DE06C}">
 										<PropertyList>
 											<Property Name="Flags" Type="int32" Value="3"/>
 										</PropertyList>
@@ -2474,7 +2474,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>6.99999999999997</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2733,13 +2733,13 @@
 						</Property>
 						<Property Name="Volume" Type="Real64">
 							<RTPCList>
-								<RTPC Name="" ID="{AFFA1AA4-8CB7-41E1-AAE2-B9086631160D}" ShortID="94088388">
+								<RTPC Name="" ID="{00E6E272-9FCC-4258-A06B-25DF36DDBD66}" ShortID="157564249">
 									<ReferenceList>
 										<Reference Name="ControlInput">
 											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
 										</Reference>
 									</ReferenceList>
-									<Curve Name="" ID="{E8B9458A-484F-426E-9E95-DED95B2F8493}">
+									<Curve Name="" ID="{D18ECCE3-C337-431F-AF0A-AAF47CC0E500}">
 										<PropertyList>
 											<Property Name="Flags" Type="int32" Value="3"/>
 										</PropertyList>
@@ -2751,7 +2751,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>6.99999999999997</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2813,7 +2813,7 @@
 											</Point>
 											<Point>
 												<XPos>100</XPos>
-												<YPos>6</YPos>
+												<YPos>3</YPos>
 												<Flags>37</Flags>
 											</Point>
 										</PointList>
@@ -2900,6 +2900,377 @@
 					</ChildrenList>
 					<ActiveSourceList>
 						<ActiveSource Name="Deep_Dark_Dungeon" ID="{929E70F0-B42B-46C6-973B-0140F9C76E11}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Lockpick_Cathedral" ID="{7247BB9F-DB6F-40D2-8EA4-1F4A1204426C}" ShortID="571301437">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
+						<Property Name="UseMaxSoundPerInstance" Type="bool">
+							<ValueList>
+								<Value>True</Value>
+							</ValueList>
+						</Property>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{0315A336-2AD9-4DCD-9ED3-0797C285FCA4}" ShortID="60043929">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{68FADCED-CA33-41E9-B0EF-D1638B8B8D82}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Lockpick_Cathedral" ID="{095DB242-C1F6-40DE-A78A-F8211624457D}" ShortID="21307161">
+							<Language>SFX</Language>
+							<AudioFile>Lockpick_Cathedral.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Lockpick_Cathedral" ID="{095DB242-C1F6-40DE-A78A-F8211624457D}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Lockpick_Cathedral_FirstMovement" ID="{DC75A52C-983C-4ADE-A5AE-97F10052A90F}" ShortID="149674880">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{B42198C7-59BF-4931-BC91-4C30319E64A2}" ShortID="647603190">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{2E1727EC-190E-4B76-8227-1F724E5E5B5A}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Lockpick_Cathedral_FirstMovement" ID="{2BDED63D-8C62-4331-BA40-ABED9A3DFE54}" ShortID="112621323">
+							<Language>SFX</Language>
+							<AudioFile>Lockpick_Cathedral_FirstMovement.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Lockpick_Cathedral_FirstMovement" ID="{2BDED63D-8C62-4331-BA40-ABED9A3DFE54}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Lockpick_Cathedral_SecondMovement" ID="{18409613-75C4-4D1A-8CCB-6CE8D4D54E6A}" ShortID="586609391">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{9DD70BFF-254F-4F9A-ACB0-8811A0BB7924}" ShortID="24222126">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{053744E6-2922-4E72-9BD1-8024AA52AB42}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Lockpick_Cathedral_SecondMovement" ID="{9C82F3DB-1B85-4005-B649-0383B69E3EBA}" ShortID="601901134">
+							<Language>SFX</Language>
+							<AudioFile>Lockpick_Cathedral_SecondMovement.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Lockpick_Cathedral_SecondMovement" ID="{9C82F3DB-1B85-4005-B649-0383B69E3EBA}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Lockpick_Cathedral_ThirdMovement" ID="{65ABE907-30F4-434C-9D49-FD39DE5B997C}" ShortID="589408661">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{D7CE199A-07F9-40A3-A7F0-160220CF4347}" ShortID="25998023">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{8EAB059C-C839-4249-BB7B-8EBA11B9ED30}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Lockpick_Cathedral_ThirdMovement" ID="{F903A5B9-38FE-4F70-B205-E75AD8FF2AE0}" ShortID="729324848">
+							<Language>SFX</Language>
+							<AudioFile>Lockpick_Cathedral_ThirdMovement.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Lockpick_Cathedral_ThirdMovement" ID="{F903A5B9-38FE-4F70-B205-E75AD8FF2AE0}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Tummy_Full_of_Gunpowder_Secret" ID="{11197391-BCB8-42C7-A222-5F522FD9B16B}" ShortID="559362914">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{B5FFA0E6-71B1-4F08-9231-2CDE8EA83077}" ShortID="174482052">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{8B8C058B-84AB-4283-A8CA-AF5E95D82692}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>6.99999999999997</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Tummy_Full_of_Gunpowder_Secret" ID="{2BB36FBD-B6C2-4F75-BA0E-E17909C55AA7}" ShortID="980031676">
+							<Language>SFX</Language>
+							<AudioFile>Tummy_Full_of_Gunpoweder_Secret.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Tummy_Full_of_Gunpowder_Secret" ID="{2BB36FBD-B6C2-4F75-BA0E-E17909C55AA7}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Cola_flavored_soda" ID="{8AA5F33A-6A40-40D3-AA80-9E2C83855E26}" ShortID="565885739">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{169DCA5B-4C36-4FCD-BA77-EAE50D4B5995}" ShortID="869242408">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{02D4C6DC-FB7C-4790-B3BE-3159CD28179E}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Cola_flavored_soda" ID="{7F5C0B6B-F074-496D-B12E-43F3D07B9D1B}" ShortID="1028827529">
+							<Language>SFX</Language>
+							<AudioFile>Cola_flavored_soda.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Cola_flavored_soda" ID="{7F5C0B6B-F074-496D-B12E-43F3D07B9D1B}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Lockpick_Cathedra_Calm" ID="{B8CFE52A-8DC6-44A1-94EF-6C58139FF7BD}" ShortID="11538074">
+					<PropertyList>
+						<Property Name="EnablePositioning" Type="bool" Value="False"/>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{1196F8F7-C736-4747-9638-0071E8254409}" ShortID="771356598">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_MUS" ID="{04885B81-FA4F-45AC-B986-FE2D17F94622}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{A752399A-B55F-455C-AEC8-16DC0470143F}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Lockpick_Cathedra_Calm" ID="{84BC1B07-69CC-4073-9A08-91C445E2F9D7}" ShortID="133710647">
+							<Language>SFX</Language>
+							<AudioFile>Lockpick_Cathedra_Calm.wav</AudioFile>
+							<ConvertedFileIDList>
+								<File ID="961443732"/>
+							</ConvertedFileIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Lockpick_Cathedra_Calm" ID="{84BC1B07-69CC-4073-9A08-91C445E2F9D7}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>

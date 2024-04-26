@@ -279,7 +279,9 @@
   <ItemGroup>
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandSharedAuto" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandAudio" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_machinepistol_idle_001.png" />
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_pistol_idle_001.png" />

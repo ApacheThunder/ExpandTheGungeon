@@ -2025,9 +2025,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightColor = Color.white;
             dungeon.PlayerLightIntensity = 3;
             dungeon.PlayerLightRadius = 5;
-            // dungeon.musicEventName = string.Empty;
-            dungeon.musicEventName = "Play_MUS_Dungeon_Rat_Theme_01";
-            // dungeon.musicEventName = "Play_MUS_Office_Theme_01";
+            dungeon.musicEventName = "Play_EX_MUS_West_01";
 
             CastlePrefab = null;
             sharedAssets2 = null;

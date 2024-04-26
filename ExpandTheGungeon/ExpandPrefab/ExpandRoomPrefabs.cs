@@ -1587,6 +1587,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_ShrineRoom.QAID = "FF" + UnityEngine.Random.Range(1000, 9999);
             Expand_West_ShrineRoom.GUID = Guid.NewGuid().ToString();
             Expand_West_ShrineRoom.overrideRoomVisualType = 0;
+            Expand_West_ShrineRoom.UseCustomMusic = false;
+            Expand_West_ShrineRoom.UseCustomMusicState = false;
+            Expand_West_ShrineRoom.CustomMusicEvent = string.Empty;
+            Expand_West_ShrineRoom.UseCustomMusicSwitch = false;
+            Expand_West_ShrineRoom.CustomMusicSwitch = string.Empty;
             RoomBuilder.GenerateBasicRoomLayout(Expand_West_ShrineRoom);
 
             Expand_West_WestBrosBossRoom.name = "West Bros Boss Room";

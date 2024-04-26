@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1986574819
+CRC: 2731305875
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,4 +7,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: expandspritesbase
+      Dependencies: {}
+    Info_2:
+      Name: expandaudio
       Dependencies: {}

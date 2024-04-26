@@ -54,18 +54,30 @@ namespace ExpandTheGungeon {
         public static void InitCustomAssetBundles(string nameSpace = null) {
             Dictionary<string, AssetBundle> m_AssetBundles = ReflectionHelpers.ReflectGetField<Dictionary<string, AssetBundle>>(typeof(ResourceManager), "LoadedBundles");
             AssetBundle m_ExpandSharedAssets1 = null;
+            AssetBundle m_ExpandAudio = null;
             
             try {
                 if (string.IsNullOrEmpty(nameSpace)) {
                     m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAssetBundleName.ToLower());
+                    m_ExpandAudio = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAudioAssetBundleName.ToLower());
                 } else {                    
                     m_ExpandSharedAssets1 = LoadAssetBundleFromResource(ExpandTheGungeon.ModAssetBundleName, nameSpace);
+                    m_ExpandAudio = LoadAssetBundleFromResource(ExpandTheGungeon.ModAudioAssetBundleName, nameSpace);
                 }
                 
                 if (m_ExpandSharedAssets1 != null) {
                     m_AssetBundles.Add(ExpandTheGungeon.ModAssetBundleName, m_ExpandSharedAssets1);
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
+                    Debug.Log(ErrorMessage);
+                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                    return;
+                }
+
+                if (m_ExpandAudio != null) {
+                    m_AssetBundles.Add(ExpandTheGungeon.ModAudioAssetBundleName, m_ExpandAudio);
+                } else {
+                    string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandAudio asset bundle not found!";
                     Debug.Log(ErrorMessage);
                     ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
                     return;
@@ -115,8 +127,8 @@ namespace ExpandTheGungeon {
         }
 
 
-        public static void InitAudio (AssetBundle expandSharedAssets1, string assetPath) {
-            TextAsset SoundBankBinary = expandSharedAssets1.LoadAsset<TextAsset>(assetPath);
+        public static void InitAudio (AssetBundle expandAudio, string assetPath) {
+            TextAsset SoundBankBinary = expandAudio.LoadAsset<TextAsset>(assetPath);
             if (SoundBankBinary) {
                 byte[] array = SoundBankBinary.bytes;
 			    IntPtr intPtr = Marshal.AllocHGlobal(array.Length);

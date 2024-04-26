@@ -50,6 +50,8 @@
 				<Event Id="1141813923" Name="Play_EX_MUS_Belly_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopB"/>
 				<Event Id="1141813922" Name="Play_EX_MUS_Belly_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopC"/>
 				<Event Id="1141813925" Name="Play_EX_MUS_Belly_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_LoopD"/>
+				<Event Id="2990710977" Name="Play_EX_MUS_Belly_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Secret"/>
+				<Event Id="3993031077" Name="Play_EX_MUS_Belly_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Shop"/>
 				<Event Id="2195148189" Name="Play_EX_MUS_BellyDevour_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyDevour_01"/>
 				<Event Id="3939060724" Name="Play_EX_MUS_BellyEntrance_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BellyEntrance_01"/>
 				<Event Id="2228256165" Name="Play_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Play_EX_MUS_BootlegMusic_01"/>
@@ -64,6 +66,15 @@
 				<Event Id="761530598" Name="Play_EX_MUS_Jungle_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Secret"/>
 				<Event Id="145544202" Name="Play_EX_MUS_Jungle_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_Jungle_01_Shop"/>
 				<Event Id="3842873489" Name="Play_EX_MUS_ShotsFired_01" ObjectPath="\Events\Weapons\Play_EX_MUS_ShotsFired_01"/>
+				<Event Id="2844332837" Name="Play_EX_MUS_West_01" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01"/>
+				<Event Id="657056321" Name="Play_EX_MUS_West_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Calm"/>
+				<Event Id="726629014" Name="Play_EX_MUS_West_01_Intro" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Intro"/>
+				<Event Id="1718848767" Name="Play_EX_MUS_West_01_LoopA" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_LoopA"/>
+				<Event Id="1718848764" Name="Play_EX_MUS_West_01_LoopB" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_LoopB"/>
+				<Event Id="1718848765" Name="Play_EX_MUS_West_01_LoopC" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_LoopC"/>
+				<Event Id="1718848762" Name="Play_EX_MUS_West_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_LoopD"/>
+				<Event Id="3429717028" Name="Play_EX_MUS_West_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Secret"/>
+				<Event Id="432080516" Name="Play_EX_MUS_West_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Shop"/>
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
@@ -108,6 +119,14 @@
 				<File Id="15010807" Language="SFX">
 					<ShortName>MushroomAlarm.wav</ShortName>
 					<Path>SFX\MushroomAlarm_F7D0E330.wem</Path>
+				</File>
+				<File Id="21307161" Language="SFX">
+					<ShortName>Lockpick_Cathedral.wav</ShortName>
+					<Path>SFX\Lockpick_Cathedral_AD29F36A.wem</Path>
+				</File>
+				<File Id="112621323" Language="SFX">
+					<ShortName>Lockpick_Cathedral_FirstMovement.wav</ShortName>
+					<Path>SFX\Lockpick_Cathedral_FirstMovement_AD29F36A.wem</Path>
 				</File>
 				<File Id="118216860" Language="SFX">
 					<ShortName>GlitchObjectDestroy.wav</ShortName>
@@ -201,6 +220,10 @@
 					<ShortName>GlitchBombDrop.wav</ShortName>
 					<Path>SFX\GlitchBombDrop_F7D0E330.wem</Path>
 				</File>
+				<File Id="601901134" Language="SFX">
+					<ShortName>Lockpick_Cathedral_SecondMovement.wav</ShortName>
+					<Path>SFX\Lockpick_Cathedral_SecondMovement_AD29F36A.wem</Path>
+				</File>
 				<File Id="603781093" Language="SFX">
 					<ShortName>Abomination_Spawn.wav</ShortName>
 					<Path>SFX\Abomination_Spawn_F7D0E330.wem</Path>
@@ -220,6 +243,10 @@
 				<File Id="725215193" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_LoopA.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpowder_LoopA_AD29F36A.wem</Path>
+				</File>
+				<File Id="729324848" Language="SFX">
+					<ShortName>Lockpick_Cathedral_ThirdMovement.wav</ShortName>
+					<Path>SFX\Lockpick_Cathedral_ThirdMovement_AD29F36A.wem</Path>
 				</File>
 				<File Id="737519471" Language="SFX">
 					<ShortName>Belly_Door_Unlock.wav</ShortName>
@@ -269,9 +296,17 @@
 					<ShortName>Abomination_Die.wav</ShortName>
 					<Path>SFX\Abomination_Die_F7D0E330.wem</Path>
 				</File>
+				<File Id="961443732" Language="SFX">
+					<ShortName>Lockpick_Cathedra_Calm.wav</ShortName>
+					<Path>SFX\Lockpick_Cathedra_Calm_AD29F36A.wem</Path>
+				</File>
 				<File Id="979919218" Language="SFX">
 					<ShortName>PowEnemyDeath.wav</ShortName>
 					<Path>SFX\PowEnemyDeath_F7D0E330.wem</Path>
+				</File>
+				<File Id="980031676" Language="SFX">
+					<ShortName>Tummy_Full_of_Gunpoweder_Secret.wav</ShortName>
+					<Path>SFX\Tummy_Full_of_Gunpoweder_Secret_AD29F36A.wem</Path>
 				</File>
 				<File Id="984890443" Language="SFX">
 					<ShortName>Belly_Door_Close.wav</ShortName>
@@ -300,6 +335,10 @@
 				<File Id="1026631834" Language="SFX">
 					<ShortName>BreachTransitionFast.wav</ShortName>
 					<Path>SFX\BreachTransitionFast_F7D0E330.wem</Path>
+				</File>
+				<File Id="1028827529" Language="SFX">
+					<ShortName>Cola_flavored_soda.wav</ShortName>
+					<Path>SFX\Cola_flavored_soda_AD29F36A.wem</Path>
 				</File>
 				<File Id="1035017998" Language="SFX">
 					<ShortName>ElevatorDing.wav</ShortName>

@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 2487000756
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b911cfc3ae2821c51f7dd815df16a8cf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/ExpandAudio/EX_SFX.bytes
+Dependencies: []

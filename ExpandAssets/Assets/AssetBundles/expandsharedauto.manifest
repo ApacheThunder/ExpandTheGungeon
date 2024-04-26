@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3113983598
+CRC: 11151786
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e8ee3e36d599b2de937269aea63b7487
+    Hash: e15650bbaa88e4676213d2b6ad45ae1f
   TypeTreeHash:
     serializedVersion: 2
     Hash: e07db27c83368901a660c5a67ad09cfb
@@ -884,7 +884,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Jungle/Woods/facewallGrids_1.txt
 - Assets/ExpandRooms/RoomFactoryData/M_Expand_Achievement_Resourceful.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Bar2.bytes
-- Assets/ExpandAudio/EX_SFX.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal2.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Box_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_Odd2.bytes

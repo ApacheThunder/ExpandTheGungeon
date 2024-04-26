@@ -507,6 +507,90 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{2BAE2779-53FC-4160-BEF4-34D970D364E6}" ShortID="419197023">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral" ID="{7247BB9F-DB6F-40D2-8EA4-1F4A1204426C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{5B4FE7B4-392C-432F-8984-BD98D3376147}" ShortID="943400407">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedra_Calm" ID="{B8CFE52A-8DC6-44A1-94EF-6C58139FF7BD}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{7473CE46-7488-41AF-9EA4-AB95B8BD240F}" ShortID="40452968">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_FirstMovement" ID="{DC75A52C-983C-4ADE-A5AE-97F10052A90F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{450AE414-727E-40C6-8B8F-44693FBD16F6}" ShortID="1036362837">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_SecondMovement" ID="{18409613-75C4-4D1A-8CCB-6CE8D4D54E6A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{54A2B71F-9B4C-4634-8391-E00588A6B342}" ShortID="15277400">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_ThirdMovement" ID="{65ABE907-30F4-434C-9D49-FD39DE5B997C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{06A7DB7B-D90E-450A-96DC-804397C74656}" ShortID="60282585">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Secret" ID="{11197391-BCB8-42C7-A222-5F522FD9B16B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{42B46B27-379B-4653-AD71-DF6C3949D0BE}" ShortID="795019173">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Cola_flavored_soda" ID="{8AA5F33A-6A40-40D3-AA80-9E2C83855E26}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -1386,6 +1470,171 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Deep_Dark_Dungeon" ID="{35887BD4-85E9-4427-B6F9-502EED84346F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01" ID="{A413D819-86BF-44E6-9279-6CFFEDA83395}">
+					<ChildrenList>
+						<Action Name="" ID="{102E3A29-4B51-4F02-996B-A0BAB15EFFF1}" ShortID="354384145">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral" ID="{7247BB9F-DB6F-40D2-8EA4-1F4A1204426C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_Intro" ID="{C2A120B7-B5E4-4A78-9109-A3D97AF65E1A}">
+					<ChildrenList>
+						<Action Name="" ID="{868985CE-02FB-4B69-ACC1-7F3C738E2B98}" ShortID="481004140">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_FirstMovement" ID="{DC75A52C-983C-4ADE-A5AE-97F10052A90F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_Calm" ID="{8DC028C8-0896-40EE-B7B1-B2BD1C4C62E6}">
+					<ChildrenList>
+						<Action Name="" ID="{727EC084-89B2-47FD-96FF-C1258C6C36B0}" ShortID="868201116">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedra_Calm" ID="{B8CFE52A-8DC6-44A1-94EF-6C58139FF7BD}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_LoopA" ID="{556AB37E-7761-488E-BC23-39D577B6F374}">
+					<ChildrenList>
+						<Action Name="" ID="{C5E087CD-54B9-4EBA-9FFB-26055A4B6219}" ShortID="319264467">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_ThirdMovement" ID="{65ABE907-30F4-434C-9D49-FD39DE5B997C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_LoopB" ID="{3F7A87E1-D307-40A0-BCBC-A9157397D188}">
+					<ChildrenList>
+						<Action Name="" ID="{BDF45C6C-79D0-408D-A782-775B3AA953FC}" ShortID="872069036">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_SecondMovement" ID="{18409613-75C4-4D1A-8CCB-6CE8D4D54E6A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_LoopC" ID="{5C1AF6C7-234C-48A7-ABA5-0D80BEC2663C}">
+					<ChildrenList>
+						<Action Name="" ID="{F0CE1641-2B92-41B1-B53E-CADBEE021480}" ShortID="211379866">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_ThirdMovement" ID="{65ABE907-30F4-434C-9D49-FD39DE5B997C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_LoopD" ID="{41F9EEC2-DA83-442E-8AED-B2E16153AD46}">
+					<ChildrenList>
+						<Action Name="" ID="{D175B0B0-E3C8-445C-AE17-764F774CB6CA}" ShortID="101869039">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral_SecondMovement" ID="{18409613-75C4-4D1A-8CCB-6CE8D4D54E6A}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Belly_01_Shop" ID="{55BB4E39-BE2B-468C-BB7D-563EED26D323}">
+					<ChildrenList>
+						<Action Name="" ID="{31391A44-5945-4A26-9F51-56F393E2FFD0}" ShortID="321349594">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Secret" ID="{11197391-BCB8-42C7-A222-5F522FD9B16B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Belly_01_Secret" ID="{58C5CAEC-48DA-49AF-9075-15941945B1A1}">
+					<ChildrenList>
+						<Action Name="" ID="{D7769564-5F6B-487E-89BD-31A4D8AC33AE}" ShortID="254047535">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Tummy_Full_of_Gunpowder_Secret" ID="{11197391-BCB8-42C7-A222-5F522FD9B16B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_Shop" ID="{410AB44B-6E94-4A60-BDA4-504F79645AC8}">
+					<ChildrenList>
+						<Action Name="" ID="{3734D62F-2C71-4958-A59E-23DF8D65BE87}" ShortID="957094915">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Cola_flavored_soda" ID="{8AA5F33A-6A40-40D3-AA80-9E2C83855E26}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_West_01_Secret" ID="{53D6FD8D-947E-4171-B4D0-964047E41A3B}">
+					<ChildrenList>
+						<Action Name="" ID="{C995379F-8934-44BA-928A-2EED2C316CE8}" ShortID="806511407">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Lockpick_Cathedral" ID="{7247BB9F-DB6F-40D2-8EA4-1F4A1204426C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

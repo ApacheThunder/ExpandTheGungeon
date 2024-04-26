@@ -8,6 +8,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ItemAPI;
+using System.Reflection;
 
 namespace ExpandTheGungeon {
 
@@ -39,6 +40,23 @@ namespace ExpandTheGungeon {
                     ThunderstormPlacable.ConfigureOnPlacement(null);
                 }
             }
+
+            ExpandDungeonMusicAPI.EnteredNewCustomFloor = false;
+            try {
+                if (GameManager.Instance?.DungeonMusicController){
+                    bool SupportsLoopSections = false;
+                    bool SupportsCustomMusic = ExpandDungeonMusicAPI.CustomLevelMusic.TryGetValue(dungeon.musicEventName, out SupportsLoopSections);
+                    FieldInfo m_CoolDownTimer = typeof(DungeonFloorMusicController).GetField("COOLDOWN_TIMER", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo m_MusicChangeTimer = typeof(DungeonFloorMusicController).GetField("MUSIC_CHANGE_TIMER", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (SupportsCustomMusic && SupportsLoopSections) {
+                        m_CoolDownTimer.SetValue(GameManager.Instance.DungeonMusicController, 34f);
+                        m_MusicChangeTimer.SetValue(GameManager.Instance.DungeonMusicController, 50f);
+                    } else {
+                        m_CoolDownTimer.SetValue(GameManager.Instance.DungeonMusicController, 22.5f);
+                        m_MusicChangeTimer.SetValue(GameManager.Instance.DungeonMusicController, 40f);
+                    }
+                }
+            } catch (System.Exception) { }
 
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON && dungeon.data != null && dungeon.data.rooms != null) {
                 foreach (RoomHandler room in dungeon.data.rooms) {

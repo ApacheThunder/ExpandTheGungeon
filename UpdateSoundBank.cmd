@@ -1,1 +1,3 @@
+@echo off
 copy ExpandAssets\Audio\GeneratedSoundBanks\Windows\EX_SFX.bnk ExpandAssets\Assets\ExpandAudio\EX_SFX.bytes /y
+pause

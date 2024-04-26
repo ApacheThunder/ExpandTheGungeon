@@ -49,6 +49,7 @@ namespace ExpandTheGungeon {
                         GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
                     }                    
                     if (GameManager.Instance.EnemyReplacementTiers != null) { ExpandEnemyReplacements.Init(GameManager.Instance.EnemyReplacementTiers); }
+                    ExpandDungeonMusicAPI.EnteredNewCustomFloor = false;
                     m_State = State.SpawnObjects;
                     return;
                 case State.SpawnObjects:
