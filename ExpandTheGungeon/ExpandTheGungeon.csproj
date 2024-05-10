@@ -109,6 +109,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandSharedAuto" />
+    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandAudio" />
     <Compile Include="ExpandComponents\ExpandArkController.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
@@ -275,14 +277,6 @@
     <Compile Include="ExpandPrefab\ExpandRoomPrefabs.cs" />
     <Compile Include="ExpandAssets.cs" />
     <Compile Include="SpriteAPI\SpriteAPI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandSharedAuto" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\ExpandAudio" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_machinepistol_idle_001.png" />
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_pistol_idle_001.png" />
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\bootleg_shotgun_idle_001.png" />
@@ -292,8 +286,6 @@
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_golden_revolver_idle_001.png" />
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_nome_rev_idle_001.png" />
     <EmbeddedResource Include="Sprites\Ammonomicon Encounter Icon Collection\gr_tuc_rev_idle_001.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_001.json" />
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_002.json" />
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_003.json" />
@@ -380,8 +372,6 @@
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.json" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.json" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.json" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinegun_reload_001.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_001.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\bootleg_machinepistol_fire_002.png" />
@@ -469,6 +459,9 @@
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExpandSharedAuto_Linux" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

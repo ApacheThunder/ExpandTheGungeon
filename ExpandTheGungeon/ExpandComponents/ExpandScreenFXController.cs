@@ -124,7 +124,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             switch (shaderType) {
                 case ShaderType.VHS:
                     // This shader doesn't appear to work on Linux for some reason.
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
                     m_colorBleedToggle = 0;
@@ -137,7 +137,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     TexturePlayer.clip = VHSClip;
                     break;
                 case ShaderType.VHSOldFilm:
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
                     m_colorBleedToggle = 0;
@@ -151,7 +151,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     Pixelator.Instance.SetSaturationColorPower(Color.white, 1);
                     break;
                 case ShaderType.VHSBasic:
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
                     if (!VHSScreenTexture) { VHSScreenTexture = ExpandAssets.LoadAsset<Texture2D>("EmptyVHSTexture"); }
                     ScreenMaterial.SetTexture("_VHSTex", VHSScreenTexture);
@@ -219,7 +219,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             switch (shaderType) {
                 case ShaderType.VHS:
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     if (m_yScanline >= 1) { m_yScanline = Random.value; }
                     if (m_xScanline <= 0 || Random.value < 0.05) { m_xScanline = Random.value; }
@@ -234,7 +234,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
                     break;
                 case ShaderType.VHSOldFilm:
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     m_xShiftIntensity = Random.Range(150, 500);
                     m_xShift = 0;
@@ -245,7 +245,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
                     break;
                 case ShaderType.VHSBasic:
-                    if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
+                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     if (enableVHSScanlineDistortion) {
                         if (m_yScanline >= 1) { m_yScanline = Random.value; }
                         m_yScanline += (BraveTime.DeltaTime * 0.01f);
@@ -291,16 +291,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             try { 
                 switch (shaderType) {
                     case ShaderType.VHS:
-                        if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
+                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSOldFilm:
-                        if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
+                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
                         Pixelator.Instance.SetSaturationColorPower(Color.white, 0);
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSBasic:
-                        if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
+                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
                         // Nothing extra needed for now
                         break;
                     case ShaderType.Glitch:

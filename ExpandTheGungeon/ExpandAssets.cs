@@ -63,6 +63,7 @@ namespace ExpandTheGungeon {
                 } else {                    
                     m_ExpandSharedAssets1 = LoadAssetBundleFromResource(ExpandTheGungeon.ModAssetBundleName, nameSpace);
                     m_ExpandAudio = LoadAssetBundleFromResource(ExpandTheGungeon.ModAudioAssetBundleName, nameSpace);
+                    // m_ExpandAudio = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAudioAssetBundleName.ToLower());
                 }
                 
                 if (m_ExpandSharedAssets1 != null) {

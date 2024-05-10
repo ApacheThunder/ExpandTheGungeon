@@ -24,16 +24,18 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.14";
+        public const string VERSION = "2.9.15";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
         
         public static bool ItemAPISetup = false;
         public static bool ListsCleared = false;
-        
+
+
+        public static string ModAssetBundleName = "ExpandSharedAuto";
+
         public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
-        public const string ModAssetBundleName = "ExpandSharedAuto";
         public const string ModAudioAssetBundleName = "ExpandAudio";
         public const string ModSpriteAssetBundleName = "ExpandSpritesBase";
         public const string ModSoundBankName = "EX_SFX";
@@ -101,7 +103,13 @@ namespace ExpandTheGungeon {
                 "Portable Ship",
                 "Old Key"
             };
-            
+
+            if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.OSXPlayer) {
+                ModAssetBundleName = "ExpandSharedAuto_Linux";
+            }
+
+            ModAssetBundleName = "ExpandSharedAuto_Linux";
+
             ExpandAssets.InitCustomAssetBundles(ModName);            
                         
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
@@ -281,7 +289,11 @@ namespace ExpandTheGungeon {
                 if (frostfireInstalled) {
                     SetupLabel(self.TitleCard, ("ExpandTheGungeon: " + "v" + VERSION), Color.white, new Vector2(380f, 22), new Vector2(264, 22), new Vector2(276, 22));
                 } else {
-                    if (ModLogo == null) { ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo"); }
+                    if (ModLogo == null) {
+                        ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo");
+                        ModLogo.filterMode = FilterMode.Point;
+
+                    }
                     ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
                     SetupLabel(self.TitleCard, ("v" + VERSION), Color.black, new Vector2(564f, -28), new Vector2(64, 16), new Vector2(74, 16));
                 }

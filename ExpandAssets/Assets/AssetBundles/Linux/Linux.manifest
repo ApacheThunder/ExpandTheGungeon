@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 1653847705
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: expandsharedauto
+      Dependencies: {}
+    Info_1:
+      Name: expandspritesbase
+      Dependencies: {}
+    Info_2:
+      Name: expandaudio
+      Dependencies: {}
