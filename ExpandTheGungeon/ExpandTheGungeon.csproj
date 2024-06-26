@@ -111,6 +111,7 @@
   <ItemGroup>
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandSharedAuto" />
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandAudio" />
+	<EmbeddedResource Include="ExpandSharedAuto_Linux" />
     <Compile Include="ExpandComponents\ExpandArkController.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
@@ -459,9 +460,6 @@
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ExpandSharedAuto_Linux" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
