@@ -155,7 +155,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             targetPlayer.WarpFollowersToPlayer();
             targetPlayer.WarpCompanionsToPlayer(false);        
-            Pixelator.Instance.MarkOcclusionDirty();
+            // Pixelator.Instance.MarkOcclusionDirty();
             yield return null;
             while (fxController.GlitchAmount > 0) {
                 fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.7f);

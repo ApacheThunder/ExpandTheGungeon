@@ -691,7 +691,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 CombatManager = RoomManager.AddComponent<ExpandCombatRoomManager>();
                 CombatManager.ParentRoom = targetPlayer.transform.position.GetAbsoluteRoom();
             }
-            Pixelator.Instance.MarkOcclusionDirty();
+            // Pixelator.Instance.MarkOcclusionDirty();
             yield return null;
             if (CombatManager) { CombatManager.Activated = true; }
             cameraController.SetManualControl(false, true);

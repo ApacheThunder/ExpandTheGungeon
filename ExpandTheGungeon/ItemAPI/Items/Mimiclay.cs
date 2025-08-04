@@ -17,7 +17,7 @@ namespace ExpandTheGungeon.ItemAPI {
             Mimiclay mimiClay = MimiclayObject.AddComponent<Mimiclay>();
             
             string shortDesc = "The Highest Form Of Flattery";
-            string longDesc = "Becomes a copy of any item.\n\nMalleable material that formed the mysterious Doppelgunner. After its defeat, it seems oddly content with applying its ability in service of Gungeoneers.";
+            string longDesc = "Becomes a copy of any item that isn't a gun.\n\nMalleable material that formed the mysterious Doppelgunner. After its defeat, it seems oddly content with applying its ability in service of Gungeoneers.";
 
             ItemBuilder.SetupItem(mimiClay, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(mimiClay, ItemBuilder.CooldownType.Timed, 1);
