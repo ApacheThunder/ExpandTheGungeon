@@ -1,0 +1,16 @@
+{
+    "ForcedPositionInAmmonomicon": 81,
+    "IsNormalEnemy": true,
+    "IsInBossTab": false,
+	"TabSpriteIsTexture": false,
+    "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 2,
+    "TabSprite": "berg_tall_idle_front_001",
+    "FullArtSprite": "cronenberg_tall_ammonomicon",
+    "EnemyName": "Unknown Entity",
+    "smallDescription": "from somwhere deep in the backrooms",
+    "bigDescription": "Something wicked approaches.\n\nDescription Pending",
+	"encounterGUID": "e2cb50a66f8a42e6b6b26682f2b7a0ff",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Backrooms Entity.prefab"
+}

@@ -10,7 +10,7 @@ namespace ExpandTheGungeon.ExpandMain {
         
         private static int RandomObjectsPlaced = 0;
         private static int RandomObjectsSkipped = 0;
-
+        
         private static readonly bool DebugMode = false;
 
         public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
@@ -31,7 +31,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (roomListOverride != null) { DungeonRooms = roomListOverride; }
 
-            if (dungeon.gameObject.name.ToLower().StartsWith("base_office")) { ReplaceTables(); }
+            if (dungeon.gameObject.name.ToLower().StartsWith("base_office") | dungeon.gameObject.name.ToLower().StartsWith("base_backrooms")) { ReplaceTables(); }
 
             foreach (RoomHandler currentRoom in DungeonRooms) {
                 try {
@@ -216,7 +216,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
         }
-
+        
         private static void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 

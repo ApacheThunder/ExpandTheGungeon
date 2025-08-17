@@ -111,13 +111,15 @@
   <ItemGroup>
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandSharedAuto" />
     <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandAudio" />
-	<EmbeddedResource Include="ExpandSharedAuto_Linux" />
+    <EmbeddedResource Include="ExpandSharedAuto_Linux" />
     <Compile Include="ExpandComponents\ExpandArkController.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoPropAnimationHandler.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
+    <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
+    <Compile Include="ExpandComponents\ExpandEntitySpawner.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
@@ -127,6 +129,8 @@
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnBowlerNoteOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandSpriteFadeOnSpawn.cs" />
+    <Compile Include="ExpandComponents\ExpandSpriteRandomizer.cs" />
+    <Compile Include="ExpandComponents\ExpandStainPlacer.cs" />
     <Compile Include="ExpandComponents\ExpandTK2DDungeonAssembler.cs" />
     <Compile Include="ExpandComponents\ExpandChargeBehavior.cs" />
     <Compile Include="ExpandComponents\ExpandCompanionManager.cs" />
@@ -175,6 +179,7 @@
     <Compile Include="ExpandComponents\ExpandWestPuzzleRoomController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoRoomController.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\apache_fucking_around_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\backrooms_flow_01.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f0b_office_flows.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f0b_phobos_flows.cs" />
     <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_jungle_flow_01.cs" />

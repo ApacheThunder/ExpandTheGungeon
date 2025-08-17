@@ -13,7 +13,9 @@ using ExpandTheGungeon.SpriteAPI;
 namespace ExpandTheGungeon.ExpandPrefab {
 
     public class ExpandPrefabs {
-     
+
+        public static GameObject EXFoyerChecker;
+
         // Custom Sprite Collections (this gets setup before ItemAPI
         public static GameObject EXItemCollection;
         public static GameObject EXGunCollection;
@@ -31,6 +33,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXOfficeCollection;
         public static GameObject EXSpaceCollection;
         public static GameObject EXFoyerCollection;
+        public static GameObject EXBackroomsCollection;
 
         // Materials
         public static Material SpaceFog;        
@@ -161,6 +164,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable WestTinyCanyonRoomTable;
         public static GenericRoomTable WestInterior1RoomTable;
         public static GenericRoomTable AbbeyRoomTableForOffice;
+        public static GenericRoomTable BackRoomsRoomTable;
+        public static GenericRoomTable BackRoomsEntranceRoomTable;
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
@@ -395,6 +400,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ENV_Tileset_West;
         public static GameObject ENV_Tileset_Phobos;
         public static GameObject ENV_Tileset_Office;
+        public static GameObject ENV_Tileset_Backrooms;
 
         // Grass sprites conveted to objects from "space" tileset (unused tileset used by all the pasts)
         public static GameObject EXSpace_Grass_01;
@@ -425,6 +431,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXCasino_Litter_Cans;
         public static GameObject EXCasino_Litter_Paper;
 
+        // Backrooms Objects
+        public static GameObject EXCarpetStainPlacer;
+        public static GameObject EXEntitySpawner;
+        public static GameObject EXBackRoomsCarpetStain_Small;
+        public static GameObject EXBackRoomsCarpetStain_Medium;
+        public static GameObject EXBackRoomsCarpetStain_Large;
+        
+
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1, AssetBundle sharedAssets) {
             ENV_Tileset_Jungle = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Jungle");
@@ -432,11 +446,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ENV_Tileset_West = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_West");
             ENV_Tileset_Phobos = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Phobos");
             ENV_Tileset_Office = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_Office");
+            ENV_Tileset_Backrooms = expandSharedAssets1.LoadAsset<GameObject>("ENV_Tileset_BackRooms");
             ExpandDungeonPrefabs.ENV_Tileset_Jungle(ENV_Tileset_Jungle, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Jungle"), sharedAssets, expandSharedAssets1);
             ExpandDungeonPrefabs.ENV_Tileset_Belly(ENV_Tileset_Belly, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Belly"), sharedAssets, expandSharedAssets1);
             ExpandDungeonPrefabs.ENV_Tileset_Phobos(ENV_Tileset_Phobos, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Phobos"), sharedAssets, expandSharedAssets1);
             ExpandDungeonPrefabs.ENV_Tileset_West(ENV_Tileset_West, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_West"), sharedAssets, expandSharedAssets1);
             ExpandDungeonPrefabs.ENV_Tileset_Office(ENV_Tileset_Office, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Nakatomi"), sharedAssets, expandSharedAssets1);
+            ExpandDungeonPrefabs.ENV_Tileset_Office(ENV_Tileset_Backrooms, expandSharedAssets1.LoadAsset<Texture2D>("ENV_Tileset_Backrooms"), sharedAssets, expandSharedAssets1);
 
             EXItemCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXItemCollection", "EXItem_Collection", "EXItemCollection");
             EXGunCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXGunCollection", "EXGun_Collection", "EXGunCollection");
@@ -454,7 +470,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXOfficeCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXOfficeCollection", "EXOffice_Collection", "EXOfficeCollection");
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
             EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
-
+            EXBackroomsCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBackroomsCollection", "EXBackrooms_Collection", "EXBackroomsCollection");
+            
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
         }
@@ -473,6 +490,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             Dungeon NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
 
+            EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
+            
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
             
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
@@ -619,6 +638,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
             WestInterior1RoomTable.includedRooms = new WeightedRoomCollection();
             WestInterior1RoomTable.includedRooms.elements = new List<WeightedRoom>();
             WestInterior1RoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            BackRoomsRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            BackRoomsRoomTable.includedRooms = new WeightedRoomCollection();
+            BackRoomsRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            BackRoomsRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            BackRoomsEntranceRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            BackRoomsEntranceRoomTable.includedRooms = new WeightedRoomCollection();
+            BackRoomsEntranceRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            BackRoomsEntranceRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
 
             AbbeyRoomTableForOffice = ScriptableObject.CreateInstance<GenericRoomTable>();
             AbbeyRoomTableForOffice.name = "Office_RoomTable";
@@ -5353,6 +5382,36 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
                 ExpandUtility.GenerateSpriteAnimator(m_ChildLock, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSpriteAnimator>().Library, 53, playAutomatically: true);
             }
+
+            EXBackRoomsCarpetStain_Small = expandSharedAssets1.LoadAsset<GameObject>("EXBackRoomsCarpetStain_Small");
+            tk2dSprite m_EXBackRoomsCarpetStainSprite_Small = SpriteSerializer.AddSpriteToObject(EXBackRoomsCarpetStain_Small, EXBackroomsCollection, "CarpetStain_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXBackRoomsCarpetStainSprite_Small.HeightOffGround = -1.7f;
+            ExpandSpriteRandomizer m_EXBackRoomsCarpetStain_SmallSpriteRandomizer = EXBackRoomsCarpetStain_Small.AddComponent<ExpandSpriteRandomizer>();
+            m_EXBackRoomsCarpetStain_SmallSpriteRandomizer.SpriteList = ExpandLists.EXSmallStainList;
+
+            EXBackRoomsCarpetStain_Medium = expandSharedAssets1.LoadAsset<GameObject>("EXBackRoomsCarpetStain_Medium");
+            tk2dSprite EXBackRoomsCarpetStainSprite_Medium = SpriteSerializer.AddSpriteToObject(EXBackRoomsCarpetStain_Medium, EXBackroomsCollection, "CarpetStainMedium_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            EXBackRoomsCarpetStainSprite_Medium.HeightOffGround = -1.7f;
+            ExpandSpriteRandomizer m_EXBackRoomsCarpetStain_MediumSpriteRandomizer = EXBackRoomsCarpetStain_Medium.AddComponent<ExpandSpriteRandomizer>();
+            m_EXBackRoomsCarpetStain_MediumSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
+
+            EXBackRoomsCarpetStain_Large = expandSharedAssets1.LoadAsset<GameObject>("EXBackRoomsCarpetStain_Large");
+            tk2dSprite m_EXBackRoomsCarpetStainSprite_Large = SpriteSerializer.AddSpriteToObject(EXBackRoomsCarpetStain_Large, EXBackroomsCollection, "CarpetStainLarge_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXBackRoomsCarpetStainSprite_Large.HeightOffGround = -1.7f;
+            ExpandSpriteRandomizer m_EXBackRoomsCarpetStain_LargeSpriteRandomizer = EXBackRoomsCarpetStain_Large.AddComponent<ExpandSpriteRandomizer>();
+            m_EXBackRoomsCarpetStain_LargeSpriteRandomizer.SpriteList = ExpandLists.EXLargeStainList;
+
+            EXEntitySpawner = expandSharedAssets1.LoadAsset<GameObject>("EXEntitySpawner");
+            GameObject m_EXEntitySpawnerChild = EXEntitySpawner.transform.Find("carpetstain").gameObject;
+            tk2dSprite m_EXEntitySpawnerSprite = SpriteSerializer.AddSpriteToObject(m_EXEntitySpawnerChild, EXBackroomsCollection, "CarpetStainMedium_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            m_EXEntitySpawnerSprite.HeightOffGround = -1.7f;
+            EXEntitySpawner.AddComponent<ExpandEntitySpawner>();
+
+            ExpandSpriteRandomizer m_EXEntitySpawnerChildSpriteRandomizer = m_EXEntitySpawnerChild.AddComponent<ExpandSpriteRandomizer>();
+            m_EXEntitySpawnerChildSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
+
+            EXCarpetStainPlacer = expandSharedAssets1.LoadAsset<GameObject>("EXEntitySpawner");
+            EXCarpetStainPlacer.AddComponent<ExpandStainPlacer>();
 
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!

@@ -413,6 +413,102 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "clownkin_wig_grounded"
         };
 
+        public static readonly List<string> EXEntityCollection = new List<string> {
+            "entity_idle_back_001",
+            "entity_idle_back_002",
+            "entity_idle_back_003",
+            "entity_idle_back_004",
+            "entity_idle_front_001",
+            "entity_idle_front_002",
+            "entity_idle_front_003",
+            "entity_idle_front_004",
+            "entity_run_back_left_001",
+            "entity_run_back_left_002",
+            "entity_run_back_left_003",
+            "entity_run_back_left_004",
+            "entity_run_back_left_005",
+            "entity_run_back_left_006",
+            "entity_run_back_right_001",
+            "entity_run_back_right_002",
+            "entity_run_back_right_003",
+            "entity_run_back_right_004",
+            "entity_run_back_right_005",
+            "entity_run_back_right_006",
+            "entity_run_left_001",
+            "entity_run_left_002",
+            "entity_run_left_003",
+            "entity_run_left_004",
+            "entity_run_left_005",
+            "entity_run_left_006",
+            "entity_run_right_001",
+            "entity_run_right_002",
+            "entity_run_right_003",
+            "entity_run_right_004",
+            "entity_run_right_005",
+            "entity_run_right_006",
+            "entity_spawn_001",
+            "entity_spawn_002",
+            "entity_spawn_003",
+            "entity_spawn_004",
+            "entity_spawn_005",
+            "entity_spawn_006",
+            "entity_spawn_007",
+            "entity_spawn_008",
+            "entity_spawn_009",
+            "entity_spawn_010",
+            "entity_spawn_011",
+            "entity_spawn_012",
+            "entity_spawn_013",
+            "entity_spawn_014",
+            "entity_spawn_015",
+            "entity_spawn_016",
+            "entity_spawn_017",
+            "entity_spawn_018",
+            "entity_spawn_019",
+            "entity_spawn_020",
+            "entity_spawn_021",
+            "entity_spawn_022",
+            "entity_spawn_023",
+            "entity_spawn_024",
+            "entity_spawn_025",
+            "entity_spawn_026",
+            "entity_spawn_027",
+            "entity_spawn_028",
+            "entity_spawn_029"
+        };
+
+        public static readonly List<string> EXBackroomsCollection = new List<string> {
+            "CarpetStainLarge_01",
+            "CarpetStainLarge_02",
+            "CarpetStainLarge_03",
+            "CarpetStainMedium_01",
+            "CarpetStainMedium_02",
+            "CarpetStainMedium_03",
+            "CarpetStainMedium_04",
+            "CarpetStainMedium_05",
+            "CarpetStainMedium_06",
+            "CarpetStain_01",
+            "CarpetStain_02",
+            "CarpetStain_03",
+            "CarpetStain_04",
+            "CarpetStain_05",
+            "CarpetStain_06",
+            "CarpetStain_07",
+            "CarpetStain_08",
+            "CarpetStain_09",
+            "CarpetStain_10",
+            "CarpetStain_11",
+            "CarpetStain_12",
+            "CarpetStain_13",
+            "CarpetStain_14",
+            "CarpetStain_15",
+            "CarpetStain_16",
+            "CarpetStain_17",
+            "CarpetStain_18",
+            "CarpetStain_19",
+            "CarpetStain_20"
+        };
+
         public static readonly List<string> EXBalloonCollection = new List<string> {
             "blueballoon_idle_001",
             "blueballoon_pop_001",
@@ -571,6 +667,44 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "alarm_mushroom2_idle_004",
             "alarm_mushroom2_idle_005",
             "alarm_mushroom2_shadow_001"
+        };
+
+        public static readonly List<string> EXSmallStainList = new List<string> {
+            "CarpetStain_01",
+            "CarpetStain_02",
+            "CarpetStain_03",
+            "CarpetStain_04",
+            "CarpetStain_05",
+            "CarpetStain_06",
+            "CarpetStain_07",
+            "CarpetStain_08",
+            "CarpetStain_09",
+            "CarpetStain_10",
+            "CarpetStain_11",
+            "CarpetStain_12",
+            "CarpetStain_13",
+            "CarpetStain_14",
+            "CarpetStain_15",
+            "CarpetStain_16",
+            "CarpetStain_17",
+            "CarpetStain_18",
+            "CarpetStain_19",
+            "CarpetStain_20"
+        };
+
+        public static readonly List<string> EXMediumStainList = new List<string> {
+            "CarpetStainMedium_01",
+            "CarpetStainMedium_02",
+            "CarpetStainMedium_03",
+            "CarpetStainMedium_04",
+            "CarpetStainMedium_05",
+            "CarpetStainMedium_06",
+        };
+
+        public static readonly List<string> EXLargeStainList = new List<string> {
+            "CarpetStainLarge_01",
+            "CarpetStainLarge_02",
+            "CarpetStainLarge_03"
         };
 
         public static readonly List<int> RatChestItems = new List<int>() {

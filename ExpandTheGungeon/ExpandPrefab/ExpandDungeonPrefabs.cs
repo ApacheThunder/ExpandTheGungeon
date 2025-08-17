@@ -18,6 +18,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Base_West;
         public static GameObject Base_Phobos;
         public static GameObject Base_Office;
+        public static GameObject Base_BackRooms;
 
         public static Hook getOrLoadByName_Hook;
         public static Hook dungeonStartHook;
@@ -231,6 +232,48 @@ namespace ExpandTheGungeon.ExpandPrefab {
             return m_NewDungeonCollection;
         }
 
+        /*public static tk2dSpriteCollectionData ENV_Tileset_BackRooms(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
+
+            tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
+            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Nakatomi/ENV_Tileset_Nakatomi"), m_NewDungeonCollection);
+
+            Material m_LitCutout = new Material(sharedAssets.LoadAsset<Shader>("BraveLitTk2dCustomFalloffCutout"));
+            Material m_LitBlend = new Material(sharedAssets.LoadAsset<Shader>("BraveLitTK2dCustomFalloff"));
+            Material m_Unlit = new Material(sharedAssets.LoadAsset<Shader>("BraveUnlitCutout"));
+            m_LitCutout.mainTexture = tileSetTexture;
+            m_LitCutout.SetFloat("_Cutoff", 0.5f);
+            m_LitCutout.SetFloat("_MaxValue", 1);
+            m_LitCutout.SetFloat("_Perpendicular", 1);
+            m_LitBlend.mainTexture = tileSetTexture;
+            m_LitBlend.SetFloat("_Cutoff", 0.5f);
+            m_LitBlend.SetFloat("_Perpendicular", 1);
+            m_Unlit.mainTexture = tileSetTexture;
+            m_Unlit.SetFloat("_Cutoff", 0.5f);
+            m_Unlit.SetFloat("_Perpendicular", 1);
+
+            string[] m_WestMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi_MaterialTable");
+
+            for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
+                if (m_WestMaterialTable[i].Contains("lit cutout")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
+                } else if (m_WestMaterialTable[i].Contains("lit blend")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitBlend;
+                } else if (m_WestMaterialTable[i].Contains("unlit")) {
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_Unlit;
+                } else {
+                    Debug.Log("[ExpandTheGungeon] ERROR: sprite id " + i + " did not have a matching material name in lookup table!");
+                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
+                }
+            }
+
+            m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_Unlit};
+            m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
+            
+            sharedAssets = null;
+
+            return m_NewDungeonCollection;
+        }*/
+
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             switch (name.ToLower()) {
                 case "base_space":
@@ -257,6 +300,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     DebugTime.RecordStartTime();
                     DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
                     return Base_Office.GetComponent<Dungeon>();
+                case "base_backrooms":
+                    DebugTime.RecordStartTime();
+                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                    return Base_BackRooms.GetComponent<Dungeon>();
                 default:
                     return orig(name);
             }
@@ -278,13 +325,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Base_West = expandSharedAuto1.LoadAsset<GameObject>("Base_West");
             Base_Phobos = expandSharedAuto1.LoadAsset<GameObject>("Base_Phobos");
             Base_Office = expandSharedAuto1.LoadAsset<GameObject>("Base_Office");
-
+            Base_BackRooms = expandSharedAuto1.LoadAsset<GameObject>("Base_BackRooms");
+            
             InitSpaceDungeon(Base_Space, LoadOfficialDungeonPrefab("Base_ResourcefulRat"));
             InitJungleDungeon(expandSharedAuto1, braveResources, sharedAssets2, Base_Jungle, LoadOfficialDungeonPrefab("Base_ResourcefulRat"));
             InitBellyDungeon(expandSharedAuto1, sharedAssets1, sharedAssets2, Base_Belly, LoadOfficialDungeonPrefab("Base_ResourcefulRat"));
             InitWestDungeon(expandSharedAuto1, sharedAssets2, Base_West, LoadOfficialDungeonPrefab("Base_Gungeon"));
             InitPhobosDungeon(expandSharedAuto1, sharedAssets2, Base_Phobos, LoadOfficialDungeonPrefab("Base_Gungeon"));
             InitOfficeDungeon(expandSharedAuto1, sharedAssets2, Base_Office, LoadOfficialDungeonPrefab("Base_Gungeon"));
+            InitBackRoomsDungeon(expandSharedAuto1, sharedAssets2, Base_BackRooms, LoadOfficialDungeonPrefab("Base_Gungeon"));
         }
         
         public static void InitCustomGameLevelDefinitions(AssetBundle braveResources, GameManager gameManager) {
@@ -300,6 +349,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (gameManager) {
                 bool SpaceEntryExists = false;
                 bool OfficeEntryExists = false;
+                bool BackRoomsEntryExists = false;
                 if (gameManager.customFloors != null) {
                     foreach (GameLevelDefinition definition in gameManager.customFloors) {
                         if (!gameManager) { return; }
@@ -346,6 +396,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             case "tt_space":
                                 SpaceEntryExists = true;
                                 break;
+                            case "tt_backrooms":
+                                BackRoomsEntryExists = true;
+                                break;
                         }
                     }
                     if (!SpaceEntryExists) {
@@ -373,6 +426,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
                                 enemyHealthMultiplier = 1.7f,
                                 damageCap = 300,
                                 bossDpsCap = 60,
+                                flowEntries = new List<DungeonFlowLevelEntry>(0),
+                                predefinedSeeds = new List<int>(0)
+                            }
+                        );
+                    }
+                    if (!BackRoomsEntryExists) {
+                        gameManager.customFloors.Add(
+                            new GameLevelDefinition() {
+                                dungeonSceneName = "tt_backrooms",
+                                dungeonPrefabPath = "Base_BackRooms",
+                                priceMultiplier = 1.5f,
+                                secretDoorHealthMultiplier = 1,
+                                enemyHealthMultiplier = 1.8f,
+                                damageCap = 400,
+                                bossDpsCap = 75,
                                 flowEntries = new List<DungeonFlowLevelEntry>(0),
                                 predefinedSeeds = new List<int>(0)
                             }
@@ -2962,6 +3030,463 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             NakatomiPrefab = null;
             AbbeyPrefab = null;
+        }
+
+        public static void InitBackRoomsDungeon(AssetBundle expandSharedAuto1, AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon NakatomiPrefab = LoadOfficialDungeonPrefab("Base_Nakatomi");
+            Dungeon AbbeyPrefab = LoadOfficialDungeonPrefab("Base_Cathedral");
+
+
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+
+
+            DungeonMaterial Backrooms_01 = ScriptableObject.CreateInstance<DungeonMaterial>();
+            Backrooms_01.name = "Backrooms";
+            Backrooms_01.wallShards = NakatomiPrefab.roomMaterialDefinitions[0].wallShards;
+            Backrooms_01.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            Backrooms_01.bigWallShardDamageThreshold = 10;
+            Backrooms_01.fallbackVerticalTileMapEffects = NakatomiPrefab.roomMaterialDefinitions[0].fallbackVerticalTileMapEffects;
+            Backrooms_01.fallbackHorizontalTileMapEffects = NakatomiPrefab.roomMaterialDefinitions[0].fallbackHorizontalTileMapEffects;
+            Backrooms_01.pitfallVFXPrefab = null;
+            Backrooms_01.UsePitAmbientVFX = false;
+            Backrooms_01.AmbientPitVFX = new List<GameObject>(0);
+            Backrooms_01.PitVFXMinCooldown = 5;
+            Backrooms_01.PitVFXMaxCooldown = 30;
+            Backrooms_01.ChanceToSpawnPitVFXOnCooldown = 1;
+            Backrooms_01.stampFailChance = 0.65f;
+            Backrooms_01.overrideTableTable = null;
+            Backrooms_01.supportsPits = false;
+            Backrooms_01.doPitAO = true;
+            Backrooms_01.pitsAreOneDeep = false;
+            Backrooms_01.supportsDiagonalWalls = false;
+            Backrooms_01.supportsUpholstery = false;
+            Backrooms_01.carpetIsMainFloor = false;
+            Backrooms_01.carpetGrids = new TileIndexGrid[0];
+            /*Backrooms_01.carpetGrids = new TileIndexGrid[] {
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/carpetGrids_0"),
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/carpetGrids_1")
+            };*/
+            Backrooms_01.supportsChannels = false;
+            Backrooms_01.minChannelPools = 0;
+            Backrooms_01.maxChannelPools = 3;
+            Backrooms_01.channelTenacity = 0.65f;
+            Backrooms_01.channelGrids = new TileIndexGrid[0];
+            Backrooms_01.supportsLavaOrLavalikeSquares = false;
+            Backrooms_01.lavaGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/lavaGrids") };
+            Backrooms_01.supportsIceSquares = false;
+            Backrooms_01.iceGrids = new TileIndexGrid[0];
+            Backrooms_01.roomFloorBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/roomFloorBorderGrid");
+            Backrooms_01.roomCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/roomCeilingBorderGrid");
+            Backrooms_01.pitLayoutGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/pitLayoutGrid");
+            Backrooms_01.pitBorderFlatGrid = null;
+            Backrooms_01.pitBorderRaisedGrid = null;
+            Backrooms_01.additionalPitBorderFlatGrid = null;
+            Backrooms_01.outerCeilingBorderGrid = null;
+            Backrooms_01.floorSquareDensity = 0.05f;
+            Backrooms_01.floorSquares = new TileIndexGrid[0];
+            Backrooms_01.usesFacewallGrids = true;
+            Backrooms_01.facewallGrids = new FacewallIndexGridDefinition[] {
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/facewallGrids_0"),
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/facewallGrids_1"),
+            };
+            Backrooms_01.facewallGrids[0].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/facewallGrids_0_grid");
+            Backrooms_01.facewallGrids[1].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Purple/facewallGrids_1_grid");
+
+            Backrooms_01.usesInternalMaterialTransitions = false;
+            Backrooms_01.usesProceduralMaterialTransitions = false;
+            Backrooms_01.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            Backrooms_01.secretRoomWallShardCollections = new List<GameObject>(0);
+            Backrooms_01.overrideStoneFloorType = false;
+            Backrooms_01.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            Backrooms_01.useLighting = true;
+            Backrooms_01.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = NakatomiPrefab.roomMaterialDefinitions[0].lightPrefabs.elements[0].rawGameObject,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };
+            Backrooms_01.facewallLightStamps = NakatomiPrefab.roomMaterialDefinitions[0].facewallLightStamps;
+            Backrooms_01.sidewallLightStamps = NakatomiPrefab.roomMaterialDefinitions[0].sidewallLightStamps;
+            Backrooms_01.usesDecalLayer = false;
+            Backrooms_01.decalIndexGrid = null;
+            Backrooms_01.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            Backrooms_01.decalSize = 1;
+            Backrooms_01.decalSpacing = 1;
+            Backrooms_01.usesPatternLayer = false;
+            Backrooms_01.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            Backrooms_01.patternSpacing = 1;
+            Backrooms_01.patternSize = 1;
+            Backrooms_01.patternIndexGrid = null;
+            Backrooms_01.forceEdgesDiagonal = false;
+            Backrooms_01.exteriorFacadeBorderGrid = null;
+            Backrooms_01.facadeTopGrid = null;
+            Backrooms_01.bridgeGrid = null;
+            
+
+            DungeonMaterial Backrooms_02 = ScriptableObject.CreateInstance<DungeonMaterial>();
+            Backrooms_02.name = "Backrooms_Bathrooms";
+            Backrooms_02.wallShards = NakatomiPrefab.roomMaterialDefinitions[1].wallShards;
+            Backrooms_02.bigWallShards = new WeightedGameObjectCollection() { elements = new List<WeightedGameObject>(0) };
+            Backrooms_02.bigWallShardDamageThreshold = 10;
+            Backrooms_02.fallbackVerticalTileMapEffects = NakatomiPrefab.roomMaterialDefinitions[1].fallbackVerticalTileMapEffects;
+            Backrooms_02.fallbackHorizontalTileMapEffects = NakatomiPrefab.roomMaterialDefinitions[1].fallbackHorizontalTileMapEffects;
+            Backrooms_02.pitfallVFXPrefab = null;
+            Backrooms_02.UsePitAmbientVFX = false;
+            Backrooms_02.AmbientPitVFX = new List<GameObject>(0);
+            Backrooms_02.PitVFXMinCooldown = 5;
+            Backrooms_02.PitVFXMaxCooldown = 30;
+            Backrooms_02.ChanceToSpawnPitVFXOnCooldown = 1;
+            Backrooms_02.stampFailChance = 0.6f;
+            Backrooms_02.overrideTableTable = null;
+            Backrooms_02.supportsPits = false;
+            Backrooms_02.doPitAO = true;
+            Backrooms_02.pitsAreOneDeep = false;
+            Backrooms_02.supportsDiagonalWalls = false;
+            Backrooms_02.supportsUpholstery = false;
+            Backrooms_02.carpetIsMainFloor = false;
+            Backrooms_02.carpetGrids = new TileIndexGrid[0];
+            /*Backrooms_02.carpetGrids = new TileIndexGrid[] {
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/carpetGrids_0"),
+                ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/carpetGrids_1")
+            };*/
+            Backrooms_02.supportsChannels = false;
+            Backrooms_02.minChannelPools = 0;
+            Backrooms_02.maxChannelPools = 3;
+            Backrooms_02.channelTenacity = 0.75f;
+            Backrooms_02.channelGrids = new TileIndexGrid[0];
+            Backrooms_02.supportsLavaOrLavalikeSquares = false;
+            Backrooms_02.lavaGrids = new TileIndexGrid[] { ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/lavaGrids") };
+            Backrooms_02.supportsIceSquares = false;
+            Backrooms_02.iceGrids = new TileIndexGrid[0];
+            Backrooms_02.roomFloorBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/roomFloorBorderGrid");
+            Backrooms_02.roomCeilingBorderGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/roomCeilingBorderGrid");
+            Backrooms_02.pitLayoutGrid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/pitLayoutGrid");
+            Backrooms_02.pitBorderFlatGrid = null;
+            Backrooms_02.pitBorderRaisedGrid = null;
+            Backrooms_02.additionalPitBorderFlatGrid = null;
+            Backrooms_02.outerCeilingBorderGrid = null;
+            Backrooms_02.floorSquareDensity = 0.05f;
+            Backrooms_02.floorSquares = new TileIndexGrid[0];
+            Backrooms_02.usesFacewallGrids = true;
+            Backrooms_02.facewallGrids = new FacewallIndexGridDefinition[] {
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/facewallGrids_0"),
+                ExpandAssets.DeserializeFacewallGridDefinitionFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/facewallGrids_1"),
+            };
+            Backrooms_02.facewallGrids[0].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/facewallGrids_0_grid");
+            Backrooms_02.facewallGrids[1].grid = ExpandAssets.DeserializeTileIndexGridFromAssetBundle(expandSharedAuto1, "Nakatomi/Nakatomi_Blue/facewallGrids_1_grid");
+
+            Backrooms_02.usesInternalMaterialTransitions = false;
+            Backrooms_02.usesProceduralMaterialTransitions = false;
+            Backrooms_02.internalMaterialTransitions = new RoomInternalMaterialTransition[0];
+            Backrooms_02.secretRoomWallShardCollections = new List<GameObject>(0);
+            Backrooms_02.overrideStoneFloorType = false;
+            Backrooms_02.overrideFloorType = CellVisualData.CellFloorType.Stone;
+            Backrooms_02.useLighting = true;
+            Backrooms_02.lightPrefabs = new WeightedGameObjectCollection() {
+                elements = new List<WeightedGameObject>() {
+                   new WeightedGameObject() {
+                       rawGameObject = NakatomiPrefab.roomMaterialDefinitions[1].lightPrefabs.elements[0].rawGameObject,
+                       weight = 1,
+                       forceDuplicatesPossible = false,
+                       pickupId = -1,
+                       additionalPrerequisites = new DungeonPrerequisite[0]
+                   }
+               }
+            };
+            Backrooms_02.facewallLightStamps = NakatomiPrefab.roomMaterialDefinitions[1].facewallLightStamps;
+            Backrooms_02.sidewallLightStamps = NakatomiPrefab.roomMaterialDefinitions[1].sidewallLightStamps;
+            Backrooms_02.usesDecalLayer = false;
+            Backrooms_02.decalIndexGrid = null;
+            Backrooms_02.decalLayerStyle = TilemapDecoSettings.DecoStyle.GROW_FROM_WALLS;
+            Backrooms_02.decalSize = 1;
+            Backrooms_02.decalSpacing = 1;
+            Backrooms_02.usesPatternLayer = false;
+            Backrooms_02.patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE;
+            Backrooms_02.patternSpacing = 1;
+            Backrooms_02.patternSize = 1;
+            Backrooms_02.patternIndexGrid = null;
+            Backrooms_02.forceEdgesDiagonal = false;
+            Backrooms_02.exteriorFacadeBorderGrid = null;
+            Backrooms_02.facadeTopGrid = null;
+            Backrooms_02.bridgeGrid = null;
+
+            
+
+            dungeon.gameObject.name = "Base_BackRooms";
+            dungeon.DungeonSeed = 0;
+            dungeon.DungeonShortName = "The Backrooms";
+            dungeon.DungeonFloorName = "The Backrooms";
+            dungeon.DungeonFloorLevelTextOverride = "A Liminal Space...";
+            dungeon.debugSettings = new DebugDungeonSettings() {
+                RAPID_DEBUG_DUNGEON_ITERATION_SEEKER = false,
+                RAPID_DEBUG_DUNGEON_ITERATION = false,
+                RAPID_DEBUG_DUNGEON_COUNT = 50,
+                GENERATION_VIEWER_MODE = false,
+                FULL_MINIMAP_VISIBILITY = false,
+                COOP_TEST = false,
+                DISABLE_ENEMIES = false,
+                DISABLE_LOOPS = true,
+                DISABLE_SECRET_ROOM_COVERS = false,
+                DISABLE_OUTLINES = false,
+                WALLS_ARE_PITS = false,
+            };
+            dungeon.PatternSettings = new SemioticDungeonGenSettings() {
+                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("BackRooms_Flow_01") },
+                mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
+                optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
+                MAX_GENERATION_ATTEMPTS = 250,
+                DEBUG_RENDER_CANVASES_SEPARATELY = false,
+            };
+            dungeon.ForceRegenerationOfCharacters = false;
+            dungeon.ActuallyGenerateTilemap = true;
+            dungeon.decoSettings = new TilemapDecoSettings() {
+                standardRoomVisualSubtypes = new WeightedIntCollection() {
+                    elements = new WeightedInt[] {
+                      new WeightedInt() {
+                          annotation = "backrooms",
+                          value = 0,
+                          weight = 0.5f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "bathrooms",
+                          value = 1,
+                          weight = 0.5f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "shop",
+                          value = 2,
+                          weight = 0,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "unused",
+                          value = 3,
+                          weight = 0f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      },
+                      new WeightedInt() {
+                          annotation = "unused",
+                          value = 4,
+                          weight = 0f,
+                          additionalPrerequisites = new DungeonPrerequisite[0]
+                      }
+                  }
+                },
+                decalLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                decalSize = 3,
+                decalSpacing = 1,
+                decalExpansion = 0,
+                patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                patternSize = 3,
+                patternSpacing = 3,
+                patternExpansion = 0,
+                decoPatchFrequency = 0.01f,
+                ambientLightColor = new Color(0.627336f, 0.666108f, 0.585294f, 1),
+                ambientLightColorTwo = new Color(0.62549f, 0.664705f, 0.584314f, 1),
+                lowQualityAmbientLightColor = Color.white,
+                lowQualityAmbientLightColorTwo = Color.white,
+                lowQualityCheapLightVector = new Vector4(1, 0, -1, 0),
+                UsesAlienFXFloorColor = false,
+                AlienFXFloorColor = Color.black,
+                generateLights = true,
+                lightCullingPercentage = 0.2f,
+                lightOverlapRadius = 8,
+                nearestAllowedLight = 12,
+                minLightExpanseWidth = 2,
+                lightHeight = -2,
+                lightCookies = new Texture2D[0],
+                debug_view = false
+            };
+            dungeon.tileIndices = new TileIndices() {
+                tilesetId = GlobalDungeonData.ValidTilesets.SPACEGEON,
+                dungeonCollection = ExpandPrefabs.ENV_Tileset_Backrooms.GetComponent<tk2dSpriteCollectionData>(),
+                dungeonCollectionSupportsDiagonalWalls = false,
+                aoTileIndices = new AOTileIndices() {
+                    AOFloorTileIndex = 0,
+                    AOBottomWallBaseTileIndex = 1,
+                    AOBottomWallTileRightIndex = 2,
+                    AOBottomWallTileLeftIndex = 3,
+                    AOBottomWallTileBothIndex = 4,
+                    AOTopFacewallRightIndex = 6,
+                    AOTopFacewallLeftIndex = 5,
+                    AOTopFacewallBothIndex = 7,
+                    AOFloorWallLeft = 5,
+                    AOFloorWallRight = 6,
+                    AOFloorWallBoth = 7,
+                    AOFloorPizzaSliceLeft = 8,
+                    AOFloorPizzaSliceRight = 9,
+                    AOFloorPizzaSliceBoth = 10,
+                    AOFloorPizzaSliceLeftWallRight = 11,
+                    AOFloorPizzaSliceRightWallLeft = 12,
+                    AOFloorWallUpAndLeft = 13,
+                    AOFloorWallUpAndRight = 14,
+                    AOFloorWallUpAndBoth = 15,
+                    AOFloorDiagonalWallNortheast = -1,
+                    AOFloorDiagonalWallNortheastLower = -1,
+                    AOFloorDiagonalWallNortheastLowerJoint = -1,
+                    AOFloorDiagonalWallNorthwest = -1,
+                    AOFloorDiagonalWallNorthwestLower = -1,
+                    AOFloorDiagonalWallNorthwestLowerJoint = -1,
+                    AOBottomWallDiagonalNortheast = -1,
+                    AOBottomWallDiagonalNorthwest = -1,
+                },
+                placeBorders = true,
+                placePits = false,
+                chestHighWallIndices = new List<TileIndexVariant>() {
+                    new TileIndexVariant() {
+                        index = 41,
+                        likelihood = 0.5f,
+                        overrideLayerIndex = 0,
+                        overrideIndex = 0
+                    }
+                },
+                decalIndexGrid = null,
+                patternIndexGrid = null,
+                globalSecondBorderTiles = new List<int>(0),
+                edgeDecorationTiles = null,
+            };
+            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
+                Backrooms_01,
+                Backrooms_02,
+                Backrooms_01,
+                Backrooms_01,
+                Backrooms_01,
+                sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights")
+            };
+            dungeon.dungeonWingDefinitions = new DungeonWingDefinition[0];
+            dungeon.pathGridDefinitions = NakatomiPrefab.pathGridDefinitions;
+            dungeon.dungeonDustups = NakatomiPrefab.dungeonDustups;
+            dungeon.damageTypeEffectMatrix = ScriptableObject.CreateInstance<DamageTypeEffectMatrix>();
+            dungeon.damageTypeEffectMatrix.definitions = NakatomiPrefab.damageTypeEffectMatrix.definitions;
+            
+            dungeon.stampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
+            dungeon.stampData.name = "ENV_OFFICE_STAMP_DATA";
+            dungeon.stampData.tileStampWeight = 0.33f;
+            dungeon.stampData.spriteStampWeight = 0;
+            dungeon.stampData.objectStampWeight = 1f;
+            dungeon.stampData.stamps = new TileStampData[] {
+                new TileStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                    occupySpace = DungeonTileStampData.StampSpace.WALL_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.FINE,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 1 }
+                    },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    stampTileIndices = new List<int>() { 60 }
+                }
+            };
+            dungeon.stampData.spriteStamps = new SpriteStampData[0];
+            
+            // Original prefab had no object stamps setup. Using Nakatomi as it is the final version of this pre-AG&D version of Office.
+            List<ObjectStampData> m_ObjectStamps = new List<ObjectStampData>();
+            foreach (ObjectStampData data in NakatomiPrefab.stampData.objectStamps) {
+                m_ObjectStamps.Add(new ObjectStampData() {
+                    width = data.width,
+                    height = data.height,
+                    relativeWeight = data.relativeWeight,
+                    placementRule = data.placementRule,
+                    occupySpace = data.occupySpace,
+                    stampCategory = data.stampCategory,
+                    preferredIntermediaryStamps = data.preferredIntermediaryStamps,
+                    intermediaryMatchingStyle = data.intermediaryMatchingStyle,
+                    requiresForcedMatchingStyle = data.requiresForcedMatchingStyle,
+                    opulence = data.opulence,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>(),
+                    indexOfSymmetricPartner = data.indexOfSymmetricPartner,
+                    preventRoomRepeats = data.preventRoomRepeats,
+                    objectReference = data.objectReference,
+                });
+            }
+            for (int i = 0; i < m_ObjectStamps.Count; i++) {
+                if (NakatomiPrefab.stampData.objectStamps[i].roomTypeData != null && NakatomiPrefab.stampData.objectStamps[i].roomTypeData.Count > 0) {
+                    foreach (StampPerRoomPlacementSettings roomPlacementSetting in NakatomiPrefab.stampData.objectStamps[i].roomTypeData) {
+                        m_ObjectStamps[i].roomTypeData.Add(new StampPerRoomPlacementSettings() {
+                            roomSubType = roomPlacementSetting.roomSubType,
+                            roomRelativeWeight = roomPlacementSetting.roomRelativeWeight,
+                        });
+                    }
+                }
+            }
+
+            m_ObjectStamps[6].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL_LEFT_CORNER; // Potted Plants (floor)
+            m_ObjectStamps[7].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
+            m_ObjectStamps[8].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
+            m_ObjectStamps[9].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
+            m_ObjectStamps[10].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS;
+            m_ObjectStamps[11].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
+            
+            m_ObjectStamps.Remove(m_ObjectStamps[12]);
+            m_ObjectStamps.Remove(m_ObjectStamps[11]);
+            m_ObjectStamps.Remove(m_ObjectStamps[10]);
+            m_ObjectStamps.Remove(m_ObjectStamps[9]);
+            m_ObjectStamps.Remove(m_ObjectStamps[6]);
+
+
+            dungeon.stampData.objectStamps = m_ObjectStamps.ToArray();
+            dungeon.stampData.SymmetricFrameChance = 0.1f;
+            dungeon.stampData.SymmetricCompleteChance = 0.1f;
+            dungeon.UsesCustomFloorIdea = false;
+            dungeon.FloorIdea = new RobotDaveIdea() {
+                ValidEasyEnemyPlaceables = new DungeonPlaceable[0],
+                ValidHardEnemyPlaceables = new DungeonPlaceable[0],
+                UseWallSawblades = false,
+                UseRollingLogsVertical = false,
+                UseRollingLogsHorizontal = false,
+                UseFloorPitTraps = false,
+                UseFloorFlameTraps = false,
+                UseFloorSpikeTraps = false,
+                UseFloorConveyorBelts = false,
+                UseCaveIns = false,
+                UseAlarmMushrooms = false,
+                UseMineCarts = false,
+                UseChandeliers = false,
+                CanIncludePits = true
+            };
+            dungeon.doorObjects = NakatomiPrefab.doorObjects;
+            dungeon.lockedDoorObjects = null;
+            dungeon.oneWayDoorObjects = AbbeyPrefab.oneWayDoorObjects;
+            // dungeon.oneWayDoorObjects = ExpandPrefabs.Office_OneWayDoors;
+            dungeon.oneWayDoorPressurePlate = NakatomiPrefab.oneWayDoorPressurePlate;
+            dungeon.phantomBlockerDoorObjects = NakatomiPrefab.phantomBlockerDoorObjects;
+            dungeon.WarpWingDoorPrefab = null;
+            dungeon.baseChestContents = NakatomiPrefab.baseChestContents;
+            dungeon.SecretRoomSimpleTriggersFacewall = NakatomiPrefab.SecretRoomSimpleTriggersFacewall;
+            dungeon.SecretRoomSimpleTriggersSidewall = NakatomiPrefab.SecretRoomSimpleTriggersSidewall;
+            dungeon.SecretRoomComplexTriggers = new List<ComplexSecretRoomTrigger>(0);
+            dungeon.SecretRoomDoorSparkVFX = NakatomiPrefab.SecretRoomDoorSparkVFX;
+            dungeon.SecretRoomHorizontalPoofVFX = NakatomiPrefab.SecretRoomHorizontalPoofVFX;
+            dungeon.SecretRoomVerticalPoofVFX = NakatomiPrefab.SecretRoomVerticalPoofVFX;
+            dungeon.sharedSettingsPrefab = NakatomiPrefab.sharedSettingsPrefab;
+            dungeon.BossMasteryTokenItemId = -1;
+            dungeon.StripPlayerOnArrival = false;
+            dungeon.SuppressEmergencyCrates = false;
+            dungeon.SetTutorialFlag = false;
+            dungeon.PlayerIsLight = false;
+            dungeon.PlayerLightColor = Color.white;
+            dungeon.PlayerLightIntensity = 3;
+            dungeon.PlayerLightRadius = 5f;
+            dungeon.musicEventName = "Play_EX_MUS_Backrooms_01";
+
+            NakatomiPrefab = null;
+            AbbeyPrefab = null;
+
         }
     }
 }

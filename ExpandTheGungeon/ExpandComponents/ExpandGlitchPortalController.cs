@@ -76,7 +76,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     DestroyAfterUse = true;
                     ParentRoom.DeregisterInteractable(this);
-                    StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
+                    if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH |
+                        GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH |
+                        GameManager.Instance.CurrentFloor > 4 | ExpandSettings.HasVisitedBackrooms) {
+                        StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
+                    } else {
+                        StartCoroutine(HandleBackroomsAccident());
+                    }
                 } else {
                     m_PositionIsValid = true;
                 }
@@ -172,6 +178,21 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield break;
         }
         
+        private IEnumerator HandleBackroomsAccident(float delay = 0.5f, bool skipFade = false) {
+            if (!skipFade) {
+                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                yield return new WaitForSeconds(1f);
+            }
+            GameUIRoot.Instance.HideCoreUI(string.Empty);
+            GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
+            ExpandSettings.HasVisitedBackrooms = true;
+            yield return null;
+            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_backrooms");
+            AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
+            yield break;
+        }
+
+
         private IEnumerator HandleShrink() {
             while(m_IsMoving) { yield return null; }
             m_IsMoving = true;

@@ -61,7 +61,7 @@ This mod is intended for post AG&D versions of Enter the Gungeon and the Farewel
 
 Credits:
 
-* SpecialAPI for helping port the mod to the BepInEx version of MTG. (and for making MTG possible with BepInEx!)
+* SpecialAPI for helping with porting the mod to BepInEx and for the MTG API that makes this possible on BepInEx! :D
 * KyleTheScientist, Zatherz, Abe Clancy, and PlaguedPixel for their help/code for improving/making certain features possible.
 * TheTurtleMelon for name idea of mod and for custom room designs used on normal floors.
 * Retrash for the Baby Good Hammer item sprite, Wooden Crest sprite, improvements to Jungle tree sprite, and for some room designs on Belly floor.
@@ -76,4 +76,7 @@ Credits:
 * https://github.com/staffantan/unity-vhsglitch - Shader used for Old West Boss intro and glitch floors.
 * C4ndy_cane for all the custom level music added to this mod!
 * luka712 (https://luka712.github.io/2018/07/21/CRT-effect-Shadertoy-Unity/) for the CRT shader used for the Punchout Arcade Game!
-* NeverNamed for the Casino room sprites like the Rat Punchout Arcade machine sprites and the decorations found in the room!
+* NeverNamed for the Casino room sprites like the Rat Punchout Arcade machine sprites and the decorations found in the room! Also made sprites for the new tree objects added to Jungle floor!
+* Lynceus for the new boss card used for West Bros boss on Old West floor as well as the new sprites used on the hotshot enemies and Ammonomicon enemy portraits!.
+* Dallan for sprite work of new secret enemy/floor. ;)
+* mazellmi (https://www.youtube.com/@mazellmi) for the sound fx used for secret enemy. ;)

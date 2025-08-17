@@ -26,7 +26,7 @@ namespace ExpandTheGungeon {
                         if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                         ExpandTheGungeon.GameManagerHook = new Hook(
                             typeof(GameManager).GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance),
-                            typeof(ExpandTheGungeon).GetMethod("GameManager_Awake", BindingFlags.NonPublic | BindingFlags.Instance),
+                            typeof(ExpandTheGungeon).GetMethod(nameof(ExpandTheGungeon.GameManager_Awake), BindingFlags.Public | BindingFlags.Instance),
                             typeof(GameManager)
                         );
                     }
@@ -38,6 +38,11 @@ namespace ExpandTheGungeon {
                         // (and any other mod that has created a custom AIActor or object that has a HealthHaver component)
                         // Moved to ExpandFoyer so this can clean up fakeprefabs from other mods regardless of mods.txt load order
                         StaticReferenceManager.AllHealthHavers.Clear();
+                        if (GameManager.Instance) {
+                            if (GameManager.Instance.PrimaryPlayer)StaticReferenceManager.AllHealthHavers.Add(GameManager.Instance.PrimaryPlayer.healthHaver);
+                            if (GameManager.Instance.SecondaryPlayer)StaticReferenceManager.AllHealthHavers.Add(GameManager.Instance.SecondaryPlayer.healthHaver);
+                        }
+
                         // Remove any custom instances that use BroController
                         StaticReferenceManager.AllBros.Clear();
                         // Clear any fakeprefab AIActors from lists.

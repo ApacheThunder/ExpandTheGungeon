@@ -59,6 +59,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getNextNearbyTileHook;
         public static Hook getAllNearbyTilesHook;
         public static Hook initNearbyTileCheckHook;
+        public static Hook HandleLostWoodsMirroringHook;
         public static Hook getTileHook;
         public static Hook floorChestPlacerConfigureOnPlacementHook;
         public static Hook applyBenefitHook;
@@ -376,6 +377,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(FlameTrapChallengeModifier)
             );
 
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.HandleLostWoodsMirroring Hook...."); }
+            HandleLostWoodsMirroringHook = new Hook(
+                typeof(TK2DDungeonAssembler).GetMethod("HandleLostWoodsMirroring", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(CellData), typeof(Dungeon), typeof(tk2dTileMap), typeof(int), typeof(int) }, new ParameterModifier[0]),
+                typeof(ExpandHooks).GetMethod(nameof(HandleLostWoodsMirroring), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(TK2DDungeonAssembler)
+            );
+            
             /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
             pixelatorStartHook = new Hook(
                 typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -1782,6 +1790,20 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
+        // Catch exceptions in TK2DDungeonAssembler.HandleLostWoodsMirroring
+        private void HandleLostWoodsMirroring(ActionEX<TK2DDungeonAssembler, CellData, Dungeon, tk2dTileMap, int, int> orig, TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
+            try {
+                if (d.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.RATGEON && !d.gameObject.name.ToLower().StartsWith("base_resourcefulrat")) { return; }
+                orig(self, current, d, map, ix, iy);
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in TK2DDungeonAssembler.HandleLostWoodsMirroring!");
+                    Debug.LogException(ex);
+                }
+                return;
+            }
+        }
+
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {
             FieldInfo m_gameManagerCachedField = typeof(OcclusionLayer).GetField("m_gameManagerCached", BindingFlags.Instance | BindingFlags.NonPublic);
             FieldInfo m_pixelatorCachedField = typeof(OcclusionLayer).GetField("m_pixelatorCached", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -1938,7 +1960,7 @@ namespace ExpandTheGungeon.ExpandMain {
             return num;
         }
         */
-        
+
         /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
             if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
                 // self.UseTexturedOcclusion = true;

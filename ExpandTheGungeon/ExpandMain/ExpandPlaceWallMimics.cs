@@ -35,8 +35,12 @@ namespace ExpandTheGungeon.ExpandMain {
                         
             if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {                
                 ExpandSettings.glitchElevatorHasBeenUsed = false;
+                ExpandSettings.HasVisitedBackrooms = false;
+                ExpandSettings.BackroomsEntrancePlaced = false;
             }
-            
+
+            if (currentFloor == 1)ExpandSettings.HasVisitedBackrooms = false;
+
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
 
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Current Floor: " + currentFloor, false); }
@@ -56,8 +60,15 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 
                 PlaceGlitchElevator(dungeon, currentFloor);
+                PlaceNoClipZone(dungeon, currentFloor, numWallMimicsForFloor);
+                PlaceBackroomsElevator(dungeon);
+                bool isBackRoomsDungeon = false;
 
-                ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler);
+                if (!string.IsNullOrEmpty(dungeon.gameObject.name) && dungeon.gameObject.name.ToLower().StartsWith("base_backrooms")) {
+                    isBackRoomsDungeon = true;
+                }
+
+                ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler, isBackRoomsDungeon);
 
                 if (ExpandSettings.EnableExpandedGlitchFloors) {
                     if (dungeon.IsGlitchDungeon) {
@@ -336,7 +347,385 @@ namespace ExpandTheGungeon.ExpandMain {
                 return 0;
             }
         }
-                
+
+        private void PlaceBackroomsElevator(Dungeon dungeon) {
+            GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
+            if (levelOverrideState == GameManager.LevelOverrideState.FOYER | 
+                levelOverrideState == GameManager.LevelOverrideState.TUTORIAL |
+                levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST |
+                levelOverrideState == GameManager.LevelOverrideState.END_TIMES
+                ) {
+                return;
+            }
+            if (!dungeon.gameObject.name.ToLower().StartsWith("base_backrooms")) { return; }
+            if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
+
+            foreach (PlayerController player in GameManager.Instance.AllPlayers) {
+                player.healthHaver.IsVulnerable = true;
+            }
+
+            if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Backrooms Exit Elevator!"); }
+            List<RoomHandler> Rooms = new List<RoomHandler>();
+            foreach (RoomHandler room in dungeon.data.rooms) {
+                if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsMaintenanceRoom() &&
+                    room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
+                    room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT)
+                {
+                    Rooms.Add(room);
+                }
+            }
+            int SpawnAttempts = 0;
+            IL_RETRY:
+            if (Rooms.Count <= 0) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] No rooms that are allowed to contain an Exit Elevator or have valid locations for one are present on this floor!", false);
+                }
+                return;
+            }
+            if (Rooms.Count > 1) { Rooms = Rooms.Shuffle(); }
+            RoomHandler SelectedRoom = BraveUtility.RandomElement(Rooms);
+            Rooms.Remove(SelectedRoom);
+            SpawnAttempts++;
+            if (!SpawnBackroomsElevator(dungeon, SelectedRoom) && SpawnAttempts < dungeon.data.rooms.Count) { goto IL_RETRY; }
+            return;
+        }
+        
+        public bool SpawnBackroomsElevator(Dungeon dungeon, RoomHandler currentRoom) {
+            int NorthWallCount = 0;
+            int ElevatorsPlaced = 0;
+            List<Tuple<IntVector2, DungeonData.Direction>> validWalls = new List<Tuple<IntVector2, DungeonData.Direction>>();
+            ExpandSecretDoorPlacable[] secretDoors = UnityEngine.Object.FindObjectsOfType<ExpandSecretDoorPlacable>();
+            if (secretDoors != null && (secretDoors.Length > 1)) { return true; }
+            try { 
+                for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
+                    for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
+                        int X = currentRoom.area.basePosition.x + Width;
+                        int Y = currentRoom.area.basePosition.y + Height;
+                        if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0 && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) != null && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
+                            int WallCount = 0;
+                			if (dungeon.data.isWall(X - 1, Y + 2) && 
+                                dungeon.data.isWall(X, Y + 2) &&
+                                dungeon.data.isWall(X + 1, Y + 2) &&
+                                dungeon.data.isWall(X + 2, Y + 2) &&
+                                dungeon.data.isWall(X - 1, Y + 1) &&
+                                dungeon.data.isWall(X, Y + 1) &&
+                                dungeon.data.isWall(X + 1, Y + 1) &&
+                                dungeon.data.isWall(X + 2, Y + 1) && 
+                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X, Y) &&
+                                dungeon.data.isWall(X + 1, Y) &&
+                                dungeon.data.isWall(X + 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X, Y + 4) &&
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y + 4))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.SOUTH));
+                				WallCount++;
+                                NorthWallCount++;
+                            }
+                			if (WallCount > 0) {
+                				bool WallStillValid = true;
+                                int XPadding = -5;
+                				while (XPadding <= 5 && WallStillValid) {
+                					int YPadding = -5;
+                					while (YPadding <= 5 && WallStillValid) {
+                						int x = X + XPadding;
+                						int y = Y + YPadding;
+                						if (dungeon.data.CheckInBoundsAndValid(x, y)) {
+                							CellData cellData = dungeon.data[x, y];
+                							if (cellData != null) {
+                                                if (cellData.type == CellType.PIT | cellData.diagonalWallType != DiagonalWallType.NONE) { WallStillValid = false; }
+                                            }
+                						}
+                						YPadding++;
+                					}
+                					XPadding++;
+                				}
+                				if (!WallStillValid) {
+                					while (WallCount > 0) {
+                						validWalls.RemoveAt(validWalls.Count - 1);
+                						WallCount--;
+                					}
+                				}
+                			}
+                		}
+                	}
+                }
+                if (validWalls.Count <= 0) {
+                    if (ExpandSettings.debugMode) {
+                        ETGModConsole.Log("[DEBUG] No valid locations found for room: " + currentRoom.GetRoomName() + " while attempting Elevator placement!", false);
+                    }
+                    return false;
+                } else {
+                    Tuple<IntVector2, DungeonData.Direction> WallCell = BraveUtility.RandomElement(validWalls);
+                    IntVector2 Position = WallCell.First;
+                    currentRoom.RuntimeStampCellComplex(Position.x, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+                    currentRoom.RuntimeStampCellComplex(Position.x + 1, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+
+                    GameObject ElevatorObject = ExpandSecretDoorPlacable.Instantiate(ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked, (Position.ToVector2() - (new Vector2(1, 0))), Quaternion.identity);
+                    if (ElevatorObject) {
+                        ExpandSecretDoorPlacable m_ExpandSecretDoorPlacable = ElevatorObject.GetComponent<ExpandSecretDoorPlacable>();
+                        if (m_ExpandSecretDoorPlacable) {
+                            m_ExpandSecretDoorPlacable.ManuallyAssigned = false;
+                            m_ExpandSecretDoorPlacable.m_IsBackRoomsElevator = true;
+                            currentRoom.RegisterInteractable(m_ExpandSecretDoorPlacable);
+                            m_ExpandSecretDoorPlacable.ConfigureOnPlacement(currentRoom);
+                        }
+                    }
+                    validWalls.Remove(WallCell);
+                    if (ExpandSettings.debugMode) {
+                        ETGModConsole.Log("[DEBUG] Elevators(s) succesfully placed in room: " + currentRoom.GetRoomName(), false);
+                        ETGModConsole.Log("[DEBUG] Number of Elevators succesfully placed in room: " + ElevatorsPlaced, false);
+                        ETGModConsole.Log("[DEBUG] Number of valid Elevator locations: " + NorthWallCount, false);
+                    }
+                    return false;
+                }
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] Exception while trying to place Elevator(s) in room: " + currentRoom.GetRoomName(), false);
+                    Debug.LogException(ex);
+                }
+                return true;
+            }
+        }
+
+
+        private void PlaceNoClipZone(Dungeon dungeon, int CurrentFloor, int wallMimicCount) {
+            GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
+            if (CurrentFloor > 4 | ExpandSettings.HasVisitedBackrooms)return;
+            if (dungeon.gameObject.name.ToLower().StartsWith("base_backrooms"))return;
+            if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
+            if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
+                return;
+            }
+            if (levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST) {
+                ExpandSettings.HasVisitedBackrooms = false;
+                ExpandSettings.BackroomsEntrancePlaced = false;
+                return;
+            }
+            if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
+            
+            float SpawnChance = 0.3f;
+
+            if (wallMimicCount != 0) { SpawnChance = 0.6f; }
+
+            if (UnityEngine.Random.value > SpawnChance) { return; }
+
+            if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a BackRooms NoClip Zone!"); }
+            List<RoomHandler> Rooms = new List<RoomHandler>();
+            foreach (RoomHandler room in dungeon.data.rooms) {
+                if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsShop && !room.IsMaintenanceRoom() && !room.GetRoomName().ToLower().StartsWith("exit") &&
+                    !room.GetRoomName().ToLower().StartsWith("tiny_exit") && !room.GetRoomName().ToLower().StartsWith("elevator") &&
+                    !room.GetRoomName().ToLower().StartsWith("tiny_entrance") && !room.GetRoomName().ToLower().StartsWith("gungeon entrance") &&
+                    !room.GetRoomName().ToLower().StartsWith("gungeon_rewardroom") && !room.GetRoomName().ToLower().StartsWith("reward room") &&
+                    !room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_BootlegRoom.name.ToLower()) && !room.area.prototypeRoom.precludeAllTilemapDrawing)
+                {
+                    Rooms.Add(room);
+                }
+            }
+            int SpawnAttempts = 0;
+            int ZonesPlaced = 0;
+            IL_RETRY:
+            if (Rooms.Count <= 0) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] No rooms that are allowed to contain a NoClip zone or have valid locations for one are present on this floor!", false);
+                }
+                return;
+            }
+            if (Rooms.Count > 1) { Rooms = Rooms.Shuffle(); }
+            RoomHandler SelectedRoom = BraveUtility.RandomElement(Rooms);
+            Rooms.Remove(SelectedRoom);
+            SpawnAttempts++;
+            ZonesPlaced += SpawnNoClipZone(dungeon, SelectedRoom, 1);
+            if (ZonesPlaced <= 0) goto IL_RETRY;
+            return;
+        }
+
+        public int SpawnNoClipZone(Dungeon dungeon, RoomHandler currentRoom, int ZonesPerRoom = 1) {
+            int SouthWallCount = 0;
+            int NorthWallCount = 0;
+            int WestWallCount = 0;
+            int EastWallCount = 0;
+            int NoClipZonesPlaced = 0;
+            int loopCount = 0;
+            List<Tuple<IntVector2, DungeonData.Direction>> validWalls = new List<Tuple<IntVector2, DungeonData.Direction>>();
+            try { 
+                for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {
+                    for (int Height = -1; Height <= currentRoom.area.dimensions.y; Height++) {
+                        int X = currentRoom.area.basePosition.x + Width;
+                        int Y = currentRoom.area.basePosition.y + Height;
+                        if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0 && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) != null && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
+                            int WallCount = 0;
+                			if (!dungeon.data.isWall(X - 1, Y + 2) &&
+                                !dungeon.data.isWall(X, Y + 2) && 
+                                !dungeon.data.isWall(X + 1, Y + 2) &&
+                                !dungeon.data.isWall(X + 2, Y + 2) &&
+                				!dungeon.data.isWall(X - 1, Y + 1) &&
+                                !dungeon.data.isWall(X, Y + 1) && 
+                                !dungeon.data.isWall(X + 1, Y + 1) &&
+                                !dungeon.data.isWall(X + 2, Y + 1) &&
+                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X, Y) && 
+                                dungeon.data.isWall(X + 1, Y) &&
+                                dungeon.data.isWall(X + 2, Y) && 
+                				dungeon.data.isWall(X - 1, Y - 1) &&
+                                dungeon.data.isWall(X, Y - 1) && 
+                                dungeon.data.isWall(X + 1, Y - 1) &&
+                                dungeon.data.isWall(X + 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 1, Y - 3) &&
+                                !dungeon.data.isPlainEmptyCell(X, Y - 3) && 
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y - 3) &&
+                                !dungeon.data.isPlainEmptyCell(X + 2, Y - 3))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.NORTH));
+                				WallCount++;
+                                SouthWallCount++;
+                            } else if (dungeon.data.isWall(X - 1, Y + 2) && 
+                                dungeon.data.isWall(X, Y + 2) &&
+                                dungeon.data.isWall(X + 1, Y + 2) &&
+                                dungeon.data.isWall(X + 2, Y + 2) &&
+                                dungeon.data.isWall(X - 1, Y + 1) &&
+                                dungeon.data.isWall(X, Y + 1) &&
+                                dungeon.data.isWall(X + 1, Y + 1) &&
+                                dungeon.data.isWall(X + 2, Y + 1) && 
+                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X, Y) &&
+                                dungeon.data.isWall(X + 1, Y) &&
+                                dungeon.data.isWall(X + 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X, Y + 4) &&
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y + 4))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.SOUTH));
+                				WallCount++;
+                                NorthWallCount++;
+                            } else if (dungeon.data.isWall(X, Y + 2) &&
+                				dungeon.data.isWall(X, Y + 1) &&
+                				dungeon.data.isWall(X - 1, Y) &&
+                				dungeon.data.isWall(X, Y - 1) &&
+                				dungeon.data.isWall(X, Y - 2) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y + 2) && 
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y + 1) && 
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X + 1, Y) &&
+                				dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X - 2, Y - 2))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.EAST));
+                				WallCount++;
+                                WestWallCount++;
+                            } else if (dungeon.data.isWall(X, Y + 2) && 
+                				dungeon.data.isWall(X, Y + 1) &&
+                				dungeon.data.isWall(X + 1, Y) &&
+                				dungeon.data.isWall(X, Y - 1) &&
+                				dungeon.data.isWall(X, Y - 2) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y + 2) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y + 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y) &&
+                				dungeon.data.isPlainEmptyCell(X - 1, Y) &&
+                				dungeon.data.isPlainEmptyCell(X - 1, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y - 1) &&
+                				!dungeon.data.isPlainEmptyCell(X + 2, Y - 2))
+                			{
+                				validWalls.Add(Tuple.Create(new IntVector2(X - 1, Y), DungeonData.Direction.WEST));
+                				WallCount++;
+                                EastWallCount++;
+                            }
+                			if (WallCount > 0) {
+                				bool WallStillValid = true;
+                                int XPadding = -5;
+                				while (XPadding <= 5 && WallStillValid) {
+                					int YPadding = -5;
+                					while (YPadding <= 5 && WallStillValid) {
+                						int x = X + XPadding;
+                						int y = Y + YPadding;
+                						if (dungeon.data.CheckInBoundsAndValid(x, y)) {
+                							CellData cellData = dungeon.data[x, y];
+                							if (cellData != null) {
+                                                if (cellData.type == CellType.PIT | cellData.diagonalWallType != DiagonalWallType.NONE) { WallStillValid = false; }
+                                            }
+                						}
+                						YPadding++;
+                					}
+                					XPadding++;
+                				}
+                				if (!WallStillValid) {
+                					while (WallCount > 0) {
+                						validWalls.RemoveAt(validWalls.Count - 1);
+                						WallCount--;
+                					}
+                				}
+                			}
+                		}
+                	}
+                }
+                if (validWalls.Count <= 0) {
+                    if (ExpandSettings.debugMode) {
+                        ETGModConsole.Log("[DEBUG] No valid locations found for room: " + currentRoom.GetRoomName() + " while attempting NoClip Zone placement!", false);
+                    }
+                    return 0;
+                }
+                while (loopCount < ZonesPerRoom && validWalls.Count > 0) {
+                    if (validWalls.Count > 0) {
+                        Tuple<IntVector2, DungeonData.Direction> WallCell = BraveUtility.RandomElement(validWalls);
+                        IntVector2 Position = WallCell.First;
+                        DungeonData.Direction Direction = WallCell.Second;
+                        if (Direction != DungeonData.Direction.WEST) {
+                            currentRoom.RuntimeStampCellComplex(Position.x, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+                        }
+                        if (Direction != DungeonData.Direction.EAST) {
+                            currentRoom.RuntimeStampCellComplex(Position.x + 1, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
+                        }
+                        ExpandUtility.GenerateFakeWall(Direction, (Position - currentRoom.area.basePosition), currentRoom, "NoClip Zone", true);
+                        GameObject BackRoomsWarp = new GameObject("NoClip Warp Zone");
+                        BackRoomsWarp.transform.position = Position.ToVector3();
+                        if (Direction == DungeonData.Direction.EAST) { BackRoomsWarp.transform.position += new Vector3(0.4f, 0); }
+                        if (Direction == DungeonData.Direction.WEST) { BackRoomsWarp.transform.position += new Vector3(1.7f, 0); }
+                        if (Direction == DungeonData.Direction.NORTH) { BackRoomsWarp.transform.position += new Vector3(0, 0.8f); }
+                        if (Direction == DungeonData.Direction.SOUTH) { BackRoomsWarp.transform.position += new Vector3(0, 1.4f); }
+
+                        IntVector2 WarpZone = new IntVector2(32, 2);
+                        if (Direction == DungeonData.Direction.WEST | Direction == DungeonData.Direction.EAST) WarpZone = new IntVector2(2, 32);
+                        ExpandUtility.GenerateOrAddToRigidBody(BackRoomsWarp, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: WarpZone);
+                        ExpandWarpManager m_NoClipWarpManager = BackRoomsWarp.AddComponent<ExpandWarpManager>();
+                        m_NoClipWarpManager.OverrideTargetFloor = "tt_backrooms";
+                        m_NoClipWarpManager.warpType = ExpandWarpManager.WarpType.FloorWarp;
+                        m_NoClipWarpManager.ConfigureOnPlacement(currentRoom);
+
+                        validWalls.Remove(WallCell);
+                        NoClipZonesPlaced++;
+                    }
+                    loopCount++;
+                }
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] Exception while trying to place NoClip Zone(s) in room: " + currentRoom.GetRoomName(), false);
+                    Debug.LogException(ex);
+                }
+                return NoClipZonesPlaced;
+            }
+            if (NoClipZonesPlaced > 0) {            	
+            	if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[DEBUG] NoClip Zone(s) succesfully placed in room: " + currentRoom.GetRoomName(), false);
+                    ETGModConsole.Log("[DEBUG] Number of Valid North NoClip Zone locations: " + NorthWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid South NoClip Zone locations: " + SouthWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid East NoClip Zone locations: " + EastWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of Valid West NoClip Zone locations: " + WestWallCount, false);
+            		ETGModConsole.Log("[DEBUG] Number of NoClip Zones succesfully placed in room: " + NoClipZonesPlaced, false);
+            	}
+                ExpandSettings.BackroomsEntrancePlaced = true;
+                return NoClipZonesPlaced;
+            } else {
+                ETGModConsole.Log("[DEBUG] No valid location found for room: " + currentRoom.GetRoomName() + " while attempting NoClip Zone placement!", false);
+                return 0;
+            }
+        }
+
+
+
         private void PlaceGlitchElevator(Dungeon dungeon, int CurrentFloor) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
             if (dungeon.IsGlitchDungeon | ExpandSettings.glitchElevatorHasBeenUsed | CurrentFloor > 4) { return; }

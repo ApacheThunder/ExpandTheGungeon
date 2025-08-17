@@ -21,7 +21,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public enum WarpType { OldWestFloorWarp, FloorWarp, Normal };
         public WarpType warpType;
 
-        public bool IsOpenForTeleport;        
+        public bool IsOpenForTeleport;
         public string OverrideTargetFloor;
 
         private bool m_justWarped;
@@ -80,7 +80,13 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private IEnumerator HandleExitFloor(float delay = 0.5f, bool skipFade = false) {
-            for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].PrepareForSceneTransition(); }
+            foreach (PlayerController player in GameManager.Instance.AllPlayers) {
+                player.PrepareForSceneTransition();
+                if (!string.IsNullOrEmpty(OverrideTargetFloor) && OverrideTargetFloor.ToLower().StartsWith("tt_backrooms")) {
+                    player.healthHaver.IsVulnerable = false;
+                    yield return new WaitForSeconds(2f);
+                }
+            }
             if (!skipFade) {
                 Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
                 yield return new WaitForSeconds(1f);
@@ -98,6 +104,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                     GameManager.DoMidgameSave(nextTileset);
                 }
                 if (!string.IsNullOrEmpty(OverrideTargetFloor)) {
+                    if (OverrideTargetFloor.ToLower().StartsWith("tt_backrooms")) {
+                        ExpandSettings.HasVisitedBackrooms = true;
+                        yield return new WaitForSeconds(1f);
+                    }
                     GameManager.Instance.DelayedLoadCustomLevel(delay, OverrideTargetFloor);
                 } else {
                     GameManager.Instance.DelayedLoadNextLevel(delay);

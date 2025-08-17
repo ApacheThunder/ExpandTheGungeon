@@ -2,24 +2,25 @@
 using UnityEngine;
 using Dungeonator;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandComponents;
 using System.Linq;
 
 namespace ExpandTheGungeon.ExpandMain {
 
     public class ExpandJunkEnemySpawneer {
-        
-        public static void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler) {
+
+        public static void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler, bool isBackRoomsEntitySpawner) {
             if (dungeon.IsGlitchDungeon) { return; }
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
 
-            if (Random.value <= 0.85f) { return; }
-            
+            if (!isBackRoomsEntitySpawner && (Random.value <= 0.85f)) { return; }
+
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
             int MaxEnemies = 1;
             int iterations = 0;
 
-            if (Random.value <= 0.1f) { MaxEnemies = 2; }
+            if (!isBackRoomsEntitySpawner && (Random.value <= 0.1f)) { MaxEnemies = 2; }
             
             if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
 
@@ -33,10 +34,10 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (currentRoom == null | currentRoom.area == null) { continue; }
                 PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
                 try {
-                    if (!string.IsNullOrEmpty(currentRoom.GetRoomName()) &&
-                        currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) && !currentRoom.IsMaintenanceRoom() &&
-                       !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && !currentRoom.IsGunslingKingChallengeRoom &&
-                       !currentRoom.GetRoomName().StartsWith("Boss Foyer") && !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom.name) &&
+                    if (!string.IsNullOrEmpty(currentRoom.GetRoomName()) && (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) || isBackRoomsEntitySpawner) &&
+                       !currentRoom.IsMaintenanceRoom() && !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && 
+                       !currentRoom.IsGunslingKingChallengeRoom && !currentRoom.GetRoomName().StartsWith("Boss Foyer") && 
+                       !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom.name) &&
                        !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom2.name))
                     {
                         if (roomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && roomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
@@ -47,15 +48,35 @@ namespace ExpandTheGungeon.ExpandMain {
                             List<IntVector2> m_CachedPositions = new List<IntVector2>();
                             IntVector2? RandomGlitchEnemyVector = GetRandomAvailableCellForEnemy(dungeon, currentRoom, m_CachedPositions);
 
-                            if (RandomGlitchEnemyVector.HasValue) {
-                                if (Random.value <= 0.5f) {
-                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                            if (isBackRoomsEntitySpawner) {
+                                if (RandomGlitchEnemyVector.HasValue) {
+                                    GameObject BackRoomsEntitySpawner = Object.Instantiate(ExpandPrefabs.EXEntitySpawner, (RandomGlitchEnemyVector.Value + currentRoom.area.basePosition).ToVector3(), Quaternion.identity);
+                                    ExpandEntitySpawner m_EntitySpawner = BackRoomsEntitySpawner.GetComponent<ExpandEntitySpawner>();
+                                    if (m_EntitySpawner) {
+                                        m_EntitySpawner.transform.SetParent(currentRoom.hierarchyParent);
+                                        m_EntitySpawner.ParentRoom = currentRoom;
+                                        m_EntitySpawner.IsReady = true;
+                                    }
+                                    RandomEnemiesPlaced++;
+                                    if (ExpandSettings.debugMode) {
+                                        ETGModConsole.Log("[DEBUG] Backrooms Entity succesfully placed in room: " + currentRoom.GetRoomName(), false);
+                                    }
+                                    return;
                                 } else {
-                                    ExpandEnemyCorruptor.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    RandomEnemiesSkipped++;
                                 }
-                            } else { RandomEnemiesSkipped++; }
-
-                            RandomEnemiesPlaced++;
+                            } else {
+                                if (RandomGlitchEnemyVector.HasValue) {
+                                    if (Random.value <= 0.5f) {
+                                        ExpandEnemyCorruptor.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    } else {
+                                        ExpandEnemyCorruptor.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
+                                    }
+                                } else {
+                                    RandomEnemiesSkipped++;
+                                }
+                                RandomEnemiesPlaced++;
+                            }
                         }
                     }
                     iterations++;
@@ -68,10 +89,15 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
             }
             if (ExpandSettings.debugMode) {
-                ETGModConsole.Log("[DEBUG] Max Number of Junk Enemies assigned to floor: " + MaxEnemies, false);
-                ETGModConsole.Log("[DEBUG] Number of Junk Enemies placed: " + RandomEnemiesPlaced, false);
-                ETGModConsole.Log("[DEBUG] Number of Junk Enemies skipped: " + RandomEnemiesSkipped, false);
-                if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Junk Enemies have been placed!", false); }
+                if (isBackRoomsEntitySpawner) {
+                    if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Backroom Entities have been placed!", false); }
+                    return;
+                } else {
+                    ETGModConsole.Log("[DEBUG] Max Number of Junk Enemies assigned to floor: " + MaxEnemies, false);
+                    ETGModConsole.Log("[DEBUG] Number of Junk Enemies placed: " + RandomEnemiesPlaced, false);
+                    ETGModConsole.Log("[DEBUG] Number of Junk Enemies skipped: " + RandomEnemiesSkipped, false);
+                    if (RandomEnemiesPlaced <= 0) { ETGModConsole.Log("[DEBUG] Error: No Junk Enemies have been placed!", false); }
+                }
             }
             if (RandomEnemiesPlaced > 0) {
                 AIActor[] actors = Object.FindObjectsOfType<AIActor>();

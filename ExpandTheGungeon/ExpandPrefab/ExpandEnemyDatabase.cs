@@ -41,6 +41,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ClownkinAltGUID = "dd1505fb84744002ad42ee8316b86ea0";
             ClownkinNoFXGUID = "ccd416569b6d4ca0bb057a837a517d73";
             ClownkinAngryGUID = "3eee833068614536a5f56cbe7dc6cfe9";
+            EntityGUID = "0108a031c74940739c56a22068c915b6";            
         }
 
         // Saved GUIDs for use in things like room prefabs
@@ -68,6 +69,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly string ClownkinAltGUID;
         public static readonly string ClownkinNoFXGUID;
         public static readonly string ClownkinAngryGUID;
+        public static readonly string EntityGUID;
 
         public static Hook loadEnemyGUIDHook;
 
@@ -83,6 +85,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ClownkinCollection;
         public static GameObject CronenbergCollection;
         public static GameObject CronenbergTallCollection;
+        public static GameObject EntityCollection;
         public static GameObject CultistCompanionCollection;
         public static GameObject SonicCompanionCollection;
         public static GameObject GungeoneerMimicCollection;
@@ -108,6 +111,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject ClownkinNoFXPrefab;
         public static GameObject ClownkinAngryPrefab;
         public static GameObject CronenbergPrefab;
+        public static GameObject EntityPrefab;
         public static GameObject MetalCubeGuyWestPrefab;
         public static GameObject AggressiveCronenbergPrefab;
         public static GameObject CorruptedEnemyPrefab;
@@ -157,6 +161,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ClownkinCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "ClownKinCollection", "Clownkin_Collection", "ClownKinCollection");
             CronenbergCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "CronenbergCollection", "Cronenberg_Collection", "CronenbergCollection");
             CronenbergTallCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "CronenbergTallCollection", "Cronenberg_Tall_Collection", "CronenbergTallCollection");
+            EntityCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EntityCollection", "Entity_Collection", "EntityCollection");
             CultistCompanionCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "CultistCompanionCollection", "CultistCompanion_Collection", "CultistCompanionCollection");
             SonicCompanionCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "SonicCompanionCollection", "SonicCompanion_Collection", "SonicCompanionCollection");
             GungeoneerMimicCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "GungeoneerMimicCollection", "GungeoneerMimic_Collection", "GungeoneerMimicCollection");
@@ -201,6 +206,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildCultistCompanionPrefab(expandSharedAssets1, out FriendlyCultistPrefab);
             BuildSonicCompanionPrefab(expandSharedAssets1, out SonicCompanionPrefab);
             BuildCorruptedEnemyPrefab(expandSharedAssets1, out CorruptedEnemyPrefab);
+            BuildEntityPrefab(expandSharedAssets1, out EntityPrefab);
 
             BuildDoppelGunnerBossPrefab(expandSharedAssets1, out DoppelGunnerPrefab);
 
@@ -5189,6 +5195,270 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedEnemyActor = null;
             m_CachedEnemyActor2 = null;
             // CachedSpaceTurtle = null;
+            return;
+        }
+
+
+        public static void BuildEntityPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Backrooms Entity");
+            
+            List<string> IdleFrontSpriteList = new List<string>() {
+                "entity_idle_front_001",
+                "entity_idle_front_002",
+                "entity_idle_front_003",
+                "entity_idle_front_004"
+            };
+
+            List<string> IdleBackSpriteList = new List<string>() {
+                "entity_idle_back_001",
+                "entity_idle_back_002",
+                "entity_idle_back_003",
+                "entity_idle_back_004"
+            };
+
+            List<string> MoveFrontLeftSpriteList = new List<string>() {
+                "entity_run_left_001",
+                "entity_run_left_002",
+                "entity_run_left_003",
+                "entity_run_left_004",
+                "entity_run_left_005",
+                "entity_run_left_006"
+            };
+
+            List<string> MoveFrontRightSpriteList = new List<string>() {
+                "entity_run_right_001",
+                "entity_run_right_002",
+                "entity_run_right_003",
+                "entity_run_right_004",
+                "entity_run_right_005",
+                "entity_run_right_006"
+            };
+
+            List<string> MoveBackLeftSpriteList = new List<string>() {
+                "entity_run_back_left_001",
+                "entity_run_back_left_002",
+                "entity_run_back_left_003",
+                "entity_run_back_left_004",
+                "entity_run_back_left_005",
+                "entity_run_back_left_006"
+            };
+
+            List<string> MoveBackRightSpriteList = new List<string>() {
+                "entity_run_back_right_001",
+                "entity_run_back_right_002",
+                "entity_run_back_right_003",
+                "entity_run_back_right_004",
+                "entity_run_back_right_005",
+                "entity_run_back_right_006"
+            };
+
+            
+            List<string> SpawnSpriteList = new List<string>() {
+                "entity_spawn_001",
+                "entity_spawn_002",
+                "entity_spawn_003",
+                "entity_spawn_004",
+                "entity_spawn_005",
+                "entity_spawn_006",
+                "entity_spawn_007",
+                "entity_spawn_008",
+                "entity_spawn_009",
+                "entity_spawn_010",
+                "entity_spawn_011",
+                "entity_spawn_012",
+                "entity_spawn_013",
+                "entity_spawn_014",
+                "entity_spawn_015",
+                "entity_spawn_016",
+                "entity_spawn_017",
+                "entity_spawn_018",
+                "entity_spawn_019",
+                "entity_spawn_020",
+                "entity_spawn_021",
+                "entity_spawn_022",
+                "entity_spawn_023",
+                "entity_spawn_024",
+                "entity_spawn_025",
+                "entity_spawn_026",
+                "entity_spawn_027",
+                "entity_spawn_028",
+                "entity_spawn_029"
+            };
+            
+            List<string> DeathSpriteList = new List<string>() { "entity_idle_front_001", "entity_idle_front_001" };
+            
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, EntityCollection, "entity_idle_front_001");
+                                    
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, null, 0, 0, playAutomatically: true, clipTime: 0, ClipFps: 0);
+
+            tk2dSpriteAnimator m_CachedSpriteAnimator = m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>();
+            
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "idle_front", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "idle_back", tk2dSpriteAnimationClip.WrapMode.Loop, 6);
+
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveFrontRightSpriteList, "move_front_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveFrontLeftSpriteList, "move_front_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackRightSpriteList, "move_back_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+            ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackLeftSpriteList, "move_back_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
+
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+            tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
+
+            if (m_SpawnAnimation != null) {
+                m_SpawnAnimation.frames[0].eventAudio = "Play_NPC_creep_creeping_01";
+                m_SpawnAnimation.frames[0].triggerEvent = true;
+            }
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, EntityGUID, null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+                        
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            // m_CachedAIActor.HasShadow = false;
+            m_CachedAIActor.ActorShadowOffset = new Vector3(0, -0.18f, 0);
+            m_CachedAIActor.MovementSpeed = 7f;
+            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            m_CachedAIActor.procedurallyOutlined = true;
+            m_CachedAIActor.EnemySwitchState = string.Empty;
+            m_CachedAIActor.PreventFallingInPitsEver = true;
+            m_CachedAIActor.IgnoreForRoomClear = false;
+            m_CachedAIActor.HitByEnemyBullets = false;
+            m_CachedAIActor.CanTargetEnemies = true;
+            m_CachedAIActor.CanTargetPlayers = false;
+            m_CachedAIActor.CollisionKnockbackStrength = 5;
+            m_CachedAIActor.CollisionDamage = 1;
+            m_CachedAIActor.DiesOnCollison = false;
+            m_CachedAIActor.healthHaver.SetHealthMaximum(70);
+            m_CachedAIActor.healthHaver.ForceSetCurrentHealth(70);
+            m_CachedAIActor.knockbackDoer.weight = 35;
+            m_CachedAIActor.procedurallyOutlined = true;
+
+            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    Enabled = false,
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyCollider,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 4,
+                    ManualOffsetY = 5,
+                    ManualWidth = 16,
+                    ManualHeight = 16,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+            m_CachedAIActor.specRigidbody.PixelColliders.Add(
+                new PixelCollider() {
+                    Enabled = false,
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.EnemyHitBox,
+                    IsTrigger = false,
+                    BagleUseFirstFrameOnly = false,
+                    SpecifyBagelFrame = string.Empty,
+                    BagelColliderNumber = 0,
+                    ManualOffsetX = 4,
+                    ManualOffsetY = 5,
+                    ManualWidth = 16,
+                    ManualHeight = 27,
+                    ManualDiameter = 0,
+                    ManualLeftX = 0,
+                    ManualLeftY = 0,
+                    ManualRightX = 0,
+                    ManualRightY = 0
+                }
+            );
+
+            if (m_CachedAIActor.aiAnimator) {
+                m_CachedAIActor.aiAnimator.facingType = AIAnimator.FacingType.Default;
+                m_CachedAIActor.aiAnimator.faceSouthWhenStopped = false;
+                m_CachedAIActor.aiAnimator.faceTargetWhenStopped = false;
+                m_CachedAIActor.aiAnimator.HitType = AIAnimator.HitStateType.Basic;
+                m_CachedAIActor.aiAnimator.IdleAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.TwoWayVertical,
+                    Prefix = "idle",
+                    AnimNames = new string[2],
+                    Flipped = new DirectionalAnimation.FlipType[2]
+                };
+                m_CachedAIActor.aiAnimator.MoveAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.FourWay,
+                    Prefix = "move",
+                    AnimNames = new string[4],
+                    Flipped = new DirectionalAnimation.FlipType[4]
+                };
+                m_CachedAIActor.aiAnimator.HitAnimation = new DirectionalAnimation() {
+                    Type = DirectionalAnimation.DirectionType.Single,
+                    Prefix = "hit",
+                    AnimNames = new string[1],
+                    Flipped = new DirectionalAnimation.FlipType[1]
+                };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "die",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.Single,
+                            Prefix = "die",
+                            AnimNames = new string[1],
+                            Flipped = new DirectionalAnimation.FlipType[1]
+                        }
+                    }
+                };
+            }
+            
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = false,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new SeekTargetBehavior() {
+                    StopWhenInRange = false,
+                    CustomRange = 6,
+                    LineOfSight = false,
+                    ReturnToSpawn = false,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.5f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+            
+            customBehaviorSpeculator.InstantFirstTick = true;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+            
+            // BehaviorSpeculator is a serialized object. You must build these lists (or create new empty lists) and save them before the game can instantiate it correctly!
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            // Loading a custom script from text file in place of one from an existing prefab..
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            m_CachedTargetObject.AddComponent<ExpandEntityManager>();
+
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, EntityGUID, ExpandAmmonomiconDatabase.Entity);
             return;
         }
 

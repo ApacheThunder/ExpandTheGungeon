@@ -812,7 +812,8 @@ namespace ExpandTheGungeon.ItemAPI {
                                             "383175a55879441d90933b5c4e60cf6f", // spectre_gun_nut
                                             "022d7c822bc146b58fe3b0287568aaa2", // blizzbulon
                                             "c0260c286c8d4538a697c5bf24976ccf", // dynamite_kin
-                                            "5f15093e6f684f4fb09d3e7e697216b4" // dynamite_kin_office
+                                            "5f15093e6f684f4fb09d3e7e697216b4", // dynamite_kin_office
+                                            "0108a031c74940739c56a22068c915b6", // Backrooms Entity
                                         };
 
                                         if (!ExcludedEnemies.Contains(enemy.EnemyGuid)) {

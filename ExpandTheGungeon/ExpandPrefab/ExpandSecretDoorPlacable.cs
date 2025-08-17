@@ -222,7 +222,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GameObject EXSecretDoorUnlocked_Light = EXSecretDoor_Unlocked.transform.Find("Light").gameObject;
 
             tk2dSprite m_Door_UnlockedSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoor_Unlocked, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Open_00");
-            tk2dSprite m_Door_UnlockedBorderTopSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorUnlocked_Frame_Top, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Frame_Top");
+            tk2dSprite m_Door_UnlockedBorderTopSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorUnlocked_Frame_Top, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Frame_NoDecal_Top");
             tk2dSprite m_Door_UnlockedBorderBottomSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorUnlocked_Frame_Bottom, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Frame_Bottom");
             tk2dSprite m_Door_UnlockedBackgroundSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorUnlocked_Background, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Background");
             tk2dSprite m_Door_UnlockedLightSprite = SpriteSerializer.AddSpriteToObject(EXSecretDoorUnlocked_Light, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_Light_Red");
@@ -280,6 +280,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         [NonSerialized]
         public bool m_WaitingForPlayer;
+
+        [NonSerialized]
+        public bool m_IsBackRoomsElevator;
 
         public ExpandInteractableLock EXLock;
         public InteractableLock Lock;
@@ -392,7 +395,30 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_doorLightSprite = DoorLightObject.GetComponent<tk2dSprite>();
 
             transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform, true);
-
+            
+            if (m_IsBackRoomsElevator) {
+                // Vector2 vector = transform.position.XY() + new Vector2(specRigidbody.GroundPixelCollider.ManualOffsetX / 16f, specRigidbody.GroundPixelCollider.ManualOffsetY / 16f);
+                Vector2 vector = transform.position.XY() + new Vector2(1, 1);
+                Vector2 vector2 = vector.ToIntVector2(VectorConversions.Round).ToVector2();
+                // transform.position += (vector2 - vector).ToVector3ZUp();
+                IntVector2 pos1 = vector2.ToIntVector2(VectorConversions.Floor);
+                IntVector2 pos2 = pos1 + IntVector2.Right;
+                try {
+                    CellData cellData = GameManager.Instance.Dungeon.data[pos1];
+                    CellData cellData2 = GameManager.Instance.Dungeon.data[pos2];
+                    cellData.isSecretRoomCell = true;
+                    cellData2.isSecretRoomCell = true;
+                    cellData.forceDisallowGoop = true;
+                    cellData2.forceDisallowGoop = true;
+                    cellData.cellVisualData.preventFloorStamping = true;
+                    cellData2.cellVisualData.preventFloorStamping = true;
+                    cellData.isWallMimicHideout = true;
+                    cellData2.isWallMimicHideout = true;
+                } catch (Exception ex) {
+                    Debug.Log("[DEBUG] Warning: Exception caught during ExpandSecretDoorPlacable.ConfigureOnPlacement!");
+                    Debug.LogException(ex);
+                }
+            }
         }
         
         public void Interact(PlayerController interactor) {

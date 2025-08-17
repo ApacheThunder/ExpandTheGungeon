@@ -555,7 +555,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             foreach (DungeonFlow flow in NakatomiPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
             foreach (DungeonFlow flow in ForgePrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
             foreach (DungeonFlow flow in BulletHellPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            
+
+            KnownFlows.Add(backrooms_flow_01.BackRooms_Flow_01());
 
             // Let's make things look cool and give all boss rush flows my new tiny exit room. :D            
             BossrushFlows.Bossrush_01a_Sewer.AllNodes[2].overrideExactRoom = ExpandPrefabs.tiny_exit;

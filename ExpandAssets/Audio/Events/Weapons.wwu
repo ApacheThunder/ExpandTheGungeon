@@ -591,6 +591,17 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{9FA8D610-B9B3-47AB-84EC-A17745074377}" ShortID="992180727">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BackRooms_Ambience" ID="{E8958FBA-FAA4-44B4-AC9B-3B8A1FC1760B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="Play_EX_Cronenberg_Spawn_01" ID="{8461C769-F67F-42D0-8E43-020FCD98CAC7}">
@@ -1635,6 +1646,65 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Lockpick_Cathedral" ID="{7247BB9F-DB6F-40D2-8EA4-1F4A1204426C}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_MUS_Backrooms_01" ID="{ECD756B2-1E7E-4A66-A802-4161AEC9F0FF}">
+					<ChildrenList>
+						<Action Name="" ID="{2F768433-BE7A-4C06-963B-6184793E0AEE}" ShortID="755940788">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BackRooms_Ambience" ID="{E8958FBA-FAA4-44B4-AC9B-3B8A1FC1760B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_MUS_Backrooms_01" ID="{837D3150-A959-4880-8426-B1336FB0FFDD}">
+					<ChildrenList>
+						<Action Name="" ID="{302C17C4-A59E-4DCD-8FF5-D181A1960C9D}" ShortID="361991911">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Scope" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BackRooms_Ambience" ID="{E8958FBA-FAA4-44B4-AC9B-3B8A1FC1760B}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_EntityScreams_01" ID="{9E5536D3-CC5A-4685-A5B9-387E66D8B538}">
+					<ChildrenList>
+						<Action Name="" ID="{880875BD-7546-4D6D-AEDA-65A5F6FD8F2D}" ShortID="623161823">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="EntityScreams" ID="{3852CA96-CBCB-4A09-9A7C-04B28E07A19F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_EntityScreams_01" ID="{4819CA17-63B2-47FD-A5B9-615F1BB69A8B}">
+					<ChildrenList>
+						<Action Name="" ID="{0BAE0BEF-6CA7-4487-8341-A2DD10DC4A9B}" ShortID="843589101">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="EntityScreams" ID="{3852CA96-CBCB-4A09-9A7C-04B28E07A19F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

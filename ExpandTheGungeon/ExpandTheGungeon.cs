@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.9.20";
+        public const string VERSION = "2.10.0";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -207,6 +207,7 @@ namespace ExpandTheGungeon {
             ETGModConsole.DungeonDictionary.Add("space", "tt_space");
             ETGModConsole.DungeonDictionary.Add("west", "tt_west");
             ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
+            ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
 
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
@@ -218,7 +219,7 @@ namespace ExpandTheGungeon {
         
         public static void CreateFoyerController() {
             if (!m_FoyerCheckerOBJ) {
-                m_FoyerCheckerOBJ = new GameObject("ExpandTheGungeon Foyer Checker", new Type[] { typeof(ExpandFoyer) });
+                m_FoyerCheckerOBJ = Instantiate(ExpandPrefabs.EXFoyerChecker, Vector3.zero, Quaternion.identity);
             } else {
                 return;
             }
@@ -267,12 +268,13 @@ namespace ExpandTheGungeon {
             }
         }
 
-        private void GameManager_Awake(Action<GameManager> orig, GameManager self) {
+        public void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
-            
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandDungeonPrefabs.ReInitFloorDefinitions(self);
             CreateFoyerController();
+            ExpandSettings.HasVisitedBackrooms = false;
+            ExpandSettings.allowGlitchFloor = false;
         }
 
         public void InitializeMainMenuHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
@@ -572,9 +574,11 @@ namespace ExpandTheGungeon {
                     ["EXBalloonCollection"] = ExpandLists.EXBalloonCollection,
                     ["EXItemCollection"] = ExpandLists.EXItemCollection,
                     ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
+                    ["EntityCollection"] = ExpandLists.EXEntityCollection,
                     ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection,
                     ["GungeoneerMimicCollection"] = ExpandLists.EXGungeoneerMimicCollection,
-                    ["EXSecretDoorCollection"] = ExpandLists.EXSecretDoorCollection
+                    ["EXSecretDoorCollection"] = ExpandLists.EXSecretDoorCollection,
+                    ["EXBackroomsCollection"] = ExpandLists.EXBackroomsCollection
                 };
             }
             int X = 2048;

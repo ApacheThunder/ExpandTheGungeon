@@ -35,6 +35,8 @@
 				<Event Id="2420965190" Name="Play_EX_Cronenberg_Die_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Die_01"/>
 				<Event Id="2184586371" Name="Play_EX_Cronenberg_Spawn_01" ObjectPath="\Events\Weapons\Play_EX_Cronenberg_Spawn_01"/>
 				<Event Id="1687291301" Name="Play_EX_ElevatorBell_01" ObjectPath="\Events\Weapons\Play_EX_ElevatorBell_01"/>
+				<Event Id="2292276853" Name="Play_EX_EntityScreams_01" ObjectPath="\Events\Weapons\Play_EX_EntityScreams_01"/>
+				<Event Id="2194735543" Name="Play_EX_MUS_Backrooms_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Backrooms_01"/>
 				<Event Id="3457196330" Name="Play_EX_MUS_Belly_01" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01"/>
 				<Event Id="2704630512" Name="Play_EX_MUS_Belly_01_Calm" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Calm"/>
 				<Event Id="620344165" Name="Play_EX_MUS_Belly_01_Intro" ObjectPath="\Events\Weapons\Play_EX_MUS_Belly_01_Intro"/>
@@ -89,7 +91,9 @@
 				<Event Id="3586982858" Name="Stop_EX_CorruptionAmbience_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionAmbience_02"/>
 				<Event Id="1036099945" Name="Stop_EX_CorruptionRoomTransition_01" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_01"/>
 				<Event Id="1036099946" Name="Stop_EX_CorruptionRoomTransition_02" ObjectPath="\Events\Weapons\Stop_EX_CorruptionRoomTransition_02"/>
+				<Event Id="2854743139" Name="Stop_EX_EntityScreams_01" ObjectPath="\Events\Weapons\Stop_EX_EntityScreams_01"/>
 				<Event Id="3570814999" Name="Stop_EX_MUS_All" ObjectPath="\Events\Weapons\Stop_EX_MUS_All"/>
+				<Event Id="3149062325" Name="Stop_EX_MUS_Backrooms_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_Backrooms_01"/>
 				<Event Id="3980046948" Name="Stop_EX_MUS_BellyMonster_Devour_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Devour_01"/>
 				<Event Id="2561576157" Name="Stop_EX_MUS_BellyMonster_Entrance_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BellyMonster_Entrance_01"/>
 				<Event Id="2264533643" Name="Stop_EX_MUS_BootlegMusic_01" ObjectPath="\Events\Weapons\Stop_EX_MUS_BootlegMusic_01"/>
@@ -151,6 +155,10 @@
 				<File Id="216664074" Language="SFX">
 					<ShortName>Quiet_Forest_LoopA.wav</ShortName>
 					<Path>SFX\Quiet_Forest_LoopA_AD29F36A.wem</Path>
+				</File>
+				<File Id="219071557" Language="SFX">
+					<ShortName>BackRooms_Ambience.wav</ShortName>
+					<Path>SFX\BackRooms_Ambience_484BA9D7.wem</Path>
 				</File>
 				<File Id="235313123" Language="SFX">
 					<ShortName>Quiet_Forest_Shop.wav</ShortName>
@@ -251,6 +259,10 @@
 				<File Id="777371175" Language="SFX">
 					<ShortName>Shots Fired!.wav</ShortName>
 					<Path>SFX\Shots Fired!_AD29F36A.wem</Path>
+				</File>
+				<File Id="809822789" Language="SFX">
+					<ShortName>EntityScreams.wav</ShortName>
+					<Path>SFX\EntityScreams_37E15E96.wem</Path>
 				</File>
 				<File Id="836609844" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Calm.wav</ShortName>

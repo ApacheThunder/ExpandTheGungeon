@@ -393,7 +393,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_Mines_Regular49;
         public static PrototypeDungeonRoom Expand_Mines_Regular50;
         public static PrototypeDungeonRoom Expand_Keep_Spiral;
-
+        
         public static PrototypeDungeonRoom Expand_Jungle_Entrance;
         public static PrototypeDungeonRoom Expand_Jungle_OldCrest;
         public static PrototypeDungeonRoom Expand_Jungle_Exit;
@@ -408,6 +408,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<string> Expand_West_CanyonRoomList;
         public static List<string> Expand_West_TinyCanyonRoomList;
         public static List<string> Expand_West_Interior1RoomList;
+        public static PrototypeDungeonRoom[] Expand_Backrooms_Rooms;
+        public static List<string> Expand_BackRooms_RoomList;
 
         public static PrototypeDungeonRoom Expand_Belly_Entrance;
         public static PrototypeDungeonRoom Expand_Belly_BossRoom;
@@ -438,6 +440,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_West_SecretRatKeyPedestalRoom;
         public static PrototypeDungeonRoom Expand_West_ShrineRoom;
         public static PrototypeDungeonRoom Expand_West_WestBrosBossRoom;
+
+        // BackRooms Entrance/Exit Rooms
+        public static PrototypeDungeonRoom Expand_BackRooms_Entrance;
+        public static PrototypeDungeonRoom Expand_BackRooms_Entrance2;
+        public static PrototypeDungeonRoom Expand_BackRooms_Entrance3;
+        public static PrototypeDungeonRoom Expand_BackRooms_Exit;
 
         // Foyer Rooms
         // public static PrototypeDungeonRoom Expand_Casino_Hub;
@@ -874,7 +882,172 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "Expand_West_Interior1_Steps3",
                 "Expand_West_Interior1_Steps4"
             };
-                        
+
+            Expand_BackRooms_RoomList = new List<string>() {
+                "BackRooms_Room001",
+                "BackRooms_Room002",
+                "BackRooms_Room003",
+                "BackRooms_Room004",
+                "BackRooms_Room005",
+                "BackRooms_Room006",
+                "BackRooms_Room007",
+                "BackRooms_Room008",
+                "BackRooms_Room009",
+                "BackRooms_Room010",
+                "BackRooms_Room011",
+                "BackRooms_Room012",
+                "BackRooms_Room013",
+                "BackRooms_Room014",
+                "BackRooms_Room015",
+                "BackRooms_Room016",
+                "BackRooms_Room017",
+                "BackRooms_Room018",
+                "BackRooms_Room019",
+                "BackRooms_Room020",
+                "BackRooms_Room021",
+                "BackRooms_Room022",
+                "BackRooms_Room023",
+                "BackRooms_Room024",
+                "BackRooms_Room025",
+                "BackRooms_Room026",
+                "BackRooms_Room027",
+                "BackRooms_Room028",
+                "BackRooms_Room029",
+                "BackRooms_Room030",
+                "BackRooms_Room031",
+                "BackRooms_Room032",
+                "BackRooms_Room033",
+                "BackRooms_Room034",
+                "BackRooms_Room035",
+                "BackRooms_Room036",
+                "BackRooms_Room037",
+                "BackRooms_Room038",
+                "BackRooms_Room039",
+                "BackRooms_Room040",
+                "BackRooms_Room041",
+                "BackRooms_Room042",
+                "BackRooms_Room043",
+                "BackRooms_Room044",
+                "BackRooms_Room045",
+                "BackRooms_Room046",
+                "BackRooms_Room047",
+                "BackRooms_Room048",
+                "BackRooms_Room049",
+                "BackRooms_Room050",
+                "BackRooms_Room051",
+                "BackRooms_Room052",
+                "BackRooms_Room053",
+                "BackRooms_Room054",
+                "BackRooms_Room055",
+                "BackRooms_Room056",
+                "BackRooms_Room057",
+                "BackRooms_Room058",
+                "BackRooms_Room059",
+                "BackRooms_Room060",
+                "BackRooms_Room061",
+                "BackRooms_Room062",
+                "BackRooms_Room063",
+                "BackRooms_Room064",
+                "BackRooms_Room065",
+                "BackRooms_Room066",
+                "BackRooms_Room067",
+                "BackRooms_Room068",
+                "BackRooms_Room069",
+                "BackRooms_Room070",
+                "BackRooms_Room071",
+                "BackRooms_Room072",
+                "BackRooms_Room073",
+                "BackRooms_Room074",
+                "BackRooms_Room075",
+                "BackRooms_Room076",
+                "BackRooms_Room077",
+                "BackRooms_Room078",
+                "BackRooms_Room079",
+                "BackRooms_Room080",
+                "BackRooms_Room081",
+                "BackRooms_Room082",
+                "BackRooms_Room083",
+                "BackRooms_Room084",
+                "BackRooms_Room085",
+                "BackRooms_Room086",
+                "BackRooms_Room087",
+                "BackRooms_Room088",
+                "BackRooms_Room089",
+                "BackRooms_Room090",
+                "BackRooms_Room091",
+                "BackRooms_Room092",
+                "BackRooms_Room093",
+                "BackRooms_Room094",
+                "BackRooms_Room095",
+                "BackRooms_Room096",
+                "BackRooms_Room097",
+                "BackRooms_Room098",
+                "BackRooms_Room099",
+                "BackRooms_Room100",
+                "BackRooms_Room101",
+                "BackRooms_Room102",
+                "BackRooms_Room103",
+                "BackRooms_Room104"
+            };
+
+            List<PrototypeDungeonRoom> m_Expand_BackRooms_RoomList = new List<PrototypeDungeonRoom>();
+
+            foreach (string roomName in Expand_BackRooms_RoomList) {
+                m_Expand_BackRooms_RoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
+            }
+
+            Expand_Backrooms_Rooms = m_Expand_BackRooms_RoomList.ToArray();
+
+            foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
+                if (!room.name.StartsWith("BackRooms_Room005") && 
+                    !room.name.StartsWith("BackRooms_Room014") &&
+                    !room.name.StartsWith("BackRooms_Room022") &&
+                    !room.name.StartsWith("BackRooms_Room040") &&
+                    !room.name.StartsWith("BackRooms_Room041") &&
+                    !room.name.StartsWith("BackRooms_Room042") &&
+                    !room.name.StartsWith("BackRooms_Room043") &&
+                    !room.name.StartsWith("BackRooms_Room048") &&
+                    !room.name.StartsWith("BackRooms_Room101") &&
+                    !room.name.StartsWith("BackRooms_Room102") &&
+                    !room.name.StartsWith("BackRooms_Room103") &&
+                    !room.name.StartsWith("BackRooms_Room104")) {
+                    room.ForceAllowDuplicates = true;
+                }
+                room.IsLostWoodsRoom = true;
+                room.overrideRoomVisualType = 0;
+                foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
+                RoomBuilder.AddObjectToRoom(room, new Vector2(2, 2), ExpandPrefabs.EXCarpetStainPlacer);
+            }
+
+            
+            Expand_BackRooms_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance", true, false);
+            Expand_BackRooms_Entrance.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_BackRooms_Entrance.IsLostWoodsRoom = true;
+            Expand_BackRooms_Entrance.overrideRoomVisualType = 1;
+            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
+            foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance.exitData.exits) { exit.containsDoor = false; }
+
+            Expand_BackRooms_Entrance2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance2", true, false);
+            Expand_BackRooms_Entrance2.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_BackRooms_Entrance2.IsLostWoodsRoom = true;
+            Expand_BackRooms_Entrance2.overrideRoomVisualType = 1;
+            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance2, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
+            foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance2.exitData.exits) { exit.containsDoor = false; }
+
+            Expand_BackRooms_Entrance3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance3", true, false);
+            Expand_BackRooms_Entrance3.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_BackRooms_Entrance3.IsLostWoodsRoom = true;
+            Expand_BackRooms_Entrance3.overrideRoomVisualType = 1;
+            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance3, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
+            foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance3.exitData.exits) { exit.containsDoor = false; }
+
+            
+
+            Expand_BackRooms_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Exit", true, false);
+            Expand_BackRooms_Exit.allowFloorDecoration = false;
+            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Exit, new Vector2(2, 14), ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked);
+
+
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion" };
 
             List<PrototypeDungeonRoom> m_BulletHellRoomList = new List<PrototypeDungeonRoom>() { };
@@ -9830,7 +10003,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 5), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBulletManBandanaGUID); // Bootleg BulletManBandana
             RoomBuilder.AddObjectToRoom(Expand_BootlegRoom, new Vector2(5, 8), EnemyBehaviourGuid: ExpandEnemyDatabase.BootlegBullatGUID); // Bootleg Bullat
 
-
             List<PrototypeDungeonRoom> m_JungleRooms = new List<PrototypeDungeonRoom>();
 
             foreach (string name in Expand_Jungle_RoomList) {
@@ -10053,6 +10225,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
             foreach (PrototypeDungeonRoom room in Expand_West_Interior1Rooms) {
                 ExpandPrefabs.WestInterior1RoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
             }
+
+            foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
+                ExpandPrefabs.BackRoomsRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+
+            ExpandPrefabs.BackRoomsEntranceRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_BackRooms_Entrance));
+            ExpandPrefabs.BackRoomsEntranceRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_BackRooms_Entrance2));
+            ExpandPrefabs.BackRoomsEntranceRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_BackRooms_Entrance3));
+            
+
 
             foreach (WeightedRoom room in CustomCastleRooms) {
                 ExpandPrefabs.CastleRoomTable.includedRooms.elements.Add(room);

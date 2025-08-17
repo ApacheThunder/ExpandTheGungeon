@@ -82,7 +82,8 @@ namespace ExpandTheGungeon.ItemAPI {
                 "22fc2c2c45fb47cf9fb5f7b043a70122",
                 "9215d1a221904c7386b481a171e52859",
                 "9b4fb8a2a60a457f90dcf285d34143ac",
-                "45192ff6d6cb43ed8f1a874ab6bef316"
+                "45192ff6d6cb43ed8f1a874ab6bef316",
+                "0108a031c74940739c56a22068c915b6"
             };
 
             m_InUse = false;
