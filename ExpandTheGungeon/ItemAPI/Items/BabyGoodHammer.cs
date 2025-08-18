@@ -125,6 +125,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public BabyGoodHammer() {
             PreventRespawnOnFloorLoad = false;
             m_HammersHidden = false;
+            m_PickedUp = false;
         }
 
         public bool PreventRespawnOnFloorLoad;
@@ -158,7 +159,10 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void DoEffect(PlayerController user) {
-            
+            if (!m_PickedUp) {
+                DoConfigure(user);
+                m_PickedUp = true;
+            }
             // AkSoundEngine.PostEvent("Play_BOSS_bulletbros_anger_01", gameObject);
             if (BraveUtility.RandomBool()) {
                 AkSoundEngine.PostEvent("Play_ENM_smiley_whistle_01", gameObject);
@@ -284,8 +288,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
             m_PickedUp = true;
-            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Combine(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
-            CreateCompanion(player);
+            DoConfigure(player);
         }
 
         protected override void OnPreDrop(PlayerController player) {
@@ -315,6 +318,11 @@ namespace ExpandTheGungeon.ItemAPI {
                     }
                 }
             }
+        }
+
+        private void DoConfigure(PlayerController player) {
+            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Combine(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
+            CreateCompanion(player);
         }
 
         private void CreateCompanion(PlayerController owner) {

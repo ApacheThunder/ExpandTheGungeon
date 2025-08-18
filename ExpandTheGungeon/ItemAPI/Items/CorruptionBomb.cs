@@ -73,19 +73,31 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandUtility.GenerateSpriteAnimator(glitchBombSpawnObject, AlwaysIgnoreTimeScale: true);
             ExpandUtility.AddAnimation(glitchBombSpawnObject.GetComponent<tk2dSpriteAnimator>(), ExpandPrefabs.EXItemCollection.GetComponent<tk2dSpriteCollectionData>(), spritePaths, "CorruptionSpawn", frameRate: 7);
         }
-        
 
-        public override void Pickup(PlayerController player) {
-            base.Pickup(player);
+
+        public CorruptionBomb() {
+            m_PickedUp = false;
+        }
+
+
+        private bool m_PickedUp;
+
+        private void DoConfigure(PlayerController player) {
             player.OnAnyEnemyReceivedDamage = (Action<float, bool, HealthHaver>)Delegate.Combine(player.OnAnyEnemyReceivedDamage, new Action<float, bool, HealthHaver>(AnyDamageDealt));
             IgnoredByRat = false;
             if (!ExpandHooks.IsHooksInstalled) { ExpandHooks.InstallPrimaryHooks(); }
+        }
+
+        public override void Pickup(PlayerController player) {
+            base.Pickup(player);
+            m_PickedUp = true;
+            DoConfigure(player);
             AkSoundEngine.PostEvent("Play_EX_CorruptionBombPickup_01", player.gameObject);
         }
 
         protected override void OnPreDrop(PlayerController user) {
             base.OnPreDrop(user);
-            if (user) {
+            if (user && m_PickedUp) {
                 user.OnAnyEnemyReceivedDamage = (Action<float, bool, HealthHaver>)Delegate.Remove(user.OnAnyEnemyReceivedDamage, new Action<float, bool, HealthHaver>(AnyDamageDealt));
             }
         }
@@ -119,6 +131,10 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void DoEffect(PlayerController user) {
+            if (!m_PickedUp) {
+                DoConfigure(user);
+                m_PickedUp = true;
+            }
             AkSoundEngine.PostEvent("Play_EX_CorruptionBombFire_01", user.gameObject);
             CurrentlyInUse = true;
             CleanUpRoom(user);

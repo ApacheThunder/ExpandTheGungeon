@@ -60,6 +60,8 @@ namespace ExpandTheGungeon.ItemAPI {
             m_currentAngle = 0;
 
             m_CachedShipStartSpriteName = string.Empty;
+
+            m_PickedUp = false;
         }
         
         public GameObject ShipPrefab;
@@ -105,16 +107,14 @@ namespace ExpandTheGungeon.ItemAPI {
         private string m_CachedShipStartSpriteName;
         
         private float m_currentAngle;
-        
+
+        private bool m_PickedUp;
 
         protected bool IsKeyboardAndMouse(PlayerController player) {
             return BraveInput.GetInstanceForPlayer(player.PlayerIDX).IsKeyboardAndMouse(false);
         }
 
-        public override void Pickup(PlayerController player) {
-            
-            base.Pickup(player);
-            
+        private void DoConfigure(PlayerController player) {
             if (!m_ShipPrefabInstance) {
                 m_ShipPrefabInstance = Instantiate(ShipPrefab.transform.Find("PlayerRotatePoint").gameObject, player.sprite.WorldCenter, Quaternion.identity);
                 m_ShipPrefabInstance.name = "ShipRotatePoint";
@@ -157,8 +157,18 @@ namespace ExpandTheGungeon.ItemAPI {
             itemState = ItemState.Inactive;
         }
 
+        public override void Pickup(PlayerController player) {
+            base.Pickup(player);
+            m_PickedUp = true;
+            DoConfigure(player);
+        }
+
 
         protected override void DoEffect(PlayerController user) {
+            if (!m_pickedUp) {
+                DoConfigure(user);
+                m_PickedUp = true;
+            }
             switch (itemState) {
                 case ItemState.Active:
                     FireMissileVolley(user, m_ShipBulletBank);

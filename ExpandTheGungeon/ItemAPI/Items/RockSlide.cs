@@ -64,6 +64,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void DoEffect(PlayerController user) {
+            if (!m_PickedUp)m_PickedUp = true;
             AkSoundEngine.PostEvent("Play_OBJ_detonate_push_01", user.gameObject);
             SpawnRockslides(user);
 		}

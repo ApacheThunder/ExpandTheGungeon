@@ -48,6 +48,7 @@ namespace ExpandTheGungeon.ItemAPI {
             m_InUse = false;
             m_IsTeleporting = false;
             m_DebugMode = false;
+            m_Configured = false;
         }
         
         private Texture2D m_CachedScreenCapture;
@@ -56,6 +57,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private bool m_IsTeleporting;
         private bool m_ScreenCapInProgress;
         private bool m_DebugMode;
+        private bool m_Configured;
 
         private Vector3 m_cachedRoomPosition;
 
@@ -66,44 +68,7 @@ namespace ExpandTheGungeon.ItemAPI {
         private List<PrototypeDungeonRoom> ShrineRoomList;
         private List<PrototypeDungeonRoom> ExitElevatorRoomList;
 
-
-        private bool IsUsableRightNow(PlayerController user) {
-            if (!user) { return false; }
-            if (user?.CurrentRoom?.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return false; }
-            if (m_InUse | user.IsInCombat | user.IsInMinecart | user.InExitCell) { return false; }
-            if (user.CurrentRoom != null && user.CurrentRoom.IsSealed) { return false; }
-            if (GameManager.Instance?.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
-            return true;
-        }
-
-        public override bool CanBeUsed(PlayerController user) { return (IsUsableRightNow(user) && base.CanBeUsed(user)); }
-
-        protected override void DoEffect(PlayerController user) {
-            m_InUse = true;
-            GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
-        }
-        
-
-        private Texture2D PortalTextureRender() {
-            m_ScreenCapInProgress = true;
-            Texture2D m_Texture = null;
-            if (Pixelator.Instance.slavedCameras != null && Pixelator.Instance.slavedCameras.Count > 0) {                
-                m_Texture = ExpandUtility.GenerateTexture2DFromRenderTexture(Pixelator.Instance.slavedCameras[0].activeTexture);
-            }
-            if (m_Texture) {
-                m_ScreenCapInProgress = false;
-                return m_Texture;
-            } else {
-                m_ScreenCapInProgress = false;
-                return ExpandAssets.LoadAsset<Texture2D>("EX_GlitchPortalDefaultTexture");
-            }
-        }
-
-        
-        public override void Pickup(PlayerController player) {
-            base.Pickup(player);
-
-
+        private void SetupLists() {
             if (MainRoomlist == null | RewardRoomList == null | NPCRoomList == null | SecretRoomList == null | ShrineRoomList == null) {
                 MainRoomlist = new List<PrototypeDungeonRoom>();
                 RewardRoomList = new List<PrototypeDungeonRoom>();
@@ -149,6 +114,45 @@ namespace ExpandTheGungeon.ItemAPI {
                 ExitElevatorRoomList.Add(ExpandPrefabs.exit_room_basic);
                 ExitElevatorRoomList.Add(ExpandPrefabs.tiny_exit);
             }
+            m_Configured = true;
+        }
+  
+        private bool IsUsableRightNow(PlayerController user) {
+            if (!user) { return false; }
+            if (user?.CurrentRoom?.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return false; }
+            if (m_InUse | user.IsInCombat | user.IsInMinecart | user.InExitCell) { return false; }
+            if (user.CurrentRoom != null && user.CurrentRoom.IsSealed) { return false; }
+            if (GameManager.Instance?.CurrentLevelOverrideState == GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return false; }
+            return true;
+        }
+
+        public override bool CanBeUsed(PlayerController user) { return (IsUsableRightNow(user) && base.CanBeUsed(user)); }
+
+        protected override void DoEffect(PlayerController user) {
+            m_InUse = true;
+            if (!m_Configured) SetupLists();
+            GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
+        }
+
+        private Texture2D PortalTextureRender() {
+            m_ScreenCapInProgress = true;
+            Texture2D m_Texture = null;
+            if (Pixelator.Instance.slavedCameras != null && Pixelator.Instance.slavedCameras.Count > 0) {                
+                m_Texture = ExpandUtility.GenerateTexture2DFromRenderTexture(Pixelator.Instance.slavedCameras[0].activeTexture);
+            }
+            if (m_Texture) {
+                m_ScreenCapInProgress = false;
+                return m_Texture;
+            } else {
+                m_ScreenCapInProgress = false;
+                return ExpandAssets.LoadAsset<Texture2D>("EX_GlitchPortalDefaultTexture");
+            }
+        }
+      
+        public override void Pickup(PlayerController player) {
+            base.Pickup(player);
+
+            SetupLists();
         }
 
         protected override void OnPreDrop(PlayerController player) { base.OnPreDrop(player); }
