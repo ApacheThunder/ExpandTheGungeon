@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1953162712
+CRC: 2477555839
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e0ecf030ebdffe9da22f763aba003580
+    Hash: 8dab18e133293f354550bc377c91c33e
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1e1fd86321726eba1aef989ebc89c5b2
@@ -1258,6 +1258,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera13.bytes
 - Assets/ExpandRooms/RoomBuilderData/Secret_Elevator_Exit_Layout.png
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXSecretDoorCollection.prefab
+- Assets/ExpandTextures/AmmonomiconTextures/entity_tall_ammonomicon.png
 - Assets/ExpandPrefabs/Items/EXCorruptionBomb_Projectile.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_smol2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Secret_Expand_reto.bytes

@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.10.2";
+        public const string VERSION = "2.11.0";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
