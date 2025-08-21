@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1349178640
+CRC: 4020778448
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d412e9fbaf060f413916c857d28fa958
+    Hash: 0f004074b325499881f58f2548e968ff
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1e1fd86321726eba1aef989ebc89c5b2
@@ -280,6 +280,7 @@ Assets:
 - Assets/ExpandRooms/RoomBuilderData/GungeonProper/Expand_Neighborino_SpikeTrap_Layout.png
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Explode_Layout.png
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Small_Passage_1_Layout.png
+- Assets/ExpandPrefabs/Misc/EX_Secret_Door_Backrooms.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/Jungle Tree Frame.prefab
 - Assets/ExpandPrefabs/AIActors/HotShotCultist.prefab
 - Assets/ExpandTextures/AmmonomiconTextures/cronenberg_tall_ammonomicon.png
@@ -315,6 +316,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_04.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room051.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_Jungle.prefab
+- Assets/ExpandPrefabs/Misc/DummyObject.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular43.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular26.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/BootlegBulletManBandanaCollection.prefab
@@ -776,6 +778,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Connector_01.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Spooky.bytes
+- Assets/ExpandPrefabs/Misc/EXSecretBackroomsDoor_MinimapIcon.prefab
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorFrames.prefab
 - Assets/ExpandRooms/RoomBuilderData/TrapRooms/Expand_Apache_SpikeAndPits_Layout.png
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBulletManBandanaCollection.txt

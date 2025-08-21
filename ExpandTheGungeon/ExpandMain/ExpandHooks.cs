@@ -14,7 +14,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
-using tk2dRuntime.TileMap;
+// using tk2dRuntime.TileMap;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
@@ -59,11 +59,12 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook getNextNearbyTileHook;
         public static Hook getAllNearbyTilesHook;
         public static Hook initNearbyTileCheckHook;
-        public static Hook HandleLostWoodsMirroringHook;
+        public static Hook handleLostWoodsMirroringHook;
         public static Hook getTileHook;
         public static Hook floorChestPlacerConfigureOnPlacementHook;
         public static Hook applyBenefitHook;
         public static Hook flameTrapHook;
+        public static Hook transitionToDepartHook;
         // public static Hook pixelatorStartHook;
         // public static Hook generateOcclusionTextureHook;
 
@@ -378,12 +379,19 @@ namespace ExpandTheGungeon.ExpandMain {
             );
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing TK2DDungeonAssembler.HandleLostWoodsMirroring Hook...."); }
-            HandleLostWoodsMirroringHook = new Hook(
+            handleLostWoodsMirroringHook = new Hook(
                 typeof(TK2DDungeonAssembler).GetMethod("HandleLostWoodsMirroring", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(CellData), typeof(Dungeon), typeof(tk2dTileMap), typeof(int), typeof(int) }, new ParameterModifier[0]),
-                typeof(ExpandHooks).GetMethod(nameof(HandleLostWoodsMirroring), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandHooks).GetMethod(nameof(HandleLostWoodsMirroringHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(TK2DDungeonAssembler)
             );
-            
+                        
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ElevatorDepartureController.TransitionToDepart Hook...."); }
+            transitionToDepartHook = new Hook(
+                typeof(ElevatorDepartureController).GetMethod("TransitionToDepart", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(tk2dSpriteAnimator), typeof(tk2dSpriteAnimationClip) }, new ParameterModifier[0]),
+                typeof(ExpandHooks).GetMethod(nameof(TransitionToDepartHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ElevatorDepartureController)
+            );
+
             /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
             pixelatorStartHook = new Hook(
                 typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -1791,7 +1799,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         // Catch exceptions in TK2DDungeonAssembler.HandleLostWoodsMirroring
-        private void HandleLostWoodsMirroring(ActionEX<TK2DDungeonAssembler, CellData, Dungeon, tk2dTileMap, int, int> orig, TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
+        private void HandleLostWoodsMirroringHook(ActionEX<TK2DDungeonAssembler, CellData, Dungeon, tk2dTileMap, int, int> orig, TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
             try {
                 if (d.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.RATGEON && !d.gameObject.name.ToLower().StartsWith("base_resourcefulrat")) { return; }
                 orig(self, current, d, map, ix, iy);
@@ -1802,6 +1810,77 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 return;
             }
+        }
+
+        
+        private static IEnumerator DoDeparture(ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
+            GameManager.Instance.MainCameraController.DoDelayedScreenShake(self.departureShake, 0.25f, null);
+            animator.AnimationCompleted = null;
+            bool m_depatureIsPlayerless = ReflectGetField<bool>(typeof(ElevatorDepartureController), "m_depatureIsPlayerless", self);
+            yield return null;
+            if (!m_depatureIsPlayerless) {
+                for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) {
+                    GameManager.Instance.AllPlayers[i].PrepareForSceneTransition();
+                }
+                self.elevatorFloor.SetActive(false);
+                yield return null;
+                animator.Play(self.elevatorDepartAnimName);
+                while (!animator.IsPlaying(self.elevatorDepartAnimName)) yield return null;
+                while (animator.IsPlaying(self.elevatorDepartAnimName)) yield return null;
+                animator.renderer.enabled = false;
+                yield return null;
+                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                GameUIRoot.Instance.HideCoreUI(string.Empty);
+                GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
+                yield return null;
+                float delay = 0.5f;
+                float time = 0;
+                while (time < delay){
+                    time += BraveTime.DeltaTime;
+                    yield return null;
+                }
+                if (self.ReturnToFoyerWithNewInstance) {
+                    GameManager.Instance.DelayedReturnToFoyer(delay);
+                } else if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) {
+                    GameManager.Instance.DelayedLoadBossrushFloor(delay);
+                } else if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH) {
+                    GameManager.Instance.DelayedLoadBossrushFloor(delay);
+                } else {
+                    if (!GameManager.Instance.IsFoyer && GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.NONE) {
+                        GlobalDungeonData.ValidTilesets nextTileset = GameManager.Instance.GetNextTileset(GameManager.Instance.Dungeon.tileIndices.tilesetId);
+                        GameManager.DoMidgameSave(nextTileset);
+                        yield return null;
+                    }
+                    if (self.UsesOverrideTargetFloor) {
+                        GlobalDungeonData.ValidTilesets overrideTargetFloor = self.OverrideTargetFloor;
+                        if (overrideTargetFloor != GlobalDungeonData.ValidTilesets.CATACOMBGEON) {
+                            if (overrideTargetFloor == GlobalDungeonData.ValidTilesets.FORGEGEON) {
+                                GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_forge");
+                            }
+                        } else {
+                            GameManager.Instance.DelayedLoadCustomLevel(delay, "tt_catacombs");
+                        }
+                    } else {
+                        GameManager.Instance.DelayedLoadNextLevel(delay);
+                    }
+                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
+                }
+                yield return null;
+            } else {
+                self.elevatorFloor.SetActive(false);
+                yield return null;
+                animator.Play(self.elevatorDepartAnimName);
+                while (!animator.IsPlaying(self.elevatorDepartAnimName)) yield return null;
+                while (animator.IsPlaying(self.elevatorDepartAnimName)) yield return null;
+                animator.renderer.enabled = false;
+                yield return null;
+            }
+            self.gameObject.SetActive(false);
+            yield break;
+        }
+        
+        private void TransitionToDepartHook(Action<ElevatorDepartureController, tk2dSpriteAnimator, tk2dSpriteAnimationClip>orig, ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
+            GameManager.Instance.StartCoroutine(DoDeparture(self, animator, clip));
         }
 
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {

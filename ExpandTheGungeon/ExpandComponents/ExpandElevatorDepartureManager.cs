@@ -8,7 +8,7 @@ using ExpandTheGungeon.ExpandDungeonFlows;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
-    class ExpandElevatorDepartureManager : DungeonPlaceableBehaviour, IPlaceConfigurable {
+    public class ExpandElevatorDepartureManager : DungeonPlaceableBehaviour, IPlaceConfigurable {
 
         public tk2dSpriteAnimator elevatorAnimator;
         public tk2dSpriteAnimator ceilingAnimator;
@@ -186,15 +186,29 @@ namespace ExpandTheGungeon.ExpandComponents {
             animator.AnimationCompleted = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>)Delegate.Combine(animator.AnimationCompleted, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>(TransitionToDepart));
         }
 
-        private void TransitionToDepart(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
-            
+        // This fixes missing elevator animations when player departs level. This has been broken since AG&D I believe.
+        // Reorganized code to ensure the departure animation is actually seen and finishes before level transition code is started.
+        private IEnumerator DoDeparture(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
             GameManager.Instance.MainCameraController.DoDelayedScreenShake(departureShake, 0.25f, null);
-            if (!m_depatureIsPlayerless) {                
+            if (!m_depatureIsPlayerless) {
                 for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].PrepareForSceneTransition(); }
+                elevatorFloor.SetActive(false);
+                yield return null;
+                animator.Play(elevatorDepartAnimName);
+                while (!animator.IsPlaying(elevatorDepartAnimName)) yield return null;
+                while (animator.IsPlaying(elevatorDepartAnimName)) yield return null;
+                animator.renderer.enabled = false;
+                yield return null;
                 float delay = 0.5f;
                 Pixelator.Instance.FadeToBlack(delay, false, 0f);
                 GameUIRoot.Instance.HideCoreUI(string.Empty);
                 GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
+                float time = 0;
+                while (time < delay) {
+                    time += BraveTime.DeltaTime;
+                    yield return null;
+                }
+                yield return null;
                 if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) {
                     GameManager.Instance.DelayedLoadBossrushFloor(delay);
                 } else if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH) {
@@ -203,6 +217,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (!GameManager.Instance.IsFoyer && GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.NONE) {
                         GlobalDungeonData.ValidTilesets nextTileset = GameManager.Instance.GetNextTileset(GameManager.Instance.Dungeon.tileIndices.tilesetId);
                         GameManager.DoMidgameSave(nextTileset);
+                        yield return null;
                     }
                     if (IsGlitchElevator) {
                         ExpandSettings.glitchElevatorHasBeenUsed = true;
@@ -211,6 +226,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;
                         if (!string.IsNullOrEmpty(OverrideTargetFlorDungeonFlow)) {
                             GameManager.Instance.InjectedFlowPath = OverrideTargetFlorDungeonFlow;
+                            yield return null;
                         }
                         switch (overrideTargetFloor) {
                             case GlobalDungeonData.ValidTilesets.CASTLEGEON:
@@ -267,10 +283,26 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
                 }
+            } else {
+                elevatorFloor.SetActive(false);
+                yield return null;
+                animator.Play(elevatorDepartAnimName);
+                yield return null;
+                while (animator.IsPlaying(elevatorDepartAnimName)) yield return null;
+                sprite.renderer.enabled = false;
             }
-            elevatorFloor.SetActive(false);
+            yield return null;
+            gameObject.SetActive(false);
+            // elevatorFloor.SetActive(false);
+            // animator.AnimationCompleted = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>)Delegate.Remove(animator.AnimationCompleted, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>(TransitionToDepart));
+            // animator.PlayAndDisableObject(elevatorDepartAnimName, null);
+            yield break;
+        }
+
+
+        private void TransitionToDepart(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
             animator.AnimationCompleted = (Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>)Delegate.Remove(animator.AnimationCompleted, new Action<tk2dSpriteAnimator, tk2dSpriteAnimationClip>(TransitionToDepart));
-            animator.PlayAndDisableObject(elevatorDepartAnimName, null);
+            StartCoroutine(DoDeparture(animator, clip));
         }
 
         private void DeflagCells() {

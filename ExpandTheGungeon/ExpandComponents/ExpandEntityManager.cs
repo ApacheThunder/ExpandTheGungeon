@@ -56,6 +56,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                     healthHaver.ForceSetCurrentHealth(1000);
                     healthHaver.PreventAllDamage = true;
                 }
+            } else {
+                aiActor.IgnoreForRoomClear = false;
+                if (behaviorSpeculator) {
+                    behaviorSpeculator.enabled = false;
+                    behaviorSpeculator.InstantFirstTick = false;
+                    behaviorSpeculator.PostAwakenDelay = 1;
+                    behaviorSpeculator.enabled = true;
+                }
             }
             
             m_SettingsApplied = true;

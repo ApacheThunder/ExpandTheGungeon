@@ -1016,7 +1016,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 room.IsLostWoodsRoom = true;
                 room.overrideRoomVisualType = 0;
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
-                RoomBuilder.AddObjectToRoom(room, new Vector2(2, 2), ExpandPrefabs.EXCarpetStainPlacer);
+                // RoomBuilder.AddObjectToRoom(room, new Vector2(2, 2), ExpandPrefabs.EXCarpetStainPlacer);
             }
 
             
@@ -1024,14 +1024,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_BackRooms_Entrance.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
             Expand_BackRooms_Entrance.IsLostWoodsRoom = true;
             Expand_BackRooms_Entrance.overrideRoomVisualType = 1;
-            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
+            // RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
             foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance.exitData.exits) { exit.containsDoor = false; }
 
             Expand_BackRooms_Entrance2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance2", true, false);
             Expand_BackRooms_Entrance2.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
             Expand_BackRooms_Entrance2.IsLostWoodsRoom = true;
             Expand_BackRooms_Entrance2.overrideRoomVisualType = 1;
-            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance2, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
+            // RoomBuilder.AddObjectToRoom(Expand_BackRooms_Entrance2, new Vector2(10, 10), ExpandPrefabs.EXCarpetStainPlacer);
             foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance2.exitData.exits) { exit.containsDoor = false; }
 
             Expand_BackRooms_Entrance3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance3", true, false);
@@ -1044,8 +1044,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
 
             Expand_BackRooms_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Exit", true, false);
-            Expand_BackRooms_Exit.allowFloorDecoration = false;
-            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Exit, new Vector2(2, 14), ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked);
+            Expand_BackRooms_Exit.allowWallDecoration = false;
+            Expand_BackRooms_Exit.overrideRoomVisualType = 0;
+            RoomBuilder.AddObjectToRoom(Expand_BackRooms_Exit, new Vector2(2, 14), ExpandSecretDoorPrefabs.EXSecretBackroomsDoor);
 
 
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion" };

@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.10.1";
+        public const string VERSION = "2.10.2";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -107,9 +107,9 @@ namespace ExpandTheGungeon {
             if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.OSXPlayer) {
                 ModAssetBundleName = "ExpandSharedAuto_Linux";
             }
-            
-            ExpandAssets.InitCustomAssetBundles(ModName);            
-                        
+
+            // ExpandAssets.InitCustomAssetBundles(ModName);
+            ExpandAssets.InitCustomAssetBundles();
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }
 

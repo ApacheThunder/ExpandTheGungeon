@@ -5323,7 +5323,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.procedurallyOutlined = true;
             m_CachedAIActor.EnemySwitchState = string.Empty;
             m_CachedAIActor.PreventFallingInPitsEver = true;
-            m_CachedAIActor.IgnoreForRoomClear = false;
+            m_CachedAIActor.IgnoreForRoomClear = true;
             m_CachedAIActor.HitByEnemyBullets = false;
             m_CachedAIActor.CanTargetEnemies = true;
             m_CachedAIActor.CanTargetPlayers = false;
@@ -5334,6 +5334,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_CachedAIActor.healthHaver.ForceSetCurrentHealth(70);
             m_CachedAIActor.knockbackDoer.weight = 35;
             m_CachedAIActor.procedurallyOutlined = true;
+            m_CachedAIActor.isPassable = false;
 
             m_CachedAIActor.specRigidbody.PixelColliders.Clear();
             m_CachedAIActor.specRigidbody.PixelColliders.Add(

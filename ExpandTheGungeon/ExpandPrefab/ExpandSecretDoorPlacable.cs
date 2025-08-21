@@ -13,12 +13,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
     public static class ExpandSecretDoorPrefabs {
 
         public static GameObject EXSecretDoorMinimapIcon;
+        public static GameObject EXSecretBackroomsDoorMinimapIcon;
 
         public static GameObject EXSecretDoor_Hollow;
         public static GameObject EXSecretDoor_Hollow_Unlocked;
         public static GameObject EXSecretDoor;
         public static GameObject EXSecretDoor_Unlocked;
+        public static GameObject EXSecretBackroomsDoor;
+
         public static GameObject EXSecretDoorAnimation;
+
+        // EXBackroomsExitMinimap
 
         private static readonly List<string> m_DoorOpenSprites = new List<string>() {
             "EXSecretDoor_Open_00",
@@ -32,15 +37,39 @@ namespace ExpandTheGungeon.ExpandPrefab {
         };
 
         private static readonly List<string> m_DoorCloseSprites = new List<string>() {
-            "EXSecretDoor_Close_00",
-            "EXSecretDoor_Close_01",
-            "EXSecretDoor_Close_02",
-            "EXSecretDoor_Close_03",
-            "EXSecretDoor_Close_04",
-            "EXSecretDoor_Close_05",
-            "EXSecretDoor_Close_06",
-            "EXSecretDoor_Close_07",
+            "EXSecretDoor_Open_07",
+            "EXSecretDoor_Open_06",
+            "EXSecretDoor_Open_05",
+            "EXSecretDoor_Open_04",
+            "EXSecretDoor_Open_03",
+            "EXSecretDoor_Open_02",
+            "EXSecretDoor_Open_01",
+            "EXSecretDoor_Open_00"
         };
+
+        private static readonly List<string> m_DoorOpenBackroomsSprites = new List<string>() {
+            "EXSecretBackroomsDoor_Open_00",
+            "EXSecretBackroomsDoor_Open_01",
+            "EXSecretBackroomsDoor_Open_02",
+            "EXSecretBackroomsDoor_Open_03",
+            "EXSecretBackroomsDoor_Open_04",
+            "EXSecretBackroomsDoor_Open_05",
+            "EXSecretBackroomsDoor_Open_06",
+            "EXSecretBackroomsDoor_Open_07"
+        };
+
+        private static readonly List<string> m_DoorCloseBackroomsSprites = new List<string>() {
+            "EXSecretBackroomsDoor_Open_07",
+            "EXSecretBackroomsDoor_Open_06",
+            "EXSecretBackroomsDoor_Open_05",
+            "EXSecretBackroomsDoor_Open_04",
+            "EXSecretBackroomsDoor_Open_03",
+            "EXSecretBackroomsDoor_Open_02",
+            "EXSecretBackroomsDoor_Open_01",
+            "EXSecretBackroomsDoor_Open_00"
+        };
+
+
 
         private static readonly List<string> m_EXLockUnlockSprites = new List<string>() {
             "west_biglock_open_001",
@@ -66,9 +95,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorOpenSprites, "door_open", frameRate: 10);
             ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorCloseSprites, "door_close", frameRate: 10);
+
+            ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorOpenBackroomsSprites, "backrooms_door_open", frameRate: 10);
+            ExpandUtility.AddAnimation(DoorSpriteAnimations, ExpandPrefabs.EXSecretDoorCollection.GetComponent<tk2dSpriteCollectionData>(), m_DoorCloseBackroomsSprites, "backrooms_door_close", frameRate: 10);
+
             
             EXSecretDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretDoor_MinimapIcon");
             SpriteSerializer.AddSpriteToObject(EXSecretDoorMinimapIcon, ExpandPrefabs.EXSecretDoorCollection, "EXSecretDoor_MinimapIcon");
+
+            EXSecretBackroomsDoorMinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSecretBackroomsDoor_MinimapIcon");
+            SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoorMinimapIcon, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_MinimapIcon");
+            
 
             EXSecretDoor_Hollow = expandSharedAssets1.LoadAsset<GameObject>("EX_Secret_Door_Hollow");
             GameObject EXSecretDoorHollow_Frame_Top = EXSecretDoor_Hollow.transform.Find("FrameTop").gameObject;
@@ -244,6 +281,45 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_SecretDoor_UnlockedComponent.DoorBackgroundObject = EXSecretDoorUnlocked_Background;
             m_SecretDoor_UnlockedComponent.DoorLightObject = EXSecretDoorUnlocked_Light;
             EXSecretDoor_Unlocked.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
+
+            
+            EXSecretBackroomsDoor = expandSharedAssets1.LoadAsset<GameObject>("EX_Secret_Door_Backrooms");
+            GameObject EXSecretBackroomsDoor_Frame_Top = EXSecretBackroomsDoor.transform.Find("FrameTop").gameObject;
+            GameObject EXSecretBackroomsDoor_Frame_Bottom = EXSecretBackroomsDoor.transform.Find("FrameBottom").gameObject;
+            GameObject EXSecretBackroomsDoor_Background = EXSecretBackroomsDoor.transform.Find("Background").gameObject;
+            GameObject EXSecretBackroomsDoor_Light = EXSecretBackroomsDoor.transform.Find("Light").gameObject;
+
+
+            tk2dSprite m_DoorBackroomsSprite = SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoor, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_Open_00", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            tk2dSprite m_DoorBackroomsBorderTopSprite = SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoor_Frame_Top, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_Frame_Top", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            tk2dSprite m_DoorBackroomsBorderBottomSprite = SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoor_Frame_Bottom, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_Frame_Bottom", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            tk2dSprite m_DoorBackroomsBackgroundSprite = SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoor_Background, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_Background", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            tk2dSprite m_DoorBackroomsLightSprite = SpriteSerializer.AddSpriteToObject(EXSecretBackroomsDoor_Light, ExpandPrefabs.EXSecretDoorCollection, "EXSecretBackroomsDoor_Light_Red", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+            m_DoorBackroomsBorderTopSprite.HeightOffGround = -1;
+            m_DoorBackroomsBorderBottomSprite.HeightOffGround = -1;
+            m_DoorBackroomsSprite.HeightOffGround = -1.5f;
+            m_DoorBackroomsBackgroundSprite.HeightOffGround = -2f;
+            m_DoorBackroomsLightSprite.HeightOffGround = -0.9f;
+
+            ExpandUtility.GenerateSpriteAnimator(EXSecretBackroomsDoor, DoorSpriteAnimations, ClipFps: 10);
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXSecretBackroomsDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 64), offset: new IntVector2(16, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXSecretBackroomsDoor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(16, 14));
+            ExpandUtility.GenerateOrAddToRigidBody(EXSecretBackroomsDoor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, CanBeCarried: false, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(16, 12));
+
+            ExpandSecretDoorPlacable m_SecretDoorBackroomsComponent = EXSecretBackroomsDoor.AddComponent<ExpandSecretDoorPlacable>();
+            m_SecretDoorBackroomsComponent.DoorTopBorderObject = EXSecretBackroomsDoor_Frame_Top;
+            m_SecretDoorBackroomsComponent.DoorBottomBorderObject = EXSecretBackroomsDoor_Frame_Bottom;
+            m_SecretDoorBackroomsComponent.DoorBackgroundObject = EXSecretBackroomsDoor_Background;
+            m_SecretDoorBackroomsComponent.DoorLightObject = EXSecretBackroomsDoor_Light;
+            m_SecretDoorBackroomsComponent.DoorPanelLight_RedSprite = "EXSecretBackroomsDoor_Light_Red";
+            m_SecretDoorBackroomsComponent.DoorPanelLight_GreenSprite = "EXSecretBackroomsDoor_Light_Green";
+            m_SecretDoorBackroomsComponent.DoorSprite_Closed = "EXSecretBackroomsDoor_Open_00";
+            m_SecretDoorBackroomsComponent.DoorCloseAnimationClip = "backrooms_door_close";
+            m_SecretDoorBackroomsComponent.DoorOpenAnimationClip = "backrooms_door_open";
+            m_SecretDoorBackroomsComponent.MinimapIcon = EXSecretBackroomsDoorMinimapIcon;
+            m_SecretDoorBackroomsComponent.IsBackRoomsElevator = true;
+            // EXSecretBackroomsDoor.SetLayerRecursively(LayerMask.NameToLayer("FG_Critical"));
         }
 
     }
@@ -256,8 +332,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             difficulty = PlaceableDifficulty.BASE;
             isPassable = true;
 
+            DoorPanelLight_RedSprite = "EXSecretDoor_Light_Red";
+            DoorPanelLight_GreenSprite = "EXSecretDoor_Light_Green";
+
+            DoorCloseAnimationClip = "door_close";
+            DoorOpenAnimationClip = "door_open";
+
+            DoorSprite_Closed = "EXSecretDoor_Open_00";
+
             ManuallyAssigned = false;
             UsesEXLock = false;
+
+            IsBackRoomsElevator = false;
 
             m_IsRecievingPlayer = false;
             m_Disabled = false;
@@ -266,9 +352,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_WaitingForPlayer = false;
         }
 
+
         public bool ManuallyAssigned;
         public bool UsesEXLock;
-
+        public bool IsBackRoomsElevator;
+        
         [NonSerialized]
         public bool m_IsRecievingPlayer;
 
@@ -281,8 +369,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         [NonSerialized]
         public bool m_WaitingForPlayer;
 
-        [NonSerialized]
-        public bool m_IsBackRoomsElevator;
 
         public ExpandInteractableLock EXLock;
         public InteractableLock Lock;
@@ -291,7 +377,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public GameObject DoorBottomBorderObject;
         public GameObject DoorBackgroundObject;
         public GameObject DoorLightObject;
-        
+
+        public string DoorPanelLight_RedSprite;
+        public string DoorPanelLight_GreenSprite;
+
+        public string DoorSprite_Closed;
+
+        public string DoorCloseAnimationClip;
+        public string DoorOpenAnimationClip;
+
         [NonSerialized]
         public ExpandSecretDoorPlacable m_DestinationDoor;
 
@@ -329,7 +423,23 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (!ManuallyAssigned) { TryFindOtherDoor(); }
 
             yield return null;
-            
+
+            RoomHandler m_room = transform.position.GetAbsoluteRoom();
+
+            if (IsBackRoomsElevator && m_room != null) {
+                int RoomChildCount = m_room.hierarchyParent.childCount;
+                if (RoomChildCount > 0) {
+                    for (int i = 0; i < RoomChildCount; i++) {
+                        Transform roomChild = m_room.hierarchyParent.GetChild(i);
+                        if (roomChild?.gameObject && roomChild.gameObject.GetComponent<MinorBreakable>()) {
+                            Destroy(roomChild.gameObject);
+                        }
+                    }
+                }
+            }
+
+            yield return null;
+
             if (!m_DestinationDoor | !m_Destination.HasValue) {
                 ETGModConsole.Log("[ExpandTheGungeon] [" + gameObject.name + "] ERROR: Destination Door was not found!", true);
                 m_Disabled = true;
@@ -386,23 +496,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public void ConfigureOnPlacement(RoomHandler room) {
             m_parentRoom = room;
 
-            DoorTopBorderObject.transform.SetParent(room.hierarchyParent, true);
-            DoorBottomBorderObject.transform.SetParent(room.hierarchyParent, true);
-            DoorBackgroundObject.transform.SetParent(room.hierarchyParent, true);
-
-            if (!Lock && !EXLock) { m_spawnUnlocked = true; }
-
-            m_doorLightSprite = DoorLightObject.GetComponent<tk2dSprite>();
-
-            transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform, true);
-            
-            if (m_IsBackRoomsElevator) {
-                // Vector2 vector = transform.position.XY() + new Vector2(specRigidbody.GroundPixelCollider.ManualOffsetX / 16f, specRigidbody.GroundPixelCollider.ManualOffsetY / 16f);
+            if (IsBackRoomsElevator && m_parentRoom?.area?.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT) {
                 Vector2 vector = transform.position.XY() + new Vector2(1, 1);
                 Vector2 vector2 = vector.ToIntVector2(VectorConversions.Round).ToVector2();
-                // transform.position += (vector2 - vector).ToVector3ZUp();
                 IntVector2 pos1 = vector2.ToIntVector2(VectorConversions.Floor);
                 IntVector2 pos2 = pos1 + IntVector2.Right;
+
                 try {
                     CellData cellData = GameManager.Instance.Dungeon.data[pos1];
                     CellData cellData2 = GameManager.Instance.Dungeon.data[pos2];
@@ -419,6 +518,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     Debug.LogException(ex);
                 }
             }
+
+            DoorTopBorderObject.transform.SetParent(room.hierarchyParent, true);
+            DoorBottomBorderObject.transform.SetParent(room.hierarchyParent, true);
+            DoorBackgroundObject.transform.SetParent(room.hierarchyParent, true);
+
+            if (!Lock && !EXLock) { m_spawnUnlocked = true; }
+
+            m_doorLightSprite = DoorLightObject.GetComponent<tk2dSprite>();
+
+            transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform, true);
         }
         
         public void Interact(PlayerController interactor) {
@@ -468,11 +577,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 m_InUse = true;
                 if (player.IsDodgeRolling) { player.ForceStopDodgeRoll(); }
                 player.SetInputOverride("Entering Elevator");
+                player.healthHaver.IsVulnerable = false;
                 if (otherPlayer) {
                     if (otherPlayer.IsDodgeRolling) { otherPlayer.ForceStopDodgeRoll(); }
                     otherPlayer.SetInputOverride("Entering Elevator");
+                    otherPlayer.healthHaver.IsVulnerable = false;
                 }
-                if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Red"); }
+                if (m_doorLightSprite) { m_doorLightSprite.SetSprite(DoorPanelLight_RedSprite); }
                 if (sprite) { sprite.HeightOffGround = 3f; sprite.UpdateZDepth(); }
                 specRigidbody.OnTriggerCollision = (SpeculativeRigidbody.OnTriggerDelegate)Delegate.Remove(specRigidbody.OnTriggerCollision, new SpeculativeRigidbody.OnTriggerDelegate(HandleTriggerCollision));
                 StartCoroutine(SendPlayer(player));
@@ -483,7 +594,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (m_parentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { return; }
             m_WaitingForPlayer = true;
             specRigidbody.OnTriggerCollision = (SpeculativeRigidbody.OnTriggerDelegate)Delegate.Combine(specRigidbody.OnTriggerCollision, new SpeculativeRigidbody.OnTriggerDelegate(HandleTriggerCollision));
-            if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Green"); }
+            if (m_doorLightSprite) { m_doorLightSprite.SetSprite(DoorPanelLight_GreenSprite); }
             AkSoundEngine.PostEvent("Play_OBJ_cardoor_open_01", gameObject);
             StartCoroutine(HandleOpen());
             return;
@@ -501,8 +612,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 while (Lock.gameObject.activeSelf) { yield return null; }
             }
             if (spriteAnimator) {
-                spriteAnimator.Play("door_open");
-                while (spriteAnimator.IsPlaying("door_open")) { yield return null; }
+                spriteAnimator.Play(DoorOpenAnimationClip);
+                while (spriteAnimator.IsPlaying(DoorOpenAnimationClip)) { yield return null; }
             }
             specRigidbody.PixelColliders[0].Enabled = false;
             sprite.HeightOffGround = -1.5f;
@@ -514,8 +625,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         private IEnumerator SendPlayer(PlayerController player) {
             if (spriteAnimator) {
                 AkSoundEngine.PostEvent("Play_OBJ_cardoor_close_01", gameObject);
-                spriteAnimator.Play("door_close");
-                while (spriteAnimator.IsPlaying("door_close")) { yield return null; }
+                spriteAnimator.Play(DoorCloseAnimationClip);
+                while (spriteAnimator.IsPlaying(DoorCloseAnimationClip)) { yield return null; }
             }
             m_WaitingForPlayer = false;
             if (m_DestinationDoor.m_WaitingForPlayer) { m_DestinationDoor.Reset(); }
@@ -541,8 +652,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
             player.forceAimPoint = Vector2.down;
             player.ForceStaticFaceDirection(Vector2.down);
-            if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Red"); }
-            if (sprite) { sprite.SetSprite("EXSecretDoor_Close_07"); }
+            if (m_doorLightSprite) { m_doorLightSprite.SetSprite(DoorPanelLight_RedSprite); }
+            if (sprite) { sprite.SetSprite(DoorSprite_Closed); }
             if (!specRigidbody.PixelColliders[0].Enabled) { specRigidbody.PixelColliders[0].Enabled = true; }
             yield return new WaitForSeconds(0.3f);
             Pixelator.Instance.FadeToBlack(0.25f, true, 0f);
@@ -554,8 +665,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
             if (spriteAnimator) {
                 AkSoundEngine.PostEvent("Play_OBJ_cardoor_open_01", gameObject);
-                spriteAnimator.Play("door_open");
-                while (spriteAnimator.IsPlaying("door_open")) { yield return null; }
+                spriteAnimator.Play(DoorOpenAnimationClip);
+                while (spriteAnimator.IsPlaying(DoorOpenAnimationClip)) { yield return null; }
             }
             AkSoundEngine.PostEvent("Play_EX_ElevatorBell_01", gameObject);
             if (sprite) { sprite.HeightOffGround = -1.5f; sprite.UpdateZDepth(); }
@@ -567,13 +678,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             yield return new WaitForSeconds(0.6f);
             if (spriteAnimator) {
                 AkSoundEngine.PostEvent("Play_OBJ_cardoor_close_01", gameObject);
-                spriteAnimator.Play("door_close");
-                while (spriteAnimator.IsPlaying("door_close")) { yield return null; }
+                spriteAnimator.Play(DoorCloseAnimationClip);
+                while (spriteAnimator.IsPlaying(DoorCloseAnimationClip)) { yield return null; }
             }
-            if (m_doorLightSprite) { m_doorLightSprite.SetSprite("EXSecretDoor_Light_Green"); }
+            if (m_doorLightSprite) { m_doorLightSprite.SetSprite(DoorPanelLight_GreenSprite); }
             player.forceAimPoint = null;
             player.ClearAllInputOverrides();
+            player.healthHaver.IsVulnerable = true;
             if (otherPlayer) {
+                otherPlayer.healthHaver.IsVulnerable = true;
                 otherPlayer.forceAimPoint = null;
                 otherPlayer.ClearAllInputOverrides();
             }

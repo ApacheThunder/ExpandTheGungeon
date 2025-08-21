@@ -15,6 +15,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
     public class ExpandPrefabs {
 
         public static GameObject EXFoyerChecker;
+        public static GameObject EXDummyObject;
 
         // Custom Sprite Collections (this gets setup before ItemAPI
         public static GameObject EXItemCollection;
@@ -491,7 +492,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
 
             EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
-            
+            EXDummyObject = expandSharedAssets1.LoadAsset<GameObject>("DummyObject");
+
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
             
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");

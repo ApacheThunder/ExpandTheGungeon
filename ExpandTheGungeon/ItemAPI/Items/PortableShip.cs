@@ -165,7 +165,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         protected override void DoEffect(PlayerController user) {
-            if (!m_pickedUp) {
+            if (!m_PickedUp) {
                 DoConfigure(user);
                 m_PickedUp = true;
             }

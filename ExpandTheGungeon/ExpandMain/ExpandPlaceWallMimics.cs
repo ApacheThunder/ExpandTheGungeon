@@ -3,9 +3,9 @@ using Dungeonator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+// using System.Reflection;
 using UnityEngine;
-using MonoMod.RuntimeDetour;
+// using MonoMod.RuntimeDetour;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 
@@ -358,6 +358,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 return;
             }
             if (!dungeon.gameObject.name.ToLower().StartsWith("base_backrooms")) { return; }
+            if (!UnityEngine.Object.FindObjectOfType<ExpandSecretDoorPlacable>()) { return; }
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
 
             foreach (PlayerController player in GameManager.Instance.AllPlayers) {
@@ -403,22 +404,35 @@ namespace ExpandTheGungeon.ExpandMain {
                         int Y = currentRoom.area.basePosition.y + Height;
                         if (dungeon.data.isWall(X, Y) && X % 4 == 0 && Y % 4 == 0 && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) != null && dungeon.data.GetAbsoluteRoomFromPosition(new IntVector2(X, Y)) == currentRoom) {
                             int WallCount = 0;
-                			if (dungeon.data.isWall(X - 1, Y + 2) && 
+                			if (dungeon.data.isWall(X - 2, Y + 2) &&
+                                dungeon.data.isWall(X - 1, Y + 2) && 
                                 dungeon.data.isWall(X, Y + 2) &&
                                 dungeon.data.isWall(X + 1, Y + 2) &&
+                                dungeon.data.isWall(X + 3, Y + 2) &&
                                 dungeon.data.isWall(X + 2, Y + 2) &&
+                                dungeon.data.isWall(X - 2, Y + 1) &&
                                 dungeon.data.isWall(X - 1, Y + 1) &&
                                 dungeon.data.isWall(X, Y + 1) &&
                                 dungeon.data.isWall(X + 1, Y + 1) &&
-                                dungeon.data.isWall(X + 2, Y + 1) && 
-                				dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X + 3, Y + 1) &&
+                                dungeon.data.isWall(X + 2, Y + 1) &&
+                                dungeon.data.isWall(X - 1, Y) &&
+                                dungeon.data.isWall(X - 2, Y) &&
                                 dungeon.data.isWall(X, Y) &&
                                 dungeon.data.isWall(X + 1, Y) &&
                                 dungeon.data.isWall(X + 2, Y) &&
-                				dungeon.data.isPlainEmptyCell(X, Y - 1) &&
+                                dungeon.data.isWall(X + 3, Y) &&
+                                dungeon.data.isPlainEmptyCell(X - 2, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X - 1, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X, Y - 1) &&
                                 dungeon.data.isPlainEmptyCell(X + 1, Y - 1) &&
-                				!dungeon.data.isPlainEmptyCell(X, Y + 4) &&
-                                !dungeon.data.isPlainEmptyCell(X + 1, Y + 4))
+                                dungeon.data.isPlainEmptyCell(X, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X + 2, Y - 1) &&
+                                dungeon.data.isPlainEmptyCell(X + 3, Y - 1) &&
+                                !dungeon.data.isPlainEmptyCell(X, Y + 4) &&
+                                !dungeon.data.isPlainEmptyCell(X + 1, Y + 4) &&
+                                !dungeon.data.isPlainEmptyCell(X - 2, Y) &&
+                                !dungeon.data.isPlainEmptyCell(X + 3, Y))
                 			{
                 				validWalls.Add(Tuple.Create(new IntVector2(X, Y), DungeonData.Direction.SOUTH));
                 				WallCount++;
@@ -462,16 +476,11 @@ namespace ExpandTheGungeon.ExpandMain {
                     IntVector2 Position = WallCell.First;
                     currentRoom.RuntimeStampCellComplex(Position.x, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
                     currentRoom.RuntimeStampCellComplex(Position.x + 1, Position.y, CellType.FLOOR, DiagonalWallType.NONE);
-
-                    GameObject ElevatorObject = ExpandSecretDoorPlacable.Instantiate(ExpandSecretDoorPrefabs.EXSecretDoor_Unlocked, (Position.ToVector2() - (new Vector2(1, 0))), Quaternion.identity);
-                    if (ElevatorObject) {
-                        ExpandSecretDoorPlacable m_ExpandSecretDoorPlacable = ElevatorObject.GetComponent<ExpandSecretDoorPlacable>();
-                        if (m_ExpandSecretDoorPlacable) {
-                            m_ExpandSecretDoorPlacable.ManuallyAssigned = false;
-                            m_ExpandSecretDoorPlacable.m_IsBackRoomsElevator = true;
-                            currentRoom.RegisterInteractable(m_ExpandSecretDoorPlacable);
-                            m_ExpandSecretDoorPlacable.ConfigureOnPlacement(currentRoom);
-                        }
+                    
+                    GameObject m_ElevatorObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandSecretDoorPrefabs.EXSecretBackroomsDoor, currentRoom, ((Position - new IntVector2(1, 0)) - currentRoom.area.basePosition), false);
+                    if (m_ElevatorObject) {
+                        ExpandSecretDoorPlacable m_ExpandSecretDoorPlacable = m_ElevatorObject.GetComponent<ExpandSecretDoorPlacable>();
+                        if (m_ExpandSecretDoorPlacable)currentRoom.RegisterInteractable(m_ExpandSecretDoorPlacable);
                     }
                     validWalls.Remove(WallCell);
                     if (ExpandSettings.debugMode) {

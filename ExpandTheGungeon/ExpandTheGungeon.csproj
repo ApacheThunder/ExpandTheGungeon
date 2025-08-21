@@ -109,9 +109,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandSharedAuto" />
-    <EmbeddedResource Include="..\ExpandAssets\Assets\AssetBundles\Windows\ExpandAudio" />
-    <EmbeddedResource Include="ExpandSharedAuto_Linux" />
     <Compile Include="ExpandComponents\ExpandArkController.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
