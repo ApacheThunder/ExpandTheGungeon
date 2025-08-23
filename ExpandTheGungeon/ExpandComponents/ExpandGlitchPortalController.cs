@@ -174,9 +174,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetPlayer.specRigidbody, null, false);
             TogglePlayerInput(targetPlayer, false);
             yield return null;
-            if (targetPlayer.transform.position.GetAbsoluteRoom() != null) {
+            /*if (targetPlayer.transform.position.GetAbsoluteRoom() != null) {
                 targetPlayer.ForceChangeRoom(targetPlayer.transform.position.GetAbsoluteRoom());
-            }
+            }*/
             if (DestroyAfterUse) { Destroy(gameObject); }
             yield break;
         }

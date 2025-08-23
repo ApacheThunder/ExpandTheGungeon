@@ -694,7 +694,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 RoomManager.transform.parent = targetRoom.hierarchyParent;
                 CombatManager = RoomManager.AddComponent<ExpandCombatRoomManager>();
                 CombatManager.ParentRoom = targetPlayer.transform.position.GetAbsoluteRoom();
-                targetPlayer.ForceChangeRoom(targetRoom);
+                // targetPlayer.ForceChangeRoom(targetRoom);
             }
             // Pixelator.Instance.MarkOcclusionDirty();
             yield return null;

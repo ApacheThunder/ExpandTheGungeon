@@ -8,7 +8,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public ExpandSpawnItemOnBreak() {
             // Setup Jungle Tree Defaults
-            CommonLoot = new List<int>() { 70, 68, 73, 73, 565 };
+            CommonLoot = new List<int>() { 70, 68, 73, 565 };
             RareLoot = new List<int>() { 74, 85, 120, 600, 78, 224, 67, 297 };
 
             BannedRoomCategories = new List<PrototypeDungeonRoom.RoomCategory>();
