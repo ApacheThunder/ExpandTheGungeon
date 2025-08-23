@@ -125,6 +125,7 @@
     <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnBowlerNoteOnDeath.cs" />
+    <Compile Include="ExpandComponents\ExpandSpawnItemOnBreak.cs" />
     <Compile Include="ExpandComponents\ExpandSpriteFadeOnSpawn.cs" />
     <Compile Include="ExpandComponents\ExpandSpriteRandomizer.cs" />
     <Compile Include="ExpandComponents\ExpandStainPlacer.cs" />

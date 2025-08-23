@@ -663,13 +663,13 @@ namespace ExpandTheGungeon.ItemAPI {
             }
 
             targetPlayer.DoVibration(Vibration.Time.Normal, Vibration.Strength.Medium);
-            GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, NewPosition));
+            GameManager.Instance.StartCoroutine(HandleTeleportToRoom(targetPlayer, targetRoom, NewPosition));
             targetPlayer.specRigidbody.Velocity = Vector2.zero;
             targetPlayer.knockbackDoer.TriggerTemporaryKnockbackInvulnerability(1f);
             targetRoom.EnsureUpstreamLocksUnlocked();
         }
 
-        private IEnumerator HandleTeleportToRoom(PlayerController targetPlayer, Vector2 targetPoint) {
+        private IEnumerator HandleTeleportToRoom(PlayerController targetPlayer, RoomHandler targetRoom, Vector2 targetPoint) {
             CameraController cameraController = GameManager.Instance.MainCameraController;
             Vector2 offsetVector = (cameraController.transform.position - targetPlayer.transform.position);
             offsetVector -= cameraController.GetAimContribution();
@@ -687,13 +687,14 @@ namespace ExpandTheGungeon.ItemAPI {
             targetPlayer.WarpFollowersToPlayer();
             targetPlayer.WarpCompanionsToPlayer(false);
             ExpandCombatRoomManager CombatManager = null;
-            if (targetPlayer.transform.position.GetAbsoluteRoom() != null) {
-                StunEnemiesForTeleport(targetPlayer.transform.position.GetAbsoluteRoom(), 1.8f);
+            if (targetRoom != null) {
+                StunEnemiesForTeleport(targetRoom, 1.8f);
                 GameObject RoomManager = new GameObject("Room Manager") { layer = 0 };
                 RoomManager.transform.position = targetPlayer.transform.position;
-                RoomManager.transform.parent = targetPlayer.transform.position.GetAbsoluteRoom().hierarchyParent;
+                RoomManager.transform.parent = targetRoom.hierarchyParent;
                 CombatManager = RoomManager.AddComponent<ExpandCombatRoomManager>();
                 CombatManager.ParentRoom = targetPlayer.transform.position.GetAbsoluteRoom();
+                targetPlayer.ForceChangeRoom(targetRoom);
             }
             // Pixelator.Instance.MarkOcclusionDirty();
             yield return null;

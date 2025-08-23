@@ -78,10 +78,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ParentRoom.DeregisterInteractable(this);
                     if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH |
                         GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH |
-                        GameManager.Instance.CurrentFloor > 4 | ExpandSettings.HasVisitedBackrooms) {
+                        (GameManager.Instance.CurrentFloor > 4) | ExpandSettings.HasVisitedBackrooms) {
                         StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
                     } else {
-                        StartCoroutine(HandleBackroomsAccident());
+                        StartCoroutine(HandleBackroomsAccident(GameManager.Instance.PrimaryPlayer));
                     }
                 } else {
                     m_PositionIsValid = true;
@@ -174,11 +174,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetPlayer.specRigidbody, null, false);
             TogglePlayerInput(targetPlayer, false);
             yield return null;
+            if (targetPlayer.transform.position.GetAbsoluteRoom() != null) {
+                targetPlayer.ForceChangeRoom(targetPlayer.transform.position.GetAbsoluteRoom());
+            }
             if (DestroyAfterUse) { Destroy(gameObject); }
             yield break;
         }
         
-        private IEnumerator HandleBackroomsAccident(float delay = 0.5f, bool skipFade = false) {
+        private IEnumerator HandleBackroomsAccident(PlayerController player, float delay = 0.5f, bool skipFade = false) {
+            if (player)player.PrepareForSceneTransition();
+            yield return new WaitForSeconds(3f);
             if (!skipFade) {
                 Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
                 yield return new WaitForSeconds(1f);

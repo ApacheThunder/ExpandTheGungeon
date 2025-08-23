@@ -36,7 +36,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator DoSpawn() {
             yield return null;
-            float delay = 2f;
+            float delay = 3f;
             float timer = 0f;
             while (timer < delay) {
                 yield return null;

@@ -3071,7 +3071,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             
             Jungle_LargeTree = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_Tree");
-            tk2dSprite JungleTreeSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTree, EXJungleCollection, "Jungle_Tree_Large");
+            tk2dSprite JungleTreeSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTree, EXJungleCollection, "Jungle_Tree_Large", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
             JungleTreeSprite.HeightOffGround = -8;
 
 
@@ -3085,15 +3085,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(23, 20), offset: new IntVector2(84, 39)); // EntranceBlocker
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(10, 20), offset: new IntVector2(74, 39)); // SideCollisions
             ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 20), offset: new IntVector2(107, 39)); // SideCollisions
-            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 64), offset: new IntVector2(74, 59)); // Top Collision
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 40), offset: new IntVector2(74, 59)); // Top Collision
 
-            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 64), offset: new IntVector2(74, 59)); // High Obstacle (For projectiles mostly)
-            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 75), offset: new IntVector2(74, 48)); // Enemy Blocker. (Prevents enemies from being siide collision area)
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 48), offset: new IntVector2(74, 59)); // High Obstacle (For projectiles mostly)
+            ExpandUtility.GenerateOrAddToRigidBody(Jungle_LargeTree, CollisionLayer.EnemyBlocker, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(41, 51), offset: new IntVector2(74, 48)); // Enemy Blocker. (Prevents enemies from being inside collision area)
 
             ExpandJungleTreeController JungleTreeController = Jungle_LargeTree.AddComponent<ExpandJungleTreeController>();
                         
             Jungle_LargeTreeTopFrame = expandSharedAssets1.LoadAsset<GameObject>("Jungle Tree Frame");
-            tk2dSprite m_JungleLargeTreeTopFrameSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTreeTopFrame, EXJungleCollection, "Jungle_Tree_Large_Frame");
+            tk2dSprite m_JungleLargeTreeTopFrameSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTreeTopFrame, EXJungleCollection, "Jungle_Tree_Large_Frame", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
             m_JungleLargeTreeTopFrameSprite.HeightOffGround = 3;
             JungleTreeController.JungleTreeTopFrame = Jungle_LargeTreeTopFrame;
 
@@ -3303,7 +3303,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_exJungleTreeSmall_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_exJungleTreeSmall_Shadow, EXJungleCollection, "Jungle_Tree_Small_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
             m_exJungleTreeSmall_ShadowSprite.usesOverrideMaterial = true;
             m_exJungleTreeSmall_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
-
+            
 
             ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Medium, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(17, 2), dimensions: new IntVector2(12, 10));
             ExpandUtility.GenerateOrAddToRigidBody(ExpandJungleTree_Medium, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, offset: new IntVector2(17, 12), dimensions: new IntVector2(12, 23));
@@ -3312,7 +3312,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             MajorBreakable ExpandJungleTree_MediumBreakable = ExpandJungleTree_Medium.AddComponent<MajorBreakable>();
-            ExpandJungleTree_MediumBreakable.HitPoints = 40;
+            ExpandJungleTree_MediumBreakable.HitPoints = 25;
             ExpandJungleTree_MediumBreakable.MinHits = 2;
             ExpandJungleTree_MediumBreakable.EnemyDamageOverride = -1;
             ExpandJungleTree_MediumBreakable.ImmuneToBeastMode = false;
@@ -3408,7 +3408,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
             MajorBreakable ExpandJungleTree_SmallBreakable = ExpandJungleTree_Small.AddComponent<MajorBreakable>();
-            ExpandJungleTree_SmallBreakable.HitPoints = 35;
+            ExpandJungleTree_SmallBreakable.HitPoints = 15;
             ExpandJungleTree_SmallBreakable.MinHits = 2;
             ExpandJungleTree_SmallBreakable.EnemyDamageOverride = -1;
             ExpandJungleTree_SmallBreakable.ImmuneToBeastMode = false;
@@ -3501,6 +3501,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandJungleTree_SmallBreakable.delayDamageVfx = false;
             ExpandJungleTree_SmallBreakable.SpawnItemOnBreak = false;
             ExpandJungleTree_SmallBreakable.HandlePathBlocking = true;
+
+            ExpandJungleTree_Small.AddComponent<ExpandSpawnItemOnBreak>();
+            ExpandJungleTree_Medium.AddComponent<ExpandSpawnItemOnBreak>();
 
 
             Door_Horizontal_Belly = UnityEngine.Object.Instantiate(NakatomiDungeonPrefab.doorObjects.variantTiers[0].nonDatabasePlaceable);

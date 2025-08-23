@@ -409,8 +409,10 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_KeepJungleEntranceRooms.includedRoomTables = new List<GenericRoomTable>(0);
             m_KeepJungleEntranceRooms.includedRooms = new WeightedRoomCollection() {
                 elements = new List<WeightedRoom>() {
-                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom, Weight: 0.5f),
-                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom2)
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom),
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom2),
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom3),
+                    ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom4)
                 }
             };
 

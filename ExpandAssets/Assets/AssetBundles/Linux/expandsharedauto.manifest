@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2477555839
+CRC: 639644027
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8dab18e133293f354550bc377c91c33e
+    Hash: 5f48be4ec46e07d29ccf5d35e4f38224
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1e1fd86321726eba1aef989ebc89c5b2
@@ -624,6 +624,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed9.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room010.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/carpetGrids_1.txt
+- Assets/ExpandRooms/RoomFactoryData/Keep_JungleElevatorRoom2.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Belly.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals27.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport2_3.bytes
@@ -1021,6 +1022,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular8.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular6.bytes
 - Assets/ExpandRooms/RoomFactoryData/K_Expand_Achievement_Money_Pit.bytes
+- Assets/ExpandRooms/RoomFactoryData/Keep_TreeRoom4.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mushroom.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Funky.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_ExitHub.bytes
@@ -1271,6 +1273,7 @@ Assets:
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/CronenbergTallCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Exit.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal7.bytes
+- Assets/ExpandRooms/RoomFactoryData/Keep_TreeRoom3.bytes
 - Assets/ExpandTextures/AmmonomiconTextures/hotshotshotgunkin_icon.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Witch3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room009.bytes

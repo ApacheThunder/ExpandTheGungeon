@@ -62,7 +62,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Special Jungle Entrance/Exit rooms for Floor 1
         public static PrototypeDungeonRoom Expand_Keep_TreeRoom;
         public static PrototypeDungeonRoom Expand_Keep_TreeRoom2;
+        public static PrototypeDungeonRoom Expand_Keep_TreeRoom3;
+        public static PrototypeDungeonRoom Expand_Keep_TreeRoom4;
         public static PrototypeDungeonRoom Expand_Keep_JungleElevatorRoom;
+        public static PrototypeDungeonRoom Expand_Keep_JungleElevatorRoom2;
 
         // New Exit room for new Elevator object
         public static PrototypeDungeonRoom Expand_ExitRoom_NewElevator;
@@ -1603,12 +1606,30 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_Keep_TreeRoom2.associatedMinimapIcon = ExpandPrefabs.EXJungleTree_MinimapIcon;
             RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom2, new Vector2(4, 20), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
 
+            Expand_Keep_TreeRoom3 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_TreeRoom3", true);
+            Expand_Keep_TreeRoom3.overrideRoomVisualType = 6;
+            Expand_Keep_TreeRoom3.associatedMinimapIcon = ExpandPrefabs.EXJungleTree_MinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom3, new Vector2(4, 9), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
+
+            Expand_Keep_TreeRoom4 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_TreeRoom4", true);
+            Expand_Keep_TreeRoom4.overrideRoomVisualType = 6;
+            Expand_Keep_TreeRoom4.associatedMinimapIcon = ExpandPrefabs.EXJungleTree_MinimapIcon;
+            RoomBuilder.AddObjectToRoom(Expand_Keep_TreeRoom4, new Vector2(9, 16), ExpandUtility.GenerateDungeonPlacable(ExpandPrefabs.Jungle_LargeTree, useExternalPrefab: true));
+
+
 
             Expand_Keep_JungleElevatorRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_JungleElevatorRoom", true, assignDecorationSettings: true);
             Expand_Keep_JungleElevatorRoom.overrideRoomVisualType = 2;
             RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(7, 15), ExpandPrefabs.EXJungleElevator_Departure_Placable);
             RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(6, 3), ExpandObjectDatabase.GodRays);
             // RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom, new Vector2(9, 6), ExpandPrefabs.Arrival);
+
+
+            Expand_Keep_JungleElevatorRoom2 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Keep_JungleElevatorRoom2", true, assignDecorationSettings: true);
+            Expand_Keep_JungleElevatorRoom2.overrideRoomVisualType = 2;
+            RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom2, new Vector2(7, 34), ExpandPrefabs.EXJungleElevator_Departure_Placable);
+            RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom2, new Vector2(6, 3), ExpandObjectDatabase.GodRays);
+            RoomBuilder.AddObjectToRoom(Expand_Keep_JungleElevatorRoom2, new Vector2(9, 25), ExpandPrefabs.Door_Vertical_Jungle);
 
             Expand_ExitRoom_NewElevator = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_ExitRoom_NewElevator", true);
             Expand_ExitRoom_NewElevator.associatedMinimapIcon = ExpandPrefabs.exit_room_basic.associatedMinimapIcon;

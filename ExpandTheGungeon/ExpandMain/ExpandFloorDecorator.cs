@@ -131,14 +131,6 @@ namespace ExpandTheGungeon.ExpandMain {
                     GameObject Tree = Object.Instantiate(BraveUtility.RandomElement(TreeList), RandomVector.ToVector3(), Quaternion.identity);
                     MajorBreakable m_TreeBreakable = Tree.GetComponent<MajorBreakable>();
                     Tree.transform.parent = currentRoom.hierarchyParent;
-                    if (Random.value < 0.35f) {
-                        m_TreeBreakable.SpawnItemOnBreak = true;
-                        if (Random.value > 0.3f) {
-                            m_TreeBreakable.ItemIdToSpawnOnBreak = 70;
-                        } else {
-                            m_TreeBreakable.ItemIdToSpawnOnBreak = 73;
-                        }
-                    }
                     RandomObjectsPlaced++;
                     if (ValidLocations.Count > 1) { ValidLocations = ValidLocations.Shuffle(); }
                     if (Tables.Count > 0) {
@@ -149,13 +141,6 @@ namespace ExpandTheGungeon.ExpandMain {
                                 currentRoom.DeregisterInteractable(currentTable.gameObject.GetComponent<FlippableCover>());
                                 RemoveTableDecorations(currentTable, currentRoom);
                                 Object.Destroy(currentTable.gameObject);
-                            }
-                        }
-                    }
-                    if (currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All).Count > 0) {
-                        foreach (AIActor enemy in currentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All)) {
-                            if (Vector2.Distance(enemy.specRigidbody.UnitCenter, m_TreeBreakable.specRigidbody.UnitCenter) < 3) {
-                                PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(enemy.specRigidbody);
                             }
                         }
                     }
@@ -331,7 +316,7 @@ namespace ExpandTheGungeon.ExpandMain {
             if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.GetRoomName()) && !currentRoom.IsMaintenanceRoom() &&
                 !currentRoom.GetRoomName().StartsWith("Boss Foyer"))
             {
-                if (Random.value <= 0.6f) {
+                if (Random.value < 0.6f) {
 
                     List<IntVector2> m_CachedPositions = ExpandUtility.FindAllValidLocations(dungeon, currentRoom, 2, 6, true, PositionRelativeToRoom: true);
 
@@ -341,17 +326,15 @@ namespace ExpandTheGungeon.ExpandMain {
                         m_CachedPositions = m_CachedPositions.Shuffle();
                     }
 
-                    int MinMushroomCount = 4;
-                    int MaxMushroomCount = 8;
-                    int X = currentRoom.area.dimensions.x;
-                    int Y = currentRoom.area.dimensions.y;
+                    int MinMushroomCount = 3;
+                    int MaxMushroomCount = 5;
 
-                    if (X * Y <= 225) {
-                        MinMushroomCount = 3;
-                        MaxMushroomCount = 5;
-                    } else if ((X * Y) >= 400 && Random.value <= 0.3f) {
-                        MinMushroomCount = 8;
-                        MaxMushroomCount = 18;
+                    if (m_CachedPositions.Count > 40) {
+                        MinMushroomCount = 4;
+                        MaxMushroomCount = 7;
+                    } else if (m_CachedPositions.Count > 70 && Random.value < 0.3f) {
+                        MinMushroomCount = 5;
+                        MaxMushroomCount = 10;
                     }
 
                     int MushroomCount = Random.Range(MinMushroomCount, MaxMushroomCount);

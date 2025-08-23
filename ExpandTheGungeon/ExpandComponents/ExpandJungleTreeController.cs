@@ -4,6 +4,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandPrefab;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -33,7 +34,15 @@ namespace ExpandTheGungeon.ExpandComponents {
             while (GameManager.Instance.IsLoadingLevel && Dungeon.IsGenerating) { yield return null; }
             yield return null;
             Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_Jungle");
-            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom, false, false, RoomExploredOnMinimap: false, RunTimeTileMapName: "JungleRuntime_");
+
+            List<PrototypeDungeonRoom> m_ExitRooms = new List<PrototypeDungeonRoom>() {
+                ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom,
+                ExpandRoomPrefabs.Expand_Keep_JungleElevatorRoom2
+            };
+
+            m_ExitRooms = m_ExitRooms.Shuffle();
+
+            m_TargetExitRoom = ExpandUtility.AddCustomRuntimeRoomWithTileSet(dungeon2, BraveUtility.RandomElement(m_ExitRooms), false, false, RoomExploredOnMinimap: false, RunTimeTileMapName: "JungleRuntime_");
             dungeon2 = null;
 
             IntVector2 baseCellPosition = (transform.position.IntXY(VectorConversions.Floor) + new IntVector2(4, 2));
