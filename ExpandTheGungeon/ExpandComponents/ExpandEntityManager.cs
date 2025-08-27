@@ -75,7 +75,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (!m_Player) m_Player = GameManager.Instance.PrimaryPlayer;
                 if (!m_Player) return;
                 m_CurrentRoom = transform.position.GetAbsoluteRoom();
-                if (m_CurrentRoom != null && m_Player.CurrentRoom != null && m_CurrentRoom != m_Player.CurrentRoom) {
+                // if (m_CurrentRoom != null && m_Player.CurrentRoom != null && m_CurrentRoom != m_Player.CurrentRoom) {
+                if (m_CurrentRoom != null && m_Player.CurrentRoom != null && !GameManager.Instance.IsAnyPlayerInRoom(m_CurrentRoom)) {
                     m_PlayerAwayTime += BraveTime.DeltaTime;
                     if (m_PlayerAwayTime > MaxPlayerAwayTime) {
                         if (m_Player.CurrentRoom.area != null && m_Player.CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.EXIT) {

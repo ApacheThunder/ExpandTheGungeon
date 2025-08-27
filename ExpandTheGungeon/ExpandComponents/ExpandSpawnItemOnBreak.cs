@@ -18,8 +18,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             BreakOnEnemyCollision = true;
 
-            LootOdds = 0.3f;
-            RareLootOdds = 0.1f;
+            LootOdds = 0.1f;
+            RareLootOdds = 0.08f;
         }
 
         public bool BreakOnEnemyCollision;
@@ -74,7 +74,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (CommonLoot.Count > 1)CommonLoot = CommonLoot.Shuffle();
             if (RareLoot.Count > 1)RareLoot = RareLoot.Shuffle();
 
-            if (Random.value < LootOdds) return;
+            if (Random.value > LootOdds) return;
 
             majorBreakable.SpawnItemOnBreak = true;
 
@@ -90,6 +90,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (!otherRigidbody.GetComponent<AIActor>().IgnoreForRoomClear && !otherRigidbody.GetComponent<CompanionController>()) {
                     BreakOnEnemyCollision = false;
                     majorBreakable.SpawnItemOnBreak = false;
+                    majorBreakable.ItemIdToSpawnOnBreak = -1;
                     majorBreakable.Break(otherRigidbody.Velocity);
                     Destroy(this);
                 }

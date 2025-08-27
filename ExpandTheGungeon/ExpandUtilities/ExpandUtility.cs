@@ -1842,8 +1842,10 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
                 }
             }
-            dungeon.data.rooms.Add(targetRoom);                        
+            dungeon.data.rooms.Add(targetRoom);
             try {
+                // Add collision walls outside room area to prevent player getting out in rare cases were exceptions prevent normal collision dgeneration.
+                GenerateOutOfBoundsWalls(targetRoom);
                 targetRoom.WriteRoomData(dungeon.data);
             } catch (Exception) {
                 if (!suppressExceptionMessages) {
@@ -1980,8 +1982,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     }
                 }
             }
-            dungeon.data.rooms.Add(targetRoom);                        
+            dungeon.data.rooms.Add(targetRoom);
+            
             try {
+                // Add collision walls outside room area to prevent player getting out in rare cases were exceptions prevent normal collision dgeneration.
+                GenerateOutOfBoundsWalls(targetRoom);
                 targetRoom.WriteRoomData(dungeon.data);
             } catch (Exception) {
                 ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
@@ -2105,6 +2110,73 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return targetRoom;
         }
         
+
+        public static GameObject GenerateOutOfBoundsWalls(RoomHandler targetRoom = null, IntVector2? position = null, IntVector2? size = null, bool reletiveToRoom = true, bool allowBackRoomsWarp = true) {
+            if ((!reletiveToRoom && !position.HasValue) | (targetRoom == null && reletiveToRoom) |
+                (!size.HasValue && targetRoom == null))
+            {
+                return null;
+            }
+
+            string m_targetRoomName = string.Empty;
+            bool m_IsBackroomsWarp = true;
+            if (!allowBackRoomsWarp | ExpandSettings.HasVisitedBackrooms) m_IsBackroomsWarp = false;
+
+            if (targetRoom == null) {
+                m_targetRoomName = ("ModifiedRoom_" + UnityEngine.Random.Range(0, 9999).ToString());
+            }
+
+            GameObject m_CollisionObject = new GameObject(m_targetRoomName + "_OutOfBoundsCollision" + UnityEngine.Random.Range(0, 9999).ToString());
+            IntVector2 m_TargetPosition = IntVector2.Zero;
+            if (position.HasValue) m_TargetPosition = position.Value;
+            if (reletiveToRoom && targetRoom != null) m_TargetPosition += (targetRoom.area.basePosition - new IntVector2(2, 2));
+            if (targetRoom != null) m_CollisionObject.transform.parent = targetRoom.hierarchyParent;
+            IntVector2 m_TargetSize = new IntVector2(10, 10);
+            if (size.HasValue) {
+                m_TargetSize = size.Value;
+            } else if (targetRoom != null) {
+                m_TargetSize = targetRoom.area.dimensions;
+            }
+
+            m_CollisionObject.transform.position = m_TargetPosition.ToVector3();
+            CollisionLayer m_ChosenLayer = CollisionLayer.LowObstacle;
+            if (m_IsBackroomsWarp) m_ChosenLayer = CollisionLayer.Trap;
+
+            // Bottwom Wall/Trigger
+            GenerateOrAddToRigidBody(m_CollisionObject, m_ChosenLayer, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2((m_TargetSize.x + 6), 1), offset: new IntVector2(-2, -2));
+            // Top Wall/Trigger
+            GenerateOrAddToRigidBody(m_CollisionObject, m_ChosenLayer, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2((m_TargetSize.x + 6), 1), offset: new IntVector2(-2, m_TargetSize.y + 4));
+            // Left Wall/Trigger
+            GenerateOrAddToRigidBody(m_CollisionObject, m_ChosenLayer, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2(1, m_TargetSize.y + 6), offset: new IntVector2(-2, -2));
+            // Right Wall/Trigger
+            GenerateOrAddToRigidBody(m_CollisionObject, m_ChosenLayer, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2(1, m_TargetSize.y + 6), offset: new IntVector2(m_TargetSize.x + 4, -2));
+
+            if (!m_IsBackroomsWarp) {
+                // Bottwom Wall
+                GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2((m_TargetSize.x + 6), 1), offset: new IntVector2(-2, -2));
+                // Top Wall
+                GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2((m_TargetSize.x + 6), 1), offset: new IntVector2(-2, m_TargetSize.y + 4));
+                // Left Wall
+                GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2(1, m_TargetSize.y + 6), offset: new IntVector2(-2, -2));
+                // Right Wall
+                GenerateOrAddToRigidBody(m_CollisionObject, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: m_IsBackroomsWarp, dimensions: new IntVector2(1, m_TargetSize.y + 6), offset: new IntVector2(m_TargetSize.x + 4, -2));
+            }
+
+            if (m_IsBackroomsWarp) {
+                ExpandWarpManager m_NoClipWarpManager = m_CollisionObject.AddComponent<ExpandWarpManager>();
+                m_NoClipWarpManager.OverrideTargetFloor = "tt_backrooms";
+                m_NoClipWarpManager.warpType = ExpandWarpManager.WarpType.FloorWarp;
+                m_NoClipWarpManager.ConfigureOnPlacement(targetRoom);
+            }
+
+            if (!m_CollisionObject.GetComponent<SpeculativeRigidbody>()) {
+                UnityEngine.Object.Destroy(m_CollisionObject);
+                return null;
+            }
+            return m_CollisionObject;
+        }
+
+
         public static void MaybeSpawnWallMimics(Dungeon dungeon, RoomHandler currentRoom, GlobalDungeonData.ValidTilesets TilesetOverride = GlobalDungeonData.ValidTilesets.CASTLEGEON, bool GuranteedWallMimic = false, int OverrideWallMimicCount = -1, tk2dSpriteCollectionData FakeWallDungeonCollectionOverride = null) {
 
             if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && UnityEngine.Random.value < 0.85f) { return; }

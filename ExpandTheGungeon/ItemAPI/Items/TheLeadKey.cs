@@ -219,7 +219,7 @@ namespace ExpandTheGungeon.ItemAPI {
             bool m_CopyCurrentRoom = false;
 
             if (!string.IsNullOrEmpty(currentRoom.GetRoomName())) { m_CopyCurrentRoom = (UnityEngine.Random.value < 0.05f); }
-
+            
             PrototypeDungeonRoom SelectedPrototypeDungeonRoom = null;
 
             if (m_CopyCurrentRoom) {
