@@ -229,6 +229,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable Belly_Doors;
         public static DungeonPlaceable West_Doors;
         public static DungeonPlaceable Office_OneWayDoors;
+        public static DungeonPlaceable Backrooms_OneWayDoors;
 
         // Modified/Reference AIActors
         public static GameObject MetalCubeGuy;
@@ -313,10 +314,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpaceFloorPitBorder_50x50;
         public static GameObject DoorOneWay_Vertical_Office;
         public static GameObject DoorOneWay_Horizontal_Office;
+        public static GameObject DoorOneWay_Vertical_Backrooms;
+
+
 
         // Custom Objects for Jungle
-
-
         public static GameObject ExpandJungleTree_Medium;
         public static GameObject ExpandJungleTree_Small;
         public static GameObject ExpandJungleTreeMedium_Stump;
@@ -433,7 +435,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXCasino_Litter_Paper;
 
         // Backrooms Objects
-        public static GameObject EXCarpetStainPlacer;
+        public static GameObject EXWarpDoor_Backrooms;
         public static GameObject EXEntitySpawner;
         public static GameObject EXBackRoomsCarpetStain_Small;
         public static GameObject EXBackRoomsCarpetStain_Medium;
@@ -3037,12 +3039,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Jungle_OneWayDoors.variantTiers[0].nonDatabasePlaceable = DoorOneWay_Vertical_Jungle;
             Jungle_OneWayDoors.variantTiers[1].nonDatabasePlaceable = DoorOneWay_Horizontal_Jungle;
 
-
+            
 
             DoorOneWay_Vertical_Office = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[0].nonDatabasePlaceable);
             GameObject m_DoorOneWay_Vertical_Office_Bottom = DoorOneWay_Vertical_Office.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
             GameObject m_DoorOneWay_Vertical_Office_Top = m_DoorOneWay_Vertical_Office_Bottom.transform.Find("Door").gameObject;
             m_DoorOneWay_Vertical_Office_Bottom.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_vertical_bottom_001");
+            m_DoorOneWay_Vertical_Office_Bottom.GetComponent<tk2dSprite>().usesOverrideMaterial = true;
+            m_DoorOneWay_Vertical_Office_Bottom.GetComponent<tk2dSprite>().renderer.material.shader = m_DoorOneWay_Horizontal_Jungle_Bottom.GetComponent<tk2dSprite>().renderer.material.shader;
             m_DoorOneWay_Vertical_Office_Top.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_vertical_top_001");
             m_DoorOneWay_Vertical_Office_Top.transform.localPosition -= new Vector3(0, 0.1f);
             m_DoorOneWay_Vertical_Office_Top.GetComponent<tk2dSprite>().HeightOffGround = 2;
@@ -3060,16 +3064,37 @@ namespace ExpandTheGungeon.ExpandPrefab {
             DoorOneWay_Horizontal_Office.SetActive(false);
 
 
+
+            DoorOneWay_Vertical_Backrooms = UnityEngine.Object.Instantiate(SewerDungeonPrefab.oneWayDoorObjects.variantTiers[0].nonDatabasePlaceable);
+            GameObject m_DoorOneWay_Vertical_Backrooms_Bottom = DoorOneWay_Vertical_Backrooms.GetComponent<DungeonDoorController>().sealAnimators[0].gameObject;
+            GameObject m_DoorOneWay_Vertical_Backrooms_Top = m_DoorOneWay_Vertical_Backrooms_Bottom.transform.Find("Door").gameObject;
+            m_DoorOneWay_Vertical_Backrooms_Bottom.GetComponent<tk2dSprite>().SetSprite(EXBackroomsCollection.GetComponent<tk2dSpriteCollectionData>(), "backrooms_one_way_blocker_vertical_bottom_001");
+            m_DoorOneWay_Vertical_Backrooms_Bottom.GetComponent<tk2dSprite>().usesOverrideMaterial = true;
+            m_DoorOneWay_Vertical_Backrooms_Bottom.GetComponent<tk2dSprite>().renderer.material.shader = m_DoorOneWay_Horizontal_Jungle_Bottom.GetComponent<tk2dSprite>().renderer.material.shader;
+            m_DoorOneWay_Vertical_Backrooms_Top.GetComponent<tk2dSprite>().SetSprite(EXOfficeCollection.GetComponent<tk2dSpriteCollectionData>(), "office_one_way_blocker_vertical_top_001");
+            m_DoorOneWay_Vertical_Backrooms_Top.transform.localPosition -= new Vector3(0, 0.1f);
+            m_DoorOneWay_Vertical_Backrooms_Top.GetComponent<tk2dSprite>().HeightOffGround = 2;
+            m_DoorOneWay_Vertical_Backrooms_Top.GetComponent<tk2dSprite>().UpdateZDepthLater();
+            DoorOneWay_Vertical_Backrooms.SetActive(false);
+
+
             FakePrefab.MarkAsFakePrefab(DoorOneWay_Vertical_Office);
             FakePrefab.MarkAsFakePrefab(DoorOneWay_Horizontal_Office);
+            FakePrefab.MarkAsFakePrefab(DoorOneWay_Vertical_Backrooms);
             UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Vertical_Office);
             UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Horizontal_Office);
+            UnityEngine.Object.DontDestroyOnLoad(DoorOneWay_Vertical_Backrooms);
+
 
             Office_OneWayDoors = ExpandUtility.DuplicateDungoenPlaceable(CastleDungeonPrefab.oneWayDoorObjects);
             Office_OneWayDoors.variantTiers[0].nonDatabasePlaceable = DoorOneWay_Vertical_Office;
             Office_OneWayDoors.variantTiers[1].nonDatabasePlaceable = DoorOneWay_Horizontal_Office;
-
+                                                            
+            Backrooms_OneWayDoors = ExpandUtility.DuplicateDungoenPlaceable(CastleDungeonPrefab.oneWayDoorObjects);
+            Backrooms_OneWayDoors.variantTiers[0].nonDatabasePlaceable = DoorOneWay_Vertical_Backrooms;
+            Backrooms_OneWayDoors.variantTiers[1].nonDatabasePlaceable = DoorOneWay_Horizontal_Office;
             
+
             Jungle_LargeTree = expandSharedAssets1.LoadAsset<GameObject>("ExpandJungle_Tree");
             tk2dSprite JungleTreeSprite = SpriteSerializer.AddSpriteToObject(Jungle_LargeTree, EXJungleCollection, "Jungle_Tree_Large", tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
             JungleTreeSprite.HeightOffGround = -8;
@@ -5388,6 +5413,28 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandUtility.GenerateSpriteAnimator(m_ChildLock, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSpriteAnimator>().Library, 53, playAutomatically: true);
             }
 
+
+            EXWarpDoor_Backrooms = expandSharedAssets1.LoadAsset<GameObject>("WarpDoor_Backrooms");
+            tk2dSprite m_EXWarpDoor_BackroomsSprite = SpriteSerializer.AddSpriteToObject(EXWarpDoor_Backrooms, EXBackroomsCollection, "backrooms_warp_wing_001", tk2dBaseSprite.PerpendicularState.PERPENDICULAR, -1);
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXWarpDoor_Backrooms, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, collideWithTileMap: true, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 32), offset: new IntVector2(9, 2));
+            ExpandUtility.GenerateOrAddToRigidBody(EXWarpDoor_Backrooms, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, collideWithTileMap: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 32), offset: new IntVector2(1, 0));
+            ExpandUtility.GenerateOrAddToRigidBody(EXWarpDoor_Backrooms, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, collideWithTileMap: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(8, 32), offset: new IntVector2(41, 0));
+
+            WarpPointHandler m_EXWarpDoor_WarpPoint = EXWarpDoor_Backrooms.AddComponent<WarpPointHandler>();
+            m_EXWarpDoor_WarpPoint.warpTarget = 0;
+            m_EXWarpDoor_WarpPoint.OnlyReceiver = false;
+            m_EXWarpDoor_WarpPoint.OptionalCover = null;
+            m_EXWarpDoor_WarpPoint.AdditionalSpawnOffset = Vector2.zero;
+
+            PlacedWallDecorator m_EXWarpDoor_Decorator = EXWarpDoor_Backrooms.AddComponent<PlacedWallDecorator>();
+            m_EXWarpDoor_Decorator.wallClearanceXStart = 0;
+            m_EXWarpDoor_Decorator.wallClearanceYStart = -2;
+            m_EXWarpDoor_Decorator.wallClearanceWidth = 3;
+            m_EXWarpDoor_Decorator.wallClearanceHeight = 5;
+            m_EXWarpDoor_Decorator.ignoreWallDrawing = false;
+            m_EXWarpDoor_Decorator.ignoresBorders = false;
+
             EXBackRoomsCarpetStain_Small = expandSharedAssets1.LoadAsset<GameObject>("EXBackRoomsCarpetStain_Small");
             tk2dSprite m_EXBackRoomsCarpetStainSprite_Small = SpriteSerializer.AddSpriteToObject(EXBackRoomsCarpetStain_Small, EXBackroomsCollection, "CarpetStain_01", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXBackRoomsCarpetStainSprite_Small.HeightOffGround = -1.7f;
@@ -5406,6 +5453,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandSpriteRandomizer m_EXBackRoomsCarpetStain_LargeSpriteRandomizer = EXBackRoomsCarpetStain_Large.AddComponent<ExpandSpriteRandomizer>();
             m_EXBackRoomsCarpetStain_LargeSpriteRandomizer.SpriteList = ExpandLists.EXLargeStainList;
 
+
             EXEntitySpawner = expandSharedAssets1.LoadAsset<GameObject>("EXEntitySpawner");
             GameObject m_EXEntitySpawnerChild = EXEntitySpawner.transform.Find("carpetstain").gameObject;
             tk2dSprite m_EXEntitySpawnerSprite = SpriteSerializer.AddSpriteToObject(m_EXEntitySpawnerChild, EXBackroomsCollection, "CarpetStainMedium_01", tk2dBaseSprite.PerpendicularState.FLAT);
@@ -5414,9 +5462,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandSpriteRandomizer m_EXEntitySpawnerChildSpriteRandomizer = m_EXEntitySpawnerChild.AddComponent<ExpandSpriteRandomizer>();
             m_EXEntitySpawnerChildSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
-
-            EXCarpetStainPlacer = expandSharedAssets1.LoadAsset<GameObject>("EXEntitySpawner");
-            EXCarpetStainPlacer.AddComponent<ExpandStainPlacer>();
+            
 
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!

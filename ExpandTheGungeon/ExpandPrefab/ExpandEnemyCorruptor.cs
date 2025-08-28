@@ -7726,6 +7726,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
+            if (isNonGlitchedVersion) ExpandUtility.ApplyCustomTexture(CachedGlitchEnemyActor, ExpandEnemyDatabase.ModifiedCompanionsAtlas);
+
             try {
                 if (CachedEnemyActor.EnemyGuid != "4d37ce3d666b4ddda8039929225b7ede") {
                     CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
@@ -7878,6 +7880,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.AlwaysShowOffscreenArrow = true;
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
+
+            if (isNonGlitchedVersion) ExpandUtility.ApplyCustomTexture(CachedGlitchEnemyActor, ExpandEnemyDatabase.ModifiedCompanionsAtlas);
 
             try {
                 CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();

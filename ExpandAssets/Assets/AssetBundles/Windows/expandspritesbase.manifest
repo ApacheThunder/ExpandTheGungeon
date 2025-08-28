@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1192656730
+CRC: 2038462765
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 71b54fb3c59eed8a31948e58ebefde9a
+    Hash: c438cfd3cc3a0a24547cb486127e702d
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -160,6 +160,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_15.png
 - Assets/ExpandSprites/Misc/EXBackrooms_Collection/CarpetStainLarge_01.png
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_RiseUp_02.png
+- Assets/ExpandSprites/Misc/EXBackrooms_Collection/backrooms_warp_wing_001.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Idle_Forward_Left_01.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_die_left_002.png
 - Assets/ExpandSprites/AIActors/GungeoneerMimic_Collection/PlayerMimicMirror_ShatterDebris_04.png
@@ -949,6 +950,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Right_001.png
 - Assets/ExpandSprites/Misc/EXFoyer_Collection/foyerdoor_open_09.png
 - Assets/ExpandSprites/GunsAndItems/EXItem_Collection/SonicRing_Idle_01.png
+- Assets/ExpandSprites/Misc/EXBackrooms_Collection/backrooms_one_way_blocker_vertical_bottom_001.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Collection/Cronenberg_Idle_003.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_dodge_front_006.png
 - Assets/ExpandSprites/AIActors/GungeoneerMimic_Collection/PlayerMimicMirror_MimicCrack_05.png

@@ -116,7 +116,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(m_SecretNode_02, m_NormalNode_10);
             m_CachedFlow.AddNodeToFlow(m_RewardNode_03, m_NormalNode_10);
 
-            // Warpwing CHain of nodes with 1 reward room
+            // Warpwing Chain of nodes with 1 reward room
             m_CachedFlow.AddNodeToFlow(m_WarpWingConnectorNode_01, m_HubNode);
             m_CachedFlow.AddNodeToFlow(m_WarpWingNormalNode_01, m_WarpWingConnectorNode_01);
             m_CachedFlow.AddNodeToFlow(m_WarpWingRewardNode_01, m_WarpWingNormalNode_01);

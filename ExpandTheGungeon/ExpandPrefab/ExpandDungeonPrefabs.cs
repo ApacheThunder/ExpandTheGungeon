@@ -3005,8 +3005,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             dungeon.doorObjects = NakatomiPrefab.doorObjects;
             dungeon.lockedDoorObjects = null;
-            dungeon.oneWayDoorObjects = AbbeyPrefab.oneWayDoorObjects;
-            // dungeon.oneWayDoorObjects = ExpandPrefabs.Office_OneWayDoors;
+            dungeon.oneWayDoorObjects = ExpandPrefabs.Office_OneWayDoors;
             dungeon.oneWayDoorPressurePlate = NakatomiPrefab.oneWayDoorPressurePlate;
             dungeon.phantomBlockerDoorObjects = NakatomiPrefab.phantomBlockerDoorObjects;
             dungeon.WarpWingDoorPrefab = null;
@@ -3237,7 +3236,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false,
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("BackRooms_Flow_01") },
+                flows = new List<DungeonFlow>() {
+                    FlowDatabase.GetOrLoadByName("BackRooms_Flow_01"),
+                    FlowDatabase.GetOrLoadByName("BackRooms_Flow_02"),
+                    FlowDatabase.GetOrLoadByName("BackRooms_Flow_03"),
+                },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -3545,11 +3548,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
             dungeon.doorObjects = NakatomiPrefab.doorObjects;
             dungeon.lockedDoorObjects = null;
-            dungeon.oneWayDoorObjects = AbbeyPrefab.oneWayDoorObjects;
-            // dungeon.oneWayDoorObjects = ExpandPrefabs.Office_OneWayDoors;
+            dungeon.oneWayDoorObjects = ExpandPrefabs.Backrooms_OneWayDoors;
             dungeon.oneWayDoorPressurePlate = NakatomiPrefab.oneWayDoorPressurePlate;
             dungeon.phantomBlockerDoorObjects = NakatomiPrefab.phantomBlockerDoorObjects;
-            dungeon.WarpWingDoorPrefab = null;
+            dungeon.WarpWingDoorPrefab = ExpandPrefabs.EXWarpDoor_Backrooms;
             dungeon.baseChestContents = NakatomiPrefab.baseChestContents;
             dungeon.SecretRoomSimpleTriggersFacewall = NakatomiPrefab.SecretRoomSimpleTriggersFacewall;
             dungeon.SecretRoomSimpleTriggersSidewall = NakatomiPrefab.SecretRoomSimpleTriggersSidewall;
@@ -3559,6 +3561,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.SecretRoomVerticalPoofVFX = NakatomiPrefab.SecretRoomVerticalPoofVFX;
             dungeon.sharedSettingsPrefab = NakatomiPrefab.sharedSettingsPrefab;
             dungeon.BossMasteryTokenItemId = -1;
+            dungeon.UsesWallWarpWingDoors = true;
             dungeon.StripPlayerOnArrival = false;
             dungeon.SuppressEmergencyCrates = false;
             dungeon.SetTutorialFlag = false;
@@ -3567,6 +3570,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlayerLightIntensity = 3;
             dungeon.PlayerLightRadius = 5f;
             dungeon.musicEventName = "Play_EX_MUS_Backrooms_01";
+            
 
             NakatomiPrefab = null;
             AbbeyPrefab = null;

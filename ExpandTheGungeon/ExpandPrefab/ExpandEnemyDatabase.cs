@@ -150,6 +150,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         private static AIActor Chameleon;
         private static AIActor Skusketling;
 
+        public static Texture2D ModifiedCompanionsAtlas;
+
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
@@ -173,6 +175,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             for (int i = 1; i < 7; i++) {
                 WestBrosCollectionData.DefineProjectileCollision("gr_black_revolver_projectile_00" + i, 12, 6, overrideColliderOffsetY: 1);
             }
+
+            ModifiedCompanionsAtlas = expandSharedAssets1.LoadAsset<Texture2D>("ModifiedCompanions_Collection");
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {

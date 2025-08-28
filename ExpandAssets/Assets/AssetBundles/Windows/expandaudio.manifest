@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3021666316
+CRC: 2216732765
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d759862cfafbe5712834a06c12ae7a84
+    Hash: 2eebc786e0b30a67319ca1afc7cd819a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5ad585dd02dfb5016c0dad519eab8f49
@@ -12,5 +12,5 @@ ClassTypes:
 - Class: 49
   Script: {instanceID: 0}
 Assets:
-- Assets/ExpandAudio/GCSFX.bytes
+- Assets/ExpandAudio/EX_SFX.bytes
 Dependencies: []

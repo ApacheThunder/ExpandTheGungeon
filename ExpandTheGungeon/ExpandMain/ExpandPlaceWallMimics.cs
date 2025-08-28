@@ -66,6 +66,11 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 if (!string.IsNullOrEmpty(dungeon.gameObject.name) && dungeon.gameObject.name.ToLower().StartsWith("base_backrooms")) {
                     isBackRoomsDungeon = true;
+                    if (dungeon.data.Entrance != null && dungeon.data.Entrance.area != null &&
+                        !dungeon.data.Entrance.area.PrototypeLostWoodsRoom)
+                    {
+                        isBackRoomsDungeon = false; // If the backrooms tileset happens to be used for other things/testin unrelated flows, then avoid spawning entity.
+                    }
                 }
 
                 ExpandJunkEnemySpawneer.PlaceRandomJunkEnemies(dungeon, roomHandler, isBackRoomsDungeon);

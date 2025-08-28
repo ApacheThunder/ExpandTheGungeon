@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1124538823
+CRC: 3222063493
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1b869b042c3292133cfde4e3a6c95f6a
+    Hash: 8cf168736b988ebfad673ff49da7a626
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1e1fd86321726eba1aef989ebc89c5b2
@@ -454,7 +454,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/West/Canyon/roomCeilingBorderGrid.txt
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Nome.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room057.bytes
-- Assets/ExpandPrefabs/Misc/EXCarpetStainPlacer.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_OddSquare2.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_BigGap1.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/RedShotgunManCollection.prefab
@@ -750,6 +749,7 @@ Assets:
 - Assets/ExpandPrefabs/Shaders/ExpandGlitchScreen.shader
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room012.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BulletMan_Monochrome.png
+- Assets/ExpandPrefabs/TilesetPrefabs/WarpDoor_Backrooms.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate24.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Roundabout.bytes
 - Assets/ExpandSerializedData/AmmonomiconData/HotShotShotgunKin_AmmonomiconData.txt
@@ -1293,6 +1293,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal3.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXSpaceCollection.prefab
 - Assets/ExpandSerializedData/SpriteCollections/StoneCubeCollection_West.txt
+- Assets/ExpandTextures/SpriteCollections/AIActors/ModifiedCompanions_Collection.png
 - Assets/ExpandPrefabs/Misc/EX_YellowBalloon.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter24.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny7.bytes
