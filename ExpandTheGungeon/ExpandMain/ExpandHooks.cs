@@ -65,6 +65,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook applyBenefitHook;
         public static Hook flameTrapHook;
         public static Hook transitionToDepartHook;
+        public static Hook exciseElbowsHook;
         // public static Hook pixelatorStartHook;
         // public static Hook generateOcclusionTextureHook;
 
@@ -392,6 +393,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ElevatorDepartureController)
             );
 
+            
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonData.ExciseElbows Hook...."); }
+            exciseElbowsHook = new Hook(
+                typeof(DungeonData).GetMethod("ExciseElbows", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandHooks).GetMethod(nameof(ExciseElbowsHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(DungeonData)
+            );
+
             /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
             pixelatorStartHook = new Hook(
                 typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -416,8 +425,10 @@ namespace ExpandTheGungeon.ExpandMain {
                     try {
                         stack.Push(self[self.rooms[i].GetRandomAvailableCellDumb()]);
                     } catch (Exception ex) {
-                        ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
-                        Debug.LogException(ex);
+                        if (ExpandSettings.debugMode) {
+                            ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
+                            Debug.LogException(ex);
+                        }
                     }
                 }
             }
@@ -435,8 +446,10 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }
             } catch (Exception ex) {
-                ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
-                Debug.LogException(ex);
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at DungeonData.FloodFillDungeonInterior!");
+                    Debug.LogException(ex);
+                }
             }
         }
 
@@ -580,7 +593,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 return gameObject;
             } catch (Exception ex) {
                 if (ExpandSettings.debugMode) {
-                    ETGModConsole.Log("Warning: Exception caught during ApplyObjectStamp method during Dungeon generation!");
+                    // ETGModConsole.Log("Warning: Exception caught during ApplyObjectStamp method during Dungeon generation!");
                     Debug.Log("Warning: Exception caught during ApplyObjectStamp method during Dungeon generation!");
                     Debug.LogException(ex);
                 }
@@ -838,9 +851,9 @@ namespace ExpandTheGungeon.ExpandMain {
                     } catch (Exception ex) {
                         if (ExpandSettings.debugMode) {
                             ETGModConsole.Log("[DEBUG] Exception caught in TK2DDungeonAssembler.ConstructTK2DDungeonHook at TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                            Debug.Log("Exception caught in TK2DDungeonAssembler.ConstructTK2DDungeonHook at TK2DDungeonAssembler.BuildTileIndicesForCell!");
+                            Debug.LogException(ex);
                         }
-                        Debug.Log("Exception caught in TK2DDungeonAssembler.ConstructTK2DDungeonHook at TK2DDungeonAssembler.BuildTileIndicesForCell!");
-                        Debug.LogException(ex);
                     }
                 }
             }
@@ -1801,7 +1814,7 @@ namespace ExpandTheGungeon.ExpandMain {
         // Catch exceptions in TK2DDungeonAssembler.HandleLostWoodsMirroring
         private void HandleLostWoodsMirroringHook(ActionEX<TK2DDungeonAssembler, CellData, Dungeon, tk2dTileMap, int, int> orig, TK2DDungeonAssembler self, CellData current, Dungeon d, tk2dTileMap map, int ix, int iy) {
             try {
-                if (d.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.RATGEON && !d.gameObject.name.ToLower().StartsWith("base_resourcefulrat")) { return; }
+                if (d.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.RATGEON && GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.RESOURCEFUL_RAT) { return; }
                 orig(self, current, d, map, ix, iy);
             } catch (Exception ex) {
                 if (ExpandSettings.debugMode) {
@@ -1881,6 +1894,18 @@ namespace ExpandTheGungeon.ExpandMain {
         
         private void TransitionToDepartHook(Action<ElevatorDepartureController, tk2dSpriteAnimator, tk2dSpriteAnimationClip>orig, ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
             GameManager.Instance.StartCoroutine(DoDeparture(self, animator, clip));
+        }
+
+        private void ExciseElbowsHook(Action<DungeonData>orig, DungeonData self) {
+            try {
+                orig(self);
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught in DungeonData.ExciseElbows!");
+                    Debug.LogException(ex);
+                }
+                return;
+            }
         }
 
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {

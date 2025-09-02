@@ -89,6 +89,8 @@
 				<Event Id="587415615" Name="Play_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Play_EX_TableAssassin_01"/>
 				<Event Id="3751824788" Name="Play_EX_TrashMan_01" ObjectPath="\Events\Weapons\Play_EX_TrashMan_01"/>
 				<Event Id="3935194361" Name="Play_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Play_EX_UnicornMusic_01"/>
+				<Event Id="387897117" Name="Play_EX_Void_DoorAmbience" ObjectPath="\Events\Weapons\Play_EX_Void_DoorAmbience"/>
+				<Event Id="3828177828" Name="Play_EX_Void_RoomAmbience" ObjectPath="\Events\Weapons\Play_EX_Void_RoomAmbience"/>
 				<Event Id="2063256460" Name="Play_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Play_EXAlarmMushroom_01"/>
 				<Event Id="582460727" Name="Stop_EX_BellyDoor_Close" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Close"/>
 				<Event Id="1648051329" Name="Stop_EX_BellyDoor_Open" ObjectPath="\Events\Weapons\Stop_EX_BellyDoor_Open"/>
@@ -117,6 +119,8 @@
 				<Event Id="3031994881" Name="Stop_EX_SonicSpinDashRelease_01" ObjectPath="\Events\Weapons\Stop_EX_SonicSpinDashRelease_01"/>
 				<Event Id="633823961" Name="Stop_EX_TableAssassin_01" ObjectPath="\Events\Weapons\Stop_EX_TableAssassin_01"/>
 				<Event Id="4051006923" Name="Stop_EX_UnicornMusic_01" ObjectPath="\Events\Weapons\Stop_EX_UnicornMusic_01"/>
+				<Event Id="1903692651" Name="Stop_EX_Void_DoorAmbience" ObjectPath="\Events\Weapons\Stop_EX_Void_DoorAmbience"/>
+				<Event Id="1419562778" Name="Stop_EX_Void_RoomAmbience" ObjectPath="\Events\Weapons\Stop_EX_Void_RoomAmbience"/>
 				<Event Id="301805658" Name="Stop_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Stop_EXAlarmMushroom_01"/>
 			</IncludedEvents>
 			<IncludedMemoryFiles>
@@ -270,7 +274,7 @@
 				</File>
 				<File Id="809822789" Language="SFX">
 					<ShortName>EntityScreams.wav</ShortName>
-					<Path>SFX\EntityScreams_37E15E96.wem</Path>
+					<Path>SFX\EntityScreams_68871954.wem</Path>
 				</File>
 				<File Id="836609844" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Calm.wav</ShortName>
@@ -335,6 +339,10 @@
 				<File Id="1005918670" Language="SFX">
 					<ShortName>Belly_Door_Lock.wav</ShortName>
 					<Path>SFX\Belly_Door_Lock_F7D0E330.wem</Path>
+				</File>
+				<File Id="1014808859" Language="SFX">
+					<ShortName>backrooms_void.wav</ShortName>
+					<Path>SFX\backrooms_void_9E0B09A9.wem</Path>
 				</File>
 				<File Id="1020036941" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_Entrance.wav</ShortName>

@@ -80,3 +80,4 @@ Credits:
 * Lynceus for the new boss card used for West Bros boss on Old West floor as well as the new sprites used on the hotshot enemies and Ammonomicon enemy portraits!.
 * Dallan for sprite work of new secret enemy/floor and for new sprites for secret elevator object. ;)
 * mazellmi (https://www.youtube.com/@mazellmi) for the sound fx used for secret enemy. ;)
+* jaava73 for the void sound fx for special void rooms found on certain secret floor. ;) (https://freesound.org/people/jaava73/sounds/45347/)

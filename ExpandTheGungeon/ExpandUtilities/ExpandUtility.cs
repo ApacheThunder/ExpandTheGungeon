@@ -83,6 +83,216 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_ValidCellsCached;
         }
 
+        public static GoopDefinition DuplicateGoop(GoopDefinition sourceGoop, string NewGoopName) {
+            GoopDefinition m_newGoop = ScriptableObject.CreateInstance<GoopDefinition>();
+            if (!sourceGoop | string.IsNullOrEmpty(NewGoopName)) {
+                ETGModConsole.Log("[" + ExpandTheGungeon.ModName + "] " + "ERROR: Source Goop null or no name provided!");
+                return m_newGoop;
+            }
+            m_newGoop.name = NewGoopName;
+            m_newGoop.goopTexture = sourceGoop.goopTexture;
+            m_newGoop.worldTexture = sourceGoop.worldTexture;
+            m_newGoop.usesWorldTextureByDefault = sourceGoop.usesWorldTextureByDefault;
+            m_newGoop.baseColor32 = sourceGoop.baseColor32;
+            m_newGoop.usesLifespan = sourceGoop.usesLifespan;
+            m_newGoop.lifespan = sourceGoop.lifespan;
+            m_newGoop.fadePeriod = sourceGoop.fadePeriod;
+            m_newGoop.fadeColor32 = sourceGoop.fadeColor32;
+            m_newGoop.lifespanRadialReduction = sourceGoop.lifespanRadialReduction;
+            m_newGoop.damagesPlayers = sourceGoop.damagesPlayers;
+            m_newGoop.damageToPlayers = sourceGoop.damageToPlayers;
+            m_newGoop.delayBeforeDamageToPlayers = sourceGoop.delayBeforeDamageToPlayers;
+            m_newGoop.damageTypes = sourceGoop.damageTypes;
+            m_newGoop.damagesEnemies = sourceGoop.damagesEnemies;
+            m_newGoop.damagePerSecondtoEnemies = sourceGoop.damagePerSecondtoEnemies;
+            if (sourceGoop.goopDamageTypeInteractions != null) {
+                m_newGoop.goopDamageTypeInteractions = new List<GoopDefinition.GoopDamageTypeInteraction>();
+                if (sourceGoop.goopDamageTypeInteractions.Count > 0) {
+                    foreach (GoopDefinition.GoopDamageTypeInteraction damageInteraction in sourceGoop.goopDamageTypeInteractions) {
+                        m_newGoop.goopDamageTypeInteractions.Add(
+                            new GoopDefinition.GoopDamageTypeInteraction() {
+                                damageType = damageInteraction.damageType,
+                                electrifiesGoop = damageInteraction.electrifiesGoop,
+                                freezesGoop = damageInteraction.freezesGoop,
+                                ignitionMode = damageInteraction.ignitionMode
+                            }
+                        );
+                    }
+                }
+            }
+            m_newGoop.usesAmbientGoopFX = sourceGoop.usesAmbientGoopFX;
+            m_newGoop.ambientGoopFXChance = sourceGoop.ambientGoopFXChance;
+            m_newGoop.ambientGoopFX = new VFXPool();
+            if (sourceGoop.ambientGoopFX != null) {
+                m_newGoop.ambientGoopFX.type = sourceGoop.ambientGoopFX.type;
+                if (sourceGoop.ambientGoopFX.effects != null && sourceGoop.ambientGoopFX.effects.Length > 0) {
+                    List<VFXComplex> m_VFXList = new List<VFXComplex>();
+                    foreach (VFXComplex vfxPool in sourceGoop.ambientGoopFX.effects) {
+                        m_VFXList.Add(vfxPool);
+                    }
+                    m_newGoop.ambientGoopFX.effects = m_VFXList.ToArray();
+                } else {
+                    m_newGoop.ambientGoopFX.effects = new VFXComplex[0];
+                }
+            } else {
+                m_newGoop.ambientGoopFX.type = VFXPoolType.None;
+                m_newGoop.ambientGoopFX.effects = new VFXComplex[0];
+            }
+            m_newGoop.usesAcidAudio = sourceGoop.usesAcidAudio;
+            m_newGoop.isOily = sourceGoop.isOily;
+            m_newGoop.usesWaterVfx = sourceGoop.usesWaterVfx;
+            m_newGoop.eternal = sourceGoop.eternal;
+            m_newGoop.usesOverrideOpaqueness = sourceGoop.usesOverrideOpaqueness;
+            m_newGoop.CanBeIgnited = sourceGoop.CanBeIgnited;
+            m_newGoop.igniteSpreadTime = sourceGoop.igniteSpreadTime;
+            m_newGoop.SelfIgnites = sourceGoop.SelfIgnites;
+            m_newGoop.selfIgniteDelay = sourceGoop.selfIgniteDelay;
+            m_newGoop.playerStepsChangeLifetime = sourceGoop.playerStepsChangeLifetime;
+            m_newGoop.playerStepsLifetime = sourceGoop.playerStepsLifetime;
+            m_newGoop.fireDamageToPlayer = sourceGoop.fireDamageToPlayer;
+            m_newGoop.fireDamagePerSecondToEnemies = sourceGoop.fireDamagePerSecondToEnemies;
+            m_newGoop.fireBurnsEnemies = sourceGoop.fireBurnsEnemies;
+            m_newGoop.igniteColor32 = sourceGoop.igniteColor32;
+            m_newGoop.fireColor32 = sourceGoop.fireColor32;
+            m_newGoop.UsesGreenFire = sourceGoop.UsesGreenFire;
+            m_newGoop.CanBeElectrified = sourceGoop.CanBeElectrified;
+            m_newGoop.electrifiedDamageToPlayer = sourceGoop.electrifiedDamageToPlayer;
+            m_newGoop.electrifiedDamagePerSecondToEnemies = sourceGoop.electrifiedDamagePerSecondToEnemies;
+            m_newGoop.electrifiedTime = sourceGoop.electrifiedTime;
+            m_newGoop.CanBeFrozen = sourceGoop.CanBeFrozen;
+            m_newGoop.freezeLifespan = sourceGoop.freezeLifespan;
+            m_newGoop.freezeSpreadTime = sourceGoop.freezeSpreadTime;
+            m_newGoop.prefreezeColor32 = sourceGoop.prefreezeColor32;
+            m_newGoop.frozenColor32 = sourceGoop.frozenColor32;
+            m_newGoop.AppliesSpeedModifier = sourceGoop.AppliesSpeedModifier;
+            m_newGoop.AppliesSpeedModifierContinuously = sourceGoop.AppliesSpeedModifierContinuously;
+            m_newGoop.AppliesDamageOverTime = sourceGoop.AppliesDamageOverTime;
+            m_newGoop.DrainsAmmo = sourceGoop.DrainsAmmo;
+            m_newGoop.PercentAmmoDrainPerSecond = sourceGoop.PercentAmmoDrainPerSecond;
+            m_newGoop.AppliesCharm = sourceGoop.AppliesCharm;
+            m_newGoop.AppliesCheese = sourceGoop.AppliesCheese;
+            m_newGoop.fireEffect = new GameActorFireEffect();
+            if (sourceGoop.fireEffect != null) {
+                m_newGoop.fireEffect.AffectsPlayers = sourceGoop.fireEffect.AffectsPlayers;
+                m_newGoop.fireEffect.AffectsEnemies = sourceGoop.fireEffect.AffectsEnemies;
+                m_newGoop.fireEffect.effectIdentifier = sourceGoop.fireEffect.effectIdentifier;
+                m_newGoop.fireEffect.resistanceType = sourceGoop.fireEffect.resistanceType;
+                m_newGoop.fireEffect.stackMode = sourceGoop.fireEffect.stackMode;
+                m_newGoop.fireEffect.duration = sourceGoop.fireEffect.duration;
+                m_newGoop.fireEffect.maxStackedDuration = sourceGoop.fireEffect.maxStackedDuration;
+                m_newGoop.fireEffect.AppliesTint = sourceGoop.fireEffect.AppliesTint;
+                m_newGoop.fireEffect.TintColor = sourceGoop.fireEffect.TintColor;
+                m_newGoop.fireEffect.AppliesDeathTint = sourceGoop.fireEffect.AppliesDeathTint;
+                m_newGoop.fireEffect.DeathTintColor = sourceGoop.fireEffect.DeathTintColor;
+                m_newGoop.fireEffect.AppliesOutlineTint = sourceGoop.fireEffect.AppliesOutlineTint;
+                m_newGoop.fireEffect.OutlineTintColor = sourceGoop.fireEffect.OutlineTintColor;
+                m_newGoop.fireEffect.OverheadVFX = sourceGoop.fireEffect.OverheadVFX;
+                m_newGoop.fireEffect.PlaysVFXOnActor = sourceGoop.fireEffect.PlaysVFXOnActor;
+                m_newGoop.fireEffect.DamagePerSecondToEnemies = sourceGoop.fireEffect.DamagePerSecondToEnemies;
+                m_newGoop.fireEffect.ignitesGoops = sourceGoop.fireEffect.ignitesGoops;
+                m_newGoop.fireEffect.FlameVfx = new List<GameObject>();
+                if (sourceGoop.fireEffect.FlameVfx != null && sourceGoop.fireEffect.FlameVfx.Count > 0) {
+                    foreach (GameObject vfxObject in sourceGoop.fireEffect.FlameVfx) {
+                        m_newGoop.fireEffect.FlameVfx.Add(vfxObject);
+                    }
+                }
+                m_newGoop.fireEffect.flameNumPerSquareUnit = sourceGoop.fireEffect.flameNumPerSquareUnit;
+                m_newGoop.fireEffect.flameBuffer = sourceGoop.fireEffect.flameBuffer;
+                m_newGoop.fireEffect.flameFpsVariation = sourceGoop.fireEffect.flameFpsVariation;
+                m_newGoop.fireEffect.flameMoveChance = sourceGoop.fireEffect.flameMoveChance;
+                m_newGoop.fireEffect.IsGreenFire = sourceGoop.fireEffect.IsGreenFire;
+            }
+            m_newGoop.SpeedModifierEffect = new GameActorSpeedEffect();
+            if (sourceGoop.SpeedModifierEffect != null) {
+                m_newGoop.SpeedModifierEffect.AffectsPlayers = sourceGoop.SpeedModifierEffect.AffectsPlayers;
+                m_newGoop.SpeedModifierEffect.AffectsEnemies = sourceGoop.SpeedModifierEffect.AffectsEnemies;
+                m_newGoop.SpeedModifierEffect.effectIdentifier = sourceGoop.SpeedModifierEffect.effectIdentifier;
+                m_newGoop.SpeedModifierEffect.resistanceType = sourceGoop.SpeedModifierEffect.resistanceType;
+                m_newGoop.SpeedModifierEffect.stackMode = sourceGoop.SpeedModifierEffect.stackMode;
+                m_newGoop.SpeedModifierEffect.AppliesTint = sourceGoop.SpeedModifierEffect.AppliesTint;
+                m_newGoop.SpeedModifierEffect.TintColor = sourceGoop.SpeedModifierEffect.TintColor;
+                m_newGoop.SpeedModifierEffect.AppliesDeathTint = sourceGoop.SpeedModifierEffect.AppliesDeathTint;
+                m_newGoop.SpeedModifierEffect.AppliesOutlineTint = sourceGoop.SpeedModifierEffect.AppliesOutlineTint;
+                m_newGoop.SpeedModifierEffect.OverheadVFX = sourceGoop.SpeedModifierEffect.OverheadVFX;
+                m_newGoop.SpeedModifierEffect.PlaysVFXOnActor = sourceGoop.SpeedModifierEffect.PlaysVFXOnActor;
+                m_newGoop.SpeedModifierEffect.SpeedMultiplier = sourceGoop.SpeedModifierEffect.SpeedMultiplier;
+                m_newGoop.SpeedModifierEffect.CooldownMultiplier = sourceGoop.SpeedModifierEffect.CooldownMultiplier;
+                m_newGoop.SpeedModifierEffect.OnlyAffectPlayerWhenGrounded = sourceGoop.SpeedModifierEffect.OnlyAffectPlayerWhenGrounded;
+            }
+            m_newGoop.HealthModifierEffect = new GameActorHealthEffect();
+            if (sourceGoop.HealthModifierEffect != null) {
+                m_newGoop.HealthModifierEffect.AffectsPlayers = sourceGoop.HealthModifierEffect.AffectsPlayers;
+                m_newGoop.HealthModifierEffect.AffectsEnemies = sourceGoop.HealthModifierEffect.AffectsEnemies;
+                m_newGoop.HealthModifierEffect.effectIdentifier = sourceGoop.HealthModifierEffect.effectIdentifier;
+                m_newGoop.HealthModifierEffect.resistanceType = sourceGoop.HealthModifierEffect.resistanceType;
+                m_newGoop.HealthModifierEffect.stackMode = sourceGoop.HealthModifierEffect.stackMode;
+                m_newGoop.HealthModifierEffect.duration = sourceGoop.HealthModifierEffect.duration;
+                m_newGoop.HealthModifierEffect.maxStackedDuration = sourceGoop.HealthModifierEffect.maxStackedDuration;
+                m_newGoop.HealthModifierEffect.AppliesTint = sourceGoop.HealthModifierEffect.AppliesTint;
+                m_newGoop.HealthModifierEffect.TintColor = sourceGoop.HealthModifierEffect.TintColor;
+                m_newGoop.HealthModifierEffect.AppliesDeathTint = sourceGoop.HealthModifierEffect.AppliesDeathTint;
+                m_newGoop.HealthModifierEffect.DeathTintColor = sourceGoop.HealthModifierEffect.DeathTintColor;
+                m_newGoop.HealthModifierEffect.AppliesOutlineTint = sourceGoop.HealthModifierEffect.AppliesOutlineTint;
+                m_newGoop.HealthModifierEffect.OutlineTintColor = sourceGoop.HealthModifierEffect.OutlineTintColor;
+                m_newGoop.HealthModifierEffect.OverheadVFX = sourceGoop.HealthModifierEffect.OverheadVFX;
+                m_newGoop.HealthModifierEffect.PlaysVFXOnActor = sourceGoop.HealthModifierEffect.PlaysVFXOnActor;
+                m_newGoop.HealthModifierEffect.DamagePerSecondToEnemies = sourceGoop.HealthModifierEffect.DamagePerSecondToEnemies;
+                m_newGoop.HealthModifierEffect.ignitesGoops = sourceGoop.HealthModifierEffect.ignitesGoops;
+            }
+            m_newGoop.CharmModifierEffect = new GameActorCharmEffect();
+            if (sourceGoop.CharmModifierEffect != null) {
+                m_newGoop.CharmModifierEffect.AffectsPlayers = sourceGoop.CharmModifierEffect.AffectsPlayers;
+                m_newGoop.CharmModifierEffect.AffectsEnemies = sourceGoop.CharmModifierEffect.AffectsEnemies;
+                m_newGoop.CharmModifierEffect.effectIdentifier = sourceGoop.CharmModifierEffect.effectIdentifier;
+                m_newGoop.CharmModifierEffect.resistanceType = sourceGoop.CharmModifierEffect.resistanceType;
+                m_newGoop.CharmModifierEffect.stackMode = sourceGoop.CharmModifierEffect.stackMode;
+                m_newGoop.CharmModifierEffect.duration = sourceGoop.CharmModifierEffect.duration;
+                m_newGoop.CharmModifierEffect.maxStackedDuration = sourceGoop.CharmModifierEffect.maxStackedDuration;
+                m_newGoop.CharmModifierEffect.AppliesTint = sourceGoop.CharmModifierEffect.AppliesTint;
+                m_newGoop.CharmModifierEffect.TintColor = sourceGoop.CharmModifierEffect.TintColor;
+                m_newGoop.CharmModifierEffect.AppliesDeathTint = sourceGoop.CharmModifierEffect.AppliesDeathTint;
+                m_newGoop.CharmModifierEffect.DeathTintColor = sourceGoop.CharmModifierEffect.DeathTintColor;
+                m_newGoop.CharmModifierEffect.AppliesOutlineTint = sourceGoop.CharmModifierEffect.AppliesOutlineTint;
+                m_newGoop.CharmModifierEffect.OutlineTintColor = sourceGoop.CharmModifierEffect.OutlineTintColor;
+                m_newGoop.CharmModifierEffect.OverheadVFX = sourceGoop.CharmModifierEffect.OverheadVFX;
+                m_newGoop.CharmModifierEffect.PlaysVFXOnActor = sourceGoop.CharmModifierEffect.PlaysVFXOnActor;
+            }
+            m_newGoop.CheeseModifierEffect  = new GameActorCheeseEffect();
+            if (sourceGoop.CheeseModifierEffect != null) {
+                m_newGoop.CheeseModifierEffect.AffectsPlayers = sourceGoop.CheeseModifierEffect.AffectsPlayers;
+                m_newGoop.CheeseModifierEffect.AffectsEnemies = sourceGoop.CheeseModifierEffect.AffectsEnemies;
+                m_newGoop.CheeseModifierEffect.effectIdentifier = sourceGoop.CheeseModifierEffect.effectIdentifier;
+                m_newGoop.CheeseModifierEffect.resistanceType = sourceGoop.CheeseModifierEffect.resistanceType;
+                m_newGoop.CheeseModifierEffect.stackMode = sourceGoop.CheeseModifierEffect.stackMode;
+                m_newGoop.CheeseModifierEffect.duration = sourceGoop.CheeseModifierEffect.duration;
+                m_newGoop.CheeseModifierEffect.maxStackedDuration = sourceGoop.CheeseModifierEffect.maxStackedDuration;
+                m_newGoop.CheeseModifierEffect.AppliesTint = sourceGoop.CheeseModifierEffect.AppliesTint;
+                m_newGoop.CheeseModifierEffect.TintColor = sourceGoop.CheeseModifierEffect.TintColor;
+                m_newGoop.CheeseModifierEffect.AppliesDeathTint = sourceGoop.CheeseModifierEffect.AppliesDeathTint;
+                m_newGoop.CheeseModifierEffect.DeathTintColor = sourceGoop.CheeseModifierEffect.DeathTintColor;
+                m_newGoop.CheeseModifierEffect.AppliesOutlineTint = sourceGoop.CheeseModifierEffect.AppliesOutlineTint;
+                m_newGoop.CheeseModifierEffect.OutlineTintColor = sourceGoop.CheeseModifierEffect.OutlineTintColor;
+                m_newGoop.CheeseModifierEffect.OverheadVFX = sourceGoop.CheeseModifierEffect.OverheadVFX;
+                m_newGoop.CheeseModifierEffect.PlaysVFXOnActor = sourceGoop.CheeseModifierEffect.PlaysVFXOnActor;
+                m_newGoop.CheeseModifierEffect.CheeseAmount = sourceGoop.CheeseModifierEffect.CheeseAmount;
+                m_newGoop.CheeseModifierEffect.CheeseGoop = sourceGoop.CheeseModifierEffect.CheeseGoop;
+                m_newGoop.CheeseModifierEffect.CheeseGoopRadius = sourceGoop.CheeseModifierEffect.CheeseGoopRadius;
+                m_newGoop.CheeseModifierEffect.CheeseCrystals = new List<GameObject>();
+                if (sourceGoop.CheeseModifierEffect.CheeseCrystals != null && sourceGoop.CheeseModifierEffect.CheeseCrystals.Count > 0) {
+                    foreach (GameObject cheeseCrystal in sourceGoop.CheeseModifierEffect.CheeseCrystals) {
+                        m_newGoop.CheeseModifierEffect.CheeseCrystals.Add(cheeseCrystal);
+                    }
+                }
+                m_newGoop.CheeseModifierEffect.crystalRot = sourceGoop.CheeseModifierEffect.crystalRot;
+                m_newGoop.CheeseModifierEffect.crystalVariation = sourceGoop.CheeseModifierEffect.crystalVariation;
+                m_newGoop.CheeseModifierEffect.debrisMinForce = sourceGoop.CheeseModifierEffect.debrisMinForce;
+                m_newGoop.CheeseModifierEffect.debrisMaxForce = sourceGoop.CheeseModifierEffect.debrisMaxForce;
+                m_newGoop.CheeseModifierEffect.debrisAngleVariance = sourceGoop.CheeseModifierEffect.debrisAngleVariance;
+                m_newGoop.CheeseModifierEffect.vfxExplosion = sourceGoop.CheeseModifierEffect.vfxExplosion;
+            }
+            return m_newGoop;
+        }
+
         public static DungeonPlaceable DuplicateDungoenPlaceable(DungeonPlaceable sourcePlaceable) {
             DungeonPlaceable m_cachedPlaceable = ScriptableObject.CreateInstance<DungeonPlaceable>();
             m_cachedPlaceable.width = sourcePlaceable.width;
@@ -1932,8 +2142,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return targetRoom;
         }
 
-        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true, string RunTimeTileMapName = "Glitch", bool SpawnWallMimic = false) {
-            Dungeon dungeon = GameManager.Instance.Dungeon;           
+        public static RoomHandler AddCustomRuntimeRoomWithTileSet(Dungeon dungeon2, PrototypeDungeonRoom prototype, bool addRoomToMinimap = true, bool addTeleporter = true, bool isSecretRatExitRoom = false, Action<RoomHandler> postProcessCellData = null, DungeonData.LightGenerationStyle lightStyle = DungeonData.LightGenerationStyle.STANDARD, bool allowProceduralDecoration = true, bool allowProceduralLightFixtures = true, bool RoomExploredOnMinimap = true, string RunTimeTileMapName = "Glitch", bool SpawnWallMimic = false, bool suppressExceptionWarnings = true) {
+            Dungeon dungeon = GameManager.Instance.Dungeon;
             tk2dTileMap m_tilemap = dungeon.MainTilemap;
 
             if (m_tilemap == null) {
@@ -1989,18 +2199,24 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 GenerateOutOfBoundsWalls(targetRoom);
                 targetRoom.WriteRoomData(dungeon.data);
             } catch (Exception) {
-                ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
+                if (ExpandSettings.debugMode | !suppressExceptionWarnings) {
+                    ETGModConsole.Log("WARNING: Exception caused during WriteRoomData step on room: " + targetRoom.GetRoomName());
+                }
             } try {
                 GenerateLightsForRoomFromOtherTileset(dungeon2.decoSettings, targetRoom, GameObject.Find("_Lights").transform, dungeon, dungeon2, lightStyle);
             } catch (Exception ex) {
-                ETGModConsole.Log("WARNING: Exception caused during GenerateLightsForRoom step on room: " + targetRoom.GetRoomName());
-                ETGModConsole.Log("WARNING: Trying fall back code..." + targetRoom.GetRoomName());
-                Debug.LogException(ex);
+                if (ExpandSettings.debugMode | !suppressExceptionWarnings) {
+                    ETGModConsole.Log("WARNING: Exception caused during GenerateLightsForRoom step on room: " + targetRoom.GetRoomName());
+                    ETGModConsole.Log("WARNING: Trying fall back code..." + targetRoom.GetRoomName());
+                    Debug.LogException(ex);
+                }
                 try {
                     dungeon.data.GenerateLightsForRoom(dungeon.decoSettings, targetRoom, GameObject.Find("_Lights").transform, lightStyle);
                 } catch (Exception ex2) {
-                    ETGModConsole.Log("WARNING: Exception caused during GenerateLightsForRoom step on room while attempting fall back code: " + targetRoom.GetRoomName());
-                    Debug.LogException(ex2);
+                    if (ExpandSettings.debugMode | !suppressExceptionWarnings) {
+                        ETGModConsole.Log("WARNING: Exception caused during GenerateLightsForRoom step on room while attempting fall back code: " + targetRoom.GetRoomName());
+                        Debug.LogException(ex2);
+                    }
                 }
             }
             postProcessCellData?.Invoke(targetRoom);
@@ -2032,9 +2248,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 RenderMeshBuilder.CurrentCellYOffset = 0;
                 component.renderData.transform.position = new Vector3(intVector3.x - num2, intVector3.y - num2, intVector3.y - num2);
             } catch (Exception ex) {
-                ETGModConsole.Log("WARNING: Exception occured during RuntimeResizeTileMap / RenderMeshBuilder steps!");
-                Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
-                Debug.LogException(ex);
+                if (ExpandSettings.debugMode | !suppressExceptionWarnings) {
+                    ETGModConsole.Log("WARNING: Exception occured during RuntimeResizeTileMap / RenderMeshBuilder steps!");
+                    Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
+                    Debug.LogException(ex);
+                }
                 return null; // Return null to prevent lead key from using this room. In most cases the resulting room is not usable as walls did not generate and there is no collision.
             }
             targetRoom.OverrideTilemap = component;
@@ -2057,7 +2275,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 try {
                     decorator.HandleRoomDecoration(targetRoom, dungeon, dungeon2, m_tilemap);
                 } catch (Exception ex) {
-                    if (ExpandSettings.debugMode) {
+                    if (ExpandSettings.debugMode | !suppressExceptionWarnings) {
                         ETGModConsole.Log("WARNING: Exception occured during HandleRoomDecoration steps!");
                         Debug.Log("WARNING: Exception occured during RuntimeResizeTileMap/RenderMeshBuilder steps!");
                         Debug.LogException(ex);

@@ -323,6 +323,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "portable_elevator",
             "portableship",
             "portableship_alt",
+            "portableship_shadow",
             "clownfriend",
             "west_key_001",
             "west_key_minimap"
@@ -486,6 +487,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly List<string> EXBackroomsCollection = new List<string> {
             "backrooms_one_way_blocker_vertical_bottom_001",
             "backrooms_warp_wing_001",
+            "Danger_MinimapIcon",
             "CarpetStainLarge_01",
             "CarpetStainLarge_02",
             "CarpetStainLarge_03",

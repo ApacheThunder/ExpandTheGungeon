@@ -8,6 +8,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	304406506	Play_EX_SonicLoseRings_01			\Weapons\Play_EX_SonicLoseRings_01	
 	330989735	Play_EX_BellyDoor_Open			\Weapons\Play_EX_BellyDoor_Open	
 	352490979	Play_EX_CorruptionBombPickup_01			\Weapons\Play_EX_CorruptionBombPickup_01	
+	387897117	Play_EX_Void_DoorAmbience			\Weapons\Play_EX_Void_DoorAmbience	
 	432080516	Play_EX_MUS_West_01_Shop			\Weapons\Play_EX_MUS_West_01_Shop	
 	582460727	Stop_EX_BellyDoor_Close			\Weapons\Stop_EX_BellyDoor_Close	
 	587415615	Play_EX_TableAssassin_01			\Weapons\Play_EX_TableAssassin_01	
@@ -33,6 +34,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	1178149973	Stop_EX_BOSS_westbros_slam_01			\Weapons\Stop_EX_BOSS_westbros_slam_01	
 	1290858200	Play_EX_CorruptionBombExplode_01			\Weapons\Play_EX_CorruptionBombExplode_01	
 	1406733088	Stop_EX_SonicRingCollect_01			\Weapons\Stop_EX_SonicRingCollect_01	
+	1419562778	Stop_EX_Void_RoomAmbience			\Weapons\Stop_EX_Void_RoomAmbience	
 	1444952135	Stop_EX_SonicBrake_01			\Weapons\Stop_EX_SonicBrake_01	
 	1464046876	Play_EX_SonicDeath_01			\Weapons\Play_EX_SonicDeath_01	
 	1482671396	Play_EX_PowBlock_Trigger			\Weapons\Play_EX_PowBlock_Trigger	
@@ -47,6 +49,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	1718848765	Play_EX_MUS_West_01_LoopC			\Weapons\Play_EX_MUS_West_01_LoopC	
 	1718848767	Play_EX_MUS_West_01_LoopA			\Weapons\Play_EX_MUS_West_01_LoopA	
 	1782047987	Play_EX_MUS_Jungle_01			\Weapons\Play_EX_MUS_Jungle_01	
+	1903692651	Stop_EX_Void_DoorAmbience			\Weapons\Stop_EX_Void_DoorAmbience	
 	2039091240	Play_EX_CorruptedObjectDestroyed_01			\Weapons\Play_EX_CorruptedObjectDestroyed_01	
 	2063256460	Play_EXAlarmMushroom_01			\Weapons\Play_EXAlarmMushroom_01	
 	2148880510	Stop_EX_CorruptedObjectDamage_01			\Weapons\Stop_EX_CorruptedObjectDamage_01	
@@ -87,6 +90,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	3761498917	Play_EX_SonicBrake_01			\Weapons\Play_EX_SonicBrake_01	
 	3798939044	Play_EX_MUS_Jungle_01_Intro			\Weapons\Play_EX_MUS_Jungle_01_Intro	
 	3822868090	Play_EX_PowBlock_EnemyDeath			\Weapons\Play_EX_PowBlock_EnemyDeath	
+	3828177828	Play_EX_Void_RoomAmbience			\Weapons\Play_EX_Void_RoomAmbience	
 	3842873489	Play_EX_MUS_ShotsFired_01			\Weapons\Play_EX_MUS_ShotsFired_01	
 	3935194361	Play_EX_UnicornMusic_01			\Weapons\Play_EX_UnicornMusic_01	
 	3939060724	Play_EX_MUS_BellyEntrance_01			\Weapons\Play_EX_MUS_BellyEntrance_01	
@@ -139,7 +143,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	737519471	Belly_Door_Unlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Belly_Door_Unlock_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Unlock		2288
 	737636557	SonicRingCollect	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicRingCollect_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicRingCollect		8956
 	777371175	Shots Fired!	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Shots Fired!_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Shots Fired!		1990376
-	809822789	EntityScreams	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\EntityScreams_37E15E96.wem		\Actor-Mixer Hierarchy\Default Work Unit\EntityScreams		1058656
+	809822789	EntityScreams	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\EntityScreams_68871954.wem		\Actor-Mixer Hierarchy\Default Work Unit\EntityScreams		1050791
 	836609844	Tummy_Full_of_Gunpowder_Calm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Calm_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Calm		888293
 	848029394	Balloonpop3	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Balloonpop3_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop3		3213
 	854678633	Tummy_Full_of_Gunpowder_Devour	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Devour_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Devour		926438
@@ -156,6 +160,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	989083201	SonicDeath	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicDeath_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicDeath		22072
 	994875608	SonicLoseRings	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicLoseRings_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicLoseRings		22416
 	1005918670	Belly_Door_Lock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Belly_Door_Lock_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Lock		2354
+	1014808859	backrooms_void	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\backrooms_void_9E0B09A9.wem		\Actor-Mixer Hierarchy\Default Work Unit\backrooms_void		245642
 	1020036941	Tummy_Full_of_Gunpowder_Entrance	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_Entrance_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Entrance		6739925
 	1020991936	Quiet_Forest_Calm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Quiet_Forest_Calm_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Calm		564880
 	1026631834	BreachTransitionFast	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\BreachTransitionFast_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransitionFast		70430

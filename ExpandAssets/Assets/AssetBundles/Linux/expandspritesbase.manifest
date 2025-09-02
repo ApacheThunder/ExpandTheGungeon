@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 337718080
+CRC: 1349322638
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 75fa0852055befc2269ceb319ae4d238
+    Hash: b52542e60a1e0e656f9de7bf4a4cf2fa
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -230,6 +230,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXTrap_Collection/RickRoll_03.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManBlue_Collection/shotgunman_blue_pitfall_002.png
 - Assets/ExpandSprites/AIActors/CultistCompanion_Collection/cultist_move_back_left_004.png
+- Assets/ExpandSprites/Misc/EXBackrooms_Collection/Danger_MinimapIcon.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Left_008.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Rebound_Death_05.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Spindash_05.png
@@ -540,6 +541,7 @@ Assets:
 - Assets/ExpandSprites/Misc/EXFoyer_Collection/cabinet_idle_012.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_idle_right_002.png
 - Assets/ExpandSprites/AIActors/Clownkin_Collection/clownkin_run_right_back_003.png
+- Assets/ExpandSprites/GunsAndItems/EXItem_Collection/portableship_shadow.png
 - Assets/ExpandSprites/GunsAndItems/EXGun_Collection/bootleg_pistol_idle_001.png
 - Assets/ExpandSprites/AIActors/Cronenberg_Tall_Collection/berg_tall_run_back_right_006.png
 - Assets/ExpandSprites/Misc/EXSecretDoor_Collection/EXSecretDoor_Open_01.png

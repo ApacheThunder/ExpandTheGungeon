@@ -13,14 +13,14 @@ namespace ExpandTheGungeon.ExpandMain {
             if (dungeon.IsGlitchDungeon) { return; }
             if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
 
-            if (!isBackRoomsEntitySpawner && (Random.value <= 0.85f)) { return; }
+            if (!isBackRoomsEntitySpawner && (Random.value < 0.85f)) { return; }
 
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
             int MaxEnemies = 1;
             int iterations = 0;
 
-            if (!isBackRoomsEntitySpawner && (Random.value <= 0.1f)) { MaxEnemies = 2; }
+            if (!isBackRoomsEntitySpawner && (Random.value < 0.1f)) { MaxEnemies = 2; }
             
             if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
 
@@ -67,7 +67,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                 }
                             } else {
                                 if (RandomGlitchEnemyVector.HasValue) {
-                                    if (Random.value <= 0.5f) {
+                                    if (Random.value < 0.5f) {
                                         ExpandEnemyCorruptor.Instance.SpawnGlitchedRaccoon(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);
                                     } else {
                                         ExpandEnemyCorruptor.Instance.SpawnGlitchedTurkey(currentRoom, RandomGlitchEnemyVector.Value, false, AIActor.AwakenAnimationType.Spawn, true);

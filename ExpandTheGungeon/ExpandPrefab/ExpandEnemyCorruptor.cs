@@ -211,8 +211,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         // Kill Pillars. (handle this one different. Uses AIActorDummy instread of AIActor component)
         public GameObject KillPillarsPrefab;
-
-
+                
         public static void CorruptExistingEnemy(AIActor aiActor, bool overrideGUIDCheck = false) { 
             if (string.IsNullOrEmpty(aiActor.EnemyGuid)) { return; }
             if (aiActor.GetActorName().ToLower().StartsWith("glitched")) { return; }
@@ -7725,9 +7724,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CachedGlitchEnemyActor.HasBeenEngaged = false;
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
-
-            if (isNonGlitchedVersion) ExpandUtility.ApplyCustomTexture(CachedGlitchEnemyActor, ExpandEnemyDatabase.ModifiedCompanionsAtlas);
-
+                        
             try {
                 if (CachedEnemyActor.EnemyGuid != "4d37ce3d666b4ddda8039929225b7ede") {
                     CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
@@ -7812,6 +7809,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandShaders.Instance.ApplyGlitchShader(GlitchActorSprite);
             }
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            if (isNonGlitchedVersion) {
+                tk2dSpriteCollectionData m_ModifiedCompanionCollection = ExpandUtility.BuildSpriteCollection(TurkeyPrefab.GetComponent<tk2dSprite>().Collection, ExpandEnemyDatabase.ModifiedCompanionsAtlas, null, null, false);
+                if (m_ModifiedCompanionCollection.gameObject) {
+                    m_ModifiedCompanionCollection.gameObject.transform.SetParent(targetObject.transform);
+                }
+                ExpandUtility.ApplyCustomTexture(targetObject.GetComponent<AIActor>(), prebuiltCollection: m_ModifiedCompanionCollection);
+            }
             UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }
@@ -7881,7 +7885,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             AddOrReplaceAIActorConfig(CachedGlitchEnemyActor, CachedEnemyActor);
 
-            if (isNonGlitchedVersion) ExpandUtility.ApplyCustomTexture(CachedGlitchEnemyActor, ExpandEnemyDatabase.ModifiedCompanionsAtlas);
+            if (isNonGlitchedVersion) {
+                GameObject customCollectionParent = new GameObject("ModifiedSpriteCollection_Turkey");
+                tk2dSpriteCollectionData m_ModifiedCollection = ExpandUtility.BuildSpriteCollection(TurkeyPrefab.GetComponent<tk2dSprite>().Collection, ExpandEnemyDatabase.ModifiedCompanionsAtlas, null, null, false);
+                if (m_ModifiedCollection.gameObject) {
+                    m_ModifiedCollection.gameObject.transform.SetParent(CachedGlitchEnemyActor.gameObject.transform);
+                }
+                ExpandUtility.ApplyCustomTexture(CachedGlitchEnemyActor, prebuiltCollection: m_ModifiedCollection);
+            }
 
             try {
                 CachedGlitchEnemyActor.healthHaver.gameObject.AddComponent<ExpandExplodeOnDeath>();
@@ -7970,6 +7981,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             GameObject targetObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(CachedGlitchEnemyActor.gameObject, CurrentRoom, position, false, awakenAnimType, autoEngage);
+            if (isNonGlitchedVersion) {
+                tk2dSpriteCollectionData m_ModifiedCompanionCollection = ExpandUtility.BuildSpriteCollection(TurkeyPrefab.GetComponent<tk2dSprite>().Collection, ExpandEnemyDatabase.ModifiedCompanionsAtlas, null, null, false);
+                if (m_ModifiedCompanionCollection.gameObject) {
+                    m_ModifiedCompanionCollection.gameObject.transform.SetParent(targetObject.transform);
+                }
+                ExpandUtility.ApplyCustomTexture(targetObject.GetComponent<AIActor>(), prebuiltCollection: m_ModifiedCompanionCollection);
+            }
             UnityEngine.Object.Destroy(CachedTargetEnemyObject);
             return targetObject;
         }

@@ -66,6 +66,8 @@
      <Compile Include="Assets\Scripts\ExpandComponents\ExpandScreenFXController.cs" />
      <Compile Include="Assets\Scripts\ExpandComponents\ExpandSpriteFadeOnSpawn.cs" />
      <Compile Include="Assets\Scripts\ExpandComponents\ExpandThunderStormPlacable.cs" />
+     <Compile Include="Assets\Scripts\ExpandComponents\ExpandVoidController.cs" />
+     <Compile Include="Assets\Scripts\ExpandComponents\ExpandVoidRoomController.cs" />
      <Compile Include="Assets\Scripts\ExpandComponents\ExpandWarpManager.cs" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Jungle\Bamboo\roomCeilingBorderGrid.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Nakatomi\Nakatomi_Purple\lavaGrids.txt" />

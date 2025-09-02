@@ -42,7 +42,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Custom Textures
         public static Texture2D BulletManMonochromeTexture;
         public static Texture2D BulletManUpsideDownTexture;
-        
+        public static Texture2D BacterialGoopWorldTexture;
+
         // Rat Trap Door
         public static GameObject RatTrapdoor;
 
@@ -166,6 +167,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable WestInterior1RoomTable;
         public static GenericRoomTable AbbeyRoomTableForOffice;
         public static GenericRoomTable BackRoomsRoomTable;
+        public static GenericRoomTable BackRoomsWarpWingTable;
         public static GenericRoomTable BackRoomsEntranceRoomTable;
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
@@ -435,12 +437,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXCasino_Litter_Paper;
 
         // Backrooms Objects
+        public static GameObject EXDangerRoomIcon;
         public static GameObject EXWarpDoor_Backrooms;
         public static GameObject EXEntitySpawner;
         public static GameObject EXBackRoomsCarpetStain_Small;
         public static GameObject EXBackRoomsCarpetStain_Medium;
         public static GameObject EXBackRoomsCarpetStain_Large;
-        
+        public static GameObject EXVoidController;
+        public static GameObject EXVoidRoomAmbience;
+
+        // Custom Goops
+        public static GoopDefinition EXBacteriaGoop;
 
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1, AssetBundle sharedAssets) {
@@ -495,11 +502,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
             EXDummyObject = expandSharedAssets1.LoadAsset<GameObject>("DummyObject");
+            tk2dSprite m_EXDummySprite = SpriteSerializer.AddSpriteToObject(EXDummyObject, EXBackroomsCollection, "CarpetStain_01", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_EXDummySprite.renderer.enabled = false;
 
             SpaceFog = PickupObjectDatabase.GetById(597).gameObject.GetComponent<GunParticleSystemController>().TargetSystem.gameObject.GetComponent<ParticleSystemRenderer>().materials[0];
             
             BulletManMonochromeTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_Monochrome");
             BulletManUpsideDownTexture = expandSharedAssets1.LoadAsset<Texture2D>("BulletMan_UpsideDown");
+            BacterialGoopWorldTexture = expandSharedAssets1.LoadAsset<Texture2D>("BacteriaGoop_WorldTexture");
 
             RatTrapdoor = MinesDungeonPrefab.RatTrapdoor;
 
@@ -652,6 +662,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BackRoomsEntranceRoomTable.includedRooms = new WeightedRoomCollection();
             BackRoomsEntranceRoomTable.includedRooms.elements = new List<WeightedRoom>();
             BackRoomsEntranceRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+
+            BackRoomsWarpWingTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            BackRoomsWarpWingTable.includedRooms = new WeightedRoomCollection();
+            BackRoomsWarpWingTable.includedRooms.elements = new List<WeightedRoom>();
+            BackRoomsWarpWingTable.includedRoomTables = new List<GenericRoomTable>(0);
 
             AbbeyRoomTableForOffice = ScriptableObject.CreateInstance<GenericRoomTable>();
             AbbeyRoomTableForOffice.name = "Office_RoomTable";
@@ -2364,6 +2380,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 zeldaChargeComponent.primeAnim = null;
                 MetalCubeGuy.gameObject.AddComponent<ExpandThwompManager>();
                 MetalCubeGuy.GetComponent<BehaviorSpeculator>().PostAwakenDelay = 0;
+                MetalCubeGuy.GetComponent<BehaviorSpeculator>().InstantFirstTick = true;
             }
 
             if (SkusketHead) { SkusketHead.GetComponent<AIActor>().DiesOnCollison = true; }
@@ -5413,6 +5430,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandUtility.GenerateSpriteAnimator(m_ChildLock, ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject.transform.Find("Lock").gameObject.GetComponent<tk2dSpriteAnimator>().Library, 53, playAutomatically: true);
             }
 
+            EXVoidController = expandSharedAssets1.LoadAsset<GameObject>("EXVoidController");
+            EXVoidRoomAmbience = expandSharedAssets1.LoadAsset<GameObject>("EXVoidRoomAmbience");
+
+            EXDangerRoomIcon = expandSharedAssets1.LoadAsset<GameObject>("EXDangerRoomIcon");
+            SpriteSerializer.AddSpriteToObject(EXDangerRoomIcon, EXBackroomsCollection, "Danger_MinimapIcon", tk2dBaseSprite.PerpendicularState.FLAT);
 
             EXWarpDoor_Backrooms = expandSharedAssets1.LoadAsset<GameObject>("WarpDoor_Backrooms");
             tk2dSprite m_EXWarpDoor_BackroomsSprite = SpriteSerializer.AddSpriteToObject(EXWarpDoor_Backrooms, EXBackroomsCollection, "backrooms_warp_wing_001", tk2dBaseSprite.PerpendicularState.PERPENDICULAR, -1);
@@ -5462,8 +5484,28 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandSpriteRandomizer m_EXEntitySpawnerChildSpriteRandomizer = m_EXEntitySpawnerChild.AddComponent<ExpandSpriteRandomizer>();
             m_EXEntitySpawnerChildSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
-            
 
+            EXBacteriaGoop = ExpandUtility.DuplicateGoop(sharedAssets.LoadAsset<GoopDefinition>("Poison Goop"), "Bacteria Goop");
+            EXBacteriaGoop.damagesEnemies = false;
+            EXBacteriaGoop.usesAmbientGoopFX = false;
+            EXBacteriaGoop.usesAcidAudio = false;
+            EXBacteriaGoop.ambientGoopFX = new VFXPool() {
+                type = VFXPoolType.None,
+                effects = new VFXComplex[0]
+            };
+            EXBacteriaGoop.baseColor32 = new Color(0f, 0f, 0f, 1);
+            EXBacteriaGoop.fadeColor32 = new Color(0.2f, 0.2f, 0.2f, 1);
+            EXBacteriaGoop.fireColor32 = new Color(0f, 0f, 0f, 1);
+            EXBacteriaGoop.worldTexture = BacterialGoopWorldTexture;
+            EXBacteriaGoop.usesWorldTextureByDefault = true;
+            EXBacteriaGoop.lifespan = 12;
+            EXBacteriaGoop.AppliesSpeedModifierContinuously = true;
+            EXBacteriaGoop.SpeedModifierEffect.AffectsEnemies = false;
+            EXBacteriaGoop.SpeedModifierEffect.AffectsPlayers = true;
+            EXBacteriaGoop.SpeedModifierEffect.effectIdentifier = "bacteria goop speed";
+            EXBacteriaGoop.SpeedModifierEffect.duration = 0.1f;
+            EXBacteriaGoop.SpeedModifierEffect.OnlyAffectPlayerWhenGrounded = true;
+            
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!
             TutorialDungeonPrefab = null;

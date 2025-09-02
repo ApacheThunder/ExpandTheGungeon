@@ -3398,6 +3398,133 @@
 						<ActiveSource Name="EntityScreams" ID="{8DBC0B07-5154-4EF4-828C-5D35E2062808}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="backrooms_void" ID="{685073CC-5D6D-46B6-87F2-C66650F1E2E7}" ShortID="970154837">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{C49E0EC3-DBB3-4AEB-A600-CEC8FF6B5340}" ShortID="348382842">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{0234C976-23D2-4FD9-ADFF-6B44B5561D7B}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>200</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="LongRange_Attenuation" ID="{FE80CB46-BA26-4346-B2BE-5F68F8965A52}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="backrooms_void" ID="{B7D25B14-63CC-44AB-AA76-0E5F79AA59C1}" ShortID="1014808859">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="1.05727567217363"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="1.05727567217363"/>
+								<Property Name="LoopBegin" Type="Real64" Value="1.09142675648558"/>
+								<Property Name="LoopEnd" Type="Real64" Value="28.3355102630237"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>backrooms_void.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="backrooms_void" ID="{B7D25B14-63CC-44AB-AA76-0E5F79AA59C1}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="backrooms_void_shortrange" ID="{E8C27FFE-2CD8-4832-AD7E-E23458566B6F}" ShortID="695287487">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{A3E10F04-4723-4B23-A2E8-313DED6AD93C}" ShortID="38126708">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{9DF7043A-234D-4161-918E-582F7B72A553}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>200</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="ShortRange_Attenuation" ID="{5EAEEAB8-1295-49BE-83D3-D9A92F285779}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="backrooms_void" ID="{8C416920-1CEF-4DEF-AC49-D2B01BC50DC0}" ShortID="957385563">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="1.05727567217363"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="1.05727567217363"/>
+								<Property Name="LoopBegin" Type="Real64" Value="1.09142675648558"/>
+								<Property Name="LoopEnd" Type="Real64" Value="28.3355102630237"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>backrooms_void.wav</AudioFile>
+							<ConvertedFileIDList>
+								<File ID="1014808859"/>
+							</ConvertedFileIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="backrooms_void" ID="{8C416920-1CEF-4DEF-AC49-D2B01BC50DC0}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

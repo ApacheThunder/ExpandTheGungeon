@@ -375,7 +375,8 @@ namespace ExpandTheGungeon.ExpandMain {
             foreach (RoomHandler room in dungeon.data.rooms) {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsMaintenanceRoom() &&
                     room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
-                    room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT)
+                    room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT &&
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_entrance_warpwing"))
                 {
                     Rooms.Add(room);
                 }
@@ -520,9 +521,9 @@ namespace ExpandTheGungeon.ExpandMain {
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             
-            float SpawnChance = 0.3f;
+            float SpawnChance = 0.2f;
 
-            if (wallMimicCount != 0) { SpawnChance = 0.6f; }
+            if (wallMimicCount != 0) { SpawnChance = 0.5f; }
 
             if (UnityEngine.Random.value > SpawnChance) { return; }
 
@@ -762,7 +763,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     !room.GetRoomName().ToLower().StartsWith("tiny_exit") && !room.GetRoomName().ToLower().StartsWith("elevator") &&
                     !room.GetRoomName().ToLower().StartsWith("tiny_entrance") && !room.GetRoomName().ToLower().StartsWith("gungeon entrance") &&
                     !room.GetRoomName().ToLower().StartsWith("gungeon_rewardroom") && !room.GetRoomName().ToLower().StartsWith("reward room") &&
-                    !room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_BootlegRoom.name.ToLower()) && !room.area.prototypeRoom.precludeAllTilemapDrawing)
+                    !room.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_BootlegRoom.name.ToLower()) &&
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_entrance_warpwing") && !room.area.prototypeRoom.precludeAllTilemapDrawing)
                 {
                     Rooms.Add(room);
                 }

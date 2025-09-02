@@ -4,7 +4,9 @@ using ExpandTheGungeon.SpriteAPI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+// using System.Reflection;
 using UnityEngine;
+// using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -13,10 +15,17 @@ namespace ExpandTheGungeon.ItemAPI {
         public static int PortableShipID;
 
         public static GameObject PortableShipOBJ;
+        public static GameObject PortableShipShadow;
 
         public static void Init(AssetBundle expandSharedAssets1) {
             PortableShipOBJ = expandSharedAssets1.LoadAsset<GameObject>("Portable Ship");
             SpriteSerializer.AddSpriteToObject(PortableShipOBJ, ExpandPrefabs.EXItemCollection, "portableship");
+
+            PortableShipShadow = expandSharedAssets1.LoadAsset<GameObject>("EXPortableShip_Shadow");
+            GameObject m_SpriteChild = PortableShipShadow.transform.Find("spriteObject").gameObject;
+            tk2dSprite m_ShadowSprite = SpriteSerializer.AddSpriteToObject(m_SpriteChild, ExpandPrefabs.EXItemCollection, "portableship_shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1f);
+            m_ShadowSprite.usesOverrideMaterial = true;
+            m_ShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
 
             PortableShip portableShip = PortableShipOBJ.AddComponent<PortableShip>();
             string shortDesc = "Become Space Ship";
@@ -44,6 +53,16 @@ namespace ExpandTheGungeon.ItemAPI {
             
             itemState = ItemState.NotConfigured;
 
+
+            contactDamageModifier = new StatModifier() {
+                amount = 1,
+                statToBoost = PlayerStats.StatType.DodgeRollDamage,
+                modifyType = StatModifier.ModifyMethod.ADDITIVE,
+                isMeatBunBuff = false,
+                ignoredForSaveData = true
+                
+            };
+            
             m_FireProjectile = false;
             m_DoingDodgeRoll = false;
             m_DamageCooldown = 240;
@@ -58,10 +77,11 @@ namespace ExpandTheGungeon.ItemAPI {
             m_CurrentLaserCooldown = 0;
             m_CurrentDodgeCooldown = 0;
             m_currentAngle = 0;
+            m_currentShadowYScale = 1;
 
             m_CachedShipStartSpriteName = string.Empty;
 
-            m_PickedUp = false;
+             m_PickedUp = false;
         }
         
         public GameObject ShipPrefab;
@@ -70,8 +90,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public ExplosionData ShipExplosionData;
 
+        public StatModifier contactDamageModifier;
 
         private GameObject m_ShipPrefabInstance;
+        private GameObject m_ShipShadowPrefabInstance;
         
         private ItemState itemState;
 
@@ -82,6 +104,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         private tk2dSprite m_ShipSprite;
+        private tk2dSprite m_ShipShadowSprite;
         private tk2dSpriteAnimator m_ShipAnimator;
         
 
@@ -102,12 +125,12 @@ namespace ExpandTheGungeon.ItemAPI {
         private float m_DamageCooldown;
         private float m_CurrentLaserCooldown;
         private float m_CurrentDodgeCooldown;
-
-
-        private string m_CachedShipStartSpriteName;
         
-        private float m_currentAngle;
+        private string m_CachedShipStartSpriteName;
 
+        private float m_currentShadowYScale;
+        private float m_currentAngle;
+        
         private bool m_PickedUp;
 
         protected bool IsKeyboardAndMouse(PlayerController player) {
@@ -118,22 +141,22 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!m_ShipPrefabInstance) {
                 m_ShipPrefabInstance = Instantiate(ShipPrefab.transform.Find("PlayerRotatePoint").gameObject, player.sprite.WorldCenter, Quaternion.identity);
                 m_ShipPrefabInstance.name = "ShipRotatePoint";
+                m_ShipPrefabInstance.transform.SetParent(player.gameObject.transform);
 
                 m_ShipSprite = m_ShipPrefabInstance.transform.Find("PlayerSprite").gameObject.GetComponent<tk2dSprite>();
                 m_ShipSprite.gameObject.name = "ShipSprite";
-                m_ShipSprite.HeightOffGround = 1f;
+                m_ShipSprite.HeightOffGround = 1;
                 m_ShipSprite.UpdateZDepth();
-
-                m_ShipPrefabInstance.transform.SetParent(player.gameObject.transform);
-
 
                 AIBulletBank sourceBulletBank = ShipPrefab.GetComponent<AIBulletBank>();
                 m_ShipBulletBank = player.gameObject.AddComponent<AIBulletBank>();
                 m_ShipBulletBank.Bullets = new List<AIBulletBank.Entry>() { sourceBulletBank.Bullets[0], sourceBulletBank.Bullets[1] };
                 m_ShipBulletBank.useDefaultBulletIfMissing = false;
                 m_ShipBulletBank.transforms = new List<Transform>();
-
-
+                if (m_ShipBulletBank && m_ShipBulletBank.Bullets[1].BulletObject.GetComponent<ExplosiveModifier>()) {
+                    m_ShipBulletBank.Bullets[1].BulletObject.GetComponent<ExplosiveModifier>().IgnoreQueues = true;
+                }
+                
                 m_CachedShipStartSpriteName = m_ShipSprite.CurrentSprite.name;
 
                 m_ShipAnimator = m_ShipSprite.gameObject.GetComponent<tk2dSpriteAnimator>();
@@ -146,7 +169,23 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 LaserShootPoints = new List<Transform>() { m_ShipSprite.gameObject.transform.Find("Fire1"), m_ShipSprite.gameObject.transform.Find("Fire2") };
 
+                
                 m_ShipPrefabInstance.SetActive(false);
+            }
+
+            if (!m_ShipShadowPrefabInstance) {
+                m_ShipShadowPrefabInstance = Instantiate(PortableShipShadow, player.sprite.WorldCenter, Quaternion.identity);
+                if (m_ShipShadowPrefabInstance) {
+                    m_ShipShadowPrefabInstance.transform.SetParent(player.gameObject.transform);
+                    m_ShipShadowPrefabInstance.transform.localPosition = new Vector3(0.825f, -0.24f, 0);
+                    Transform m_SpriteChild = m_ShipShadowPrefabInstance.transform.Find("spriteObject");
+                    if (m_SpriteChild) {
+                        m_ShipShadowSprite = m_SpriteChild.gameObject.GetComponent<tk2dSprite>();
+                        m_ShipShadowSprite.HeightOffGround = -1f;
+                        m_ShipShadowSprite.UpdateZDepth();
+                    }
+                    m_ShipShadowPrefabInstance.SetActive(false);
+                }
             }
 
             SpeculativeRigidbody specRigidbody = player.specRigidbody;
@@ -177,6 +216,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 case ItemState.Inactive:
                     m_currentAngle = BraveMathCollege.Atan2Degrees(user.unadjustedAimPoint.XY() - user.CenterPosition);
                     m_ShipPrefabInstance.SetActive(true);
+                    m_ShipShadowPrefabInstance.SetActive(true);
                     timeCooldown = m_MissileCooldown;
                     sprite.SetSprite(m_RocketItemSprite.Collection, m_RocketItemSprite.GetCurrentSpriteDef().name);
                     user.SetIsFlying(true, "PlayerIsShip", false, false);
@@ -184,9 +224,11 @@ namespace ExpandTheGungeon.ItemAPI {
                     user.ToggleShadowVisiblity(false);
                     user.healthHaver.Armor += 1;
                     AkSoundEngine.PostEvent("Play_OBJ_computer_boop_01", user.gameObject);
-                    // user.AdditionalCanDodgeRollWhileFlying.AddOverride("IsAFlyingShip");
                     itemState = ItemState.Active;
                     ClearCooldowns();
+                    user.ownerlessStatModifiers.Add(contactDamageModifier);
+                    user.stats.RecalculateStats(user, false, false);
+                    user.ReceivesTouchDamage = false;
                     return;
                 case ItemState.NotConfigured:
                     ClearCooldowns();
@@ -215,14 +257,30 @@ namespace ExpandTheGungeon.ItemAPI {
                         if (m_CurrentDodgeCooldown > m_DodgeCooldown) { CheckDodgeRollInput(LastOwner); }
                         m_currentAngle = BraveMathCollege.Atan2Degrees(LastOwner.unadjustedAimPoint.XY() - LastOwner.CenterPosition);
                     }
-                    if (m_DoingDodgeRoll) {
+                    /*if (m_DoingDodgeRoll) {
                         LastOwner.healthHaver.IsVulnerable = false;
                     } else {
                         if (!LastOwner.healthHaver.IsVulnerable) { LastOwner.healthHaver.IsVulnerable = true; }
-                    }
+                    }*/
+
                     m_currentAngle = BraveMathCollege.Atan2Degrees(LastOwner.unadjustedAimPoint.XY() - LastOwner.CenterPosition);
+                    /*if (IsKeyboardAndMouse(LastOwner) | GameManager.Options.controllerAutoAim == GameOptions.ControllerAutoAim.NEVER) {
+                        m_currentAngle = BraveMathCollege.Atan2Degrees(LastOwner.unadjustedAimPoint.XY() - LastOwner.CenterPosition);
+                    } else {
+                        m_CurrentAimAngle = ReflectGetField<Vector2>(typeof(PlayerController), "SuperDuperAimPoint", LastOwner);
+                        if (m_CurrentAimAngle.HasValue) {
+                            m_currentAngle = BraveMathCollege.Atan2Degrees(m_CurrentAimAngle.Value - LastOwner.CenterPosition);
+                        } else {
+                            m_currentAngle = BraveMathCollege.Atan2Degrees(LastOwner.unadjustedAimPoint.XY() - LastOwner.CenterPosition);
+                        }
+                    }*/
+
+
                     m_ShipPrefabInstance.transform.rotation = Quaternion.Euler(0f, 0f, m_currentAngle);
+                    m_ShipShadowPrefabInstance.transform.localRotation = Quaternion.Euler(0f, m_currentShadowYScale, m_currentAngle);
+                    m_ShipShadowPrefabInstance.transform.localScale = new Vector3(1, m_currentShadowYScale, 1);
                     m_ShipSprite.ForceRotationRebuild();
+                    m_ShipShadowSprite.ForceRotationRebuild();
 
                     LastOwner.IsOnFire = false;
                     LastOwner.IsVisible = false;
@@ -241,6 +299,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     m_CurrentDodgeCooldown += BraveTime.DeltaTime;
 
                     if (m_CurrentLaserCooldown <= 0) {
+                        LastOwner.IsVisible = false;
                         LastOwner.ToggleRenderer(false);
                         LastOwner.ToggleHandRenderers(false);
                         LastOwner.ToggleGunRenderers(false);
@@ -289,8 +348,9 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected void CheckDodgeRollInput(PlayerController player) {
-            if (player.WasPausedThisFrame) { return; }
-            if (m_DoingDodgeRoll) { return; }
+            if (player.WasPausedThisFrame)return;
+            if (m_DoingDodgeRoll)return;
+            if (player.IsDodgeRolling) return;
             Vector2 direction = player.specRigidbody.Velocity;
             if (direction == Vector2.zero) { return; }
             bool AttemptDodgeRollAnimation = false;
@@ -298,12 +358,35 @@ namespace ExpandTheGungeon.ItemAPI {
             if (instanceForPlayer.GetButtonDown(GungeonActions.GungeonActionType.DodgeRoll)) {
                 instanceForPlayer.ConsumeButtonDown(GungeonActions.GungeonActionType.DodgeRoll);
                 AttemptDodgeRollAnimation = true;
+                m_DoingDodgeRoll = true;
             }
-            if (AttemptDodgeRollAnimation) { StartCoroutine(PlayDodgeRollAnimation(player, direction)); }
+            if (AttemptDodgeRollAnimation) {
+                StartCoroutine(ScaleShadowSprite());
+                StartCoroutine(PlayDodgeRollAnimation(player, direction));
+            }
             return;
         }
 
-        
+        private IEnumerator ScaleShadowSprite() {
+            float elapsed = 0;
+            float duration = (0.3f / 2);
+            Vector2 startVector = Vector2.one;
+            Vector2 endVector = new Vector2(0.2f, 0.2f);
+            while (elapsed < duration) {
+                elapsed += BraveTime.DeltaTime;
+                m_currentShadowYScale = Vector2.Lerp(startVector, endVector, (elapsed / duration)).y;
+                yield return null;
+            }
+            elapsed = 0;
+            yield return null;
+            while (elapsed < duration) {
+                elapsed += BraveTime.DeltaTime;
+                m_currentShadowYScale = Vector2.Lerp(endVector, startVector, (elapsed / duration)).y;
+                yield return null;
+            }
+            yield break;
+        }
+
         protected IEnumerator PlayDodgeRollAnimation(PlayerController player, Vector2 direction) {
             tk2dSpriteAnimationClip tk2dSpriteAnimationClip = null;
             direction.Normalize();
@@ -311,14 +394,15 @@ namespace ExpandTheGungeon.ItemAPI {
             float movementAngle = BraveMathCollege.ClampAngle180(directionAngle - m_currentAngle);
             string text = (movementAngle < 0f) ? "dodgeroll_right_e" : "dodgeroll_left_e";
             tk2dSpriteAnimationClip = m_ShipAnimator.GetClipByName(text);
-            yield return null;
             if (tk2dSpriteAnimationClip != null) {
                 float overrideFps = tk2dSpriteAnimationClip.frames.Length / player.rollStats.GetModifiedTime(player);
                 m_ShipAnimator.Play(tk2dSpriteAnimationClip, 0f, overrideFps, false);
-                while (m_ShipAnimator.IsPlaying(tk2dSpriteAnimationClip)) {
-                    m_DoingDodgeRoll = true;
-                    yield return null;
-                }
+                player.AdditionalCanDodgeRollWhileFlying.AddOverride("IsAFlyingShip");
+                player.ForceStartDodgeRoll(direction);
+                yield return null;
+                player.AdditionalCanDodgeRollWhileFlying.RemoveOverride("IsAFlyingShip");
+                yield return null;
+                while (m_ShipAnimator.IsPlaying(tk2dSpriteAnimationClip)) { yield return null; }
                 m_ShipAnimator.Play("idle_e");
                 m_CurrentDodgeCooldown = 0;
             }
@@ -336,7 +420,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected void FireProjectiles(PlayerController player, AIBulletBank bulletbank) {
-            if (Time.timeScale == 0 | GameManager.IsBossIntro | GameManager.Instance.PreventPausing) { return; }
+            if (player.IsInputOverridden | Time.timeScale == 0 | GameManager.IsBossIntro | GameManager.Instance.PreventPausing) { return; }
             foreach (Transform laserShootPoint in LaserShootPoints) {
                 FireBullet(player, bulletbank, laserShootPoint, Quaternion.Euler(0f, 0f, -90f + m_currentAngle) * Vector2.up, "default");
             }
@@ -357,6 +441,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         private void ResetConfig(PlayerController player = null, bool ShipWasDestroyed = false, bool OnDestroy = false) {
+            if (m_ShipBulletBank && m_ShipBulletBank.Bullets[1].BulletObject.GetComponent<ExplosiveModifier>())
+            if (m_ShipBulletBank.Bullets[1].BulletObject.GetComponent<ExplosiveModifier>()) {
+                m_ShipBulletBank.Bullets[1].BulletObject.GetComponent<ExplosiveModifier>().IgnoreQueues = true;
+            }
             if (player) {
                 if (!player.healthHaver.IsVulnerable) { player.healthHaver.IsVulnerable = true; }
                 player.SetIsFlying(false, "PlayerIsShip", false, false);
@@ -366,7 +454,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 player.ToggleRenderer(true);
                 player.ToggleGunRenderers(true);
                 player.ToggleHandRenderers(true);
-                // player.AdditionalCanDodgeRollWhileFlying.RemoveOverride("IsAFlyingShip");
+                player.AdditionalCanDodgeRollWhileFlying.RemoveOverride("IsAFlyingShip");
                 if (!ShipWasDestroyed) {
                     SpeculativeRigidbody specRigidbody3 = player.specRigidbody;
                     specRigidbody3.OnPreRigidbodyCollision = (SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate)Delegate.Remove(specRigidbody3.OnPreRigidbodyCollision, new SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate(HandlePrerigidbodyCollision));
@@ -374,14 +462,15 @@ namespace ExpandTheGungeon.ItemAPI {
                     player.OnReceivedDamage -= HandlePlayerDamaged;
                 }
                 if (itemState == ItemState.Active) {
-                    if (player.healthHaver.Armor > 0) {
-                        player.healthHaver.Armor -= 1;
-                    }
+                    if (player.healthHaver.Armor > 0)player.healthHaver.Armor -= 1;
                     /*if (player.healthHaver.Armor > 0 && !player.ForceZeroHealthState) {
                         player.healthHaver.Armor -= 1;
                     } else if (player.ForceZeroHealthState && player.healthHaver.Armor > 1) {
                         player.healthHaver.Armor -= 1;
                     }*/
+                    player.ReceivesTouchDamage = true;
+                    player.ownerlessStatModifiers.Remove(contactDamageModifier);
+                    player.stats.RecalculateStats(player, false, false);
                 }
             } else if (LastOwner) {
                 LastOwner.ToggleRenderer(true);
@@ -403,6 +492,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
                 Exploder.Explode(m_ShipPrefabInstance.transform.position, ShipExplosionData, Vector2.zero, null, true, CoreDamageTypes.None, false);
                 m_ShipPrefabInstance.SetActive(false);
+                m_ShipShadowPrefabInstance.SetActive(false);
                 timeCooldown = m_DamageCooldown;
                 if (player) {
                     ApplyCooldown(player);
@@ -415,11 +505,14 @@ namespace ExpandTheGungeon.ItemAPI {
             m_ShipBulletBank = null;
             m_ShipSprite = null;
             m_ShipHidden = false;
-            if (m_ShipPrefabInstance) { m_ShipPrefabInstance.transform.parent = null; }
+            if (m_ShipPrefabInstance)m_ShipPrefabInstance.transform.parent = null;
+            if (m_ShipShadowPrefabInstance) m_ShipShadowPrefabInstance.transform.parent = null;
             LaserShootPoints.Clear();
             Destroy(m_ShipPrefabInstance);
+            Destroy(m_ShipShadowPrefabInstance);
             Destroy(m_ShipBulletBank);
             m_ShipPrefabInstance = null;
+            m_ShipShadowPrefabInstance = null;
 
             m_currentAngle = 0;
             m_FireProjectile = false;
@@ -431,8 +524,20 @@ namespace ExpandTheGungeon.ItemAPI {
         private void HandlePrerigidbodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
             switch (itemState) {
                 case ItemState.Active:
-                    if (m_DoingDodgeRoll && otherRigidbody && otherPixelCollider != null && otherPixelCollider.CollisionLayer == CollisionLayer.Projectile) {
+                    /*if (m_DoingDodgeRoll && otherRigidbody && otherPixelCollider != null && otherPixelCollider.CollisionLayer == CollisionLayer.Projectile) {
                         PhysicsEngine.SkipCollision = true;
+                    }*/
+                    if (otherRigidbody) {
+                        if (!string.IsNullOrEmpty(otherRigidbody.gameObject.name) && 
+                            otherRigidbody.gameObject.name.ToLower().Contains("table") &&
+                            otherRigidbody.gameObject.transform.parent &&
+                            otherRigidbody.gameObject.transform.parent.gameObject.GetComponent<FlippableCover>() &&
+                            !otherRigidbody.gameObject.transform.parent.gameObject.GetComponent<FlippableCover>().IsFlipped)
+                        {
+                            PhysicsEngine.SkipCollision = true;
+                        } else if (otherRigidbody.gameObject.GetComponent<AlarmMushroom>()) {
+                            PhysicsEngine.SkipCollision = true;
+                        }
                     }
                     break;
                 default:

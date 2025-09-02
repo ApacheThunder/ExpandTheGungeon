@@ -1710,6 +1710,62 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_Void_RoomAmbience" ID="{03DE5925-1976-4AEC-BC45-A85909ECC034}">
+					<ChildrenList>
+						<Action Name="" ID="{9338637A-ADD5-4EA1-88F8-E42707C568B1}" ShortID="919926625">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="backrooms_void" ID="{685073CC-5D6D-46B6-87F2-C66650F1E2E7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_Void_DoorAmbience" ID="{D69B1B96-D5D3-4F23-82FF-B6E8BAEEB53A}">
+					<ChildrenList>
+						<Action Name="" ID="{CA6E457C-BB5F-4B83-A95B-3ECD4185F275}" ShortID="756040291">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="backrooms_void_shortrange" ID="{E8C27FFE-2CD8-4832-AD7E-E23458566B6F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_Void_DoorAmbience" ID="{00924B86-EC1D-476D-B204-D1A1C109ACAF}">
+					<ChildrenList>
+						<Action Name="" ID="{46408DCB-0996-4687-B909-81338F5CC56F}" ShortID="617206735">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="backrooms_void_shortrange" ID="{E8C27FFE-2CD8-4832-AD7E-E23458566B6F}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_EX_Void_RoomAmbience" ID="{28DC2389-BBF0-40BD-A34F-EC3A98D53272}">
+					<ChildrenList>
+						<Action Name="" ID="{D16E8E60-2BBE-4FD8-AECA-1910B199DCF3}" ShortID="377401668">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="backrooms_void" ID="{685073CC-5D6D-46B6-87F2-C66650F1E2E7}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

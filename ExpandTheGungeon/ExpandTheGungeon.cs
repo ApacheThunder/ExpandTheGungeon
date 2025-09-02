@@ -387,7 +387,8 @@ namespace ExpandTheGungeon {
             // Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
 
             // m_texturedOcclusionTarget
-            
+
+            SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
         }*/
 
         private void ExpandConsoleInfo(string[] consoleText) {

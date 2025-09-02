@@ -114,6 +114,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly GameObject GlassWall_Side;
         public static readonly GameObject GlassWall_Front;
         public static readonly GameObject BossOfficeDesk;
+        public static readonly GameObject SlipperySign;
+        // Misc
         public static readonly GameObject GungeonSewersExit;
 
 
@@ -314,6 +316,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GlassWall_Side = NakatomiPrefab.PatternSettings.flows[0].AllNodes[7].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
             GlassWall_Front = NakatomiPrefab.PatternSettings.flows[0].AllNodes[7].overrideExactRoom.placedObjects[6].nonenemyBehaviour.gameObject;
             BossOfficeDesk = NakatomiPrefab.PatternSettings.flows[0].AllNodes[8].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
+            SlipperySign = NakatomiPrefab.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[3].nonenemyBehaviour.gameObject;
 
             NakatomiPrefab = null;
             convictPastDungeon = null;

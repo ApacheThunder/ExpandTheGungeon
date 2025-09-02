@@ -412,7 +412,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<string> Expand_West_TinyCanyonRoomList;
         public static List<string> Expand_West_Interior1RoomList;
         public static PrototypeDungeonRoom[] Expand_Backrooms_Rooms;
+        public static PrototypeDungeonRoom[] Expand_Backrooms_WarpWings;
         public static List<string> Expand_BackRooms_RoomList;
+        public static List<string> Expand_BackRooms_WarpWingList;
 
         public static PrototypeDungeonRoom Expand_Belly_Entrance;
         public static PrototypeDungeonRoom Expand_Belly_BossRoom;
@@ -448,7 +450,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_BackRooms_Entrance;
         public static PrototypeDungeonRoom Expand_BackRooms_Entrance2;
         public static PrototypeDungeonRoom Expand_BackRooms_Entrance3;
+        public static PrototypeDungeonRoom Expand_BackRooms_Entrance_WarpWing;
+
         public static PrototypeDungeonRoom Expand_BackRooms_Exit;
+
 
         // Foyer Rooms
         // public static PrototypeDungeonRoom Expand_Casino_Hub;
@@ -990,7 +995,28 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "BackRooms_Room101",
                 "BackRooms_Room102",
                 "BackRooms_Room103",
-                "BackRooms_Room104"
+                "BackRooms_Room104",
+                "BackRooms_VoidRoom_01",
+                "BackRooms_VoidRoom_02",
+                "BackRooms_VoidRoom_03",
+                "BackRooms_VoidRoom_04",
+                "BackRooms_VoidRoom_05",
+                "BackRooms_VoidRoom_06",
+                "BackRooms_VoidRoom_07",
+                "BackRooms_VoidRoom_08",
+                "BackRooms_VoidRoom_09",
+                "BackRooms_VoidRoom_10",
+                "BackRooms_VoidRoom_Connector_01"
+            };
+
+            Expand_BackRooms_WarpWingList = new List<string>() {
+                "BackRooms_WarpWingRoom1",
+                "BackRooms_WarpWingRoom2",
+                "BackRooms_WarpWingRoom3",
+                "BackRooms_WarpWingRoom4",
+                "BackRooms_WarpWingRoom5",
+                "BackRooms_WarpWingRoom6",
+                "BackRooms_WarpWingRoom7"
             };
 
             List<PrototypeDungeonRoom> m_Expand_BackRooms_RoomList = new List<PrototypeDungeonRoom>();
@@ -999,7 +1025,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 m_Expand_BackRooms_RoomList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
             }
 
+            List<PrototypeDungeonRoom> m_Expand_BackRooms_WarpWingList = new List<PrototypeDungeonRoom>();
+
+            foreach (string roomName in Expand_BackRooms_WarpWingList) {
+                m_Expand_BackRooms_WarpWingList.Add(RoomFactory.BuildFromAssetBundle(AssetBundles, roomName, true, false));
+            }
+
             Expand_Backrooms_Rooms = m_Expand_BackRooms_RoomList.ToArray();
+
+            Expand_Backrooms_WarpWings = m_Expand_BackRooms_WarpWingList.ToArray();
 
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
                 if (!room.name.StartsWith("BackRooms_Room005") && 
@@ -1013,15 +1047,29 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     !room.name.StartsWith("BackRooms_Room101") &&
                     !room.name.StartsWith("BackRooms_Room102") &&
                     !room.name.StartsWith("BackRooms_Room103") &&
-                    !room.name.StartsWith("BackRooms_Room104")) {
+                    !room.name.StartsWith("BackRooms_Room104") &&
+                    !room.name.StartsWith("BackRooms_VoidRoom_01")) {
                     room.ForceAllowDuplicates = true;
+                }
+                if (room.name.StartsWith("BackRooms_VoidRoom_")) {
+                    room.allowFloorDecoration = false;
+                    room.allowWallDecoration = false;
+                    room.usesProceduralDecoration = false;
+                    room.usesProceduralLighting = false;
+                    room.associatedMinimapIcon = ExpandPrefabs.EXDangerRoomIcon;
+                    RoomBuilder.AddObjectToRoom(room, new Vector2((room.Width / 2), (room.Height / 2)), ExpandPrefabs.EXVoidRoomAmbience);
                 }
                 room.IsLostWoodsRoom = true;
                 room.overrideRoomVisualType = 0;
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
             }
 
-            
+            foreach (PrototypeDungeonRoom room in Expand_Backrooms_WarpWings) {
+                room.ForceAllowDuplicates = true;
+                room.IsLostWoodsRoom = true;
+                foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
+            }
+
             Expand_BackRooms_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance", true, false);
             Expand_BackRooms_Entrance.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
             Expand_BackRooms_Entrance.IsLostWoodsRoom = true;
@@ -1040,6 +1088,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_BackRooms_Entrance3.overrideRoomVisualType = 1;
             foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance3.exitData.exits) { exit.containsDoor = false; }
 
+            Expand_BackRooms_Entrance_WarpWing = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance_WarpWing", true, false);
+            Expand_BackRooms_Entrance_WarpWing.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_BackRooms_Entrance_WarpWing.IsLostWoodsRoom = true;
+            Expand_BackRooms_Entrance_WarpWing.overrideRoomVisualType = 0;
+            foreach (PrototypeRoomExit exit in Expand_BackRooms_Entrance_WarpWing.exitData.exits) { exit.containsDoor = false; }
             
 
             Expand_BackRooms_Exit = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Exit", true, false);
@@ -10247,6 +10300,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
                 ExpandPrefabs.BackRoomsRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
             }
+
+            foreach (PrototypeDungeonRoom room in Expand_Backrooms_WarpWings) {
+                ExpandPrefabs.BackRoomsWarpWingTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+                        
 
             ExpandPrefabs.BackRoomsEntranceRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_BackRooms_Entrance));
             ExpandPrefabs.BackRoomsEntranceRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_BackRooms_Entrance2));

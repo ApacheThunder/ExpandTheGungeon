@@ -3,6 +3,8 @@ using System.Collections;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
+using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -11,9 +13,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public ExpandEntityManager() {
             Configured = false;
             IsOnBackRoomsFloor = false;
-            MaxPlayerAwayTime = 30;
-            EntitySize = new IntVector2(1, 2);
+            MaxPlayerAwayTime = 20;
+            EntitySize = new IntVector2(2, 2);
             AIAnimatorSpawnClip = "spawn";
+            AIAnimatorDeSpawnClip = "despawn";
             EntityPlayScreemEvent = "Play_EX_EntityScreams_01";
             EntityStopScreemEvent = "Stop_EX_EntityScreams_01";
 
@@ -31,6 +34,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public IntVector2 EntitySize;
         public string AIAnimatorSpawnClip;
+        public string AIAnimatorDeSpawnClip;
 
         public string EntityPlayScreemEvent;
         public string EntityStopScreemEvent;
@@ -39,7 +43,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         private bool m_IsTeleporting;
         private bool m_ScreemStarted;
         private bool m_PlayerEaten;
-
 
         private float m_PlayerAwayTime;
 
@@ -60,10 +63,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_ScreemStarted = true;
             }
             if (!Configured) return;
-            if (m_PlayerEaten)specRigidbody.Reinitialize();
-            if (aiActor.IsBlackPhantom && IsOnBackRoomsFloor) {
-                aiActor.UnbecomeBlackPhantom();
+            if (m_PlayerEaten) {
+                specRigidbody.Reinitialize();
+                if (m_Player) {
+                    m_Player.CurrentPoisonMeterValue = 0f;
+                    if (GameManager.Instance.SecondaryPlayer)GameManager.Instance.SecondaryPlayer.CurrentPoisonMeterValue = 0;
+                }
+                return;
             }
+            if (aiActor.IsBlackPhantom && IsOnBackRoomsFloor)aiActor.UnbecomeBlackPhantom();
             if (aiActor.ParentRoom != null)aiActor.ParentRoom = null;
             if (gameObject.transform.parent != null)gameObject.transform.parent = null;
             if (m_PlayerEaten)return;
@@ -87,28 +95,26 @@ namespace ExpandTheGungeon.ExpandComponents {
                         m_PlayerAwayTime = 0;
                         if (aiActor && specRigidbody && aiAnimator && spriteAnimator && behaviorSpeculator) {
                             if (m_Player.CurrentRoom != null) {
-                                behaviorSpeculator.enabled = false;
-                                aiActor.ClearPath();
-                                specRigidbody.Velocity = Vector2.zero;
-                                aiAnimator.enabled = false;
-                                spriteAnimator.Stop();
-                                aiActor.ToggleRenderers(false);
                                 if (m_Player.CurrentRoom.connectedRooms != null && m_Player.CurrentRoom.connectedRooms.Count > 0) {
                                     m_TargetTeleportRoom = BraveUtility.RandomElement(m_Player.CurrentRoom.connectedRooms);
                                 } else {
                                     m_TargetTeleportRoom = m_CurrentRoom;
                                 }
                                 if (m_TargetTeleportRoom != null) {
-                                        IntVector2? newPosition = ExpandUtility.GetRandomAvailableCellSmart(m_TargetTeleportRoom, EntitySize, false);
-                                        if (newPosition.HasValue) {
-                                            m_IsTeleporting = true;
-                                            AkSoundEngine.PostEvent(EntityStopScreemEvent, gameObject);
-                                            StartCoroutine(DoTeleport(newPosition.Value));
-                                        } else{
-                                            m_PlayerAwayTime = (MaxPlayerAwayTime - 2);
-                                            if (m_PlayerAwayTime < 0) m_PlayerAwayTime = 2;
-                                            return;
-                                        }
+                                    // IntVector2? newPosition = ExpandUtility.GetRandomAvailableCellSmart(m_TargetTeleportRoom, EntitySize, false);
+                                    Vector2 newPosition = FindSafeSpawnInRoom(m_TargetTeleportRoom, EntitySize, sprite, new Vector2(-0.15f, 0.5f));
+                                    m_IsTeleporting = true;
+                                    AkSoundEngine.PostEvent(EntityStopScreemEvent, gameObject);
+                                    StartCoroutine(DoTeleport(newPosition));
+                                    /*if (newPosition.HasValue) {
+                                        m_IsTeleporting = true;
+                                        AkSoundEngine.PostEvent(EntityStopScreemEvent, gameObject);
+                                        StartCoroutine(DoTeleport(newPosition.Value));
+                                    } else{
+                                        m_PlayerAwayTime = (MaxPlayerAwayTime - 2);
+                                        if (m_PlayerAwayTime < 0) m_PlayerAwayTime = 2;
+                                        return;
+                                    }*/
                                 } else {
                                     m_PlayerAwayTime = (MaxPlayerAwayTime - 2);
                                     if (m_PlayerAwayTime < 0) m_PlayerAwayTime = 2;
@@ -128,12 +134,17 @@ namespace ExpandTheGungeon.ExpandComponents {
                 return;
             }
             if (IsOnBackRoomsFloor) {
+                if (visibilityManager) {
+                    visibilityManager.ChangeToVisibility(RoomHandler.VisibilityStatus.VISITED, true);
+                    Destroy(visibilityManager);
+                }
                 if (aiActor) {
                     aiActor.ImmuneToAllEffects = true;
                     aiActor.IgnoreForRoomClear = true;
                     aiActor.CollisionKnockbackStrength = 0;
                     aiActor.CollisionDamage = 0;
                     aiActor.knockbackDoer.weight = 100f;
+                    aiActor.CorpseObject = null;
                 }
                 if (healthHaver) {
                     healthHaver.SetHealthMaximum(1000);
@@ -141,6 +152,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     healthHaver.PreventAllDamage = true;
                 }
             } else {
+                aiActor.ImmuneToAllEffects = true;
                 aiActor.IgnoreForRoomClear = false;
                 if (behaviorSpeculator) {
                     behaviorSpeculator.enabled = false;
@@ -149,15 +161,27 @@ namespace ExpandTheGungeon.ExpandComponents {
                     behaviorSpeculator.enabled = true;
                 }
             }
-            
             m_SettingsApplied = true;
         }
 
-        private IEnumerator DoTeleport(IntVector2 targetPosition) {
-            aiActor.ToggleRenderers(true);
-            transform.position = targetPosition.ToVector3();
-            if (specRigidbody)specRigidbody.Reinitialize();
+        private IEnumerator DoTeleport(Vector2 targetPosition) {
+            behaviorSpeculator.enabled = false;
+            aiActor.ClearPath();
+            if (specRigidbody) {
+                specRigidbody.Velocity = Vector2.zero;
+                specRigidbody.Reinitialize();
+            }
             yield return null;
+            if (aiAnimator && spriteAnimator) {
+                aiAnimator.enabled = true;
+                spriteAnimator.enabled = true;
+                aiAnimator.PlayUntilFinished(AIAnimatorDeSpawnClip, true, "despawn");
+                while (!aiAnimator.IsPlaying(AIAnimatorDeSpawnClip)) yield return null;
+                while (aiAnimator.IsPlaying(AIAnimatorDeSpawnClip)) yield return null;
+
+            }
+            transform.position = targetPosition;
+            if (specRigidbody)specRigidbody.Reinitialize();
             if (aiAnimator && spriteAnimator) {
                 aiAnimator.enabled = true;
                 spriteAnimator.enabled = true;
@@ -189,25 +213,49 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void OnPreRigidBodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
-            if (!m_PlayerEaten && otherRigidbody.GetComponent<PlayerController>() && aiActor) {
-                if (!otherRigidbody.GetComponent<PlayerController>().healthHaver.IsVulnerable)return;
-                m_PlayerEaten = true;
-                otherRigidbody.GetComponent<PlayerController>().SetInputOverride("got eaten");
-                behaviorSpeculator.enabled = false;
-                aiAnimator.enabled = false;
-                aiActor.BehaviorOverridesVelocity = false;
-                aiActor.ClearPath();
-                specRigidbody.Velocity = Vector2.zero;
-                specRigidbody.Reinitialize();
-                spriteAnimator.Stop();
-                StartCoroutine(HandleExitFloor(otherRigidbody.GetComponent<PlayerController>()));
+            try { 
+                if (!this | !gameObject | !aiActor) return;
+                if (otherRigidbody.GetComponent<PlayerController>()) {
+                    PhysicsEngine.SkipCollision = true;
+                    if (m_PlayerEaten)return;
+                    if (!otherRigidbody.GetComponent<PlayerController>().healthHaver.IsVulnerable) return;
+                    m_PlayerEaten = true;
+                    otherRigidbody.GetComponent<PlayerController>().SetInputOverride("got eaten");
+                    behaviorSpeculator.enabled = false;
+                    aiAnimator.enabled = false;
+                    aiActor.BehaviorOverridesVelocity = false;
+                    aiActor.ClearPath();
+                    myRigidbody.Velocity = Vector2.zero;
+                    myRigidbody.Reinitialize();
+                    spriteAnimator.Stop();
+                    StartCoroutine(HandleExitFloor(otherRigidbody.GetComponent<PlayerController>()));
+                    return;
+                } else if (otherRigidbody.GetComponent<MajorBreakable>()) {
+                    otherRigidbody.GetComponent<MajorBreakable>().Break(new Vector2(1, 0));
+                    if (otherRigidbody && otherRigidbody.GetComponent<Chest>() && !otherRigidbody.GetComponent<Chest>().IsMimic |
+                        otherRigidbody.GetComponent<MajorBreakable>().TemporarilyInvulnerable)
+                    {
+                        SpriteOutlineManager.RemoveOutlineFromSprite(otherRigidbody.sprite, false);
+                        otherRigidbody.renderer.enabled = false;
+                        InvokeMethod(typeof(Chest), "ExplodeInSadness", otherRigidbody.GetComponent<Chest>());
+                    } else if (GameManager.Instance.PrimaryPlayer && otherRigidbody.GetComponent<Chest>().IsMimic) {
+                        otherRigidbody.GetComponent<MajorBreakable>().ApplyDamage(1, myRigidbody.Velocity, false);
+                    }
+                    PhysicsEngine.SkipCollision = true;
+                } else if (otherRigidbody.GetComponent<MinorBreakable>()) {
+                    otherRigidbody.GetComponent<MinorBreakable>().Break(myRigidbody.Velocity);
+                } else if (otherRigidbody.GetComponent<Projectile>() | otherRigidbody.GetComponent<BeamController>() |
+                    otherRigidbody.GetComponent<BasicBeamController>() | otherRigidbody.GetComponent<ProjectileAndBeamMotionModule>() != null
+                    )
+                {
+                    PhysicsEngine.SkipCollision = true;
+                }
+            } catch (Exception ex) {
+                if (ExpandSettings.debugMode) {
+                    ETGModConsole.Log("[ExpandTheGungeon] Warning: Exception caught at ExpandEntityController.OnPreRigidBodyCollision!");
+                    Debug.LogException(ex);
+                }
                 return;
-            } else if (otherRigidbody.GetComponent<MajorBreakable>()) {
-                otherRigidbody.GetComponent<MajorBreakable>().Break(new Vector2(1, 0));
-            } else if (otherRigidbody.GetComponent<MinorBreakable>()) {
-                otherRigidbody.GetComponent<MinorBreakable>().Break(new Vector2(1, 0));
-            } else if (otherRigidbody.GetComponent<Projectile>()) {
-                Destroy(otherRigidbody.gameObject);
             }
         }
         
@@ -215,9 +263,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator HandleExitFloor(PlayerController player) {
             m_Player = player;
-            m_Player.ToggleRenderer(false, "got eaten");
-            m_Player.ToggleGunRenderers(false, "got eaten");
-            m_Player.ToggleHandRenderers(false, "got eaten");
+            m_Player.IsVisible = false;
             yield return null;
             float elapsed = 0f;
             float duration = 0.5f;
@@ -228,7 +274,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             tk2dSprite targetSprite = dummySpriteObject.GetComponent<tk2dSprite>();
             ExpandUtility.DuplicateSprite(targetSprite, (m_Player.sprite as tk2dSprite));
             targetSprite.SetSprite(m_Player.sprite.spriteId);
-            yield return null;
             AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
             AkSoundEngine.PostEvent(EntityStopScreemEvent, gameObject);
             while (elapsed < duration) {
@@ -238,8 +283,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 targetSprite.transform.position = Vector3.Lerp(startPos, finalOffset, elapsed / duration);
                 yield return null;
             }
-            // AkSoundEngine.PostEvent("Play_CHR_muncher_eat_01", gameObject);
-            // yield return new WaitForSeconds(0.15f);
             AkSoundEngine.PostEvent("Play_VO_lichA_cackle_01", gameObject);
             Vector2 BottomOffset = dummySpriteObject.transform.position;
             Vector2 TopOffset = dummySpriteObject.transform.position + new Vector3(1, 1);
@@ -251,30 +294,29 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield return new WaitForSeconds(1);
             Pixelator.Instance.FadeToBlack(0.15f, false, 0f);
             yield return new WaitForSeconds(0.3f);
-            // AkSoundEngine.PostEvent("Play_CHR_muncher_chew_01", gameObject);
-            // yield return new WaitForSeconds(4);;
+            specRigidbody.OnPreRigidbodyCollision -= OnPreRigidBodyCollision;
             Destroy(dummySpriteObject);
-            m_Player.ToggleRenderer(true, "got eaten");
-            m_Player.ToggleGunRenderers(true, "got eaten");
-            m_Player.ToggleHandRenderers(true, "got eaten");
-            m_Player.ClearAllInputOverrides();
-            // GameManager.Instance.LoadCustomLevel("tt_belly");
             AkSoundEngine.PostEvent("Stop_MUS_All", gameObject);
             AkSoundEngine.PostEvent("Stop_EX_MUS_All", gameObject);
+            yield return null;
+            m_Player.ClearAllInputOverrides();
+            yield return null;
+            m_Player.PrepareForSceneTransition();
             GameManager.Instance.LoadNextLevel();
             yield break;
         }
 
+        private Vector2 FindSafeSpawnInRoom(RoomHandler targetRoom, IntVector2 clearance, tk2dBaseSprite targetSprite, Vector2? offset = null) {
+            Vector2 m_result;
+            IntVector2? randomAvailableCell = targetRoom.GetRandomAvailableCell(new IntVector2?(clearance), new CellTypes?(CellTypes.FLOOR), false, null);
+            m_result = ((randomAvailableCell == null) ? targetRoom.GetCenterCell().ToVector2() : randomAvailableCell.Value.ToVector2());
+            m_result += ((sprite.GetUntrimmedBounds().size).XY().WithY(0f) / 2f);
+            if (offset.HasValue) m_result += offset.Value;
+            return m_result;
+        }
+
         
         protected override void OnDestroy() {
-            // Incase something kills the entity before it finishes the process of activating floor transition.
-            // Not normally possible but who knows given all the modded items floating about. :P
-            if (IsOnBackRoomsFloor && m_PlayerEaten && m_Player) {
-                m_Player.ToggleRenderer(true, "got eaten");
-                m_Player.ToggleGunRenderers(true, "got eaten");
-                m_Player.ToggleHandRenderers(true, "got eaten");
-                m_Player.ClearAllInputOverrides();
-            }
             AkSoundEngine.PostEvent(EntityStopScreemEvent, gameObject);
             if (specRigidbody && IsOnBackRoomsFloor)specRigidbody.OnPreRigidbodyCollision -= OnPreRigidBodyCollision;
             base.OnDestroy();

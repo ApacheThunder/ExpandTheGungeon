@@ -152,6 +152,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static Texture2D ModifiedCompanionsAtlas;
 
+        // public static tk2dSpriteCollectionData ModifiedCompanionCollection;
+
 
         public static void InitSpriteCollections(AssetBundle expandSharedAssets1) {
             BabyGoodHammerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "BabyGoodHammerCollection", "BabyGoodHammer_Collection", "BabyGoodHammerCollection");
@@ -177,6 +179,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             ModifiedCompanionsAtlas = expandSharedAssets1.LoadAsset<Texture2D>("ModifiedCompanions_Collection");
+
+            // ModifiedCompanionCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("6f9c28403d3248c188c391f5e40774c5").sprite.Collection, ModifiedCompanionsAtlas, null, null, true);
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {
@@ -4835,8 +4839,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 new SeekTargetBehavior() {
                     StopWhenInRange = true,
                     CustomRange = 6,
-                    LineOfSight = false,
-                    ReturnToSpawn = true,
+                    LineOfSight = true,
+                    ReturnToSpawn = false,
                     SpawnTetherDistance = 0,
                     PathInterval = 0.5f,
                     SpecifyRange = false,
@@ -5290,7 +5294,41 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "entity_spawn_028",
                 "entity_spawn_029"
             };
+
+            List<string> DeSpawnSpriteList = new List<string>() {
+                "entity_spawn_029",
+                "entity_spawn_028",
+                "entity_spawn_027",
+                "entity_spawn_026",
+                "entity_spawn_025",
+                "entity_spawn_024",
+                "entity_spawn_023",
+                "entity_spawn_022",
+                "entity_spawn_021",
+                "entity_spawn_020",
+                "entity_spawn_019",
+                "entity_spawn_018",
+                "entity_spawn_017",
+                "entity_spawn_016",
+                "entity_spawn_015",
+                "entity_spawn_014",
+                "entity_spawn_013",
+                "entity_spawn_012",
+                "entity_spawn_011",
+                "entity_spawn_010",
+                "entity_spawn_009",
+                "entity_spawn_008",
+                "entity_spawn_007",
+                "entity_spawn_006",
+                "entity_spawn_005",
+                "entity_spawn_004",
+                "entity_spawn_003",
+                "entity_spawn_002",
+                "entity_spawn_001"
+            };
             
+
+
             List<string> DeathSpriteList = new List<string>() { "entity_idle_front_001", "entity_idle_front_001" };
             
             tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, EntityCollection, "entity_idle_front_001");
@@ -5307,7 +5345,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackRightSpriteList, "move_back_right", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
             ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), MoveBackLeftSpriteList, "move_back_left", tk2dSpriteAnimationClip.WrapMode.Loop, 10);
 
-            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 8);
+            tk2dSpriteAnimationClip m_DeSpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), DeSpawnSpriteList, "despawn", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            tk2dSpriteAnimationClip m_SpawnAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), SpawnSpriteList, "spawn", tk2dSpriteAnimationClip.WrapMode.Once, 10);
             tk2dSpriteAnimationClip m_HitAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), IdleFrontSpriteList, "hit", tk2dSpriteAnimationClip.WrapMode.Once, 6);
             tk2dSpriteAnimationClip m_DeathAnimation = ExpandUtility.AddAnimation(m_CachedSpriteAnimator, EntityCollection.GetComponent<tk2dSpriteCollectionData>(), DeathSpriteList, "die", tk2dSpriteAnimationClip.WrapMode.Once, 6);
 
@@ -5316,7 +5355,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 m_SpawnAnimation.frames[0].triggerEvent = true;
             }
 
-            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, EntityGUID, null, EnemyHasNoCorpse: true, EnemyHasNoShooter: true);
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, m_CachedTargetObject.name, EntityGUID, null, instantiateCorpseObject: false, EnemyHasNoShooter: true);
                         
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
@@ -5416,6 +5455,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         }
                     }
                 };
+                m_CachedAIActor.aiAnimator.OtherAnimations = new List<AIAnimator.NamedDirectionalAnimation>() {
+                    new AIAnimator.NamedDirectionalAnimation() {
+                        name = "despawn",
+                        anim = new DirectionalAnimation() {
+                            Type = DirectionalAnimation.DirectionType.Single,
+                            Prefix = "despawn",
+                            AnimNames = new string[1],
+                            Flipped = new DirectionalAnimation.FlipType[1]
+                        }
+                    }
+                };
             }
             
             BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
@@ -5460,6 +5510,32 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
             // Loading a custom script from text file in place of one from an existing prefab..
             m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+
+            GoopDoer m_BacteriaGoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
+            m_BacteriaGoopDoer.goopDefinition = ExpandPrefabs.EXBacteriaGoop;
+            m_BacteriaGoopDoer.positionSource = GoopDoer.PositionSource.HitBoxCenter;
+            m_BacteriaGoopDoer.updateTiming = GoopDoer.UpdateTiming.Always;
+            m_BacteriaGoopDoer.updateFrequency = 0.05f;
+            m_BacteriaGoopDoer.isTimed = false;
+            m_BacteriaGoopDoer.goopTime = 1;
+            m_BacteriaGoopDoer.updateOnPreDeath = true;
+            m_BacteriaGoopDoer.updateOnDeath = false;
+            m_BacteriaGoopDoer.updateOnAnimFrames = false;
+            m_BacteriaGoopDoer.updateOnCollision = false;
+            m_BacteriaGoopDoer.updateOnGrounded = false;
+            m_BacteriaGoopDoer.updateOnDestroy = false;
+            m_BacteriaGoopDoer.defaultGoopRadius = 1.8f;
+            m_BacteriaGoopDoer.suppressSplashes = false;
+            m_BacteriaGoopDoer.goopSizeVaries = true;
+            m_BacteriaGoopDoer.varyCycleTime = 0.9f;
+            m_BacteriaGoopDoer.radiusMin = 1.25f;
+            m_BacteriaGoopDoer.radiusMax = 1.8f;
+            m_BacteriaGoopDoer.goopSizeRandom = true;
+            m_BacteriaGoopDoer.UsesDispersalParticles = false;
+            m_BacteriaGoopDoer.DispersalDensity = 2;
+            m_BacteriaGoopDoer.DispersalMinCoherency = 0.2f;
+            m_BacteriaGoopDoer.DispersalMaxCoherency = 1;
 
             m_CachedTargetObject.AddComponent<ExpandEntityManager>();
 

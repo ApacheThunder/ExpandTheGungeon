@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3222063493
+CRC: 607406649
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8cf168736b988ebfad673ff49da7a626
+    Hash: 50868d9f865e5aea247ed7656c9032d8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 1e1fd86321726eba1aef989ebc89c5b2
+    Hash: 084f6c1cb424c050847492c6d98c3335
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,6 +39,10 @@ ClassTypes:
   Script: {fileID: 11500000, guid: c59f4fb058392d745a690e85b4feba5d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 85a95b2198074e1459671337ed25c270, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 72f5af3208ae05b408d811e3a4f2ad50, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b056c5929d02a2949bc9c04eb651b2b5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: ffe832c3889be3440813e901b0c5bb7c, type: 3}
 - Class: 114
@@ -246,6 +250,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room090.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_CornerBomb2.bytes
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/carpetGrid.txt
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom4.bytes
 - Assets/ExpandRooms/RoomBuilderData/Hollow/Expand_Neighborino_BlobRoom_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Brother4.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular37.bytes
@@ -262,6 +267,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/M_Expand_Retrashed.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room053.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXSecretDoor_Collection.png
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_07.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals16.bytes
 - Assets/ExpandPrefabs/Items/EXSonicRing.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate8.bytes
@@ -338,6 +344,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room019.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Spiralbomb.bytes
 - Assets/ExpandSerializedData/AmmonomiconData/WestBrosTuc_AmmonomiconData.txt
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom1.bytes
 - Assets/ExpandRooms/RoomFactoryData/P_Expand_MasterRound2.bytes
 - Assets/ExpandRooms/RoomFactoryData/F_Expand_Obsidian_Shell_Casing.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter13.bytes
@@ -395,6 +402,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular46.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/Clownkin_Collection.png
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_02.prefab
+- Assets/ExpandPrefabs/Misc/EXPortableShip_Shadow.prefab
 - Assets/ExpandSerializedData/TilesetData/Phobos/ENV_Tileset_Phobos.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Batsmall.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Pit_Passage_Layout.png
@@ -456,6 +464,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room057.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_OddSquare2.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_BigGap1.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_Connector_01.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/RedShotgunManCollection.prefab
 - Assets/ExpandTextures/Misc/EmptyVHSTexture.png
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny6.bytes
@@ -475,6 +484,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/FB_Expand_Achievement_Gungeon_Master.bytes
 - Assets/ExpandPrefabs/AIActors/Clownkin_Wig.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate4.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_02.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_ExitRoom_NewElevator.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal7.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal25.bytes
@@ -486,6 +496,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_MushZookie.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular31.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/roomFloorBorderGrid.txt
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Entrance_WarpWing.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_ArrowSpent.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_tight3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_AnimalsHunters1.bytes
@@ -551,6 +562,7 @@ Assets:
 - Assets/ExpandPrefabs/AIActors/Bootleg Bullat.prefab
 - Assets/ExpandTextures/AmmonomiconTextures/bootlegbulletmanbandana_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/B_Expand_demon_onehand.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_06.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_MelonTurtle_Enclose_Hub_Layout.png
 - Assets/ExpandSerializedData/TilesetData/Jungle/Woods/pitLayoutGrid.txt
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXLargeMonsterCollection.prefab
@@ -667,6 +679,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular1.bytes
 - Assets/ExpandRooms/RoomFactoryData/F_Expand_MasterRound5.bytes
 - Assets/ExpandPrefabs/SpriteCollections/Misc/EXBackroomsCollection.prefab
+- Assets/ExpandPrefabs/TilesetPrefabs/EXVoidController.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room028.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed18.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Ice3.bytes
@@ -684,6 +697,7 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_2.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Steps1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room086.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_10.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/pitLayoutGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Square3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Smallcentral.bytes
@@ -725,6 +739,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular14.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal29.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal11.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_09.bytes
 - Assets/ExpandPrefabs/Misc/Arrival.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed11.bytes
 - Assets/ExpandRooms/RoomBuilderData/Forge/Expand_Neighborino_CorridorOfDoomDeath_Layout.png
@@ -760,6 +775,7 @@ Assets:
 - Assets/ExpandSerializedData/AmmonomiconData/Skusketling_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Jungle_RewardRoom.bytes
 - Assets/ExpandPrefabs/Items/Projectiles/WestBrosGoldenRevolverProjectile.prefab
+- Assets/ExpandTextures/Misc/BacteriaGoop_WorldTexture.png
 - Assets/ExpandRooms/RoomFactoryData/MHF_Expand_Achievement_Great_Hall.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman7.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed9.bytes
@@ -776,9 +792,11 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular36.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room066.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Mixed10.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_01.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Connector_01.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Spooky.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom6.bytes
 - Assets/ExpandPrefabs/Misc/EXSecretBackroomsDoor_MinimapIcon.prefab
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorFrames.prefab
 - Assets/ExpandRooms/RoomBuilderData/TrapRooms/Expand_Apache_SpikeAndPits_Layout.png
@@ -828,7 +846,9 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed3.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Blocks_Pits_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Connector_03.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_04.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room050.bytes
+- Assets/ExpandPrefabs/Misc/EXDangerRoomIcon.prefab
 - Assets/ExpandPrefabs/Misc/EX Alarm Mushroom.prefab
 - Assets/ExpandPrefabs/Misc/EXPortableElevator_Departure_Placable.prefab
 - Assets/ExpandRooms/RoomBuilderData/Mines/Neighborino_GoopTroop_Layout.png
@@ -861,6 +881,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal13.bytes
 - Assets/ExpandRooms/RoomFactoryData/HF_Expand_Achievement_Cartographers_Assistant.bytes
 - Assets/ExpandRooms/RoomBuilderData/BulletHell/Hell_Hath_No_Joery_009_Layout.png
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_03.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Phobos.prefab
 - Assets/ExpandPrefabs/Misc/BootlegRoomDoorTriggers.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular45.bytes
@@ -989,6 +1010,7 @@ Assets:
 - Assets/ExpandSerializedData/SpriteCollections/EXJungleCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room002.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal6.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom5.bytes
 - Assets/ExpandPrefabs/Items/HammerSpawningFX.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room026.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter8.bytes
@@ -1137,6 +1159,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter27.bytes
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/BootlegBullatCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Steps4.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_05.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room018.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Connector_06.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room014.bytes
@@ -1242,6 +1265,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Shotgun.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/FloorData/Expand_Jungle_Boss_FloorData.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_RainbowRoom.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_VoidRoom_08.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXPortableElevator_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera22.bytes
 - Assets/ExpandPrefabs/AIActors/Cronenberg Abomination.prefab
@@ -1307,6 +1331,7 @@ Assets:
 - Assets/ExpandRooms/RoomBuilderData/GungeonProper/Expand_Neighborino_LongSpikeTrap_Layout.png
 - Assets/ExpandTextures/EXLogoMini.png
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room064.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom2.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ExpandSarco_Floor.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Squareish6.bytes
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room005.bytes
@@ -1326,8 +1351,10 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter3.bytes
 - Assets/ExpandPrefabs/Misc/Chaos Baby Dragun.prefab
 - Assets/ExpandRooms/RoomFactoryData/PM_Expand_Achievement_Castle_Crasher.bytes
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Brother8.bytes
 - Assets/ExpandPrefabs/Misc/ExpandChallenge_KingsMen.prefab
+- Assets/ExpandPrefabs/TilesetPrefabs/EXVoidRoomAmbience.prefab
 - Assets/ExpandPrefabs/Breakables/ExpandJungleTree_Shard_01.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_Weird4.bytes
 - Assets/ExpandRooms/RoomFactoryData/M_Expand_ratkey.bytes
@@ -1402,6 +1429,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular38.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal26.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/carpetGrids_0.txt
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_WarpWingRoom7.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter19.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/facewallGrids_1.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular2.bytes
