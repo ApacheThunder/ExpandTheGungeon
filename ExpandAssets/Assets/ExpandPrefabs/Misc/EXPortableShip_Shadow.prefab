@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4667030873996038}
-  m_Layer: 20
+  m_Layer: 10
   m_Name: EXPortableShip_Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

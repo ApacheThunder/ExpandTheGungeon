@@ -11,17 +11,22 @@ namespace ExpandTheGungeon.ExpandComponents {
             CommonLoot = new List<int>() { 70, 68, 73, 565 };
             RareLoot = new List<int>() { 74, 85, 120, 600, 78, 224, 67, 297 };
 
-            BannedRoomCategories = new List<PrototypeDungeonRoom.RoomCategory>();
+            BannedRoomCategories = new List<PrototypeDungeonRoom.RoomCategory>() {
+                PrototypeDungeonRoom.RoomCategory.BOSS
+            };
             AllowedTilesets = new List<GlobalDungeonData.ValidTilesets>() {
-                 GlobalDungeonData.ValidTilesets.JUNGLEGEON
+                GlobalDungeonData.ValidTilesets.JUNGLEGEON
             };
 
             BreakOnEnemyCollision = true;
+
+            SpawnItemOnBreak = true;
 
             LootOdds = 0.1f;
             RareLootOdds = 0.08f;
         }
 
+        public bool SpawnItemOnBreak;
         public bool BreakOnEnemyCollision;
         public float LootOdds;
         public float RareLootOdds;
@@ -61,13 +66,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
 
-            if (m_ParentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS)BreakOnEnemyCollision = false;
-
             if (specRigidbody && BreakOnEnemyCollision) {
                 specRigidbody.OnPreRigidbodyCollision += OnPreRigidBodyCollision;
             } else if (!specRigidbody) {
                 BreakOnEnemyCollision = false;
             }
+
+            if (!SpawnItemOnBreak) return;
 
             if (CommonLoot.Count < 1 && RareLoot.Count < 1)return;
 

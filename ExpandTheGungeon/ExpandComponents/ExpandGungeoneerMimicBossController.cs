@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using Pathfinding;
+using ExpandTheGungeon.ItemAPI;
+using ExpandTheGungeon.ExpandMain;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -19,6 +21,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UseGlitchShader = false;
             EnableFallBackAttacks = true;
             IsConfigured = false;
+            FireOverride = false;
 
             m_SpecialChargeWeapons = new List<int>() {
                 332, 393, 541, 719, 393, 8, 37, 200, 210,
@@ -57,6 +60,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool UseGlitchShader;
         public bool EnableFallBackAttacks;
         public bool IsConfigured;
+        public bool FireOverride;
 
         public float RotationAngle;
         
@@ -66,7 +70,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         private List<int> m_StartingGuns;
         
         private AIActor m_AIActor;
-        
+
+        private PortableShip m_PortableShipItem;
+
         private bool m_HasBeenActivated;
         private bool m_DelayedActive;
         private bool m_MirrorGunToggle;
@@ -125,6 +131,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (UseGlitchShader) { SetupPlayerGlitchShader(); };
 
             IsConfigured = true;
+            ExpandStaticReferenceManager.CurrentGungeoneerMimic = this;
         }
         
         public void SetupPlayerGlitchShader() {
@@ -158,7 +165,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void Update() {
             try {
                 if (!IsConfigured) { return; }
-
+                
                 if (!m_HasBeenActivated && m_Player && m_Player.GetAbsoluteParentRoom() != null && transform.position.GetAbsoluteRoom() != null && m_Player.GetAbsoluteParentRoom() == transform.position.GetAbsoluteRoom()) {
                     m_Player.PostProcessBeam += HandleBeam;
                     m_AIActor.specRigidbody.CollideWithTileMap = true;
@@ -166,6 +173,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_HasBeenActivated = true;                
                     StartCoroutine(DelayedActivate());
                 }
+
+                if (!ExpandStaticReferenceManager.CurrentGungeoneerMimic) ExpandStaticReferenceManager.CurrentGungeoneerMimic = this;
 
                 if (m_HasBeenActivated && m_Player == null) { m_Player = GameManager.Instance.BestActivePlayer; }
 
@@ -178,14 +187,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 
                 if (!m_DelayedActive) { return; }
-
+                                
                 if (m_AIActor.PlayerTarget == null | m_AIActor.TargetRigidbody == null) { m_AIActor.PlayerTarget = m_Player; }
 
                 if (m_Player && m_AIActor) {
                     UpdateSprites();
                     if (m_AIActor.spriteAnimator.IsPlaying("run_down")) { m_AIActor.spriteAnimator.Stop(); }
                 }
-
+                
                 if (m_MirrorGunToggle) {
                     if (m_AIActor.aiShooter.EquippedGun.PickupObjectId != m_Player.CurrentGun.PickupObjectId && ExpandLists.AllowedMimicBossWeapons.Contains(m_Player.CurrentGun.PickupObjectId)) {
                         ChangeOrAddGun(m_AIActor.aiShooter.Inventory, m_Player.CurrentGun.PickupObjectId);
@@ -202,10 +211,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         }
                     }
                     
-                    if ((!m_IsFiring && m_CanAttack && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId))) && (m_Player.CurrentGun.IsFiring | m_Player.CurrentGun.IsCharging)) {
+                    if ((!m_IsFiring && m_CanAttack && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId))) && (FireOverride | m_Player.CurrentGun.IsFiring | m_Player.CurrentGun.IsCharging)) {
                         m_IsFiring = true;
                         StartCoroutine(HandleFireGun());
-                    } else if ((m_Player.IsFiring | m_Player.CurrentGun.IsCharging) && !m_IsFiring && m_CanAttack && !m_AIActor.aiShooter.CurrentGun.IsHeroSword) {
+                    } else if ((FireOverride | m_Player.IsFiring | m_Player.CurrentGun.IsCharging) && !m_IsFiring && m_CanAttack && !m_AIActor.aiShooter.CurrentGun.IsHeroSword) {
                         m_AIActor.aiShooter.CurrentGun.Attack();
                         m_AIActor.aiShooter.CurrentGun.ClearReloadData();
                         m_IsFiring = false;
@@ -248,6 +257,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (!m_IntroDoer.m_finished | !IntroDone | m_AIActor.healthHaver.IsDead) { return; }
                 
                 m_RandomRefresh -= BraveTime.DeltaTime;
+
+                if (m_Player && !m_PortableShipItem && m_Player.activeItems != null && m_Player.activeItems.Count > 0) {
+                    for (int i = 0; i < m_Player.activeItems.Count; i++) {
+                        if (m_Player.activeItems[i].gameObject.GetComponent<PortableShip>()) {
+                            m_PortableShipItem = (m_Player.activeItems[i].gameObject.GetComponent<PortableShip>());
+                            break;
+                        }
+                    }
+                }
 
                 if (!m_IsPathfindingToCenter) {
                     if (m_ParentRoom != null) {
@@ -526,7 +544,7 @@ namespace ExpandTheGungeon.ExpandComponents {
            
             yield return null;
             
-            if (!m_Player.CurrentGun.IsCharging && !m_Player.CurrentGun.IsFiring) {
+            if (!m_Player.CurrentGun.IsCharging && !m_Player.CurrentGun.IsFiring && !FireOverride) {
                 m_ChargingTime = 0;
                 m_IsFiring = false;
                 m_AIActor.aiShooter.CurrentGun.ClearReloadData();
@@ -537,7 +555,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_ChargingTime = 0;
             yield return null;
             if (ChargeTime.HasValue) {
-                while ((m_Player.CurrentGun.IsCharging | m_Player.CurrentGun.IsFiring) && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId)) ) {
+                while ((m_Player.CurrentGun.IsCharging | m_Player.CurrentGun.IsFiring | FireOverride) && (m_HasShootStyle(ProjectileModule.ShootStyle.Charged) | m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId)) ) {
                     m_ChargingTime += BraveTime.DeltaTime;
                     if (!m_MirrorGunToggle | m_IsDisconnected) {
                         m_IsFiring = false;
@@ -555,7 +573,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield return null;
             if ((m_ChargingTime >= ChargeTime.Value) | (!m_HasShootStyle(ProjectileModule.ShootStyle.Charged) && !m_SpecialChargeWeapons.Contains(m_AIActor.aiShooter.CurrentGun.PickupObjectId))) {
-                while (m_AIActor.aiShooter.CurrentGun.Attack() != Gun.AttackResult.Success && (m_Player.CurrentGun.IsCharging | m_Player.CurrentGun.IsFiring)) {
+                while (m_AIActor.aiShooter.CurrentGun.Attack() != Gun.AttackResult.Success && (FireOverride | m_Player.CurrentGun.IsCharging | m_Player.CurrentGun.IsFiring)) {
                     if (m_IsDisconnected) {
                         m_ChargingTime = 0;
                         m_IsFiring = false;
@@ -601,7 +619,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         private IEnumerator HandleFiringBeam(BeamController beam) {
             float elapsed = 0f;
             yield return null;
-            while (m_Player && m_Player.IsFiring && this && m_AIActor.sprite && m_AIActor.healthHaver && !m_IsDisconnected) {
+            while (m_Player && (m_Player.IsFiring | FireOverride) && this && m_AIActor.sprite && m_AIActor.healthHaver && !m_IsDisconnected) {
                 elapsed += BraveTime.DeltaTime;
                 if (!m_AIActor.TargetRigidbody) { m_AIActor.PlayerTarget = m_Player; }
                 if (!m_MirrorGunToggle) {
@@ -791,6 +809,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         protected override void OnDestroy() {
             if (m_CameraChanged) { ModifyCamera(false); }
             if (!m_IsDisconnected) { Disconnect(); }
+            ExpandStaticReferenceManager.CurrentGungeoneerMimic = null;
             base.OnDestroy();
         }
     }

@@ -7,6 +7,8 @@ namespace ExpandTheGungeon.ExpandMain {
 
     public static class ExpandStaticReferenceManager {
 
+        public static ExpandGungeoneerMimicBossController CurrentGungeoneerMimic;
+
         public static List<ExpandSecretDoorPlacable> AllSecretDoors;
         public static List<ExpandCorruptedObjectDummyComponent> AllGlitchTiles;
         public static List<ExpandForgeHammerComponent> AllFriendlyHammers;
@@ -17,9 +19,11 @@ namespace ExpandTheGungeon.ExpandMain {
         public static List<ExpandWesternBroController> AllWesternBros;
         public static List<ExpandTallGrassPatchSystem> AllGrasses;
         public static List<ExpandAlarmMushroomPlacable> AllAlarmMushrooms;
-
+        
 
         static ExpandStaticReferenceManager() {
+            CurrentGungeoneerMimic = null;
+
             AllSecretDoors = new List<ExpandSecretDoorPlacable>();
             AllGlitchTiles = new List<ExpandCorruptedObjectDummyComponent>();
 
@@ -67,6 +71,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         public static void ClearStaticPerLevelData() {
             if (GameManager.Instance?.Dungeon?.tileIndices.tilesetId != GlobalDungeonData.ValidTilesets.CATACOMBGEON) { AllSecretDoors.Clear(); }
+            CurrentGungeoneerMimic = null;
             AllGlitchTiles.Clear();
             AllFriendlyHammers.Clear();
             AllCorruptionSoundObjects.Clear();
@@ -79,6 +84,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         public static void ForceClearAllStaticMemory() {
+            CurrentGungeoneerMimic = null;
             AllSecretDoors.Clear();
             AllGlitchTiles.Clear();
             AllFriendlyHammers.Clear();

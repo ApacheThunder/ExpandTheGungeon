@@ -9,6 +9,8 @@ namespace ExpandTheGungeon.ItemAPI {
     public class BabySitter : PassiveItem {
                 
         public static GameObject BabySitterObject;
+
+        public static int BabySitterID;
         
         public static void Init(AssetBundle expandSharedAssets1) {
 
@@ -24,6 +26,7 @@ namespace ExpandTheGungeon.ItemAPI {
             babysitItem.quality = ItemQuality.B;
             if (!ExpandSettings.EnableEXItems) { babysitItem.quality = ItemQuality.EXCLUDED; }
             ExpandLists.CompanionItems.Add(BabySitterObject);
+            BabySitterID = babysitItem.PickupObjectId;
         }
         
 

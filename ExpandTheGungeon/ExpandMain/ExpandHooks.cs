@@ -1007,7 +1007,12 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         private void TeardownPunchout_Hook(Action<PunchoutController> orig, PunchoutController self) {
-            if (!GameStatsManager.Instance.IsRainbowRun && !ExpandSettings.PlayingPunchoutArcade) { orig(self); return; }
+            if (GameStatsManager.HasInstance && !GameStatsManager.Instance.IsRainbowRun && 
+                !ExpandSettings.PlayingPunchoutArcade
+                ) {
+                orig(self);
+                return;
+            }
             
             if (ReflectGetField<bool>(typeof(PunchoutController), "m_isInitialized", self)) {
                 Minimap.Instance.TemporarilyPreventMinimap = false;
@@ -1080,11 +1085,7 @@ namespace ExpandTheGungeon.ExpandMain {
                                 LootEngine.SpawnItem(gameObject2, (a + new Vector2(11f, 0f).Rotate(degrees)), Vector2.zero, 0f, true, false, false);
                             } else {
                                 if (m_room != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
-                                    string[] CustomText = new string[] {
-                                        "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}",
-                                        "Rats are GROOOOOOSS!\n\n{wb}-Bowler{w}"
-                                    };
-                                    ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, BraveUtility.RandomElement(CustomText), false);
+                                    ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, (a + new Vector2(11f, 0f).Rotate(degrees)), m_room, BraveUtility.RandomElement(ExpandLists.EXBowlerNotes_RatPunchout), false);
                                 }
                             }
                         }

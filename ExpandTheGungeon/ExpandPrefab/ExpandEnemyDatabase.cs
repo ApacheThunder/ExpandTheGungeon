@@ -5514,7 +5514,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             GoopDoer m_BacteriaGoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
             m_BacteriaGoopDoer.goopDefinition = ExpandPrefabs.EXBacteriaGoop;
-            m_BacteriaGoopDoer.positionSource = GoopDoer.PositionSource.HitBoxCenter;
+            m_BacteriaGoopDoer.positionSource = GoopDoer.PositionSource.SpecifyGameObject;
+            m_BacteriaGoopDoer.goopCenter = m_CachedTargetObject.transform.Find("goopObject")?.gameObject;
             m_BacteriaGoopDoer.updateTiming = GoopDoer.UpdateTiming.Always;
             m_BacteriaGoopDoer.updateFrequency = 0.05f;
             m_BacteriaGoopDoer.isTimed = false;

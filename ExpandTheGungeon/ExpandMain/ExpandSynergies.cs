@@ -166,13 +166,13 @@ namespace ExpandTheGungeon.ExpandMain {
             m_TempSynergyList.Add(
                 new AdvancedSynergyEntry() {
                     NameKey = "Become Friend's Ship...",
-                    MandatoryItemIDs = new List<int>() { PortableShip.PortableShipID, 326 }, // Synergy for Portable Ship and Number 2
+                    MandatoryItemIDs = new List<int>() { PortableShip.PortableShipID }, // Synergy for Portable Ship and Number 2
                     IgnoreLichEyeBullets = false,
                     SuppressVFX = false,
                     RequiresAtLeastOneGunAndOneItem = false,
                     MandatoryGunIDs = new List<int>(0),
                     OptionalGunIDs = new List<int>(0),
-                    OptionalItemIDs = new List<int>(0),
+                    OptionalItemIDs = new List<int>() { BabySitter.BabySitterID, 326, 491 },
                     ActivationStatus = SynergyEntry.SynergyActivation.ACTIVE,
                     ActiveWhenGunUnequipped = true,
                     statModifiers = new List<StatModifier>(0),

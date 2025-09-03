@@ -26,7 +26,9 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void Start() {
             m_AIActor = aiActor;
-            m_AIActor.AdditionalSafeItemDrops = new List<PickupObject>() { Mimiclay.MimiclayObject.GetComponent<Mimiclay>() };
+            if (!GameStatsManager.HasInstance | !GameStatsManager.Instance.IsRainbowRun) {
+                m_AIActor.AdditionalSafeItemDrops = new List<PickupObject>() { Mimiclay.MimiclayObject.GetComponent<Mimiclay>() };
+            }
             m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
         }
 

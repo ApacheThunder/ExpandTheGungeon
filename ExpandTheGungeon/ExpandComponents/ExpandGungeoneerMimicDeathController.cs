@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
+using System.Collections;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -25,6 +27,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         protected override void OnDestroy() { base.OnDestroy(); }
 
         private void OnBossDeath(Vector2 dir) {
+            if (GameManager.Instance.SecondaryPlayer) { GameManager.Instance.SecondaryPlayer.CurrentInputState = PlayerInputState.NoInput; }
+            if (aiActor && sprite && GameStatsManager.HasInstance && GameStatsManager.Instance.IsRainbowRun) {
+                ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, sprite.WorldCenter, aiActor.ParentRoom, BraveUtility.RandomElement(ExpandLists.EXBowlerNotes_GungeoneerMimic), false);
+            }
             if (m_GungeoneerMimicBossController) {
                 m_GungeoneerMimicBossController.IntroDone = false;
                 m_GungeoneerMimicBossController.Disconnect();

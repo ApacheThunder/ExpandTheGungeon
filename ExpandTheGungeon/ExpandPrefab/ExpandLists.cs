@@ -11,6 +11,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<GameObject> CompanionItems = new List<GameObject>();
         public static Dictionary<string, List<string>> SpriteCollections;
 
+        public static List<string> EXBowlerNotes_RatPunchout = new List<string>() {
+            "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}",
+            "Rats are GROOOOOOSS!\n\n{wb}-Bowler{w}"
+        };
+
+        public static List<string> EXBowlerNotes_GungeoneerMimic = new List<string>() {
+            "Doesn't look like this Mimiclay item came from a {wb}RAAAAAIIIINBOW{w} Chest.\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}",
+            "It doesn't matter if you had to fight yourself!\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}"
+        };
+
+        public static List<string> EXBowlerNotes_OldWestBros = new List<string>() {
+            "Did this fancy gun come from a {wb}RAAAAAIIIINBOW{w} Chest? I don't think so!\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}",
+            "This town ain't big enough for the two of us! ... by two us I mean this item you could have gotten.\n\nOnly room in this town for {wb}RAAAAAIIIINBOWS{w}!\n\n-Bowler"
+        };
+
         public static readonly List<string> EXSecretDoorCollection = new List<string>() {
             "EXSecretDoor_Background",
             "EXSecretBackroomsDoor_Background",

@@ -1,4 +1,6 @@
 ﻿using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
 using UnityEngine;
 
@@ -27,22 +29,34 @@ namespace ExpandTheGungeon.ExpandComponents
 
             if (!oneSurvivor)
             {
-                PickupObject rewardRevolver;
-
-                if (aiActor.ParentRoom != null && !aiActor.ParentRoom.PlayerHasTakenDamageInThisRoom)
+                if (GameStatsManager.HasInstance && GameStatsManager.Instance.IsRainbowRun && GameManager.Instance.RewardManager.BowlerNoteOtherSource)
                 {
-                    rewardRevolver = PickupObjectDatabase.GetById(BlackAndGoldenRevolver.GoldenRevolverID);
+                    if (base.aiActor && base.aiActor.ParentRoom != null)
+                    {
+                        ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, base.transform.position.XY(), base.aiActor.ParentRoom, BraveUtility.RandomElement(ExpandLists.EXBowlerNotes_OldWestBros), false);
+                    }
+                    
                 }
                 else
                 {
-                    rewardRevolver = PickupObjectDatabase.GetById(BlackAndGoldenRevolver.BlackRevolverID);
-                }
+                    PickupObject rewardRevolver;
 
-                if (rewardRevolver && base.aiActor)
-                {
-                    base.aiActor.AdditionalSafeItemDrops.Add(rewardRevolver);
+                    if (aiActor.ParentRoom != null && !aiActor.ParentRoom.PlayerHasTakenDamageInThisRoom)
+                    {
+                        rewardRevolver = PickupObjectDatabase.GetById(BlackAndGoldenRevolver.GoldenRevolverID);
+                    }
+                    else
+                    {
+                        rewardRevolver = PickupObjectDatabase.GetById(BlackAndGoldenRevolver.BlackRevolverID);
+                    }
+
+                    if (rewardRevolver && base.aiActor)
+                    {
+                        base.aiActor.AdditionalSafeItemDrops.Add(rewardRevolver);
+                    }
                 }
             }
         }
     }
 }
+

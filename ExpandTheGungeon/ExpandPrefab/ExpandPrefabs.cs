@@ -4337,8 +4337,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Cactus_A_Braakable.delayDamageVfx = false;
             Cactus_A_Braakable.SpawnItemOnBreak = false;
             Cactus_A_Braakable.HandlePathBlocking = true;
-
-
+            
 
             Cactus_B = expandSharedAssets1.LoadAsset<GameObject>("ExpandCactus_B");
 
@@ -4401,6 +4400,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Cactus_B_Braakable.SpawnItemOnBreak = false;
             Cactus_B_Braakable.HandlePathBlocking = true;
 
+
+            ExpandSpawnItemOnBreak m_CactiA_OnBreak = Cactus_A.AddComponent<ExpandSpawnItemOnBreak>();
+            ExpandSpawnItemOnBreak m_CactiB_OnBreak = Cactus_B.AddComponent<ExpandSpawnItemOnBreak>();
+            m_CactiA_OnBreak.AllowedTilesets = new List<GlobalDungeonData.ValidTilesets>();
+            m_CactiB_OnBreak.AllowedTilesets = new List<GlobalDungeonData.ValidTilesets>();
+            m_CactiA_OnBreak.BannedRoomCategories = new List<PrototypeDungeonRoom.RoomCategory>();
+            m_CactiB_OnBreak.BannedRoomCategories = new List<PrototypeDungeonRoom.RoomCategory>();
+            m_CactiA_OnBreak.SpawnItemOnBreak = false;
+            m_CactiB_OnBreak.SpawnItemOnBreak = false;
+            
+            
 
             CorruptionBombRewardPedestal = expandSharedAssets1.LoadAsset<GameObject>("EXReward_Pedestal_CorruptionBomb");
             tk2dSprite CorruptionBombRewardPedestalSprite = CorruptionBombRewardPedestal.AddComponent<tk2dSprite>();
@@ -5486,16 +5496,25 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_EXEntitySpawnerChildSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
 
             EXBacteriaGoop = ExpandUtility.DuplicateGoop(sharedAssets.LoadAsset<GoopDefinition>("Poison Goop"), "Bacteria Goop");
-            EXBacteriaGoop.damagesEnemies = false;
+            EXBacteriaGoop.SpeedModifierEffect.AppliesTint = true;
+            EXBacteriaGoop.SpeedModifierEffect.AppliesDeathTint = true;
+            EXBacteriaGoop.SpeedModifierEffect.TintColor = new Color(0, 0, 0, 1);
+            EXBacteriaGoop.SpeedModifierEffect.DeathTintColor = new Color(0, 0, 0, 1);
+            EXBacteriaGoop.HealthModifierEffect.AppliesTint = false;
+            EXBacteriaGoop.HealthModifierEffect.AppliesDeathTint = false;
+            EXBacteriaGoop.HealthModifierEffect.AffectsEnemies = false;
             EXBacteriaGoop.usesAmbientGoopFX = false;
             EXBacteriaGoop.usesAcidAudio = false;
             EXBacteriaGoop.ambientGoopFX = new VFXPool() {
                 type = VFXPoolType.None,
                 effects = new VFXComplex[0]
             };
-            EXBacteriaGoop.baseColor32 = new Color(0f, 0f, 0f, 1);
-            EXBacteriaGoop.fadeColor32 = new Color(0.2f, 0.2f, 0.2f, 1);
-            EXBacteriaGoop.fireColor32 = new Color(0f, 0f, 0f, 1);
+            EXBacteriaGoop.usesWaterVfx = false;
+            EXBacteriaGoop.usesOverrideOpaqueness = true;
+            EXBacteriaGoop.overrideOpaqueness = 0.75f;
+            EXBacteriaGoop.baseColor32 = new Color(0.45f, 0.45f, 0.45f, 1);
+            EXBacteriaGoop.fadeColor32 = new Color(0.45f, 0.45f, 0.45f, 0.5f);
+            EXBacteriaGoop.fireColor32 = new Color(0.45f, 0.45f, 0.45f, 1);
             EXBacteriaGoop.worldTexture = BacterialGoopWorldTexture;
             EXBacteriaGoop.usesWorldTextureByDefault = true;
             EXBacteriaGoop.lifespan = 12;
