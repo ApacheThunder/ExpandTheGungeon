@@ -125,7 +125,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 case ShaderType.VHS:
                     // This shader doesn't appear to work on Linux for some reason.
                     // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
                     m_colorBleedToggle = 0;
                     if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
@@ -138,7 +138,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     break;
                 case ShaderType.VHSOldFilm:
                     // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
                     m_colorBleedToggle = 0;
                     if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
@@ -152,7 +152,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     break;
                 case ShaderType.VHSBasic:
                     // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandVHSPostProcessEffect"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
                     if (!VHSScreenTexture) { VHSScreenTexture = ExpandAssets.LoadAsset<Texture2D>("EmptyVHSTexture"); }
                     ScreenMaterial.SetTexture("_VHSTex", VHSScreenTexture);
                     if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
@@ -167,12 +167,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetFloat("_GlitchRandom", GlitchRandom);
                     break;
                 case ShaderType.Scanlines:
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandScanlines"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandScanlines"));
                     ScreenMaterial.SetInt("_ValueX", ScanlineThickness);
                     ScreenMaterial.SetFloat("_Intensity", ScanlineIntensity);
                     break;
                 case ShaderType.CRT:
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandCRT"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandCRT"));
                     ScreenMaterial.SetFloat("u_time", Time.fixedTime);
                     ScreenMaterial.SetFloat("u_bend", bend);
                     ScreenMaterial.SetFloat("u_scanline_size_1", scanlineSize1);
@@ -316,8 +316,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_SetupComplete = false;
                 if (m_MaterialRegistered) { Pixelator.Instance.DeregisterAdditionalRenderPass(ScreenMaterial); }
                 base.OnDestroy();
-            } catch (System.Exception) {
-            }
+            } catch (System.Exception) { }
         }
     }
 }

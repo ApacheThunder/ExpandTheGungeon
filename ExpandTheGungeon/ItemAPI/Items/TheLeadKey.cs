@@ -211,9 +211,16 @@ namespace ExpandTheGungeon.ItemAPI {
             GameObject TempFXObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXLeadKeyGlitchScreenFX"), transform.position, Quaternion.identity);
             TempFXObject.transform.SetParent(dungeon.gameObject.transform);
             ExpandScreenFXController fxController = TempFXObject.GetComponent<ExpandScreenFXController>();
-            while (fxController.GlitchAmount < 1) {
-                fxController.GlitchAmount += (BraveTime.DeltaTime / 0.5f);
-                yield return null;
+
+            if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) { 
+                while (fxController.GlitchAmount < 1) {
+                    fxController.GlitchAmount += (BraveTime.DeltaTime / 0.5f);
+                    yield return null;
+                }
+            } else {
+                fxController.GlitchAmount = 0;
+                Destroy(fxController);
+                Destroy(TempFXObject);
             }
 
             bool m_CopyCurrentRoom = false;
@@ -231,8 +238,11 @@ namespace ExpandTheGungeon.ItemAPI {
                         Debug.LogException(ex);
                     }
                     AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                    fxController.GlitchAmount = 0;
-                    Destroy(TempFXObject);
+                    if (fxController) {
+                        fxController.GlitchAmount = 0;
+                        Destroy(fxController);
+                    }
+                    if (TempFXObject)Destroy(TempFXObject);
                     m_InUse = false;
                     TogglePlayerInput(user, false);
                     ClearCooldowns();
@@ -269,8 +279,11 @@ namespace ExpandTheGungeon.ItemAPI {
                         ETGModConsole.Log("[ExpandTheGungeon.TheLeadKey] ERROR: Exception occured while building room!", true);
                         if (ExpandSettings.debugMode) { Debug.LogException(ex); }
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                        fxController.GlitchAmount = 0;
-                        Destroy(TempFXObject);
+                        if (fxController) {
+                            fxController.GlitchAmount = 0;
+                            Destroy(fxController);
+                        }
+                        if (TempFXObject)Destroy(TempFXObject);
                         m_InUse = false;
                         TogglePlayerInput(user, false);
                         ClearCooldowns();
@@ -279,11 +292,17 @@ namespace ExpandTheGungeon.ItemAPI {
                     yield return null;
                     if (SecretBossRoomCluster == null) {
                         AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                        while (fxController.GlitchAmount > 0) {
-                            fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
-                            yield return null;
+                        if (fxController) { 
+                            while (fxController.GlitchAmount > 0) {
+                                fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                                yield return null;
+                            }
                         }
-                        Destroy(TempFXObject);
+                        if (fxController) {
+                            fxController.GlitchAmount = 0;
+                            Destroy(fxController);
+                        }
+                        if (TempFXObject)Destroy(TempFXObject);
                         m_InUse = false;
                         TogglePlayerInput(user, false);
                         ClearCooldowns();
@@ -305,15 +324,21 @@ namespace ExpandTheGungeon.ItemAPI {
                     m_PortalControllerBossCluster.ParentRoom = SecretBossRoomCluster[0];
                     SecretBossRoomCluster[0].RegisterInteractable(m_PortalControllerBossCluster);
 
-                    while (fxController.GlitchAmount > 0) {
-                        fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
-                        yield return null;
+                    if (fxController) {
+                        while (fxController.GlitchAmount > 0) {
+                            fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                            yield return null;
+                        }
                     }
 
                     TogglePlayerInput(user, false);
 
                     m_PortalControllerBossCluster.Configured = true;
 
+                    if (fxController) {
+                        fxController.GlitchAmount = 0;
+                        Destroy(fxController);
+                    }
                     Destroy(TempFXObject);
                     m_InUse = false;
                     if (m_DebugMode) { ClearCooldowns(); }
@@ -323,11 +348,15 @@ namespace ExpandTheGungeon.ItemAPI {
 
             if (SelectedPrototypeDungeonRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                while (fxController.GlitchAmount > 0) {
-                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
-                    yield return null;
+                if (fxController) {
+                    while (fxController.GlitchAmount > 0) {
+                        fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                        yield return null;
+                    }
+                    fxController.GlitchAmount = 0;
+                    Destroy(fxController);
                 }
-                Destroy(TempFXObject);
+                if (TempFXObject)Destroy(TempFXObject);
                 m_InUse = false;
                 TogglePlayerInput(user, false);
                 ClearCooldowns();
@@ -435,11 +464,15 @@ namespace ExpandTheGungeon.ItemAPI {
                      
             if (GlitchRoom == null) {
                 AkSoundEngine.PostEvent("Play_OBJ_purchase_unable_01", gameObject);
-                while (fxController.GlitchAmount > 0) {
-                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
-                    yield return null;
+                if (fxController) {
+                    while (fxController.GlitchAmount > 0) {
+                        fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                        yield return null;
+                    }
+                    fxController.GlitchAmount = 0;
+                    Destroy(fxController);
                 }
-                Destroy(TempFXObject);
+                if (TempFXObject)Destroy(TempFXObject);
                 m_InUse = false;                
                 TogglePlayerInput(user, false);
                 ClearCooldowns();
@@ -453,7 +486,7 @@ namespace ExpandTheGungeon.ItemAPI {
             }
             
             if (m_CopyCurrentRoom) {
-                if (ExpandSettings.EnableGlitchFloorScreenShader && !dungeon.IsGlitchDungeon) {
+                if (ExpandSettings.EnableGlitchFloorScreenShader && !ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType) && !dungeon.IsGlitchDungeon) {
                     GameObject GlitchShaderObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXRoomCorruptionFX"), GlitchRoom.area.UnitCenter, Quaternion.identity);
                     ExpandScreenFXController FXController = GlitchShaderObject.GetComponent<ExpandScreenFXController>();
                     FXController.ParentRoom = GlitchRoom;
@@ -552,17 +585,19 @@ namespace ExpandTheGungeon.ItemAPI {
             m_PortalController.CachedPosition = m_cachedRoomPosition;
             m_PortalController.ParentRoom = GlitchRoom;
             GlitchRoom.RegisterInteractable(m_PortalController);
-            
-            while (fxController.GlitchAmount > 0) {
-                fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
-                yield return null;
+
+            if (fxController) {
+                while (fxController.GlitchAmount > 0) {
+                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.5f);
+                    yield return null;
+                }
             }
             
             TogglePlayerInput(user, false);
 
             m_PortalController.Configured = true;
 
-            Destroy(TempFXObject);
+            if (TempFXObject)Destroy(TempFXObject);
             
             m_InUse = false;
             if (m_DebugMode) { ClearCooldowns(); }

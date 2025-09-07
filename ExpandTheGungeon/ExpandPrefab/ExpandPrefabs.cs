@@ -438,13 +438,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         // Backrooms Objects
         public static GameObject EXDangerRoomIcon;
+        public static GameObject EXBackroomsWWIcon;
         public static GameObject EXWarpDoor_Backrooms;
-        public static GameObject EXEntitySpawner;
         public static GameObject EXBackRoomsCarpetStain_Small;
         public static GameObject EXBackRoomsCarpetStain_Medium;
         public static GameObject EXBackRoomsCarpetStain_Large;
         public static GameObject EXVoidController;
         public static GameObject EXVoidRoomAmbience;
+        public static GameObject EXEntitySpawner;
 
         // Custom Goops
         public static GoopDefinition EXBacteriaGoop;
@@ -5446,6 +5447,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXDangerRoomIcon = expandSharedAssets1.LoadAsset<GameObject>("EXDangerRoomIcon");
             SpriteSerializer.AddSpriteToObject(EXDangerRoomIcon, EXBackroomsCollection, "Danger_MinimapIcon", tk2dBaseSprite.PerpendicularState.FLAT);
 
+            EXBackroomsWWIcon = expandSharedAssets1.LoadAsset<GameObject>("EXBackroomsWWIcon");
+            SpriteSerializer.AddSpriteToObject(EXBackroomsWWIcon, EXBackroomsCollection, "WarpWing_MinimapIcon", tk2dBaseSprite.PerpendicularState.FLAT);
+            
+
             EXWarpDoor_Backrooms = expandSharedAssets1.LoadAsset<GameObject>("WarpDoor_Backrooms");
             tk2dSprite m_EXWarpDoor_BackroomsSprite = SpriteSerializer.AddSpriteToObject(EXWarpDoor_Backrooms, EXBackroomsCollection, "backrooms_warp_wing_001", tk2dBaseSprite.PerpendicularState.PERPENDICULAR, -1);
 
@@ -5488,12 +5493,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             EXEntitySpawner = expandSharedAssets1.LoadAsset<GameObject>("EXEntitySpawner");
             GameObject m_EXEntitySpawnerChild = EXEntitySpawner.transform.Find("carpetstain").gameObject;
-            tk2dSprite m_EXEntitySpawnerSprite = SpriteSerializer.AddSpriteToObject(m_EXEntitySpawnerChild, EXBackroomsCollection, "CarpetStainMedium_01", tk2dBaseSprite.PerpendicularState.FLAT);
+            tk2dSprite m_EXEntitySpawnerSprite = SpriteSerializer.AddSpriteToObject(m_EXEntitySpawnerChild, ExpandPrefabs.EXBackroomsCollection, "CarpetStainMedium_01", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXEntitySpawnerSprite.HeightOffGround = -1.7f;
-            EXEntitySpawner.AddComponent<ExpandEntitySpawner>();
 
             ExpandSpriteRandomizer m_EXEntitySpawnerChildSpriteRandomizer = m_EXEntitySpawnerChild.AddComponent<ExpandSpriteRandomizer>();
             m_EXEntitySpawnerChildSpriteRandomizer.SpriteList = ExpandLists.EXMediumStainList;
+
 
             EXBacteriaGoop = ExpandUtility.DuplicateGoop(sharedAssets.LoadAsset<GoopDefinition>("Poison Goop"), "Bacteria Goop");
             EXBacteriaGoop.SpeedModifierEffect.AppliesTint = true;

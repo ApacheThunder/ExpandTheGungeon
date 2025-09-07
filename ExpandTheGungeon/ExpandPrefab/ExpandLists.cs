@@ -5,6 +5,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
     public static class ExpandLists {
 
+        // Currently custom screen glitch shaders don't support OpenGL or Vulkan backend.
+        // Game must be using DirectX backend for them to not result in pink screens.
+        public static readonly List<UnityEngine.Rendering.GraphicsDeviceType> InvalidGraphicsModes = new List<UnityEngine.Rendering.GraphicsDeviceType>() {
+            UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore,
+            UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2,
+            UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3,
+            UnityEngine.Rendering.GraphicsDeviceType.Vulkan
+        };
+
         /*public static List<GameObject> CustomChests = new List<GameObject>();
         public static List<GameObject> CustomChestsWithoutRickRoll = new List<GameObject>();*/
 
@@ -503,6 +512,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "backrooms_one_way_blocker_vertical_bottom_001",
             "backrooms_warp_wing_001",
             "Danger_MinimapIcon",
+            "WarpWing_MinimapIcon",
             "CarpetStainLarge_01",
             "CarpetStainLarge_02",
             "CarpetStainLarge_03",

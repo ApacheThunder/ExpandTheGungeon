@@ -53,9 +53,9 @@ namespace ExpandTheGungeon.ExpandMain {
                                     GameObject BackRoomsEntitySpawner = Object.Instantiate(ExpandPrefabs.EXEntitySpawner, (RandomGlitchEnemyVector.Value + currentRoom.area.basePosition).ToVector3(), Quaternion.identity);
                                     ExpandEntitySpawner m_EntitySpawner = BackRoomsEntitySpawner.GetComponent<ExpandEntitySpawner>();
                                     if (m_EntitySpawner) {
-                                        m_EntitySpawner.transform.SetParent(currentRoom.hierarchyParent);
+                                        m_EntitySpawner.transform.SetParent(dungeon.gameObject.transform);
                                         m_EntitySpawner.ParentRoom = currentRoom;
-                                        m_EntitySpawner.IsReady = true;
+                                        m_EntitySpawner.SpawnState = ExpandEntitySpawner.EntitySpawnState.WaitingToSpawn;
                                     }
                                     RandomEnemiesPlaced++;
                                     if (ExpandSettings.debugMode) {

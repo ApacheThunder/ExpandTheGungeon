@@ -20,37 +20,45 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static List<IntVector2> FindAllValidLocations(Dungeon dungeon, RoomHandler currentRoom, int Clearence = 1, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false) {
             List<IntVector2> m_ValidCellsCached = new List<IntVector2>();
             if (dungeon == null | currentRoom == null) { return m_ValidCellsCached; }
-            
-            for (int X = 0; X < currentRoom.area.dimensions.x; X++) {
-                for (int Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
+            IntVector2 currentPosition = currentRoom.area.basePosition, TargetPosition = currentRoom.area.basePosition;
+            Vector2 m_Position1 = currentRoom.area.basePosition.ToVector2(), m_Position2 = m_Position1;
+            bool isInvalid = false;
+            int x = 0, y = 0, X = 0, Y = 0;
+            for (X = 0; X < currentRoom.area.dimensions.x; X++) {
+                for (Y = 0; Y < currentRoom.area.dimensions.y; Y++) {
                     try {
-                        bool isInvalid = false;
-                        IntVector2 TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
+                        TargetPosition = new IntVector2(currentRoom.area.basePosition.x + X, currentRoom.area.basePosition.y + Y);
                         if (!m_ValidCellsCached.Contains(TargetPosition)) {
+                            currentPosition = TargetPosition;
                             RoomHandler ActualRoom = dungeon.data.GetAbsoluteRoomFromPosition(TargetPosition);
-                            for (int x = 0; x < Clearence; x++) {
-                                for (int y = 0; y < Clearence; y++) {
-                                    IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
-                                    if (dungeon.data.CheckInBoundsAndValid(intVector)) {
-                                        CellData cellData = dungeon.data[intVector];
-                                        if (cellData.parentRoom == null | cellData.type != CellType.FLOOR | cellData.isOccupied | !cellData.IsPassable) { isInvalid = true; }
-                                        if (ActualRoom != currentRoom | cellData.HasPitNeighbor(dungeon.data)) { isInvalid = true; }
-                                        if (cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Water) { isInvalid = true; }
-                                        if (cellData.HasWallNeighbor()) { isInvalid = true; }
+                            for (x = 0; x < Clearence; x++) {
+                                for (y = 0; y < Clearence; y++) {
+                                    currentPosition = (TargetPosition + new IntVector2(x, y));
+                                    if (dungeon.data.CheckInBoundsAndValid(currentPosition)) {
+                                        CellData cellData = dungeon.data[currentPosition];
+                                        if (cellData.parentRoom == null | cellData.type != CellType.FLOOR | cellData.isOccupied | !cellData.IsPassable) { isInvalid = true; break; }
+                                        if (ActualRoom != currentRoom | cellData.HasPitNeighbor(dungeon.data)) { isInvalid = true; break; }
+                                        if (cellData.cellVisualData.floorType == CellVisualData.CellFloorType.Water) { isInvalid = true; break; }
+                                        if (cellData.HasWallNeighbor()) { isInvalid = true; break; }
                                     } else {
                                         isInvalid = true;
+                                        break;
                                     }
+                                    isInvalid = false;
                                 }
+                                if (isInvalid) break;
                             }
                             if (!isInvalid && avoidExits) {
-                                for (int x = 0; x < ExitClearence; x++) {
-                                    for (int y = 0; y < ExitClearence; y++) {
-                                        IntVector2 intVector = (TargetPosition + new IntVector2(x, y));
-                                        if (dungeon.data.CheckInBoundsAndValid(intVector)) {
-                                            CellData cellData = dungeon.data[intVector];
-                                            if (cellData.isExitCell) { isInvalid = true; }
+                                for (x = 0; x < ExitClearence; x++) {
+                                    for (y = 0; y < ExitClearence; y++) {
+                                        currentPosition = (TargetPosition + new IntVector2(x, y));
+                                        if (dungeon.data.CheckInBoundsAndValid(currentPosition)) {
+                                            CellData cellData = dungeon.data[currentPosition];
+                                            if (cellData.isExitCell) { isInvalid = true; break; }
                                         }
+                                        isInvalid = false;
                                     }
+                                    if (isInvalid) break;
                                 }
                             }
                             if (!isInvalid) {
@@ -70,13 +78,11 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
             }
             if (m_ValidCellsCached.Count > 1) {
-                for (int I = 0; I < m_ValidCellsCached.Count; I++) {
-                    Vector2 m_Position1 = m_ValidCellsCached[I].ToVector2();
-                    for (int I2 = (I + 1); I2 < m_ValidCellsCached.Count; I2++) {
-                        Vector2 m_Position2 = m_ValidCellsCached[I2].ToVector2();
-                        if (Vector2.Distance(m_Position1, m_Position2) < Clearence) {
-                            m_ValidCellsCached.Remove(m_ValidCellsCached[I2]);
-                        }
+                for (X = 0; X < m_ValidCellsCached.Count; X++) {
+                    m_Position1 = m_ValidCellsCached[X].ToVector2();
+                    for (Y = (X + 1); Y < m_ValidCellsCached.Count; Y++) {
+                        m_Position2 = m_ValidCellsCached[Y].ToVector2();
+                        if (Vector2.Distance(m_Position1, m_Position2) < Clearence)m_ValidCellsCached.Remove(m_ValidCellsCached[Y]);
                     }
                 }
             }
@@ -1850,13 +1856,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
             CellValidator cellValidator = delegate (IntVector2 c) {
                 for (int X = 0; X < Clearence.x; X++) {
                     for (int Y = 0; Y < Clearence.y; Y++) {
-                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + X, c.y + Y) || 
-                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.PIT || 
-                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].isOccupied ||
-                             GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.WALL)
-                        {
-                            return false;
-                        }
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + X, c.y + Y)) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.PIT) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].isOccupied) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].type == CellType.WALL) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].IsLowerFaceWall()) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + X, c.y + Y].IsTopWall()) return false;
                     }
                 }
                 return true;
@@ -1880,13 +1885,12 @@ namespace ExpandTheGungeon.ExpandUtilities {
             CellValidator cellValidator = delegate (IntVector2 c) {
                 for (int l = 0; l < MinClearence; l++) {
                     for (int m = 0; m < MinClearence; m++) {
-                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + l, c.y + m) || 
-                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.PIT || 
-                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].isOccupied ||
-                             GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.WALL)
-                        {
-                            return false;
-                        }
+                        if (!GameManager.Instance.Dungeon.data.CheckInBoundsAndValid(c.x + l, c.y + m))return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.PIT)return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + l, c.y + m].isOccupied) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + l, c.y + m].type == CellType.WALL) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + l, c.y + m].IsLowerFaceWall()) return false;
+                        if (GameManager.Instance.Dungeon.data[c.x + l, c.y + m].IsTopWall()) return false;
                     }
                 }
                 return true;

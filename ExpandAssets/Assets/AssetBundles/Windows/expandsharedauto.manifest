@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4064349448
+CRC: 277866564
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f3cc2f99b224cbe9e60df65b18c2ec49
+    Hash: 279717c157cfb4e693748fff87a938c1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 084f6c1cb424c050847492c6d98c3335
+    Hash: 513673b503952618eb00f45379ce1f5a
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -37,6 +37,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: dcb4fda0513fcf24a93207e0ed520ae2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: c59f4fb058392d745a690e85b4feba5d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5324e1118d099c647b166d6bda17e1fb, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 85a95b2198074e1459671337ed25c270, type: 3}
 - Class: 114
@@ -195,7 +197,6 @@ Assets:
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_MelonTurtle_Apache_Hub_Layout.png
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBulletManCollection.txt
 - Assets/ExpandPrefabs/AIActors/EX_ExplodyBoy.prefab
-- Assets/ExpandPrefabs/Shaders/ExpandScanlines.shader
 - Assets/ExpandPrefabs/Misc/RoomCorruptionAmbience_Placable.prefab
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/roomFloorBorderGrid.txt
 - Assets/ExpandTextures/SpriteCollections/AIActors/BabyGoodHammer_Collection.png
@@ -320,6 +321,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed16.bytes
 - Assets/ExpandTextures/Misc/JungleOcclusionTestTile.png
 - Assets/ExpandPrefabs/Misc/CronenbergCorpseFragment_04.prefab
+- Assets/ExpandPrefabs/Misc/EXBackroomsWWIcon.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room051.bytes
 - Assets/ExpandPrefabs/TilesetPrefabs/ENV_Tileset_Jungle.prefab
 - Assets/ExpandPrefabs/Misc/DummyObject.prefab
@@ -733,7 +735,6 @@ Assets:
 - Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/carpetGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny4.bytes
 - Assets/ExpandPrefabs/AIActors/WestBros/WestBrosHat_Tuc.prefab
-- Assets/ExpandPrefabs/Shaders/ExpandCRT.shader
 - Assets/ExpandSerializedData/SpriteCollections/EXChestCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Teleport2_1.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular14.bytes
@@ -761,7 +762,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room025.bytes
 - Assets/ExpandSerializedData/TilesetData/Belly/lavaGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny1.bytes
-- Assets/ExpandPrefabs/Shaders/ExpandGlitchScreen.shader
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room012.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BulletMan_Monochrome.png
 - Assets/ExpandPrefabs/TilesetPrefabs/WarpDoor_Backrooms.prefab
@@ -981,7 +981,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/TrapRooms/Expand_TheCrushZone.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera23.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXChest_Collection.png
-- Assets/ExpandPrefabs/Shaders/ExpandVHSPostProcessEffect.shader
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular49.bytes
 - Assets/ExpandPrefabs/Items/Projectiles/EXBootlegPistolProjectile.prefab
 - Assets/ExpandPrefabs/Misc/ExpandRickRoll_MusicSwitch.prefab
@@ -1186,7 +1185,6 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman2.bytes
 - Assets/ExpandRooms/RoomFactoryData/PMH_Expand_Achievement_Dat_Plat.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate17.bytes
-- Assets/ExpandPrefabs/Shaders/ExpandGlitchBasic.shader
 - Assets/ExpandTextures/SpriteCollections/AIActors/HotShotBulletMan_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Brother2.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_AnimalsTribal.bytes

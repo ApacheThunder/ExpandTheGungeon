@@ -1715,6 +1715,7 @@
 						<Action Name="" ID="{9338637A-ADD5-4EA1-88F8-E42707C568B1}" ShortID="919926625">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeTime" Type="Real64" Value="2"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -1757,6 +1758,7 @@
 						<Action Name="" ID="{D16E8E60-2BBE-4FD8-AECA-1910B199DCF3}" ShortID="377401668">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="2"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">

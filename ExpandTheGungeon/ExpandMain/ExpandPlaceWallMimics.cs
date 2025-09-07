@@ -376,8 +376,9 @@ namespace ExpandTheGungeon.ExpandMain {
                 if (!string.IsNullOrEmpty(room.GetRoomName()) && !room.IsMaintenanceRoom() &&
                     room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
                     room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT &&
-                    !room.GetRoomName().ToLower().StartsWith("backrooms_entrance_warpwing"))
-                {
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_entrance_warpwing") &&
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_voidroom")
+                    ) {
                     Rooms.Add(room);
                 }
             }
@@ -521,9 +522,9 @@ namespace ExpandTheGungeon.ExpandMain {
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             
-            float SpawnChance = 0.2f;
+            float SpawnChance = 0.1f;
 
-            if (wallMimicCount != 0) { SpawnChance = 0.5f; }
+            if (wallMimicCount != 0) { SpawnChance = 0.25f; }
 
             if (UnityEngine.Random.value > SpawnChance) { return; }
 

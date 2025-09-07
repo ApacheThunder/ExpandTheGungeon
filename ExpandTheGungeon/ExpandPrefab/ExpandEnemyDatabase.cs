@@ -144,7 +144,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject StoneCubeCollection_West;
         public static GameObject DopplegunnerHand;
         public static GameObject ClownkinWig;
-
+        
         public static Texture2D[] RatGrenadeTextures;
         
         private static AIActor Chameleon;

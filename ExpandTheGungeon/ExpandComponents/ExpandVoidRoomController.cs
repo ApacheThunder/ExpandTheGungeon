@@ -14,6 +14,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             
             m_IsReady = false;
             m_Triggered = false;
+            m_AudioActive = false;
         }
                 
         [SerializeField]
@@ -33,7 +34,10 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         [NonSerialized]
         private bool m_Triggered;
-        
+
+        [NonSerialized]
+        private bool m_AudioActive;
+
         [NonSerialized]
         private RoomHandler m_ParentRoom;
                 
@@ -49,35 +53,46 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
                 
         public void Update() {
-            if (!m_IsReady | m_Triggered) {
-                if (!m_IsReady) return;
-                if (m_ParentRoom != null && m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null &&
-                    m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count > 0) {
-                    for (int i = 0; i < m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count; i++) {
-                        if (m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i] && m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager) {
-                            m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager.ChangeToVisibility(RoomHandler.VisibilityStatus.VISITED, true);
-                            Destroy(m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager);
-                        }
-                    }
-                }
-                return;
-            }
-
-            if (!GameManager.HasInstance | !GameManager.Instance.Dungeon |
+            if (!m_IsReady | !GameManager.HasInstance | !GameManager.Instance.Dungeon |
                 GameManager.Instance.IsLoadingLevel | Dungeon.IsGenerating) {
                 return;
             }
-                        
             if (m_ParentRoom != null && m_PrimaryPlayer && m_PrimaryPlayer.CurrentRoom != null) {
                 if (m_PrimaryPlayer.CurrentRoom == m_ParentRoom) m_Triggered = true;
                 if (m_PrimaryPlayer.CurrentRoom.connectedRooms != null && m_PrimaryPlayer.CurrentRoom.connectedRooms.Count > 0) {
-                    if (m_PrimaryPlayer.CurrentRoom.connectedRooms.Contains(m_ParentRoom)) m_Triggered = true;
-                }
-                if (m_Triggered){
-                    AkSoundEngine.PostEvent(StartSoundEvent, gameObject);
-                    return;
+                    if ((!m_Triggered | !m_AudioActive) && (m_PrimaryPlayer.CurrentRoom == m_ParentRoom | m_PrimaryPlayer.CurrentRoom.connectedRooms.Contains(m_ParentRoom))) {
+                        if (!m_Triggered)m_Triggered = true;
+                        if (!m_AudioActive)ToggleAudio(true);
+                    } else if (m_Triggered && m_AudioActive && m_PrimaryPlayer.CurrentRoom != m_ParentRoom && !m_PrimaryPlayer.CurrentRoom.connectedRooms.Contains(m_ParentRoom)) {
+                        ToggleAudio(false);
+                    }
                 }
             }
+        }
+
+        public void LateUpdate() {
+            if (!m_IsReady | !m_Triggered | !GameManager.HasInstance | !GameManager.Instance.Dungeon |
+                GameManager.Instance.IsLoadingLevel | Dungeon.IsGenerating) {
+                return;
+            }
+            if (m_ParentRoom != null && m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null &&
+                m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count > 0) {
+                for (int i = 0; i < m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count; i++) {
+                    if (m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i] && m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager) {
+                        m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager.ChangeToVisibility(RoomHandler.VisibilityStatus.VISITED, true);
+                        Destroy(m_ParentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[i].visibilityManager);
+                    }
+                }
+            }
+        }
+
+        public void ToggleAudio(bool active) {
+            if (active) {
+                AkSoundEngine.PostEvent(StartSoundEvent, gameObject);
+            } else {
+                AkSoundEngine.PostEvent(StopSoundEvent, gameObject);
+            }
+            m_AudioActive = active;
         }
 
         public void ConfigureOnPlacement(RoomHandler room) {
@@ -87,7 +102,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         protected override void OnDestroy() {
-            if (m_Triggered)AkSoundEngine.PostEvent(StopSoundEvent, gameObject);
+            if (m_AudioActive) ToggleAudio(false);
             base.OnDestroy();
         }
     }

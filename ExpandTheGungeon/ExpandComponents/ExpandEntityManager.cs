@@ -27,28 +27,39 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_PlayerAwayTime = 0;
         }
 
+        [NonSerialized]
         public bool Configured;
+        [NonSerialized]
         public bool IsOnBackRoomsFloor;
-
+        [SerializeField]
         public float MaxPlayerAwayTime;
-
+        [SerializeField]
         public IntVector2 EntitySize;
+        [SerializeField]
         public string AIAnimatorSpawnClip;
+        [SerializeField]
         public string AIAnimatorDeSpawnClip;
-
+        [SerializeField]
         public string EntityPlayScreemEvent;
+        [SerializeField]
         public string EntityStopScreemEvent;
 
+        [NonSerialized]
         private bool m_SettingsApplied;
+        [NonSerialized]
         private bool m_IsTeleporting;
+        [NonSerialized]
         private bool m_ScreemStarted;
+        [NonSerialized]
         private bool m_PlayerEaten;
-
+        [NonSerialized]
         private float m_PlayerAwayTime;
 
+        [NonSerialized]
         private PlayerController m_Player;
-
+        [NonSerialized]
         private RoomHandler m_CurrentRoom;
+        [NonSerialized]
         private RoomHandler m_TargetTeleportRoom;
 
         public void Awake() { }
@@ -232,7 +243,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     return;
                 } else if (otherRigidbody.GetComponent<MajorBreakable>()) {
                     otherRigidbody.GetComponent<MajorBreakable>().Break(new Vector2(1, 0));
-                    if (otherRigidbody && otherRigidbody.GetComponent<Chest>() && !otherRigidbody.GetComponent<Chest>().IsMimic |
+                    if (otherRigidbody && otherRigidbody.GetComponent<Chest>() && !otherRigidbody.GetComponent<Chest>().IsMimic &&
                         otherRigidbody.GetComponent<MajorBreakable>().TemporarilyInvulnerable)
                     {
                         SpriteOutlineManager.RemoveOutlineFromSprite(otherRigidbody.sprite, false);

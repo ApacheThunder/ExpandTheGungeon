@@ -1067,6 +1067,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_WarpWings) {
                 room.ForceAllowDuplicates = true;
                 room.IsLostWoodsRoom = true;
+                room.associatedMinimapIcon = ExpandPrefabs.EXBackroomsWWIcon;
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
             }
 
@@ -10298,11 +10299,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
-                ExpandPrefabs.BackRoomsRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+                if (room.name.ToLower().StartsWith("BackRooms_Room101")) {
+
+                } else {
+                    ExpandPrefabs.BackRoomsRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 0.5f));
+                }
             }
 
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_WarpWings) {
-                ExpandPrefabs.BackRoomsWarpWingTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+                ExpandPrefabs.BackRoomsWarpWingTable.includedRooms.elements.Add(GenerateWeightedRoom(room, LimitedCopies: false));
             }
                         
 

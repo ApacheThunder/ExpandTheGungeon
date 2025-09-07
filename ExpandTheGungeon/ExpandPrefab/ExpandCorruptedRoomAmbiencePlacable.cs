@@ -53,11 +53,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     m_RoomAmbienceSFX.transform.position = m_Room.area.Center;
                     m_RoomAmbienceSFX.transform.parent = m_Room.hierarchyParent;
                 }
-                if (!m_ScreenFXObject) {
-                    m_ScreenFXObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXSecretRoomGlitchFX"), m_Room.area.UnitCenter, Quaternion.identity);
-                    ExpandScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandScreenFXController>();
-                    FXController.ParentRoom = m_Room;
-                    m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
+                if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {
+                    if (!m_ScreenFXObject) {
+                        m_ScreenFXObject = Instantiate(ExpandAssets.LoadAsset<GameObject>("EXSecretRoomGlitchFX"), m_Room.area.UnitCenter, Quaternion.identity);
+                        ExpandScreenFXController FXController = m_ScreenFXObject.GetComponent<ExpandScreenFXController>();
+                        FXController.ParentRoom = m_Room;
+                        m_ScreenFXObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
+                    }
                 }
                 AkSoundEngine.PostEvent(CorruptionFXPlayEvent, m_RoomAmbienceSFX);
                 m_HasBeenActivated = true;

@@ -3446,14 +3446,14 @@
 					<ChildrenList>
 						<AudioFileSource Name="backrooms_void" ID="{B7D25B14-63CC-44AB-AA76-0E5F79AA59C1}" ShortID="1014808859">
 							<PropertyList>
-								<Property Name="FadeInDuration" Type="Real64" Value="1.05727567217363"/>
-								<Property Name="FadeOutDuration" Type="Real64" Value="1.05727567217363"/>
 								<Property Name="LoopBegin" Type="Real64" Value="1.09142675648558"/>
 								<Property Name="LoopEnd" Type="Real64" Value="28.3355102630237"/>
-								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
 							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>backrooms_void.wav</AudioFile>
+							<ConvertedFileIDList>
+								<File ID="957385563"/>
+							</ConvertedFileIDList>
 						</AudioFileSource>
 					</ChildrenList>
 					<ActiveSourceList>

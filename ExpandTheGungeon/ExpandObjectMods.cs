@@ -134,7 +134,7 @@ namespace ExpandTheGungeon {
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
                     dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
 
-                    if (ExpandSettings.EnableGlitchFloorScreenShader) {
+                    if (ExpandSettings.EnableGlitchFloorScreenShader && !ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {
                         GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandAssets.LoadAsset<GameObject>("EXGlitchFloorScreenFX"));
                         EXGlitchFloorScreenFX.transform.SetParent(dungeon.gameObject.transform);
                     }

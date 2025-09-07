@@ -1,4 +1,5 @@
 ﻿using Dungeonator;
+using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Collections;
 using UnityEngine;
@@ -141,9 +142,16 @@ namespace ExpandTheGungeon.ExpandComponents {
             TempFXObject.transform.SetParent(dungeon.gameObject.transform);
             AkSoundEngine.PostEvent("Play_EX_CorruptionRoomTransition_01", targetPlayer.gameObject);
             ExpandScreenFXController fxController = TempFXObject.GetComponent<ExpandScreenFXController>();
-            while (fxController.GlitchAmount < 1) {
-                fxController.GlitchAmount += (BraveTime.DeltaTime / 0.7f);
-                yield return null;
+            yield return null;
+            if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {
+                while (fxController.GlitchAmount < 1) {
+                    fxController.GlitchAmount += (BraveTime.DeltaTime / 0.7f);
+                    yield return null;
+                }
+            } else {
+                fxController.GlitchAmount = 0;
+                Destroy(fxController);
+                Destroy(TempFXObject);
             }
             CameraController cameraController = GameManager.Instance.MainCameraController;
             Vector2 offsetVector = (cameraController.transform.position - targetPlayer.transform.position);
@@ -163,9 +171,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetPlayer.WarpCompanionsToPlayer(false);        
             // Pixelator.Instance.MarkOcclusionDirty();
             yield return null;
-            while (fxController.GlitchAmount > 0) {
-                fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.7f);
-                yield return null;
+            if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType) && fxController) {
+                while (fxController.GlitchAmount > 0) {
+                    fxController.GlitchAmount -= (BraveTime.DeltaTime / 0.7f);
+                    yield return null;
+                }
             }
             cameraController.SetManualControl(false, true);
             yield return new WaitForSeconds(0.15f);
@@ -177,7 +187,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             /*if (targetPlayer.transform.position.GetAbsoluteRoom() != null) {
                 targetPlayer.ForceChangeRoom(targetPlayer.transform.position.GetAbsoluteRoom());
             }*/
-            if (DestroyAfterUse) { Destroy(gameObject); }
+            if (DestroyAfterUse) {
+                fxController.GlitchAmount = 0;
+                Destroy(fxController);
+                Destroy(TempFXObject);
+                Destroy(gameObject);
+            }
             yield break;
         }
         

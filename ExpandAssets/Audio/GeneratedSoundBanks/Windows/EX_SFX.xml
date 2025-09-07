@@ -300,6 +300,10 @@
 					<ShortName>RickRolled.wav</ShortName>
 					<Path>SFX\RickRolled_AD29F36A.wem</Path>
 				</File>
+				<File Id="957385563" Language="SFX">
+					<ShortName>backrooms_void.wav</ShortName>
+					<Path>SFX\backrooms_void_AD29F36A.wem</Path>
+				</File>
 				<File Id="958802487" Language="SFX">
 					<ShortName>Abomination_Die.wav</ShortName>
 					<Path>SFX\Abomination_Die_F7D0E330.wem</Path>

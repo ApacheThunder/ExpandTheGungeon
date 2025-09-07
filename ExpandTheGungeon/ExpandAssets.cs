@@ -14,6 +14,10 @@ namespace ExpandTheGungeon {
         
         public enum AssetSource { BraveResources, SharedAuto1, SharedAuto2, EnemiesBase, FlowBase }
 
+        public static T LoadShaderAsset<T>(string assetPath) where T : UnityEngine.Object {
+            return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<T>(assetPath);
+        }
+
         public static T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
             return ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<T>(assetPath);
         }
@@ -55,14 +59,17 @@ namespace ExpandTheGungeon {
             Dictionary<string, AssetBundle> m_AssetBundles = ReflectionHelpers.ReflectGetField<Dictionary<string, AssetBundle>>(typeof(ResourceManager), "LoadedBundles");
             AssetBundle m_ExpandSharedAssets1 = null;
             AssetBundle m_ExpandAudio = null;
+            AssetBundle m_ExpandShaders = null;
             
             try {
                 if (string.IsNullOrEmpty(nameSpace)) {
                     m_ExpandSharedAssets1 = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAssetBundleName.ToLower());
                     m_ExpandAudio = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAudioAssetBundleName.ToLower());
+                    m_ExpandShaders = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModShaderBundleName.ToLower());
                 } else {                    
                     m_ExpandSharedAssets1 = LoadAssetBundleFromResource(ExpandTheGungeon.ModAssetBundleName, nameSpace);
                     m_ExpandAudio = LoadAssetBundleFromResource(ExpandTheGungeon.ModAudioAssetBundleName, nameSpace);
+                    m_ExpandShaders = LoadAssetBundleFromResource(ExpandTheGungeon.ModShaderBundleName, nameSpace);
                     // m_ExpandAudio = LoadFromModZIPOrModFolder(ExpandTheGungeon.ModAudioAssetBundleName.ToLower());
                 }
                 
@@ -79,6 +86,15 @@ namespace ExpandTheGungeon {
                     m_AssetBundles.Add(ExpandTheGungeon.ModAudioAssetBundleName, m_ExpandAudio);
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandAudio asset bundle not found!";
+                    Debug.Log(ErrorMessage);
+                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                    return;
+                }
+
+                if (m_ExpandShaders != null) {
+                    m_AssetBundles.Add(ExpandTheGungeon.ModShaderBundleName, m_ExpandShaders);
+                } else {
+                    string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandShaders asset bundle not found!";
                     Debug.Log(ErrorMessage);
                     ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
                     return;

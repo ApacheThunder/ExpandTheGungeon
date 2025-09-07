@@ -490,7 +490,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public void ApplyGlitchShader(tk2dBaseSprite sprite, bool usesOverrideMaterial = true, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
             try { 
                 if (sprite == null) { return; }
-                if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+                if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
                 Material m_cachedMaterial = new Material(EXGlitchShader);
                 m_cachedMaterial.name = "GlitchMaterial";
                 m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
@@ -539,7 +539,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             try { 
                 if (sprite == null) { return; }
                 // Material m_cachedMaterial = new Material(ShaderCache.Acquire("Brave/Internal/Glitch"));
-                if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+                if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
                 Material m_cachedMaterial = new Material(EXGlitchShader);
                 m_cachedMaterial.name = "GlitchMaterial";
                 m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
@@ -593,7 +593,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
                 
         public void ApplySuperGlitchShader(tk2dBaseSprite sprite, AIActor glitchactor, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
             
             MeshRenderer aiActorSpriteComponent = sprite.GetComponent<MeshRenderer>();
             MeshRenderer aiActorGlitchSpriteComponent = glitchactor.sprite.GetComponent<MeshRenderer>();
@@ -701,7 +701,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public void ApplySuperGlitchShader(tk2dBaseSprite firstSprite, tk2dBaseSprite secondSprite, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
 
             MeshRenderer targetSpriteComponent = firstSprite.GetComponent<MeshRenderer>();
             MeshRenderer sourceSpriteComponent = secondSprite.GetComponent<MeshRenderer>();
@@ -838,7 +838,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static Material ApplyGlitchMaterial(Material originalMaterial, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
             Material m_cachedMaterial = new Material(EXGlitchShader);
             m_cachedMaterial.name = "TileGlitchMaterial";
             m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);
@@ -852,7 +852,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
 
         public static void ApplyGlitchShader(tk2dSpriteDefinition spriteDefinition, float GlitchInterval = 0.1f, float DispProbability = 0.4f, float DispIntensity = 0.01f, float ColorProbability = 0.4f, float ColorIntensity = 0.04f) {
-            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
+            if (!EXGlitchShader) { EXGlitchShader = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModShaderBundleName).LoadAsset<Shader>("ExpandGlitchBasic"); }
             Material m_cachedMaterial = new Material(EXGlitchShader);
             m_cachedMaterial.name = "GlitchMaterial";
             m_cachedMaterial.SetFloat("_GlitchInterval", GlitchInterval);

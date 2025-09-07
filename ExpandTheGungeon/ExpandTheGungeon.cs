@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.11.4";
+        public const string VERSION = "2.11.5";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -32,9 +32,11 @@ namespace ExpandTheGungeon {
         public static bool ItemAPISetup = false;
         public static bool ListsCleared = false;
 
+        public static string ModShaderBundleName = "ExpandShaders";
 
-        public static string ModAssetBundleName = "ExpandSharedAuto";
-
+        public const string ModAssetBundleName = "ExpandSharedAuto";
+        public const string ModLinuxShaderBundleName = "ExpandShaders_Linux";
+        public const string ModMacOSShaderBundleName = "ExpandShaders_MacOS";
         public const string ModSettingsFileName = "ExpandTheGungeon_Settings.txt";
         public const string ModAudioAssetBundleName = "ExpandAudio";
         public const string ModSpriteAssetBundleName = "ExpandSpritesBase";
@@ -104,11 +106,15 @@ namespace ExpandTheGungeon {
                 "Old Key"
             };
 
-            if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.OSXPlayer) {
-                ModAssetBundleName = "ExpandSharedAuto_Linux";
+            switch (Application.platform) {
+                case RuntimePlatform.LinuxPlayer:
+                    ModShaderBundleName = ModLinuxShaderBundleName;
+                    break;
+                case RuntimePlatform.OSXPlayer:
+                    ModShaderBundleName = ModMacOSShaderBundleName;
+                    break;
             }
-
-            // ExpandAssets.InitCustomAssetBundles(ModName);
+            
             ExpandAssets.InitCustomAssetBundles();
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }

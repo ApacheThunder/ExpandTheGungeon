@@ -17,17 +17,17 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             DungeonFlowNode exitWarpNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsRoomTable, isWarpWingNode: true);
 
-            DungeonFlowNode m_FlowWarpEntranceNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[0], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpEntranceNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[1], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpEntranceNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[2], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpEntranceNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[3], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpEntranceNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[4], handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
                         
-            DungeonFlowNode m_FlowWarpDestinationNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[1], isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinationNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[0], isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinationNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[3], isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinationNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[4], isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinationNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[5], isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinationNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinationNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinationNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinationNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinationNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
             
 
             m_CachedFlow.name = "BackRooms_Flow_03";
@@ -67,10 +67,10 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SubNode09 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
             DungeonFlowNode m_SubNode10 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
 
-            DungeonFlowNode m_FlowWarpEntranceSubNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[3], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpEntranceSubNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[5], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinatioSubNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[6], isWarpWingNode: true, handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinatioSubNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[2], isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceSubNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceSubNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinatioSubNode01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinatioSubNode02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
 
             m_CachedFlow.AddNodeToFlow(m_FlowWarpEntranceNode01, entranceNode);
 
@@ -125,8 +125,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SubNode19 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
             DungeonFlowNode m_SubNode20 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
 
-            DungeonFlowNode m_FlowWarpEntranceSubNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[1], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinatioSubNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[0], isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceSubNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinatioSubNode03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
 
             m_CachedFlow.AddNodeToFlow(m_FlowWarpEntranceNode02, entranceNode);
             
@@ -181,8 +181,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SubNode29 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
             DungeonFlowNode m_SubNode30 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
 
-            DungeonFlowNode m_FlowWarpEntranceSubNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[6], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinatioSubNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[1], isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceSubNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinatioSubNode04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
 
 
             m_CachedFlow.AddNodeToFlow(m_FlowWarpEntranceNode03, entranceNode);
@@ -279,8 +279,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SubNode44 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
             DungeonFlowNode m_SubNode45 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, null, ExpandPrefabs.BackRoomsRoomTable);
 
-            DungeonFlowNode m_FlowWarpEntranceSubNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[4], handlesOwnWarping: false);
-            DungeonFlowNode m_FlowWarpDestinatioSubNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_Backrooms_WarpWings[6], isWarpWingNode: true, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpEntranceSubNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, handlesOwnWarping: false);
+            DungeonFlowNode m_FlowWarpDestinatioSubNode05 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, null, ExpandPrefabs.BackRoomsWarpWingTable, isWarpWingNode: true, handlesOwnWarping: false);
                         
             m_CachedFlow.AddNodeToFlow(m_FlowWarpEntranceNode05, entranceNode);
 
