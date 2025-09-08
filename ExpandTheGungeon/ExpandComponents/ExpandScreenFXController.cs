@@ -102,6 +102,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         [System.NonSerialized]
         public Material ScreenMaterial;
         [System.NonSerialized]
+        public Material ScreenMaterial2;
+        [System.NonSerialized]
         public RoomHandler ParentRoom;
 
         public ShaderType shaderType;
@@ -123,35 +125,43 @@ namespace ExpandTheGungeon.ExpandComponents {
         private void Start() {
             switch (shaderType) {
                 case ShaderType.VHS:
-                    // This shader doesn't appear to work on Linux for some reason.
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
                     TexturePlayer = GetComponent<VideoPlayer>();
                     m_colorBleedToggle = 0;
-                    if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
+                    if (enableVHSColorBleed)m_colorBleedToggle = 1;
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
-                    if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
-                    TexturePlayer.Play();
+                    if (!enableVHSScanlineDistortion)ScreenMaterial.SetFloat("_enableScanlineDistortion", 0);
                     TexturePlayer.isLooping = true;
                     TexturePlayer.renderMode = VideoRenderMode.APIOnly;
                     TexturePlayer.clip = VHSClip;
+                    TexturePlayer.Play();
                     break;
                 case ShaderType.VHSOldFilm:
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
-                    TexturePlayer = GetComponent<VideoPlayer>();
-                    m_colorBleedToggle = 0;
-                    if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
-                    ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
-                    if (!enableVHSScanlineDistortion) { ScreenMaterial.SetFloat("_enableScanlineDistortion", 0); }
-                    TexturePlayer.Play();
-                    TexturePlayer.isLooping = true;
-                    TexturePlayer.renderMode = VideoRenderMode.APIOnly;
-                    TexturePlayer.clip = OldFilmClip;
-                    Pixelator.Instance.SetSaturationColorPower(Color.white, 1);
+                    if (!VHSScreenTexture)VHSScreenTexture = ExpandAssets.LoadAsset<Texture2D>("EmptyVHSTexture");
+                    ScreenMaterial.SetTexture("_VHSTex", VHSScreenTexture);
+                    if (enableVHSColorBleed) {
+                        m_colorBleedToggle = 1;
+                    } else {
+                        m_colorBleedToggle = 0;
+                    }
+                    if (!enableVHSScanlineDistortion)ScreenMaterial.SetFloat("_enableScanlineDistortion", 0);
+                    // New Film Shader as second render pass.
+                    if (!isRoomSpecific && Application.platform == RuntimePlatform.WindowsPlayer) {
+                        ScreenMaterial2 = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandChromaKey"));
+                        ScreenMaterial2.SetColor("_ChromaKey", new Color(0, 1, 0));
+                        ScreenMaterial2.SetFloat("_Sensitivity", 0.02f);
+                        ScreenMaterial2.SetFloat("_Smooth", 0.25f);
+                        TexturePlayer = GetComponent<VideoPlayer>();
+                        TexturePlayer.clip = OldFilmClip;
+                        TexturePlayer.isLooping = true;
+                        TexturePlayer.renderMode = VideoRenderMode.APIOnly;
+                        TexturePlayer.Play();
+                        ScreenMaterial2.SetTexture("_OverlayTex", TexturePlayer.texture);
+                    }
+                    Pixelator.Instance.SetFreezeFramePower(1f, false);
                     break;
                 case ShaderType.VHSBasic:
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandVHSPostProcessEffect"));
                     if (!VHSScreenTexture) { VHSScreenTexture = ExpandAssets.LoadAsset<Texture2D>("EmptyVHSTexture"); }
                     ScreenMaterial.SetTexture("_VHSTex", VHSScreenTexture);
@@ -160,7 +170,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (enableVHSColorBleed) { m_colorBleedToggle = 1; }
                     break;
                 case ShaderType.Glitch:
-                    ScreenMaterial = new Material(ExpandAssets.LoadAsset<Shader>("ExpandGlitchScreen"));
+                    ScreenMaterial = new Material(ExpandAssets.LoadShaderAsset<Shader>("ExpandGlitchScreen"));
                     ScreenMaterial.SetTexture("_GlitchMap", ExpandAssets.LoadAsset<Texture2D>(GlitchMapTexture));
                     GlitchRandom = Random.Range(-1.0f, 1.0f);
                     ScreenMaterial.SetFloat("_GlitchAmount", Mathf.Clamp(GlitchAmount, 0f, 1f));
@@ -193,6 +203,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (isRoomSpecific && !ParentRoomIsSecretGlitchRoom) {
                 if (UseCorruptionAmbience) { AkSoundEngine.PostEvent("Play_EX_CorruptionAmbience_01", gameObject); }
             } else {
+                if (shaderType == ShaderType.VHSOldFilm && Application.platform == RuntimePlatform.WindowsPlayer) Pixelator.Instance.RegisterAdditionalRenderPass(ScreenMaterial2);
                 Pixelator.Instance.RegisterAdditionalRenderPass(ScreenMaterial);
                 m_MaterialRegistered = true;
             }
@@ -219,7 +230,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             switch (shaderType) {
                 case ShaderType.VHS:
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     if (m_yScanline >= 1) { m_yScanline = Random.value; }
                     if (m_xScanline <= 0 || Random.value < 0.05) { m_xScanline = Random.value; }
@@ -234,18 +244,19 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
                     break;
                 case ShaderType.VHSOldFilm:
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
-                    ScreenMaterial.SetTexture("_VHSTex", TexturePlayer.texture);
                     m_xShiftIntensity = Random.Range(150, 500);
-                    m_xShift = 0;
-                    m_xScanline = Random.Range(0.4f, 0.8f);
+                    m_xShift = Random.Range(0, 0.002f);
+                    m_xScanline = Random.Range(0.1f, 0.3f);
+                    m_yScanline = Random.Range(0.2f, 0.8f);
                     ScreenMaterial.SetFloat("_xScanline", m_xScanline);
+                    ScreenMaterial.SetFloat("_yScanline", m_yScanline);
                     ScreenMaterial.SetFloat("_xShift", m_xShift);
                     ScreenMaterial.SetFloat("_xShiftIntensity", m_xShiftIntensity);
                     ScreenMaterial.SetFloat("_colorBleedToggle", m_colorBleedToggle);
+                    // Second Render pass. Sends new video to second shader for chroma keying.
+                    if (!isRoomSpecific)ScreenMaterial2.SetTexture("_OverlayTex", TexturePlayer.texture);
                     break;
                 case ShaderType.VHSBasic:
-                    // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { return; }
                     if (enableVHSScanlineDistortion) {
                         if (m_yScanline >= 1) { m_yScanline = Random.value; }
                         m_yScanline += (BraveTime.DeltaTime * 0.01f);
@@ -291,16 +302,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             try { 
                 switch (shaderType) {
                     case ShaderType.VHS:
-                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSOldFilm:
-                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
-                        Pixelator.Instance.SetSaturationColorPower(Color.white, 0);
+                        Pixelator.Instance.ClearFreezeFrame();
                         TexturePlayer.Stop();
                         break;
                     case ShaderType.VHSBasic:
-                        // if (Application.platform == RuntimePlatform.LinuxPlayer | Application.platform == RuntimePlatform.LinuxEditor) { break; }
                         // Nothing extra needed for now
                         break;
                     case ShaderType.Glitch:
@@ -314,7 +322,10 @@ namespace ExpandTheGungeon.ExpandComponents {
                         break;
                 }
                 m_SetupComplete = false;
-                if (m_MaterialRegistered) { Pixelator.Instance.DeregisterAdditionalRenderPass(ScreenMaterial); }
+                if (m_MaterialRegistered) {
+                    Pixelator.Instance.DeregisterAdditionalRenderPass(ScreenMaterial);
+                    if (shaderType == ShaderType.VHSOldFilm && Application.platform == RuntimePlatform.WindowsPlayer) Pixelator.Instance.DeregisterAdditionalRenderPass(ScreenMaterial2);
+                }
                 base.OnDestroy();
             } catch (System.Exception) { }
         }

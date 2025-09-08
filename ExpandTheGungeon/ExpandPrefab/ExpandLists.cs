@@ -8,7 +8,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // Currently custom screen glitch shaders don't support OpenGL or Vulkan backend.
         // Game must be using DirectX backend for them to not result in pink screens.
         public static readonly List<UnityEngine.Rendering.GraphicsDeviceType> InvalidGraphicsModes = new List<UnityEngine.Rendering.GraphicsDeviceType>() {
-            UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore,
+            // UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore,
             UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2,
             UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3,
             UnityEngine.Rendering.GraphicsDeviceType.Vulkan

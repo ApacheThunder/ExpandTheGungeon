@@ -100,6 +100,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         [System.NonSerialized]
         public Material ScreenMaterial;
+		[System.NonSerialized]
+        public Material ScreenMaterial2;
         [System.NonSerialized]
         public RoomHandler ParentRoom;
 

@@ -212,7 +212,7 @@ namespace ExpandTheGungeon.ItemAPI {
             TempFXObject.transform.SetParent(dungeon.gameObject.transform);
             ExpandScreenFXController fxController = TempFXObject.GetComponent<ExpandScreenFXController>();
 
-            if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) { 
+            if (!ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {
                 while (fxController.GlitchAmount < 1) {
                     fxController.GlitchAmount += (BraveTime.DeltaTime / 0.5f);
                     yield return null;

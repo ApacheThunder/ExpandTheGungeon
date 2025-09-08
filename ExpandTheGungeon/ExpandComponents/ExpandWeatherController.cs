@@ -214,7 +214,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         protected IEnumerator DoLightningStrike() {
             AkSoundEngine.PostEvent("Play_ENV_thunder_flash_01", GameManager.Instance.PrimaryPlayer.gameObject);
-            PlatformInterface.SetAlienFXColor(new Color(1f, 1f, 1f, 1f), 0.25f);
+            if (Application.platform == RuntimePlatform.WindowsPlayer)PlatformInterface.SetAlienFXColor(new Color(1f, 1f, 1f, 1f), 0.25f);
             yield return new WaitForSeconds(0.25f);
             GameManager.Instance.MainCameraController.DoScreenShake(ThunderShake, null, false);
     		yield break;
