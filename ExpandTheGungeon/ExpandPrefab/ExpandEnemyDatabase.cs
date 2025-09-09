@@ -17,6 +17,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
     public static class ExpandEnemyDatabase {
 
         static ExpandEnemyDatabase() {
+            BulletManBossGUID = "170bad1ea59344278c996c4ccc3bee51";
             HotShotCultistGUID = "61a8112544ce4389ab14f2287616a71b";
             HotShotShotgunKinGUID = "758a0a0215e6448ab52adf73bc44ae5e";
             HotShotBulletKinGUID = "8a0b7a287410464bb17b9e656958bd19";
@@ -45,6 +46,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         // Saved GUIDs for use in things like room prefabs
+        public static readonly string BulletManBossGUID;
         public static readonly string HotShotCultistGUID;
         public static readonly string HotShotShotgunKinGUID;
         public static readonly string HotShotBulletKinGUID;
@@ -125,6 +127,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject MonsterParasitePrefab;
         public static GameObject com4nd0BossPrefab;
         public static GameObject DoppelGunnerPrefab;
+        public static GameObject BulletManBossPrefab;
 
         // Enemies with pallete system disabled
         public static GameObject RedShotGunMan;
@@ -217,6 +220,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BuildEntityPrefab(expandSharedAssets1, out EntityPrefab);
 
             BuildDoppelGunnerBossPrefab(expandSharedAssets1, out DoppelGunnerPrefab);
+
+            BuildBulletManBossPrefab(expandSharedAssets1, out BulletManBossPrefab);
 
             ExpandWesternBrosPrefabBuilder.BuildWestBrosBossPrefabs(expandSharedAssets1);
             
@@ -1075,12 +1080,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static void BuildRatGrenadePrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             m_CachedTargetObject = UnityEngine.Object.Instantiate(GetOfficialEnemyByGuid("14ea47ff46b54bb4a98f91ffcffb656d").gameObject);
             m_CachedTargetObject.SetActive(false);
-            m_CachedTargetObject.name = "Greande Rat";
-
-            ExpandExplodeOnDeath RatExplodeComponent = m_CachedTargetObject.AddComponent<ExpandExplodeOnDeath>();
+            m_CachedTargetObject.name = "Grenade Rat";
+            
+            ExplodeOnDeath RatExplodeComponent = m_CachedTargetObject.AddComponent<ExplodeOnDeath>();
+            RatExplodeComponent.explosionData = ExpandUtility.GenerateExplosionData();
+            RatExplodeComponent.immuneToIBombApp = false;
+            RatExplodeComponent.LinearChainExplosion = false;
             RatExplodeComponent.deathType = OnDeathBehavior.DeathType.Death;
+            RatExplodeComponent.preDeathDelay = 0.1f;
 
             AIActor m_CachedAIActor = RatGrenadePrefab.GetComponent<AIActor>();
+            m_CachedAIActor.ActorName = "Grenade Rat";
             m_CachedAIActor.OverrideDisplayName = "Grenade Rat";
             m_CachedAIActor.EnemyGuid = RatGrenadeGUID;
             m_CachedAIActor.EnemyId = UnityEngine.Random.Range(10000, 100000);
@@ -6355,6 +6365,226 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_TargetBehaviorSpeculatorSeralized.SerializedStateValues = new List<string>(0);
             
             AddEnemyToDatabaseAndAmmonomicon(CachedDoppelGunnerBoss, doppelgunnerbossEnemyGUID, ExpandAmmonomiconDatabase.Doppelgunner, false);
+        }
+
+        public static void BuildBulletManBossPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("01972dee89fc4404a5c408d50007dad5"); //bullet_kin
+
+            GameObject m_DummyCorpseObject = null;
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("BulletMan Boss");
+            
+            tk2dSprite m_CachedSprite = SpriteSerializer.AddSpriteToObject(m_CachedTargetObject, m_CachedEnemyActor.sprite.Collection, m_CachedEnemyActor.sprite.Collection.spriteDefinitions[363].name, tk2dBaseSprite.PerpendicularState.PERPENDICULAR);
+
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, m_CachedEnemyActor.spriteAnimator.Library, 5, 0, playAutomatically: true, ClipFps: 0);
+            
+            GameObject m_CachedGunAttachPoint = m_CachedTargetObject.transform.Find("GunAttachPoint").gameObject;
+
+            ExpandUtility.DuplicateAIShooterAndAIBulletBank(m_CachedTargetObject, m_CachedEnemyActor.aiShooter, m_CachedEnemyActor.GetComponent<AIBulletBank>(), 38, m_CachedGunAttachPoint.transform);
+
+            ExpandUtility.GenerateAIActorTemplate(m_CachedTargetObject, out m_DummyCorpseObject, "BulletMan Boss", BulletManBossGUID, null, instantiateCorpseObject: false, ExternalCorpseObject: m_CachedEnemyActor.CorpseObject, EnemyHasNoShooter: true);
+                        
+            AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+
+            ExpandUtility.DuplicateComponent(m_CachedAIActor.aiAnimator, m_CachedEnemyActor.aiAnimator);
+
+
+            m_CachedAIActor.aiAnimator.OtherAnimations.Add(
+                new AIAnimator.NamedDirectionalAnimation() {
+                    name = "cover_idle_left",
+                    anim = new DirectionalAnimation() {
+                        Type = DirectionalAnimation.DirectionType.None,
+                        Prefix = "cover_idle_left",
+                        AnimNames = new string[1],
+                        Flipped = new DirectionalAnimation.FlipType[1]
+                    }
+                }
+            );
+            m_CachedAIActor.aiAnimator.OtherAnimations.Add(
+                new AIAnimator.NamedDirectionalAnimation() {
+                    name = "cover_leap_left",
+                    anim = new DirectionalAnimation() {
+                        Type = DirectionalAnimation.DirectionType.None,
+                        Prefix = "cover_leap_left",
+                        AnimNames = new string[1],
+                        Flipped = new DirectionalAnimation.FlipType[1]
+                    }
+                }
+            );
+
+
+            m_CachedAIActor.MovementSpeed = 2;
+            m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
+            // m_CachedAIActor.aiShooter.handObject = null;
+
+            m_CachedAIActor.specRigidbody.PixelColliders.Clear();
+
+            ExpandUtility.DuplicateRigidBody(m_CachedAIActor.specRigidbody, m_CachedEnemyActor.specRigidbody);
+
+
+            string bossName = "Just a normal Bullet Kin?";
+            GenericIntroDoer bossIntroDoer = m_CachedAIActor.gameObject.AddComponent<GenericIntroDoer>();
+            bossIntroDoer.triggerType = GenericIntroDoer.TriggerType.PlayerEnteredRoom;
+            bossIntroDoer.initialDelay = 0.15f;
+            bossIntroDoer.cameraMoveSpeed = 14;
+            bossIntroDoer.specifyIntroAiAnimator = null;
+            bossIntroDoer.BossMusicEvent = "Play_MUS_Boss_Theme_Beholster";
+            bossIntroDoer.PreventBossMusic = false;
+            bossIntroDoer.InvisibleBeforeIntroAnim = false;
+            bossIntroDoer.preIntroDirectionalAnim = string.Empty;
+            bossIntroDoer.preIntroAnim = "cover_idle_left";
+            bossIntroDoer.introAnim = "cover_leap_left";
+            bossIntroDoer.introDirectionalAnim = string.Empty;
+            bossIntroDoer.continueAnimDuringOutro = true;
+            bossIntroDoer.cameraFocus = null;
+            bossIntroDoer.roomPositionCameraFocus = Vector2.zero;
+            bossIntroDoer.restrictPlayerMotionToRoom = false;
+            bossIntroDoer.fusebombLock = false;
+            bossIntroDoer.AdditionalHeightOffset = 0;
+            bossIntroDoer.SkipBossCard = false;
+            bossIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
+                bossArtSprite = ExpandAssets.LoadAsset<Texture2D>("BulletMan_BossCard"),
+                bossNameString = bossName,
+                bossSubtitleString = "He's serious?",
+                bossQuoteString = "Don't tell Him...",
+                bossSpritePxOffset = IntVector2.Zero,
+                topLeftTextPxOffset = IntVector2.Zero,
+                bottomRightTextPxOffset = IntVector2.Zero,
+                bgColor = new Color(0, 0, 1, 1)
+            };
+            bossIntroDoer.HideGunAndHand = true;
+            bossIntroDoer.SkipFinalizeAnimation = false;
+            
+            m_CachedAIActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.MainBar;
+            m_CachedAIActor.healthHaver.overrideBossName = bossName;
+
+            m_CachedTargetObject.AddComponent<ExpandFlipTablesAfterIntro>();
+
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>() {
+                new RedBarrelAwareness() { AvoidRedBarrels = true, ShootRedBarrels = true, PushRedBarrels = true }
+            };
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>() {
+                new TargetPlayerBehavior() {
+                    Radius = 35,
+                    LineOfSight = true,
+                    ObjectPermanence = true,
+                    SearchInterval = 0.25f,
+                    PauseOnTargetSwitch = false,
+                    PauseTime = 0.25f
+                }
+            };
+
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>() {
+                new RideInCartsBehavior(),
+                new TakeCoverBehavior() {
+                    PathInterval = 0.25f,
+                    LineOfSightToLeaveCover = true,
+                    MaxCoverDistance = 10,
+                    MaxCoverDistanceToTarget = 25,
+                    FlipCoverDistance = 0.3f,
+                    InsideCoverTime = 2,
+                    OutsideCoverTime = 2,
+                    PopOutSpeedMultiplier = 3,
+                    PopInSpeedMultiplier = 1,
+                    InitialCoverChance = 0.9f,
+                    RepeatingCoverChance = 0.15f,
+                    RepeatingCoverInterval = 1
+                },
+                new SeekTargetBehavior() {
+                    StopWhenInRange = true,
+                    CustomRange = 7,
+                    LineOfSight = true,
+                    ReturnToSpawn = true,
+                    SpawnTetherDistance = 0,
+                    PathInterval = 0.25f,
+                    SpecifyRange = false,
+                    MinActiveRange = 0,
+                    MaxActiveRange = 0
+                }
+            };
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>() {
+                new ShootGunBehavior() {
+                    GroupCooldownVariance = 0.2f,
+                    LineOfSight = true,
+                    WeaponType = WeaponType.AIShooterProjectile,
+                    OverrideBulletName = "default",
+                    BulletScript = null,
+                    FixTargetDuringAttack = false,
+                    StopDuringAttack = false,
+                    LeadAmount = 0,
+                    LeadChance = 1,
+                    RespectReload = true,
+                    MagazineCapacity = 6,
+                    ReloadSpeed = 2,
+                    EmptiesClip = false,
+                    SuppressReloadAnim = false,
+                    TimeBetweenShots = -1,
+                    PreventTargetSwitching = false,
+                    OverrideAnimation = null,
+                    OverrideDirectionalAnimation = null,
+                    HideGun = false,
+                    UseLaserSight = false,
+                    UseGreenLaser = false,
+                    PreFireLaserTime = -1,
+                    AimAtFacingDirectionWhenSafe = false,
+                    Cooldown = 1.6f,
+                    CooldownVariance = 0,
+                    AttackCooldown = 0,
+                    GlobalCooldown = 0,
+                    InitialCooldown = 0,
+                    InitialCooldownVariance = 0,
+                    GroupName = null,
+                    GroupCooldown = 0,
+                    MinRange = 0,
+                    Range = 12,
+                    MinWallDistance = 0,
+                    MaxEnemiesInRoom = 0,
+                    MinHealthThreshold = 0,
+                    MaxHealthThreshold = 1,
+                    HealthThresholds = new float[0],
+                    AccumulateHealthThresholds = true,
+                    targetAreaStyle = null,
+                    IsBlackPhantom = false,
+                    resetCooldownOnDamage = null,
+                    RequiresLineOfSight = false,
+                    MaxUsages = 0
+                }
+            };
+
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0.5f;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+                        
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>(0);
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+
+            ExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExplodeOnDeath>();
+            m_Exploder.explosionData = ExpandUtility.GenerateExplosionData();
+            m_Exploder.immuneToIBombApp = true;
+            m_Exploder.LinearChainExplosion = false;
+            m_Exploder.deathType = OnDeathBehavior.DeathType.Death;
+            m_Exploder.preDeathDelay = 0.1f;
+
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BulletManBossGUID, ExpandAmmonomiconDatabase.BulletManBoss);
+            
+            m_CachedEnemyActor = null;
+            return;
         }
 
         private static void m_GenerateCronenbergDebris(GameObject targetObject, GoopDefinition goopSource) {

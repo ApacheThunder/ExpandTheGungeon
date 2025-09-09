@@ -203,6 +203,7 @@
      <None Include="Assets\ExpandSerializedData\SpriteCollections\EXSecretDoorCollection.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\GungeoneerMimicCollection.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Nakatomi\Nakatomi_Purple\facewallGrids_0.txt" />
+     <None Include="Assets\ExpandSerializedData\AmmonomiconData\BulletManBoss_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\TilesetData\Phobos\Phobos_Grey\floorSquares.txt" />
      <None Include="Assets\ExpandSerializedData\AmmonomiconData\HotShotBulletKin_AmmonomiconData.txt" />
      <None Include="Assets\ExpandSerializedData\SpriteCollections\WestBrosCollection.txt" />

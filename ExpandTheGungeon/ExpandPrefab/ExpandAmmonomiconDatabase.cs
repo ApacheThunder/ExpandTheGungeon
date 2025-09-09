@@ -22,6 +22,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             public string encounterPath;
         }
 
+        public static EnemyEntryData BulletManBoss;
         public static EnemyEntryData BootlegBullat;
         public static EnemyEntryData BootlegBulletKin;
         public static EnemyEntryData BootlegBandanaBulletKin;
@@ -44,6 +45,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
         public static void Init(AssetBundle expandSharedAssets1) {
+            BulletManBoss = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BulletManBoss_AmmonomiconData").text);
             BootlegBullat = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBullat_AmmonomiconData").text);
             BootlegBulletKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBulletKin_AmmonomiconData").text);
             BootlegBandanaBulletKin = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("BootlegBandanaBulletKin_AmmonomiconData").text);
@@ -64,7 +66,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Doppelgunner = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Doppelgunner_AmmonomiconData").text);
         }
 
-        public static void AddExistingEnemyToAmmonomicon(AIActor targetEnemy, EnemyEntryData enemyEntryData, bool AddToEncounterDatabase = true) {
+        public static void AddExistingEnemyToAmmonomicon(AIActor targetEnemy, EnemyEntryData enemyEntryData, bool AddToEncounterDatabase = true, Texture2D FullArtSpriteOverride = null) {
 
             if (!targetEnemy) { return; }
 
@@ -77,7 +79,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             } else {
                 return;
             }
-            
+
             if (enemyEntryData.TabSpriteIsTexture) {
                 if (!ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite)) { return; }
                 SpriteBuilder.AddToAmmonomicon(ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.TabSprite));
@@ -98,7 +100,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             encounter.ProxyEncounterGuid = string.Empty;
             encounter.journalData = new JournalEntry() {
                 AmmonomiconSprite = enemyEntryData.TabSprite,
-                enemyPortraitSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite),
                 PrimaryDisplayName = "#THE_" + m_EnemyNameCode,
                 NotificationPanelDescription = "#THE_" + m_EnemyNameCode + "_SHORTDESC",
                 AmmonomiconFullEntry = "#THE_" + m_EnemyNameCode + "_LONGDESC",
@@ -109,6 +110,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 DisplayOnLoadingScreen = false,
                 RequiresLightBackgroundInLoadingScreen = false
             };
+
+            if (FullArtSpriteOverride) {
+                encounter.journalData.enemyPortraitSprite = FullArtSpriteOverride;
+            } else {
+                encounter.journalData.enemyPortraitSprite = ExpandAssets.LoadAsset<Texture2D>(enemyEntryData.FullArtSprite);
+            }
             
             ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode, enemyEntryData.EnemyName);
             ExpandTheGungeon.Strings.Enemies.Set("#THE_" + m_EnemyNameCode + "_SHORTDESC", enemyEntryData.smallDescription);

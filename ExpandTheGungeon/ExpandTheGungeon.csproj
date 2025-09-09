@@ -117,6 +117,7 @@
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntitySpawner.cs" />
+    <Compile Include="ExpandComponents\ExpandFlipTablesAfterIntro.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />

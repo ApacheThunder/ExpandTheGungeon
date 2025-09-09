@@ -2080,42 +2080,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             FakeBossRoom.UseCustomMusicSwitch = false;
             FakeBossRoom.CustomMusicSwitch = string.Empty;
             FakeBossRoom.overrideRoomVisualTypeForSecretRooms = false;
-            FakeBossRoom.rewardChestSpawnPosition = new IntVector2(12, 12);
-            FakeBossRoom.Width = 25;
-            FakeBossRoom.Height = 25;
+            FakeBossRoom.rewardChestSpawnPosition = new IntVector2(13, 13);
+            FakeBossRoom.Width = 26;
+            FakeBossRoom.Height = 26;
             FakeBossRoom.associatedMinimapIcon = ExpandPrefabs.GatlingGullRoom05.associatedMinimapIcon;
-            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(0, 12), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(12, 0), DungeonData.Direction.SOUTH);
-            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(26, 12), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.EXIT_ONLY);
-            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(12, 26), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            FakeBossRoom.overrideRoomVisualType = 1;
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(13, 27), DungeonData.Direction.NORTH, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(27, 13), DungeonData.Direction.EAST, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(0, 13), DungeonData.Direction.WEST, PrototypeRoomExit.ExitType.EXIT_ONLY);
+            RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(13, 0), DungeonData.Direction.SOUTH);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(13, 16), EnemyBehaviourGuid: ExpandEnemyDatabase.BulletManBossGUID, yOffset: -4);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(12, 14), ExpandObjectDatabase.TableHorizontal, xOffset: 4);
             RoomBuilder.GenerateBasicRoomLayout(FakeBossRoom);
-            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(8, 18), EnemyBehaviourGuid: "01972dee89fc4404a5c408d50007dad5");
-            FakeBossRoom.additionalObjectLayers = new List<PrototypeRoomObjectLayer>() {
-                new PrototypeRoomObjectLayer() {
-                    placedObjects = new List<PrototypePlacedObjectData>() {
-                        new PrototypePlacedObjectData() {
-                            enemyBehaviourGuid = "fc809bd43a4d41738a62d7565456622c", // Ser_Manuel
-                            contentsBasePosition = new Vector2(12, 12),
-                            layer = 0,
-                            xMPxOffset = 0,
-                            yMPxOffset = 0,
-                            fieldData = new List<PrototypePlacedObjectFieldData>(0),
-                            instancePrerequisites = new DungeonPrerequisite[0],
-                            linkedTriggerAreaIDs = new List<int>(0),
-                            assignedPathStartNode = 0
-                        }
-                    },
-                    placedObjectBasePositions = new List<Vector2>() { new Vector2(12, 12) },
-                    layerIsReinforcementLayer = true,
-                    shuffle = true,
-                    randomize = 2,
-                    suppressPlayerChecks = true,
-                    delayTime = 4,
-                    reinforcementTriggerCondition = RoomEventTriggerCondition.ON_ENEMIES_CLEARED,
-                    probability = 1,
-                    numberTimesEncounteredRequired = 0
-                }
-            };
 
 
             Giant_Elevator_Room.name = "Giant Elevator Room";

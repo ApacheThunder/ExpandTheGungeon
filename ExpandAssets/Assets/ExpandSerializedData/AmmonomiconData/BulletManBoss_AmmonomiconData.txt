@@ -1,0 +1,16 @@
+{
+    "ForcedPositionInAmmonomicon": 2,
+    "IsNormalEnemy": true,
+    "IsInBossTab": true,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 0,
+	"placeableWidth": 1,
+	"placeableHeight": 1,
+    "TabSprite": "boss_icon_bulletman",
+    "FullArtSprite": "bulletman_boss_ammonomicon",
+    "EnemyName": "Bullet Kin Boss",
+    "smallDescription": "Totally a Boss",
+    "bigDescription": "Aww he think's he's the boss!\n\nLet's play along for his sake even if he's not long for this world.\n\nIf you die to this guy you have only yourself to blame!",
+	"encounterGUID": "c68c58a4052a4f08bbeab0e9cdb14f4b",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/BulletMan Boss.prefab"
+}

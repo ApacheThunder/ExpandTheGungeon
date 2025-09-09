@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2417359524
+CRC: 883327005
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 84b470bfd2b7327eb8b8f57d84727cf4
+    Hash: de5c6deb9c06b174eeb6aae754591bc1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 513673b503952618eb00f45379ce1f5a
@@ -1006,6 +1006,7 @@ Assets:
 - Assets/ExpandSerializedData/AmmonomiconData/Doppelgunner_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/MA_Expand_Achievement_Dungeon_Diver.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal18.bytes
+- Assets/ExpandTextures/BossCards/BulletMan_BossCard.png
 - Assets/ExpandSerializedData/SpriteCollections/EXJungleCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room002.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal6.bytes
@@ -1033,6 +1034,7 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/Tilesets/ENV_Tileset_Canyon.png
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Jungle_OldCrest.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed25.bytes
+- Assets/ExpandPrefabs/AIActors/BulletMan Boss.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Undead3.bytes
 - Assets/ExpandRooms/RoomFactoryData/KP_Expand_Achievement_Not_Just_A_Box.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera3.bytes
@@ -1119,6 +1121,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular48.bytes
 - Assets/ExpandTextures/SpriteCollections/AIActors/BulletMan_UpsideDown.png
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room045.bytes
+- Assets/ExpandTextures/AmmonomiconTextures/boss_icon_bulletman.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular43.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_RealExit.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Reward.bytes
@@ -1202,6 +1205,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed24.bytes
 - Assets/ExpandPrefabs/Items/Projectiles/EXBootlegShotgunProjectile.prefab
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/BootlegBulletManCollection.prefab
+- Assets/ExpandTextures/AmmonomiconTextures/bulletman_boss_ammonomicon.png
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera28.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera18.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_BIRDS.bytes
@@ -1268,6 +1272,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera22.bytes
 - Assets/ExpandPrefabs/AIActors/Cronenberg Abomination.prefab
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Purple/facewallGrids_0.txt
+- Assets/ExpandSerializedData/AmmonomiconData/BulletManBoss_AmmonomiconData.txt
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room085.bytes
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/floorSquares.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed6.bytes
