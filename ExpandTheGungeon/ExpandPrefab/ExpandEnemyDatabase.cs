@@ -6416,11 +6416,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     }
                 }
             );
-
+            m_CachedAIActor.aiAnimator.OtherAnimations.Add(
+                new AIAnimator.NamedDirectionalAnimation() {
+                    name = "spawn",
+                    anim = new DirectionalAnimation() {
+                        Type = DirectionalAnimation.DirectionType.None,
+                        Prefix = "cover_leap_left",
+                        AnimNames = new string[1],
+                        Flipped = new DirectionalAnimation.FlipType[1]
+                    }
+                }
+            );
+            
 
             m_CachedAIActor.MovementSpeed = 2;
             m_CachedAIActor.PathableTiles = Dungeonator.CellTypes.FLOOR;
-            // m_CachedAIActor.aiShooter.handObject = null;
 
             m_CachedAIActor.specRigidbody.PixelColliders.Clear();
 
@@ -6438,7 +6448,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             bossIntroDoer.InvisibleBeforeIntroAnim = false;
             bossIntroDoer.preIntroDirectionalAnim = string.Empty;
             bossIntroDoer.preIntroAnim = "cover_idle_left";
-            bossIntroDoer.introAnim = "cover_leap_left";
+            bossIntroDoer.introAnim = string.Empty;
             bossIntroDoer.introDirectionalAnim = string.Empty;
             bossIntroDoer.continueAnimDuringOutro = true;
             bossIntroDoer.cameraFocus = null;
@@ -6457,14 +6467,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 bottomRightTextPxOffset = IntVector2.Zero,
                 bgColor = new Color(0, 0, 1, 1)
             };
-            bossIntroDoer.HideGunAndHand = true;
+            bossIntroDoer.HideGunAndHand = false;
             bossIntroDoer.SkipFinalizeAnimation = false;
             
             m_CachedAIActor.healthHaver.bossHealthBar = HealthHaver.BossBarType.MainBar;
             m_CachedAIActor.healthHaver.overrideBossName = bossName;
-
-            m_CachedTargetObject.AddComponent<ExpandFlipTablesAfterIntro>();
-
+            m_CachedAIActor.OverrideDisplayName = bossName;
+            
+            m_CachedTargetObject.AddComponent<ExpandBulletManBossIntroDoer>();
 
             BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
             customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);

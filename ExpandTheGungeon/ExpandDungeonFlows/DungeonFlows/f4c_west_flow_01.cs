@@ -80,7 +80,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode BlankRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_BlankPedestalRoom);
 
             DungeonFlowNode RatKeyRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
-            DungeonFlowNode RatKeyRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
+            // DungeonFlowNode RatKeyRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
             DungeonFlowNode SecretRatKeyRoom_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
             DungeonFlowNode SecretRatKeyRoom_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SECRET, ExpandRoomPrefabs.Expand_West_SecretRatKeyPedestalRoom);
 
@@ -94,7 +94,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode m_SecretBossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.GungeoneerMimicBossRoom);
             DungeonFlowNode m_SecretBossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandRoomPrefabs.GungeoneerMimicBossFoyerRoom);
             // DungeonFlowNode m_SecretBossFoyerNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, overrideTable: ExpandPrefabs.boss_foyertable);
-            DungeonFlowNode m_SecretBossExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
+            // DungeonFlowNode m_SecretBossExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_West_RatKeyPedestalRoom);
             // DungeonFlowNode m_SecretBossExitNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.EXIT, ExpandPrefabs.DraGunExitRoom);
             // DungeonFlowNode m_SecretBossEndTimesNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandPrefabs.DraGunEndTimesRoom, isWarpWingNode: true);
             // DungeonFlowNode m_SecretBossShopNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.SPECIAL, ExpandPrefabs.BlacksmithShop);
@@ -150,7 +150,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(m_SecretBossFoyerNode, m_SpecialRewardNode);
             // m_CachedFlow.AddNodeToFlow(m_SecretBossFoyerNode, m_SecretBossShopNode);
             m_CachedFlow.AddNodeToFlow(m_SecretBossNode, m_SecretBossFoyerNode);
-            m_CachedFlow.AddNodeToFlow(m_SecretBossExitNode, m_SecretBossNode);
+            // m_CachedFlow.AddNodeToFlow(m_SecretBossExitNode, m_SecretBossNode);
             // m_CachedFlow.AddNodeToFlow(m_SecretBossEndTimesNode, m_SecretBossExitNode);
 
             m_CachedFlow.AddNodeToFlow(WestRoom_02, WestRoom_12);
@@ -161,7 +161,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(WestRoom_10, WestRoom_04);
             m_CachedFlow.AddNodeToFlow(fakebossFoyerNode, WestRoom_10);
             m_CachedFlow.AddNodeToFlow(fakebossNode, fakebossFoyerNode);
-            m_CachedFlow.AddNodeToFlow(RatKeyRoom_02, fakebossNode);
+            // m_CachedFlow.AddNodeToFlow(RatKeyRoom_02, fakebossNode);
 
             m_CachedFlow.FirstNode = entranceNode;
 

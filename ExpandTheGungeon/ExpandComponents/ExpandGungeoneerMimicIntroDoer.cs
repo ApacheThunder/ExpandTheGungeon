@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandPrefab;
-using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon.ExpandComponents {
@@ -26,8 +25,13 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void Start() {
             m_AIActor = aiActor;
+            aiActor.AdditionalSafeItemDrops = new List<PickupObject>();
             if (!GameStatsManager.HasInstance | !GameStatsManager.Instance.IsRainbowRun) {
-                m_AIActor.AdditionalSafeItemDrops = new List<PickupObject>() { Mimiclay.MimiclayObject.GetComponent<Mimiclay>() };
+                m_AIActor.AdditionalSafeItemDrops.Add(Mimiclay.MimiclayObject.GetComponent<Mimiclay>());
+            }
+
+            if (GameManager.Instance?.Dungeon?.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                aiActor.AdditionalSafeItemDrops.Add(PickupObjectDatabase.GetById(727));
             }
             m_GungeoneerMimicController = m_AIActor.gameObject.GetComponent<ExpandGungeoneerMimicBossController>();
         }
@@ -173,17 +177,16 @@ namespace ExpandTheGungeon.ExpandComponents {
         public override void OnBossCard() { }
         
         private IEnumerator DoIntro() {
-
-            yield return StartCoroutine(WaitForSecondsInvariant(1f));
+            yield return StartCoroutine(TimeInvariantWait(1f));
             tk2dSpriteAnimator mirrorAnimation = null;
             if (MirrorBase) { mirrorAnimation = MirrorBase.GetComponent<tk2dSpriteAnimator>(); }
             if (mirrorAnimation) {
                 mirrorAnimation.Play("PlayerMimicFadeIn");
                 while (mirrorAnimation.IsPlaying("PlayerMimicFadeIn")) { yield return null; }
-                yield return StartCoroutine(WaitForSecondsInvariant(1f));
+                yield return StartCoroutine(TimeInvariantWait(1f));
             }
             yield return StartCoroutine(DoTalk(new Vector3(0.5f, 1.25f)));
-            yield return StartCoroutine(WaitForSecondsInvariant(0.6f));
+            yield return StartCoroutine(TimeInvariantWait(0.6f));
             if (mirrorAnimation) {                
                 mirrorAnimation.Play("MirrorGlassCrack");
                 AkSoundEngine.PostEvent("Play_OBJ_crystal_shatter_01", GameManager.Instance.MainCameraController.gameObject);
@@ -298,12 +301,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             yield break;
         }
-
-        private IEnumerator WaitForSecondsInvariant(float time) {
-            for (float elapsed = 0f; elapsed < time; elapsed += GameManager.INVARIANT_DELTA_TIME) { yield return null; }
-            yield break;
-        }
-
+        
         public override void EndIntro() {
             m_finished = true;
             StopAllCoroutines();
