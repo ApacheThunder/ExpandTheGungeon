@@ -2876,10 +2876,49 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandFakeChest RickRollChest_SwitchComponent = RickRollMusicSwitchObject.AddComponent<ExpandFakeChest>();
             RickRollChest_SwitchComponent.chestType = ExpandFakeChest.ChestType.MusicSwitch;
-            
+
             // RoomBuilder.AddObjectToRoom(gungeon_entrance, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
             // RoomBuilder.AddObjectToRoom(gungeon_entrance_bossrush, new Vector2(12, 20), ExpandUtility.GenerateDungeonPlacable(RickRollMusicSwitchObject, useExternalPrefab: true), xOffset: 12, yOffset: 6);
+
+            List<string> chestEnemyOpen = new List<string>() {
+                "enemy_chest_open_001",
+                "enemy_chest_open_002",
+                "enemy_chest_open_003",
+                "enemy_chest_open_004",
+                "enemy_chest_open_005",
+                "enemy_chest_open_006",
+                "enemy_chest_open_007",
+                "enemy_chest_open_008",
+                "enemy_chest_open_009",
+                "enemy_chest_open_010",
+                "enemy_chest_open_011",
+                "enemy_chest_open_012",
+                "enemy_chest_open_013",
+                "enemy_chest_open_014"
+            };
             
+            List<string> chestEnemyAppear = new List<string>() {
+                "enemy_chest_appear_001",
+                "enemy_chest_appear_002",
+                "enemy_chest_appear_003",
+                "enemy_chest_appear_004",
+                "enemy_chest_appear_005"
+            };
+
+            List<string> chestEnemyBreak = new List<string>() {
+                "enemy_chest_break001",
+                "enemy_chest_break002",
+                "enemy_chest_break003",
+                "enemy_chest_break004"
+            };
+
+            List<string> chestEnemyKnock = new List<string>() {
+                "enemy_chest_knock_001",
+                "enemy_chest_knock_002",
+                "enemy_chest_knock_003",
+                "enemy_chest_knock_004",
+                "enemy_chest_knock_005"
+            };
 
             GameObject m_BrownChestReference = ExpandObjectDatabase.ChestBrownTwoItems;
 
@@ -2891,21 +2930,24 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandUtility.DuplicateSprite(SurpriseChestShadowSprite, m_BrownChestReference.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>());
             }
             
-            tk2dSprite SurpriseChestSprite = SurpriseChestObject.AddComponent<tk2dSprite>();
-            ExpandUtility.DuplicateSprite(SurpriseChestSprite, m_BrownChestReference.GetComponent<tk2dSprite>());
-            SurpriseChestSprite.SetSprite("coop_chest_idle_001"); // coop_chest_open_001
+            tk2dSprite SurpriseChestSprite = SpriteSerializer.AddSpriteToObject(SurpriseChestObject, EXChestCollection, "enemy_chest_idle_001", tk2dBaseSprite.PerpendicularState.PERPENDICULAR, -1);
+            
+            ExpandUtility.GenerateSpriteAnimator(SurpriseChestObject);
 
-            tk2dSpriteAnimator SurpriseChestAnimator = SurpriseChestObject.AddComponent<tk2dSpriteAnimator>();
-            SurpriseChestAnimator.Library = m_BrownChestReference.GetComponent<tk2dSpriteAnimator>().Library;
-            SurpriseChestAnimator.DefaultClipId = 31;
-            SurpriseChestAnimator.AdditionalCameraVisibilityRadius = 0;
-            SurpriseChestAnimator.AlwaysIgnoreTimeScale = false;
-            SurpriseChestAnimator.ForceSetEveryFrame = false;
-            SurpriseChestAnimator.playAutomatically = false;
-            SurpriseChestAnimator.IsFrameBlendedAnimation = false;
-            SurpriseChestAnimator.clipTime = 0;
-            SurpriseChestAnimator.deferNextStartClip = false;
+            tk2dSpriteAnimator ChestEnemyAnimator = SurpriseChestObject.GetComponent<tk2dSpriteAnimator>();
 
+            ExpandUtility.AddAnimation(ChestEnemyAnimator, EXChestCollection.GetComponent<tk2dSpriteCollectionData>(), chestEnemyAppear, "enemy_chest_appear", tk2dSpriteAnimationClip.WrapMode.Once, 11);
+            ExpandUtility.AddAnimation(ChestEnemyAnimator, EXChestCollection.GetComponent<tk2dSpriteCollectionData>(), chestEnemyOpen, "enemy_chest_open", tk2dSpriteAnimationClip.WrapMode.Once, 14);
+            ExpandUtility.AddAnimation(ChestEnemyAnimator, EXChestCollection.GetComponent<tk2dSpriteCollectionData>(), chestEnemyBreak, "enemy_chest_break", tk2dSpriteAnimationClip.WrapMode.Once, 10);
+            ExpandUtility.AddAnimation(ChestEnemyAnimator, EXChestCollection.GetComponent<tk2dSpriteCollectionData>(), chestEnemyKnock, "enemy_chest_knock", tk2dSpriteAnimationClip.WrapMode.LoopFidget, 12, 0, 1, 2);
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_appear").frames[0].eventAudio = "Play_OBJ_smallchest_spawn_01";
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_appear").frames[0].triggerEvent = true;
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_break").frames[0].eventAudio = "Play_OBJ_barrel_break_01";
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_break").frames[0].triggerEvent = true;
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_knock").frames[1].eventAudio = "Play_OBJ_chest_shake_01";
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_knock").frames[1].eventInfo = "enemychestvfx";
+            ChestEnemyAnimator.Library.GetClipByName("enemy_chest_knock").frames[1].triggerEvent = true;
+            
             SpeculativeRigidbody SurpriseChestRigidBody = SurpriseChestObject.AddComponent<SpeculativeRigidbody>();
             ExpandUtility.DuplicateRigidBody(SurpriseChestRigidBody, m_BrownChestReference.GetComponent<SpeculativeRigidbody>());
 
@@ -2933,7 +2975,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             SurpriseChestBreakable.maxShardPercentSpeed = 0.3f;
             SurpriseChestBreakable.shardBreakStyle = MinorBreakable.BreakStyle.CONE;
             SurpriseChestBreakable.usesTemporaryZeroHitPointsState = true;
-            SurpriseChestBreakable.overrideSpriteNameToUseAtZeroHP = "coop_chest_break001";
+            SurpriseChestBreakable.overrideSpriteNameToUseAtZeroHP = "enemy_chest_break001";
             SurpriseChestBreakable.destroyedOnBreak = false;
             SurpriseChestBreakable.childrenToDestroy = new List<GameObject>(0);
             SurpriseChestBreakable.playsAnimationOnNotBroken = false;
@@ -2954,8 +2996,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandFakeChest SurpriseChestComponent = SurpriseChestObject.AddComponent<ExpandFakeChest>();
             SurpriseChestComponent.chestType = ExpandFakeChest.ChestType.SurpriseChest;
             SurpriseChestComponent.MinimapIconPrefab = m_BrownChestReference.GetComponent<Chest>().MinimapIconPrefab;
-            SurpriseChestComponent.breakAnimName = "coop_chest_break";
-            SurpriseChestComponent.openAnimName = "coop_chest_open";
+            SurpriseChestComponent.breakAnimName = "enemy_chest_break";
+            SurpriseChestComponent.openAnimName = "enemy_chest_open";
 
 
             ETGModConsole.ModdedShrines.Add("EX:SurpriseChest", SurpriseChestObject);
@@ -4651,7 +4693,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "chest_west_break_002",
                 "chest_west_break_003",
                 "chest_west_break_004"
-            };
+            };//
             
             ExpandUtility.GenerateSpriteAnimator(EX_Chest_West);
             

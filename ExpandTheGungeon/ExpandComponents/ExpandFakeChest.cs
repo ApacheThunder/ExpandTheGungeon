@@ -214,6 +214,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
             }
+            AkSoundEngine.PostEvent("Play_OBJ_prize_won_01", gameObject);
         }
 
         private IEnumerator DoWestOpen() {
@@ -410,7 +411,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void HandleSurpriseChestAnimationEvent(tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip, int frameNo) {
             tk2dSpriteAnimationFrame frame = clip.GetFrame(frameNo);
-            if (frame.eventInfo == "coopchestvfx") {
+            if (frame.eventInfo == "enemychestvfx") {
                 Instantiate(BraveResources.Load("Global VFX/VFX_ChestKnock_001", ".prefab"), sprite.WorldCenter + new Vector2(0f, 0.3125f), Quaternion.identity);
             }
         }
@@ -499,7 +500,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         renderer.enabled = false;
                         StartCoroutine(HandleSupriseChestSpawnAnimation());
                     } else {
-                        spriteAnimator.Play("coop_chest_knock");
+                        spriteAnimator.Play("enemy_chest_knock");
                     }
                     return;
                 case ChestType.WestChest:
@@ -540,7 +541,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 renderer.enabled = true;
             }
             
-            tk2dSpriteAnimationClip spawnAnimClip = spriteAnimator.GetClipByName("coop_chest_appear");
+            tk2dSpriteAnimationClip spawnAnimClip = spriteAnimator.GetClipByName("enemy_chest_appear");
 
             if (spawnAnimClip != null) {                
                 specRigidbody.enabled = false;
@@ -574,7 +575,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(specRigidbody, null, false);
             m_temporarilyUnopenable = false;
             if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = false; }
-            spriteAnimator.Play("coop_chest_knock");            
+            spriteAnimator.Play("enemy_chest_break");            
             yield break;
         }
         

@@ -18,6 +18,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             GunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().GunPrefab;
             HeldGunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().HeldGunPrefab;
             IsTrollChest = true;
+            TrollText = "Suspicious Chest"; // "HaHa April Fools!"
         }
 
         public tk2dSpriteAnimator LidAnimator;
@@ -31,6 +32,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         
         public bool IsTrollChest;
         public static bool IsResettingPlayers = false;
+        public string TrollText;
+
 
         [NonSerialized]
         public RoomHandler ParentRoom;
@@ -294,7 +297,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             BraveInput.DoVibrationForAllPlayers(Vibration.Time.Normal, Vibration.Strength.Hard);
             clockhair.StartCoroutine(clockhair.WipeoutDistortionAndFade(0.5f));
             clockhair.gameObject.SetLayerRecursively(LayerMask.NameToLayer("Unoccluded"));
-            Pixelator.Instance.FadeToColor(1f, Color.white, true, 0.2f);
+            if (!IsTrollChest)Pixelator.Instance.FadeToColor(1f, Color.white, true, 0.2f);
             Pixelator.Instance.DoRenderGBuffer = false;
             clockhair.spriteAnimator.Play("clockhair_fire");
             clockhair.hourAnimator.GetComponent<Renderer>().enabled = false;
@@ -483,11 +486,11 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private IEnumerator HandleGameOver(PlayerController interactor) {
-            interactor.healthHaver.lastIncurredDamageSource = "HaHa April Fools!";
+            interactor.healthHaver.lastIncurredDamageSource = TrollText;
             interactor.healthHaver.ForceSetCurrentHealth(0);
             interactor.healthHaver.Armor = 0;
             interactor.healthHaver.Die(Vector2.zero);
-            while (interactor.healthHaver.IsDead) { yield return null; }
+            while (!interactor.healthHaver.IsDead)yield return null;
             if (interactor.healthHaver.IsAlive) {
                 GameManager.Instance.MainCameraController.SetManualControl(false, true);
                 Pixelator.Instance.LerpToLetterbox(1, 0.25f);

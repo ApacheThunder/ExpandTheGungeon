@@ -996,6 +996,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 "BackRooms_Room102",
                 "BackRooms_Room103",
                 "BackRooms_Room104",
+                "BackRooms_Room105",
                 "BackRooms_VoidRoom_01",
                 "BackRooms_VoidRoom_02",
                 "BackRooms_VoidRoom_03",
@@ -1048,6 +1049,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     !room.name.StartsWith("BackRooms_Room102") &&
                     !room.name.StartsWith("BackRooms_Room103") &&
                     !room.name.StartsWith("BackRooms_Room104") &&
+                    !room.name.StartsWith("BackRooms_Room105") &&
                     !room.name.StartsWith("BackRooms_VoidRoom_01")) {
                     room.ForceAllowDuplicates = true;
                 }
@@ -1059,6 +1061,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     room.associatedMinimapIcon = ExpandPrefabs.EXDangerRoomIcon;
                     RoomBuilder.AddObjectToRoom(room, new Vector2((room.Width / 2), (room.Height / 2)), ExpandPrefabs.EXVoidRoomAmbience);
                 }
+                if (room.name.StartsWith("BackRooms_Room105"))RoomBuilder.AddObjectToRoom(room, new Vector2(8, 25), ExpandPrefabs.FakePastChest, xOffset: -8);
                 room.IsLostWoodsRoom = true;
                 room.overrideRoomVisualType = 0;
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
@@ -2091,6 +2094,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddExitToRoom(FakeBossRoom, new Vector2(13, 0), DungeonData.Direction.SOUTH);
             RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(13, 16), EnemyBehaviourGuid: ExpandEnemyDatabase.BulletManBossGUID, yOffset: -4);
             RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(12, 14), ExpandObjectDatabase.TableHorizontal, xOffset: 4);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(4, 22), ExpandObjectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(22, 4), ExpandObjectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(22, 22), ExpandObjectDatabase.ExplodyBarrel);
+            RoomBuilder.AddObjectToRoom(FakeBossRoom, new Vector2(4, 4), ExpandObjectDatabase.ExplodyBarrel);
             RoomBuilder.GenerateBasicRoomLayout(FakeBossRoom);
 
 

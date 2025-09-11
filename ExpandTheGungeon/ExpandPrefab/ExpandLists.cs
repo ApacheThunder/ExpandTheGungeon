@@ -18,7 +18,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<GameObject> CustomChestsWithoutRickRoll = new List<GameObject>();*/
 
         public static List<GameObject> CompanionItems = new List<GameObject>();
-        public static Dictionary<string, List<string>> SpriteCollections;
 
         public static List<string> EXBowlerNotes_RatPunchout = new List<string>() {
             "Doesn't look like this rat stole this from a {wb}Rainbow Chest{w}.\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}",
@@ -33,6 +32,71 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<string> EXBowlerNotes_OldWestBros = new List<string>() {
             "Did this fancy gun come from a {wb}RAAAAAIIIINBOW{w} Chest? I don't think so!\n\nNo {wb}RAAAAAIIIINBOW{w}, no item!\n\n{wb}-Bowler{w}",
             "This town ain't big enough for the two of us! ... by two us I mean this item you could have gotten.\n\nOnly room in this town for {wb}RAAAAAIIIINBOWS{w}!\n\n-Bowler"
+        };
+
+        public static readonly List<string> EXChestCollection = new List<string>() {
+            "chest_west_appear_001",
+            "chest_west_appear_002",
+            "chest_west_appear_003",
+            "chest_west_appear_004",
+            "chest_west_appear_005",
+            "chest_west_appear_006",
+            "chest_west_break_001",
+            "chest_west_break_002",
+            "chest_west_break_003",
+            "chest_west_break_004",
+            "chest_west_idle_001",
+            "chest_west_open_001",
+            "chest_west_open_002",
+            "chest_west_open_003",
+            "chest_west_open_004",
+            "chest_west_open_005",
+            "chest_west_open_006",
+            "chest_west_open_007",
+            "chest_west_open_008",
+            "chest_west_open_009",
+            "chest_west_open_010",
+            "chest_west_shadow",
+            "west_lock_broke_001",
+            "west_lock_idle_001",
+            "west_lock_nokey_001",
+            "west_lock_nokey_002",
+            "west_lock_open_001",
+            "west_lock_open_002",
+            "west_lock_open_003",
+            "west_lock_open_004",
+            "west_lock_open_005",
+            "west_lock_open_006",
+            "west_lock_open_007",
+            "enemy_chest_appear_001",
+            "enemy_chest_appear_002",
+            "enemy_chest_appear_003",
+            "enemy_chest_appear_004",
+            "enemy_chest_appear_005",
+            "enemy_chest_break001",
+            "enemy_chest_break002",
+            "enemy_chest_break003",
+            "enemy_chest_break004",
+            "enemy_chest_idle_001",
+            "enemy_chest_knock_001",
+            "enemy_chest_knock_002",
+            "enemy_chest_knock_003",
+            "enemy_chest_knock_004",
+            "enemy_chest_knock_005",
+            "enemy_chest_open_001",
+            "enemy_chest_open_002",
+            "enemy_chest_open_003",
+            "enemy_chest_open_004",
+            "enemy_chest_open_005",
+            "enemy_chest_open_006",
+            "enemy_chest_open_007",
+            "enemy_chest_open_008",
+            "enemy_chest_open_009",
+            "enemy_chest_open_010",
+            "enemy_chest_open_011",
+            "enemy_chest_open_012",
+            "enemy_chest_open_013",
+            "enemy_chest_open_014"
         };
 
         public static readonly List<string> EXSecretDoorCollection = new List<string>() {
@@ -1825,6 +1889,23 @@ namespace ExpandTheGungeon.ExpandPrefab {
             816, // trank_gun_dupe_1
             819, // glass_cannon+steel_skin
             823 // wood_beam_dupe_1
+        };
+
+        public static readonly Dictionary<string, List<string>> SpriteCollections = new Dictionary<string, List<string>>() {
+            ["EXChestCollection"] = EXChestCollection,
+            ["EXTrapCollection"] = EXTrapCollection,
+            ["EXSpaceCollection"] = EXSpaceCollection,
+            ["EXOfficeCollection"] = EXOfficeCollection,
+            ["EXJungleCollection"] = EXJungleCollection,
+            ["EXPortableElevatorCollection"] = EXPortableElevatorCollection,
+            ["EXBalloonCollection"] = EXBalloonCollection,
+            ["EXItemCollection"] = EXItemCollection,
+            ["ClownkinCollection"] = ClownkinCollection,
+            ["EntityCollection"] = EXEntityCollection,
+            ["EXFoyerCollection"] = EXFoyerCollection,
+            ["GungeoneerMimicCollection"] = EXGungeoneerMimicCollection,
+            ["EXSecretDoorCollection"] = EXSecretDoorCollection,
+            ["EXBackroomsCollection"] = EXBackroomsCollection
         };
     }
 }

@@ -14,13 +14,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             DoTableFlips = true;
             FlipAllTables = false;
             FlipDirectionIsRandom = false;
-            FlipDirection = DungeonData.Direction.SOUTH;
             FlipDirections = new List<DungeonData.Direction>() {
                 DungeonData.Direction.WEST,
                 DungeonData.Direction.EAST,
                 DungeonData.Direction.SOUTH,
                 DungeonData.Direction.NORTH
             };
+            m_FlipDirection = DungeonData.Direction.SOUTH;
             m_IsFinished = false;
             PreFlipDelay = 1;
             PostFlipDelay = 0.5f;
@@ -37,9 +37,9 @@ namespace ExpandTheGungeon.ExpandComponents {
         public float PreFlipDelay;
         public float PostFlipDelay;
         
-        public DungeonData.Direction FlipDirection;
-
         public List<DungeonData.Direction> FlipDirections;
+
+        private DungeonData.Direction m_FlipDirection;
 
         private AIActor m_AIActor;
 
@@ -74,6 +74,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
 
             if (TargetTables.Count <= 0) { DoTableFlips = false; return; }
+            
         }
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators) {
@@ -87,33 +88,26 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private IEnumerator FlipTables() {
             if (PreFlipDelay > 0) yield return StartCoroutine(TimeInvariantWait(PreFlipDelay));
+            DungeonData.Direction m_ChosenDirection = m_FlipDirection;
             foreach (FlippableCover table in TargetTables) {
                 if (!table.IsBroken && !table.IsFlipped && table.flipStyle != FlippableCover.FlipStyle.NO_FLIPS) {
                     if (FlipDirectionIsRandom) {
                         FlipDirections = FlipDirections.Shuffle();
-                        DungeonData.Direction m_ChosenDirection = BraveUtility.RandomElement(FlipDirections);
-                        if (!string.IsNullOrEmpty(BossFlipAnimation))m_AIActor.spriteAnimator.Play(BossFlipAnimation);
-                        table.Flip(m_ChosenDirection);
-                        string m_FlipAnimation = GetTableFlipAnimName(table.flipAnimation, m_ChosenDirection);
-                        while (!table.spriteAnimator.IsPlaying(m_FlipAnimation)) yield return null;
-                        for (float elapsed = 0f; elapsed < 2; elapsed += GameManager.INVARIANT_DELTA_TIME) {
-                            table.spriteAnimator.UpdateAnimation(GameManager.INVARIANT_DELTA_TIME);
-                            if (!table.spriteAnimator.IsPlaying(m_FlipAnimation)) break;
-                            yield return null;
-                        }
-                        while (!table.IsFlipped)yield return null;
+                        m_ChosenDirection = BraveUtility.RandomElement(FlipDirections);
                     } else {
-                        if (!string.IsNullOrEmpty(BossFlipAnimation))m_AIActor.spriteAnimator.Play(BossFlipAnimation);
-                        string m_FlipAnimation = GetTableFlipAnimName(table.flipAnimation, FlipDirection);
-                        table.Flip(FlipDirection);
-                        while (!table.spriteAnimator.IsPlaying(GetTableFlipAnimName(table.flipAnimation, FlipDirection)))yield return null;
-                        for (float elapsed = 0f; elapsed < 2; elapsed += GameManager.INVARIANT_DELTA_TIME) {
-                            table.spriteAnimator.UpdateAnimation(GameManager.INVARIANT_DELTA_TIME);
-                            if (!table.spriteAnimator.IsPlaying(m_FlipAnimation))break;
-                            yield return null;
-                        }
-                        while (!table.IsFlipped)yield return null;
+                        m_ChosenDirection = table.GetFlipDirection(specRigidbody);
                     }
+                    if (!string.IsNullOrEmpty(BossFlipAnimation))m_AIActor.spriteAnimator.Play(BossFlipAnimation);
+                    if (FlipDirectionIsRandom) { table.Flip(m_ChosenDirection); } else { table.Flip(specRigidbody); }
+                    string m_FlipAnimation = GetTableFlipAnimName(table.flipAnimation, m_ChosenDirection);
+                    while (!table.spriteAnimator.IsPlaying(m_FlipAnimation)) yield return null;
+                    for (float elapsed = 0f; elapsed < 2; elapsed += GameManager.INVARIANT_DELTA_TIME) {
+                        table.spriteAnimator.UpdateAnimation(GameManager.INVARIANT_DELTA_TIME);
+                        if (!table.spriteAnimator.IsPlaying(m_FlipAnimation)) break;
+                        yield return null;
+                    }
+                    while (!table.IsFlipped)yield return null;
+                    if (!FlipAllTables)break;
                 }
             }
             if (PostFlipDelay > 0) yield return StartCoroutine(TimeInvariantWait(PostFlipDelay));

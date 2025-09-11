@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 883327005
+CRC: 677441599
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: de5c6deb9c06b174eeb6aae754591bc1
+    Hash: f02cda785cee7b353477cf01ac70ed02
   TypeTreeHash:
     serializedVersion: 2
     Hash: 513673b503952618eb00f45379ce1f5a
@@ -1248,6 +1248,7 @@ Assets:
 - Assets/ExpandSerializedData/SpriteCollections/GungeoneerMimicCollection.txt
 - Assets/ExpandTextures/SpriteCollections/Misc/EXLargeMonster_Collection.png
 - Assets/ExpandTextures/AmmonomiconTextures/boss_photo_Western_Bros_Nome.png
+- Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room105.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon_BigGap3.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Owl6.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular45.bytes

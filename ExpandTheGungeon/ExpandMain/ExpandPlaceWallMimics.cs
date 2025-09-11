@@ -377,7 +377,8 @@ namespace ExpandTheGungeon.ExpandMain {
                     room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
                     room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.EXIT &&
                     !room.GetRoomName().ToLower().StartsWith("backrooms_entrance_warpwing") &&
-                    !room.GetRoomName().ToLower().StartsWith("backrooms_voidroom")
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_voidroom") &&
+                    !room.GetRoomName().ToLower().StartsWith("backrooms_room105")
                     ) {
                     Rooms.Add(room);
                 }

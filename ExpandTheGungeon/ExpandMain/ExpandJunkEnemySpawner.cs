@@ -38,7 +38,8 @@ namespace ExpandTheGungeon.ExpandMain {
                        !currentRoom.IsMaintenanceRoom() && !currentRoom.IsSecretRoom && !currentRoom.IsWinchesterArcadeRoom && 
                        !currentRoom.IsGunslingKingChallengeRoom && !currentRoom.GetRoomName().StartsWith("Boss Foyer") && 
                        !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom.name) &&
-                       !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom2.name))
+                       !currentRoom.GetRoomName().StartsWith(ExpandRoomPrefabs.Expand_Keep_TreeRoom2.name) &&
+                       !currentRoom.GetRoomName().ToLower().StartsWith("backrooms_room105"))
                     {
                         if (roomCategory != PrototypeDungeonRoom.RoomCategory.BOSS && roomCategory != PrototypeDungeonRoom.RoomCategory.ENTRANCE &&
                             roomCategory != PrototypeDungeonRoom.RoomCategory.REWARD && roomCategory != PrototypeDungeonRoom.RoomCategory.EXIT)

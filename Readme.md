@@ -83,3 +83,4 @@ Credits:
 * jaava73 for the void sound fx for special void rooms found on certain secret floor. ;) (https://freesound.org/people/jaava73/sounds/45347/)
 * EveraldoSembiring for video overlay shader used in updated West Bros Intro. (https://github.com/EveraldoSembiring/Green-Screen-Unity/blob/master/Assets/Shaders/GreenScreenReplacer.shader)
 * Dallan for sprite work for Bullet Kin joke boss's boss card and ammonomicon sprite.
+* Dallan for sprtie work for Enemy spawn chest.

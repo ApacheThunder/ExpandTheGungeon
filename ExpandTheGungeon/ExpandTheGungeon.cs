@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.11.8";
+        public const string VERSION = "2.11.9";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -394,7 +394,8 @@ namespace ExpandTheGungeon {
 
             // m_texturedOcclusionTarget
 
-            SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
+            // SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
+            SpriteSerializer.DumpSpriteCollection(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection);
         }*/
 
         private void ExpandConsoleInfo(string[] consoleText) {
@@ -570,23 +571,6 @@ namespace ExpandTheGungeon {
                 string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading sprite asset bundles! This is an option asset bundle however it is required for building sprite collections!";
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
-            }
-            if (ExpandLists.SpriteCollections == null) {
-                ExpandLists.SpriteCollections = new Dictionary<string, List<string>>() {
-                    ["EXTrapCollection"] = ExpandLists.EXTrapCollection,
-                    ["EXSpaceCollection"] = ExpandLists.EXSpaceCollection,
-                    ["EXOfficeCollection"] = ExpandLists.EXOfficeCollection,
-                    ["EXJungleCollection"] = ExpandLists.EXJungleCollection,
-                    ["EXPortableElevatorCollection"] = ExpandLists.EXPortableElevatorCollection,
-                    ["EXBalloonCollection"] = ExpandLists.EXBalloonCollection,
-                    ["EXItemCollection"] = ExpandLists.EXItemCollection,
-                    ["ClownkinCollection"] = ExpandLists.ClownkinCollection,
-                    ["EntityCollection"] = ExpandLists.EXEntityCollection,
-                    ["EXFoyerCollection"] = ExpandLists.EXFoyerCollection,
-                    ["GungeoneerMimicCollection"] = ExpandLists.EXGungeoneerMimicCollection,
-                    ["EXSecretDoorCollection"] = ExpandLists.EXSecretDoorCollection,
-                    ["EXBackroomsCollection"] = ExpandLists.EXBackroomsCollection
-                };
             }
             int X = 2048;
             int Y = 2048;

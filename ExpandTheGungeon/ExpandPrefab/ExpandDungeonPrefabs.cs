@@ -101,7 +101,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             return m_NewDungeonCollection;
         }
-                
+
         public static tk2dSpriteCollectionData ENV_Tileset_West(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
             
             tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();

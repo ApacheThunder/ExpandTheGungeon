@@ -18,7 +18,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode firstConnectorNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
             DungeonFlowNode lastConnectorNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.CONNECTOR, ExpandRoomPrefabs.Utiliroom);
 
-            DungeonFlowNode TrapRoomNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+            DungeonFlowNode TrapRoomNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Backrooms_Rooms[104]);
             DungeonFlowNode TrapRoomNode_02 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode TrapRoomNode_03 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode TrapRoomNode_04 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
@@ -43,7 +43,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode TrapRoomNode_23 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode TrapRoomNode_24 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
             DungeonFlowNode TrapRoomNode_25 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
-            
+            DungeonFlowNode TrapRoomNode_26 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL);
+
             TrapRoomTable.name = "Test Trap Room Table";
             TrapRoomTable.includedRooms = new WeightedRoomCollection();
             TrapRoomTable.includedRooms.elements = new List<WeightedRoom>();
@@ -56,7 +57,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     TrapRoomTable.includedRooms.elements.Add(weightedRoom);
                 }                
             }
-
+                        
             m_CachedFlow.name = "Test_TrapRoom_Flow";
             m_CachedFlow.fallbackRoomTable = TrapRoomTable;
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
@@ -91,7 +92,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(TrapRoomNode_23, TrapRoomNode_22);
             m_CachedFlow.AddNodeToFlow(TrapRoomNode_24, TrapRoomNode_23);
             m_CachedFlow.AddNodeToFlow(TrapRoomNode_25, TrapRoomNode_24);
-            m_CachedFlow.AddNodeToFlow(lastConnectorNode, TrapRoomNode_25);
+            m_CachedFlow.AddNodeToFlow(TrapRoomNode_26, TrapRoomNode_25);
+            m_CachedFlow.AddNodeToFlow(lastConnectorNode, TrapRoomNode_26);
             m_CachedFlow.AddNodeToFlow(exitNode, lastConnectorNode);
             m_CachedFlow.FirstNode = entranceNode;
 
