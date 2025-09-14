@@ -224,14 +224,22 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void OnPreRigidBodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
-            try { 
-                if (!this | !gameObject | !aiActor) return;
-                if (otherRigidbody.GetComponent<PlayerController>()) {
-                    PhysicsEngine.SkipCollision = true;
-                    if (m_PlayerEaten)return;
-                    if (!otherRigidbody.GetComponent<PlayerController>().healthHaver.IsVulnerable) return;
+            if (!this | !gameObject | !aiActor | !otherRigidbody) return;
+            if (m_PlayerEaten) { PhysicsEngine.SkipCollision = true; return; }
+            try {
+                PlayerController m_PlayerController = otherRigidbody.GetComponent<PlayerController>();
+                Chest m_Chest = otherRigidbody.GetComponent<Chest>();
+                MajorBreakable m_MajorBreakable = otherRigidbody.GetComponent<MajorBreakable>();
+                MinorBreakable m_MinorBreakable = otherRigidbody.GetComponent<MinorBreakable>();
+                Projectile m_Projectile = otherRigidbody.GetComponent<Projectile>();
+                BeamController m_BeamController = otherRigidbody.GetComponent<BeamController>();
+                BasicBeamController m_BasicBeamController = otherRigidbody.GetComponent<BasicBeamController>();
+                ProjectileAndBeamMotionModule m_ProjectileAndBeamMotionModule = otherRigidbody.GetComponent<ProjectileAndBeamMotionModule>();
+                PhysicsEngine.SkipCollision = (m_PlayerController | m_MajorBreakable | m_MinorBreakable | m_Projectile | m_BeamController | m_BasicBeamController | (m_ProjectileAndBeamMotionModule != null));
+                if (m_PlayerController) {
+                    if (!m_PlayerController.healthHaver.IsVulnerable) return;
                     m_PlayerEaten = true;
-                    otherRigidbody.GetComponent<PlayerController>().SetInputOverride("got eaten");
+                    m_PlayerController.SetInputOverride("got eaten");
                     behaviorSpeculator.enabled = false;
                     aiAnimator.enabled = false;
                     aiActor.BehaviorOverridesVelocity = false;
@@ -239,27 +247,25 @@ namespace ExpandTheGungeon.ExpandComponents {
                     myRigidbody.Velocity = Vector2.zero;
                     myRigidbody.Reinitialize();
                     spriteAnimator.Stop();
-                    StartCoroutine(HandleExitFloor(otherRigidbody.GetComponent<PlayerController>()));
+                    StartCoroutine(HandleExitFloor(m_PlayerController));
                     return;
-                } else if (otherRigidbody.GetComponent<MajorBreakable>()) {
-                    otherRigidbody.GetComponent<MajorBreakable>().Break(new Vector2(1, 0));
-                    if (otherRigidbody && otherRigidbody.GetComponent<Chest>() && !otherRigidbody.GetComponent<Chest>().IsMimic &&
-                        otherRigidbody.GetComponent<MajorBreakable>().TemporarilyInvulnerable)
-                    {
-                        SpriteOutlineManager.RemoveOutlineFromSprite(otherRigidbody.sprite, false);
-                        otherRigidbody.renderer.enabled = false;
-                        InvokeMethod(typeof(Chest), "ExplodeInSadness", otherRigidbody.GetComponent<Chest>());
-                    } else if (GameManager.Instance.PrimaryPlayer && otherRigidbody.GetComponent<Chest>().IsMimic) {
-                        otherRigidbody.GetComponent<MajorBreakable>().ApplyDamage(1, myRigidbody.Velocity, false);
+                } else if (m_MajorBreakable) {
+                    if (m_Chest && m_Chest.IsMimic && !m_Chest.IsOpen) {
+                        PhysicsEngine.SkipCollision = true;
+                        m_MajorBreakable.ApplyDamage(1, myRigidbody.Velocity, false);
+                        return;
+                    } else if (m_Chest && m_MajorBreakable.TemporarilyInvulnerable && !m_Chest.IsOpen && !m_Chest.IsMimic) {
+                        PhysicsEngine.SkipCollision = true;
+                        if (otherRigidbody.sprite) {
+                            SpriteOutlineManager.RemoveOutlineFromSprite(otherRigidbody.sprite, false);
+                            otherRigidbody.renderer.enabled = false;
+                        }
+                        InvokeMethod(typeof(Chest), "ExplodeInSadness", m_Chest);
+                        return;
                     }
-                    PhysicsEngine.SkipCollision = true;
-                } else if (otherRigidbody.GetComponent<MinorBreakable>()) {
-                    otherRigidbody.GetComponent<MinorBreakable>().Break(myRigidbody.Velocity);
-                } else if (otherRigidbody.GetComponent<Projectile>() | otherRigidbody.GetComponent<BeamController>() |
-                    otherRigidbody.GetComponent<BasicBeamController>() | otherRigidbody.GetComponent<ProjectileAndBeamMotionModule>() != null
-                    )
-                {
-                    PhysicsEngine.SkipCollision = true;
+                    m_MajorBreakable.Break(new Vector2(1, 0));
+                } else if (m_MinorBreakable) {
+                    m_MinorBreakable.Break(myRigidbody.Velocity);
                 }
             } catch (Exception ex) {
                 if (ExpandSettings.debugMode) {

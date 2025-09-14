@@ -3,22 +3,44 @@ using System.Collections;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
+using System.Collections.Generic;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandArkController : BraveBehaviour, IPlaceConfigurable, IPlayerInteractable {
 
         public ExpandArkController() {
-            LidAnimator = gameObject.transform.Find("G_Lid").gameObject.GetComponent<tk2dSpriteAnimator>();
-            ChestAnimator = gameObject.GetComponent<tk2dSpriteAnimator>();
-            PoofAnimator = gameObject.transform.Find("G_Poof").gameObject.GetComponent<tk2dSpriteAnimator>();
-            LightSpriteBeam = gameObject.transform.Find("G_Light").gameObject.GetComponent<tk2dSprite>();
             HellCrackSprite = null;
-            GunSpawnPoint = gameObject.transform.Find("Spawn");
-            GunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().GunPrefab;
-            HeldGunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().HeldGunPrefab;
             IsTrollChest = true;
-            TrollText = "Suspicious Chest"; // "HaHa April Fools!"
+            TrollText = "HaHa April Fools!";
+
+            CultistCutoutNames = new List<string> {
+                "cultistbaldbowbackleft_cutout",
+                "cultistbaldbowbackright_cutout",
+                "cultistbaldbowback_cutout",
+                "cultisthoodbowback_cutout",
+                "cultisthoodbowleft_cutout",
+                "cultisthoodbowright_cutout",
+            };
+            CultistCutoutFreakoutAnim = "freakout";
+            CultistNPCName = "cultistbaldbowleft_cutout";
+            CultistEnemyGUID = "57255ed50ee24794b7aac1ac3cfb8a95";
+
+            CultistCutoutDialog = new List<string>() {
+                "Blasphemy! Begone with you!",
+                "How could you!",
+                "You monster!",
+                "You'll pay for that!",
+                "You were supposed to die! Not him!",
+                "We will have our revenge!",
+                "You'll die for this!",
+                "We will pump you full of lead!",
+                "How dare you!"
+            };
+
+            m_InitFinished = false;
+            m_Configured = false;
         }
 
         public tk2dSpriteAnimator LidAnimator;
@@ -34,6 +56,12 @@ namespace ExpandTheGungeon.ExpandComponents {
         public static bool IsResettingPlayers = false;
         public string TrollText;
 
+        public List<string> CultistCutoutNames;
+        public List<string> CultistCutoutDialog;
+        public string CultistCutoutFreakoutAnim;
+        public string CultistNPCName;
+        public string CultistEnemyGUID;
+
 
         [NonSerialized]
         public RoomHandler ParentRoom;
@@ -43,22 +71,73 @@ namespace ExpandTheGungeon.ExpandComponents {
         [NonSerialized]
         private GameObject minimapIconInstance;
 
+        [NonSerialized]
         private bool m_hasBeenInteracted;
+
+        [NonSerialized]
         protected bool m_isLocalPointing;
 
-        
+        [NonSerialized]
+        private bool m_InitFinished;
 
-        private IEnumerator Start() {
-            if (!IsTrollChest) {
-                ParentRoom = GameManager.Instance.Dungeon.data.GetAbsoluteRoomFromPosition(transform.position.IntXY(VectorConversions.Floor));
-                yield return null;
-                RoomHandler.unassignedInteractableObjects.Add(this);
-            }
-            yield break;
+        [NonSerialized]
+        private bool m_Configured;
+        
+        [NonSerialized]
+        private ExpandNPCController m_CultistNPC;
+        
+        [NonSerialized]
+        private List<tk2dSpriteAnimator> m_CultistCutouts;
+
+        [NonSerialized]
+        private PlayerController m_ShotPlayer;
+
+        public void Init() {
+            ChestAnimator = gameObject.GetComponent<tk2dSpriteAnimator>();
+            LidAnimator = gameObject.transform.Find("G_Lid").gameObject.GetComponent<tk2dSpriteAnimator>();
+            PoofAnimator = gameObject.transform.Find("G_Poof").gameObject.GetComponent<tk2dSpriteAnimator>();
+            LightSpriteBeam = gameObject.transform.Find("G_Light").gameObject.GetComponent<tk2dSprite>();
+            GunSpawnPoint = gameObject.transform.Find("Spawn");
+            GunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().GunPrefab;
+            HeldGunPrefab = ExpandObjectDatabase.EndTimesChest.GetComponent<ArkController>().HeldGunPrefab;
+            m_InitFinished = true;
         }
 
-        private void Update() { }
+        public void Awake() {
+            if (!m_InitFinished)Init();
+        }
 
+        public void Update() {
+            if (m_Configured | !m_InitFinished | Dungeon.IsGenerating | GameManager.Instance.IsLoadingLevel | ParentRoom == null) return;
+            if (ParentRoom != null) ParentRoom = GameManager.Instance.Dungeon.data.GetAbsoluteRoomFromPosition(transform.position.IntXY(VectorConversions.Floor));
+            if (IsTrollChest && CultistCutoutNames != null && CultistCutoutNames.Count > 0) {
+                int m_RoomChilds = 0;
+                if (ParentRoom.hierarchyParent?.childCount > 0) {
+                    m_CultistCutouts = new List<tk2dSpriteAnimator>();
+                    m_RoomChilds = ParentRoom.hierarchyParent.childCount;
+                    for (int i = 0; i < m_RoomChilds; i++) {
+                        foreach (string cultist in CultistCutoutNames) {
+                            if (ParentRoom.hierarchyParent.GetChild(i).gameObject.name.ToLower().StartsWith(cultist)) {
+                                if (ParentRoom.hierarchyParent.GetChild(i).gameObject.GetComponent<tk2dSpriteAnimator>() && !ParentRoom.hierarchyParent.GetChild(i).gameObject.GetComponent<TalkDoerLite>()) {
+                                    m_CultistCutouts.Add(ParentRoom.hierarchyParent.GetChild(i).gameObject.GetComponent<tk2dSpriteAnimator>());
+                                    break;
+                                }
+                            } else if (ParentRoom.hierarchyParent.GetChild(i).gameObject.name.ToLower().StartsWith(CultistNPCName) &&
+                              ParentRoom.hierarchyParent.GetChild(i).gameObject.GetComponent<TalkDoerLite>()
+                          ) {
+                                m_CultistNPC = ParentRoom.hierarchyParent.GetChild(i).gameObject.AddComponent<ExpandNPCController>();
+                                m_CultistNPC.ConfigureOnPlacement(ParentRoom);
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else {
+                RoomHandler.unassignedInteractableObjects.Add(this);
+            }
+            m_Configured = true;
+        }
+        
         public float GetDistanceToPoint(Vector2 point) {
             if (m_hasBeenInteracted) { return 100000f; }
             return Vector2.Distance(point, specRigidbody.UnitCenter) / 2f;
@@ -77,7 +156,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void Interact(PlayerController interactor) {
             SpriteOutlineManager.RemoveOutlineFromSprite(sprite, false);
             SpriteOutlineManager.RemoveOutlineFromSprite(LidAnimator.sprite, false);
-            if (!m_hasBeenInteracted) { m_hasBeenInteracted = true; }
+            if (!m_hasBeenInteracted)m_hasBeenInteracted = true;
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { GameManager.Instance.AllPlayers[i].RemoveBrokenInteractable(this); }
             BraveInput.DoVibrationForAllPlayers(Vibration.Time.Normal, Vibration.Strength.Medium);
             if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
@@ -90,6 +169,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
             StartCoroutine(Open(interactor));
+            if (IsTrollChest && m_CultistNPC)m_CultistNPC.InteractPlayerless(ExpandNPCController.CultistDialogState.OpenedChest);
         }
 
         private IEnumerator HandleLightSprite() {
@@ -150,6 +230,18 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private bool CheckPlayerTarget(PlayerController target, Transform clockhairTransform) {
+            if (target.IsGhost | target.healthHaver.IsDead) return false;
+            Vector2 a = clockhairTransform.position.XY() + new Vector2(-0.375f, 0.25f);
+            return Vector2.Distance(a, target.CenterPosition) < 0.625f;
+        }
+
+        private bool CheckNPCTarget(ExpandNPCController target, Transform clockhairTransform) {
+            Vector2 a = clockhairTransform.position.XY() + new Vector2(-0.375f, 0.25f);
+            return Vector2.Distance(a, target.sprite.WorldCenter) < 0.625f;
+        }
+
+        private bool CheckEnemyTarget(AIActor target, Transform clockhairTransform) {
+            if (target.IsGone | target.healthHaver.IsDead) return false;
             Vector2 a = clockhairTransform.position.XY() + new Vector2(-0.375f, 0.25f);
             return Vector2.Distance(a, target.CenterPosition) < 0.625f;
         }
@@ -233,27 +325,64 @@ namespace ExpandTheGungeon.ExpandComponents {
             clockhair.SetMotionType(1f);
             float shotTargetTime = 0f;
             float holdDuration = 4f;
-            PlayerController shotPlayer = null;
+            PlayerController shotPlayer = interactor;
+            AIActor m_EnemyTarget = null;
+            AIActor[] m_Enemies = null;
+            ExpandNPCController m_NPCTarget = null;
+            if (IsTrollChest) m_Enemies = FindObjectsOfType<AIActor>();
             bool didShootHellTrigger = false;
             Vector3 lastJitterAmount = Vector3.zero;
             bool m_isPlayingChargeAudio = false;
+            bool isTargetingEnemy = false;
+            bool isTargetingNPC = false;
             for (;;) {
                 UpdateCameraPositionDuringClockhair(interactor.CenterPosition);
                 clockhair.transform.position = clockhair.transform.position - lastJitterAmount;
                 clockhair.transform.position = GetTargetClockhairPosition(currentInput, clockhair.transform.position.XY());
                 clockhair.sprite.UpdateZDepth();
-                bool isTargetingValidTarget = CheckPlayerTarget(GameManager.Instance.PrimaryPlayer, clockhairTransform);
-                shotPlayer = GameManager.Instance.PrimaryPlayer;
-                if (!isTargetingValidTarget && GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
-                    isTargetingValidTarget = CheckPlayerTarget(GameManager.Instance.SecondaryPlayer, clockhairTransform);
-                    shotPlayer = GameManager.Instance.SecondaryPlayer;
+                bool isTargetingValidTarget = CheckPlayerTarget(interactor, clockhairTransform);
+                if (isTargetingValidTarget)shotPlayer = interactor;
+                if (IsTrollChest && !isTargetingValidTarget) {
+                    if (m_Enemies != null && m_Enemies.Length > 0) {
+                        for (int i = 0; i < m_Enemies.Length; i++) {
+                            if (m_Enemies[i] && m_Enemies[i].gameObject.activeInHierarchy && m_Enemies[i].gameObject.activeSelf &&
+                                !m_Enemies[i].IsGone && m_Enemies[i].healthHaver && !m_Enemies[i].healthHaver.IsDead)
+                            {
+                                isTargetingEnemy = CheckEnemyTarget(m_Enemies[i], clockhairTransform);
+                                if (isTargetingEnemy) {
+                                    m_EnemyTarget = m_Enemies[i];
+                                    m_NPCTarget = null;
+                                    isTargetingNPC = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!isTargetingEnemy) {
+                        m_EnemyTarget = null;
+                        m_NPCTarget = null;
+                        isTargetingNPC = false;
+                        if (m_CultistNPC) {
+                            isTargetingNPC = CheckNPCTarget(m_CultistNPC, clockhairTransform);
+                            if (isTargetingNPC) { m_NPCTarget = m_CultistNPC; } else { m_NPCTarget = null; }
+                        }
+                    }
+                } else {
+                    m_NPCTarget = null;
+                    m_EnemyTarget = null;
+                    isTargetingNPC = false;
+                    isTargetingEnemy = false;
                 }
-                if (!isTargetingValidTarget && GameStatsManager.Instance.AllCorePastsBeaten()) {
+                if (!isTargetingValidTarget && !isTargetingEnemy && !isTargetingNPC && GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
+                    isTargetingValidTarget = CheckPlayerTarget(GameManager.Instance.GetOtherPlayer(interactor), clockhairTransform);
+                    shotPlayer = GameManager.Instance.GetOtherPlayer(interactor);
+                }
+                if (!isTargetingValidTarget && !isTargetingEnemy && !isTargetingNPC && GameStatsManager.Instance.AllCorePastsBeaten()) {
                     isTargetingValidTarget = CheckHellTarget(HellCrackSprite, clockhairTransform);
                     didShootHellTrigger = isTargetingValidTarget;
                 }
-                if (isTargetingValidTarget) { clockhair.SetMotionType(-10f); } else { clockhair.SetMotionType(1f); }
-                if ((currentInput.ActiveActions.ShootAction.IsPressed || currentInput.ActiveActions.InteractAction.IsPressed) && isTargetingValidTarget) {
+                if (isTargetingValidTarget | isTargetingEnemy | isTargetingNPC) { clockhair.SetMotionType(-10f); } else { clockhair.SetMotionType(1f); }
+                if ((currentInput.ActiveActions.ShootAction.IsPressed || currentInput.ActiveActions.InteractAction.IsPressed) && (isTargetingValidTarget | isTargetingEnemy | isTargetingNPC)) {
                     if (!m_isPlayingChargeAudio) {
                         m_isPlayingChargeAudio = true;
                         AkSoundEngine.PostEvent("Play_OBJ_pastkiller_charge_01", gameObject);
@@ -266,7 +395,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                         AkSoundEngine.PostEvent("Stop_OBJ_pastkiller_charge_01", gameObject);
                     }
                 }
-                if ((currentInput.ActiveActions.ShootAction.WasReleased || currentInput.ActiveActions.InteractAction.WasReleased) && isTargetingValidTarget && shotTargetTime > holdDuration && !GameManager.Instance.IsPaused) {
+                if ((currentInput.ActiveActions.ShootAction.WasReleased || currentInput.ActiveActions.InteractAction.WasReleased) && (isTargetingValidTarget | isTargetingEnemy | isTargetingNPC) && shotTargetTime > holdDuration && !GameManager.Instance.IsPaused) {
+                    if (IsTrollChest)currentInput.ConsumeButtonDown(GungeonActions.GungeonActionType.Shoot);
                     break;
                 }
                 if (shotTargetTime > 0f) {
@@ -309,7 +439,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 interactor.ToggleGunRenderers(true, "fakeArk");
                 GameCursorController.CursorOverride.RemoveOverride("fakeArk");
                 Pixelator.Instance.LerpToLetterbox(0.35f, 0.25f);
-                yield return StartCoroutine(HandleGameOver(shotPlayer));
+                yield return StartCoroutine(HandleCrosshairShot(shotPlayer, m_EnemyTarget, m_NPCTarget));
                 yield break;
             }
             yield return null;
@@ -386,14 +516,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             // yield break;
         }
 
-        private void ResetPlayers(bool isGunslingerPast = false) {
+        private void ResetPlayers(bool isGunslingerPast = false, bool survivedTrollChest = false) {
             IsResettingPlayers = true;
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) {
-                if (GameManager.Instance.AllPlayers[i].healthHaver.IsAlive) {
-                    if (!isGunslingerPast) {
+                if (GameManager.Instance.AllPlayers[i].healthHaver.IsAlive | survivedTrollChest) {
+                    if (!isGunslingerPast && !survivedTrollChest) {
                         GameManager.Instance.AllPlayers[i].ResetToFactorySettings(true, true, false);
-                    }
-                    if (!isGunslingerPast) {
                         GameManager.Instance.AllPlayers[i].CharacterUsesRandomGuns = false;
                     }
                     GameManager.Instance.AllPlayers[i].IsVisible = true;
@@ -403,7 +531,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             IsResettingPlayers = false;
         }
-
+        
         private void DestroyPlayers() {
             for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++) { Destroy(GameManager.Instance.AllPlayers[i].gameObject); }
         }
@@ -485,21 +613,149 @@ namespace ExpandTheGungeon.ExpandComponents {
             yield break;
         }
 
-        private IEnumerator HandleGameOver(PlayerController interactor) {
-            interactor.healthHaver.lastIncurredDamageSource = TrollText;
-            interactor.healthHaver.ForceSetCurrentHealth(0);
-            interactor.healthHaver.Armor = 0;
-            interactor.healthHaver.Die(Vector2.zero);
-            while (!interactor.healthHaver.IsDead)yield return null;
-            if (interactor.healthHaver.IsAlive) {
-                GameManager.Instance.MainCameraController.SetManualControl(false, true);
-                Pixelator.Instance.LerpToLetterbox(1, 0.25f);
-                Pixelator.Instance.DoFinalNonFadedLayer = false;
-                ResetPlayers(false);
-                Destroy(LightSpriteBeam.gameObject);
-                Destroy(this);
+        private IEnumerator HandleCrosshairShot(PlayerController interactor, AIActor EnemyTarget = null, ExpandNPCController m_CultistTarget = null) {
+            bool m_KilledCultist = false;
+            bool m_KilledCompanion = false;
+            bool m_ExtraLifeTriggered = false;
+            bool m_SecondPlayerExistsAndIsGhost = (GameManager.Instance.GetOtherPlayer(interactor) && GameManager.Instance.GetOtherPlayer(interactor).IsGhost);
+            bool m_SecondPlayerExistsAndIsNotGhost = (GameManager.Instance.GetOtherPlayer(interactor) && !GameManager.Instance.GetOtherPlayer(interactor).IsGhost);
+            bool m_AllowExtraLife = (DateTime.Now.Day != 1 && DateTime.Now.Month != 4);
+            if (m_SecondPlayerExistsAndIsNotGhost) m_AllowExtraLife = false;
+            m_ShotPlayer = interactor;
+            if (EnemyTarget) {
+                m_KilledCompanion = true;
+                Vector2 m_EnemyTargetPosition = EnemyTarget.sprite.WorldCenter;
+                yield return null;
+                EnemyTarget.healthHaver.lastIncurredDamageSource = TrollText;
+                EnemyTarget.healthHaver.ForceSetCurrentHealth(0);
+                EnemyTarget.healthHaver.Die(Vector2.zero);
+                yield return null;
+                HandleAIActorLoot(m_EnemyTargetPosition);
+            } else if (!m_CultistTarget) {
+                if (m_AllowExtraLife) {
+                    m_ExtraLifeTriggered = true;
+                    interactor.healthHaver.OnPreDeath += HandlePreDeath;
+                } else if (m_SecondPlayerExistsAndIsNotGhost) {
+                    m_KilledCompanion = true;
+                }
+                Vector2 m_CompanionTargetPosition = interactor.sprite.WorldCenter;
+                yield return null;
+                interactor.healthHaver.lastIncurredDamageSource = TrollText;
+                interactor.healthHaver.ForceSetCurrentHealth(0);
+                interactor.healthHaver.Armor = 0;
+                interactor.healthHaver.Die(Vector2.zero);
+                if (m_KilledCompanion)HandleAIActorLoot(m_CompanionTargetPosition);
+                yield return null;
             }
+            yield return new WaitForSeconds(0.2f);
+            if (m_KilledCompanion | EnemyTarget | m_CultistTarget) {
+                Pixelator.Instance.DoFinalNonFadedLayer = false;
+                LightSpriteBeam.renderer.enabled = false;
+                if (m_CultistTarget && ParentRoom != null) {
+                    m_CultistTarget.Kill();
+                    m_KilledCultist = true;
+                    int RandomCultistDialogCount = UnityEngine.Random.Range(2, 4);
+                    yield return new WaitForSeconds(2f);
+                    if (m_CultistCutouts != null && m_CultistCutouts.Count > 0) {
+                        List<Transform> m_CultistDialogTargets = new List<Transform>();
+                        foreach (tk2dSpriteAnimator cultist in m_CultistCutouts) {
+                            cultist.Play(CultistCutoutFreakoutAnim);
+                            m_CultistDialogTargets.Add(cultist.transform);
+                            yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 0.25f));
+                        }
+                        foreach (Transform cultistTransform in m_CultistDialogTargets) {
+                            CultistCutoutDialog = CultistCutoutDialog.Shuffle();
+                            string m_SelectedDialog = BraveUtility.RandomElement(CultistCutoutDialog);
+                            if (CultistCutoutDialog.Count > 1) {
+                                CultistCutoutDialog.Remove(m_SelectedDialog);
+                                CultistCutoutDialog = CultistCutoutDialog.Shuffle();
+                            }
+                            TextBoxManager.ShowTextBox(cultistTransform.position + new Vector3(-0.9375f, 1.375f), cultistTransform, UnityEngine.Random.Range(3f, 4.5f), m_SelectedDialog, instant: false, slideOrientation: TextBoxManager.BoxSlideOrientation.FORCE_RIGHT, showContinueText: false);
+                            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
+                            RandomCultistDialogCount--;
+                            if (RandomCultistDialogCount <= 0) break;
+                        }
+                        yield return new WaitForSeconds(UnityEngine.Random.Range(3, 4));
+                        foreach (tk2dSpriteAnimator cultist in m_CultistCutouts) {
+                            cultist.Stop();
+                            if (cultist.sprite?.renderer) cultist.sprite.renderer.enabled = false;
+                            cultist.enabled = false;
+                            if (cultist.specRigidbody) cultist.specRigidbody.enabled = false;
+                            AIActor m_EnemyCultist = AIActor.Spawn(EnemyDatabase.GetOrLoadByGuid(CultistEnemyGUID), cultist.sprite.WorldBottomCenter, ParentRoom, false, AIActor.AwakenAnimationType.Awaken, true);
+                            if (m_EnemyCultist) m_EnemyCultist.procedurallyOutlined = false;
+                            TextBoxManager.ClearTextBox(cultist.transform);
+                        }
+                        while (!ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) yield return null;
+                        ParentRoom.SealRoom();
+                        for (int i = 0; i < m_CultistCutouts.Count; i++) Destroy(m_CultistCutouts[i].gameObject);
+                        m_CultistCutouts.Clear();
+                        yield return null;
+                    }
+                }
+            }
+            if (m_KilledCompanion) {
+                m_CultistNPC.InteractPlayerless(ExpandNPCController.CultistDialogState.ShotCompanion);
+            } else if (!m_KilledCultist && m_ExtraLifeTriggered) {
+                m_CultistNPC.InteractPlayerless(ExpandNPCController.CultistDialogState.PlayerShot);
+            }
+            GameManager.Instance.MainCameraController.SetManualControl(false, false);
+            Pixelator.Instance.LerpToLetterbox(1, 0.25f);
+            ResetPlayers(false, true);
+            if (ParentRoom != null) {
+                ParentRoom.DeregisterInteractable(this);
+                if (m_KilledCultist) {
+                    while (ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) yield return null;
+                    ParentRoom.UnsealRoom();
+                }
+            }
+            Destroy(this);           
             yield break;
+        }
+
+        private void HandlePreDeath(Vector2 damageDirection) {
+            if (!m_ShotPlayer) return;
+            m_ShotPlayer.healthHaver.OnPreDeath -= HandlePreDeath;
+            if (m_ShotPlayer.IsInMinecart)m_ShotPlayer.currentMineCart.EvacuateSpecificPlayer(m_ShotPlayer, true);
+            foreach (PassiveItem passive in m_ShotPlayer.passiveItems) {
+                if ((passive is CompanionItem) && (passive as CompanionItem).DisplayName == "Pig")return;
+                if ((passive is ExtraLifeItem) && (passive as ExtraLifeItem).extraLifeMode == ExtraLifeItem.ExtraLifeMode.DARK_SOULS) return;
+            }
+            m_ShotPlayer.HandleCloneItem(null);
+        }
+
+        private void HandleAIActorLoot(Vector2 targetPosition) {
+            PickupObject.ItemQuality targetQuality = (UnityEngine.Random.value >= 0.2f) ? ((!BraveUtility.RandomBool()) ? PickupObject.ItemQuality.C : PickupObject.ItemQuality.B) : PickupObject.ItemQuality.A;
+            GenericLootTable lootTable = (!BraveUtility.RandomBool()) ? GameManager.Instance.RewardManager.GunsLootTable : GameManager.Instance.RewardManager.ItemsLootTable;
+            PickupObject item = LootEngine.GetItemOfTypeAndQuality<PickupObject>(targetQuality, lootTable, false);
+            if (item) {
+                List<int> m_AllowedItemsInRainbowMode = new List<int>() {
+                    GlobalItemIds.SmallHeart,
+                    GlobalItemIds.FullHeart,
+                    GlobalItemIds.AmmoPickup,
+                    GlobalItemIds.SpreadAmmoPickup,
+                    GlobalItemIds.Spice,
+                    GlobalItemIds.Junk,
+                    GlobalItemIds.GoldJunk,
+                    GlobalItemIds.Key,
+                    GlobalItemIds.GlassGuonStone,
+                    GlobalItemIds.Junk,
+                    GlobalItemIds.GoldJunk,
+                    GlobalItemIds.SackKnightBoon,
+                    GlobalItemIds.Blank,
+                    GlobalItemIds.Map,
+                    120 // armor
+                };
+                if (!GameStatsManager.Instance.IsRainbowRun | m_AllowedItemsInRainbowMode.Contains(item.PickupObjectId)) {
+                    LootEngine.SpawnItem(item.gameObject, targetPosition, Vector2.zero, 0f, true, true, false);
+                    return;
+                } else {
+                    if (ParentRoom != null && GameManager.Instance.RewardManager.BowlerNoteOtherSource) {
+                        string CustomText = "Corpses aren't {wb}Rainbow Chests{w}!\n\nNo RAAAAAIIIINBOW, no item!\n\n{wb}-Bowler{w}";
+                        ExpandUtility.SpawnCustomBowlerNote(GameManager.Instance.RewardManager.BowlerNoteOtherSource, targetPosition, ParentRoom, CustomText, false);
+                        return;
+                    }
+                }
+            }
         }
 
         public void RegisterChestOnMinimap(GameObject MinimapIconPrefab) {
@@ -510,7 +766,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void DeregisterChestOnMinimap() {
-            if (minimapIconInstance && ParentRoom != null) { Minimap.Instance.DeregisterRoomIcon(ParentRoom, minimapIconInstance); }
+            if (minimapIconInstance && ParentRoom != null)Minimap.Instance.DeregisterRoomIcon(ParentRoom, minimapIconInstance);
         }
 
         public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
@@ -523,6 +779,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         protected override void OnDestroy() { base.OnDestroy(); }
 
         public void ConfigureOnPlacement(RoomHandler room) {
+            if (!m_InitFinished)Init();
             if (IsTrollChest) {
                 ParentRoom = room;
                 ParentRoom.RegisterInteractable(this);

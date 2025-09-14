@@ -5548,6 +5548,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_BacteriaGoopDoer.DispersalMinCoherency = 0.2f;
             m_BacteriaGoopDoer.DispersalMaxCoherency = 1;
 
+            ExplodeOnDeath m_Exploder = m_CachedTargetObject.AddComponent<ExplodeOnDeath>();
+            m_Exploder.explosionData = ExpandUtility.GenerateExplosionData();
+            m_Exploder.immuneToIBombApp = true;
+            m_Exploder.LinearChainExplosion = false;
+            m_Exploder.deathType = OnDeathBehavior.DeathType.PreDeath;
+            m_Exploder.preDeathDelay = 0.1f;
+
             m_CachedTargetObject.AddComponent<ExpandEntityManager>();
 
             AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, EntityGUID, ExpandAmmonomiconDatabase.Entity);

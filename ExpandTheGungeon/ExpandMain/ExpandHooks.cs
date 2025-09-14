@@ -401,14 +401,15 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(DungeonData)
             );
 
-            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
-            pixelatorStartHook = new Hook(
-                typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
+            /*pixelatorStartHook = new Hook(
+                // typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(Pixelator).GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandHooks).GetMethod(nameof(PixelatorStartHook), BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Pixelator)
-            );
+            );*/
 
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing OcclusionLayer.GenerateOcclusionTextureHook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing OcclusionLayer.GenerateOcclusionTextureHook...."); }
             generateOcclusionTextureHook = new Hook(
                 typeof(OcclusionLayer).GetMethod("GenerateOcclusionTexture", BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandHooks).GetMethod(nameof(GenerateOcclusionTextureHook), BindingFlags.Public | BindingFlags.Instance),

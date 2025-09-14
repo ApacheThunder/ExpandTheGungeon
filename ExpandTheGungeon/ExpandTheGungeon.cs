@@ -24,7 +24,7 @@ namespace ExpandTheGungeon {
 
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.11.9";
+        public const string VERSION = "2.12.0";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -289,7 +289,7 @@ namespace ExpandTheGungeon {
                 bool frostfireInstalled = false;
                 if (FindObjectsOfType<BaseUnityPlugin>() != null) {
                     foreach (BaseUnityPlugin plugin in FindObjectsOfType<BaseUnityPlugin>()) {
-                        if (plugin.Info.Metadata.GUID.ToLower().Contains("frostandgunfire")) { frostfireInstalled = true; }
+                        if (plugin.Info.Metadata.GUID.ToLower().Contains("frostandgunfire"))frostfireInstalled = true;
                     }
                 }
                 if (frostfireInstalled) {
@@ -298,7 +298,6 @@ namespace ExpandTheGungeon {
                     if (ModLogo == null) {
                         ModLogo = ExpandAssets.LoadAsset<Texture2D>("EXLogo");
                         ModLogo.filterMode = FilterMode.Point;
-
                     }
                     ((dfTextureSprite)self.TitleCard).Texture = ModLogo;
                     SetupLabel(self.TitleCard, ("v" + VERSION), Color.black, new Vector2(564f, -28), new Vector2(64, 16), new Vector2(74, 16));
@@ -379,11 +378,11 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
-        /*private void ExpandTestCommand(string[] consoleText) {
+        private void ExpandTestCommand(string[] consoleText) {
             // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
             // Tools.DumpSpecificSpriteCollection(ExpandWesternBrosPrefabBuilder.Collection);
             // GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0, 2, 0)), Quaternion.identity);
@@ -395,8 +394,13 @@ namespace ExpandTheGungeon {
             // m_texturedOcclusionTarget
 
             // SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
-            SpriteSerializer.DumpSpriteCollection(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection);
-        }*/
+            // SpriteSerializer.DumpSpriteCollection(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection);
+            
+            SpriteSerializer.DumpSpriteCollection(EnemyDatabase.GetOrLoadByGuid("57255ed50ee24794b7aac1ac3cfb8a95").sprite.Collection);
+            // FieldInfo field = typeof(GameManager).GetField("m_dungeon", BindingFlags.Instance | BindingFlags.NonPublic);
+            // field.SetValue(GameManager.Instance, Instantiate(ExpandDungeonPrefabs.Base_Office).GetComponent<Dungeon>());
+            return;
+        }
 
         private void ExpandConsoleInfo(string[] consoleText) {
             if (ETGModConsole.Commands.GetGroup(ConsoleCommandName) != null && ETGModConsole.Commands.GetGroup(ConsoleCommandName).GetAllUnitNames() != null) {

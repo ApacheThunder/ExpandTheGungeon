@@ -121,6 +121,7 @@
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
+    <Compile Include="ExpandComponents\ExpandNPCController.cs" />
     <Compile Include="ExpandComponents\ExpandPlaySoundOnSpawn.cs" />
     <Compile Include="ExpandComponents\ExpandPunchoutArcadeController.cs" />
     <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />

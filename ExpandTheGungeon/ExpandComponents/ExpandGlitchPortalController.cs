@@ -98,7 +98,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
         }
-    
+        
+        // Added to allow COOP player to use portal if player 1 is dead.
+        public bool IsPrimaryPlayerOrSoleLivingPlayer(PlayerController player) {
+            if (player.IsPrimaryPlayer)return true;
+            if (GameManager.Instance.GetOtherPlayer(player) && GameManager.Instance.GetOtherPlayer(player).IsGhost) return true;
+            return false;
+        }
+
         public void OnEnteredRange(PlayerController interactor) { }
         public void OnExitRange(PlayerController interactor) { }
     
@@ -109,7 +116,7 @@ namespace ExpandTheGungeon.ExpandComponents {
     
         public void Interact(PlayerController interactor) {
             if (!Configured | !m_IsActive) { return; }
-            if (m_used || !interactor.IsPrimaryPlayer) { return; }
+            if (m_used || !IsPrimaryPlayerOrSoleLivingPlayer(interactor)) { return; }
             if (CachedPosition == Vector3.zero | ParentRoom == null | ParentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { return; }
             m_used = true;
             if (DestroyAfterUse) { ParentRoom.DeregisterInteractable(this); }
@@ -163,6 +170,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetPlayer.specRigidbody.Reinitialize();
             targetPlayer.specRigidbody.RecheckTriggers = true;
             if (GameManager.Instance.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
+                PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(targetPlayer);
+                if (otherPlayer) otherPlayer.WarpToPoint(targetPlayer.transform.position);
+                yield return null;
                 cameraController.OverridePosition = cameraController.GetIdealCameraPosition();
             } else {
                 cameraController.OverridePosition = (targetPoint + offsetVector).ToVector3ZUp(0f);

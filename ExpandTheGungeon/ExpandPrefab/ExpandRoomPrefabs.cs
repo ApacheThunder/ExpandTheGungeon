@@ -158,6 +158,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static PrototypeDungeonRoom Expand_Apache_RickRollChest;
         public static PrototypeDungeonRoom Expand_Apache_SurpriseChest;
         public static PrototypeDungeonRoom Expand_Apache_RainbowRoom;
+        public static PrototypeDungeonRoom Expand_FakePastChest;
 
 
         // Custom Secret Rooms
@@ -1061,8 +1062,12 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     room.associatedMinimapIcon = ExpandPrefabs.EXDangerRoomIcon;
                     RoomBuilder.AddObjectToRoom(room, new Vector2((room.Width / 2), (room.Height / 2)), ExpandPrefabs.EXVoidRoomAmbience);
                 }
-                if (room.name.StartsWith("BackRooms_Room105"))RoomBuilder.AddObjectToRoom(room, new Vector2(8, 25), ExpandPrefabs.FakePastChest, xOffset: -8);
-                room.IsLostWoodsRoom = true;
+                if (room.name.StartsWith("BackRooms_Room105")) {
+                    RoomBuilder.AddObjectToRoom(room, new Vector2(8, 25), ExpandPrefabs.FakePastChest, xOffset: 1);
+                    room.usesProceduralDecoration = false;
+                } else {
+                    room.IsLostWoodsRoom = true;
+                }
                 room.overrideRoomVisualType = 0;
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
             }
@@ -1631,8 +1636,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ExpandUtility.GeneratePathNode(new IntVector2(12, 30), SerializedPathNode.SerializedNodePlacement.East)
             };
             Expand_Apache_RainbowRoom.paths = new List<SerializedPath>() { EXTrapApachePath, EXTrapApachePath2 };
-            
 
+
+            Expand_FakePastChest = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_FakePastChest", true, false, assignDecorationSettings: true);
+            RoomBuilder.AddObjectToRoom(Expand_FakePastChest, new Vector2(8, 25), ExpandPrefabs.FakePastChest, xOffset: 1);
+            Expand_FakePastChest.usesProceduralDecoration = false;
 
             SecretExitRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             SecretRatEntranceRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
@@ -10100,8 +10108,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 GenerateWeightedRoom(Expand_Apache_TheCrushZone),
                 GenerateWeightedRoom(Expand_Apache_SpikeAndPits),
                 GenerateWeightedRoom(Expand_Apache_PitTraps),
-                GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.2f)/*
-                GenerateWeightedRoom(Expand_Apache_FieldOfSaws), // Added only to Sewers and Abbey now
+                GenerateWeightedRoom(Expand_Apache_RainbowRoom, Weight: 0.3f),
+                GenerateWeightedRoom(Expand_FakePastChest, Weight: 0.42f)
+                /*GenerateWeightedRoom(Expand_Apache_FieldOfSaws), // Added only to Sewers and Abbey now
                 GenerateWeightedRoom(Trap_Expand_Turtlemelon),
                 GenerateWeightedRoom(Expand_Apache_RickRollChest, Weight: 0.25f),
                 GenerateWeightedRoom(Expand_Apache_SurpriseChest, Weight: 0.35f),*/

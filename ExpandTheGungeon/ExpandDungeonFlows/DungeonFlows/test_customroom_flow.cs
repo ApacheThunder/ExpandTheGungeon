@@ -18,6 +18,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             DungeonFlowNode bossNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.BOSS, ExpandRoomPrefabs.FakeBossRoom);
             DungeonFlowNode TestRoomNode_0 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Apache_RickRollChest);
 
+            DungeonFlowNode TestPastChestNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Backrooms_Rooms[104]);
+
             DungeonFlowNode TestRoomNode_01 = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, PrototypeDungeonRoom.RoomCategory.NORMAL, ExpandRoomPrefabs.Expand_Apache_SurpriseChest);
 
             DungeonFlowNode TestShopNode = ExpandDungeonFlow.GenerateDefaultNode(m_CachedFlow, ExpandPrefabs.shop02.category, overrideTable: ExpandPrefabs.shop_room_table);
@@ -50,7 +52,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_CachedFlow.AddNodeToFlow(entranceNode, null);            
             m_CachedFlow.AddNodeToFlow(TestRoomNode_01, entranceNode);
             m_CachedFlow.AddNodeToFlow(TestRoomNode_0, entranceNode);
-            
+            m_CachedFlow.AddNodeToFlow(TestPastChestNode, TestRoomNode_0);
+
+
             m_CachedFlow.AddNodeToFlow(TestRewardNode, TestRoomNode_01);
             m_CachedFlow.AddNodeToFlow(TestSecretRoomNode, TestRewardNode);
 

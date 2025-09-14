@@ -49,14 +49,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public override bool IsIntroFinished { get { return m_IsFinished; } }
 
-        public void Start() {
-            m_AIActor = aiActor;
-            m_room = aiActor.ParentRoom;
-
-            if (GameManager.Instance?.Dungeon?.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                aiActor.AdditionalSafeItemDrops = new List<PickupObject>() { PickupObjectDatabase.GetById(727) };
-            }
-
+        public void ScanForTables() {
             if (m_room == null | !m_room.hierarchyParent | m_room.hierarchyParent.childCount == 0) { DoTableFlips = false; return; }
 
             int m_ChildCount = m_room.hierarchyParent.childCount;
@@ -66,15 +59,23 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (m_CurrentTransform && m_CurrentTransform.gameObject?.GetComponent<FlippableCover>()) {
                     FlippableCover m_CurrentTable = m_CurrentTransform.gameObject.GetComponent<FlippableCover>();
                     if (!m_CurrentTable.IsBroken && !m_CurrentTable.IsFlipped &&
-                        m_CurrentTable.flipStyle != FlippableCover.FlipStyle.NO_FLIPS) {
+                        m_CurrentTable.flipStyle != FlippableCover.FlipStyle.NO_FLIPS
+                    ) {
                         TargetTables.Add(m_CurrentTransform.gameObject.GetComponent<FlippableCover>());
                     }
                     if (!FlipAllTables) break;
                 }
             }
 
-            if (TargetTables.Count <= 0) { DoTableFlips = false; return; }
-            
+            if (TargetTables.Count <= 0)DoTableFlips = false;
+        }
+
+        public void Start() {
+            m_AIActor = aiActor;
+            m_room = aiActor.ParentRoom;
+            if (GameManager.Instance?.Dungeon?.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                aiActor.AdditionalSafeItemDrops = new List<PickupObject>() { PickupObjectDatabase.GetById(727) };
+            }
         }
 
         public override void PlayerWalkedIn(PlayerController player, List<tk2dSpriteAnimator> animators) {
@@ -83,6 +84,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
 
         public override void StartIntro(List<tk2dSpriteAnimator> animators) {
+            ScanForTables();
             if (DoTableFlips) { StartCoroutine(FlipTables()); } else { m_IsFinished = true; }
         }
 

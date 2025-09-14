@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 677441599
+CRC: 3839798542
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f02cda785cee7b353477cf01ac70ed02
+    Hash: 65a2b65eb845a2473d675c7ed657f755
   TypeTreeHash:
     serializedVersion: 2
     Hash: 513673b503952618eb00f45379ce1f5a
@@ -1153,6 +1153,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Tribal5.bytes
 - Assets/ExpandRooms/RoomBuilderData/Castle/Expand_TurtleMelon_Pit_Jump_Layout.png
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate20.bytes
+- Assets/ExpandRooms/RoomFactoryData/TrapRooms/Expand_FakePastChest.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular49.bytes
 - Assets/ExpandTextures/AmmonomiconTextures/hotshotbulletkin_icon.png
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room049.bytes
