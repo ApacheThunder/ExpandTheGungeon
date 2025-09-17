@@ -118,8 +118,11 @@
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntitySpawner.cs" />
+    <Compile Include="ExpandComponents\ExpandHatProjectile.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
+    <Compile Include="ExpandLoadingScreen.cs" />
+    <Compile Include="ExpandComponents\ExpandMrCapMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
     <Compile Include="ExpandComponents\ExpandNPCController.cs" />
     <Compile Include="ExpandComponents\ExpandPlaySoundOnSpawn.cs" />
@@ -206,6 +209,7 @@
     <Compile Include="ExpandUtilities\RoomFactory.cs" />
     <Compile Include="ItemAPI\Items\ClownBullets.cs" />
     <Compile Include="ItemAPI\Items\ClownFriend.cs" />
+    <Compile Include="ItemAPI\Items\MrCap.cs" />
     <Compile Include="ItemAPI\Items\OldKey.cs" />
     <Compile Include="ItemAPI\Items\PortableElevator.cs" />
     <Compile Include="ItemAPI\Items\PortableShip.cs" />
@@ -468,6 +472,12 @@
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_002.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_003.png" />
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EXLoadScreenLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EXLoadingScreen_West.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

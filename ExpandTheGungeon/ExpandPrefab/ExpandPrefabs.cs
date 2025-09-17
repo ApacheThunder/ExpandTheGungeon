@@ -485,6 +485,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
+
+            tk2dSpriteCollectionData itemCollection = EXItemCollection.GetComponent<tk2dSpriteCollectionData>();
+            for (int i = 1; i < 7; i++) {
+                itemCollection.DefineProjectileCollision("hatty_00" + i.ToString(), 13, 12, 2, 1, 0, 0);
+            }
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {

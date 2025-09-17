@@ -233,15 +233,23 @@ namespace ExpandTheGungeon.ItemAPI {
                     yield return null;
                 }
                 Vector3 m_LastSpritePosition = targetObject.transform.position;
-                targetHammer.gameObject.GetComponent<CompanionController>().enabled = true;
-                targetHammer.ToggleRenderers(true);
-                targetHammer.IsGone = false;
-                targetHammer.behaviorSpeculator.enabled = true;                
-                targetHammer.gameObject.transform.position = m_LastSpritePosition;
-                if (targetHammer.specRigidbody) {
-                    targetHammer.specRigidbody.CollideWithOthers = true;
-                    targetHammer.specRigidbody.Reinitialize();
-                    PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetHammer.specRigidbody, null, false);
+                if (!targetHammer && LastOwner) {
+                    ForceCompanionRegeneration(LastOwner, returnPosition);
+                    if (targetHammer.specRigidbody) {
+                        targetHammer.specRigidbody.Reinitialize();
+                        PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetHammer.specRigidbody, null, false);
+                    }
+                } else {
+                    targetHammer.gameObject.GetComponent<CompanionController>().enabled = true;
+                    targetHammer.ToggleRenderers(true);
+                    targetHammer.IsGone = false;
+                    targetHammer.behaviorSpeculator.enabled = true;
+                    targetHammer.gameObject.transform.position = m_LastSpritePosition;
+                    if (targetHammer.specRigidbody) {
+                        targetHammer.specRigidbody.CollideWithOthers = true;
+                        targetHammer.specRigidbody.Reinitialize();
+                        PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(targetHammer.specRigidbody, null, false);
+                    }
                 }
                 Destroy(targetObject);
             } else {

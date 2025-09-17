@@ -77,6 +77,7 @@ Credits:
 * C4ndy_cane for all the custom level music added to this mod!
 * luka712 (https://luka712.github.io/2018/07/21/CRT-effect-Shadertoy-Unity/) for the CRT shader used for the Punchout Arcade Game!
 * NeverNamed for the Casino room sprites like the Rat Punchout Arcade machine sprites and the decorations found in the room! Also made sprites for the new tree objects added to Jungle floor!
+* NeverNamed for the sprites used for "The Lead Key" item.
 * Lynceus for the new boss card used for West Bros boss on Old West floor as well as the new sprites used on the hotshot enemies and Ammonomicon enemy portraits!.
 * Dallan for sprite work of new secret enemy/floor and for new sprites for secret elevator object. ;)
 * mazellmi (https://www.youtube.com/@mazellmi) for the sound fx used for secret enemy. ;)

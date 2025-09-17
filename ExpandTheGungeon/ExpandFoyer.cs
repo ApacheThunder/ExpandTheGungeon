@@ -1,4 +1,5 @@
-﻿using Dungeonator;
+﻿using BepInEx;
+using Dungeonator;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
@@ -15,13 +16,10 @@ namespace ExpandTheGungeon {
         private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit };
         private State m_State;
 
-        public void Awake() { }
-        public void Start() { }
-
         public void Update() {
             switch (m_State) {
                 case State.PreFoyerCheck:
-                    if (Foyer.DoIntroSequence && Foyer.DoMainMenu) { return; }
+                    if (!ExpandTheGungeon.ModInitFinished | Foyer.DoIntroSequence | Foyer.DoMainMenu)return;
                     if (ExpandTheGungeon.GameManagerHook == null) {
                         if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                         ExpandTheGungeon.GameManagerHook = new Hook(

@@ -115,6 +115,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override void Update() {
             base.Update();
+            if (Dungeon.IsGenerating) return;
             if (!m_InUse && IsOnCooldown && !spriteAnimator.IsPlaying("POW")) {
                 spriteAnimator.Play("POW");
             } else if (!m_InUse && !IsOnCooldown && !spriteAnimator.IsPlaying("Idle")) {

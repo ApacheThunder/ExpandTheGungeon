@@ -4,33 +4,37 @@ using System.Reflection;
 using UnityEngine;
 using Dungeonator;
 using MonoMod.RuntimeDetour;
+using BepInEx;
 using ExpandTheGungeon.SpriteAPI;
-using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandDungeonFlows;
-using BepInEx;
 
 namespace ExpandTheGungeon {
 
     [BepInDependency("etgmodding.etg.mtgapi")]
     [BepInPlugin(GUID, ModName, VERSION)]
     public class ExpandTheGungeon : BaseUnityPlugin {
+
+        public static bool ModInitFinished = false;
         
         public static Texture2D ModLogo;
+        public static Texture2D ModLogoMini;
+
         public static Hook GameManagerHook;
         public static Hook initializeMainMenuHook;
-
+        
+        
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "2.12.0";
+        public const string VERSION = "3.0.0";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
         
         public static bool ItemAPISetup = false;
         public static bool ListsCleared = false;
+        public static bool PreventInput = true;
 
         public static string ModShaderBundleName = "ExpandShaders";
 
@@ -49,7 +53,7 @@ namespace ExpandTheGungeon {
         private static GameObject m_FoyerCheckerOBJ;
         private static List<string> itemList;
 
-        private bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
+        private static bool m_IsCommandValid(string[] CommandText, string validCommands, string sourceSubCommand) {
             if (CommandText == null) {
                 if (!string.IsNullOrEmpty(validCommands) && !string.IsNullOrEmpty(sourceSubCommand)) { ETGModConsole.Log("[ExpandTheGungeon] [" + sourceSubCommand + "] ERROR: Invalid console command specified! Valid Sub-Commands: \n" + validCommands); }
                 return false;
@@ -67,11 +71,12 @@ namespace ExpandTheGungeon {
         }
 
         public void Start() {
-            
             FilePath = this.FolderPath();
             ZipFilePath = this.FolderPath();
             
             ResourcesPath = ETGMod.ResourcesDirectory;
+
+            ExpandLoadingScreen.Init();
 
             ExceptionText = new List<string>();
 
@@ -103,7 +108,8 @@ namespace ExpandTheGungeon {
                 "Clown Bullets",
                 "Portable Elevator",
                 "Portable Ship",
-                "Old Key"
+                "Old Key",
+                // "Mr Cap"
             };
 
             switch (Application.platform) {
@@ -116,15 +122,30 @@ namespace ExpandTheGungeon {
             }
             
             ExpandAssets.InitCustomAssetBundles();
+
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
+
+            if (expandSharedAssets1) {
+                ModLogo = expandSharedAssets1.LoadAsset<Texture2D>("EXLogo");
+                ModLogo.filterMode = FilterMode.Point;
+
+                ModLogoMini = expandSharedAssets1.LoadAsset<Texture2D>("EXLogoMini");
+                ModLogoMini.filterMode = FilterMode.Point;
+            }
+
+            expandSharedAssets1 = null;
+            
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }
 
-
+        
         public void GMStart(GameManager gameManager) {
             if (ExceptionText.Count > 0) {
                 foreach (string text in ExceptionText) { ETGModConsole.Log(text); }
                 return;
             }
+
+            ExpandLoadingScreen.UpdateText("Installing Hooks...");
 
             try {
                 Strings = new StringDB();
@@ -133,96 +154,30 @@ namespace ExpandTheGungeon {
                 if (ExpandSettings.EnableLogo) {
                     initializeMainMenuHook = new Hook(
                         typeof(MainMenuFoyerController).GetMethod("InitializeMainMenu", BindingFlags.Public | BindingFlags.Instance),
-                        typeof(ExpandTheGungeon).GetMethod(nameof(InitializeMainMenuHook), BindingFlags.Public| BindingFlags.Instance),
+                        typeof(ExpandTheGungeon).GetMethod(nameof(ExpandTheGungeon.InitializeMainMenuHook), BindingFlags.Public| BindingFlags.Instance),
                         typeof(MainMenuFoyerController)
                     );
                 }
                 gameManager.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
-            } catch (Exception ex) {
-                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
-                Debug.LogException(ex);
-                return;
-            }
-            
-            try {
+
                 ExpandHooks.InstallRequiredHooks();
                 ExpandDungeonMusicAPI.InitHooks();
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
+                ExpandLoadingScreen.UpdateText("ERROR: Exception occured while installing hooks!");
                 Debug.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
                 Debug.LogException(ex);
                 return;
             }
-
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
-            AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ModAudioAssetBundleName);
-            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
-
-            ExpandAssets.InitAudio(expandAudio, ModSoundBankName);
-            // Init Custom GameLevelDefinitions
-            ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
-            // Init Custom Sprite Collections
-            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
-            ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
-
-            // Init ItemAPI
-            SetupItemAPI(expandSharedAssets1);
-
-            try {
-                // Init Prefab Databases
-                ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
-                // Init Custom Enemy Ammonomicon Data
-                ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
-                // Init Custom Enemy Prefabs
-                ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
-                // Init Custom Room Prefabs
-                ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
-                // Init Custom DungeonFlow(s)
-                ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
-                // Things that need existing stuff created first have code run here
-                BootlegGuns.PostInit();
-                ClownFriend.PostInit();
-                // Dungeon Prefabs
-                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
-            } catch (Exception ex) {
-                ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while building prefabs!", true);
-                Debug.LogException(ex);
-                expandSharedAssets1 = null;
-                sharedAssets = null;
-                sharedAssets2 = null;
-                enemiesBase = null;
-                braveResources = null;
-                return;
-            }
             
-            // Modified version of Anywhere mod
-            DungeonFlowModule.Install();
-
-            InitConsoleCommands(ConsoleCommandName);
-
-            CreateFoyerController();
-
-            ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
-            ETGModConsole.DungeonDictionary.Add("office", "tt_office");
-            ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
-            ETGModConsole.DungeonDictionary.Add("space", "tt_space");
-            ETGModConsole.DungeonDictionary.Add("west", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
-
-            // Null bundles when done with them to avoid game crash issues
-            expandSharedAssets1 = null;
-            sharedAssets = null;
-            sharedAssets2 = null;
-            enemiesBase = null;
-            braveResources = null;
+            if (ExpandLoadingScreen.Instance) {
+                ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+            } else {
+                gameManager.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+            }
         }
-        
+
+
         public static void CreateFoyerController() {
             if (!m_FoyerCheckerOBJ) {
                 m_FoyerCheckerOBJ = Instantiate(ExpandPrefabs.EXFoyerChecker, Vector3.zero, Quaternion.identity);
@@ -231,49 +186,7 @@ namespace ExpandTheGungeon {
             }
         }
                 
-        private void SetupItemAPI(AssetBundle expandSharedAssets1) {
-            if (!ItemAPISetup) {
-                try {
-                    ETGMod.Assets.SetupSpritesFromAssembly(Assembly.GetExecutingAssembly(), "ExpandTheGungeon/Sprites");
-                    Tools.Init();
-                    ItemBuilder.Init();
-                    BabyGoodHammer.Init(expandSharedAssets1);
-                    CorruptionBomb.Init(expandSharedAssets1);
-                    if (ExpandSettings.EnableBloodiedScarfFix) { ExpandRedScarf.Init(expandSharedAssets1); }
-                    TableTechAssassin.Init(expandSharedAssets1);
-                    CorruptedJunk.Init(expandSharedAssets1);
-                    BootlegGuns.Init(expandSharedAssets1);
-                    CronenbergBullets.Init(expandSharedAssets1);
-                    Mimiclay.Init(expandSharedAssets1);
-                    TheLeadKey.Init(expandSharedAssets1);
-                    RockSlide.Init(expandSharedAssets1);
-                    CustomMasterRounds.Init(expandSharedAssets1);
-                    WoodenCrest.Init(expandSharedAssets1);
-                    BulletKinGun.Init();
-                    BabySitter.Init(expandSharedAssets1);
-                    PowBlock.Init(expandSharedAssets1);
-                    CursedBrick.Init(expandSharedAssets1);
-                    SonicRing.Init(expandSharedAssets1);
-                    SonicBox.Init(expandSharedAssets1);
-                    ThirdEye.Init(expandSharedAssets1);
-                    ClownBullets.Init(expandSharedAssets1);
-                    ClownFriend.Init(expandSharedAssets1);
-                    PortableElevator.Init(expandSharedAssets1);
-                    PortableShip.Init(expandSharedAssets1);
-                    WestBrosRevolverGenerator.Init();
-                    HotShotShotGun.Init();
-                    ExpandKeyBulletPickup.Init(expandSharedAssets1);
-
-                    // Setup Custom Synergies. Do this after all custom items have been Init!;
-                    ExpandSynergies.Init();
-                    
-                    ItemAPISetup = true;
-                } catch (Exception e2) {
-                    Tools.PrintException(e2, "FF0000");
-                }
-            }
-        }
-
+        
         public void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
@@ -304,6 +217,7 @@ namespace ExpandTheGungeon {
                 }
             }
         }
+        
 
         private void SetupLabel(dfControl controlParent, string TextString, Color TextColor, Vector3 UIPosition, Vector2 Size, Vector2 MaxSize) {
             dfTiledSprite referenceLabel = ExpandAssets.LoadOfficialAsset<GameObject>("Weapon Skull Ammo FG", ExpandAssets.AssetSource.SharedAuto1).GetComponent<dfTiledSprite>();
@@ -370,7 +284,7 @@ namespace ExpandTheGungeon {
             referenceLabel = null;
         }
 
-        private void InitConsoleCommands(string MainCommandName) {
+        public static void InitConsoleCommands(string MainCommandName) {
             ETGModConsole.Commands.AddGroup(MainCommandName, ExpandConsoleInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("createSpriteCollection", ExpandSerializeCollection);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("dump_layout", ExpandDumpLayout);
@@ -378,11 +292,11 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
 
-        private void ExpandTestCommand(string[] consoleText) {
+        /*private static void ExpandTestCommand(string[] consoleText) {
             // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
             // Tools.DumpSpecificSpriteCollection(ExpandWesternBrosPrefabBuilder.Collection);
             // GameObject NewChestTest = Instantiate(ExpandObjectDatabase.EndTimesChest, (GameManager.Instance.PrimaryPlayer.transform.position + new Vector3(0, 2, 0)), Quaternion.identity);
@@ -396,13 +310,13 @@ namespace ExpandTheGungeon {
             // SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
             // SpriteSerializer.DumpSpriteCollection(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection);
             
-            SpriteSerializer.DumpSpriteCollection(EnemyDatabase.GetOrLoadByGuid("57255ed50ee24794b7aac1ac3cfb8a95").sprite.Collection);
+            SpriteSerializer.DumpSpriteCollection((PickupObjectDatabase.GetById(448) as SpawnObjectPlayerItem).objectToSpawn.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>().Collection);
             // FieldInfo field = typeof(GameManager).GetField("m_dungeon", BindingFlags.Instance | BindingFlags.NonPublic);
             // field.SetValue(GameManager.Instance, Instantiate(ExpandDungeonPrefabs.Base_Office).GetComponent<Dungeon>());
             return;
-        }
+        }*/
 
-        private void ExpandConsoleInfo(string[] consoleText) {
+        private static void ExpandConsoleInfo(string[] consoleText) {
             if (ETGModConsole.Commands.GetGroup(ConsoleCommandName) != null && ETGModConsole.Commands.GetGroup(ConsoleCommandName).GetAllUnitNames() != null) {
                 List<string> m_CommandList = new List<string>();
 
@@ -424,7 +338,7 @@ namespace ExpandTheGungeon {
             }
         }
         
-        private void ExpandDebug(string[] consoleText) {
+        private static void ExpandDebug(string[] consoleText) {
             string validSubCommands = "stats\nclearroom\nunsealroom\nfixplayerinput";
             
             if (!m_IsCommandValid(consoleText, validSubCommands, "debug")) { return; }
@@ -496,7 +410,7 @@ namespace ExpandTheGungeon {
             }
         }
 
-        private void ExpandDumpLayout(string[] consoleText) {
+        private static void ExpandDumpLayout(string[] consoleText) {
             string validSubCommands = "currentroom\ncurrentroomhandler\nallknownroomprefabs\ncurrentdungeonlayout";
 
             if (!m_IsCommandValid(consoleText, validSubCommands, "dump_layout")) { return; }
@@ -545,12 +459,12 @@ namespace ExpandTheGungeon {
             }
         }
         
-        private void ExpandCustomItemsInfo(string[] consoleText) {
+        private static void ExpandCustomItemsInfo(string[] consoleText) {
             ETGModConsole.Log("Custom Items: ", false);
             foreach (string str in itemList) { ETGModConsole.Log("    " + str, false); }
         }
 
-        private void ExpandYouTubeSafeCommand(string[] consoleTest) {
+        private static void ExpandYouTubeSafeCommand(string[] consoleTest) {
             if (ExpandSettings.youtubeSafeMode) {
                 ETGModConsole.Log("No longer YouTube safe.", false);
                 ExpandSettings.youtubeSafeMode = false;
@@ -560,7 +474,7 @@ namespace ExpandTheGungeon {
             }
         }
         
-        private void ExpandExportSettings(string[] consoleText) {
+        private static void ExpandExportSettings(string[] consoleText) {
             ExpandSettings.SaveSettings();
             ETGModConsole.Log("[ExpandTheGungeon] Settings have been saved!");
             return;
@@ -568,7 +482,7 @@ namespace ExpandTheGungeon {
         
         // Setup console command to point to this function. Expects name of collection followed by resolution X/Y (exmaple: 512 512 EXItemCollection)
         // If you wish to manually specify path of output files add path as 4th parameter.
-        public void ExpandSerializeCollection(string[] consoleText) {
+        public static void ExpandSerializeCollection(string[] consoleText) {
             try {
                 ExpandAssets.InitSpritesAssetBundle();
             } catch (Exception ex) {

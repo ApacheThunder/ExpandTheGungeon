@@ -12,6 +12,7 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using ExpandTheGungeon.ExpandMain;
+using System.IO;
 
 namespace ExpandTheGungeon.ExpandUtilities {
 
@@ -1435,6 +1436,19 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return m_CachedAnimation;
         }
 
+
+
+        public static void AddAnimation(tk2dSpriteAnimator targetAnimator, GameObject collection, List<int> spriteIDList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            AddAnimation(targetAnimator, collection.GetComponent<tk2dSpriteCollectionData>(), spriteIDList, clipName, wrapMode, frameRate, loopStart, minFidgetDuration, maxFidgetDuration);
+        }
+        public static void AddAnimation(tk2dSpriteAnimation targetAnimation, GameObject collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            AddAnimation(targetAnimation, collection.GetComponent<tk2dSpriteCollectionData>(), spriteNameList, clipName, wrapMode, frameRate, loopStart, minFidgetDuration, maxFidgetDuration);
+        }
+
+        public static tk2dSpriteAnimationClip AddAnimation(tk2dSpriteAnimator targetAnimator, GameObject collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            return AddAnimation(targetAnimator, collection.GetComponent<tk2dSpriteCollectionData>(), spriteNameList, clipName, wrapMode, frameRate, loopStart, minFidgetDuration, maxFidgetDuration);
+        }
+
         public static void AddAnimation(tk2dSpriteAnimator targetAnimator, tk2dSpriteCollectionData collection, List<int> spriteIDList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
             
             if (targetAnimator.Library == null) {
@@ -1481,6 +1495,50 @@ namespace ExpandTheGungeon.ExpandUtilities {
             };
 			Array.Resize(ref targetAnimator.Library.clips, targetAnimator.Library.clips.Length + 1);
             targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
+            return;
+        }
+        
+        public static void AddAnimation(tk2dSpriteAnimation targetAnimation, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
+            if (targetAnimation.clips == null) { targetAnimation.clips = new tk2dSpriteAnimationClip[0]; }
+            List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
+			for (int i = 0; i < spriteNameList.Count; i++) {
+                tk2dSpriteDefinition spriteDefinition = collection.GetSpriteDefinition(spriteNameList[i]);
+                if (spriteDefinition != null && spriteDefinition.Valid) {
+                    animationList.Add(
+                        new tk2dSpriteAnimationFrame {
+                            spriteCollection = collection,
+                            spriteId = collection.GetSpriteIdByName(spriteNameList[i]),
+                            invulnerableFrame = false,
+                            groundedFrame = true,
+                            requiresOffscreenUpdate = false,
+                            eventAudio = string.Empty,
+                            eventVfx = string.Empty,
+                            eventStopVfx = string.Empty,
+                            eventLerpEmissive = false,
+                            eventLerpEmissiveTime = 0.5f,
+                            eventLerpEmissivePower = 30,
+                            forceMaterialUpdate = false,
+                            finishedSpawning = false,
+                            triggerEvent = false,
+                            eventInfo = string.Empty,
+                            eventInt = 0,
+                            eventFloat = 0,
+                            eventOutline = tk2dSpriteAnimationFrame.OutlineModifier.Unspecified,
+					    }
+                    );
+				}
+			}
+            tk2dSpriteAnimationClip animationClip = new tk2dSpriteAnimationClip() {
+                name = clipName,
+                frames = animationList.ToArray(),
+                fps = frameRate,
+                wrapMode = wrapMode,
+                loopStart = loopStart,
+                minFidgetDuration = minFidgetDuration,
+                maxFidgetDuration = maxFidgetDuration,
+            };
+            Array.Resize(ref targetAnimation.clips, targetAnimation.clips.Length + 1);
+            targetAnimation.clips[targetAnimation.clips.Length - 1] = animationClip;
             return;
         }
 
@@ -1536,50 +1594,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             targetAnimator.Library.clips[targetAnimator.Library.clips.Length - 1] = animationClip;
             return animationClip;
         }
-        
-        public static void AddAnimation(tk2dSpriteAnimation targetAnimation, tk2dSpriteCollectionData collection, List<string> spriteNameList, string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Once, int frameRate = 15, int loopStart = 0, float minFidgetDuration = 0.5f, float maxFidgetDuration = 1) {
-            if (targetAnimation.clips == null) { targetAnimation.clips = new tk2dSpriteAnimationClip[0]; }
-            List<tk2dSpriteAnimationFrame> animationList = new List<tk2dSpriteAnimationFrame>();
-			for (int i = 0; i < spriteNameList.Count; i++) {
-                tk2dSpriteDefinition spriteDefinition = collection.GetSpriteDefinition(spriteNameList[i]);
-                if (spriteDefinition != null && spriteDefinition.Valid) {
-                    animationList.Add(
-                        new tk2dSpriteAnimationFrame {
-                            spriteCollection = collection,
-                            spriteId = collection.GetSpriteIdByName(spriteNameList[i]),
-                            invulnerableFrame = false,
-                            groundedFrame = true,
-                            requiresOffscreenUpdate = false,
-                            eventAudio = string.Empty,
-                            eventVfx = string.Empty,
-                            eventStopVfx = string.Empty,
-                            eventLerpEmissive = false,
-                            eventLerpEmissiveTime = 0.5f,
-                            eventLerpEmissivePower = 30,
-                            forceMaterialUpdate = false,
-                            finishedSpawning = false,
-                            triggerEvent = false,
-                            eventInfo = string.Empty,
-                            eventInt = 0,
-                            eventFloat = 0,
-                            eventOutline = tk2dSpriteAnimationFrame.OutlineModifier.Unspecified,
-					    }
-                    );
-				}
-			}
-            tk2dSpriteAnimationClip animationClip = new tk2dSpriteAnimationClip() {
-                name = clipName,
-                frames = animationList.ToArray(),
-                fps = frameRate,
-                wrapMode = wrapMode,
-                loopStart = loopStart,
-                minFidgetDuration = minFidgetDuration,
-                maxFidgetDuration = maxFidgetDuration,
-            };
-            Array.Resize(ref targetAnimation.clips, targetAnimation.clips.Length + 1);
-            targetAnimation.clips[targetAnimation.clips.Length - 1] = animationClip;
-            return;
-        }
+
 
         public static void GenerateCorruptedTilesAtPosition(Dungeon dungeon, RoomHandler parentRoom, IntVector2 targetPosition, IntVector2 areaSize, GameObject parentObject = null, float CorruptionIntensity = 0.5f, bool AllowGlitchShader = true, bool emitsCorruptionNoise = true, bool corruptionNoiseFillsRoom = false, bool isSecretRoomWallMarkerCorruption = true) {
 
@@ -5014,6 +5029,62 @@ namespace ExpandTheGungeon.ExpandUtilities {
             texture2D.name = resourceName;
             texture2D.Apply();
             return texture2D;
+        }
+
+        public static Texture2D GetTextureFromResource(string texturePath, IntVector2 textureResolution) {
+            string file = texturePath;
+            file = file.Replace("/", ".");
+            file = file.Replace("\\", ".");
+            int Width = textureResolution.x, Height = textureResolution.y;
+            byte[] bytes = ExtractEmbeddedResource($"{ExpandTheGungeon.ModName}." + file);
+            if (bytes == null) {
+                Debug.Log("[ExpandTheGungeon] No bytes found in " + file);
+                return null;
+            }
+            Texture2D texture = new Texture2D(Width, Height, TextureFormat.RGBA32, false);
+            ImageConversion.LoadImage(texture, bytes);
+            texture.filterMode = FilterMode.Point;
+
+            string name = file.Substring(0, file.LastIndexOf('.'));
+            if (name.LastIndexOf('.') >= 0) { name = name.Substring(name.LastIndexOf('.') + 1); }
+            texture.name = name;
+            return texture;
+        }
+
+        public static byte[] ExtractEmbeddedResource(string filename) {
+			Assembly callingAssembly = Assembly.GetCallingAssembly();
+			byte[] result;
+			using (Stream manifestResourceStream = callingAssembly.GetManifestResourceStream(filename)) {
+				bool flag = manifestResourceStream == null;
+				if (flag) {
+					result = null;
+				} else {
+					byte[] array = new byte[manifestResourceStream.Length];
+					manifestResourceStream.Read(array, 0, array.Length);
+					result = array;
+				}
+			}
+			return result;
+		}
+
+        public static void DumpTexture2DToFile(Texture2D target, bool useRandomFilenames = false) {
+            if (target == null) { return; }
+            string text = "DUMPsprites/" + "DUMP" + target.name;
+            string text2 = text + "/" + "DUMP" + target.name;
+            if (useRandomFilenames) {
+                text += ("_" + Guid.NewGuid().ToString());
+                text2 += ("_" + Guid.NewGuid().ToString());
+            }
+            string path = System.IO.Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', System.IO.Path.DirectorySeparatorChar).Replace('\\', System.IO.Path.DirectorySeparatorChar) + ".png");
+            bool fileExists = File.Exists(path);
+            if (!fileExists) {
+                path = System.IO.Path.Combine(ETGMod.ResourcesDirectory, text2.Replace('/', System.IO.Path.DirectorySeparatorChar).Replace('\\', System.IO.Path.DirectorySeparatorChar) + ".png");
+                bool folderPath = !File.Exists(path);
+                if (folderPath) {
+                    Directory.GetParent(path).Create();
+                    File.WriteAllBytes(path, ImageConversion.EncodeToPNG(target));
+                }
+            }
         }
     }
 

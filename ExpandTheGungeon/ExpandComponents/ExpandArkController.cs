@@ -628,7 +628,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 yield return null;
                 EnemyTarget.healthHaver.lastIncurredDamageSource = TrollText;
                 EnemyTarget.healthHaver.ForceSetCurrentHealth(0);
-                EnemyTarget.healthHaver.Die(Vector2.zero);
+                EnemyTarget.healthHaver.IsVulnerable = true;
+                EnemyTarget.healthHaver.ApplyDamage(100000f, Vector2.zero, "PastGunKill", CoreDamageTypes.None, DamageCategory.Normal, true, null, false);
+                // EnemyTarget.healthHaver.Die(Vector2.zero);
                 yield return null;
                 HandleAIActorLoot(m_EnemyTargetPosition);
             } else if (!m_CultistTarget) {

@@ -414,7 +414,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "portableship_shadow",
             "clownfriend",
             "west_key_001",
-            "west_key_minimap"
+            "west_key_minimap",
+            "hatty_001",
+            "hatty_002",
+            "hatty_003",
+            "hatty_004",
+            "hatty_005",
+            "hatty_006",
+            "hatty_item",
+            "hatty_item_active_blue",
+            "hatty_item_active_red"
         };
 
         public static readonly List<string> ClownkinCollection = new List<string> {

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3839798542
+CRC: 2187611702
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 65a2b65eb845a2473d675c7ed657f755
+    Hash: 888f327c7513e57d1b29685f0528304e
   TypeTreeHash:
     serializedVersion: 2
     Hash: 513673b503952618eb00f45379ce1f5a
@@ -1094,6 +1094,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed10.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate21.bytes
 - Assets/ExpandPrefabs/Misc/EX_Secret_Door_Unlocked.prefab
+- Assets/ExpandPrefabs/Items/Mr Cap.prefab
 - Assets/ExpandTextures/SpriteCollections/AIActors/Entity_Collection.png
 - Assets/ExpandPrefabs/SpriteCollections/Misc/SecretElevatorExitTilesetCollection.prefab
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room037.bytes
@@ -1107,6 +1108,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_BIRDS.bytes
 - Assets/ExpandSerializedData/TilesetData/Jungle/Bamboo/facewallGrids_1_grid.txt
 - Assets/ExpandSerializedData/SpriteCollections/SonicCompanionCollection.txt
+- Assets/ExpandPrefabs/Items/EXMrCapVFX.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular44.bytes
 - Assets/ExpandSerializedData/TilesetData/Nakatomi/Nakatomi_Blue/facewallGrids_0.txt
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Mixed13.bytes
@@ -1327,6 +1329,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter24.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny7.bytes
 - Assets/ExpandPrefabs/Dungeons/Base_Office.prefab
+- Assets/ExpandPrefabs/Items/Projectiles/EXMrCapProjectile.prefab
 - Assets/ExpandRooms/RoomFactoryData/Expand_Proper_Regular8.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny12.bytes
 - Assets/ExpandSerializedData/TilesetData/West/ENV_Tileset_West_MaterialTable.txt

@@ -124,7 +124,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public override void Update() {
             base.Update();
             if (!Dungeon.IsGenerating && m_PickedUp && !m_Ready) {
-                if (!IsOnCooldown) {
+                if (!IsOnCooldown && !(spriteAnimator && spriteAnimator.IsPlaying("Activate"))) {
                     sprite.SetSprite("rockslide");
                     m_Ready = true;
                 }
@@ -134,6 +134,11 @@ namespace ExpandTheGungeon.ItemAPI {
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
             m_PickedUp = true;
+            if (m_Ready && !IsOnCooldown && !(spriteAnimator && spriteAnimator.IsPlaying("Activate"))) {
+                sprite.SetSprite("rockslide");
+            } else if (m_Ready && IsOnCooldown && !(spriteAnimator && spriteAnimator.IsPlaying("Activate"))) {
+                sprite.SetSprite("plunger_fire_006");
+            }
         }
 
         protected override void OnPreDrop(PlayerController player) {
