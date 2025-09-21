@@ -134,7 +134,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_AIActor.spriteAnimator.Library.clips = m_AnimationClips.ToArray();
             }
 
-            MirrorController mirror = ExpandPrefabs.CurrsedMirror.GetComponent<MirrorController>();
+            MirrorController mirror = ExpandPrefabs.CursedMirror.GetComponent<MirrorController>();
                                                 
             MirrorBase = Instantiate(ExpandPrefabs.DoppelgunnerMirror, gameObject.transform.position - new Vector3(0.25f, 1), Quaternion.identity);
             ShatterSystem = Instantiate(mirror.ShatterSystem, MirrorBase.transform.position, Quaternion.identity);

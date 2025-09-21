@@ -5,6 +5,7 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.ExpandLoadingScreens;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -221,6 +222,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     if (IsGlitchElevator) {
                         ExpandSettings.glitchElevatorHasBeenUsed = true;
+                        ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Glitched;
                         GameManager.Instance.StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
                     } else if (UsesOverrideTargetFloor) {
                         GlobalDungeonData.ValidTilesets overrideTargetFloor = OverrideTargetFloor;

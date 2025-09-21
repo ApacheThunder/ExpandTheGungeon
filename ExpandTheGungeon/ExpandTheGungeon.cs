@@ -9,15 +9,32 @@ using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandLoadingScreens;
+using ExpandTheGungeon.ItemAPI;
 
 namespace ExpandTheGungeon {
 
-    [BepInDependency("etgmodding.etg.mtgapi")]
+    [BepInDependency("etgmodding.etg.mtgapi", BepInDependency.DependencyFlags.HardDependency)]
     [BepInPlugin(GUID, ModName, VERSION)]
     public class ExpandTheGungeon : BaseUnityPlugin {
 
-        public static bool ModInitFinished = false;
-        
+        public enum LoadStatus {
+            PreStartup,
+            PreInit,
+            LoadStart,
+            LoadAudio,
+            LoadSprites,
+            LoadItems,
+            LoadPrefabs,
+            LoadEnemies,
+            LoadRooms,
+            LoadFloors,
+            LoadCleanup,
+            LoadFinished
+        };
+
+        public static LoadStatus loadStatus = LoadStatus.PreStartup;
+
         public static Texture2D ModLogo;
         public static Texture2D ModLogoMini;
 
@@ -81,7 +98,9 @@ namespace ExpandTheGungeon {
             ExceptionText = new List<string>();
 
             try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText.Add(ex.ToString()); }
-            
+
+            loadStatus = LoadStatus.PreInit;
+
             itemList = new List<string>() {
                 "Baby Good Hammer",
                 "Corruption Bomb",
@@ -109,7 +128,7 @@ namespace ExpandTheGungeon {
                 "Portable Elevator",
                 "Portable Ship",
                 "Old Key",
-                // "Mr Cap"
+                "Mr Cap"
             };
 
             switch (Application.platform) {
@@ -126,27 +145,33 @@ namespace ExpandTheGungeon {
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
 
             if (expandSharedAssets1) {
+                ExpandFoyer.EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
+
                 ModLogo = expandSharedAssets1.LoadAsset<Texture2D>("EXLogo");
                 ModLogo.filterMode = FilterMode.Point;
 
                 ModLogoMini = expandSharedAssets1.LoadAsset<Texture2D>("EXLogoMini");
                 ModLogoMini.filterMode = FilterMode.Point;
             }
-
+                        
             expandSharedAssets1 = null;
+
+            ExpandPrefabs.PreInit();
             
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }
 
         
         public void GMStart(GameManager gameManager) {
+            loadStatus = LoadStatus.LoadStart;
+
             if (ExceptionText.Count > 0) {
                 foreach (string text in ExceptionText) { ETGModConsole.Log(text); }
                 return;
             }
 
-            ExpandLoadingScreen.UpdateText("Installing Hooks...");
-
+            CreateFoyerController();
+            
             try {
                 Strings = new StringDB();
 
@@ -154,7 +179,7 @@ namespace ExpandTheGungeon {
                 if (ExpandSettings.EnableLogo) {
                     initializeMainMenuHook = new Hook(
                         typeof(MainMenuFoyerController).GetMethod("InitializeMainMenu", BindingFlags.Public | BindingFlags.Instance),
-                        typeof(ExpandTheGungeon).GetMethod(nameof(ExpandTheGungeon.InitializeMainMenuHook), BindingFlags.Public| BindingFlags.Instance),
+                        typeof(ExpandTheGungeon).GetMethod(nameof(ExpandTheGungeon.InitializeMainMenuHook), BindingFlags.Public | BindingFlags.Instance),
                         typeof(MainMenuFoyerController)
                     );
                 }
@@ -169,18 +194,25 @@ namespace ExpandTheGungeon {
                 Debug.LogException(ex);
                 return;
             }
-            
-            if (ExpandLoadingScreen.Instance) {
-                ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+
+            BlackAndGoldenRevolver.InitExceptionsAndHooks();
+
+            if (ExpandSettings.EnableAsyncAssetLoading) {
+                if (ExpandLoadingScreen.Instance) {
+                    ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssetsAsync(gameManager));
+                } else {
+                    gameManager.StartCoroutine(ExpandAssets.InitAssetsAsync(gameManager));
+                }
             } else {
-                gameManager.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+                ExpandAssets.InitAssets(gameManager);
             }
         }
 
 
         public static void CreateFoyerController() {
             if (!m_FoyerCheckerOBJ) {
-                m_FoyerCheckerOBJ = Instantiate(ExpandPrefabs.EXFoyerChecker, Vector3.zero, Quaternion.identity);
+                m_FoyerCheckerOBJ = Instantiate(ExpandFoyer.EXFoyerChecker, Vector3.zero, Quaternion.identity);
+                DontDestroyOnLoad(m_FoyerCheckerOBJ);
             } else {
                 return;
             }

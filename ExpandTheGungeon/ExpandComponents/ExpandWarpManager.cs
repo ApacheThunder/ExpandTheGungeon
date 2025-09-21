@@ -2,6 +2,7 @@
 using Dungeonator;
 using UnityEngine;
 using System;
+using ExpandTheGungeon.ExpandLoadingScreens;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -54,6 +55,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         m_justWarped = true;
                         return;
                     case WarpType.OldWestFloorWarp:
+                        ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.West;
                         StartCoroutine(HandleOldWestExitFloor(player));
                         m_justWarped = true;
                         break;
@@ -105,6 +107,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 if (!string.IsNullOrEmpty(OverrideTargetFloor)) {
                     if (OverrideTargetFloor.ToLower().StartsWith("tt_backrooms")) {
+                        ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Backrooms;
                         ExpandSettings.HasVisitedBackrooms = true;
                         yield return new WaitForSeconds(1f);
                     }

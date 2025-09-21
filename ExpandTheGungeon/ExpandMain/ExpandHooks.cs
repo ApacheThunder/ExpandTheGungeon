@@ -14,6 +14,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
+using ExpandTheGungeon.ExpandLoadingScreens;
 // using tk2dRuntime.TileMap;
 // using Pathfinding;
 
@@ -66,6 +67,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook flameTrapHook;
         public static Hook transitionToDepartHook;
         public static Hook exciseElbowsHook;
+        public static Hook delayedLoadNextLevelHook;
         // public static Hook pixelatorStartHook;
         // public static Hook generateOcclusionTextureHook;
 
@@ -401,8 +403,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(DungeonData)
             );
 
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
-            /*pixelatorStartHook = new Hook(
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.DelayedLoadNextLevel Hook...."); }
+            delayedLoadNextLevelHook = new Hook(
+                typeof(GameManager).GetMethod("DelayedLoadNextLevel", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(float) }, new ParameterModifier[0]),
+                typeof(ExpandHooks).GetMethod(nameof(DelayedLoadNextLevelHook), BindingFlags.Public | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
+            pixelatorStartHook = new Hook(
                 // typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(Pixelator).GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Instance),
                 typeof(ExpandHooks).GetMethod(nameof(PixelatorStartHook), BindingFlags.NonPublic | BindingFlags.Instance),
@@ -1827,7 +1835,15 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        
+        private void TransitionToDepartHook(Action<ElevatorDepartureController, tk2dSpriteAnimator, tk2dSpriteAnimationClip> orig, ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
+            bool m_depatureIsPlayerless = ReflectGetField<bool>(typeof(ElevatorDepartureController), "m_depatureIsPlayerless", self);
+            if (m_depatureIsPlayerless) {
+                orig(self, animator, clip);
+            } else {
+                GameManager.Instance.StartCoroutine(DoDeparture(self, animator, clip));
+            }
+        }
+
         private static IEnumerator DoDeparture(ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
             GameManager.Instance.MainCameraController.DoDelayedScreenShake(self.departureShake, 0.25f, null);
             animator.AnimationCompleted = null;
@@ -1893,10 +1909,7 @@ namespace ExpandTheGungeon.ExpandMain {
             self.gameObject.SetActive(false);
             yield break;
         }
-        
-        private void TransitionToDepartHook(Action<ElevatorDepartureController, tk2dSpriteAnimator, tk2dSpriteAnimationClip>orig, ElevatorDepartureController self, tk2dSpriteAnimator animator, tk2dSpriteAnimationClip clip) {
-            GameManager.Instance.StartCoroutine(DoDeparture(self, animator, clip));
-        }
+
 
         private void ExciseElbowsHook(Action<DungeonData>orig, DungeonData self) {
             try {
@@ -1908,6 +1921,13 @@ namespace ExpandTheGungeon.ExpandMain {
                 }
                 return;
             }
+        }
+
+        public void DelayedLoadNextLevelHook(Action<GameManager, float>orig, GameManager self, float delay) {
+            if (!string.IsNullOrEmpty(GameManager.Instance.InjectedFlowPath) && GameManager.Instance.InjectedFlowPath.Contains("Core Game Flows/Secret_DoubleBeholster_Flow")) {
+                ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Glitched;
+            }
+            orig(self, delay);
         }
 
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {

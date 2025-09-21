@@ -29,6 +29,43 @@ namespace ExpandTheGungeon.ItemAPI
             "gr_black_revolver_projectile_006"
         };
 
+        // Must do this before Async load to avoid issues with Alexanderia's hooks.
+        public static void InitExceptionsAndHooks() {
+
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
+            }
+
+            ProjectileHookClass.AddHook();
+
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
+            }
+            foreach (var item in EnemyDatabase.Instance.Entries)
+            {
+                if (item != null)
+                {
+                    // var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
+                    var enemy = ExpandEnemyDatabase.GetOfficialEnemyByGuid(item.myGuid); 
+
+                    if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
+                    {
+                        float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
+
+                        if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
+                        {
+                            var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
+
+                            exceptionEnemies.Add(enemy.EnemyGuid, ratio);
+                        }
+
+                    }
+                }
+            }
+        }
+
 
         public static void AddBothVariants()
         {
@@ -40,7 +77,7 @@ namespace ExpandTheGungeon.ItemAPI
             Add(true);
             Add(false);
 
-            if (ExpandSettings.debugMode)
+            /*if (ExpandSettings.debugMode)
             {
                 Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
             }
@@ -56,7 +93,8 @@ namespace ExpandTheGungeon.ItemAPI
             {
                 if (item != null)
                 {
-                    var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
+                    // var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
+                    var enemy = ExpandEnemyDatabase.GetOfficialEnemyByGuid(item.myGuid); // Changed to avoid Alexandira's enemy guid hook from breaking my attempt to retrieve this reference during async load.
 
                     if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
                     {
@@ -71,7 +109,7 @@ namespace ExpandTheGungeon.ItemAPI
                         
                     }
                 }
-            }
+            }*/
             if (ExpandSettings.debugMode)
             {
                 Debug.Log("[ExpandTheGungeon] Done setting up black and golden revolver");

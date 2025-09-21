@@ -65,7 +65,11 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void InitFX() {
             if (DoConfettiOnSpawn) {
-                AkSoundEngine.PostEvent("Play_OBJ_prize_won_01", gameObject);
+                if (BraveUtility.RandomBool()) {
+                    AkSoundEngine.PostEvent("Play_EX_PartySFX_01", gameObject);
+                } else {
+                    AkSoundEngine.PostEvent("Play_OBJ_prize_won_01", gameObject);
+                }
                 DoConfetti(aiActor.transform.position);
             }
 

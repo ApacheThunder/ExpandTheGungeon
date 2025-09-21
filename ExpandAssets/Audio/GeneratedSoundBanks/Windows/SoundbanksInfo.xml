@@ -29,6 +29,12 @@
 				<Event Id="3501969484" Name="Play_EX_BellyDoor_Seal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Seal"/>
 				<Event Id="3121071097" Name="Play_EX_BellyDoor_Unseal" ObjectPath="\Events\Weapons\Play_EX_BellyDoor_Unseal"/>
 				<Event Id="2430550659" Name="Play_EX_BOSS_westbros_slam_01" ObjectPath="\Events\Weapons\Play_EX_BOSS_westbros_slam_01"/>
+				<Event Id="3518319628" Name="Play_EX_CapReturn_01" ObjectPath="\Events\Weapons\Play_EX_CapReturn_01"/>
+				<Event Id="792385973" Name="Play_EX_CapToss_01" ObjectPath="\Events\Weapons\Play_EX_CapToss_01"/>
+				<Event Id="832434918" Name="Play_EX_ChestSlam_01" ObjectPath="\Events\Weapons\Play_EX_ChestSlam_01"/>
+				<Event Id="832434917" Name="Play_EX_ChestSlam_02" ObjectPath="\Events\Weapons\Play_EX_ChestSlam_02"/>
+				<Event Id="832434916" Name="Play_EX_ChestSlam_03" ObjectPath="\Events\Weapons\Play_EX_ChestSlam_03"/>
+				<Event Id="832434915" Name="Play_EX_ChestSlam_04" ObjectPath="\Events\Weapons\Play_EX_ChestSlam_04"/>
 				<Event Id="797577896" Name="Play_EX_CorruptedObjectDamage_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDamage_01"/>
 				<Event Id="2039091240" Name="Play_EX_CorruptedObjectDestroyed_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectDestroyed_01"/>
 				<Event Id="3112632927" Name="Play_EX_CorruptedObjectTransform_01" ObjectPath="\Events\Weapons\Play_EX_CorruptedObjectTransform_01"/>
@@ -77,6 +83,7 @@
 				<Event Id="1718848762" Name="Play_EX_MUS_West_01_LoopD" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_LoopD"/>
 				<Event Id="3429717028" Name="Play_EX_MUS_West_01_Secret" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Secret"/>
 				<Event Id="432080516" Name="Play_EX_MUS_West_01_Shop" ObjectPath="\Events\Weapons\Play_EX_MUS_West_01_Shop"/>
+				<Event Id="565989609" Name="Play_EX_PartySFX_01" ObjectPath="\Events\Weapons\Play_EX_PartySFX_01"/>
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
@@ -124,6 +131,10 @@
 				<Event Id="301805658" Name="Stop_EXAlarmMushroom_01" ObjectPath="\Events\Weapons\Stop_EXAlarmMushroom_01"/>
 			</IncludedEvents>
 			<IncludedMemoryFiles>
+				<File Id="257158" Language="SFX">
+					<ShortName>CapReturn.wav</ShortName>
+					<Path>SFX\CapReturn_F7D0E330.wem</Path>
+				</File>
 				<File Id="15010807" Language="SFX">
 					<ShortName>MushroomAlarm.wav</ShortName>
 					<Path>SFX\MushroomAlarm_F7D0E330.wem</Path>
@@ -143,6 +154,10 @@
 				<File Id="122249576" Language="SFX">
 					<ShortName>Tummy_Full_of_Gunpowder_LoopB.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpowder_LoopB_AD29F36A.wem</Path>
+				</File>
+				<File Id="155416438" Language="SFX">
+					<ShortName>PartySFX.wav</ShortName>
+					<Path>SFX\PartySFX_F7D0E330.wem</Path>
 				</File>
 				<File Id="186141995" Language="SFX">
 					<ShortName>GlitchDestruct.wav</ShortName>
@@ -204,6 +219,10 @@
 					<ShortName>Balloonpop2.wav</ShortName>
 					<Path>SFX\Balloonpop2_F7D0E330.wem</Path>
 				</File>
+				<File Id="388721367" Language="SFX">
+					<ShortName>CapToss.wav</ShortName>
+					<Path>SFX\CapToss_F7D0E330.wem</Path>
+				</File>
 				<File Id="389740606" Language="SFX">
 					<ShortName>UnicornMusic.wav</ShortName>
 					<Path>SFX\UnicornMusic_AD29F36A.wem</Path>
@@ -227,6 +246,10 @@
 				<File Id="449996002" Language="SFX">
 					<ShortName>Quiet_Forest_LoopB.wav</ShortName>
 					<Path>SFX\Quiet_Forest_LoopB_AD29F36A.wem</Path>
+				</File>
+				<File Id="504060007" Language="SFX">
+					<ShortName>chest_slam_01.wav</ShortName>
+					<Path>SFX\chest_slam_01_F7D0E330.wem</Path>
 				</File>
 				<File Id="587730353" Language="SFX">
 					<ShortName>GlitchBombDrop.wav</ShortName>
@@ -328,6 +351,10 @@
 					<ShortName>Tummy_Full_of_Gunpoweder_Secret.wav</ShortName>
 					<Path>SFX\Tummy_Full_of_Gunpoweder_Secret_AD29F36A.wem</Path>
 				</File>
+				<File Id="980570676" Language="SFX">
+					<ShortName>chest_slam_02.wav</ShortName>
+					<Path>SFX\chest_slam_02_F7D0E330.wem</Path>
+				</File>
 				<File Id="984890443" Language="SFX">
 					<ShortName>Belly_Door_Close.wav</ShortName>
 					<Path>SFX\Belly_Door_Close_F7D0E330.wem</Path>
@@ -364,6 +391,10 @@
 					<ShortName>Cola_flavored_soda.wav</ShortName>
 					<Path>SFX\Cola_flavored_soda_AD29F36A.wem</Path>
 				</File>
+				<File Id="1032819611" Language="SFX">
+					<ShortName>chest_slam_03.wav</ShortName>
+					<Path>SFX\chest_slam_03_F7D0E330.wem</Path>
+				</File>
 				<File Id="1035017998" Language="SFX">
 					<ShortName>ElevatorDing.wav</ShortName>
 					<Path>SFX\ElevatorDing_F7D0E330.wem</Path>
@@ -371,6 +402,10 @@
 				<File Id="1053740231" Language="SFX">
 					<ShortName>GlitchDamage.wav</ShortName>
 					<Path>SFX\GlitchDamage_F7D0E330.wem</Path>
+				</File>
+				<File Id="1059311868" Language="SFX">
+					<ShortName>chest_slam_04.wav</ShortName>
+					<Path>SFX\chest_slam_04_F7D0E330.wem</Path>
 				</File>
 			</IncludedMemoryFiles>
 		</SoundBank>

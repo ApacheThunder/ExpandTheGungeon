@@ -1207,6 +1207,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(42, 25), ExpandObjectDatabase.DefaultTorch, xOffset: 8);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(22, 14), ExpandObjectDatabase.GodRays);
             RoomBuilder.AddObjectToRoom(Expand_Jungle_Boss, new Vector2(24, 16), EnemyBehaviourGuid: ExpandEnemyDatabase.com4nd0GUID);
+            
+            
 
 
             Expand_Belly_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_Entrance", true);
@@ -1227,7 +1229,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(3, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightPurple, useExternalPrefab: true));
             RoomBuilder.AddObjectToRoom(Expand_Gungeon_BellyEntranceRoom, new Vector2(12, 26), ExpandUtility.GenerateDungeonPlacable(ExpandObjectDatabase.GungeonLightPurple, useExternalPrefab: true));
             // RoomBuilder.GenerateRoomLayout(Expand_Gungeon_BellyEntranceRoom, "Expand_Gungeon_BellyEntranceRoom_ext", DamageCellsType: CoreDamageTypes.Water); // use old system to force carpet floor cells
-
 
             Expand_Belly_BossRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Belly_BossRoom");
             Expand_Belly_BossRoom.category = PrototypeDungeonRoom.RoomCategory.BOSS;
@@ -1333,7 +1334,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(20, 19), EnemyBehaviourGuid: ExpandEnemyDatabase.ParasiteBossGUID);
             // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(1, 30), ExpandPrefab.Belly_Shipwreck_Left);
             // RoomBuilder.AddObjectToRoom(Expand_Belly_BossRoom, new Vector2(26, 31), ExpandPrefab.Belly_Shipwreck_Right);
-
+            
 
             Expand_Gungeon_HiddenMonsterRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_Gungeon_HiddenMonsterRoom", true);
             Expand_Gungeon_HiddenMonsterRoom.roomEvents = new List<RoomEventDefinition>() {

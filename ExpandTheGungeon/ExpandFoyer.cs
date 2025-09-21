@@ -11,6 +11,8 @@ namespace ExpandTheGungeon {
 
     public class ExpandFoyer : BraveBehaviour {
 
+        public static GameObject EXFoyerChecker;
+
         public ExpandFoyer() { m_State = State.PreFoyerCheck; }
 
         private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit };
@@ -19,7 +21,6 @@ namespace ExpandTheGungeon {
         public void Update() {
             switch (m_State) {
                 case State.PreFoyerCheck:
-                    if (!ExpandTheGungeon.ModInitFinished | Foyer.DoIntroSequence | Foyer.DoMainMenu)return;
                     if (ExpandTheGungeon.GameManagerHook == null) {
                         if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
                         ExpandTheGungeon.GameManagerHook = new Hook(
@@ -28,6 +29,8 @@ namespace ExpandTheGungeon {
                             typeof(GameManager)
                         );
                     }
+                    if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished) return;
+                    if (Foyer.DoIntroSequence | Foyer.DoMainMenu) return;
                     m_State = State.CheckSettings;
                     return;
                 case State.CheckSettings:
@@ -50,7 +53,8 @@ namespace ExpandTheGungeon {
                     if (ExpandSettings.EnableTestDungeonFlow) {
                         GameManager.Instance.InjectedFlowPath = ExpandSettings.TestFlow;
                         GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
-                    }                    
+                        ExpandSettings.EnableTestDungeonFlow = false;
+                    }
                     if (GameManager.Instance.EnemyReplacementTiers != null) { ExpandEnemyReplacements.Init(GameManager.Instance.EnemyReplacementTiers); }
                     ExpandDungeonMusicAPI.EnteredNewCustomFloor = false;
                     m_State = State.SpawnObjects;

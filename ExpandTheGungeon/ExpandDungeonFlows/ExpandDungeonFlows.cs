@@ -14,8 +14,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static List<string> GlitchChestFlows = new List<string>() {
             "custom_glitch_flow",
             "custom_glitchchest_flow",
-            // "custom_glitchchestalt_flow",
             "apache_fucking_around_flow"
+            // "custom_glitchchestalt_flow",
         };
 
         public static DungeonFlow GetRandomFlowFromNextDungeonPrefabForGlitchFloor() {

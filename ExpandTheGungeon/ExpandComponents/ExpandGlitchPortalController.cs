@@ -1,4 +1,5 @@
 ﻿using Dungeonator;
+using ExpandTheGungeon.ExpandLoadingScreens;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using System.Collections;
@@ -82,6 +83,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         (GameManager.Instance.CurrentFloor > 4) | ExpandSettings.HasVisitedBackrooms) {
                         StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
                     } else {
+                        ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Backrooms;
                         StartCoroutine(HandleBackroomsAccident(GameManager.Instance.PrimaryPlayer));
                     }
                 } else {

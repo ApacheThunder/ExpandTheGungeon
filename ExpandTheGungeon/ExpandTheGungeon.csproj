@@ -119,15 +119,16 @@
     <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntitySpawner.cs" />
     <Compile Include="ExpandComponents\ExpandHatProjectile.cs" />
+    <Compile Include="ExpandComponents\ExpandHatVFX.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
-    <Compile Include="ExpandLoadingScreen.cs" />
-    <Compile Include="ExpandComponents\ExpandMrCapMindController.cs" />
+    <Compile Include="ExpandComponents\ExpandSpriteBobber.cs" />
+    <Compile Include="ExpandLoadingScreens\ExpandLoadingScreen.cs" />
+    <Compile Include="ExpandComponents\ExpandHatMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
     <Compile Include="ExpandComponents\ExpandNPCController.cs" />
     <Compile Include="ExpandComponents\ExpandPlaySoundOnSpawn.cs" />
     <Compile Include="ExpandComponents\ExpandPunchoutArcadeController.cs" />
-    <Compile Include="ExpandComponents\ExpandRandomVarGenerator.cs" />
     <Compile Include="ExpandComponents\ExpandReticleRiserEffect.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnBowlerNoteOnDeath.cs" />
     <Compile Include="ExpandComponents\ExpandSpawnItemOnBreak.cs" />
@@ -474,10 +475,10 @@
     <EmbeddedResource Include="Sprites\WeaponCollection\gr_tuc_rev_reload_004.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EXLoadScreenLogo.png" />
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadScreenLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EXLoadingScreen_West.png" />
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_West.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

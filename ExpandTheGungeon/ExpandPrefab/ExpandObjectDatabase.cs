@@ -5,7 +5,10 @@ using Dungeonator;
 namespace ExpandTheGungeon.ExpandPrefab {
 
     public static class ExpandObjectDatabase {
-        
+
+        // VFX
+        public static readonly GameObject VFXKatanaBullets;
+
         public static readonly GameObject YellowDrum;
         public static readonly GameObject RedDrum;
         public static readonly GameObject WaterDrum;
@@ -139,6 +142,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
 
         static ExpandObjectDatabase() {
+            
             // Dungeon marinePastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_soldier");
             Dungeon convictPastDungeon = DungeonDatabase.GetOrLoadByName("finalscenario_convict");
             Dungeon NakatomiPrefab = DungeonDatabase.GetOrLoadByName("Base_Nakatomi");
@@ -147,6 +151,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon forgeDungeon = DungeonDatabase.GetOrLoadByName("base_forge");
             Dungeon gungeonDungeon = DungeonDatabase.GetOrLoadByName("base_gungeon");
             Dungeon castleDungeon = DungeonDatabase.GetOrLoadByName("base_castle");
+
+            VFXKatanaBullets = PickupObjectDatabase.GetById(822).gameObject.GetComponent<ComplexProjectileModifier>().LinearChainExplosionData.effect;
 
             YellowDrum = ExpandAssets.LoadOfficialAsset<GameObject>("Yellow Drum", ExpandAssets.AssetSource.SharedAuto2);
             RedDrum = ExpandAssets.LoadOfficialAsset<GameObject>("Red Drum", ExpandAssets.AssetSource.SharedAuto1);
@@ -216,12 +222,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
             DefaultTorchSide = ExpandAssets.LoadOfficialAsset<GameObject>("DefaultTorchSide", ExpandAssets.AssetSource.SharedAuto1);
             // GungeonWarpDoor = gungeonDungeon.WarpWingDoorPrefab;
             // CastleWarpDoor = castleDungeon.WarpWingDoorPrefab;
+            
+
             EndTimes = ExpandAssets.LoadOfficialAsset<GameObject>("EndTimes", ExpandAssets.AssetSource.BraveResources);
             EndTimesChest = forgeDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("EndTimes_Xform").Find("G_CacheOfTheAmmulich").gameObject;
             GungeonSewersExit = castleDungeon.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
 
-
-
+            
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
                     if (wRoom.room.name.ToLower().StartsWith("sewer_trash_compactor_001")) {
@@ -294,8 +301,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ConvictPastCrowdNPC_15,
                 ConvictPastCrowdNPC_16
             };
-
-
+            
             Mines_Cave_In = ExpandAssets.LoadOfficialAsset<GameObject>("Mines_Cave_In", ExpandAssets.AssetSource.SharedAuto2);
             Plunger = Mines_Cave_In.GetComponent<HangingObjectController>().triggerObjectPrefab;
 
@@ -317,7 +323,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GlassWall_Front = NakatomiPrefab.PatternSettings.flows[0].AllNodes[7].overrideExactRoom.placedObjects[6].nonenemyBehaviour.gameObject;
             BossOfficeDesk = NakatomiPrefab.PatternSettings.flows[0].AllNodes[8].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
             SlipperySign = NakatomiPrefab.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[3].nonenemyBehaviour.gameObject;
-
+            
             NakatomiPrefab = null;
             convictPastDungeon = null;
             catacombsDungeon = null;

@@ -10,6 +10,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	352490979	Play_EX_CorruptionBombPickup_01			\Weapons\Play_EX_CorruptionBombPickup_01	
 	387897117	Play_EX_Void_DoorAmbience			\Weapons\Play_EX_Void_DoorAmbience	
 	432080516	Play_EX_MUS_West_01_Shop			\Weapons\Play_EX_MUS_West_01_Shop	
+	565989609	Play_EX_PartySFX_01			\Weapons\Play_EX_PartySFX_01	
 	582460727	Stop_EX_BellyDoor_Close			\Weapons\Stop_EX_BellyDoor_Close	
 	587415615	Play_EX_TableAssassin_01			\Weapons\Play_EX_TableAssassin_01	
 	620344165	Play_EX_MUS_Belly_01_Intro			\Weapons\Play_EX_MUS_Belly_01_Intro	
@@ -17,7 +18,12 @@ Event	ID	Name			Wwise Object Path	Notes
 	657056321	Play_EX_MUS_West_01_Calm			\Weapons\Play_EX_MUS_West_01_Calm	
 	726629014	Play_EX_MUS_West_01_Intro			\Weapons\Play_EX_MUS_West_01_Intro	
 	761530598	Play_EX_MUS_Jungle_01_Secret			\Weapons\Play_EX_MUS_Jungle_01_Secret	
+	792385973	Play_EX_CapToss_01			\Weapons\Play_EX_CapToss_01	
 	797577896	Play_EX_CorruptedObjectDamage_01			\Weapons\Play_EX_CorruptedObjectDamage_01	
+	832434915	Play_EX_ChestSlam_04			\Weapons\Play_EX_ChestSlam_04	
+	832434916	Play_EX_ChestSlam_03			\Weapons\Play_EX_ChestSlam_03	
+	832434917	Play_EX_ChestSlam_02			\Weapons\Play_EX_ChestSlam_02	
+	832434918	Play_EX_ChestSlam_01			\Weapons\Play_EX_ChestSlam_01	
 	866377016	Stop_EX_MUS_DeepDungeon_01			\Weapons\Stop_EX_MUS_DeepDungeon_01	
 	975922376	Play_EX_BalloonPop_01			\Weapons\Play_EX_BalloonPop_01	
 	975922378	Play_EX_BalloonPop_03			\Weapons\Play_EX_BalloonPop_03	
@@ -83,6 +89,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	3457196330	Play_EX_MUS_Belly_01			\Weapons\Play_EX_MUS_Belly_01	
 	3492306034	Stop_EX_CorruptedObjectDestroyed_01			\Weapons\Stop_EX_CorruptedObjectDestroyed_01	
 	3501969484	Play_EX_BellyDoor_Seal			\Weapons\Play_EX_BellyDoor_Seal	
+	3518319628	Play_EX_CapReturn_01			\Weapons\Play_EX_CapReturn_01	
 	3570814999	Stop_EX_MUS_All			\Weapons\Stop_EX_MUS_All	
 	3586982857	Stop_EX_CorruptionAmbience_01			\Weapons\Stop_EX_CorruptionAmbience_01	
 	3586982858	Stop_EX_CorruptionAmbience_02			\Weapons\Stop_EX_CorruptionAmbience_02	
@@ -106,11 +113,13 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 	3273357900	VOL_SFX			\Default Work Unit\VOL_SFX	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	257158	CapReturn	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapReturn_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapReturn		11531
 	15010807	MushroomAlarm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\MushroomAlarm_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\MushroomAlarm		30859
 	21307161	Lockpick_Cathedral	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedral_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedral		2048077
 	112621323	Lockpick_Cathedral_FirstMovement	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedral_FirstMovement_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedral_FirstMovement		2582178
 	118216860	GlitchObjectDestroy	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\GlitchObjectDestroy_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchObjectDestroy		11569
 	122249576	Tummy_Full_of_Gunpowder_LoopB	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpowder_LoopB_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_LoopB		1421219
+	155416438	PartySFX	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\PartySFX_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\PartySFX		27068
 	186141995	GlitchDestruct	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\GlitchDestruct_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchDestruct		8848
 	187584435	Quiet_Forest_Secret	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Quiet_Forest_Secret_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Secret		661638
 	193116416	SonicBrake	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicBrake_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicBrake		11497
@@ -126,12 +135,14 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	373051574	Deep_Dark_Dungeon	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Deep_Dark_Dungeon_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Deep_Dark_Dungeon		3232535
 	376140418	SonicSpinDashCharge	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicSpinDashCharge_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashCharge		20888
 	385469871	Balloonpop2	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Balloonpop2_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop2		1734
+	388721367	CapToss	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapToss_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapToss		9136
 	389740606	UnicornMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\UnicornMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\UnicornMusic		745599
 	395418058	Belly_Door_Open	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Belly_Door_Open_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Open		3470
 	438768819	westbros_slam_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Play_EX_BOSS_westbros_slam_01_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\westbros_slam_01		18306
 	440225368	CorruptionAmbience_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CorruptionAmbience_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\CorruptionAmbience_01		44440
 	448206274	PowBlock	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\PowBlock_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\PowBlock		7235
 	449996002	Quiet_Forest_LoopB	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Quiet_Forest_LoopB_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_LoopB		1173698
+	504060007	chest_slam_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\chest_slam_01_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\chest_slam_01		5295
 	587730353	GlitchBombDrop	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\GlitchBombDrop_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchBombDrop		10922
 	601901134	Lockpick_Cathedral_SecondMovement	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedral_SecondMovement_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedral_SecondMovement		2592211
 	603781093	Abomination_Spawn	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Abomination_Spawn_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Abomination_Spawn		8969
@@ -157,6 +168,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	961443732	Lockpick_Cathedra_Calm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedra_Calm_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedra_Calm		2610075
 	979919218	PowEnemyDeath	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\PowEnemyDeath_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\PowEnemyDeath		3344
 	980031676	Tummy_Full_of_Gunpowder_Secret	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Tummy_Full_of_Gunpoweder_Secret_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Tummy_Full_of_Gunpowder_Secret		841450
+	980570676	chest_slam_02	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\chest_slam_02_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\chest_slam_02		4081
 	984890443	Belly_Door_Close	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Belly_Door_Close_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Close		3174
 	989083201	SonicDeath	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicDeath_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicDeath		22072
 	994875608	SonicLoseRings	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicLoseRings_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicLoseRings		22416
@@ -166,6 +178,8 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	1020991936	Quiet_Forest_Calm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Quiet_Forest_Calm_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Quiet_Forest_Calm		564880
 	1026631834	BreachTransitionFast	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\BreachTransitionFast_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\BreachTransitionFast		70430
 	1028827529	Cola_flavored_soda	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Cola_flavored_soda_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Cola_flavored_soda		1466155
+	1032819611	chest_slam_03	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\chest_slam_03_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\chest_slam_03		5937
 	1035017998	ElevatorDing	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\ElevatorDing_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\ElevatorDing		13620
 	1053740231	GlitchDamage	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\GlitchDamage_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\GlitchDamage		4024
+	1059311868	chest_slam_04	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\chest_slam_04_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\chest_slam_04		5967
 

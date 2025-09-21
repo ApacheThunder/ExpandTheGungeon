@@ -214,7 +214,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                 }
             }
-            AkSoundEngine.PostEvent("Play_OBJ_prize_won_01", gameObject);
+            if (BraveUtility.RandomBool()) {
+                AkSoundEngine.PostEvent("Play_EX_PartySFX_01", gameObject);
+            } else {
+                AkSoundEngine.PostEvent("Play_OBJ_prize_won_01", gameObject);
+            }
         }
 
         private IEnumerator DoWestOpen() {

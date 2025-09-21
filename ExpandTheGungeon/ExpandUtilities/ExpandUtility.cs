@@ -18,6 +18,87 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static void SetPlayerIsStealthed(PlayerController player, bool value, string reason, bool showStealthVFX = false) {
+            player.SetIsStealthed(value, reason);
+            if (value && !showStealthVFX) {
+                GameObject m_stealthVfx = ReflectionHelpers.ReflectGetField<GameObject>(typeof(GameActor), "m_stealthVfx", player);
+                if (m_stealthVfx)UnityEngine.Object.Destroy(m_stealthVfx);
+            }
+        }
+
+        public static GameObject AttachEffect(GameObject parentObject, Vector3 offset, bool attached = true, bool alreadyMiddleCenter = false, bool useHitbox = false) {
+            GameObject vfxObject = SpawnManager.SpawnVFX(MrCap.MrCapVFX, false);
+            tk2dBaseSprite vfxSprite = vfxObject.GetComponent<tk2dBaseSprite>();
+            SpeculativeRigidbody parentRigidBody = parentObject.GetComponent<SpeculativeRigidbody>();
+            tk2dBaseSprite parentSprite = parentObject.GetComponent<tk2dBaseSprite>();
+            Vector3 a = (!useHitbox || !parentRigidBody || parentRigidBody.HitboxPixelCollider == null) ? parentSprite.WorldCenter.ToVector3ZUp(0f) : parentRigidBody.HitboxPixelCollider.UnitCenter.ToVector3ZUp(0f);
+            if (!alreadyMiddleCenter) {
+                vfxSprite.PlaceAtPositionByAnchor(a + offset, tk2dBaseSprite.Anchor.MiddleCenter);
+            } else {
+                vfxSprite.transform.position = a + offset;
+            }
+            if (attached) {
+                vfxObject.transform.parent = parentObject.transform;
+                vfxSprite.HeightOffGround = 0.2f;
+                parentSprite.AttachRenderer(vfxSprite);
+                if (parentObject.GetComponent<PlayerController>()) {
+                    SmartOverheadVFXController component2 = vfxObject.GetComponent<SmartOverheadVFXController>();
+                    if (component2) component2.Initialize(parentObject.GetComponent<PlayerController>(), offset);
+                }
+            }
+            if (!alreadyMiddleCenter) vfxObject.transform.localPosition = vfxObject.transform.localPosition.QuantizeFloor(0.0625f);
+            return vfxObject;
+        }
+
+        public static void TriggerInvulnerableFrames(PlayerController targetPlayer, bool PlayerIsActuallyInvulnerable = true, float incorporealityTime = 1) {
+            if (incorporealityTime <= 0 | ReflectionHelpers.ReflectGetField<bool>(typeof(HealthHaver), "m_isIncorporeal", targetPlayer.healthHaver)) return;
+            if (PlayerIsActuallyInvulnerable) targetPlayer.healthHaver.TriggerInvulnerabilityPeriod(incorporealityTime);
+            targetPlayer.StartCoroutine(IncorporealityOnHit(targetPlayer.healthHaver, incorporealityTime));
+        }
+
+        public static IEnumerator IncorporealityOnHit(HealthHaver healthHaver, float InVulnTimeOverride = 0) {
+            (typeof(HealthHaver)).GetField("m_isIncorporeal", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(healthHaver, true);
+            if (!ReflectionHelpers.ReflectGetField<bool>(typeof(HealthHaver), "isPlayerCharacter", healthHaver)) {
+                Debug.LogError("Incorporeality is currently only supported on the player.", healthHaver);
+            }
+            PlayerController player = healthHaver.gameObject.GetComponent<PlayerController>();
+            if (player == null) {
+                Debug.LogError("Failed to incorporeal something...");
+                yield break;
+            }
+            int enemyMask = CollisionMask.LayerToMask(CollisionLayer.EnemyCollider, CollisionLayer.EnemyHitBox, CollisionLayer.Projectile);
+            player.specRigidbody.AddCollisionLayerIgnoreOverride(enemyMask);
+            yield return null;
+            float timer = 0f;
+            float subtimer = 0f;
+            float inVulnTime = healthHaver.incorporealityTime;
+            if (InVulnTimeOverride > 0) inVulnTime = InVulnTimeOverride;
+            while (timer < inVulnTime) {
+                while (timer < inVulnTime) {
+                    timer += BraveTime.DeltaTime;
+                    subtimer += BraveTime.DeltaTime;
+                    if (subtimer > 0.12f) {
+                        player.IsVisible = false;
+                        subtimer -= 0.12f;
+                        break;
+                    }
+                    yield return null;
+                }
+                while (timer < inVulnTime) {
+                    timer += BraveTime.DeltaTime;
+                    subtimer += BraveTime.DeltaTime;
+                    if (subtimer > 0.12f) {
+                        player.IsVisible = true;
+                        subtimer -= 0.12f;
+                        break;
+                    }
+                    yield return null;
+                }
+            }
+            ReflectionHelpers.InvokeMethod(typeof(HealthHaver), "EndIncorporealityOnHit", healthHaver);
+            yield break;
+        }
+
         public static List<IntVector2> FindAllValidLocations(Dungeon dungeon, RoomHandler currentRoom, int Clearence = 1, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = false) {
             List<IntVector2> m_ValidCellsCached = new List<IntVector2>();
             if (dungeon == null | currentRoom == null) { return m_ValidCellsCached; }
@@ -5010,6 +5091,15 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     // tk2dTileMap.Build();
                 }
             }
+        }
+
+        public static void RegenerateMapTilemap(Minimap self) {
+            GameManager.Instance.StartCoroutine(DoLateRegeneration(self));
+        }
+        private static IEnumerator DoLateRegeneration(Minimap instance) {
+            yield return null;
+            (typeof(Minimap).GetField("m_shouldBuildTilemap", BindingFlags.Instance | BindingFlags.NonPublic)).SetValue(instance, true);
+            yield break;
         }
 
         public static Texture2D GenerateTexture2DFromRenderTexture(RenderTexture rTex) {

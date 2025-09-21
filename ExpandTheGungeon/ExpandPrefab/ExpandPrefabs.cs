@@ -14,7 +14,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
     public class ExpandPrefabs {
 
-        public static GameObject EXFoyerChecker;
         public static GameObject EXDummyObject;
 
         // Custom Sprite Collections (this gets setup before ItemAPI
@@ -246,7 +245,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject PirateBulletKinHat;
 
         public static GameObject RatJailDoor;
-        public static GameObject CurrsedMirror;
+        public static GameObject CursedMirror;
 
         // Used for forcing Arrival Elevator to spawn on phobos floor tileset ID.
         public static DungeonPlaceableVariant ElevatorArrivalVarientForUnknownTilesets;
@@ -487,9 +486,26 @@ namespace ExpandTheGungeon.ExpandPrefab {
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
 
             tk2dSpriteCollectionData itemCollection = EXItemCollection.GetComponent<tk2dSpriteCollectionData>();
-            for (int i = 1; i < 7; i++) {
-                itemCollection.DefineProjectileCollision("hatty_00" + i.ToString(), 13, 12, 2, 1, 0, 0);
-            }
+            for (int i = 1; i < 7; i++)itemCollection.DefineProjectileCollision("hatty_00" + i.ToString(), 13, 12, 2, 1, 0, 0);
+        }
+
+        // Things that have to be loaded before main coroutine before certain mods have a chance to break my ability to reference them. (looking at you Alexandria. :P )
+        public static void PreInit() {
+
+            basic_special_rooms = ExpandAssets.LoadOfficialAsset<GenericRoomTable>("basic special rooms (shrines, etc)", ExpandAssets.AssetSource.SharedAuto1);
+
+            // Special room table but without Black market.
+            basic_special_rooms_noBlackMarket = ScriptableObject.CreateInstance<GenericRoomTable>();
+            basic_special_rooms_noBlackMarket.name = "Special Rooms (no blackmarket)";
+            basic_special_rooms_noBlackMarket.includedRooms = new WeightedRoomCollection();
+            basic_special_rooms_noBlackMarket.includedRooms.elements = new List<WeightedRoom>();
+            basic_special_rooms_noBlackMarket.includedRoomTables = new List<GenericRoomTable>(0);
+            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[0]);
+            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[1]);
+            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[3]);
+            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[4]);
+
+            CursedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
         }
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1, AssetBundle sharedAssets, AssetBundle sharedAssets2, AssetBundle braveResources, AssetBundle enemiesBase) {
@@ -506,7 +522,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon CatacombsDungeonPrefab = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
             Dungeon NakatomiDungeonPrefab = DungeonDatabase.GetOrLoadByName("base_nakatomi");
 
-            EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
+            
             EXDummyObject = expandSharedAssets1.LoadAsset<GameObject>("DummyObject");
             tk2dSprite m_EXDummySprite = SpriteSerializer.AddSpriteToObject(EXDummyObject, EXBackroomsCollection, "CarpetStain_01", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
             m_EXDummySprite.renderer.enabled = false;
@@ -603,7 +619,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             bosstable_04_statues = sharedAssets.LoadAsset<GenericRoomTable>("bosstable_04_statues");
             blocknerminiboss_table_01 = sharedAssets.LoadAsset<GenericRoomTable>("BlocknerMiniboss_Table_01");
             phantomagunim_table_01 = sharedAssets.LoadAsset<GenericRoomTable>("PhantomAgunim_Table_01");
-            basic_special_rooms = sharedAssets.LoadAsset<GenericRoomTable>("basic special rooms (shrines, etc)");
             winchesterroomtable = sharedAssets.LoadAsset<GenericRoomTable>("winchesterroomtable");
             SewersRoomTable = SewerDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             AbbeyRoomTable = CathedralDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
@@ -612,7 +627,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ForgeRoomTable = ForgeDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             BulletHellRoomTable = BulletHellDungeonPrefab.PatternSettings.flows[0].fallbackRoomTable;
             boss_foyertable = sharedAssets2.LoadAsset<GenericRoomTable>("Boss Foyers");
-            
+                        
             gungeon_entrance_bossrush = UnityEngine.Object.Instantiate(gungeon_entrance);
             gungeon_entrance_bossrush.category = PrototypeDungeonRoom.RoomCategory.CONNECTOR;
             gungeon_entrance_bossrush.name = "Bossrush Curse Shrine";
@@ -629,6 +644,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AbbeyAblernRoomTable.includedRooms.elements.Add(ExpandRoomPrefabs.GenerateWeightedRoom(CathedralDungeonPrefab.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom));
             AbbeyFlowModifierData.exactRoom = null;
             AbbeyFlowModifierData.roomTable = AbbeyAblernRoomTable;
+
             JungleRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             JungleRoomTable.includedRooms = new WeightedRoomCollection();
             JungleRoomTable.includedRooms.elements = new List<WeightedRoom>();
@@ -799,7 +815,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             MegaBossRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             MegaChallengeShrineTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             MegaMiniBossRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
-            basic_special_rooms_noBlackMarket = ScriptableObject.CreateInstance<GenericRoomTable>();
             bosstable_01_gatlinggull_custom = ScriptableObject.CreateInstance<GenericRoomTable>();
 
             gatlinggull_noTileVisualOverrides = new PrototypeDungeonRoom[0];
@@ -859,6 +874,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             SpeculativeRigidbody EXTrap_ApacheRigidBody = ExpandUtility.GenerateOrAddToRigidBody(EXTrap_Apache, CollisionLayer.Trap, PixelCollider.PixelColliderGeneration.Manual, IsTrigger: true, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(44, 58), offset: new IntVector2(10, 1));
 
+            
 
             PathingTrapController EXTrapApache_PathTrap = EXTrap_Apache.AddComponent<PathingTrapController>();
             EXTrapApache_PathTrap.placeableHeight = 2;
@@ -1255,7 +1271,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             tk2dSprite m_EXPElevatorArrival_InteriorFloorPlacableSprite = SpriteSerializer.AddSpriteToObject(m_ElevatorArrivalPlacableChild_InteriorFloor, EXPortableElevatorCollection, "portable_elevator_interiorfloor", tk2dBaseSprite.PerpendicularState.FLAT);
             m_EXPElevatorArrival_InteriorFloorPlacableSprite.HeightOffGround = -0.75f;
 
-
+            
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 12), offset: new IntVector2(32, 16));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(32, 36), offset: new IntVector2(32, 28));
             ExpandUtility.GenerateOrAddToRigidBody(m_ElevatorArrivalPlacableChild_Floor, CollisionLayer.LowObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(11, 7), offset: new IntVector2(21, 21));
@@ -1586,11 +1602,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             PirateBulletKinHat.GetComponent<tk2dSprite>().CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
             PirateBulletKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].usesZHeight = true;
             PirateBulletKin.GetComponent<AIAnimator>().OtherVFX[0].vfxPool.effects[0].effects[0].zHeight = -1.5f;
-
-
+                        
             RatJailDoor = ratDungeon.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[1].nonenemyBehaviour.gameObject;
-            CurrsedMirror = basic_special_rooms.includedRooms.elements[1].room.placedObjects[0].nonenemyBehaviour.gameObject;
-            
+                        
             ElevatorArrivalVarientForUnknownTilesets = new DungeonPlaceableVariant() {
                 percentChance = 0,
                 percentChanceMultiplier = 1,
@@ -1603,7 +1617,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 materialRequirements = new DungeonPlaceableRoomMaterialRequirement[0],
                 prerequisites = new DungeonPrerequisite[0]
             };
-
+            
 
             ElevatorArrivalVarientForOffice = new DungeonPlaceableVariant() {
                 percentChance = 1f,
@@ -1960,7 +1974,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     }
                 }
             };
-
             
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForUnknownTilesets);
             ElevatorArrival.variantTiers.Add(ElevatorArrivalVarientForOffice);
@@ -2016,6 +2029,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             CustomRoomTableSecretGlitchFloor.includedRooms.elements = new List<WeightedRoom>();
             CustomRoomTableSecretGlitchFloor.includedRoomTables = new List<GenericRoomTable>() { SecretRoomTable };
 
+            
             foreach (WeightedRoom roomElement in OfficeAndUnusedWeightedRooms) {
                 if (roomElement.room != null) {
                     CustomRoomTable.includedRooms.elements.Add(roomElement);
@@ -2094,6 +2108,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             if (Hell_Hath_No_Joery_009 != null) {
                 RoomBuilder.GenerateRoomLayout(Hell_Hath_No_Joery_009, "Hell_Hath_No_Joery_009_Layout");
             }
+            
 
             List<PrototypeDungeonRoom> m_GatlingGullRooms = new List<PrototypeDungeonRoom>();
 
@@ -2160,6 +2175,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     MegaBossRoomTable.includedRooms.elements.Add(roomElement);
                 }
             }
+            
 
             // Randomize room order in these tables. Custom Secret Floor doesn't seem to want to randomize them on it's own.
             winchesterroomtable.includedRooms.elements = winchesterroomtable.includedRooms.elements.Shuffle();
@@ -2285,7 +2301,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 },
             };
 
-
+            
             big_entrance.name = "Large Elevator Entrance";
             big_entrance.associatedMinimapIcon = tiny_entrance.associatedMinimapIcon;
             big_entrance.roomEvents.Clear();
@@ -2362,19 +2378,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             foreach (WeightedRoom weightedRoom in MegaMiniBossRoomTable.includedRooms.elements) { weightedRoom.room.category = PrototypeDungeonRoom.RoomCategory.NORMAL; }
-
-
-
-            // Special room table but without Black market.
-            basic_special_rooms_noBlackMarket.name = "Special Rooms (no blackmarket)";
-            basic_special_rooms_noBlackMarket.includedRooms = new WeightedRoomCollection();
-            basic_special_rooms_noBlackMarket.includedRooms.elements = new List<WeightedRoom>();
-            basic_special_rooms_noBlackMarket.includedRoomTables = new List<GenericRoomTable>(0);
-            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[0]);
-            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[1]);
-            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[3]);
-            basic_special_rooms_noBlackMarket.includedRooms.elements.Add(basic_special_rooms.includedRooms.elements[4]);
-
+            
             
 
             if (MetalCubeGuy) {

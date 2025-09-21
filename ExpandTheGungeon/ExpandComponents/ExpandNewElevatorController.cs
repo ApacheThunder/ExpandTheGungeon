@@ -7,6 +7,7 @@ using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using ExpandTheGungeon.ExpandMain;
+using ExpandTheGungeon.ExpandLoadingScreens;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -470,6 +471,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (IsGlitchElevator) {
                 ExpandSettings.glitchElevatorHasBeenUsed = true;
+                ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Backrooms;
                 StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
             } else {
                 if (UsesOverrideTargetFloor) {

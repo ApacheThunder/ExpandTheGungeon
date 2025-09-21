@@ -1768,6 +1768,104 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_PartySFX_01" ID="{9910EDBC-FF60-4667-BE73-901B34D1C261}">
+					<ChildrenList>
+						<Action Name="" ID="{3E75FC82-7AA3-4A73-ACB7-0A7A4974D027}" ShortID="562711843">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="PartySFX" ID="{DD9F2A3A-F6B4-48D7-AD58-8884ACF2C1CF}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CapToss_01" ID="{4B877268-D63E-453B-B0DD-4DDD3458FF80}">
+					<ChildrenList>
+						<Action Name="" ID="{86A81C01-E74F-4F5B-81FD-297E6C40FFDE}" ShortID="704019407">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CapToss" ID="{2A53C832-7BD8-4CC2-85BC-1869E4AD3160}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_CapReturn_01" ID="{397A839F-2E39-48CF-9F84-033835E06D68}">
+					<ChildrenList>
+						<Action Name="" ID="{BD861150-8873-419E-B3FD-DCFDB47CA2C1}" ShortID="466369237">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="CapReturn" ID="{C5D360C1-4FA5-457D-A341-B60EDFEF9213}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_ChestSlam_01" ID="{7531E05C-31E3-4FDF-BB65-5772C9940BC6}">
+					<ChildrenList>
+						<Action Name="" ID="{BBC3E11C-EA35-42E3-BFEA-DD60553C26E8}" ShortID="1067416632">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="chest_slam_01" ID="{FAF5A906-8A74-491E-93FA-99A10A0264F6}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_ChestSlam_02" ID="{33095B2B-75CC-45D0-9517-D92CFB0E32A5}">
+					<ChildrenList>
+						<Action Name="" ID="{ECE20C37-FE8E-46D7-9834-A070A56ED5CF}" ShortID="216422492">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="chest_slam_02" ID="{C064AF40-3BA4-463A-9289-107AF7E355DC}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_ChestSlam_03" ID="{2B21F28B-F4D9-46B1-A652-EFA35DFCF716}">
+					<ChildrenList>
+						<Action Name="" ID="{7F37B42C-DB8D-4CD8-AF69-3D52C2FE082E}" ShortID="20076014">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="chest_slam_03" ID="{141F2ED7-856A-4B27-BC71-D33E4FA63244}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_ChestSlam_04" ID="{5BD336A7-2AB5-4238-97AE-A80538B8597C}">
+					<ChildrenList>
+						<Action Name="" ID="{075A857E-C756-4495-8884-ECC00AF401C1}" ShortID="76915452">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="chest_slam_04" ID="{83C0B399-4600-43A2-8373-481525344063}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

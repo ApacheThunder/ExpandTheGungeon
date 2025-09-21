@@ -9,7 +9,7 @@ namespace ExpandTheGungeon.ItemAPI
         public static int WestBrosAngelGunID = -1;
         public static int WestBrosNomeGunID = -1;
         public static int WestBrosTucGunID = -1;
-
+                
         public static void Init()
         {
             Generate(WestBros.Angel);

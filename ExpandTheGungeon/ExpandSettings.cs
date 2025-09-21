@@ -19,6 +19,7 @@ namespace ExpandTheGungeon {
         public static bool EnableGlitchFloorScreenShader = true;
         public static bool EnableEXItems = true;
         public static float JungleRainIntensity = 400f;
+        public static bool EnableAsyncAssetLoading = true;
         // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
         // public static int GameLanguage = 0;
 
@@ -76,6 +77,7 @@ namespace ExpandTheGungeon {
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             EnableEXItems = stats.EnableEXItems;
             JungleRainIntensity = stats.JungleRainIntensity;
+            EnableAsyncAssetLoading = stats.EnableAsyncAssetLoading;
         }
     }
 
@@ -95,7 +97,8 @@ namespace ExpandTheGungeon {
         public bool EnableEXItems;
         public float JungleRainIntensity;
         public int GameLanguage;
-        
+        public bool EnableAsyncAssetLoading;
+
         public ExpandCachedStats() {
             EnableLogo = ExpandSettings.EnableLogo;
             EnableTestDungeonFlow = ExpandSettings.EnableTestDungeonFlow;
@@ -111,6 +114,7 @@ namespace ExpandTheGungeon {
             EnableGlitchFloorScreenShader = ExpandSettings.EnableGlitchFloorScreenShader;
             EnableEXItems = ExpandSettings.EnableEXItems;
             JungleRainIntensity = ExpandSettings.JungleRainIntensity;
+            EnableAsyncAssetLoading = ExpandSettings.EnableAsyncAssetLoading;
             // GameLanguage = ExpandSettings.GameLanguage;
         }
     }
