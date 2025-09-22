@@ -161,7 +161,8 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (specRigidbody.Velocity.x <= 0) { specRigidbody.Velocity = new Vector2(-1.5f, 0); }
 
-            if (!specRigidbody.CanPush) { specRigidbody.CanPush = true; }
+            if (!specRigidbody.CanPush)specRigidbody.CanPush = true;
+            if (specRigidbody.CanBePushed)specRigidbody.CanBePushed = false;
 
             if (m_Triggered) {
                 GameManager.Instance.MainCameraController.OverridePosition = (transform.position - new Vector3(3, 0) + new Vector3(0, 6));

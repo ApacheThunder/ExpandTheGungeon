@@ -8,12 +8,15 @@ namespace ExpandTheGungeon.ExpandComponents {
     public class ExpandHatProjectile : Projectile {
 
         [Header("Mr Cap Input Guiding")]
+        public bool AllowSingleEnemy = true;
         public bool IsReturning = true;
         public float TrackingSpeed = 345;
-        public float ReturnToPlayerSpeed = 800;
-        public float DumbFireTime = 0;
+        public float ReturnToPlayerSpeed = 3000;
+        public float DumbFireTime = 0.1f;
         public float SmartFireTime = 2;
-        public float ReturnToPlayerTime = 2.5f;
+        public float ReturnToPlayerTime = 3;
+
+        public string HatReturnSFX = "Play_obj_katana_slash_01";
 
         public MrCap hatItemOwner;
 
@@ -29,14 +32,13 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private bool m_Configured = false;
         
-
+        
         protected override void Move() {
             if (!m_Configured) {
                 specRigidbody.OnPreRigidbodyCollision = (SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnPreRigidbodyCollision, new SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate(HatOnPreRigidBodyCollision));
                 specRigidbody.OnPreTileCollision = (SpeculativeRigidbody.OnPreTileCollisionDelegate)Delegate.Combine(specRigidbody.OnPreTileCollision, new SpeculativeRigidbody.OnPreTileCollisionDelegate(HatOnPreTileCollision));
                 OnBecameDebris += HatOnDebris;
                 OnBecameDebrisGrounded += HatOnDebris;
-
                 if (!m_ChildSpriteTransform) m_ChildSpriteTransform = transform.Find("Sprite");
                 BraveInput instanceForPlayer = BraveInput.GetInstanceForPlayer((Owner as PlayerController).PlayerIDX);
                 Vector2 vector = Vector2.zero;
@@ -47,9 +49,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 float target = vector.ToAngle();
                 float z = transform.eulerAngles.z;
-                float z2 = Mathf.MoveTowardsAngle(z, target, 100000 * BraveTime.DeltaTime);
-                transform.rotation = Quaternion.Euler(0f, 0f, z2);
-                if (m_ChildSpriteTransform) m_ChildSpriteTransform.transform.localRotation = Quaternion.Euler(0, 0, -z2);
+                transform.rotation = Quaternion.Euler(0f, 0f, target);
+                if (m_ChildSpriteTransform) m_ChildSpriteTransform.transform.localRotation = Quaternion.Euler(0, 0, -target);
                 specRigidbody.Velocity = (transform.right * baseData.speed);
                 LastVelocity = specRigidbody.Velocity;
                 m_Configured = true;
@@ -97,12 +98,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                         return;
                     }
                     if (Owner) {
-                        Vector3 vector = Owner.transform.position - transform.position;
-                        float f = (Mathf.Atan2(vector.y, vector.x) - Mathf.Atan2(specRigidbody.Velocity.y, specRigidbody.Velocity.x)) * 57.29578f;
-                        float zAngle = Mathf.Min(Mathf.Abs(f), ReturnToPlayerSpeed * BraveTime.DeltaTime) * Mathf.Sign(f);
-                        transform.Rotate(0f, 0f, zAngle);
-                        if (m_ChildSpriteTransform) m_ChildSpriteTransform.transform.Rotate(0, 0, -zAngle);
-                        if (Vector2.Distance(Owner.CenterPosition, transform.position) < 1f) {
+                        Vector2 OwnerPosition = Owner.transform.position.XY();
+                        if (Owner.sprite) OwnerPosition = Owner.sprite.WorldTopCenter;
+
+                        float target = (OwnerPosition - transform.position.XY()).ToAngle();
+                        float z = transform.eulerAngles.z;
+                        float z2 = Mathf.MoveTowardsAngle(z, target, ReturnToPlayerSpeed * BraveTime.DeltaTime);
+                        transform.rotation = Quaternion.Euler(0f, 0f, z2);
+                        if (m_ChildSpriteTransform) m_ChildSpriteTransform.transform.localRotation = Quaternion.Euler(0, 0, -z2);
+                        if (Vector2.Distance(OwnerPosition, transform.position) < 0.8f) {
                             // DieInAir(true, true, true, false);
                             fireMode = FireMode.Inactive;
                             return;
@@ -120,35 +124,32 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
+        public void HatOnDebris(DebrisObject obj) { Destroy(obj.gameObject); }
+
         public void HatOnPreTileCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, PhysicsEngine.Tile tile, PixelCollider otherPixelCollider) {
+            PhysicsEngine.SkipCollision = true;
+            if (fireMode == FireMode.DumbFire | fireMode == FireMode.ReturnToPlayer) return;
             if (PenetratesInternalWalls) {
                 IntVector2 position = tile.Position;
                 CellData cellData = GameManager.Instance.Dungeon.data[position];
-                if (cellData == null || cellData.isRoomInternal) {
-                    PhysicsEngine.SkipCollision = true;
-                    return;
-                }
+                if (cellData == null || cellData.isRoomInternal)return;
             }
-            PhysicsEngine.SkipCollision = true;
-            if (fireMode != FireMode.ReturnToPlayer) {
-                TrackingSpeed *= 10.5f;
-                fireMode = FireMode.ReturnToPlayer;
-            }
+            fireMode = FireMode.ReturnToPlayer;
         }
-
-        public void HatOnDebris(DebrisObject obj) { Destroy(obj.gameObject); }
-
 
         public void HatOnPreRigidBodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
             if (!Owner | !(Owner is PlayerController)) return;
             bool IsAttached = false;
             PhysicsEngine.SkipCollision = true;
+            if (fireMode == FireMode.DumbFire) return;
+            if (ExpandTheGungeon.PortableShipInUse)return;
+
             PlayerController m_Owner = (Owner as PlayerController);
             if ((myRigidbody.transform.position.GetAbsoluteRoom() == null | m_Owner.CurrentRoom == null) |
                 (m_Owner.CurrentRoom != myRigidbody.transform.position.GetAbsoluteRoom())) {
                 return;
             }
-
+            
             if (m_Owner.CurrentRoom != null && m_Owner.CurrentRoom.connectedRooms != null) {
                 foreach (RoomHandler room in m_Owner.CurrentRoom.connectedRooms) {
                     if (room.area != null && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
@@ -164,12 +165,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (otherRigidbody.GetComponentInChildren<ExpandHatMindController>())return;
             if (hatItemOwner.InUse)return;
             if (hatItemOwner.CurrentMindControl)return;
-            if (!m_Chest && m_AIActor && (m_AIActor.name.ToLower().StartsWith("corrupted ") | m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null) &&
+            if (!m_Chest && m_AIActor && (m_AIActor.name.ToLower().StartsWith("corrupted ") | (!AllowSingleEnemy && m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null)) &&
                 m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count < 2) {
-                if (fireMode != FireMode.ReturnToPlayer) {
-                    TrackingSpeed *= 10f;
-                    fireMode = FireMode.ReturnToPlayer;
-                }
+                if (fireMode != FireMode.ReturnToPlayer)fireMode = FireMode.ReturnToPlayer;
                 if (m_AIActor && !m_AIActor.healthHaver.IsDead && !m_AIActor.healthHaver.IsBoss &&
                     !m_AIActor.IsGone && m_AIActor.ParentRoom != null &&
                     m_Owner.CurrentRoom != null && m_AIActor.ParentRoom == m_Owner.CurrentRoom
@@ -183,6 +181,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 hatItemOwner.CurrentMindControl = m_Chest.gameObject.AddComponent<ExpandHatMindController>();
                 hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.Chest;
                 hatItemOwner.CurrentMindControl.UseFakeActorTarget = false;
+                hatItemOwner.CurrentMindControl.MrCapItem = hatItemOwner;
                 if (Owner)hatItemOwner.CurrentMindControl.Init(m_Owner, m_Chest.gameObject);
                 if (hatItemOwner.CurrentMindControl && hatItemOwner.CurrentMindControl.AttachFailed) {
                     hatItemOwner.CurrentMindControl.IsOnDeath = false;
@@ -200,6 +199,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ) {
                     hatItemOwner.CurrentMindControl = m_AIActor.gameObject.AddComponent<ExpandHatMindController>();
                     hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.AIActor;
+                    hatItemOwner.CurrentMindControl.MrCapItem = hatItemOwner;
                     hatItemOwner.CurrentMindControl.Init(m_Owner, m_AIActor.gameObject);
                     if (hatItemOwner.CurrentMindControl && hatItemOwner.CurrentMindControl.AttachFailed) {
                         hatItemOwner.CurrentMindControl.IsOnDeath = false;
@@ -212,22 +212,23 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
             if (IsAttached) {
-                AkSoundEngine.PostEvent("Play_EX_CapReturn_01", otherRigidbody.gameObject);
+                PlayCaptureSFX(otherRigidbody.gameObject);
                 IsReturning = false;
                 hatItemOwner.InFlight = false;
                 hatItemOwner.InUse = true;
                 Destroy(myRigidbody.gameObject);
-            } /*else if (fireMode != FireMode.ReturnToPlayer) {
-                TrackingSpeed *= 10.5f;
-                fireMode = FireMode.ReturnToPlayer;
-            }*/
+            }
+        }
+
+        private void PlayCaptureSFX(GameObject target) {
+            if (!string.IsNullOrEmpty(HatReturnSFX))AkSoundEngine.PostEvent(HatReturnSFX, target);
         }
         
 
         protected override void OnDestroy() {
             if (hatItemOwner) {
                 hatItemOwner.InFlight = false;
-                if (IsReturning)AkSoundEngine.PostEvent("Play_obj_katana_slash_01", hatItemOwner.gameObject);
+                if (IsReturning) PlayCaptureSFX(hatItemOwner.gameObject);
             }
             specRigidbody.OnPreRigidbodyCollision = (SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate)Delegate.Remove(specRigidbody.OnPreRigidbodyCollision, new SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate(HatOnPreRigidBodyCollision));
             specRigidbody.OnPreTileCollision = (SpeculativeRigidbody.OnPreTileCollisionDelegate)Delegate.Remove(specRigidbody.OnPreTileCollision, new SpeculativeRigidbody.OnPreTileCollisionDelegate(HatOnPreTileCollision));

@@ -85,3 +85,5 @@ Credits:
 * EveraldoSembiring for video overlay shader used in updated West Bros Intro. (https://github.com/EveraldoSembiring/Green-Screen-Unity/blob/master/Assets/Shaders/GreenScreenReplacer.shader)
 * Dallan for sprite work for Bullet Kin joke boss's boss card and ammonomicon sprite.
 * Dallan for sprtie work for Enemy spawn chest.
+* Dallan for sprite work for Mr Cap active item.
+* Alaxandira/Nevernameed for some of the code I lifted from the hat system used for controlling hat facing direction used for Mr Cap when it's sprite is displayed above the player or a controlled object.

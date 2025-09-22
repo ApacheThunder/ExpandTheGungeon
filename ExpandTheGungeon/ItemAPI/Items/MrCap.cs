@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandComponents;
-using System.Reflection;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -27,11 +25,12 @@ namespace ExpandTheGungeon.ItemAPI {
 
             MrCap MrCap = MrCapObject.AddComponent<MrCap>();
             string shortDesc = "Total Control";
-			string longDesc = "Place Holder";
+			string longDesc = "This santient hat once was on a certain odysee with a certain small plumber.\n\n He is now on vacation. Unfortunately the Gungeon turned out to not be a good vacation spot so now he's trapped down here with you.\n\nHe might as well help you on your journey. Maybe it will be his ticket of here.";
 			ItemBuilder.SetupItem(MrCap, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(MrCap, ItemBuilder.CooldownType.Timed, MrCapTossCooldown);
             MrCap.quality = ItemQuality.A;
             if (!ExpandSettings.EnableEXItems)MrCap.quality = ItemQuality.EXCLUDED;
+            ItemBuilder.AddPassiveStatModifier(MrCap, PlayerStats.StatType.AdditionalItemCapacity, 1, StatModifier.ModifyMethod.ADDITIVE);
 
             List<string> spritePaths = new List<string>() {
                 "hatty_item",
@@ -127,15 +126,18 @@ namespace ExpandTheGungeon.ItemAPI {
         
 
         public MrCap() {
-            m_PickedUp = false;
-            // m_Ready = true;
+            AllowFreeRoam = true;
             InUse = false;
+
+            m_PickedUp = false;
+            m_DoingHatVFX = false;
             m_FlightTimer = 6;
             m_MaxFlightTime = 6;
         }
 
         public bool InUse;
         public bool InFlight;
+        public bool AllowFreeRoam;
 
         public MrCap currentMrCap;
 
@@ -145,8 +147,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
 
         private bool m_PickedUp;
-        //private bool m_Ready;
-        // private bool m_DoingHatVFX;
+        private bool m_DoingHatVFX;
 
         private float m_FlightTimer;
         private float m_MaxFlightTime;
@@ -159,6 +160,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!user) return false;
             if (InFlight) return false;
             // if (!user.IsInCombat)return false;
+            if (ExpandTheGungeon.PortableShipInUse) return false;
             if (IsOnCooldown) return false;
             return true;
         }
@@ -196,8 +198,8 @@ namespace ExpandTheGungeon.ItemAPI {
             m_FlightTimer = m_MaxFlightTime;
         }
 
-        public void DoDetach() {
-            if (CurrentMindControl)CurrentMindControl.Detach();
+        public void DoDetach(bool KillTarget = false) {
+            if (CurrentMindControl)CurrentMindControl.Detach(KillTarget);
             InUse = false;
             timeCooldown = 60;
             if (LastOwner)ApplyCooldown(LastOwner);
@@ -205,10 +207,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override void Update() {
             if (Dungeon.IsGenerating | !GameManager.HasInstance | GameManager.IsShuttingDown | GameManager.Instance.IsLoadingLevel) return;
-            /*if (InUse && LastOwner && CurrentMindControl && CurrentMindControl.targetType == ExpandHatMindController.TargetType.AIActor && !LastOwner.IsInCombat) {
+            if (!AllowFreeRoam && InUse && LastOwner && CurrentMindControl && CurrentMindControl.targetType == ExpandHatMindController.TargetType.AIActor && !LastOwner.IsInCombat) {
                 CurrentMindControl.Detach();
                 InUse = false;
-            } else */if (InUse && LastOwner && !CurrentMindControl) {
+            } else if (InUse && LastOwner && !CurrentMindControl) {
                 InUse = false;
             }
             base.Update();
@@ -229,12 +231,16 @@ namespace ExpandTheGungeon.ItemAPI {
                 }
                 if (attachedPlayerHat)attachedPlayerHat.vanishOverride = true;
             } else if (m_PickedUp && attachedPlayerHat) {
+                if (m_DoingHatVFX) return;
                 attachedPlayerHat.vanishOverride = false;
+                if (attachedPlayerHat.targetType != ExpandHatVFX.TargetType.Player)attachedPlayerHat.targetType = ExpandHatVFX.TargetType.Player;
+                if (attachedPlayerHat.hatOwner != LastOwner) attachedPlayerHat.hatOwner = LastOwner;
+            } else if (m_PickedUp && !m_DoingHatVFX && !attachedPlayerHat) {
+                DoHatVFX(LastOwner);
             }
         }
 
         private void HandleMrCapToss(PlayerController user) {
-            // float m_UseDelay = 0.5f;
             if (InUse && CurrentMindControl) {
                 CurrentMindControl.Detach();
                 InUse = false;
@@ -263,11 +269,11 @@ namespace ExpandTheGungeon.ItemAPI {
                 
                 m_FlightTimer = m_MaxFlightTime;
                 hatProjectile.Owner = user;
+                hatProjectile.hatItemOwner = currentMrCap;
                 hatProjectile.TreatedAsNonProjectileForChallenge = true;
                 hatProjectile.OnBecameDebris += HatOnDebris;
                 hatProjectile.OnBecameDebrisGrounded += HatOnDebris;
                 InFlight = true;
-                hatProjectile.hatItemOwner = currentMrCap;
             }
         }
 
@@ -277,7 +283,7 @@ namespace ExpandTheGungeon.ItemAPI {
         
         
         public void DoHatVFX(PlayerController player) {
-            // m_DoingHatVFX = true;
+            m_DoingHatVFX = true;
             RemovePlayerHat(player);
             float HatPosition = (player.sprite.GetBounds().size.y - (MrCapVFX.GetComponent<tk2dSprite>().GetBounds().size.y / 2.1f));
             player.PlayEffectOnActor(MrCapVFX, new Vector3(0f, HatPosition, 0f), true, false, true);
@@ -286,12 +292,13 @@ namespace ExpandTheGungeon.ItemAPI {
                 attachedPlayerHat.hatOwner = player;
                 attachedPlayerHat.targetType = ExpandHatVFX.TargetType.Player;
             }
-            // m_DoingHatVFX = false;
+            m_DoingHatVFX = false;
         }
 
         public void RemovePlayerHat(PlayerController player) {
             // m_DoingHatVFX = true;
             if (attachedPlayerHat) {
+                sprite.DetachRenderer(attachedPlayerHat.sprite);
                 Destroy(attachedPlayerHat.gameObject);
                 attachedPlayerHat = null;
             }
@@ -300,7 +307,7 @@ namespace ExpandTheGungeon.ItemAPI {
             }
         }
 
-        public void ResetHat(GameObject otherHat, GameObject sourceTarget) {
+        /*public void ResetHat(GameObject otherHat, GameObject sourceTarget) {
             // m_DoingHatVFX = true;
             InUse = false;
             InFlight = false;
@@ -314,7 +321,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 CurrentMindControl = null;
             }
             DoHatVFX(LastOwner);
-        }
+        }*/
         
         protected override void OnDestroy() {
             m_PickedUp = false;

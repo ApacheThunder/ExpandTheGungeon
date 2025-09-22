@@ -8,6 +8,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         // VFX
         public static readonly GameObject VFXKatanaBullets;
+        public static readonly GameObject VFXLeadMaidenMove;
 
         public static readonly GameObject YellowDrum;
         public static readonly GameObject RedDrum;
@@ -153,6 +154,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Dungeon castleDungeon = DungeonDatabase.GetOrLoadByName("base_castle");
 
             VFXKatanaBullets = PickupObjectDatabase.GetById(822).gameObject.GetComponent<ComplexProjectileModifier>().LinearChainExplosionData.effect;
+            VFXLeadMaidenMove = ExpandEnemyDatabase.GetOfficialEnemyByGuid("cd4a4b7f612a4ba9a720b9f97c52f38c").aiAnimator.OtherVFX[1].vfxPool.effects[0].effects[0].effect;
+
 
             YellowDrum = ExpandAssets.LoadOfficialAsset<GameObject>("Yellow Drum", ExpandAssets.AssetSource.SharedAuto2);
             RedDrum = ExpandAssets.LoadOfficialAsset<GameObject>("Red Drum", ExpandAssets.AssetSource.SharedAuto1);

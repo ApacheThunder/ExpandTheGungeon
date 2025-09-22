@@ -123,6 +123,7 @@
     <Compile Include="ExpandComponents\ExpandInteractableDoor.cs" />
     <Compile Include="ExpandComponents\ExpandInteractableLock.cs" />
     <Compile Include="ExpandComponents\ExpandSpriteBobber.cs" />
+    <Compile Include="ExpandComponents\ExpandTeleportBehavior.cs" />
     <Compile Include="ExpandLoadingScreens\ExpandLoadingScreen.cs" />
     <Compile Include="ExpandComponents\ExpandHatMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />
@@ -479,6 +480,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_West.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadScreenLogo_LoadBar.png" />
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadScreenLogo_LoadBarFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

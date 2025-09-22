@@ -113,7 +113,7 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 	3273357900	VOL_SFX			\Default Work Unit\VOL_SFX	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	257158	CapReturn	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapReturn_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapReturn		11531
+	257158	CapReturn	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapReturn_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapReturn		5514
 	15010807	MushroomAlarm	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\MushroomAlarm_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\MushroomAlarm		30859
 	21307161	Lockpick_Cathedral	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedral_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedral		2048077
 	112621323	Lockpick_Cathedral_FirstMovement	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Lockpick_Cathedral_FirstMovement_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Lockpick_Cathedral_FirstMovement		2582178
@@ -135,7 +135,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	373051574	Deep_Dark_Dungeon	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Deep_Dark_Dungeon_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\Deep_Dark_Dungeon		3232535
 	376140418	SonicSpinDashCharge	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\SonicSpinDashCharge_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\SonicSpinDashCharge		20888
 	385469871	Balloonpop2	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Balloonpop2_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Balloonpop2		1734
-	388721367	CapToss	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapToss_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapToss		9136
+	388721367	CapToss	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\CapToss_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\CapToss		2105
 	389740606	UnicornMusic	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\UnicornMusic_AD29F36A.wem		\Actor-Mixer Hierarchy\Default Work Unit\UnicornMusic		745599
 	395418058	Belly_Door_Open	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Belly_Door_Open_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\Belly_Door_Open		3470
 	438768819	westbros_slam_01	C:\Users\Spenser\Documents\GitHub\ApacheThunder\ExpandTheGungeon\ExpandAssets\Audio\.cache\Windows\SFX\Play_EX_BOSS_westbros_slam_01_F7D0E330.wem		\Actor-Mixer Hierarchy\Default Work Unit\westbros_slam_01		18306

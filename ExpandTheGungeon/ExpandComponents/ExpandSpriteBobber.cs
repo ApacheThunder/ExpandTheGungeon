@@ -1,4 +1,5 @@
-﻿using ExpandTheGungeon.ExpandUtilities;
+﻿using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -238,20 +239,29 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
             if (bobType == BobType.BigChonker)GameManager.Instance.MainCameraController.DoScreenShake(SlamScreenShakeSettings, (transform.position + new Vector3(0, 2f)), false);
 
-            if (ImpactVFXObjects != null && ImpactVFXObjects.Length > 0) {
-                int SpawnCount = Random.Range(3, 5);
-
-                if (Random.value > 0.4f) {
-                    for (int i = 0; i < SpawnCount; i++) {
-                        Vector2 m_ChosenSpawnPoint = transform.position;
-                        m_ChosenSpawnPoint += new Vector2(Random.Range(ImpactVFXOffset.x, ImpactVFXFootprint.x), Random.Range(ImpactVFXOffset.y, ImpactVFXFootprint.y));
-                        Instantiate(BraveUtility.RandomElement(ImpactVFXObjects), m_ChosenSpawnPoint, Quaternion.identity);
+            switch (bobType) {
+                case BobType.BigChonker:
+                    break;
+                case BobType.TinyBoi:
+                    if (ImpactVFXObjects != null && ImpactVFXObjects.Length > 0) {
+                        int SpawnCount = Random.Range(2, 4);
+                        if (Random.value > 0.4f) {
+                            for (int i = 0; i < SpawnCount; i++) {
+                                Vector2 m_ChosenSpawnPoint = transform.position;
+                                m_ChosenSpawnPoint += new Vector2(Random.Range(ImpactVFXOffset.x, ImpactVFXFootprint.x), Random.Range(ImpactVFXOffset.y, ImpactVFXFootprint.y));
+                                Instantiate(BraveUtility.RandomElement(ImpactVFXObjects), m_ChosenSpawnPoint, Quaternion.identity);
+                            }
+                        }
                     }
-                }
-                
-                ImpactSoundFX = ImpactSoundFX.Shuffle();
-                AkSoundEngine.PostEvent(BraveUtility.RandomElement(ImpactSoundFX), gameObject);
+                    break;
+                case BobType.Standard:
+                    GameObject impactVFX = ExpandUtility.AttachEffect(ExpandObjectDatabase.VFXLeadMaidenMove, gameObject, new Vector3(0, -0.5f), true, false, false, true, 1.2f);
+                    impactVFX.SetLayerRecursively(20);
+                    break;
             }
+            
+            ImpactSoundFX = ImpactSoundFX.Shuffle();
+            AkSoundEngine.PostEvent(BraveUtility.RandomElement(ImpactSoundFX), gameObject);
         }
 
         public void Update() {

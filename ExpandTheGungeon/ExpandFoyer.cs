@@ -1,6 +1,6 @@
-﻿using BepInEx;
-using Dungeonator;
+﻿using Dungeonator;
 using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandLoadingScreens;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
 using MonoMod.RuntimeDetour;
@@ -31,6 +31,8 @@ namespace ExpandTheGungeon {
                     }
                     if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished) return;
                     if (Foyer.DoIntroSequence | Foyer.DoMainMenu) return;
+                    if (ExpandLoadingScreen.LoadingScreenObject.activeSelf) ExpandLoadingScreen.LoadingScreenObject.SetActive(false);
+                    if (ExpandLoadingScreen.LoadingBarObject.activeSelf) ExpandLoadingScreen.LoadingBarObject.SetActive(false);
                     m_State = State.CheckSettings;
                     return;
                 case State.CheckSettings:

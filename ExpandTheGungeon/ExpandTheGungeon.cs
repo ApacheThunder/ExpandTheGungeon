@@ -52,6 +52,8 @@ namespace ExpandTheGungeon {
         public static bool ItemAPISetup = false;
         public static bool ListsCleared = false;
         public static bool PreventInput = true;
+        public static bool MrCapInUse = false;
+        public static bool PortableShipInUse = false;
 
         public static string ModShaderBundleName = "ExpandShaders";
 
@@ -92,13 +94,13 @@ namespace ExpandTheGungeon {
             ZipFilePath = this.FolderPath();
             
             ResourcesPath = ETGMod.ResourcesDirectory;
-
-            ExpandLoadingScreen.Init();
-
+            
             ExceptionText = new List<string>();
 
             try { ExpandSettings.LoadSettings(); } catch (Exception ex) { ExceptionText.Add(ex.ToString()); }
 
+            ExpandLoadingScreen.Init();
+            
             loadStatus = LoadStatus.PreInit;
 
             itemList = new List<string>() {
@@ -153,7 +155,7 @@ namespace ExpandTheGungeon {
                 ModLogoMini = expandSharedAssets1.LoadAsset<Texture2D>("EXLogoMini");
                 ModLogoMini.filterMode = FilterMode.Point;
             }
-                        
+            
             expandSharedAssets1 = null;
 
             ExpandPrefabs.PreInit();
@@ -164,6 +166,7 @@ namespace ExpandTheGungeon {
         
         public void GMStart(GameManager gameManager) {
             loadStatus = LoadStatus.LoadStart;
+            if(ExpandSettings.EnableAsyncAssetLoading)ExpandLoadingScreen.UpdateLoadingBar(loadStatus);
 
             if (ExceptionText.Count > 0) {
                 foreach (string text in ExceptionText) { ETGModConsole.Log(text); }

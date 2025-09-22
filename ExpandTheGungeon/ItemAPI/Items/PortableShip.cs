@@ -143,6 +143,11 @@ namespace ExpandTheGungeon.ItemAPI {
             return BraveInput.GetInstanceForPlayer(player.PlayerIDX).IsKeyboardAndMouse(false);
         }
 
+        public override bool CanBeUsed(PlayerController user) {
+            if (ExpandTheGungeon.MrCapInUse) return false;
+            return base.CanBeUsed(user);
+        }
+
         private void DoConfigure(PlayerController player) {
             if (!m_ShipPrefabInstance) {
                 m_ShipPrefabInstance = Instantiate(ShipPrefab.transform.Find("PlayerRotatePoint").gameObject, player.sprite.WorldCenter, Quaternion.identity);
@@ -224,6 +229,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     return;
                 case ItemState.Inactive:
                     m_currentAngle = BraveMathCollege.Atan2Degrees(user.unadjustedAimPoint.XY() - user.CenterPosition);
+                    ExpandTheGungeon.PortableShipInUse = true;
                     m_ShipPrefabInstance.SetActive(true);
                     m_ShipShadowPrefabInstance.SetActive(true);
                     timeCooldown = m_MissileCooldown;
@@ -514,6 +520,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 } else if (LastOwner) {
                     ApplyCooldown(LastOwner);
                 }
+                ExpandTheGungeon.PortableShipInUse = false;
                 return;
             }
             m_HasCoopSynergy = false;
@@ -534,6 +541,7 @@ namespace ExpandTheGungeon.ItemAPI {
             m_DoingDodgeRoll = false;
             m_CurrentLaserCooldown = 0;
             m_CurrentDodgeCooldown = 0;
+            ExpandTheGungeon.PortableShipInUse = false;
         }
 
         private void HandlePrerigidbodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {

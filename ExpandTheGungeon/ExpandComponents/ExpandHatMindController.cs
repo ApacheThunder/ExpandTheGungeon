@@ -38,7 +38,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_active = false;
             IsOnDeath = false;
             m_TargetLeftAlive = false;
+            m_UsedSecondaryAttackThisCycle = false;
             m_DecoyTimer = 1;
+            m_SecondaryCooldown = 0;
         }
 
         
@@ -86,11 +88,13 @@ namespace ExpandTheGungeon.ExpandComponents {
         private SpeculativeRigidbody m_targetRigidbody;
         private ArbitraryCableDrawer m_cable;
         private float m_DecoyTimer;
+        private float m_SecondaryCooldown;
         private Vector2 m_LastPlayerPosition;
 
         private bool m_CachedRigidBodyCanPush;
         private bool m_CachedRigidBodyCanBePushed;
         private bool m_IsMovingToNewRoom;
+        private bool m_UsedSecondaryAttackThisCycle;
         private IntVector2 m_CachedOwnerSize;
 
         private ExpandHatVFX attachedHat;
@@ -154,6 +158,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_aiActor.IsHarmlessEnemy = true;
                     m_aiActor.behaviorSpeculator.PostAwakenDelay = 0;
                     m_aiActor.behaviorSpeculator.InstantFirstTick = true;
+                    // ExpandUtility.ConvertTeleportBehaviors(m_aiActor.behaviorSpeculator, true);
                     if (!KillTargetExceptions.Contains(m_aiActor.EnemyGuid))m_aiActor.IgnoreForRoomClear = true;
                     m_aiActor.healthHaver.OnPreDeath += OnPreDeath;
                     m_aiActor.healthHaver.OnDeath += OnDeath;
@@ -161,6 +166,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (m_aiActor.visibilityManager) Destroy(m_aiActor.visibilityManager);
                     m_ParentRoom.DeregisterEnemy(m_aiActor);
                     if (parentObject.transform.parent)parentObject.transform.SetParent(GameManager.Instance.Dungeon.gameObject.transform);
+                    m_aiActor.ClearPath();
                     break;
                 case TargetType.Chest:
                     if (!parentObject | !parentObject.GetComponent<Chest>()) { AttachFailed = true; return; }
@@ -233,6 +239,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             owner.SetCapableOfStealing(true, "MrCapMineControl");
             owner.IsGunLocked = true;
             m_active = true;
+            ExpandTheGungeon.MrCapInUse = true;
         }
 
         private void BuildFakeActor() {
@@ -288,7 +295,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!IsOnDeath) {
                 IsOnDeath = true;
                 if (MrCapItem && MrCapItem.CurrentMindControl == this) {
-                    MrCapItem.DoDetach();
+                    MrCapItem.DoDetach(false);
                 } else {
                     Detach(false);
                 }
@@ -299,7 +306,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!IsOnDeath) {
                 IsOnDeath = true;
                 if (MrCapItem && MrCapItem.CurrentMindControl == this) {
-                    MrCapItem.DoDetach();
+                    MrCapItem.DoDetach(false);
                 } else {
                     Detach(false);
                 }
@@ -364,58 +371,32 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
         
-        private void Update() {
-            if (!m_active | !owner | !m_targetRigidbody | IsOnDeath | m_TargetLeftAlive) return;
-            if (m_ParentRoom != null && m_ParentRoom.connectedRooms != null) {
-                foreach (RoomHandler room in m_ParentRoom.connectedRooms) {
-                    if (room.area != null && room.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
-                        m_active = false;
-                        if (MrCapItem && MrCapItem.CurrentMindControl == this) {
-                            MrCapItem.DoDetach();
-                        } else {
-                            Detach(false);
-                        }
-                        return;
-                    }
-                    if (AttachPlayer) {
-                        if (room.IsSealed && room != m_ParentRoom) {
-                            ETGModConsole.Log("[ExpandTheGungeon] MrCap: A sealed room was found with the player not in it! Fix that ***! :P");
-                            m_active = false;
-                            m_ParentRoom = room;
-                            DoReposition(true);
-                            return;
-                        }
-                    }
-                }
-            }
-
+        private void UpdateActions() {
+            if (!m_active | !owner | !m_targetRigidbody | IsOnDeath | m_TargetLeftAlive | m_IsMovingToNewRoom) return;
             BraveInput instanceForPlayer = BraveInput.GetInstanceForPlayer(owner.PlayerIDX);
             if (!instanceForPlayer) return;
             GungeonActions activeActions = instanceForPlayer.ActiveActions;
-
+            
             switch (targetType) {
                 case TargetType.AIActor: 
                     if (!m_aiActor) return;
-                    if (m_IsMovingToNewRoom) return;
                     if (UseFakeActorTarget) m_fakeActor.specRigidbody = m_fakeTargetRigidbody;
-                    if (m_aiActor) {
+                    if (UseFakeActorTarget) {
+                        m_aiActor.PlayerTarget = m_fakeActor;
+                    } else {
+                        m_aiActor.PlayerTarget = null;
+                    }
+                    if (UseFakeActorTarget) UpdateAimTargetPosition();
+                    if (m_aiActor.aiShooter) {
                         if (UseFakeActorTarget) {
-                            m_aiActor.PlayerTarget = m_fakeActor;
-                        } else {
-                            m_aiActor.PlayerTarget = null;
-                        }
-                        if (UseFakeActorTarget) UpdateAimTargetPosition();
-                        if (m_aiActor.aiShooter) {
-                            if (UseFakeActorTarget) {
-                                m_aiActor.aiShooter.AimAtPoint(m_behaviorSpeculator.PlayerTarget.CenterPosition);
-                            } else if (UpdateAimTarget(owner).HasValue) {
-                                m_aiActor.aiShooter.AimAtPoint(UpdateAimTarget(owner).Value);
-                            }
+                            m_aiActor.aiShooter.AimAtPoint(m_behaviorSpeculator.PlayerTarget.CenterPosition);
+                        } else if (UpdateAimTarget(owner).HasValue) {
+                            m_aiActor.aiShooter.AimAtPoint(UpdateAimTarget(owner).Value);
                         }
                     }
                     if (m_behaviorSpeculator) {
-                        m_aiActor.ClearPath();
                         bool WeaponIsFullyAuto = (m_aiActor.aiShooter && m_aiActor.aiShooter.CurrentGun && m_aiActor.aiShooter.CurrentGun.ClipCapacity > 1 && m_aiActor.aiShooter.CurrentGun.gunClass != GunClass.SHOTGUN);
+                        bool usedSecondaryAttack = (owner.AcceptingNonMotionInput && activeActions.DodgeRollAction.WasPressed);
                         if (m_behaviorSpeculator.AttackCooldown <= 0f) {
                             if (!m_attackedThisCycle && m_behaviorSpeculator.ActiveContinuousAttackBehavior != null) {
                                 m_attackedThisCycle = true;
@@ -426,12 +407,27 @@ namespace ExpandTheGungeon.ExpandComponents {
                         } else if (WeaponIsFullyAuto && activeActions.ShootAction.WasPressedRepeating) {
                             m_attackedThisCycle = false;
                             m_behaviorSpeculator.AttackCooldown = 0f;
-                            if (owner && owner.IsStealthed) ExpandUtility.SetPlayerIsStealthed(owner, false, "MrCapMindControl");
-                        } else if (!WeaponIsFullyAuto && activeActions.ShootAction.WasPressed) {
+                            if (owner.IsStealthed) ExpandUtility.SetPlayerIsStealthed(owner, false, "MrCapMindControl");
+                        } else if (!WeaponIsFullyAuto && owner.AcceptingNonMotionInput && activeActions.ShootAction.WasPressed) {
                             m_attackedThisCycle = false;
                             m_behaviorSpeculator.AttackCooldown = 0f;
-                            if (owner && owner.IsStealthed) ExpandUtility.SetPlayerIsStealthed(owner, false, "MrCapMindControl");
+                            if (owner.IsStealthed) ExpandUtility.SetPlayerIsStealthed(owner, false, "MrCapMindControl");
+                        } else if (usedSecondaryAttack && owner.AcceptingNonMotionInput && !m_UsedSecondaryAttackThisCycle && !m_attackedThisCycle) {
+                            m_UsedSecondaryAttackThisCycle = true;
                         }
+
+                        if (usedSecondaryAttack && owner.AcceptingNonMotionInput && owner.IsStealthed) {
+                            ExpandUtility.SetPlayerIsStealthed(owner, false, "MrCapMindControl");
+                        }
+
+                        if (m_UsedSecondaryAttackThisCycle && owner.AcceptingNonMotionInput) {
+                            m_SecondaryCooldown -= BraveTime.DeltaTime;
+                            if (m_SecondaryCooldown <= 0) {
+                                m_SecondaryCooldown = 1;
+                                m_UsedSecondaryAttackThisCycle = false;
+                            }
+                        }
+
                         if (m_behaviorSpeculator.TargetBehaviors != null && m_behaviorSpeculator.TargetBehaviors.Count > 0) {
                             m_behaviorSpeculator.TargetBehaviors.Clear();
                         }
@@ -440,18 +436,23 @@ namespace ExpandTheGungeon.ExpandComponents {
                                 if (m_behaviorSpeculator.MovementBehaviors[i] is TakeCoverBehavior) {
                                     TakeCoverBehavior m_takeCover = m_behaviorSpeculator.MovementBehaviors[i] as TakeCoverBehavior;
                                     m_takeCover.InitialCoverChance = 0;
-                                    m_takeCover.Start();
+                                    InvokeMethod(typeof(TakeCoverBehavior), "BecomeDisinterested", m_takeCover, new object[] { ReflectGetField<int>(typeof(TakeCoverBehavior), "m_tableQuadrant", m_takeCover) });
                                 }
                             }
                             m_behaviorSpeculator.MovementBehaviors.Clear();
                         }
-                        m_aiActor.ImpartedVelocity += activeActions.Move.Value * m_aiActor.MovementSpeed;
+
+                        if (!m_UsedSecondaryAttackThisCycle)usedSecondaryAttack = activeActions.DodgeRollAction.WasPressed;
+                        m_UsedSecondaryAttackThisCycle = usedSecondaryAttack;
                         if (m_behaviorSpeculator.AttackBehaviors != null) {
                             for (int i = 0; i < m_behaviorSpeculator.AttackBehaviors.Count; i++) {
                                 AttackBehaviorBase attack = m_behaviorSpeculator.AttackBehaviors[i];
                                 ProcessAttackAIActor(attack);
                             }
                         }
+
+                        OverridableBool m_IsImmobile = ReflectGetField<OverridableBool>(typeof(KnockbackDoer), "m_isImmobile", m_aiActor.knockbackDoer);
+                        if (!m_IsImmobile.Value) m_aiActor.ImpartedVelocity += activeActions.Move.Value * m_aiActor.MovementSpeed;
                     }
                 break;
                 case TargetType.Chest:
@@ -480,6 +481,36 @@ namespace ExpandTheGungeon.ExpandComponents {
                     // Not Implemented Yet.
                 break;
             }
+        }
+
+
+        private void Update() {
+            if (!m_active | !owner | !m_targetRigidbody | IsOnDeath | m_TargetLeftAlive | m_IsMovingToNewRoom) return;
+            if (owner.CurrentRoom != m_ParentRoom) m_ParentRoom = owner.CurrentRoom;
+            if (AttachPlayer) {
+                m_IsMovingToNewRoom = CheckForNewRoom(true, false);
+                if (m_ParentRoom != null && m_ParentRoom.connectedRooms != null) {
+                    foreach (RoomHandler room in m_ParentRoom.connectedRooms) {
+                        if (room.area != null && room.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                            m_active = false;
+                            if (MrCapItem && MrCapItem.CurrentMindControl == this) {
+                                MrCapItem.DoDetach(true);
+                            } else {
+                                Detach(false);
+                            }
+                            return;
+                        }
+                        if (room.IsSealed && room != m_ParentRoom) {
+                            ETGModConsole.Log("[ExpandTheGungeon] MrCap: A sealed room was found with the player not in it! Fix that ***! :P", true);
+                            m_active = false;
+                            m_ParentRoom = room;
+                            DoReposition(true);
+                            return;
+                        }
+                    }
+                }
+                m_IsMovingToNewRoom = false;
+            }
             if (ActAsDecoy) {
                 m_DecoyTimer -= BraveTime.DeltaTime;
                 if (m_DecoyTimer <= 0) {
@@ -487,29 +518,27 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (m_ParentRoom != null) AttractEnemies(m_ParentRoom);
                 }
             }
+            UpdateActions();
         }
 
         private void LateUpdate() {
             if (!m_active | !owner | !m_targetRigidbody | m_TargetLeftAlive | m_IsMovingToNewRoom) return;
             if (AttachPlayer) {
-                m_IsMovingToNewRoom = CheckForNewRoom(true, false);
-                if (!m_IsMovingToNewRoom) {
-                    switch (targetType) {
-                        case TargetType.AIActor:
-                            if (m_targetRigidbody.HitboxPixelCollider != null) {
-                                m_LastPlayerPosition = m_targetRigidbody.HitboxPixelCollider.UnitBottomLeft;
-                            } else {
-                                m_LastPlayerPosition = parentObject.transform.position;
-                            }
-                        break;
-                        case TargetType.Chest:
-                            if (m_targetRigidbody.GroundPixelCollider != null) {
-                                m_LastPlayerPosition = m_targetRigidbody.HitboxPixelCollider.UnitCenterLeft;
-                            } else {
-                                m_LastPlayerPosition = parentObject.transform.position;
-                            }
-                        break;
-                    }
+                switch (targetType) {
+                    case TargetType.AIActor:
+                        if (m_targetRigidbody.HitboxPixelCollider != null) {
+                            m_LastPlayerPosition = m_targetRigidbody.HitboxPixelCollider.UnitBottomLeft;
+                        } else {
+                            m_LastPlayerPosition = parentObject.transform.position;
+                        }
+                    break;
+                    case TargetType.Chest:
+                        if (m_targetRigidbody.GroundPixelCollider != null) {
+                            m_LastPlayerPosition = m_targetRigidbody.HitboxPixelCollider.UnitCenterLeft;
+                        } else {
+                            m_LastPlayerPosition = parentObject.transform.position;
+                        }
+                    break;
                 }
             }
             owner.transform.position = m_LastPlayerPosition;
@@ -517,7 +546,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             owner.healthHaver.IsVulnerable = false;
             owner.IsVisible = false;
             if (owner.IsInMinecart && owner.currentMineCart) owner.currentMineCart.EvacuateSpecificPlayer(owner);
-            m_IsMovingToNewRoom = false;
         }
         
         private bool CheckForNewRoom(bool skipReposition, bool avoidExitCells) {
@@ -572,55 +600,68 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public void PlayerOnEnteredCombat() {
             if (!m_active | m_ParentRoom == null | !owner) return;
+            if (!owner.IsStealthed)ExpandUtility.SetPlayerIsStealthed(owner, true, "MrCapMindControl");
             m_IsMovingToNewRoom = CheckForNewRoom(true, true);
             m_IsMovingToNewRoom = true;
             DoReposition(true);
-            // Player is somehow not in the active combat room?
-            /*if (!owner.CurrentRoom.IsSealed) {
-                for (int i = 0; i < owner.CurrentRoom.connectedRooms.Count; i++) {
-                    if (owner.CurrentRoom.connectedRooms[i].IsSealed) {
-                        m_ParentRoom = owner.CurrentRoom.connectedRooms[i];
-                        break;
-                    }
-                }
-                ETGModConsole.Log("[ExpandTheGungeon]MrCap: Found an instance of player not in right room!", true);
-                DoReposition(true);
-            }*/
             m_IsMovingToNewRoom = false;
-            // StartCoroutine(DelayedReposition());
         }
         
+
         private void ProcessAttackAIActor(AttackBehaviorBase attack) {
             if (attack == null)return;
             if (attack is BasicAttackBehavior) {
-                BasicAttackBehavior basicAttackBehavior = attack as BasicAttackBehavior;
-                basicAttackBehavior.IgnoreGlobalCooldown();
-                basicAttackBehavior.Cooldown = 0f;
-                basicAttackBehavior.RequiresLineOfSight = false;
-                basicAttackBehavior.MinRange = -1f;
-                basicAttackBehavior.Range = -1f;
-                if (attack is LeapExplosion) {
-                    LeapExplosion leapExploder = attack as LeapExplosion;
-                    leapExploder.IgnoreGlobalCooldown();
-                    leapExploder.minLeapDistance = 0;
-                    leapExploder.leapDistance = 1000f;
+                if (m_UsedSecondaryAttackThisCycle) {
+                    m_behaviorSpeculator.AttackCooldown = 0;
+                } else {
+                    BasicAttackBehavior basicAttackBehavior = attack as BasicAttackBehavior;
+                    basicAttackBehavior.IgnoreGlobalCooldown();
+                    basicAttackBehavior.Cooldown = 0f;
+                    basicAttackBehavior.RequiresLineOfSight = false;
+                    basicAttackBehavior.MinRange = -1f;
+                    basicAttackBehavior.Range = -1f;
+                    if (attack is LeapExplosion) {
+                        LeapExplosion leapExploder = attack as LeapExplosion;
+                        leapExploder.minLeapDistance = 0;
+                        leapExploder.leapDistance = 1000f;
+                    }
+                    if (basicAttackBehavior is ShootGunBehavior) {
+                        ShootGunBehavior shootGunBehavior = basicAttackBehavior as ShootGunBehavior;
+                        shootGunBehavior.LineOfSight = false;
+                        shootGunBehavior.EmptiesClip = false;
+                        shootGunBehavior.RespectReload = false;
+                    }
+                    if (basicAttackBehavior is GunHandBasicShootBehavior) {
+                        GunHandBasicShootBehavior shootDualGunBehavior = basicAttackBehavior as GunHandBasicShootBehavior;
+                        shootDualGunBehavior.LineOfSight = false;
+                        foreach (GunHandController gunHand in shootDualGunBehavior.GunHands) {
+                            gunHand.Cooldown = 1;
+                        }
+                    }
                 }
-                if (attack is TeleportBehavior) {
-                    basicAttackBehavior.RequiresLineOfSight = true;
-                    basicAttackBehavior.MinRange = 1000f;
-                    basicAttackBehavior.Range = 0.1f;
-                }
-                if (basicAttackBehavior is ShootGunBehavior) {
-                    ShootGunBehavior shootGunBehavior = basicAttackBehavior as ShootGunBehavior;
-                    shootGunBehavior.LineOfSight = false;
-                    shootGunBehavior.EmptiesClip = false;
-                    shootGunBehavior.RespectReload = false;
-                }
-                if (basicAttackBehavior is GunHandBasicShootBehavior) {
-                    GunHandBasicShootBehavior shootDualGunBehavior = basicAttackBehavior as GunHandBasicShootBehavior;
-                    shootDualGunBehavior.LineOfSight = false;
-                    foreach (GunHandController gunHand in shootDualGunBehavior.GunHands) {
-                        gunHand.Cooldown = 1;
+                if ((attack is TeleportBehavior)) {
+                    TeleportBehavior teleportAttack = (attack as TeleportBehavior);
+                    if (m_UsedSecondaryAttackThisCycle) {
+                        teleportAttack.RequiresLineOfSight = false;
+                        teleportAttack.OnlyTeleportIfPlayerUnreachable = false;
+                        teleportAttack.AttackCooldown = 0;
+                        teleportAttack.AllowCrossRoomTeleportation = true;
+                        teleportAttack.MinDistanceFromPlayer = -1;
+                        teleportAttack.MaxDistanceFromPlayer = -1;
+                        teleportAttack.MinRange = -1;
+                        teleportAttack.Range = -1;
+                        teleportAttack.GroupCooldown = 0;
+                        teleportAttack.Cooldown = 0;
+                    } else {
+                        teleportAttack.IgnoreGlobalCooldown();
+                        teleportAttack.MaxEnemiesInRoom = 0;
+                        teleportAttack.StayOnScreen = false;
+                        teleportAttack.InitialCooldown = 0;
+                        teleportAttack.AttackCooldown = 0;
+                        teleportAttack.GroupCooldown = 0;
+                        teleportAttack.RequiresLineOfSight = true;
+                        teleportAttack.MinRange = 1000f;
+                        teleportAttack.Range = 0.1f;
                     }
                 }
             } else if (attack is AttackBehaviorGroup) {
@@ -742,22 +783,33 @@ namespace ExpandTheGungeon.ExpandComponents {
                     owner.IsGunLocked = false;
                 }
                 BraveInput input = BraveInput.GetInstanceForPlayer(owner.PlayerIDX);
-                if (input)input.ConsumeButtonDown(GungeonActions.GungeonActionType.Shoot);
+                GungeonActions activeActions = input.ActiveActions;
+                if (input && activeActions != null && (activeActions.ShootAction.WasPressed | activeActions.ShootAction.WasPressedRepeating))input.ConsumeButtonDown(GungeonActions.GungeonActionType.Shoot);
                 owner.SetCapableOfStealing(false, "MrCapMineControl");
             }
-            if (MrCapItem) {
+            /*if (MrCapItem) {
                 MrCapItem.ResetHat(attachedHat.gameObject, gameObject);
             } else {
                 if (attachedHat) Destroy(attachedHat.gameObject);
                 Destroy(this);
+            }*/
+            if (attachedHat) {
+                if (sprite)sprite.DetachRenderer(attachedHat.sprite);
+                Destroy(attachedHat.gameObject);
             }
+            ExpandTheGungeon.MrCapInUse = false;
+            Destroy(this);
         }
 
                 
         protected override void OnDestroy() {
+            if (!owner) {
+                base.OnDestroy();
+                return;
+            }
             if (!IsOnDeath) {
                 if (MrCapItem && MrCapItem.CurrentMindControl && MrCapItem.CurrentMindControl == this) {
-                    MrCapItem.DoDetach();
+                    MrCapItem.DoDetach(false);
                 } else {
                     Detach(false);
                 }

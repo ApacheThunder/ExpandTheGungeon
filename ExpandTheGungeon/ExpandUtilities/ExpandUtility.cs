@@ -26,7 +26,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-        public static GameObject AttachEffect(GameObject parentObject, Vector3 offset, bool attached = true, bool alreadyMiddleCenter = false, bool useHitbox = false) {
+        public static GameObject AttachSpriteBobber(GameObject parentObject, Vector3 offset, bool attached = true, bool alreadyMiddleCenter = false, bool useHitbox = false) {
             GameObject vfxObject = SpawnManager.SpawnVFX(MrCap.MrCapVFX, false);
             tk2dBaseSprite vfxSprite = vfxObject.GetComponent<tk2dBaseSprite>();
             SpeculativeRigidbody parentRigidBody = parentObject.GetComponent<SpeculativeRigidbody>();
@@ -40,6 +40,30 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (attached) {
                 vfxObject.transform.parent = parentObject.transform;
                 vfxSprite.HeightOffGround = 0.2f;
+                parentSprite.AttachRenderer(vfxSprite);
+                if (parentObject.GetComponent<PlayerController>()) {
+                    SmartOverheadVFXController component2 = vfxObject.GetComponent<SmartOverheadVFXController>();
+                    if (component2) component2.Initialize(parentObject.GetComponent<PlayerController>(), offset);
+                }
+            }
+            if (!alreadyMiddleCenter) vfxObject.transform.localPosition = vfxObject.transform.localPosition.QuantizeFloor(0.0625f);
+            return vfxObject;
+        }
+
+        public static GameObject AttachEffect(GameObject sourceEffect, GameObject parentObject, Vector3 offset, bool attached = true, bool alreadyMiddleCenter = false, bool useHitbox = false, bool ignorePools = false, float heightOffGround = 0.2f) {
+            GameObject vfxObject = SpawnManager.SpawnVFX(sourceEffect, ignorePools);
+            tk2dBaseSprite vfxSprite = vfxObject.GetComponent<tk2dBaseSprite>();
+            SpeculativeRigidbody parentRigidBody = parentObject.GetComponent<SpeculativeRigidbody>();
+            tk2dBaseSprite parentSprite = parentObject.GetComponent<tk2dBaseSprite>();
+            Vector3 a = (!useHitbox || !parentRigidBody || parentRigidBody.HitboxPixelCollider == null) ? parentSprite.WorldCenter.ToVector3ZUp(0f) : parentRigidBody.HitboxPixelCollider.UnitCenter.ToVector3ZUp(0f);
+            if (!alreadyMiddleCenter) {
+                vfxSprite.PlaceAtPositionByAnchor(a + offset, tk2dBaseSprite.Anchor.MiddleCenter);
+            } else {
+                vfxSprite.transform.position = a + offset;
+            }
+            if (attached) {
+                vfxObject.transform.parent = parentObject.transform;
+                vfxSprite.HeightOffGround = heightOffGround;
                 parentSprite.AttachRenderer(vfxSprite);
                 if (parentObject.GetComponent<PlayerController>()) {
                     SmartOverheadVFXController component2 = vfxObject.GetComponent<SmartOverheadVFXController>();
@@ -5096,11 +5120,95 @@ namespace ExpandTheGungeon.ExpandUtilities {
         public static void RegenerateMapTilemap(Minimap self) {
             GameManager.Instance.StartCoroutine(DoLateRegeneration(self));
         }
+
         private static IEnumerator DoLateRegeneration(Minimap instance) {
             yield return null;
             (typeof(Minimap).GetField("m_shouldBuildTilemap", BindingFlags.Instance | BindingFlags.NonPublic)).SetValue(instance, true);
             yield break;
         }
+
+        public static void ConvertTeleportBehaviors(BehaviorSpeculator sourceSpeculator, bool refreshBehaviors) {
+            if (sourceSpeculator == null) return;
+            bool m_BehaviorsWereAltered = false;
+            for (int i = 0; i < sourceSpeculator.AttackBehaviors.Count; i++) {
+                AttackBehaviorBase attack = sourceSpeculator.AttackBehaviors[i];
+                if (attack is TeleportBehavior) {
+                    sourceSpeculator.AttackBehaviors[i] = ConvertTeleportBehavior(attack as TeleportBehavior);
+                    m_BehaviorsWereAltered = true;
+                } else if (attack is AttackBehaviorGroup) {
+                    m_BehaviorsWereAltered = ConvertTeleportBehaviorsInGroup(attack as AttackBehaviorGroup);
+                }
+            }
+            if (refreshBehaviors && m_BehaviorsWereAltered)sourceSpeculator.RefreshBehaviors();
+        }
+
+        public static bool ConvertTeleportBehaviorsInGroup(AttackBehaviorGroup attackBehaviorGroup) {
+            if (attackBehaviorGroup.Count <= 0) return false;
+            bool m_BehaviorsAltered = false;
+            for (int i = 0; i < attackBehaviorGroup.AttackBehaviors.Count; i++) {
+                if (attackBehaviorGroup.AttackBehaviors[i].Behavior is TeleportBehavior) {
+                    AttackBehaviorGroup.AttackGroupItem newItem = new AttackBehaviorGroup.AttackGroupItem() {
+                        NickName = attackBehaviorGroup.AttackBehaviors[i].NickName,
+                        Behavior = ConvertTeleportBehavior(attackBehaviorGroup.AttackBehaviors[i].Behavior as TeleportBehavior),
+                        Probability = attackBehaviorGroup.AttackBehaviors[i].Probability
+                    };
+                    attackBehaviorGroup.AttackBehaviors[i] = newItem;
+                    m_BehaviorsAltered = true;
+                }
+            }
+            return m_BehaviorsAltered;
+        }
+
+        public static ExpandTeleportBehavior ConvertTeleportBehavior(TeleportBehavior sourceBehavior) {
+            if (!(sourceBehavior is TeleportBehavior)) return null;
+            TeleportBehavior m_NewTeleportBehavior = sourceBehavior as TeleportBehavior;
+            return new ExpandTeleportBehavior() {
+                AttackableDuringAnimation = m_NewTeleportBehavior.AttackableDuringAnimation,
+                AvoidWalls = m_NewTeleportBehavior.AvoidWalls,
+                StayOnScreen = m_NewTeleportBehavior.StayOnScreen,
+                MinDistanceFromPlayer = m_NewTeleportBehavior.MinDistanceFromPlayer,
+                MaxDistanceFromPlayer = m_NewTeleportBehavior.MaxDistanceFromPlayer,
+                GoneTime = m_NewTeleportBehavior.GoneTime,
+                OnlyTeleportIfPlayerUnreachable = m_NewTeleportBehavior.OnlyTeleportIfPlayerUnreachable,
+                teleportOutBulletScript = m_NewTeleportBehavior.teleportOutBulletScript,
+                teleportInBulletScript = m_NewTeleportBehavior.teleportInBulletScript,
+                goneAttackBehavior = m_NewTeleportBehavior.goneAttackBehavior,
+                AllowCrossRoomTeleportation = m_NewTeleportBehavior.AllowCrossRoomTeleportation,
+                teleportOutAnim = m_NewTeleportBehavior.teleportOutAnim,
+                teleportInAnim = m_NewTeleportBehavior.teleportInAnim,
+                teleportRequiresTransparency = m_NewTeleportBehavior.teleportRequiresTransparency,
+                hasOutlinesDuringAnim = m_NewTeleportBehavior.hasOutlinesDuringAnim,
+                shadowOutAnim = m_NewTeleportBehavior.shadowOutAnim,
+                shadowInAnim = m_NewTeleportBehavior.shadowInAnim,
+                ManuallyDefineRoom = m_NewTeleportBehavior.ManuallyDefineRoom,
+                roomMin = m_NewTeleportBehavior.roomMin,
+                roomMax = m_NewTeleportBehavior.roomMax,
+                Cooldown = m_NewTeleportBehavior.Cooldown,
+                CooldownVariance = m_NewTeleportBehavior.CooldownVariance,
+                AttackCooldown = m_NewTeleportBehavior.AttackCooldown,
+                GlobalCooldown = m_NewTeleportBehavior.GlobalCooldown,
+                InitialCooldown = m_NewTeleportBehavior.InitialCooldown,
+                InitialCooldownVariance = m_NewTeleportBehavior.InitialCooldownVariance,
+                GroupName = m_NewTeleportBehavior.GroupName,
+                GroupCooldown = m_NewTeleportBehavior.GroupCooldown,
+                MinRange = m_NewTeleportBehavior.MinRange,
+                Range = m_NewTeleportBehavior.Range,
+                MinWallDistance = m_NewTeleportBehavior.MinWallDistance,
+                MaxEnemiesInRoom = m_NewTeleportBehavior.MaxEnemiesInRoom,
+                MinHealthThreshold = m_NewTeleportBehavior.MinHealthThreshold,
+                MaxHealthThreshold = m_NewTeleportBehavior.MaxHealthThreshold,
+                HealthThresholds = m_NewTeleportBehavior.HealthThresholds,
+                AccumulateHealthThresholds = m_NewTeleportBehavior.AccumulateHealthThresholds,
+                targetAreaStyle = m_NewTeleportBehavior.targetAreaStyle,
+                IsBlackPhantom = m_NewTeleportBehavior.IsBlackPhantom,
+                resetCooldownOnDamage = m_NewTeleportBehavior.resetCooldownOnDamage,
+                RequiresLineOfSight = m_NewTeleportBehavior.RequiresLineOfSight,
+                MaxUsages = m_NewTeleportBehavior.MaxUsages,
+                shadowSupport  = ExpandTeleportBehavior.ConvertTeleportTypeEnum(m_NewTeleportBehavior.shadowSupport)
+            };
+        }
+
+        
 
         public static Texture2D GenerateTexture2DFromRenderTexture(RenderTexture rTex) {
             Texture2D tex = new Texture2D(rTex.width, rTex.height, TextureFormat.RGB24, false);
