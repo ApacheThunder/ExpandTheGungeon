@@ -309,7 +309,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             GlobalSparksDoer.DoRandomParticleBurst(5, BottomOffset, TopOffset, Vector3.left, 70f, 0.5f, null, new float?(2.25f), new Color?(TargetColor), GlobalSparksDoer.SparksType.BLOODY_BLOOD);
             GlobalSparksDoer.DoRandomParticleBurst(5, BottomOffset, TopOffset, new Vector3(-1, -1), 70f, 0.5f, null, new float?(3), new Color?(TargetColor), GlobalSparksDoer.SparksType.BLOODY_BLOOD);
             yield return new WaitForSeconds(1);
-            Pixelator.Instance.FadeToBlack(0.15f, false, 0f);
+            if (ExpandDebugCamera.DebugCameraEnabled) {
+                ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+            } else {
+                Pixelator.Instance.FadeToBlack(0.15f, false, 0f);
+            }
             yield return new WaitForSeconds(0.3f);
             specRigidbody.OnPreRigidbodyCollision -= OnPreRigidBodyCollision;
             Destroy(dummySpriteObject);

@@ -10,9 +10,11 @@ namespace ExpandTheGungeon.ExpandComponents {
 
     public class ExpandWestPuzzleRoomController : BraveBehaviour, IPlaceConfigurable {
 
-        public ExpandWestPuzzleRoomController() { m_SelectedType = PuzzleType.None; }
+        public ExpandWestPuzzleRoomController() {
+            SelectedType = PuzzleType.None;
+        }
 
-        private enum PuzzleType {
+        public enum PuzzleType {
             None,
             BuildFakeWall,
             HideKeyOnRandomEnemy,
@@ -22,12 +24,14 @@ namespace ExpandTheGungeon.ExpandComponents {
             PlaceHubSign
         }
 
-        private PuzzleType m_SelectedType;
+        public PuzzleType SelectedType;
 
+        public List<string> ConfettiNames;
+        
         private RoomHandler m_ParentRoom;
 
         private void Start() {
-            switch (m_SelectedType) {
+            switch (SelectedType) {
                 case PuzzleType.BuildFakeWall:
                     HandleBuildFakeWall();
                     break;
@@ -256,23 +260,29 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (UnityEngine.Random.value < 0.5f) {
                     PuzzleWestChest1Component.forceContentIds = new List<int> { 68 };
                     PuzzleWestChest2Component.forceContentIds = new List<int> { 727, 727 };
+                    PlacedPuzzleWestChest2.AddComponent<ExpandConfettiSpawner>();
                 } else {
                     PuzzleWestChest1Component.forceContentIds = new List<int> { 727, 727 };
                     PuzzleWestChest2Component.forceContentIds = new List<int> { 68 };
+                    PlacedPuzzleWestChest1.AddComponent<ExpandConfettiSpawner>();
                 }
                 if (UnityEngine.Random.value < 0.5f) {
                     PuzzleWestChest3Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
                     PuzzleWestChest4Component.forceContentIds = new List<int> { 727, 727 };
+                    PlacedPuzzleWestChest4.AddComponent<ExpandConfettiSpawner>();
                 } else {
                     PuzzleWestChest3Component.forceContentIds = new List<int> { 727, 727 };
                     PuzzleWestChest4Component.forceContentIds = new List<int> { 70, 70, 70, 70 };
+                    PlacedPuzzleWestChest3.AddComponent<ExpandConfettiSpawner>();
                 }
                 if (UnityEngine.Random.value < 0.5f) {
                     PuzzleWestChest5Component.forceContentIds = new List<int> { 74 };
                     PuzzleWestChest6Component.forceContentIds = new List<int> { 316 };
+                    PlacedPuzzleWestChest6.AddComponent<ExpandConfettiSpawner>();
                 } else {
                     PuzzleWestChest5Component.forceContentIds = new List<int> { 316 };
                     PuzzleWestChest6Component.forceContentIds = new List<int> { 74 };
+                    PlacedPuzzleWestChest5.AddComponent<ExpandConfettiSpawner>();
                 }
 
                 PuzzleWestChest1Component.ConfigureOnPlacement(m_ParentRoom);
@@ -423,32 +433,29 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void ConfigureOnPlacement(RoomHandler room) {
 
             if (room == null | string.IsNullOrEmpty(room.GetRoomName())) {
-                m_SelectedType = PuzzleType.None;
+                SelectedType = PuzzleType.None;
                 return;
             }
 
             m_ParentRoom = room;
 
             if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom1.name.ToLower())) {
-                m_SelectedType = PuzzleType.HideKeyOnRandomEnemy;
+                SelectedType = PuzzleType.HideKeyOnRandomEnemy;
             } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom2.name.ToLower())) {
-                m_SelectedType = PuzzleType.HideKeyOnTable;
+                SelectedType = PuzzleType.HideKeyOnTable;
             } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.PuzzleRoom3.name.ToLower())) {
-                m_SelectedType = PuzzleType.BuildFakeWall;
+                SelectedType = PuzzleType.BuildFakeWall;
             } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.SecretRewardRoom.name.ToLower())) {
-                m_SelectedType = PuzzleType.PlaceChestPuzzle;
+                SelectedType = PuzzleType.PlaceChestPuzzle;
             } else if (m_ParentRoom.IsActuallyWildWestEntrance()) {
-                m_SelectedType = PuzzleType.PlaceWinchesterSign;
+                SelectedType = PuzzleType.PlaceWinchesterSign;
             } else if (m_ParentRoom.GetRoomName().ToLower().StartsWith(ExpandRoomPrefabs.Expand_West_SecretHub2.name.ToLower())) {
-                m_SelectedType = PuzzleType.PlaceHubSign;
+                SelectedType = PuzzleType.PlaceHubSign;
             } else {
-                m_SelectedType = PuzzleType.None;
+                SelectedType = PuzzleType.None;
             }
         }
-
-        private void Update() { }
-        private void LateUpdate() { }
-
+        
         protected override void OnDestroy() { base.OnDestroy(); }
     }    
 }

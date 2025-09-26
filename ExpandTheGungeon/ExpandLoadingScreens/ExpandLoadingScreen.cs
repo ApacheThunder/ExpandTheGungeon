@@ -1,6 +1,6 @@
 ﻿using BepInEx;
+using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
-using HarmonyLib;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Collections;
@@ -13,31 +13,39 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
     
     public class ExpandLoadingScreen : FoyerPreloader {
 
+        public static GameObject EXDebugObject;
+
         public static Hook FoyerPreloadHook; 
         public static FoyerPreloader Instance;
 
         public static GameObject LoadingScreenObject;
+        public static GameObject LoadingBarFrameObject;
         public static GameObject LoadingBarObject;
-
+        
         public static dfLabel LoadTextInstance;
+        
         public static dfTextureSprite EXLoadingScreenSprite;
-        public static dfTextureSprite EXLoadingScreenWithFrameSprite;
+        public static dfTextureSprite EXLoadingBarFrameSprite;
         public static dfTextureSprite EXLoadingBarSprite;
 
         public static Texture2D EXLoadScreenLogo;
         public static Texture2D EXLoadScreenLogoLoadBarFrame;
         public static Texture2D EXLoadScreenLogoLoadBar;
+        public static Texture2D EXLoadScreenLogoLoadBarError;
 
         // These are instantiated instances. They will be null when the loading screen is Destroyed.
         private static dfTextureSprite m_EXLoadingScreenSprite;
+        private static dfTextureSprite m_EXLoadingBarFrameSprite;
         private static dfTextureSprite m_EXLoadingBarSprite;
 
 
+        public static Texture2D EXLoadScreenThrobber_Error;
         public static Texture2D EXLoadScreenThrobber_West;
+        public static Texture2D EXLoadScreenThrobber_Glitch;
         /*public static Texture2D EXLoadScreenThrobber_Backrooms;
         public static Texture2D EXLoadScreenThrobber_Jungle;
         public static Texture2D EXLoadScreenThrobber_Belly;*/
-        
+
         public static readonly string txtCloser = "...";
         /*public static string CurrentText = "Preparing Gungeon Expansion...";
         public static string CurrentTextAlt = "Building Mod Assets. Please Wait!";*/
@@ -54,6 +62,8 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             [ExpandTheGungeon.LoadStatus.LoadFloors] = "Building Gungeon Floor Prefabs",
             [ExpandTheGungeon.LoadStatus.LoadCleanup] = "Final Cleanup",
             [ExpandTheGungeon.LoadStatus.LoadFinished] = "Gungeon Expansion Completed",
+            [ExpandTheGungeon.LoadStatus.LoadError] = "ERROR",
+            [ExpandTheGungeon.LoadStatus.Other] = "Not Implemented"
         };
 
 
@@ -75,16 +85,31 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                 typeof(FoyerPreloader)
             );
 
-            EXLoadScreenLogo = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo.png", new IntVector2(218, 99));
+            EXLoadScreenLogo = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo.png", new IntVector2(218, 96));
+            EXLoadScreenThrobber_Error = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Error.png", new IntVector2(1024, 512));
+            EXLoadScreenThrobber_Glitch = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Glitch.png", new IntVector2(1024, 512));
             EXLoadScreenThrobber_West = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_West.png", new IntVector2(1024, 512));
-            EXLoadScreenLogoLoadBarFrame = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBarFrame.png", new IntVector2(218, 99));
-            EXLoadScreenLogoLoadBar = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBar.png", new IntVector2(218, 99));
-
+            EXLoadScreenLogoLoadBarFrame = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBarFrame.png", new IntVector2(218, 24));
+            EXLoadScreenLogoLoadBar = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBar.png", new IntVector2(218, 24));
+            EXLoadScreenLogoLoadBarError = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBarError.png", new IntVector2(218, 24));
+            
             AssetsReady = true;
         }
-
         
         public void EXUpdate(Action<FoyerPreloader>orig, FoyerPreloader self) {
+            if (!self) return;
+            if (!HookActive) {
+                ExpandSettings.EnableAsyncAssetLoading = false;
+                orig(self);
+                return;
+            }
+            if (!Instance) Instance = self;
+
+            bool m_wasFirstLoadScreen = ReflectGetField<bool>(typeof(FoyerPreloader), "m_wasFirstLoadScreen", self);
+            bool m_isLoading = ReflectGetField<bool>(typeof(FoyerPreloader), "m_isLoading", self);
+
+            if (!AssetsReady) return;
+
             if (ExpandSettings.EnableAsyncAssetLoading) {
                 if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished && ExpandTheGungeon.PreventInput) {
                     if (UnityInput.Current != null) UnityInput.Current.ResetInputAxes();
@@ -92,13 +117,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     ExpandTheGungeon.PreventInput = false;
                 }
             }
-            if (!HookActive) { orig(self); return; }
-            if (!AssetsReady) return;
-            if (!Instance) Instance = self;
-            if (!self) return;
-
-            bool m_wasFirstLoadScreen = ReflectGetField<bool>(typeof(FoyerPreloader), "m_wasFirstLoadScreen", self);
-
+            
             if (m_wasFirstLoadScreen && RefreshText) {
                 string m_NewText = string.Empty;
                 if (!InitialScreenInit) {
@@ -112,20 +131,23 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     InitialScreenInit = true;
                 } else {
                     LoadText.TryGetValue(ExpandTheGungeon.loadStatus, out m_NewText);
-                    if (!string.IsNullOrEmpty(m_NewText)) UpdateText(m_NewText);
+                    if (!string.IsNullOrEmpty(m_NewText)) UpdateText(m_NewText, (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError));
                     UpdateLoadingBar(ExpandTheGungeon.loadStatus);
                 }
                 RefreshText = false;
             }
-
-            bool m_isLoading = ReflectGetField<bool>(typeof(FoyerPreloader), "m_isLoading", self);
-            
-            if (m_wasFirstLoadScreen && Time.frameCount >= 5 && !m_isLoading) {
+                        
+            if (m_wasFirstLoadScreen && Time.frameCount > 4 && !m_isLoading) {
                 self.StartCoroutine(EXAsyncLoadFoyer(self, m_wasFirstLoadScreen));
                 typeof(FoyerPreloader).GetField("m_isLoading", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, true);
+                return;
+            } else if (!m_wasFirstLoadScreen) {
+                if (!ExpandSettings.debugMode && overrideType != OverrideType.None) {
+                    MaybeOverrideGraphics(self);
+                } else if (ExpandDebugCamera.DebugCameraEnabled && Instance) {
+                    ExpandDebugCamera.ClearLoadScreenBackground(Instance);
+                }
             }
-
-            if (!m_wasFirstLoadScreen && overrideType != OverrideType.None)MaybeOverrideGraphics(self);
         }
 
         public static IEnumerator WaitForTextUpdate() {
@@ -140,8 +162,8 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                 case OverrideType.None:
                     return;
                 case OverrideType.West:
-                    CreateOldWestLoadingScreen(foyerPreloader);
                     overrideType = OverrideType.None;
+                    CreateOldWestLoadingScreen(foyerPreloader);
                     return;
                 case OverrideType.Jungle:
                     overrideType = OverrideType.None;
@@ -150,12 +172,12 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     overrideType = OverrideType.None;
                     return;
                 case OverrideType.Backrooms:
-                    CreateBackroomsLoadingScreen(foyerPreloader);
                     overrideType = OverrideType.None;
+                    CreateBackroomsLoadingScreen(foyerPreloader);
                     return;
                 case OverrideType.Glitched:
-                    CreateGlitchedLoadingScreen(foyerPreloader);
                     overrideType = OverrideType.None;
+                    CreateGlitchedLoadingScreen(foyerPreloader);
                     return;
             }
         }
@@ -166,6 +188,9 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     Instance.LoadingLabel.Text = Text;
                 } else {
                     Instance.LoadingLabel.Text = Text + txtCloser;
+                }
+                if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError) {
+                    Instance.LoadingLabel.Color = new Color(1, 0, 0, 1);
                 }
                 if (ExpandSettings.debugMode) Debug.Log("[" + ExpandTheGungeon.ModName + "] " + Text);
             }
@@ -204,63 +229,80 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         }
 
         public static void UpdateLoadingBar(ExpandTheGungeon.LoadStatus status) {
-            if (!ExpandSettings.EnableAsyncAssetLoading) return; // Additional load screen assets are not available when async loading is disabled.
+            if (!ExpandSettings.EnableAsyncAssetLoading) return;
             switch (status) {
                 case ExpandTheGungeon.LoadStatus.PreInit:
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadStart:
-                    m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
-                    m_EXLoadingBarSprite.IsVisible = true;
-                    m_EXLoadingBarSprite.Width = 10;
+                    // if (m_EXLoadingScreenSprite) m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
+                    if (m_EXLoadingBarFrameSprite) m_EXLoadingBarFrameSprite.IsVisible = true;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.IsVisible = true;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 18;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadAudio:
-                    m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
-                    m_EXLoadingBarSprite.Width = 54;
+                    // if (m_EXLoadingScreenSprite) m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
+                    if (m_EXLoadingBarFrameSprite) m_EXLoadingBarFrameSprite.IsVisible = true;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.IsVisible = true;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 48;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadSprites:
-                    m_EXLoadingBarSprite.Width = 65;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 58;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadItems:
-                    m_EXLoadingBarSprite.Width = 88;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 68;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadPrefabs:
-                    m_EXLoadingBarSprite.Width = 130;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 88;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadEnemies:
-                    m_EXLoadingBarSprite.Width = 152;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 100;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadRooms:
-                    m_EXLoadingBarSprite.Width = 185;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 180;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadFloors:
-                    m_EXLoadingBarSprite.Width = 196;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 190;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadCleanup:
-                    m_EXLoadingBarSprite.Width = 200;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 200;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadFinished:
-                    m_EXLoadingBarSprite.Width = 218;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 214;
                     break;
+                case ExpandTheGungeon.LoadStatus.LoadError:
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Texture = EXLoadScreenLogoLoadBarError;
+                    if (Instance)Instance.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Error;
+                    break;
+                case ExpandTheGungeon.LoadStatus.Other:
+                    break;
+                default: break;
             }
         }
 
 
-        public static void CreateInitialLoadingScreen(FoyerPreloader foyerPreloader, string InitialText) {
+        public void CreateInitialLoadingScreen(FoyerPreloader foyerPreloader, string InitialText) {
             if (!foyerPreloader) return;
+            if (!foyerPreloader.GetComponentInChildren<dfGUIManager>())return;
+
             foyerPreloader.LoadingLabel.gameObject.SetActive(true);
             foyerPreloader.LanguageManager.enabled = true;
+
             LoadingScreenObject = new GameObject("Expand Startup Loading Screen Panel Child");
+            LoadingBarFrameObject = new GameObject("Expand Startup LoadBar Frame Panel Child");
             LoadingBarObject = new GameObject("Expand LoadBar Panel Child");
+            
             DontDestroyOnLoad(LoadingScreenObject);
+            DontDestroyOnLoad(LoadingBarFrameObject);
             DontDestroyOnLoad(LoadingBarObject);
 
+
             EXLoadingScreenSprite = LoadingScreenObject.AddComponent<dfTextureSprite>();
-            EXLoadingScreenSprite.Anchor = dfAnchorStyle.All;
+            EXLoadingScreenSprite.Anchor = (dfAnchorStyle.Left | dfAnchorStyle.Bottom);
             EXLoadingScreenSprite.IsVisible = true;
             EXLoadingScreenSprite.IsInteractive = true;
-            EXLoadingScreenSprite.Size = new Vector2(218, 99);
-            EXLoadingScreenSprite.MinimumSize = Vector2.zero;
-            EXLoadingScreenSprite.MaximumSize = Vector2.zero;
+            EXLoadingScreenSprite.Size = new Vector2(EXLoadScreenLogo.width, EXLoadScreenLogo.height);
+            EXLoadingScreenSprite.MinimumSize = EXLoadingScreenSprite.Size;
+            EXLoadingScreenSprite.MaximumSize = EXLoadingScreenSprite.Size;
             EXLoadingScreenSprite.ClipChildren = false;
             EXLoadingScreenSprite.InverseClipChildren = false;
             EXLoadingScreenSprite.TabIndex = -1;
@@ -276,14 +318,38 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             EXLoadingScreenSprite.InvertFill = false;
             EXLoadingScreenSprite.CropRect = new Rect() { x = 0, y = 0, width = 1, height = 1 };
             EXLoadingScreenSprite.Texture = EXLoadScreenLogo;
-            // typeof(dfTextureSprite).GetField("renderOrder", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(EXLoadingScreenSprite, 6);
+
+            EXLoadingBarFrameSprite = LoadingBarFrameObject.AddComponent<dfTextureSprite>();
+            EXLoadingBarFrameSprite.Anchor = (dfAnchorStyle.CenterHorizontal | dfAnchorStyle.Bottom);
+            EXLoadingBarFrameSprite.Pivot = dfPivotPoint.BottomLeft;
+            EXLoadingBarFrameSprite.IsVisible = true;
+            EXLoadingBarFrameSprite.IsInteractive = true;
+            EXLoadingBarFrameSprite.Size = new Vector2(EXLoadScreenLogoLoadBarFrame.width, EXLoadScreenLogoLoadBarFrame.height);
+            EXLoadingBarFrameSprite.MinimumSize = Vector2.zero;
+            EXLoadingBarFrameSprite.MaximumSize = Vector2.zero;
+            EXLoadingBarFrameSprite.ClipChildren = false;
+            EXLoadingBarFrameSprite.InverseClipChildren = false;
+            EXLoadingBarFrameSprite.TabIndex = -1;
+            EXLoadingBarFrameSprite.CanFocus = false;
+            EXLoadingBarFrameSprite.AutoFocus = false;
+            EXLoadingBarFrameSprite.IsLocalized = false;
+            EXLoadingBarFrameSprite.HotZoneScale = Vector2.one;
+            EXLoadingBarFrameSprite.AllowSignalEvents = true;
+            EXLoadingBarFrameSprite.PrecludeUpdateCycle = false;
+            EXLoadingBarFrameSprite.Flip = dfSpriteFlip.None;
+            EXLoadingBarFrameSprite.FillDirection = dfFillDirection.Horizontal;
+            EXLoadingBarFrameSprite.FillAmount = 1;
+            EXLoadingBarFrameSprite.InvertFill = false;
+            EXLoadingBarFrameSprite.CropRect = new Rect() { x = 0, y = 0, width = 1, height = 1 };
+            EXLoadingBarFrameSprite.Texture = EXLoadScreenLogoLoadBarFrame;
+
 
 
             EXLoadingBarSprite = LoadingBarObject.AddComponent<dfTextureSprite>();
-            EXLoadingBarSprite.Anchor = dfAnchorStyle.All;
-            EXLoadingBarSprite.IsVisible = false;
+            EXLoadingBarSprite.Anchor = (dfAnchorStyle.Left | dfAnchorStyle.Bottom);
+            EXLoadingBarSprite.IsVisible = true;
             EXLoadingBarSprite.IsInteractive = true;
-            EXLoadingBarSprite.Size = new Vector2(218, 99);
+            EXLoadingBarSprite.Size = new Vector2(EXLoadScreenLogoLoadBar.width, EXLoadScreenLogoLoadBar.height);
             EXLoadingBarSprite.MinimumSize = Vector2.zero;
             EXLoadingBarSprite.MaximumSize = Vector2.zero;
             EXLoadingBarSprite.ClipChildren = false;
@@ -301,29 +367,36 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             EXLoadingBarSprite.InvertFill = false;
             EXLoadingBarSprite.CropRect = new Rect() { x = 0, y = 0, width = 1, height = 1 };
             EXLoadingBarSprite.Texture = EXLoadScreenLogoLoadBar;
-            // typeof(dfTextureSprite).GetField("renderOrder", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(EXLoadingBarSprite, 5);
+
 
             LoadTextInstance = foyerPreloader.LoadingLabel;
             LoadTextInstance.Text = InitialText;
-            LoadTextInstance.VerticalAlignment = dfVerticalAlignment.Bottom;
+            LoadTextInstance.IsLocalized = false;
+            
             LoadTextInstance.TextAlignment = TextAlignment.Center;
+            LoadTextInstance.VerticalAlignment = dfVerticalAlignment.Bottom;
             LoadTextInstance.AutoSize = false;
             LoadTextInstance.ClipChildren = true;
             LoadTextInstance.AutoHeight = false;
-            LoadTextInstance.Size = new Vector2(218, 99);
-            LoadTextInstance.Position += new Vector3(0, 32);
-            LoadTextInstance.IsLocalized = false;
+            LoadTextInstance.Size = new Vector2(EXLoadScreenLogo.width, EXLoadScreenLogo.height);
+            LoadTextInstance.Position += new Vector3(0, 28);
 
-            if (ExpandSettings.EnableAsyncAssetLoading) {
-                /*LoadTextInstance.AddPrefab(LoadingBarObject);
-                LoadTextInstance.AddPrefab(LoadingScreenObject);*/
+            
+            m_EXLoadingBarSprite = AddPrefab(LoadTextInstance, LoadingBarObject);
+            m_EXLoadingBarFrameSprite = AddPrefab(LoadTextInstance, LoadingBarFrameObject);
+            m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
+
+            m_EXLoadingBarFrameSprite.IsVisible = false;
+            m_EXLoadingBarSprite.IsVisible = false;
+            
+            /*if (ExpandSettings.EnableAsyncAssetLoading) {
                 m_EXLoadingBarSprite = AddPrefab(LoadTextInstance, LoadingBarObject);
                 m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
             } else {
                 m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
-            }
+            }*/
         }
-
+        
         public static dfTextureSprite AddPrefab(dfLabel parentLabel, GameObject prefab) {
             if (!prefab.GetComponent<dfTextureSprite>())throw new InvalidCastException();
             GameObject gameObject = Instantiate(prefab);
@@ -342,6 +415,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
         public static void CreateGlitchedLoadingScreen (FoyerPreloader foyerPreloader) {
             foyerPreloader.LoadingLabel.Glitchy = true;
+            foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Glitch;
         }
         
         public static void CreateBackroomsLoadingScreen (FoyerPreloader foyerPreloader) {

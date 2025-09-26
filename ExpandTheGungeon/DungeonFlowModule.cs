@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using Dungeonator;
 
 namespace ExpandTheGungeon {
 
@@ -13,7 +12,7 @@ namespace ExpandTheGungeon {
 		private static List<string> knownTilesets = new List<string>();
         private static List<string> knownScenes = new List<string>();		
         
-        private static string[] ReturnMatchesFromList(string matchThis, List<string> inThis) {
+        public static string[] ReturnMatchesFromList(string matchThis, List<string> inThis) {
             List<string> result = new List<string>();
             string matchString = matchThis.ToLower();
             foreach (string text in inThis) {
@@ -51,14 +50,15 @@ namespace ExpandTheGungeon {
             }
             
             ETGModConsole.Commands.AddUnit("load_flow", new Action<string[]>(LoadFlowFunction), new AutocompletionSettings(delegate(int index, string input) {
-				if (index == 0) {
-                    return ReturnMatchesFromList(input.ToLower(), knownFlows);
-                } else if (index == 1) {
-                    return ReturnMatchesFromList(input.ToLower(), knownTilesets);
-                } else if (index == 2) {
-                    return ReturnMatchesFromList(input.ToLower(), knownScenes);
-                } else {
-                    return new string[0];
+                switch (index) {
+                    case 0:
+                        return ReturnMatchesFromList(input.ToLower(), knownFlows);
+                    case 1:
+                        return ReturnMatchesFromList(input.ToLower(), knownTilesets);
+                    case 2:
+                        return ReturnMatchesFromList(input.ToLower(), knownScenes);
+                    default:
+                        return new string[0];
                 }
             }));
         }	

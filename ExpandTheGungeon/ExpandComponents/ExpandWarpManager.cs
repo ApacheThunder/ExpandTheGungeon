@@ -90,7 +90,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
             if (!skipFade) {
-                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                if (ExpandDebugCamera.DebugCameraEnabled) {
+                    ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+                } else {
+                    Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                }
                 yield return new WaitForSeconds(1f);
             }
             GameUIRoot.Instance.HideCoreUI(string.Empty);
@@ -132,7 +136,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             targetPlayer.ForceMoveInDirectionUntilThreshold(Vector2.up, targetPlayer.CenterPosition.y + 15, maximumTime: 4);
             OverrideTargetFloor = "tt_west";
             yield return new WaitForSeconds(3f);
-            Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            if (ExpandDebugCamera.DebugCameraEnabled) {
+                ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+            } else {
+                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            }
             yield return new WaitForSeconds(1f);
             targetPlayer.specRigidbody.Velocity = Vector2.zero;
             targetPlayer.specRigidbody.CollideWithOthers = true;

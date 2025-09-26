@@ -14,7 +14,9 @@ namespace ExpandTheGungeon.ItemAPI
     {
         public static int GoldenRevolverID = -1;
         public static int BlackRevolverID = -1;
+        public static bool RevolverExceptionListsBuilt = false;
         public static Dictionary<string, float> exceptionEnemies = new Dictionary<string, float>();
+        public static List<string> moddedEnemiesSkipped = new List<string>();
 
         public static GameObject WestBrosBlackRevolverProjectile;
         public static GameObject WestBrosGoldenRevolverProjectile;
@@ -28,41 +30,81 @@ namespace ExpandTheGungeon.ItemAPI
             "gr_black_revolver_projectile_005",
             "gr_black_revolver_projectile_006"
         };
-
-        // Must do this before Async load to avoid issues with Alexanderia's hooks.
-        public static void InitExceptionsAndHooks() {
-
-            if (ExpandSettings.debugMode)
-            {
-                Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
-            }
-
-            ProjectileHookClass.AddHook();
-
-            if (ExpandSettings.debugMode)
-            {
-                Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
-            }
+        
+        // Modified to load after mod load to ensure modded enemies get checked too.
+        public static void BuildExceptionsList()
+        {
+            RevolverExceptionListsBuilt = true;
             foreach (var item in EnemyDatabase.Instance.Entries)
             {
                 if (item != null)
                 {
-                    // var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
-                    var enemy = ExpandEnemyDatabase.GetOfficialEnemyByGuid(item.myGuid); 
-
-                    if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
+                    try
                     {
-                        float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
+                        var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
 
-                        if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
+                        if (enemy == null)
                         {
-                            var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
-
-                            exceptionEnemies.Add(enemy.EnemyGuid, ratio);
+                            moddedEnemiesSkipped.Add(item.myGuid);
                         }
-
+                        else
+                        {
+                            ProcessEnemyEntry(enemy, false);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        moddedEnemiesSkipped.Add(item.myGuid);
+                        if (ExpandSettings.debugMode)
+                        {
+                            Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Exception caught trying to add enemy with GUID " + item.myGuid.ToString() + " to BlackAndGoldenRevolver.ExceptionEnemies!");
+                            Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "This Enemy will be processed seperately by looking for it in Game.Enemies.Entries later!");
+                            Debug.LogException(ex);
+                        }
+                    }
+                    if (moddedEnemiesSkipped.Count > 0)
+                    {
+                        foreach (AIActor enemy in Game.Enemies.Entries)
+                        {   
+                            if (enemy.EnemyGuid.Contains(enemy.EnemyGuid))
+                            {
+                                ProcessEnemyEntry(enemy, true);
+                                break;
+                            }
+                        }
                     }
                 }
+            }
+            if (ExpandSettings.debugMode)
+            {
+                Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Done setting up black and golden revolver enemy excweptions");
+            }
+        }
+
+        public static void ProcessEnemyEntry(AIActor enemy, bool wasSkippedEarlier)
+        {   
+            if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
+            {
+                float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
+
+                if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
+                {
+                    var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
+
+                    exceptionEnemies.Add(enemy.EnemyGuid, ratio);
+                    if (ExpandSettings.debugMode)
+                    {
+                        if (!wasSkippedEarlier)
+                        {
+                            Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Enemy with " + enemy.EnemyGuid.ToString() + " succesfully added to BlackAndGoldenRevolver.ExceptionEnemies list.");
+                        }
+                        else
+                        {
+                           Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Skipped enemy with GUID " + enemy.EnemyGuid.ToString() + " succesfully added to BlackAndGoldenRevolver.ExceptionEnemies!");
+                        }
+                    }
+                }
+
             }
         }
 
@@ -77,42 +119,21 @@ namespace ExpandTheGungeon.ItemAPI
             Add(true);
             Add(false);
 
-            /*if (ExpandSettings.debugMode)
+            if (ExpandSettings.debugMode)
             {
-                Debug.Log("[ExpandTheGungeon] Now setting up projectile hook");
+                Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Now setting up projectile hook");
             }
 
             ProjectileHookClass.AddHook();
 
             if (ExpandSettings.debugMode)
             {
-                Debug.Log("[ExpandTheGungeon] Done setting up projectile hook");
+                Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Done setting up projectile hook");
             }
 
-            foreach (var item in EnemyDatabase.Instance.Entries)
-            {
-                if (item != null)
-                {
-                    // var enemy = EnemyDatabase.GetOrLoadByGuid(item.myGuid);
-                    var enemy = ExpandEnemyDatabase.GetOfficialEnemyByGuid(item.myGuid); // Changed to avoid Alexandira's enemy guid hook from breaking my attempt to retrieve this reference during async load.
-
-                    if (enemy && enemy.BlackPhantomProperties != null && enemy.healthHaver && !enemy.healthHaver.healthIsNumberOfHits && !enemy.healthHaver.IsBoss)
-                    {
-                        float jammedHealthMultiplier = 1 + enemy.BlackPhantomProperties.BonusHealthPercentIncrease + BlackPhantomProperties.GlobalPercentIncrease;
-
-                        if (enemy.BlackPhantomProperties.MaxTotalHealth > 0f && enemy.BlackPhantomProperties.MaxTotalHealth < enemy.healthHaver.GetMaxHealth() * jammedHealthMultiplier)
-                        {
-                            var ratio = enemy.BlackPhantomProperties.MaxTotalHealth / enemy.healthHaver.GetMaxHealth();
-
-                            exceptionEnemies.Add(enemy.EnemyGuid, ratio);
-                        }
-                        
-                    }
-                }
-            }*/
             if (ExpandSettings.debugMode)
             {
-                Debug.Log("[ExpandTheGungeon] Done setting up black and golden revolver");
+                Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Done setting up black and golden revolver");
             }
         }
 

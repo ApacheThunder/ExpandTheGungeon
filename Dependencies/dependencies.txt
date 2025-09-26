@@ -13,11 +13,10 @@ UnityEngine.ParticleSystemModule.dll
 UnityEngine.Physics2DModule.dll
 UnityEngine.PhysicsModule.dll
 UnityEngine.TextRenderingModule
+UnityEngine.UI.dll
 Assembly-CSharp.dll
 Assembly-CSharp-firstpass.dll
 MonoMod.RuntimeDetour.dll
 MonoMod.Utils.dll
 PlayMaker.dll
 Ionic.Zip.dll
-
-

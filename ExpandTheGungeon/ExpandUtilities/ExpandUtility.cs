@@ -5220,6 +5220,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             return tex;
         }
         
+        
         public static Texture2D BytesToTexture(byte[] bytes, string resourceName) {
             Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             ImageConversion.LoadImage(texture2D, bytes);
@@ -5265,18 +5266,18 @@ namespace ExpandTheGungeon.ExpandUtilities {
 			return result;
 		}
 
-        public static void DumpTexture2DToFile(Texture2D target, bool useRandomFilenames = false) {
+        public static void DumpTexture2DToFile(Texture2D target, string fileNameOverride = null, bool useRandomFilenames = false) {
             if (target == null) { return; }
-            string text = "DUMPsprites/" + "DUMP" + target.name;
-            string text2 = text + "/" + "DUMP" + target.name;
+            string targetName = target.name;
+            if (!string.IsNullOrEmpty(fileNameOverride))targetName = fileNameOverride;
+
+            string text = "EXDumpedTextures/" + targetName;
             if (useRandomFilenames) {
                 text += ("_" + Guid.NewGuid().ToString());
-                text2 += ("_" + Guid.NewGuid().ToString());
             }
             string path = System.IO.Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', System.IO.Path.DirectorySeparatorChar).Replace('\\', System.IO.Path.DirectorySeparatorChar) + ".png");
             bool fileExists = File.Exists(path);
             if (!fileExists) {
-                path = System.IO.Path.Combine(ETGMod.ResourcesDirectory, text2.Replace('/', System.IO.Path.DirectorySeparatorChar).Replace('\\', System.IO.Path.DirectorySeparatorChar) + ".png");
                 bool folderPath = !File.Exists(path);
                 if (folderPath) {
                     Directory.GetParent(path).Create();

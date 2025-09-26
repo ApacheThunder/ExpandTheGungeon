@@ -18,105 +18,12 @@ namespace ExpandTheGungeon {
 	
 	public class ExpandAssets {
 
-        public static void InitAssets(GameManager gameManager) {
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
-            ExpandLoadingScreen.RefreshText = true;
-
-            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
-            AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAudioAssetBundleName);
-            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
-            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
-            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
-            AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
-                        
-            InitAudio(expandAudio, ExpandTheGungeon.ModSoundBankName);
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadSprites;
-            ExpandLoadingScreen.RefreshText = true;
-            
-            // Init Custom GameLevelDefinitions
-            ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
-
-            // Init Custom Sprite Collections
-            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
-            ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadItems;
-            ExpandLoadingScreen.RefreshText = true;
-            
-            // Init ItemAPI
-            SetupItemAPI(expandSharedAssets1);
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadPrefabs;
-            ExpandLoadingScreen.RefreshText = true;
-
-            // Init Prefab Databases
-            ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadEnemies;
-            ExpandLoadingScreen.RefreshText = true;
-
-            // Init Custom Enemy Ammonomicon Data
-            ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
-            // Init Custom Enemy Prefabs
-            ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
-
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadRooms;
-            ExpandLoadingScreen.RefreshText = true;
-
-            // Init Custom Room Prefabs
-            ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
-
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFloors;
-            ExpandLoadingScreen.RefreshText = true;
-
-            // Init Custom DungeonFlow(s)
-            ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
-            // Things that need existing stuff created first have code run here
-
-            BootlegGuns.PostInit();
-            ClownFriend.PostInit();
-            
-            // Dungeon Prefabs
-            ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
-
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadCleanup;
-            ExpandLoadingScreen.RefreshText = true;
-
-            // Modified version of Anywhere mod
-            DungeonFlowModule.Install();
-            
-            ExpandTheGungeon.InitConsoleCommands(ExpandTheGungeon.ConsoleCommandName);
-
-            ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
-            ETGModConsole.DungeonDictionary.Add("office", "tt_office");
-            ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
-            ETGModConsole.DungeonDictionary.Add("space", "tt_space");
-            ETGModConsole.DungeonDictionary.Add("west", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
-            
-            // Null bundles when done with them to avoid game crash issues
-            expandSharedAssets1 = null;
-            sharedAssets = null;
-            sharedAssets2 = null;
-            enemiesBase = null;
-            braveResources = null;
-
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFinished;
-            ExpandLoadingScreen.RefreshText = true;
-
-            if (!ExpandLoadingScreen.KeepLoading && ExpandLoadingScreen.Instance)ExpandLoadingScreen.Instance.StartCoroutine(ExpandLoadingScreen.DestroyLoadScreen(ExpandLoadingScreen.Instance));
-        }
+        public static Exception LastException;
 
         public static IEnumerator InitAssetsAsync(GameManager gameManager) {
             yield return new WaitForEndOfFrame();
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
-            ExpandLoadingScreen.RefreshText = true;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
             
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
@@ -125,20 +32,28 @@ namespace ExpandTheGungeon {
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
-                        
-            InitAudio(expandAudio, ExpandTheGungeon.ModSoundBankName);
             
+            try {
+                InitAudio(expandAudio, ExpandTheGungeon.ModSoundBankName);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadSprites;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
-
-
-            // Init Custom GameLevelDefinitions
-            ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
-            yield return null;
-            // Init Custom Sprite Collections
-            ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
-            yield return null;
-            ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
+            
+            try {
+                // Init Custom GameLevelDefinitions
+                ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
+                // Init Custom Sprite Collections
+                ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
+                ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadItems;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
@@ -146,64 +61,96 @@ namespace ExpandTheGungeon {
 
             // Init ItemAPI
             SetupItemAPI(expandSharedAssets1);
-            
+
+            if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError) {
+                HandleError();
+                yield break;
+            }
+
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadPrefabs;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
 
 
-            // Init Prefab Databases
-            ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+            try { 
+                // Init Prefab Databases
+                ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadEnemies;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
 
-            // Init Custom Enemy Ammonomicon Data
-            ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
-            // Init Custom Enemy Prefabs
-            ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
+            try { 
+                // Init Custom Enemy Ammonomicon Data
+                ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
+                // Init Custom Enemy Prefabs
+                ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadRooms;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
-
-
-            // Init Custom Room Prefabs
-            ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
             
+            try {             
+                // Init Custom Room Prefabs
+                ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
+
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFloors;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
-
-
-            // Init Custom DungeonFlow(s)
-            ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
-            // Things that need existing stuff created first have code run here
-
-            BootlegGuns.PostInit();
-            ClownFriend.PostInit();
             
-            // Dungeon Prefabs
-            ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
+
+            try { 
+                // Init Custom DungeonFlow(s)
+                ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
+                // Things that need existing stuff created first have code run here
+
+                BootlegGuns.PostInit();
+                ClownFriend.PostInit();
             
+                // Dungeon Prefabs
+                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
+
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
+
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadCleanup;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
 
-            // Modified version of Anywhere mod
-            DungeonFlowModule.Install();
+            try {
+                // Modified version of Anywhere mod
+                DungeonFlowModule.Install();
+            
+                ExpandConsole.InitConsoleCommands(ExpandConsole.ConsoleCommandName);
 
-            yield return null;
-
-            ExpandTheGungeon.InitConsoleCommands(ExpandTheGungeon.ConsoleCommandName);
-
-            ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
-            ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
-            ETGModConsole.DungeonDictionary.Add("office", "tt_office");
-            ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
-            ETGModConsole.DungeonDictionary.Add("space", "tt_space");
-            ETGModConsole.DungeonDictionary.Add("west", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
-            ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
-            yield return null;
-
+                ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
+                ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
+                ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
+                ETGModConsole.DungeonDictionary.Add("office", "tt_office");
+                ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
+                ETGModConsole.DungeonDictionary.Add("space", "tt_space");
+                ETGModConsole.DungeonDictionary.Add("west", "tt_west");
+                ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
+                ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                yield break;
+            }
+            
             // Destroy Ammonomicon after Async load to ensure it gets updated when it's instantiated again.
             UnityEngine.Object.Destroy(AmmonomiconController.Instance);
             
@@ -214,6 +161,11 @@ namespace ExpandTheGungeon {
             enemiesBase = null;
             braveResources = null;
 
+            if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError) {
+                HandleError();
+                yield break;
+            }
+
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFinished;
             yield return ExpandLoadingScreen.WaitForTextUpdate();
 
@@ -221,6 +173,136 @@ namespace ExpandTheGungeon {
                 yield return ExpandLoadingScreen.Instance.StartCoroutine(ExpandLoadingScreen.DestroyLoadScreen(ExpandLoadingScreen.Instance));
             }
             yield break;
+        }
+
+        public static void InitAssets(GameManager gameManager) {
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
+            
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
+            AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAudioAssetBundleName);
+            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
+            AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
+
+            try { 
+                InitAudio(expandAudio, ExpandTheGungeon.ModSoundBankName);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadSprites;
+
+            try {     
+                // Init Custom GameLevelDefinitions
+                ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
+
+                // Init Custom Sprite Collections
+                ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
+                ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadItems;
+
+            // Init ItemAPI
+            SetupItemAPI(expandSharedAssets1);
+
+            if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError) {
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadPrefabs;
+
+            try {
+                // Init Prefab Databases
+                ExpandPrefabs.InitPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadEnemies;
+
+            try { 
+                // Init Custom Enemy Ammonomicon Data
+                ExpandAmmonomiconDatabase.Init(expandSharedAssets1);
+                // Init Custom Enemy Prefabs
+                ExpandEnemyDatabase.InitPrefabs(expandSharedAssets1);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadRooms;
+
+            try {
+                // Init Custom Room Prefabs
+                ExpandRoomPrefabs.InitCustomRooms(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources, enemiesBase);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFloors;
+
+            try {
+                // Init Custom DungeonFlow(s)
+                ExpandDungeonFlow.InitDungeonFlows(sharedAssets2);
+                
+                // Things that need existing stuff created first have code run here
+                BootlegGuns.PostInit();
+                ClownFriend.PostInit();
+                
+                // Dungeon Prefabs
+                ExpandDungeonPrefabs.InitDungoenPrefabs(expandSharedAssets1, sharedAssets, sharedAssets2, braveResources);
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadCleanup;
+
+            try { 
+                // Modified version of Anywhere mod
+                DungeonFlowModule.Install();
+            
+                ExpandConsole.InitConsoleCommands(ExpandConsole.ConsoleCommandName);
+
+                ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
+                ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
+                ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
+                ETGModConsole.DungeonDictionary.Add("office", "tt_office");
+                ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
+                ETGModConsole.DungeonDictionary.Add("space", "tt_space");
+                ETGModConsole.DungeonDictionary.Add("west", "tt_west");
+                ETGModConsole.DungeonDictionary.Add("oldwest", "tt_west");
+                ETGModConsole.DungeonDictionary.Add("backrooms", "tt_backrooms");
+            
+                // Null bundles when done with them to avoid game crash issues
+                expandSharedAssets1 = null;
+                sharedAssets = null;
+                sharedAssets2 = null;
+                enemiesBase = null;
+                braveResources = null;
+            } catch (Exception ex) {
+                LastException = ex;
+                HandleError();
+                return;
+            }
+
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFinished;
+            
+            if (!ExpandLoadingScreen.KeepLoading && ExpandLoadingScreen.Instance)ExpandLoadingScreen.Instance.StartCoroutine(ExpandLoadingScreen.DestroyLoadScreen(ExpandLoadingScreen.Instance));
         }
 
         private static void SetupItemAPI(AssetBundle expandSharedAssets1) {
@@ -262,9 +344,56 @@ namespace ExpandTheGungeon {
                     
                     ExpandTheGungeon.ItemAPISetup = true;
                 } catch (Exception e2) {
+                    ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadError;
+                    LastException = e2;
                     Tools.PrintException(e2, "FF0000");
                 }
             }
+        }
+
+        public static void HandleError(bool printToConsole = true) {
+            string m_ErrorText = "ERROR: ";
+            switch (ExpandTheGungeon.lastNonErrorState) {
+                default:
+                    m_ErrorText += "Unknown Error!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.PreInit:
+                    m_ErrorText += "Error encountered during pre-init!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadStart:
+                    m_ErrorText += "Error encountered during load start!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadAudio:
+                    m_ErrorText += "Error setting up audio!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadSprites:
+                    m_ErrorText += "Error building sprite collections!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadItems:
+                    m_ErrorText += "Error building item prefabs!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadPrefabs:
+                    m_ErrorText += "Error building prefabs!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadEnemies:
+                    m_ErrorText += "Error building enemy prefabs!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadRooms:
+                    m_ErrorText += "Error building room prefabs!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadFloors:
+                    m_ErrorText += "Error building gungeon floors!";
+                    break;
+                case ExpandTheGungeon.LoadStatus.LoadCleanup:
+                    m_ErrorText += "Error encountered during load cleanup!";
+                    break;
+            }
+            ExpandLoadingScreen.LoadText[ExpandTheGungeon.LoadStatus.LoadError] = m_ErrorText;
+            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadError;
+            if (!ExpandSettings.EnableAsyncAssetLoading) ExpandLoadingScreen.UpdateText(m_ErrorText, true);
+            if (printToConsole)ETGModConsole.Log("[" + ExpandTheGungeon.ModName + "] " + m_ErrorText, true);
+            if (LastException != null) Debug.Log(LastException);
+            return;
         }
 
 
@@ -334,7 +463,7 @@ namespace ExpandTheGungeon {
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandSharedAuto asset bundle not found!";
                     Debug.Log(ErrorMessage);
-                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                    ExpandTheGungeon.ExceptionTextList.Add(ErrorMessage);
                     return;
                 }
 
@@ -343,7 +472,7 @@ namespace ExpandTheGungeon {
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandAudio asset bundle not found!";
                     Debug.Log(ErrorMessage);
-                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                    ExpandTheGungeon.ExceptionTextList.Add(ErrorMessage);
                     return;
                 }
 
@@ -352,14 +481,14 @@ namespace ExpandTheGungeon {
                 } else {
                     string ErrorMessage = "[ExpandTheGungeon] ERROR: ExpandShaders asset bundle not found!";
                     Debug.Log(ErrorMessage);
-                    ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                    ExpandTheGungeon.ExceptionTextList.Add(ErrorMessage);
                     return;
                 }
             } catch (Exception ex) {
                 string ErrorMessage = "[ExpandTheGungeon] ERROR: Exception while loading custom asset bundles! Possible GUID conflict with other custom AssetBundles?";
                 Debug.Log(ErrorMessage);
                 Debug.LogException(ex);
-                ExpandTheGungeon.ExceptionText.Add(ErrorMessage);
+                ExpandTheGungeon.ExceptionTextList.Add(ErrorMessage);
                 return;
             }
         }

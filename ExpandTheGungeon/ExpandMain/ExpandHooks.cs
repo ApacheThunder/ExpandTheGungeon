@@ -115,7 +115,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
 
         public static void InstallRequiredHooks() {
-
+            
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DeadlyDeadlyGoopManager.IgniteGoopsCircle Hook..."); }
             igniteGoopsCircleHook = new Hook(
                 typeof(DeadlyDeadlyGoopManager).GetMethod(nameof(DeadlyDeadlyGoopManager.IgniteGoopsCircle), BindingFlags.Public | BindingFlags.Static),
@@ -918,7 +918,11 @@ namespace ExpandTheGungeon.ExpandMain {
             grabbedPlayer.IsVisible = false;
             yield return new WaitForSeconds(2.3f);
             grabbedPlayer.specRigidbody.CapVelocity = false;
-            Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            if (ExpandDebugCamera.DebugCameraEnabled) {
+                ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+            } else {
+                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            }
             if (m_cryoBool != null && m_cryoBool.Value) {
                 AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
                 GameManager.DoMidgameSave(GlobalDungeonData.ValidTilesets.HELLGEON);
@@ -1860,7 +1864,11 @@ namespace ExpandTheGungeon.ExpandMain {
                 while (animator.IsPlaying(self.elevatorDepartAnimName)) yield return null;
                 animator.renderer.enabled = false;
                 yield return null;
-                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                if (ExpandDebugCamera.DebugCameraEnabled) {
+                    ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+                } else {
+                    Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+                }
                 GameUIRoot.Instance.HideCoreUI(string.Empty);
                 GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
                 yield return null;
@@ -1930,6 +1938,10 @@ namespace ExpandTheGungeon.ExpandMain {
             orig(self, delay);
         }
 
+
+        // public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
+        public static bool test = false;
+        
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {
             FieldInfo m_gameManagerCachedField = typeof(OcclusionLayer).GetField("m_gameManagerCached", BindingFlags.Instance | BindingFlags.NonPublic);
             FieldInfo m_pixelatorCachedField = typeof(OcclusionLayer).GetField("m_pixelatorCached", BindingFlags.Instance | BindingFlags.NonPublic);

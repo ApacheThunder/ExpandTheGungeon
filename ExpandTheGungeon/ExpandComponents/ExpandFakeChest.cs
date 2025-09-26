@@ -57,8 +57,14 @@ namespace ExpandTheGungeon.ExpandComponents {
                 "05cb719e0178478685dc610f8b3e8bfc" // bullet_kin_vest
             };
 
+            spawnAnimClipName = "enemy_chest_appear";
+            chestKnockClipName = "enemy_chest_knock";
+            
             IsWinnerChest = false;
             surpriseChestDoesSpawnAnim = false;
+
+            groundHitDelay = 0.73f;
+
 
             IsBroken = false;
             m_configured = false;
@@ -79,6 +85,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public string openAnimName;
         public string breakAnimName;
 
+        public string spawnAnimClipName;
+        public string chestKnockClipName;
+
+
         public string switchOnAnimName;
         public string switchOffAnimName;
 
@@ -87,6 +97,10 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public GameObject RickRollAnimationObject;
         public GameObject MinimapIconPrefab;
+        public GameObject VFX_PreSpawn;
+        public GameObject VFX_GroundHit;
+
+        public float groundHitDelay;
 
         private bool m_configured;
         private bool m_Opened;
@@ -96,9 +110,9 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private RoomHandler m_room;
         private RoomHandler m_registeredIconRoom;
-
-
+        
         public void Interact(PlayerController player) {
+            if (chestType != ChestType.MusicSwitch && majorBreakable) majorBreakable.SpawnItemOnBreak = false;
             switch (chestType) {
                 case ChestType.MusicSwitch:
                     ToggleSwitch();
@@ -123,7 +137,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_room.DeregisterInteractable(this);
                 spriteAnimator.Play(openAnimName);
                 player.TriggerItemAcquisition();
-                if (majorBreakable) { majorBreakable.SpawnItemOnBreak = false; }
                 StartCoroutine(DoWestOpen());
             }
         }
@@ -135,7 +148,6 @@ namespace ExpandTheGungeon.ExpandComponents {
                 m_room.DeregisterInteractable(this);
                 spriteAnimator.Play(openAnimName);
                 player.TriggerItemAcquisition();
-                if (majorBreakable) { majorBreakable.SpawnItemOnBreak = false; }
                 StartCoroutine(DoSurprise());
             }
         }
@@ -150,10 +162,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 AkSoundEngine.PostEvent("play_obj_chest_open_01", gameObject);
                 spriteAnimator.Play(openAnimName);
                 player.TriggerItemAcquisition();
-                if (majorBreakable) {
-                    majorBreakable.OnBreak = (Action)Delegate.Remove(majorBreakable.OnBreak, new Action(OnBroken));
-                    majorBreakable.SpawnItemOnBreak = false;
-                }
+                if (majorBreakable)majorBreakable.OnBreak = (Action)Delegate.Remove(majorBreakable.OnBreak, new Action(OnBroken));
                 if (m_room.area.PrototypeRoomCategory != PrototypeDungeonRoom.RoomCategory.SECRET) {
                     Vector3 RoomOffset = m_room.area.basePosition.ToVector3();
                     List<string> EnemyGUIDs = new List<string>() {
@@ -502,7 +511,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     if (surpriseChestDoesSpawnAnim) {
                         renderer.enabled = false;
-                        StartCoroutine(HandleSupriseChestSpawnAnimation());
+                        specRigidbody.Initialize();
+                        specRigidbody.PreventPiercing = true;
+                        GameManager.Instance.StartCoroutine(HandleSupriseChestSpawnAnimation());
                     } else {
                         spriteAnimator.Play("enemy_chest_knock");
                     }
@@ -523,36 +534,32 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
 
-        private IEnumerator HandleSupriseChestSpawnAnimation() {
-            if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = true; }
-
-            GameObject VFX_PreSpawn = Instantiate(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>().VFX_PreSpawn, transform.position, Quaternion.identity);
-            GameObject VFX_GroundHit = Instantiate(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<Chest>().VFX_GroundHit, transform.position, Quaternion.identity);
-
-            VFX_PreSpawn.transform.SetParent(transform);
-            VFX_PreSpawn.transform.localPosition = new Vector3(-0.625f, 0.875f, 0);
-
-            VFX_GroundHit.transform.SetParent(transform);
-            VFX_GroundHit.transform.localPosition = new Vector3(-0.3125f, -0.375f, 0);
+        
+        public IEnumerator HandleSupriseChestSpawnAnimation() {
+            if (majorBreakable) majorBreakable.TemporarilyInvulnerable = true;
 
             m_temporarilyUnopenable = true;
 
-            if (VFX_PreSpawn != null) {                
+            if (VFX_PreSpawn) {
+                renderer.enabled = false;
                 VFX_PreSpawn.SetActive(true);
                 yield return new WaitForSeconds(0.1f);
-                renderer.enabled = true;                
-            } else {
-                renderer.enabled = true;
             }
-            
-            tk2dSpriteAnimationClip spawnAnimClip = spriteAnimator.GetClipByName("enemy_chest_appear");
 
-            if (spawnAnimClip != null) {                
-                specRigidbody.enabled = false;
+            renderer.enabled = true;
+
+            tk2dSpriteAnimationClip spawnAnimClip = null;
+            tk2dSpriteAnimationClip chestKnockClip = null;
+            if (!string.IsNullOrEmpty(spawnAnimClipName)) spawnAnimClip = spriteAnimator.GetClipByName(spawnAnimClipName);
+            if (!string.IsNullOrEmpty(chestKnockClipName)) chestKnockClip = spriteAnimator.GetClipByName(chestKnockClipName);
+            
+            if (spawnAnimClip != null) {
+                // specRigidbody.enabled = false;
                 float clipTime = (spawnAnimClip.frames.Length / spawnAnimClip.fps);
                 spriteAnimator.Play(spawnAnimClip);
                 sprite.UpdateZDepth();
-                float groundHitDelay = 0.73f;
+                groundHitDelay = 0.73f;
+                if (chestType == ChestType.SurpriseChest)groundHitDelay = 0.4f;
                 float elapsed = 0f;
                 bool groundHitTriggered = false;
                 while (elapsed < clipTime) {
@@ -560,8 +567,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (elapsed >= groundHitDelay && !groundHitTriggered) {
                         groundHitTriggered = true;
                         Exploder.DoRadialPush(sprite.WorldCenter.ToVector3ZUp(sprite.WorldCenter.y), 22f, 5f);
-                        if (VFX_GroundHit) { VFX_GroundHit.SetActive(true); }
-                        specRigidbody.enabled = true;
+                        if (VFX_GroundHit)VFX_GroundHit.SetActive(true);
                         List<CollisionData> list = new List<CollisionData>();
                         PhysicsEngine.Instance.OverlapCast(specRigidbody, list, false, true, null, null, false, null, null, new SpeculativeRigidbody[0]);
                         for (int i = 0; i < list.Count; i++) {
@@ -578,8 +584,11 @@ namespace ExpandTheGungeon.ExpandComponents {
             m_room.RegisterInteractable(this);
             PhysicsEngine.Instance.RegisterOverlappingGhostCollisionExceptions(specRigidbody, null, false);
             m_temporarilyUnopenable = false;
-            if (majorBreakable) { majorBreakable.TemporarilyInvulnerable = false; }
-            spriteAnimator.Play("enemy_chest_break");            
+            if (majorBreakable)majorBreakable.TemporarilyInvulnerable = false;
+            if (spawnAnimClip != null) {
+                while (spriteAnimator.IsPlaying(spawnAnimClip)) yield return null;
+            }
+            if (chestKnockClip != null)spriteAnimator.Play("enemy_chest_knock");
             yield break;
         }
         
@@ -596,12 +605,13 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         private void OnBroken() {
             spriteAnimator.Play(breakAnimName);
+            // specRigidbody.OnPreRigidbodyCollision -= ChestOnPreRigidBodyCollision;
             specRigidbody.enabled = false;
             IsBroken = true;
             sprite.HeightOffGround = -3f;
             sprite.UpdateZDepth();
             string ShadowObjectName = "Expand_RickRollChestShadow";
-            if (chestType == ChestType.SurpriseChest) { ShadowObjectName = "Expand_SurpriseChestShadow"; }
+            if (chestType == ChestType.SurpriseChest) { ShadowObjectName = "Shadow"; }
             Transform shadowTransform = transform.Find(ShadowObjectName);
             if (shadowTransform != null) { Destroy(shadowTransform.gameObject); }
             if (m_registeredIconRoom != null) { Minimap.Instance.DeregisterRoomIcon(m_registeredIconRoom, minimapIconInstance); }
@@ -663,7 +673,6 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
         
         protected override void OnDestroy() {
-            base.OnDestroy();
             switch (chestType) {
                 case ChestType.MusicSwitch:
                     break;
@@ -676,6 +685,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 case ChestType.WestChest:
                     break;
             }
+            base.OnDestroy();
         }
     }
 

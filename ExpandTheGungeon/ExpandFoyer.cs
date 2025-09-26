@@ -3,6 +3,7 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandLoadingScreens;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ItemAPI;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using UnityEngine;
@@ -30,7 +31,8 @@ namespace ExpandTheGungeon {
                         );
                     }
                     if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished) return;
-                    if (Foyer.DoIntroSequence | Foyer.DoMainMenu) return;
+                    if (!BlackAndGoldenRevolver.RevolverExceptionListsBuilt)BlackAndGoldenRevolver.BuildExceptionsList();
+                    if (Foyer.DoIntroSequence) return;
                     if (ExpandLoadingScreen.LoadingScreenObject.activeSelf) ExpandLoadingScreen.LoadingScreenObject.SetActive(false);
                     if (ExpandLoadingScreen.LoadingBarObject.activeSelf) ExpandLoadingScreen.LoadingBarObject.SetActive(false);
                     m_State = State.CheckSettings;

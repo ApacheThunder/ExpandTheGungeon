@@ -39,29 +39,46 @@ namespace ExpandTheGungeon.ItemAPI {
         
 
         public ThirdEye() {
-            m_BannedRooms = m_BannedRooms = new List<string> {
+            BannedRooms = BannedRooms = new List<string> {
                 "endtimes_chamber",
                 "lichroom03"
             };
+
+            MaxChestSpawnsPerFloor = 1;
+
+            m_DoRoomActivations = false;
             m_pickedUp = false;
         }
 
-        private List<string> m_BannedRooms;
+        public int MaxChestSpawnsPerFloor;
+
+        public List<string> BannedRooms;
 
         private RoomHandler m_CurrentRoom;
 
         private bool m_PickedUp;
+        private bool m_DoRoomActivations;
+        private int m_ChestsSpawnsThisFloor;
 
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
             ExpandPlaceWallMimic.PlayerHasThirdEye = true;
             Pixelator.Instance.DoOcclusionLayer = false;
             player.OnRoomClearEvent += OnRoomCleared;
+            player.OnNewFloorLoaded += OnFloorEntered;
+            ExpandDebugCamera.DebugCameraEnabled = true;
+            if (GameManager.HasInstance && GameManager.Instance.Dungeon?.data?.rooms != null) {
+                foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
+                    room.SetRoomActive(true);
+                    room.ForcedActiveState = true;
+                }
+            }
             m_PickedUp = true;
         }
         
         private void OnRoomCleared(PlayerController player) {
             bool debugMode = false;
+            if (!debugMode && m_ChestsSpawnsThisFloor > MaxChestSpawnsPerFloor) return;
             if (m_CurrentRoom != null && m_CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return; }
             if (m_CurrentRoom != player.CurrentRoom && (Random.value <= 0.15f | debugMode)) {
                 IntVector2 bestRewardLocation = player.CurrentRoom.GetBestRewardLocation(new IntVector2(2, 1), RoomHandler.RewardLocationStyle.CameraCenter, true);
@@ -69,6 +86,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 
                 if (m_EnemyChest) {
                     ExpandFakeChest enemyChest = m_EnemyChest.GetComponent<ExpandFakeChest>();
+                    m_ChestsSpawnsThisFloor++;
                     if (enemyChest) {
                         enemyChest.surpriseChestDoesSpawnAnim = true;
                         enemyChest.ConfigureOnPlacement(player.CurrentRoom);                        
@@ -78,24 +96,38 @@ namespace ExpandTheGungeon.ItemAPI {
             m_CurrentRoom = player.CurrentRoom;
         }
 
+        private void OnFloorEntered(PlayerController player) {
+            m_ChestsSpawnsThisFloor = 0;
+            m_DoRoomActivations = true;
+        }
+
+
         protected override void Update() {
-            if (Dungeon.IsGenerating | (GameManager.Instance && GameManager.Instance.IsLoadingLevel)) { return; }
-            if (m_PickedUp) { foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) { room.SetRoomActive(true); } }
+            if (Dungeon.IsGenerating | (GameManager.Instance && GameManager.Instance.IsLoadingLevel))return;
+
+            if (m_PickedUp && m_DoRoomActivations && GameManager.HasInstance && GameManager.Instance.Dungeon?.data?.rooms != null) {
+                m_DoRoomActivations = false;
+                foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
+                    room.SetRoomActive(true);
+                    room.ForcedActiveState = true;
+                }
+            }
             if (Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) {
                 if (m_owner && m_owner.CurrentRoom != null && !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) &&
-                   !m_BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
+                   !BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
                    )
                 {   
                     Pixelator.Instance.DoOcclusionLayer = false;
                 }
             } else if (Pixelator.Instance && !Pixelator.Instance.DoOcclusionLayer) {
                 if (m_owner && m_owner.CurrentRoom != null &&
-                   !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) && m_BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
+                   !string.IsNullOrEmpty(m_owner.CurrentRoom.GetRoomName()) && BannedRooms.Contains(m_owner.CurrentRoom.GetRoomName().ToLower())
                    )
                 {
                     Pixelator.Instance.DoOcclusionLayer = true;
                 }
             }
+            if (m_PickedUp && !ExpandDebugCamera.DebugCameraEnabled)ExpandDebugCamera.DebugCameraEnabled = true;
             base.Update();
         }
 
@@ -104,18 +136,21 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandPlaceWallMimic.PlayerHasThirdEye = false;
             Pixelator.Instance.DoOcclusionLayer = true;
             m_PickedUp = false;
-            foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) {
-                if (player.CurrentRoom != null && player.CurrentRoom != room && !player.CurrentRoom.connectedRooms.Contains(room))
-                room.SetRoomActive(false);
+            m_DoRoomActivations = false;
+            if (GameManager.HasInstance && GameManager.Instance.Dungeon?.data?.rooms != null) {
+                foreach (RoomHandler room in GameManager.Instance.Dungeon.data.rooms) room.ForcedActiveState = null;
             }
+            ExpandDebugCamera.DebugCameraEnabled = false;
             player.OnRoomClearEvent -= OnRoomCleared;
+            player.OnNewFloorLoaded -= OnFloorEntered;
             return drop;
         }
         
 
         protected override void OnDestroy() {
-            if (Pixelator.Instance) { Pixelator.Instance.DoOcclusionLayer = true; }
+            if (Pixelator.Instance)Pixelator.Instance.DoOcclusionLayer = true;
             ExpandPlaceWallMimic.PlayerHasThirdEye = false;
+            ExpandDebugCamera.DebugCameraEnabled = false;
             m_PickedUp = false;
             base.OnDestroy();
         }

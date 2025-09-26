@@ -459,7 +459,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 AkSoundEngine.PostEvent("Stop_ENV_rain_loop_01", rainFXOBJ.gameObject);
                 Destroy(rainFXOBJ.gameObject);
             }
-            Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            if (ExpandDebugCamera.DebugCameraEnabled) {
+                ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+            } else {
+                Pixelator.Instance.FadeToBlack(0.5f, false, 0f);
+            }
             GameUIRoot.Instance.HideCoreUI(string.Empty);
             GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
             float delay = 0.5f;
@@ -471,7 +475,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             if (IsGlitchElevator) {
                 ExpandSettings.glitchElevatorHasBeenUsed = true;
-                ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Backrooms;
+                ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Glitched;
                 StartCoroutine(ExpandUtility.DelayedGlitchLevelLoad(delay, BraveUtility.RandomElement(ExpandDungeonFlow.GlitchChestFlows), BraveUtility.RandomBool()));
             } else {
                 if (UsesOverrideTargetFloor) {

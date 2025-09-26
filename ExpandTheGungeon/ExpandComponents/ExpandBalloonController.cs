@@ -213,7 +213,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         
 
         private void LateUpdate() {
-            if (m_Inactive) { return; }
+            if (m_Inactive)return;
 
             if (IsBeingDestroyed) {
                 IsBeingDestroyed = false;
@@ -237,7 +237,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!IsUsingGameObjectTarget && DoDetachAndFloatAfterTargetDeath && AttachTarget && AttachTarget is AIActor && (!AttachTarget || AttachTarget.healthHaver.IsDead)) {
                 if (DestroyOnDeath) {
                     m_Inactive = true;
-                    if (AlternateAttachTarget) { Destroy(AlternateAttachTarget); }
+                    if (AlternateAttachTarget)Destroy(AlternateAttachTarget);
                     Destroy(m_BalloonString);
                     Destroy(gameObject);
                     return;
@@ -246,7 +246,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     m_IsDetachedFromOriginalTarget = true;
                     AttachTarget = null;
 
-                    if (AlternateAttachTarget) { Destroy(AlternateAttachTarget); }
+                    if (AlternateAttachTarget)Destroy(AlternateAttachTarget);
 
                     if (!AlternateAttachTarget) {
                         AlternateAttachTarget = new GameObject() { name = ("Balloon Temp Object - " + Guid.NewGuid().ToString()) };
@@ -287,6 +287,12 @@ namespace ExpandTheGungeon.ExpandComponents {
                     if (primaryHand.renderer.enabled) { m_stringTargetAnchorPoint = primaryHand.sprite.WorldCenter; }
                 }
 
+                if (!m_stringBalloonAnchorPoint.HasValue) {
+                    IsBeingDestroyed = true;
+                    m_IsDetachedFromOriginalTarget = true;
+                    return;
+                }
+
                 stringLength = Vector3.Distance(transform.position, m_stringBalloonAnchorPoint.Value);
             }
 
@@ -296,7 +302,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 transform.position = Vector3.MoveTowards(transform.position, m_stringBalloonAnchorPoint.Value, BraveMathCollege.UnboundedLerp(1f, 10f, stringLength / 3f) * BraveTime.DeltaTime);
             }
 
-            if (!m_stringTargetAnchorPoint.HasValue) { return; }
+            if (!m_stringTargetAnchorPoint.HasValue | !m_stringBalloonAnchorPoint.HasValue) {
+                IsBeingDestroyed = true;
+                m_IsDetachedFromOriginalTarget = true;
+                return;
+            }
 
             BuildMeshAlongCurve(m_stringTargetAnchorPoint.Value, m_stringTargetAnchorPoint.Value, BalloonSprite.WorldBottomCenter - new Vector2(0, 2), BalloonSprite.WorldBottomCenter);
             m_mesh.vertices = m_vertices;

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -20,18 +21,25 @@ namespace ExpandTheGungeon {
         public static bool EnableEXItems = true;
         public static float JungleRainIntensity = 400f;
         public static bool EnableAsyncAssetLoading = true;
-        // Refer to ExpandUtilities.ExpandUtility.LanguageToInt or IntToLanguage for which language this number can be matched to.
-        // public static int GameLanguage = 0;
 
         // These are set during GamePlay, don't read/write them from JSON text.
+        [NonSerialized]
         public static bool spritesBundlePresent = false;
+        [NonSerialized]
         public static bool allowGlitchFloor = false;
+        [NonSerialized]
         public static bool glitchElevatorHasBeenUsed = false;
+        [NonSerialized]
         public static bool HasSpawnedSecretBoss = false;
+        [NonSerialized]
         public static float randomSeed = 0.5f;
+        [NonSerialized]
         public static bool PlayingPunchoutArcade = false;
+        [NonSerialized]
         public static bool HasSpawnedFakePastChest = false;
+        [NonSerialized]
         public static bool HasVisitedBackrooms = false;
+        [NonSerialized]
         public static bool BackroomsEntrancePlaced = false;
 
         public static void LoadSettings() {
@@ -72,7 +80,6 @@ namespace ExpandTheGungeon {
             IsHardModeBuild = stats.IsHardModeBuild;
             EnableJungleRain = stats.EnableJungleRain;
             EnableBloodiedScarfFix = stats.EnableBloodiedScarfFix;
-            // GameLanguage = stats.GameLanguage;
             EnableExpandedGlitchFloors = stats.EnableExpandedGlitchFloors;
             EnableGlitchFloorScreenShader = stats.EnableGlitchFloorScreenShader;
             EnableEXItems = stats.EnableEXItems;
@@ -96,7 +103,6 @@ namespace ExpandTheGungeon {
         public bool EnableGlitchFloorScreenShader;
         public bool EnableEXItems;
         public float JungleRainIntensity;
-        public int GameLanguage;
         public bool EnableAsyncAssetLoading;
 
         public ExpandCachedStats() {
@@ -115,7 +121,6 @@ namespace ExpandTheGungeon {
             EnableEXItems = ExpandSettings.EnableEXItems;
             JungleRainIntensity = ExpandSettings.JungleRainIntensity;
             EnableAsyncAssetLoading = ExpandSettings.EnableAsyncAssetLoading;
-            // GameLanguage = ExpandSettings.GameLanguage;
         }
     }
 }

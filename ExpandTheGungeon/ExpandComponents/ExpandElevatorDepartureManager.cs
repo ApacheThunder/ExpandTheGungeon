@@ -201,7 +201,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 animator.renderer.enabled = false;
                 yield return null;
                 float delay = 0.5f;
-                Pixelator.Instance.FadeToBlack(delay, false, 0f);
+                if (ExpandDebugCamera.DebugCameraEnabled) {
+                    ExpandDebugCamera.SetInitialCameraPosition(Pixelator.Instance, GameManager.Instance.MainCameraController);
+                } else {
+                    Pixelator.Instance.FadeToBlack(delay, false, 0f);
+                }
                 GameUIRoot.Instance.HideCoreUI(string.Empty);
                 GameUIRoot.Instance.ToggleLowerPanels(false, false, string.Empty);
                 float time = 0;
