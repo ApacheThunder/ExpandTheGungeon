@@ -15,6 +15,8 @@ namespace ExpandTheGungeon.ItemAPI {
         public static GameObject MrCapObject;
         public static GameObject MrCapProjectile;
         public static GameObject MrCapVFX;
+        public static GameObject MrCapHammerTarget;
+        public static GameObject MrCapHammer;
 
         public static float MrCapTossCooldown = 3;
 
@@ -94,7 +96,6 @@ namespace ExpandTheGungeon.ItemAPI {
             tk2dSpriteAnimator MrCapProjAnimator = ExpandUtility.GenerateSpriteAnimator(m_CapProjSpriteObject, playAutomatically: true);
             ExpandUtility.AddAnimation(MrCapProjAnimator, ExpandPrefabs.EXItemCollection, projSpritePaths, "spin", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 12);
             
-
             PierceProjModifier m_CapPiercer = MrCapProjectile.AddComponent<PierceProjModifier>();
             m_CapPiercer.penetration = 1000;
             m_CapPiercer.penetratesBreakables = true;
@@ -102,26 +103,22 @@ namespace ExpandTheGungeon.ItemAPI {
             m_CapPiercer.BeastModeLevel = PierceProjModifier.BeastModeStatus.BEAST_MODE_LEVEL_ONE;
             m_CapPiercer.UsesMaxBossImpacts = false;
             m_CapPiercer.MaxBossImpacts = -1;
-
-            /*BounceProjModifier m_CapBouncer = MrCapProjectile.AddComponent<BounceProjModifier>();
-            m_CapBouncer.numberOfBounces = 1000;
-            m_CapBouncer.chanceToDieOnBounce = 0;
-            m_CapBouncer.percentVelocityToLoseOnBounce = 0;
-            m_CapBouncer.usesAdditionalScreenShake = false;
-            m_CapBouncer.useLayerLimit = false;
-            m_CapBouncer.layerLimit = 0;
-            m_CapBouncer.ExplodeOnEnemyBounce = false;
-            m_CapBouncer.removeBulletScriptControl = true;
-            m_CapBouncer.suppressHitEffectsOnBounce = true;
-            m_CapBouncer.onlyBounceOffTiles = false;
-            m_CapBouncer.bouncesTrackEnemies = false;
-            m_CapBouncer.bounceTrackRadius = 5;
-            m_CapBouncer.TrackEnemyChance = 1;*/
-
+            
 
             MrCapVFX = expandSharedAssets1.LoadAsset<GameObject>("EXMrCapVFX");
             tk2dSprite MrCapVFXSprite = SpriteSerializer.AddSpriteToObject(MrCapVFX, ExpandPrefabs.EXItemCollection, "hatty_001");
             MrCapVFX.AddComponent<ExpandHatVFX>();
+
+            MrCapHammerTarget = expandSharedAssets1.LoadAsset<GameObject>("MrCapHammerTarget");
+            SpriteSerializer.AddSpriteToObject(MrCapHammerTarget.transform.Find("Sprite").gameObject, ExpandPrefabs.EXItemCollection, "hatty_hammertarget_001", tk2dBaseSprite.PerpendicularState.FLAT, 0);
+            
+            MrCapHammer = ExpandForgeHammerComponent.BuildHammerPrefab(expandSharedAssets1, "Mr Cap Forge Hammer", "8x8_fireball_companion_projectile_dark", false, true, true, out ExpandPrefabs.EXFriendlyForgeHammerBullet);
+            ExpandForgeHammerComponent MrCapHammerController = MrCapHammer.GetComponent<ExpandForgeHammerComponent>();
+            MrCapHammerController.PowerScalesWithFloors = false;
+            MrCapHammerController.IsCapturedHammer = true;
+            MrCapHammerController.TracksPlayer = true;
+            MrCapHammerController.TracksRandomEnemy = false;
+            MrCapHammerController.DeactivateOnEnemiesCleared = false;
         }
         
 

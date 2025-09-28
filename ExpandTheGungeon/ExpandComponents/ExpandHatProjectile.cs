@@ -2,6 +2,7 @@
 using ExpandTheGungeon.ItemAPI;
 using System;
 using Dungeonator;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -161,6 +162,7 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             AIActor m_AIActor = otherRigidbody.gameObject.GetComponent<AIActor>();
             Chest m_Chest = otherRigidbody.gameObject.GetComponent<Chest>();
+            ForgeHammerController m_Hammer = otherRigidbody.gameObject.GetComponent<ForgeHammerController>();
 
             if (otherRigidbody.GetComponentInChildren<ExpandHatMindController>())return;
             if (hatItemOwner.InUse)return;
@@ -176,8 +178,34 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
                 return;
             }
+
+            if (m_Hammer && !m_Chest && !m_AIActor) {
+                RoomHandler m_HammerRoom = ReflectionHelpers.ReflectGetField<RoomHandler>(typeof(ForgeHammerController), "m_room", m_Hammer);
+                if (m_HammerRoom != null) {
+                    GameObject ForgeHammerObject = DungeonPlaceableUtility.InstantiateDungeonPlaceable(MrCap.MrCapHammer, m_HammerRoom, (m_Hammer.transform.position.XY().ToIntVector2() - m_HammerRoom.area.basePosition), true);
+                    if (ForgeHammerObject) {
+                        ExpandForgeHammerComponent ForgeHammer = ForgeHammerObject.GetComponent<ExpandForgeHammerComponent>();
+                        ForgeHammer.Owner = m_Owner;
+                        ForgeHammer.ConfigureOnPlacement(m_HammerRoom);
+                        hatItemOwner.CurrentMindControl = ForgeHammerObject.AddComponent<ExpandHatMindController>();
+                        hatItemOwner.CurrentMindControl.PreviousHammer = m_Hammer;
+                        hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.Hammer;
+                        hatItemOwner.CurrentMindControl.UseFakeActorTarget = false;
+                        hatItemOwner.CurrentMindControl.MrCapItem = hatItemOwner;
+                        if (Owner) hatItemOwner.CurrentMindControl.Init(m_Owner, ForgeHammerObject);
+                        if (hatItemOwner.CurrentMindControl && hatItemOwner.CurrentMindControl.AttachFailed) {
+                            hatItemOwner.CurrentMindControl.IsOnDeath = false;
+                            Destroy(hatItemOwner.CurrentMindControl);
+                            hatItemOwner.CurrentMindControl = null;
+                            Destroy(ForgeHammerObject);
+                        } else {
+                            IsAttached = true;
+                        }
+                    }
+                }
+            }
             
-            if (m_Chest && !m_AIActor && !m_Chest.IsBroken) {
+            if (!IsAttached && m_Chest && !m_AIActor && !m_Chest.IsBroken) {
                 hatItemOwner.CurrentMindControl = m_Chest.gameObject.AddComponent<ExpandHatMindController>();
                 hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.Chest;
                 hatItemOwner.CurrentMindControl.UseFakeActorTarget = false;

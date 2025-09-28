@@ -21,27 +21,39 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         public static GameObject LoadingScreenObject;
         public static GameObject LoadingBarFrameObject;
         public static GameObject LoadingBarObject;
-        
+        public static GameObject OptionalLoadingScreenObject;
+
         public static dfLabel LoadTextInstance;
         
         public static dfTextureSprite EXLoadingScreenSprite;
         public static dfTextureSprite EXLoadingBarFrameSprite;
         public static dfTextureSprite EXLoadingBarSprite;
+        public static dfTextureSprite EXAdditionalLogoSprite;
 
         public static Texture2D EXLoadScreenLogo;
         public static Texture2D EXLoadScreenLogoLoadBarFrame;
         public static Texture2D EXLoadScreenLogoLoadBar;
-        public static Texture2D EXLoadScreenLogoLoadBarError;
+        
+
+        // The values defined below are for external mod use if they so choose.
+        public static Texture2D ExternalLogoOverride = null;
+        // Control progress bar by altering it's size on horizontal axis. Current graphic is 218 on horizontal resolution. So anything between 0 and 218 gives you the normal coverage under the frame.
+        public static float? ProgressBarWidthOverride = null;
+        // Color override for Progress Bar. Only set if LoadStatus set to other.
+        public static Color? ProgressBarColorOverride = null;
+        // Anchor style. Control centering of optional logo graphics. If null, center in middle of screen is default.
+        public static dfAnchorStyle? ExternalLogoAnchorStyle = null;
 
         // These are instantiated instances. They will be null when the loading screen is Destroyed.
         private static dfTextureSprite m_EXLoadingScreenSprite;
         private static dfTextureSprite m_EXLoadingBarFrameSprite;
         private static dfTextureSprite m_EXLoadingBarSprite;
 
-
         public static Texture2D EXLoadScreenThrobber_Error;
         public static Texture2D EXLoadScreenThrobber_West;
+        public static Texture2D EXLoadScreenThrobber_ThirdEye;
         public static Texture2D EXLoadScreenThrobber_Glitch;
+        public static Texture2D EXLoadScreenThrobber_Glitch2;
         /*public static Texture2D EXLoadScreenThrobber_Backrooms;
         public static Texture2D EXLoadScreenThrobber_Jungle;
         public static Texture2D EXLoadScreenThrobber_Belly;*/
@@ -63,7 +75,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             [ExpandTheGungeon.LoadStatus.LoadCleanup] = "Final Cleanup",
             [ExpandTheGungeon.LoadStatus.LoadFinished] = "Gungeon Expansion Completed",
             [ExpandTheGungeon.LoadStatus.LoadError] = "ERROR",
-            [ExpandTheGungeon.LoadStatus.Other] = "Not Implemented"
+            [ExpandTheGungeon.LoadStatus.Other] = "Insert Message Here"
         };
 
 
@@ -75,7 +87,8 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         public static bool AssetsReady = false;
         public static bool InitialScreenInit = false;
         public static bool RefreshText = true;
-
+        public static int MaxProgressBarWidth;
+        public static int MinProgressBarWidth;
 
 
         public static void Init() {
@@ -87,12 +100,16 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
             EXLoadScreenLogo = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo.png", new IntVector2(218, 96));
             EXLoadScreenThrobber_Error = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Error.png", new IntVector2(1024, 512));
+            EXLoadScreenThrobber_ThirdEye = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_ThirdEye.png", new IntVector2(1024, 512));
             EXLoadScreenThrobber_Glitch = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Glitch.png", new IntVector2(1024, 512));
+            EXLoadScreenThrobber_Glitch2 = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Glitch2.png", new IntVector2(1024, 512));
             EXLoadScreenThrobber_West = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_West.png", new IntVector2(1024, 512));
             EXLoadScreenLogoLoadBarFrame = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBarFrame.png", new IntVector2(218, 24));
             EXLoadScreenLogoLoadBar = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBar.png", new IntVector2(218, 24));
-            EXLoadScreenLogoLoadBarError = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo_LoadBarError.png", new IntVector2(218, 24));
-            
+
+            MaxProgressBarWidth = (EXLoadScreenLogoLoadBar.width - 2);
+            MinProgressBarWidth = 5;
+
             AssetsReady = true;
         }
         
@@ -142,9 +159,9 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                 typeof(FoyerPreloader).GetField("m_isLoading", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, true);
                 return;
             } else if (!m_wasFirstLoadScreen) {
-                if (!ExpandSettings.debugMode && overrideType != OverrideType.None) {
-                    MaybeOverrideGraphics(self);
-                } else if (ExpandDebugCamera.DebugCameraEnabled && Instance) {
+                if (Instance && overrideType != OverrideType.None)MaybeOverrideGraphics(self);
+                if (Instance && ExpandDebugCamera.DebugCameraEnabled) {
+                    CreateThirdEyeLoadingScreen(Instance);
                     ExpandDebugCamera.ClearLoadScreenBackground(Instance);
                 }
             }
@@ -221,10 +238,15 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         }
 
         public static IEnumerator DestroyLoadScreen(FoyerPreloader Preloader, int skipFrames = 3) {
+            bool DontDestroyItAfterAll = false;
+            for (int i = 0; i < Preloader.gameObject.transform.childCount; i++) {
+                if (Preloader.gameObject.transform.GetChild(i).name == "DontDestroyMePlease") DontDestroyItAfterAll = true;
+            }
             DebugTime.Log("Starting to destroy the load screen", new object[0]);
             for (int i = 0; i < skipFrames; i++) yield return null;
             DebugTime.Log("Finished destroying the load screen", new object[0]);
-            Destroy(Preloader.gameObject);
+
+            if (!DontDestroyItAfterAll)Destroy(Preloader.gameObject);
             yield break;
         }
 
@@ -237,43 +259,62 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     // if (m_EXLoadingScreenSprite) m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
                     if (m_EXLoadingBarFrameSprite) m_EXLoadingBarFrameSprite.IsVisible = true;
                     if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.IsVisible = true;
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 18;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 18;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.025f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadAudio:
                     // if (m_EXLoadingScreenSprite) m_EXLoadingScreenSprite.Texture = EXLoadScreenLogoLoadBarFrame;
                     if (m_EXLoadingBarFrameSprite) m_EXLoadingBarFrameSprite.IsVisible = true;
                     if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.IsVisible = true;
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 48;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 48;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.03f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadSprites:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 58;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 58;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.04f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadItems:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 68;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 68;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.06f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadPrefabs:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 88;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 88;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.1f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadEnemies:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 100;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 140;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.4f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadRooms:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 180;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 165;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.5f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadFloors:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 190;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 175;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.7f));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadCleanup:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 200;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 0.85f));
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 190;
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadFinished:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 214;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = 214;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Width = (int)(Mathf.Lerp(MinProgressBarWidth, MaxProgressBarWidth, 1));
                     break;
                 case ExpandTheGungeon.LoadStatus.LoadError:
-                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Texture = EXLoadScreenLogoLoadBarError;
+                    // if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Texture = EXLoadScreenLogoLoadBarError;
+                    if (m_EXLoadingBarSprite) m_EXLoadingBarSprite.Color = new Color(1, 0, 0);
                     if (Instance)Instance.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Error;
                     break;
                 case ExpandTheGungeon.LoadStatus.Other:
+                    if (ProgressBarWidthOverride.HasValue) {
+                        m_EXLoadingBarSprite.Width = ProgressBarWidthOverride.Value;
+                        ProgressBarWidthOverride = null;
+                        
+                    }
+                    if (ProgressBarColorOverride.HasValue) {
+                        m_EXLoadingBarSprite.Color = ProgressBarColorOverride.Value;
+                    }
                     break;
                 default: break;
             }
@@ -282,14 +323,14 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
         public void CreateInitialLoadingScreen(FoyerPreloader foyerPreloader, string InitialText) {
             if (!foyerPreloader) return;
-            if (!foyerPreloader.GetComponentInChildren<dfGUIManager>())return;
-
+            
             foyerPreloader.LoadingLabel.gameObject.SetActive(true);
             foyerPreloader.LanguageManager.enabled = true;
 
             LoadingScreenObject = new GameObject("Expand Startup Loading Screen Panel Child");
             LoadingBarFrameObject = new GameObject("Expand Startup LoadBar Frame Panel Child");
             LoadingBarObject = new GameObject("Expand LoadBar Panel Child");
+                       
             
             DontDestroyOnLoad(LoadingScreenObject);
             DontDestroyOnLoad(LoadingBarFrameObject);
@@ -344,7 +385,6 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             EXLoadingBarFrameSprite.Texture = EXLoadScreenLogoLoadBarFrame;
 
 
-
             EXLoadingBarSprite = LoadingBarObject.AddComponent<dfTextureSprite>();
             EXLoadingBarSprite.Anchor = (dfAnchorStyle.Left | dfAnchorStyle.Bottom);
             EXLoadingBarSprite.IsVisible = true;
@@ -367,7 +407,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             EXLoadingBarSprite.InvertFill = false;
             EXLoadingBarSprite.CropRect = new Rect() { x = 0, y = 0, width = 1, height = 1 };
             EXLoadingBarSprite.Texture = EXLoadScreenLogoLoadBar;
-
+            EXLoadingBarSprite.Color = new Color(0, 1, 0);
 
             LoadTextInstance = foyerPreloader.LoadingLabel;
             LoadTextInstance.Text = InitialText;
@@ -386,17 +426,54 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             m_EXLoadingBarFrameSprite = AddPrefab(LoadTextInstance, LoadingBarFrameObject);
             m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
 
+            // Set Specific names here to help external mods find them
+            m_EXLoadingBarSprite.gameObject.name = "EXBarChild";
+            m_EXLoadingBarFrameSprite.gameObject.name = "EXBarFrameChild";
+            m_EXLoadingScreenSprite.gameObject.name = "EXLogoChild";
+
+            // Generalized dummy object. Does nothing but serve as a marker for other mods to find.
+            GameObject m_DummyObject = new GameObject("ExpandLoadingScreenDummy");
+            m_DummyObject.gameObject.transform.SetParent(foyerPreloader.gameObject.transform);
+
             m_EXLoadingBarFrameSprite.IsVisible = false;
             m_EXLoadingBarSprite.IsVisible = false;
             
-            /*if (ExpandSettings.EnableAsyncAssetLoading) {
-                m_EXLoadingBarSprite = AddPrefab(LoadTextInstance, LoadingBarObject);
-                m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
-            } else {
-                m_EXLoadingScreenSprite = AddPrefab(LoadTextInstance, LoadingScreenObject);
-            }*/
         }
         
+        public static dfControl CreateAdditionalLoadingScreen(FoyerPreloader foyerPreloader, Texture2D logoTexture, dfAnchorStyle anchorStyle, Vector2 textureSize) {
+            if (!foyerPreloader) return null;
+            if (!foyerPreloader.gameObject.GetComponentInChildren<dfGUIManager>()) return null;
+            OptionalLoadingScreenObject = new GameObject("Optional Startup Loading Screen Panel Child");
+            DontDestroyOnLoad(OptionalLoadingScreenObject);
+            
+            EXAdditionalLogoSprite = OptionalLoadingScreenObject.AddComponent<dfTextureSprite>();
+            EXAdditionalLogoSprite.Anchor = anchorStyle;
+            EXAdditionalLogoSprite.IsVisible = true;
+            EXAdditionalLogoSprite.IsInteractive = false;
+            EXAdditionalLogoSprite.Size = new Vector2(textureSize.x, textureSize.y);
+            EXAdditionalLogoSprite.MinimumSize = textureSize;
+            EXAdditionalLogoSprite.MaximumSize = textureSize;
+            EXAdditionalLogoSprite.ClipChildren = false;
+            EXAdditionalLogoSprite.InverseClipChildren = false;
+            EXAdditionalLogoSprite.TabIndex = -1;
+            EXAdditionalLogoSprite.CanFocus = false;
+            EXAdditionalLogoSprite.AutoFocus = false;
+            EXAdditionalLogoSprite.IsLocalized = false;
+            EXAdditionalLogoSprite.HotZoneScale = Vector2.one;
+            EXAdditionalLogoSprite.AllowSignalEvents = true;
+            EXAdditionalLogoSprite.PrecludeUpdateCycle = false;
+            EXAdditionalLogoSprite.Flip = dfSpriteFlip.None;
+            EXAdditionalLogoSprite.FillDirection = dfFillDirection.Horizontal;
+            EXAdditionalLogoSprite.FillAmount = 1;
+            EXAdditionalLogoSprite.InvertFill = false;
+            EXAdditionalLogoSprite.CropRect = new Rect() { x = 0, y = 0, width = 1, height = 1 };
+            EXAdditionalLogoSprite.Texture = logoTexture;
+
+            return foyerPreloader.gameObject.GetComponentInChildren<dfGUIManager>().AddPrefab(OptionalLoadingScreenObject);
+
+            // return AddPrefab(foyerPreloader.gameObject.GetComponentInChildren<dfGUIManager>(), OptionalLoadingScreenObject);
+        }
+
         public static dfTextureSprite AddPrefab(dfLabel parentLabel, GameObject prefab) {
             if (!prefab.GetComponent<dfTextureSprite>())throw new InvalidCastException();
             GameObject gameObject = Instantiate(prefab);
@@ -409,13 +486,40 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             return component;
         }
 
+        public static dfTextureSprite AddPrefab(dfGUIManager parentLabel, GameObject prefab) {
+            if (!prefab.GetComponent<dfTextureSprite>())throw new InvalidCastException();
+            GameObject gameObject = Instantiate(prefab);
+            gameObject.transform.parent = parentLabel.transform;
+            gameObject.layer = parentLabel.gameObject.layer;
+            dfTextureSprite component = gameObject.GetComponent<dfTextureSprite>();
+            typeof(dfTextureSprite).GetField("parent", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(component, parentLabel);
+            component.zindex = -1;
+            // parentLabel.AddControl(component);
+            return component;
+        }
+
         public static void CreateOldWestLoadingScreen (FoyerPreloader foyerPreloader) {
+            if (ExpandDebugCamera.DebugCameraEnabled) return;
             foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_West;
+        }
+
+        public static void CreateThirdEyeLoadingScreen(FoyerPreloader foyerPreloader) {
+            if (foyerPreloader.Throbber.Atlas.Material.mainTexture != EXLoadScreenThrobber_ThirdEye &&
+                foyerPreloader.Throbber.Atlas.Material.mainTexture != EXLoadScreenThrobber_Glitch &&
+                foyerPreloader.Throbber.Atlas.Material.mainTexture != EXLoadScreenThrobber_Glitch2)
+            {
+                foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_ThirdEye;
+            }
+            
         }
 
         public static void CreateGlitchedLoadingScreen (FoyerPreloader foyerPreloader) {
             foyerPreloader.LoadingLabel.Glitchy = true;
-            foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Glitch;
+            if (BraveUtility.RandomBool()) {
+                foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Glitch;
+            } else {
+                foyerPreloader.Throbber.Atlas.Material.mainTexture = EXLoadScreenThrobber_Glitch2;
+            }
         }
         
         public static void CreateBackroomsLoadingScreen (FoyerPreloader foyerPreloader) {

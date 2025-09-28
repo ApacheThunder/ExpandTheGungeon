@@ -13,8 +13,8 @@ using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
-using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 using ExpandTheGungeon.ExpandLoadingScreens;
+using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 // using tk2dRuntime.TileMap;
 // using Pathfinding;
 
@@ -1934,10 +1934,12 @@ namespace ExpandTheGungeon.ExpandMain {
         public void DelayedLoadNextLevelHook(Action<GameManager, float>orig, GameManager self, float delay) {
             if (!string.IsNullOrEmpty(GameManager.Instance.InjectedFlowPath) && GameManager.Instance.InjectedFlowPath.Contains("Core Game Flows/Secret_DoubleBeholster_Flow")) {
                 ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Glitched;
+                if (ExpandSettings.EnableExpandedGlitchFloors) {
+                    GameManager.Instance.InjectedFlowPath = "secret_expandeddoublebeholster_flow"; // custom dummy name to use as trigger to avoid breaking other mods taht want to use original for references.
+                }
             }
             orig(self, delay);
         }
-
 
         // public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
         public static bool test = false;
@@ -2099,28 +2101,28 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         */
 
-        /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
-            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                // self.UseTexturedOcclusion = true;
-                // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                Color32 previousAlpha = self.occludedColor;
+                /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
+                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                        // self.UseTexturedOcclusion = true;
+                        // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                        // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                        Color32 previousAlpha = self.occludedColor;
 
-                self.occludedColor = new Color32(73, 33, 26, previousAlpha.a);
-                // m_vignetteMaterial
+                        self.occludedColor = new Color32(73, 33, 26, previousAlpha.a);
+                        // m_vignetteMaterial
+                    }
+                    orig(self);
+                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                        // self.UseTexturedOcclusion = true;
+                        // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                        // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                        // m_smallBlackTexture
+                        typeof(Pixelator).GetField("m_smallBlackTexture", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest"));
+                    }
+                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                        self.UseTexturedOcclusion = false;
+                    }
+                }*/
             }
-            orig(self);
-            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                // self.UseTexturedOcclusion = true;
-                // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                // m_smallBlackTexture
-                typeof(Pixelator).GetField("m_smallBlackTexture", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest"));
-            }
-            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                self.UseTexturedOcclusion = false;
-            }
-        }*/
-    }
-}
+        }
 

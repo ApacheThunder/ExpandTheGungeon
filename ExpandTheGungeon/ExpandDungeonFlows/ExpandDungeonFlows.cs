@@ -72,26 +72,26 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             string flowName = target;
             if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
-            if (flowName.ToLower().EndsWith("secret_doublebeholster_flow") && ExpandSettings.EnableExpandedGlitchFloors) {
+            // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
+            if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
                 DungeonFlow m_Flow = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
                 DebugTime.RecordStartTime();
                 DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { m_Flow.name });
                 return m_Flow;
             } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
-                flowName = "secret_doublebeholster_flow";
+                flowName = "secret_doublebeholster_flow"; // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
             }
             if (KnownFlows != null && KnownFlows.Count > 0) {
                 foreach (DungeonFlow flow in KnownFlows) {
-                    if (flow.name != null && flow.name != string.Empty) {                                                
-                        if (flowName.ToLower() == flow.name.ToLower()) {
-                            // Allows glitch chest floors to have things like the Old Crest room drop off if on Gungeon tileset, etc.
-                            if (GlitchChestFlows.Contains(flow.name.ToLower())) {
-                                flow.sharedInjectionData = RetrieveSharedInjectionDataListFromCurrentFloor();
-                            }
-                            DebugTime.RecordStartTime();
-                            DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
-                            return flow;
+                    if (flow.name != null && flow.name != string.Empty && flowName.ToLower() == flow.name.ToLower()) {
+                        // Allows glitch chest floors to have things like the Old Crest room drop off if on Gungeon tileset, etc.
+                        if (GlitchChestFlows.Contains(flow.name.ToLower())) {
+                            flow.sharedInjectionData = RetrieveSharedInjectionDataListFromCurrentFloor();
                         }
+                        DebugTime.RecordStartTime();
+                        DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
+                        return flow;
+                        
                     }
                 }
             }
@@ -416,7 +416,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 }
             };
 
-
+            
             SecretJungleEntranceInjector = new ProceduralFlowModifierData() {
                 annotation = "Secret Jungle Entrance Room",
                 DEBUG_FORCE_SPAWN = false,

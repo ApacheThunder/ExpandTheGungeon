@@ -589,7 +589,12 @@ namespace ExpandTheGungeon.ItemAPI {
                         for (int i = 0; i < m_targetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All).Count; i++) {
                             AIActor enemy = m_targetRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All)[i];
                             bool enemyModified = false;
-                            if (enemy != null && (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted")) && !enemy.healthHaver.IsDead && !enemy.healthHaver.IsBoss && enemy.healthHaver.IsVulnerable && !enemy.IgnoreForRoomClear && !enemy.IsMimicEnemy && enemy.HasBeenEngaged && enemy.specRigidbody && enemy.specRigidbody.CollideWithOthers) {
+                            if (enemy != null && !enemy.gameObject.GetComponent<ExpandHatMindController>() &&
+                                (string.IsNullOrEmpty(enemy.OverrideDisplayName) | !enemy.OverrideDisplayName.StartsWith("Corrupted")) && 
+                                !enemy.healthHaver.IsDead && !enemy.healthHaver.IsBoss && enemy.healthHaver.IsVulnerable &&
+                                !enemy.IgnoreForRoomClear &&  !enemy.IsMimicEnemy && enemy.HasBeenEngaged && 
+                                enemy.specRigidbody &&  enemy.specRigidbody.CollideWithOthers)
+                            {
                                 Vector2 unitCenter = enemy.specRigidbody.GetUnitCenter(ColliderType.HitBox);
                                 if (unitCenter == null) { unitCenter = enemy.sprite.WorldCenter; }
                                 float num = Vector2.Distance(unitCenter, lastPosition);                                

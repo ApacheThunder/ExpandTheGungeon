@@ -44,6 +44,13 @@ Features:
  * "Baby Sitter". Companion item that gives you the COOP cultist as a non playable friend. Like Cop, he can die. When this happes you get curse and damage up.
  * "Rock Slide". Causes rocks to fall on your enemies! Amount of rocks is random. Sometimes all enemies get targeted while other times only a few do.
  * "Pow Block". Flips enemies and makes them easier to kill. Flipped enemies can no longer attack.
+ * "Clown Bullets". Bullets have a chance to transform enemies into clownkins.
+ * "Clown Friend". A Clownkin friend followes you around and wields a balloon gun! Balloons caried by this friend can cause small blank effect when popped by enemy bullets.
+ * "Portable Elevator". A portable elevator for a quick escape. Takes you to a secret floor!
+ * "Portable Ship". Transforms the player into a ship until the player is damaged.
+ * "Sonic Box". Sonic the Hedgehog comes to the Gungeon!
+ * "The Third Eye". Allows viewing rooms not yet explored. May cause some corrupted enemies to appear.
+ * "Mr Cap". Allows capture of enemies, chests and Forge Hammers in a manner similar to a certain plumber from a certain game.... :P
  
 14. Certain NPCs and objects and even a copy of the player can appear as enemies on glitch floors.
 
@@ -86,4 +93,5 @@ Credits:
 * Dallan for sprite work for Bullet Kin joke boss's boss card and ammonomicon sprite.
 * Dallan for sprtie work for Enemy spawn chest.
 * Dallan for sprite work for Mr Cap active item.
+* Dallan for sprite work for the new loading screen animations.
 * Alaxandira/Nevernameed for some of the code I lifted from the hat system used for controlling hat facing direction used for Mr Cap when it's sprite is displayed above the player or a controlled object.

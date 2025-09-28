@@ -5,7 +5,6 @@ using UnityEngine.Video;
 namespace ExpandTheGungeon.ExpandComponents {
 
     [RequireComponent(typeof(VideoPlayer))]
-
     public class ExpandScreenFXController : BraveBehaviour {
 
         public ExpandScreenFXController() {

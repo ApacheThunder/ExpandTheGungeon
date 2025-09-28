@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 239514359
+CRC: 1986672081
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e6f67a0ba82e3dad64df78afb1a0c954
+    Hash: 76a9a69e4c4639742b12dfb452652626
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73412a662fd4e4f36af34cbdf078b85
@@ -792,6 +792,7 @@ Assets:
 - Assets/ExpandSprites/AIActors/Entity_Collection/entity_run_left_002.png
 - Assets/ExpandSprites/Misc/EXFoyer_Collection/cabinet_interact_003.png
 - Assets/ExpandSprites/AIActors/SonicCompanion_Collection/Sonic_Move_Back_Right_006.png
+- Assets/ExpandSprites/GunsAndItems/EXItem_Collection/hatty_hammertarget_001.png
 - Assets/ExpandSprites/Misc/EXChest_Collection/west_lock_open_002.png
 - Assets/ExpandSprites/AIActors/BootlegShotgunManRed_Collection/shotgunman_red_pitfall_004.png
 - Assets/ExpandSprites/Misc/EXBackrooms_Collection/CarpetStain_12.png

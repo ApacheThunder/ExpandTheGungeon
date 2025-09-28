@@ -5,6 +5,7 @@ using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.SpriteAPI;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ItemAPI {
 
@@ -92,7 +93,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
                     AIActor TargetEnemy = BraveUtility.RandomElement(SelectedEnemies);
 
-                    if (TargetEnemy && !TargetEnemy.healthHaver.IsDead) {
+                    if (TargetEnemy && !TargetEnemy.healthHaver.IsDead && !TargetEnemy.gameObject.GetComponent<ExpandHatMindController>()) {
                         Vector2 SelectedEnemyPosition = TargetEnemy.specRigidbody.GetUnitCenter(ColliderType.Ground);
                         StartCoroutine(HandleTriggerRockSlide(user, m_MinesCageInObject, SelectedEnemyPosition));
                         SelectedEnemies.Remove(TargetEnemy);

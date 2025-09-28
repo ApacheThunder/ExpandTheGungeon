@@ -121,7 +121,8 @@
     <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandConfettiSpawner.cs" />
-    <Compile Include="ExpandComponents\ExpandDebugCamera.cs" />
+    <Compile Include="ExpandComponents\ExpandSpriteMirror.cs" />
+    <Compile Include="ExpandDebugCamera.cs" />
     <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
     <Compile Include="ExpandComponents\ExpandEntitySpawner.cs" />
     <Compile Include="ExpandComponents\ExpandHatProjectile.cs" />
@@ -493,13 +494,14 @@
     <EmbeddedResource Include="ExpandLoadingScreens\EXLoadScreenLogo_LoadBarFrame.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadScreenLogo_LoadBarError.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_Error.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_Glitch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_Glitch2.png" />
+    <EmbeddedResource Include="ExpandLoadingScreens\EXLoadingScreen_ThirdEye.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

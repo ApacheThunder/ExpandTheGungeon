@@ -423,7 +423,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "hatty_006",
             "hatty_item",
             "hatty_item_active_blue",
-            "hatty_item_active_red"
+            "hatty_item_active_red",
+            "hatty_hammertarget_001"
         };
 
         public static readonly List<string> ClownkinCollection = new List<string> {

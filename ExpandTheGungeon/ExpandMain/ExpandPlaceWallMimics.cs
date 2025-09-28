@@ -24,6 +24,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static bool PlayerHasWallMimicItem = false;
         public static bool PlayerHasCorruptedJunk = false;
         public static bool PlayerHasThirdEye = false;
+        public static bool EnemiesHaveCorruptorInstalled = false;
 
         public void PlaceWallMimics(Action<Dungeon, RoomHandler>orig, Dungeon dungeon, RoomHandler roomHandler) {
             int WallMimicsPlaced = 0;
@@ -77,9 +78,15 @@ namespace ExpandTheGungeon.ExpandMain {
 
                 if (ExpandSettings.EnableExpandedGlitchFloors) {
                     if (dungeon.IsGlitchDungeon) {
-                        ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                        if (!EnemiesHaveCorruptorInstalled) {
+                            EnemiesHaveCorruptorInstalled = true;
+                            ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Combine(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                        }
                     } else {
-                        ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                        if (EnemiesHaveCorruptorInstalled) {
+                            ETGMod.AIActor.OnPreStart = (Action<AIActor>)Delegate.Remove(ETGMod.AIActor.OnPreStart, new Action<AIActor>(EnemyModRandomizer));
+                            EnemiesHaveCorruptorInstalled = false;
+                        }
                     }
 
                     ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon);

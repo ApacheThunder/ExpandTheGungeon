@@ -134,7 +134,8 @@ namespace ExpandTheGungeon.ItemAPI {
 
                 for (int i = 0; i < RoomEnemies.Count; i++) {
                     if (RoomEnemies[i] && !RoomEnemies[i].IsGone && RoomEnemies[i].specRigidbody &&
-                        RoomEnemies[i].sprite && !RoomEnemies[i].healthHaver.IsDead && !RoomEnemies[i].healthHaver.IsBoss) 
+                        RoomEnemies[i].sprite && !RoomEnemies[i].healthHaver.IsDead && !RoomEnemies[i].healthHaver.IsBoss &&
+                        !RoomEnemies[i].gameObject.GetComponent<ExpandHatMindController>())
                     {
                         if (ExcludedEnemies.Contains(RoomEnemies[i].EnemyGuid)) {
                             RoomEnemies[i].healthHaver.ApplyDamage(100000, Vector2.zero, "Pow Block Death", ignoreInvulnerabilityFrames: true, ignoreDamageCaps: true);

@@ -8,7 +8,6 @@ using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandMain;
-using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon {
 
@@ -39,10 +38,10 @@ namespace ExpandTheGungeon {
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("list_items", ExpandCustomItemsInfo);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("youtubemode", ExpandYouTubeSafeCommand);
             ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("savesettings", ExpandExportSettings);
-            // ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
+            //ETGModConsole.Commands.GetGroup(MainCommandName).AddUnit("test", ExpandTestCommand);
             return;
         }
-
+        
         /*private static void ExpandTestCommand(string[] consoleText) {
             // Tools.ExportTexture((GameManager.Instance.PrimaryPlayer.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)[0].sprite.Collection.materials[0].mainTexture as Texture2D).GetRW());
             // Tools.DumpSpecificSpriteCollection(ExpandWesternBrosPrefabBuilder.Collection);
@@ -53,10 +52,19 @@ namespace ExpandTheGungeon {
             // Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
 
             // m_texturedOcclusionTarget
+            
 
+            // GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ItemAPI.MrCap.MrCapHammer, GameManager.Instance.PrimaryPlayer.CurrentRoom, (GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2() - GameManager.Instance.PrimaryPlayer.CurrentRoom.area.basePosition), true);
+            // GameObject ForgeHammer = UnityEngine.Object.Instantiate(ItemAPI.MrCap.MrCapHammer, GameManager.Instance.PrimaryPlayer.CenterPosition, Quaternion.identity);
+            GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandObjectDatabase.ForgeHammer, GameManager.Instance.PrimaryPlayer.CurrentRoom, (GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2() - GameManager.Instance.PrimaryPlayer.CurrentRoom.area.basePosition), true);
+            ForgeHammerController hammer = ForgeHammer.GetComponent<ForgeHammerController>();
+            hammer = ForgeHammer.GetComponent<ForgeHammerController>();
+            hammer.DeactivateOnEnemiesCleared = false;
+            hammer.TracksPlayer = false;
+            hammer.ConfigureOnPlacement(GameManager.Instance.PrimaryPlayer.CurrentRoom);
             // SpriteSerializer.DumpSpriteCollection(ExpandPrefabs.ElevatorMaintanenceRoomIcon.GetComponent<tk2dSprite>().Collection);
             // SpriteSerializer.DumpSpriteCollection(ExpandObjectDatabase.ChestBrownTwoItems.GetComponent<tk2dSprite>().Collection);
-            SpriteSerializer.DumpSpriteCollection((PickupObjectDatabase.GetById(448) as SpawnObjectPlayerItem).objectToSpawn.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>().Collection);
+            // SpriteSerializer.DumpSpriteCollection((PickupObjectDatabase.GetById(448) as SpawnObjectPlayerItem).objectToSpawn.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>().Collection);
             // FieldInfo field = typeof(GameManager).GetField("m_dungeon", BindingFlags.Instance | BindingFlags.NonPublic);
             // field.SetValue(GameManager.Instance, Instantiate(ExpandDungeonPrefabs.Base_Office).GetComponent<Dungeon>());
             return;

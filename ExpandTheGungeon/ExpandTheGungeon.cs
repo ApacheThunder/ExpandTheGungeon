@@ -11,6 +11,7 @@ using ExpandTheGungeon.ExpandLoadingScreens;
 namespace ExpandTheGungeon {
 
     [BepInDependency("etgmodding.etg.mtgapi", BepInDependency.DependencyFlags.HardDependency)]
+    // [BepInDependency("alexandria.etgmod.alexandria", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(GUID, ModName, VERSION)]
     public class ExpandTheGungeon : BaseUnityPlugin {
 
@@ -55,7 +56,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.1";
+        public const string VERSION = "3.0.2";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -79,6 +80,7 @@ namespace ExpandTheGungeon {
         public static StringDB Strings;
         public static List<string> ExceptionTextList;
         public static string ExceptionText;
+        
         
         private static GameObject m_FoyerCheckerOBJ;
         
@@ -212,8 +214,14 @@ namespace ExpandTheGungeon {
                 Debug.LogException(ex);
                 return;
             }
-            
-            if (ExpandSettings.EnableAsyncAssetLoading) {
+
+            if (ExpandLoadingScreen.Instance) {
+                ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+            } else {
+                gameManager.StartCoroutine(ExpandAssets.InitAssets(gameManager));
+            }
+
+            /*if (ExpandSettings.EnableAsyncAssetLoading) {
                 if (ExpandLoadingScreen.Instance) {
                     ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssetsAsync(gameManager));
                 } else {
@@ -221,7 +229,7 @@ namespace ExpandTheGungeon {
                 }
             } else {
                 ExpandAssets.InitAssets(gameManager);
-            }
+            }*/
         }
 
 

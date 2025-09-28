@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 253322668
+CRC: 384941988
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b0af22aad373bad76c4e94aee2f076e5
+    Hash: 4cb8e6438748fde40dc51bfe00fbdd2d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6af7294dcb7fd671c320d2135cf8bbda
@@ -238,6 +238,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate7.bytes
 - Assets/ExpandSerializedData/TilesetData/Phobos/Phobos_Grey/pitBorderFlatGrid.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Pickups.bytes
+- Assets/ExpandPrefabs/AIActors/Mr Cap Forge Hammer.prefab
 - Assets/ExpandRooms/RoomFactoryData/Jungle/FloorData/Expand_Forest_Mixed1_FloorData.png
 - Assets/ExpandPrefabs/Breakables/ExpandCactus_A.prefab
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal30.bytes
@@ -538,6 +539,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Hunter1.bytes
 - Assets/ExpandTextures/SpriteCollections/Misc/EXBootlegRoom_Collection.png
 - Assets/ExpandRooms/RoomBuilderData/TrapRooms/Expand_Apache_FieldOfSaws_Layout.png
+- Assets/ExpandPrefabs/AIActors/HattyHammerCollection.prefab
 - Assets/ExpandPrefabs/TilesetPrefabs/EXShipwreck_Right.prefab
 - Assets/ExpandPrefabs/Misc/EXSecretDoor_MinimapIcon.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Tabled3.bytes
@@ -546,6 +548,7 @@ Assets:
 - Assets/ExpandPrefabs/Misc/BootlegRoomBorder_South.prefab
 - Assets/ExpandTextures/SpriteCollections/Misc/EXSpace_Collection.png
 - Assets/ExpandSerializedData/TilesetData/West/RedInterior/carpetGrid1.txt
+- Assets/ExpandPrefabs/Items/MrCapHammerTarget.prefab
 - Assets/ExpandSerializedData/SpriteCollections/BootlegBullatCollection.txt
 - Assets/ExpandPrefabs/Misc/EX_Parachute.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Interior1_Square5.bytes
@@ -879,6 +882,7 @@ Assets:
 - Assets/ExpandTextures/SpriteCollections/Misc/SecretElevatorExitTileset_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Expand_LargeMany.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny19.bytes
+- Assets/ExpandPrefabs/AIActors/Friendly Forge Hammer.prefab
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny15.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Skeletal13.bytes
 - Assets/ExpandRooms/RoomFactoryData/HF_Expand_Achievement_Cartographers_Assistant.bytes
@@ -961,6 +965,7 @@ Assets:
 - Assets/ExpandSerializedData/SpriteCollections/BootlegShotgunManRedCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room074.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_Animals24.bytes
+- Assets/ExpandTextures/SpriteCollections/AIActors/HattyHammer_Collection.png
 - Assets/ExpandRooms/RoomFactoryData/Backrooms/BackRooms_Room061.bytes
 - Assets/ExpandRooms/RoomFactoryData/Jungle/Expand_Forest_TribalNugget.bytes
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_Tiny10.bytes
@@ -977,6 +982,7 @@ Assets:
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Pirate11.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Mines_Regular40.bytes
 - Assets/ExpandRooms/RoomFactoryData/Expand_Oddshroom.bytes
+- Assets/ExpandPrefabs/AIActors/Projectiles/8x8_fireball_companion_projectile_dark.prefab
 - Assets/ExpandPrefabs/SpriteCollections/AIActors/SonicCompanionCollection.prefab
 - Assets/ExpandSerializedData/SpriteCollections/EXParadropCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/Expand_Secret_Oldman9.bytes

@@ -34,9 +34,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpaceCollection;
         public static GameObject EXFoyerCollection;
         public static GameObject EXBackroomsCollection;
+        public static GameObject EXHattyHammerCollection;
 
         // Materials
-        public static Material SpaceFog;        
+        public static Material SpaceFog;
+        public static Material HattyHammerMaterial;
 
         // Custom Textures
         public static Texture2D BulletManMonochromeTexture;
@@ -207,7 +209,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Minimap_Maintenance_Icon;
 
         // Forge Hammer. Used by Baby Good hammer
-        public static GameObject ForgeHammer;
+        // public static GameObject ForgeHammer;
 
         // Use for Arrival location for destination rooms setup by TargetPitFallRoom
         public static GameObject Arrival;
@@ -481,6 +483,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
             EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
             EXBackroomsCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBackroomsCollection", "EXBackrooms_Collection", "EXBackroomsCollection");
+
+            EXHattyHammerCollection = expandSharedAssets1.LoadAsset<GameObject>("HattyHammerCollection");
+
+            tk2dSpriteCollectionData m_EXHattyHammerCollection = EXHattyHammerCollection.AddComponent<tk2dSpriteCollectionData>();
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ForgeHammer.GetComponent<tk2dSprite>().Collection), m_EXHattyHammerCollection);
+
+            HattyHammerMaterial = new Material(ExpandObjectDatabase.ForgeHammer.GetComponent<tk2dSprite>().Collection.materials[0]);
+            HattyHammerMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("HattyHammer_Collection");
+            m_EXHattyHammerCollection.materials[0] = HattyHammerMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in m_EXHattyHammerCollection.spriteDefinitions) { spriteDefinition.material = HattyHammerMaterial; }
             
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -1020,16 +1033,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RewardPedestalPrefab = sharedAssets.LoadAsset<GameObject>("Boss_Reward_Pedestal");
             Minimap_Maintenance_Icon = sharedAssets2.LoadAsset<GameObject>("minimap_maintenance_icon");
 
-            // Forge Hammer prefab for Baby Good Hammer
-            ForgeHammer = sharedAssets.LoadAsset<GameObject>("Forge_Hammer");
-            EXFriendlyForgeHammerBullet = UnityEngine.Object.Instantiate(ForgeHammer.GetComponent<ForgeHammerController>().bulletBank.Bullets[0].BulletObject);
-            EXFriendlyForgeHammerBullet.SetActive(false);
-            EXFriendlyForgeHammerBullet.name = "8x8_fireball_companion_projectile_dark";
-            FakePrefab.MarkAsFakePrefab(EXFriendlyForgeHammerBullet);
-            UnityEngine.Object.DontDestroyOnLoad(EXFriendlyForgeHammerBullet);
 
-            ExpandForgeHammerComponent.BuildPrefab();
-
+            GameObject m_HammerDummyBullet; // Bullet will get created prior to InitPrefabs during Mr Hat init.
+            EXFriendlyForgeHammer = ExpandForgeHammerComponent.BuildHammerPrefab(expandSharedAssets1, "Friendly Forge Hammer", string.Empty, true, true, false, out m_HammerDummyBullet);
+            EXFriendlyForgeHammer.GetComponent<ExpandForgeHammerComponent>().bulletBank.Bullets[0].BulletObject = EXFriendlyForgeHammerBullet;
 
             Arrival = expandSharedAssets1.LoadAsset<GameObject>("Arrival");
             Arrival.transform.name = "Arrival";

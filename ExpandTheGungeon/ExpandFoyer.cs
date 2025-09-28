@@ -1,17 +1,20 @@
 ﻿using Dungeonator;
+using MonoMod.RuntimeDetour;
+using System;
+using System.Reflection;
+using UnityEngine;
+
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandLoadingScreens;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ItemAPI;
-using MonoMod.RuntimeDetour;
-using System.Reflection;
-using UnityEngine;
 
 namespace ExpandTheGungeon {
 
     public class ExpandFoyer : BraveBehaviour {
 
+        [NonSerialized]
         public static GameObject EXFoyerChecker;
 
         public ExpandFoyer() { m_State = State.PreFoyerCheck; }

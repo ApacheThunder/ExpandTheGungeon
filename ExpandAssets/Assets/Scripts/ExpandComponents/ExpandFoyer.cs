@@ -1,8 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace ExpandTheGungeon {
 
     public class ExpandFoyer : BraveBehaviour {
+		
+		[NonSerialized]
+		public static GameObject EXFoyerChecker;
 
         public ExpandFoyer() { m_State = State.PreFoyerCheck; }
 

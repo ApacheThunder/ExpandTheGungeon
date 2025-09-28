@@ -1,14 +1,11 @@
-﻿using Dungeonator;
-using ExpandTheGungeon.ExpandUtilities;
+﻿using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 
-namespace ExpandTheGungeon.ExpandComponents {
+namespace ExpandTheGungeon {
 
     public class ExpandDebugCamera : BraveBehaviour {
 

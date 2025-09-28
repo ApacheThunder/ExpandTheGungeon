@@ -20,11 +20,11 @@ namespace ExpandTheGungeon {
 
         public static Exception LastException;
 
-        public static IEnumerator InitAssetsAsync(GameManager gameManager) {
-            yield return new WaitForEndOfFrame();
+        public static IEnumerator InitAssets(GameManager gameManager) {
+            // yield return new WaitForEndOfFrame();
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
             
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
             AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAudioAssetBundleName);
@@ -41,7 +41,7 @@ namespace ExpandTheGungeon {
                 yield break;
             }
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadSprites;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
             
             try {
                 // Init Custom GameLevelDefinitions
@@ -56,7 +56,7 @@ namespace ExpandTheGungeon {
             }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadItems;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
 
 
             // Init ItemAPI
@@ -68,7 +68,7 @@ namespace ExpandTheGungeon {
             }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadPrefabs;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
 
 
             try { 
@@ -81,7 +81,7 @@ namespace ExpandTheGungeon {
             }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadEnemies;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
 
             try { 
                 // Init Custom Enemy Ammonomicon Data
@@ -95,7 +95,7 @@ namespace ExpandTheGungeon {
             }
             
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadRooms;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
             
             try {             
                 // Init Custom Room Prefabs
@@ -107,7 +107,7 @@ namespace ExpandTheGungeon {
             }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFloors;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
             
 
             try { 
@@ -128,7 +128,7 @@ namespace ExpandTheGungeon {
             }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadCleanup;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
 
             try {
                 // Modified version of Anywhere mod
@@ -167,7 +167,11 @@ namespace ExpandTheGungeon {
             }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFinished;
-            yield return ExpandLoadingScreen.WaitForTextUpdate();
+            if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
+
+            GameObject m_EXFinishFlag = new GameObject("ExpandFinished");
+            UnityEngine.Object.DontDestroyOnLoad(m_EXFinishFlag);
+            // m_EXFinishFlag.transform.SetParent(ExpandLoadingScreen.Instance.gameObject.transform);
 
             if (!ExpandLoadingScreen.KeepLoading && ExpandLoadingScreen.Instance) {
                 yield return ExpandLoadingScreen.Instance.StartCoroutine(ExpandLoadingScreen.DestroyLoadScreen(ExpandLoadingScreen.Instance));
@@ -175,7 +179,7 @@ namespace ExpandTheGungeon {
             yield break;
         }
 
-        public static void InitAssets(GameManager gameManager) {
+        /*public static void InitAssets(GameManager gameManager) {
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
             
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
@@ -301,9 +305,13 @@ namespace ExpandTheGungeon {
             }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadFinished;
-            
+
+            GameObject m_EXFinishFlag = new GameObject("ExpandFinished");
+            m_EXFinishFlag.transform.SetParent(ExpandLoadingScreen.Instance.gameObject.transform);
+
             if (!ExpandLoadingScreen.KeepLoading && ExpandLoadingScreen.Instance)ExpandLoadingScreen.Instance.StartCoroutine(ExpandLoadingScreen.DestroyLoadScreen(ExpandLoadingScreen.Instance));
         }
+        */
 
         private static void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ExpandTheGungeon.ItemAPISetup) {

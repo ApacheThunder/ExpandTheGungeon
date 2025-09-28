@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Dungeonator;
+using UnityEngine;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.SpriteAPI;
 using ExpandTheGungeon.ExpandMain;
-using Dungeonator;
 using ExpandTheGungeon.ExpandComponents;
 using System.Collections.Generic;
 
@@ -77,10 +77,10 @@ namespace ExpandTheGungeon.ItemAPI {
         }
         
         private void OnRoomCleared(PlayerController player) {
-            bool debugMode = false;
-            if (!debugMode && m_ChestsSpawnsThisFloor > MaxChestSpawnsPerFloor) return;
+            // bool debugMode = false;
+            if (/*!debugMode && */m_ChestsSpawnsThisFloor > MaxChestSpawnsPerFloor) return;
             if (m_CurrentRoom != null && m_CurrentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) { return; }
-            if (m_CurrentRoom != player.CurrentRoom && (Random.value <= 0.15f | debugMode)) {
+            if (m_CurrentRoom != player.CurrentRoom && (Random.value <= 0.15f/* | debugMode*/)) {
                 IntVector2 bestRewardLocation = player.CurrentRoom.GetBestRewardLocation(new IntVector2(2, 1), RoomHandler.RewardLocationStyle.CameraCenter, true);
                 GameObject m_EnemyChest = Instantiate(ExpandPrefabs.SurpriseChestObject, bestRewardLocation.ToVector3(), Quaternion.identity);                
                 

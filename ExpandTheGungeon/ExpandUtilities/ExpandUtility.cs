@@ -3012,7 +3012,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 }
             }
         }
-        
+                
         public static void ApplyCustomTexture(AIActor targetActor, Texture2D newTexture = null, List<Texture2D> spriteList = null, tk2dSpriteCollectionData prebuiltCollection = null, Shader overrideShader = null, bool disablePalette = false, bool makeStatic = false) {
             if (prebuiltCollection != null) {
                 tk2dSpriteAnimation spriteAnimator = UnityEngine.Object.Instantiate(targetActor.spriteAnimator.Library);
@@ -3229,9 +3229,9 @@ namespace ExpandTheGungeon.ExpandUtilities {
             if (sourceCollection == null) { return null; }
             tk2dSpriteCollectionData collectionData = UnityEngine.Object.Instantiate(sourceCollection);
             if (IsStatic) { UnityEngine.Object.DontDestroyOnLoad(collectionData); }
-            tk2dSpriteDefinition[] spriteDefinietions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
-            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinietions[i] = collectionData.spriteDefinitions[i].Copy(); }
-            collectionData.spriteDefinitions = spriteDefinietions;
+            tk2dSpriteDefinition[] spriteDefinitions = new tk2dSpriteDefinition[collectionData.spriteDefinitions.Length];
+            for (int i = 0; i < collectionData.spriteDefinitions.Length; i++) { spriteDefinitions[i] = collectionData.spriteDefinitions[i].Copy(); }
+            collectionData.spriteDefinitions = spriteDefinitions;
             if (spriteSheet != null) {                
                 Material[] materials = sourceCollection.materials;
                 Material[] newMaterials = new Material[materials.Length];
@@ -3292,7 +3292,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
         }
         
         public static tk2dSpriteCollectionData DuplicateSpriteCollection(GameObject targetObject, tk2dSpriteCollectionData sourceCollection, bool attachCollectionToObject = true, Texture2D spriteSheet = null, List<Texture2D>spriteList = null, Shader overrideShader = null) {
-            if (sourceCollection == null) { return null; }
+            if (sourceCollection == null)return null;
 
             tk2dSpriteCollectionData newCollection = null;
 
@@ -3303,7 +3303,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                 newCollection = new tk2dSpriteCollectionData();
             }
             
-            if (!newCollection) { return null; }
+            if (!newCollection)return null;
 
             newCollection.version = sourceCollection.version;
             newCollection.materialIdsValid = sourceCollection.materialIdsValid;

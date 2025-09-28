@@ -190,6 +190,17 @@ namespace ExpandTheGungeon.ItemAPI {
                         StartCoroutine(SpawnHammer(user));
                     }
                 }
+                if (StaticReferenceManager.AllForgeHammers.Count > 0) {
+                    for (int i = 0; i < StaticReferenceManager.AllForgeHammers.Count; i++) {
+                        if (StaticReferenceManager.AllForgeHammers[i]) {
+                            RoomHandler m_room = ReflectionHelpers.ReflectGetField<RoomHandler>(typeof(ForgeHammerController), "m_room", StaticReferenceManager.AllForgeHammers[i]);
+                            if (m_room == user.CurrentRoom) {
+                                StaticReferenceManager.AllForgeHammers[i].Deactivate();
+                                StartCoroutine(SpawnHammer(user));
+                            }
+                        }
+                    }
+                }
             } else {
                 StartCoroutine(HandleSpawnAnimation(user));
                 StartCoroutine(SpawnHammer(user));
@@ -269,22 +280,22 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         public static IEnumerator SpawnHammer(PlayerController user, float spawnDelay = 0) {
-            if (spawnDelay > 0) { yield return new WaitForSeconds(spawnDelay); }
+            if (spawnDelay > 0)yield return new WaitForSeconds(spawnDelay);
 
 			// Tools.Print("Spawning A Friendly Hammer!", "FFFFFF", false);
 			RoomHandler room = user.CurrentRoom;
             IntVector2? spawnPosition = room.GetRandomVisibleClearSpot(2, 2);
             yield return new WaitForSeconds(1f);
-            if (!spawnPosition.HasValue) { spawnPosition = (user.CenterPosition.ToIntVector2() - user.CurrentRoom.area.basePosition);  }
+            if (!spawnPosition.HasValue)spawnPosition = (user.CenterPosition.ToIntVector2() - user.CurrentRoom.area.basePosition);
 			if (spawnPosition.HasValue) {
                 RoomHandler currentRoom = user.CurrentRoom;
                 GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.EXFriendlyForgeHammer, currentRoom, spawnPosition.Value, true);
                 yield return null;
                 
                 if (ForgeHammer) {
-                    ForgeHammer.AddComponent<ExpandForgeHammerComponent>();
+                    // ForgeHammer.AddComponent<ExpandForgeHammerComponent>();
                     ExpandForgeHammerComponent expandForgeHammer = ForgeHammer.GetComponent<ExpandForgeHammerComponent>();
-                    expandForgeHammer.m_Owner = user;
+                    expandForgeHammer.Owner = user;
                     expandForgeHammer.ConfigureOnPlacement(currentRoom);                    
                 }
 
