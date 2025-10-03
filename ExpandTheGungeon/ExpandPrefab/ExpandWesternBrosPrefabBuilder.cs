@@ -1,4 +1,5 @@
 ﻿using ExpandTheGungeon.ExpandComponents;
+using ExpandTheGungeon.ExpandLoadingScreens;
 using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.SpriteAPI;
@@ -38,7 +39,7 @@ namespace ExpandTheGungeon.ExpandPrefab
         public static PickupObject WestBrosGun;
         public static tk2dSpriteCollectionData Collection;
         public static tk2dSpriteAnimation Animation;
-        public static AIActor Shades;
+        // public static AIActor Shades;
         public static DebrisObject ShadesDebris;
 
         public static void BuildWestBrosBossPrefabs(AssetBundle assetBundle)
@@ -52,7 +53,7 @@ namespace ExpandTheGungeon.ExpandPrefab
             Collection = WestBrosGun.gameObject.GetComponent<tk2dSprite>().Collection;
             Animation = WestBrosGun.gameObject.GetComponent<tk2dSpriteAnimator>().Library;
 
-            Shades = ExpandEnemyDatabase.GetOfficialEnemyByGuid("c00390483f394a849c36143eb878998f");
+            AIActor Shades = ExpandEnemyDatabase.GetOfficialEnemyByGuid("c00390483f394a849c36143eb878998f");
             ShadesDebris = Shades.GetComponentInChildren<ExplosionDebrisLauncher>().debrisSources[0];
 
             SetupHand(assetBundle, out WestBrosHandPrefab, ExpandEnemyDatabase.WestBrosCollection.GetComponent<tk2dSpriteCollectionData>());
@@ -145,9 +146,9 @@ namespace ExpandTheGungeon.ExpandPrefab
             GameObject prefab = ExpandEnemyDatabase.GetOfficialEnemyByGuid(isSmiley
                 ? "ea40fcc863d34b0088f490f4e57f8913"  // Smiley
                 : "c00390483f394a849c36143eb878998f").gameObject; // Shades
-
+                        
             outObject = UnityEngine.Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
+                        
             try
             {
                 string name = $"West Bros {whichBro}";
@@ -499,7 +500,10 @@ namespace ExpandTheGungeon.ExpandPrefab
             }
             catch (Exception e)
             {
-                ETGModConsole.Log($"Error setting up the western bro {whichBro}: " + e.ToString());
+                Debug.Log($"Error setting up the western bro {whichBro}!");
+                Debug.LogException(e);
+                ExpandLoadingScreen.LoadText[ExpandTheGungeon.LoadStatus.LoadError] = "ERROR: Error building Western Bros!";
+                ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadError;
             }
         }
 

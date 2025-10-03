@@ -18,6 +18,36 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static void CorrectForWalls(SpeculativeRigidbody rigidBody, SpeculativeRigidbody[] rigidBodiesToIgnore = null, bool checkForOtherRigidBodies = false) {
+            if (!rigidBody)return;
+            SpeculativeRigidbody[] m_rigidBodiesToIgnore;
+            if (rigidBodiesToIgnore != null) {
+                m_rigidBodiesToIgnore = rigidBodiesToIgnore;
+            } else {
+                m_rigidBodiesToIgnore = new SpeculativeRigidbody[0];
+            }
+
+            bool isOverLapping = PhysicsEngine.Instance.OverlapCast(rigidBody, null, true, checkForOtherRigidBodies, null, null, false, null, null, m_rigidBodiesToIgnore);
+            if (isOverLapping) {
+                Vector2 a = rigidBody.gameObject.transform.position.XY();
+                IntVector2[] cardinalsAndOrdinals = IntVector2.CardinalsAndOrdinals;
+                int num = 0;
+                int num2 = 1;
+                for (;;) {
+                    for (int i = 0; i < cardinalsAndOrdinals.Length; i++) {
+                        rigidBody.gameObject.transform.position = a + PhysicsEngine.PixelToUnit(cardinalsAndOrdinals[i] * num2);
+                        rigidBody.Reinitialize();
+                        if (!PhysicsEngine.Instance.OverlapCast(rigidBody, null, true, checkForOtherRigidBodies, null, null, false, null, null, m_rigidBodiesToIgnore))return;
+                    }
+                    num2++;
+                    num++;
+                    if (num > 200)break;
+                }
+                Debug.LogError("EX: FREEZE AVERTED!  TELL APACHE!  (you're welcome) 147");
+            }
+            return;
+        }
+        
         public static void SetPlayerIsStealthed(PlayerController player, bool value, string reason, bool showStealthVFX = false) {
             player.SetIsStealthed(value, reason);
             if (value && !showStealthVFX) {
@@ -2082,7 +2112,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                     num2++;
                     num++;
                     if (num > 200) {
-                        Debug.LogError("FREEZE AVERTED!  TELL RUBEL!  (you're welcome) 147");
+                        Debug.LogError("EX: FREEZE AVERTED!  TELL APACHE!  (you're welcome) 147");
                         return;
                     }
                 }                
@@ -2436,22 +2466,28 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             HandleSpecificRoomAGDInjection(targetRoom, dungeon, dungeon2.tileIndices.tilesetId);
 
+            if (addTeleporter) targetRoom.AddProceduralTeleporterToRoom();
             if (addRoomToMinimap) {
                 if (RoomExploredOnMinimap) {
                     targetRoom.visibility = RoomHandler.VisibilityStatus.VISITED;
                 } else {
                     targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED;
                 }
-                GameManager.Instance.StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(targetRoom, true, true, false));
-                if (isSecretRatExitRoom && RoomExploredOnMinimap) { targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED; }
+                if (isSecretRatExitRoom && RoomExploredOnMinimap) targetRoom.visibility = RoomHandler.VisibilityStatus.OBSCURED;
+                Minimap.Instance.InitializeMinimap(dungeon.data);
+                Minimap.Instance.StartCoroutine(DoMinimapRebuildOnRoom(targetRoom));
             }         
-            if (addTeleporter) { targetRoom.AddProceduralTeleporterToRoom(); }
-            if (addRoomToMinimap) { Minimap.Instance.InitializeMinimap(dungeon.data); }
+            
             DeadlyDeadlyGoopManager.ReinitializeData();
             
             return targetRoom;
         }
         
+        public static IEnumerator DoMinimapRebuildOnRoom(RoomHandler room) {
+            yield return new WaitForEndOfFrame();
+            yield return Minimap.Instance.StartCoroutine(Minimap.Instance.RevealMinimapRoomInternal(room, true, true, false));
+        }
+               
 
         public static GameObject GenerateOutOfBoundsWalls(RoomHandler targetRoom = null, IntVector2? position = null, IntVector2? size = null, bool reletiveToRoom = true, bool allowBackRoomsWarp = true) {
             if ((!reletiveToRoom && !position.HasValue) | (targetRoom == null && reletiveToRoom) |
@@ -5117,13 +5153,14 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
         }
 
-        public static void RegenerateMapTilemap(Minimap self) {
-            GameManager.Instance.StartCoroutine(DoLateRegeneration(self));
+        public static void RegenerateMapTilemap(Minimap self, tk2dTileMap.BuildFlags buildFlags = tk2dTileMap.BuildFlags.Default) {
+            GameManager.Instance.StartCoroutine(DoLateRegeneration(self, buildFlags));
         }
 
-        private static IEnumerator DoLateRegeneration(Minimap instance) {
-            yield return null;
-            (typeof(Minimap).GetField("m_shouldBuildTilemap", BindingFlags.Instance | BindingFlags.NonPublic)).SetValue(instance, true);
+        private static IEnumerator DoLateRegeneration(Minimap instance, tk2dTileMap.BuildFlags buildFlags) {
+            yield return new WaitForEndOfFrame();
+            // (typeof(Minimap).GetField("m_shouldBuildTilemap", BindingFlags.Instance | BindingFlags.NonPublic)).SetValue(instance, true);
+            instance.tilemap.Build(buildFlags);
             yield break;
         }
 

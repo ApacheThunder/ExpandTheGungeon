@@ -15,6 +15,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public static GameObject EXRedScarfObject;
         
         public static void Init(AssetBundle expandSharedAssets1) {
+            if (ExpandSettings.EnableBloodiedScarfFix) return;
             
             m_BlinkPassive = PickupObjectDatabase.GetById(436).GetComponent<BlinkPassiveItem>();
             

@@ -21,6 +21,8 @@ namespace ExpandTheGungeon.ItemAPI
         public static GameObject WestBrosBlackRevolverProjectile;
         public static GameObject WestBrosGoldenRevolverProjectile;
 
+        public static Hook ProjectileHook;
+
         public static readonly List<string> ProjectileSpriteList = new List<string>()
         {
             "gr_black_revolver_projectile_001",
@@ -124,7 +126,7 @@ namespace ExpandTheGungeon.ItemAPI
                 Debug.Log("[" + ExpandTheGungeon.ModName + "] " + "Now setting up projectile hook");
             }
 
-            ProjectileHookClass.AddHook();
+            if (ProjectileHook == null) ProjectileHook = ProjectileHookClass.AddHook();
 
             if (ExpandSettings.debugMode)
             {
@@ -416,9 +418,11 @@ namespace ExpandTheGungeon.ItemAPI
     // because Projectile.HandleDamageResult is protected, we inherit from Projectile just to create the hook
     public class ProjectileHookClass : Projectile
     {
-        public static void AddHook()
+
+
+        public static Hook AddHook()
         {
-            new Hook(typeof(Projectile).GetMethod("HandleDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance),
+            return new Hook(typeof(Projectile).GetMethod("HandleDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance),
                 typeof(ProjectileHookClass).GetMethod(nameof(ProjectileHookClass.HandleDamageHook), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static));
         }
 

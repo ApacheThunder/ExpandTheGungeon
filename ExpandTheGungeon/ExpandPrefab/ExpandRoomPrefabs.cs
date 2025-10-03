@@ -9,6 +9,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
     public class ExpandRoomPrefabs {
 
         // Custom Room Prefabs
+        public static PrototypeDungeonRoom ForgeHammerTestRoom;
         public static PrototypeDungeonRoom Giant_Elevator_Room;
         // This room prefab was removed in 2.1.8. I will recreate in code now plus with a few extras of my own design.
         public static PrototypeDungeonRoom Utiliroom;
@@ -1421,7 +1422,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_SecretShopWarp.overrideRoomVisualType = 2;
             Expand_West_SecretShopWarp.usesProceduralDecoration = false;
             RoomBuilder.AddObjectToRoom(Expand_West_SecretShopWarp, new Vector2(2, 5), ExpandPrefabs.EXRatDoor_4xLocks);
-            
+
+            ForgeHammerTestRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_ForgeHammerTestRoom", true, false, true);
+            RoomBuilder.AddObjectToRoom(ForgeHammerTestRoom, new Vector2(4, 10), ExpandObjectDatabase.ForgeHammerPlacable_TracksPlayer);
 
             Expand_West_SecretKeyShop = UnityEngine.Object.Instantiate(ExpandPrefabs.shop_special_key_01);
             Expand_West_SecretKeyShop.overrideRoomVisualType = 0;
@@ -1434,7 +1437,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_RatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_West_SecretRatKeyPedestalRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Expand_West_ShrineRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-
+            
             Giant_Elevator_Room = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             Utiliroom_SpecialPit = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();

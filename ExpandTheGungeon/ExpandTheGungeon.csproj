@@ -132,6 +132,7 @@
     <Compile Include="ExpandComponents\ExpandSpriteBobber.cs" />
     <Compile Include="ExpandComponents\ExpandTeleportBehavior.cs" />
     <Compile Include="ExpandConsole.cs" />
+    <Compile Include="ExpandComponents\ExpandEnemyAutoKiller.cs" />
     <Compile Include="ExpandLoadingScreens\ExpandLoadingScreen.cs" />
     <Compile Include="ExpandComponents\ExpandHatMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />

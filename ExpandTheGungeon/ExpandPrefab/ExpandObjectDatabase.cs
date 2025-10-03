@@ -140,7 +140,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable WrithingBulletman;
         public static DungeonPlaceable GungeonLockedDoors;
         public static DungeonPlaceable IronWoodDoors;
-
+        public static DungeonPlaceable ForgeHammerPlacable_TracksPlayer;
 
         public static void InitObjectDatabase() {
             
@@ -265,6 +265,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GungeonLockedDoors = gungeonDungeon.lockedDoorObjects;
             IronWoodDoors = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("DoorTest", ExpandAssets.AssetSource.SharedAuto2);
             // DimensionFog = marinePastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("DimensionFog").gameObject;
+            ForgeHammerPlacable_TracksPlayer = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("Hammer", ExpandAssets.AssetSource.SharedAuto1);
 
             ConvictPastController pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
             NightclubCrowdController crowdController = pastController.crowdController;

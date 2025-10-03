@@ -409,6 +409,14 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandHooks).GetMethod(nameof(DelayedLoadNextLevelHook), BindingFlags.Public | BindingFlags.Instance),
                 typeof(GameManager)
             );
+
+
+            /*new Hook(
+                typeof(AIAnimator).GetMethod("OnDestroy", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(ExpandHooks).GetMethod(nameof(OnDestroyHook), BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(AIAnimator)
+            );*/
+
             /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing Pixelator.Start Hook...."); }
             pixelatorStartHook = new Hook(
                 // typeof(Pixelator).GetMethod("RenderOptionalMaps", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -1941,8 +1949,17 @@ namespace ExpandTheGungeon.ExpandMain {
             orig(self, delay);
         }
 
+        /*protected void OnDestroyHook(Action<AIAnimator>orig, AIAnimator self) {
+            try {
+                orig(self);
+            } catch (Exception ex) {
+                Debug.LogException(ex);
+                Debug.Log("Exception occured on AIAnimator.OnDestroy with parent object: " + self.gameObject.name);
+            }
+        }*/
+
+
         // public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
-        public static bool test = false;
         
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {
             FieldInfo m_gameManagerCachedField = typeof(OcclusionLayer).GetField("m_gameManagerCached", BindingFlags.Instance | BindingFlags.NonPublic);

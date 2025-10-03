@@ -21,51 +21,14 @@ namespace ExpandTheGungeon {
         public static Exception LastException;
 
         public static IEnumerator InitAssets(GameManager gameManager) {
-            // yield return new WaitForEndOfFrame();
 
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadAudio;
-            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
-            
             AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAssetBundleName);
             AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ExpandTheGungeon.ModAudioAssetBundleName);
+
             AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
             AssetBundle sharedAssets2 = ResourceManager.LoadAssetBundle("shared_auto_002");
             AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
             AssetBundle enemiesBase = ResourceManager.LoadAssetBundle("enemies_base_001");
-            
-            try {
-                InitAudio(expandAudio, ExpandTheGungeon.ModSoundBankName);
-            } catch (Exception ex) {
-                LastException = ex;
-                HandleError();
-                yield break;
-            }
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadSprites;
-            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
-            
-            try {
-                // Init Custom GameLevelDefinitions
-                ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
-                // Init Custom Sprite Collections
-                ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
-                ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
-            } catch (Exception ex) {
-                LastException = ex;
-                HandleError();
-                yield break;
-            }
-            
-            ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadItems;
-            // if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
-
-
-            // Init ItemAPI
-            SetupItemAPI(expandSharedAssets1);
-
-            if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError) {
-                HandleError();
-                yield break;
-            }
 
             ExpandTheGungeon.loadStatus = ExpandTheGungeon.LoadStatus.LoadPrefabs;
             if (ExpandSettings.EnableAsyncAssetLoading) yield return ExpandLoadingScreen.WaitForTextUpdate();
@@ -152,7 +115,7 @@ namespace ExpandTheGungeon {
             }
             
             // Destroy Ammonomicon after Async load to ensure it gets updated when it's instantiated again.
-            UnityEngine.Object.Destroy(AmmonomiconController.Instance);
+            if(ExpandSettings.EnableAsyncAssetLoading)UnityEngine.Object.Destroy(AmmonomiconController.Instance);
             
             // Null bundles when done with them to avoid game crash issues
             expandSharedAssets1 = null;
@@ -313,7 +276,7 @@ namespace ExpandTheGungeon {
         }
         */
 
-        private static void SetupItemAPI(AssetBundle expandSharedAssets1) {
+        public static void SetupItemAPI(AssetBundle expandSharedAssets1) {
             if (!ExpandTheGungeon.ItemAPISetup) {
                 try {
                     ETGMod.Assets.SetupSpritesFromAssembly(Assembly.GetExecutingAssembly(), "ExpandTheGungeon/Sprites");
@@ -321,7 +284,7 @@ namespace ExpandTheGungeon {
                     ItemBuilder.Init();
                     BabyGoodHammer.Init(expandSharedAssets1);
                     CorruptionBomb.Init(expandSharedAssets1);
-                    if (ExpandSettings.EnableBloodiedScarfFix) { ExpandRedScarf.Init(expandSharedAssets1); }
+                    ExpandRedScarf.Init(expandSharedAssets1);
                     TableTechAssassin.Init(expandSharedAssets1);
                     CorruptedJunk.Init(expandSharedAssets1);
                     BootlegGuns.Init(expandSharedAssets1);

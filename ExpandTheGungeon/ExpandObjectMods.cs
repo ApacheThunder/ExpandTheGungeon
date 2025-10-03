@@ -106,8 +106,8 @@ namespace ExpandTheGungeon {
 
             if (ExpandPlaceWallMimic.PlayerHasThirdEye && Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) { Pixelator.Instance.DoOcclusionLayer = false; }
 
-            if (player1) { if (player1.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
-            if (player2) { if (player2.HasPassiveItem(ItemAPI.CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
+            if (player1) { if (player1.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
+            if (player2) { if (player2.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
 
             if (ExpandSettings.EnableExpandedGlitchFloors && (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow | playerHasCorruptedJunk)) {
                 
@@ -132,7 +132,7 @@ namespace ExpandTheGungeon {
                 }
 
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
-                    dungeon.BossMasteryTokenItemId = ItemAPI.CustomMasterRounds.GtlichFloorMasterRoundID;
+                    dungeon.BossMasteryTokenItemId = CustomMasterRounds.GtlichFloorMasterRoundID;
 
                     if (ExpandSettings.EnableGlitchFloorScreenShader && !ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {
                         GameObject EXGlitchFloorScreenFX = Object.Instantiate(ExpandAssets.LoadAsset<GameObject>("EXGlitchFloorScreenFX"));

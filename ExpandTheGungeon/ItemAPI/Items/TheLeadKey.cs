@@ -48,6 +48,7 @@ namespace ExpandTheGungeon.ItemAPI {
             m_InUse = false;
             m_IsTeleporting = false;
             m_DebugMode = false;
+            // m_ScreenCapInProgress = false;
             m_Configured = false;
         }
         
@@ -55,7 +56,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         private bool m_InUse;
         private bool m_IsTeleporting;
-        private bool m_ScreenCapInProgress;
+        // private bool m_ScreenCapInProgress;
         private bool m_DebugMode;
         private bool m_Configured;
 
@@ -136,9 +137,73 @@ namespace ExpandTheGungeon.ItemAPI {
             GameManager.Instance.StartCoroutine(CorruptionRoomTime(user));
         }
 
-        private Texture2D PortalTextureRender() {
-            m_ScreenCapInProgress = true;
+        private Texture2D PortalTextureRender(GlobalDungeonData.ValidTilesets currentTileset, string CurrentDungeonName) {
             Texture2D m_Texture = null;
+
+            switch (currentTileset) {
+                case GlobalDungeonData.ValidTilesets.CASTLEGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Castle");
+                    break;
+                case GlobalDungeonData.ValidTilesets.SEWERGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Sewer");
+                    break;
+                case GlobalDungeonData.ValidTilesets.JUNGLEGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Jungle");
+                    break;
+                case GlobalDungeonData.ValidTilesets.GUNGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Gungeon");
+                    break;
+                case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Cathedral");
+                    break;
+                case GlobalDungeonData.ValidTilesets.BELLYGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Belly");
+                    break;
+                case GlobalDungeonData.ValidTilesets.MINEGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Mines");
+                    break;
+                case GlobalDungeonData.ValidTilesets.RATGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_ResourcefulRat");
+                    break;
+                case GlobalDungeonData.ValidTilesets.CATACOMBGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Catacombs");
+                    break;
+                case GlobalDungeonData.ValidTilesets.OFFICEGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Nakatomi");
+                    break;
+                case GlobalDungeonData.ValidTilesets.WESTGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_West");
+                    break;
+                case GlobalDungeonData.ValidTilesets.FORGEGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Forge");
+                    break;
+                case GlobalDungeonData.ValidTilesets.HELLGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_BulletHell");
+                    break;
+                case GlobalDungeonData.ValidTilesets.PHOBOSGEON:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Phobos");
+                    break;
+                case GlobalDungeonData.ValidTilesets.SPACEGEON:
+                    if (CurrentDungeonName.ToLower().Contains("office")) {
+                        m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Office");
+                    } else if (CurrentDungeonName.ToLower().Contains("backrooms")) {
+                        m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Backrooms");
+                    } else {
+                        m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Space");
+                    }
+                    break;
+                default:
+                    m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Gungeon");
+                    break;
+            }
+
+            if (!m_Texture)m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Gungeon");
+
+
+            return m_Texture;
+
+            /*
+            m_ScreenCapInProgress = true;
             if (Pixelator.Instance.slavedCameras != null && Pixelator.Instance.slavedCameras.Count > 0) {                
                 m_Texture = ExpandUtility.GenerateTexture2DFromRenderTexture(Pixelator.Instance.slavedCameras[0].activeTexture);
             }
@@ -147,10 +212,10 @@ namespace ExpandTheGungeon.ItemAPI {
                 return m_Texture;
             } else {
                 m_ScreenCapInProgress = false;
-                return ExpandAssets.LoadAsset<Texture2D>("EX_GlitchPortalDefaultTexture");
-            }
+                return ExpandAssets.LoadAsset<Texture2D>("EXPortal_Gungeon");
+            }*/
         }
-      
+
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
 
@@ -197,9 +262,9 @@ namespace ExpandTheGungeon.ItemAPI {
             RoomHandler currentRoom = user.CurrentRoom;
             Dungeon dungeon = GameManager.Instance.Dungeon;
                         
-            m_CachedScreenCapture = PortalTextureRender();
+            m_CachedScreenCapture = PortalTextureRender(dungeon.tileIndices.tilesetId, dungeon.name);
             yield return null;
-            while (m_ScreenCapInProgress) { yield return null; }
+            // while (m_ScreenCapInProgress) { yield return null; }
 
             if (currentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { StunEnemiesForTeleport(currentRoom, 1f); }
 
@@ -386,6 +451,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 "west",
                 "forge",
                 "bullethell",
+                "backrooms"
             };
 
             for (int i = 0; i < DungeonNames.Count; i++) {
@@ -453,6 +519,8 @@ namespace ExpandTheGungeon.ItemAPI {
                 DungeonName = "BulletHell";
             } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("hell_") && !dungeon.gameObject.name.ToLower().Contains("bullethell")) {
                 DungeonName = "BulletHell";
+            } else if (SelectedPrototypeDungeonRoom.name.ToLower().Contains("backrooms_") && !dungeon.gameObject.name.ToLower().Contains("backrooms")) {
+                DungeonName = "Backrooms";
             }
             
             Dungeon dungeon2 = DungeonDatabase.GetOrLoadByName("Base_" + DungeonName);

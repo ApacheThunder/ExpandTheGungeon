@@ -33,8 +33,9 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         public static Texture2D EXLoadScreenLogo;
         public static Texture2D EXLoadScreenLogoLoadBarFrame;
         public static Texture2D EXLoadScreenLogoLoadBar;
-        
 
+        public static Texture2D CachedVanillaThrobberTexture;
+        public static Texture2D CachedVanillaRatThrobberTexture;
         // The values defined below are for external mod use if they so choose.
         public static Texture2D ExternalLogoOverride = null;
         // Control progress bar by altering it's size on horizontal axis. Current graphic is 218 on horizontal resolution. So anything between 0 and 218 gives you the normal coverage under the frame.
@@ -159,6 +160,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                 typeof(FoyerPreloader).GetField("m_isLoading", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, true);
                 return;
             } else if (!m_wasFirstLoadScreen) {
+                if (Instance && !Instance.gameObject.GetComponent<EXLoadingScreenResetThrobbersOnDestroy>()) Instance.gameObject.AddComponent<EXLoadingScreenResetThrobbersOnDestroy>();
                 if (Instance && overrideType != OverrideType.None)MaybeOverrideGraphics(self);
                 if (Instance && ExpandDebugCamera.DebugCameraEnabled) {
                     CreateThirdEyeLoadingScreen(Instance);
@@ -437,7 +439,9 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
             m_EXLoadingBarFrameSprite.IsVisible = false;
             m_EXLoadingBarSprite.IsVisible = false;
-            
+
+            CachedVanillaThrobberTexture = (foyerPreloader.Throbber.Atlas.Material.mainTexture as Texture2D);
+            CachedVanillaRatThrobberTexture = (foyerPreloader.RatThrobber.Atlas.Material.mainTexture as Texture2D);
         }
         
         public static dfControl CreateAdditionalLoadingScreen(FoyerPreloader foyerPreloader, Texture2D logoTexture, dfAnchorStyle anchorStyle, Vector2 textureSize) {
@@ -525,6 +529,23 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         public static void CreateBackroomsLoadingScreen (FoyerPreloader foyerPreloader) {
             foyerPreloader.LoadingLabel.Text = ("No-Clipping" + txtCloser);
         }
+    }
+
+    public class EXLoadingScreenResetThrobbersOnDestroy : BraveBehaviour {
+
+        private FoyerPreloader m_foyerPreloader;
+
+        public void Awake() { m_foyerPreloader = gameObject.GetComponent<FoyerPreloader>(); }
+
+        protected override void OnDestroy() {
+            if (!m_foyerPreloader) m_foyerPreloader.gameObject.GetComponent<FoyerPreloader>();
+            if (m_foyerPreloader) {
+                if ((m_foyerPreloader.Throbber.Atlas.Material.mainTexture as Texture2D) != ExpandLoadingScreen.CachedVanillaThrobberTexture) m_foyerPreloader.Throbber.Atlas.Material.mainTexture = ExpandLoadingScreen.CachedVanillaThrobberTexture;
+                if ((m_foyerPreloader.RatThrobber.Atlas.Material.mainTexture as Texture2D) != ExpandLoadingScreen.CachedVanillaThrobberTexture) m_foyerPreloader.RatThrobber.Atlas.Material.mainTexture = ExpandLoadingScreen.CachedVanillaRatThrobberTexture;
+            }
+            base.OnDestroy();
+        }
+
     }
 }
 

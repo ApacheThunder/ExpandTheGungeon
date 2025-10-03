@@ -619,8 +619,9 @@ namespace ExpandTheGungeon.ExpandComponents {
             bool m_ExtraLifeTriggered = false;
             bool m_SecondPlayerExistsAndIsGhost = (GameManager.Instance.GetOtherPlayer(interactor) && GameManager.Instance.GetOtherPlayer(interactor).IsGhost);
             bool m_SecondPlayerExistsAndIsNotGhost = (GameManager.Instance.GetOtherPlayer(interactor) && !GameManager.Instance.GetOtherPlayer(interactor).IsGhost);
-            bool m_AllowExtraLife = (DateTime.Now.Day != 1 && DateTime.Now.Month != 4);
+            bool m_AllowExtraLife = true;
             if (m_SecondPlayerExistsAndIsNotGhost) m_AllowExtraLife = false;
+            if (DateTime.Now.Day == 1 && DateTime.Now.Month == 4) m_AllowExtraLife = false;
             m_ShotPlayer = interactor;
             if (EnemyTarget) {
                 m_KilledCompanion = true;

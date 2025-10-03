@@ -2718,7 +2718,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     // m_EXGlitchPortalRenderer.materials = new Material[] { new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().materials[0]) };
                     m_EXGlitchPortalRenderer.material = new Material(m_ParadoxPortal.GetComponent<MeshRenderer>().material);
                     m_EXGlitchPortalRenderer.material.SetColor("_EmissionColor", new Color(1, 1, 1, 1));
-                    m_EXGlitchPortalRenderer.material.SetTexture("_PortalTex", expandSharedAssets1.LoadAsset<Texture2D>("EX_GlitchPortalDefaultTexture"));
+                    m_EXGlitchPortalRenderer.material.SetTexture("_PortalTex", expandSharedAssets1.LoadAsset<Texture2D>("EXPortal_Gungeon"));
                 }
             }
 

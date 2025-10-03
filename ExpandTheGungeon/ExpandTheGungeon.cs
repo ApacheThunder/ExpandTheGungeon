@@ -56,7 +56,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.2";
+        public const string VERSION = "3.0.3";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -214,22 +214,60 @@ namespace ExpandTheGungeon {
                 Debug.LogException(ex);
                 return;
             }
+                        
+            loadStatus = LoadStatus.LoadAudio;
+            
+            AssetBundle expandSharedAssets1 = ResourceManager.LoadAssetBundle(ModAssetBundleName);
+            AssetBundle expandAudio = ResourceManager.LoadAssetBundle(ModAudioAssetBundleName);
+            AssetBundle sharedAssets = ResourceManager.LoadAssetBundle("shared_auto_001");
+            AssetBundle braveResources = ResourceManager.LoadAssetBundle("brave_resources_001");
+            
+            try {
+                ExpandAssets.InitAudio(expandAudio, ModSoundBankName);
+            } catch (Exception ex) {
+                ExpandAssets.LastException = ex;
+                ExpandAssets.HandleError();
+                return;
+            }
+
+            loadStatus = LoadStatus.LoadSprites;
+                        
+            try {
+                // Init Custom GameLevelDefinitions
+                ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
+                // Init Custom Sprite Collections
+                ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
+                ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);
+                
+            } catch (Exception ex) {
+                expandAudio = null;
+                sharedAssets = null;
+                braveResources = null;
+                ExpandAssets.LastException = ex;
+                ExpandAssets.HandleError();
+                return;
+            }
+            
+            loadStatus = LoadStatus.LoadItems;
+            
+            // Init ItemAPI
+            ExpandAssets.SetupItemAPI(expandSharedAssets1);
+            
+            expandSharedAssets1 = null;
+            expandAudio = null;
+            sharedAssets = null;
+            braveResources = null;
+
+            if (loadStatus == LoadStatus.LoadError) {
+                ExpandAssets.HandleError();
+                return;
+            }
 
             if (ExpandLoadingScreen.Instance) {
                 ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssets(gameManager));
             } else {
                 gameManager.StartCoroutine(ExpandAssets.InitAssets(gameManager));
             }
-
-            /*if (ExpandSettings.EnableAsyncAssetLoading) {
-                if (ExpandLoadingScreen.Instance) {
-                    ExpandLoadingScreen.Instance.StartCoroutine(ExpandAssets.InitAssetsAsync(gameManager));
-                } else {
-                    gameManager.StartCoroutine(ExpandAssets.InitAssetsAsync(gameManager));
-                }
-            } else {
-                ExpandAssets.InitAssets(gameManager);
-            }*/
         }
 
 
@@ -340,7 +378,6 @@ namespace ExpandTheGungeon {
             referenceLabel = null;
         }
 
-        
     }
 }
 

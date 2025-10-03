@@ -231,11 +231,13 @@ namespace ExpandTheGungeon.ExpandComponents {
                 Chest m_Chest = otherRigidbody.GetComponent<Chest>();
                 MajorBreakable m_MajorBreakable = otherRigidbody.GetComponent<MajorBreakable>();
                 MinorBreakable m_MinorBreakable = otherRigidbody.GetComponent<MinorBreakable>();
+                ExpandHatMindController m_HatMindController = otherRigidbody.GetComponent<ExpandHatMindController>();
                 Projectile m_Projectile = otherRigidbody.GetComponent<Projectile>();
                 BeamController m_BeamController = otherRigidbody.GetComponent<BeamController>();
                 BasicBeamController m_BasicBeamController = otherRigidbody.GetComponent<BasicBeamController>();
                 ProjectileAndBeamMotionModule m_ProjectileAndBeamMotionModule = otherRigidbody.GetComponent<ProjectileAndBeamMotionModule>();
                 PhysicsEngine.SkipCollision = (m_PlayerController | m_MajorBreakable | m_MinorBreakable | m_Projectile | m_BeamController | m_BasicBeamController | (m_ProjectileAndBeamMotionModule != null));
+                if (m_HatMindController && m_HatMindController.owner)m_HatMindController.Detach();
                 if (m_PlayerController) {
                     if (!m_PlayerController.healthHaver.IsVulnerable) return;
                     m_PlayerEaten = true;

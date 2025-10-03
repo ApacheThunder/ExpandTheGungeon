@@ -3,6 +3,7 @@ using ExpandTheGungeon.ItemAPI;
 using System;
 using Dungeonator;
 using ExpandTheGungeon.ExpandUtilities;
+using System.Collections.Generic;
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -16,6 +17,10 @@ namespace ExpandTheGungeon.ExpandComponents {
         public float DumbFireTime = 0.1f;
         public float SmartFireTime = 2;
         public float ReturnToPlayerTime = 3;
+
+        public List<string> ExcludedEnemies = new List<string>() {
+            "45192ff6d6cb43ed8f1a874ab6bef316" // Displacer Beast/Misfire Beast. His collision is too wonky. Player ends up in walls/door when hat mind controller tries to teleport it to a safe spot.
+        };
 
         public string HatReturnSFX = "Play_obj_katana_slash_01";
 
@@ -167,17 +172,6 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (otherRigidbody.GetComponentInChildren<ExpandHatMindController>())return;
             if (hatItemOwner.InUse)return;
             if (hatItemOwner.CurrentMindControl)return;
-            if (!m_Chest && m_AIActor && (m_AIActor.name.ToLower().StartsWith("corrupted ") | (!AllowSingleEnemy && m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null)) &&
-                m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count < 2) {
-                if (fireMode != FireMode.ReturnToPlayer)fireMode = FireMode.ReturnToPlayer;
-                if (m_AIActor && !m_AIActor.healthHaver.IsDead && !m_AIActor.healthHaver.IsBoss &&
-                    !m_AIActor.IsGone && m_AIActor.ParentRoom != null &&
-                    m_Owner.CurrentRoom != null && m_AIActor.ParentRoom == m_Owner.CurrentRoom
-                ) {
-                    if (m_AIActor.behaviorSpeculator) m_AIActor.behaviorSpeculator.Stun(5, true);
-                }
-                return;
-            }
 
             if (m_Hammer && !m_Chest && !m_AIActor) {
                 RoomHandler m_HammerRoom = ReflectionHelpers.ReflectGetField<RoomHandler>(typeof(ForgeHammerController), "m_room", m_Hammer);
@@ -205,7 +199,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 }
             }
             
-            if (!IsAttached && m_Chest && !m_AIActor && !m_Chest.IsBroken) {
+            if (!IsAttached && !m_AIActor && m_Chest && !m_Chest.IsBroken && m_Owner.CenterPosition.GetAbsoluteRoom() != null && m_Chest.gameObject.transform.position.GetAbsoluteRoom() == m_Owner.CenterPosition.GetAbsoluteRoom()) {
                 hatItemOwner.CurrentMindControl = m_Chest.gameObject.AddComponent<ExpandHatMindController>();
                 hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.Chest;
                 hatItemOwner.CurrentMindControl.UseFakeActorTarget = false;
@@ -221,9 +215,25 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
 
             if (!IsAttached && m_AIActor && !otherRigidbody.gameObject.GetComponent<CompanionController>()) {
+                bool StunEnemyInstead = false;
+                if (m_AIActor.name.ToLower().Contains("corrupted")) StunEnemyInstead = true;
+                if (ExcludedEnemies.Contains(m_AIActor.EnemyGuid)) StunEnemyInstead = true;
+                if (!AllowSingleEnemy && m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear) != null && m_Owner.CurrentRoom?.GetActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear).Count < 2) {
+                    StunEnemyInstead = true;
+                }
+                if (StunEnemyInstead) {
+                    if (fireMode != FireMode.ReturnToPlayer) fireMode = FireMode.ReturnToPlayer;
+                    if (m_AIActor && !m_AIActor.healthHaver.IsDead && !m_AIActor.healthHaver.IsBoss &&
+                        !m_AIActor.IsGone && m_AIActor.ParentRoom != null &&
+                        m_Owner.CurrentRoom != null && m_AIActor.ParentRoom == m_Owner.CurrentRoom
+                    ) {
+                        if (m_AIActor.behaviorSpeculator) m_AIActor.behaviorSpeculator.Stun(5, true);
+                    }
+                    return;
+                }
                 if (!m_AIActor.healthHaver.IsDead && !m_AIActor.healthHaver.IsBoss &&
-                    !m_AIActor.IsGone && m_AIActor.ParentRoom != null &&
-                    m_Owner.CurrentRoom != null && m_AIActor.ParentRoom == m_Owner.CurrentRoom
+                    !m_AIActor.IsGone && m_AIActor.CenterPosition.GetAbsoluteRoom() != null &&
+                    m_Owner.CenterPosition.GetAbsoluteRoom() != null && m_AIActor.ParentRoom == m_Owner.CenterPosition.GetAbsoluteRoom()
                     ) {
                     hatItemOwner.CurrentMindControl = m_AIActor.gameObject.AddComponent<ExpandHatMindController>();
                     hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.AIActor;

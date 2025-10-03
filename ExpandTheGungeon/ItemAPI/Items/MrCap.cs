@@ -19,6 +19,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public static GameObject MrCapHammer;
 
         public static float MrCapTossCooldown = 3;
+        public static float MrCapAfterUseCooldown = 60;
 
         public static void Init(AssetBundle expandSharedAssets1) {
             MrCapObject = expandSharedAssets1.LoadAsset<GameObject>("Mr Cap");
@@ -27,7 +28,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
             MrCap MrCap = MrCapObject.AddComponent<MrCap>();
             string shortDesc = "Total Control";
-			string longDesc = "This santient hat once was on a certain odysee with a certain small plumber.\n\n He is now on vacation. Unfortunately the Gungeon turned out to not be a good vacation spot so now he's trapped down here with you.\n\nHe might as well help you on your journey. Maybe it will be his ticket of here.";
+			string longDesc = "This santient hat once was on a certain odyssey with a certain small plumber.\n\n He is now on vacation. Unfortunately the Gungeon turned out to not be a good vacation spot so now he's trapped down here with you.\n\nHe might as well help you on your journey. Maybe it will be his ticket of here.";
 			ItemBuilder.SetupItem(MrCap, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(MrCap, ItemBuilder.CooldownType.Timed, MrCapTossCooldown);
             MrCap.quality = ItemQuality.A;
@@ -173,6 +174,10 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void OnPreDrop(PlayerController player) {
             base.OnPreDrop(player);
+            if (InUse) {
+                timeCooldown = MrCapAfterUseCooldown;
+                if (LastOwner) ApplyCooldown(LastOwner);
+            }
             if (CurrentMindControl)CurrentMindControl.Detach();
             if (spawnedHatObject)Destroy(spawnedHatObject);
             InUse = false;
@@ -196,10 +201,10 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         public void DoDetach(bool KillTarget = false) {
-            if (CurrentMindControl)CurrentMindControl.Detach(KillTarget);
             InUse = false;
-            timeCooldown = 60;
-            if (LastOwner)ApplyCooldown(LastOwner);
+            timeCooldown = MrCapAfterUseCooldown;
+            if (LastOwner) ApplyCooldown(LastOwner);
+            if (CurrentMindControl)CurrentMindControl.Detach(KillTarget);
         }
 
         public override void Update() {
@@ -241,8 +246,9 @@ namespace ExpandTheGungeon.ItemAPI {
             if (InUse && CurrentMindControl) {
                 CurrentMindControl.Detach();
                 InUse = false;
-                timeCooldown = 60;
                 ClearCooldowns();
+                timeCooldown = MrCapAfterUseCooldown;
+                ApplyCooldown(user);
             } else {
                 timeCooldown = MrCapTossCooldown;
                 ClearCooldowns();
