@@ -31,6 +31,7 @@ namespace ExpandTheGungeon.ItemAPI {
             // ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
             ItemBuilder.SetupItem(babyGoodHammer, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(babyGoodHammer, ItemBuilder.CooldownType.Damage, 350f);
+            ItemBuilder.AddPassiveStatModifier(babyGoodHammer, PlayerStats.StatType.AdditionalItemCapacity, 1, StatModifier.ModifyMethod.ADDITIVE);
             babyGoodHammer.quality = ItemQuality.B;
             if (!ExpandSettings.EnableEXItems) { babyGoodHammer.quality = ItemQuality.EXCLUDED; }
 

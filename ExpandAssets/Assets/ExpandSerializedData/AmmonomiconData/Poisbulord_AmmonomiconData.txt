@@ -1,0 +1,16 @@
+{
+    "ForcedPositionInAmmonomicon": 4,
+    "IsNormalEnemy": true,
+    "IsInBossTab": true,
+	"TabSpriteIsTexture": true,
+    "EnemyDifficulty": 3,
+	"placeableWidth": 7,
+	"placeableHeight": 6,
+    "TabSprite": "boss_icon_poisbulord_001",
+    "FullArtSprite": "boss_photo_poisbulord",
+    "EnemyName": "Poisbulord",
+    "smallDescription": "Five-Star General",
+    "bigDescription": "Once a Four-Star general, he has moved up a rank after his extended time in the Oubliette.\n\nNow in this far flung future, he has absorbed all the toxic sludge of the Oubliette and transformed into his final form and now seeps poisonous goo everywhere he goes.\n\nIt has been said he is the reason the Oubliette is now much cleaner then it was in the past when he first arrived.",
+	"encounterGUID": "a4077fdd5d7a41969baf22c74a382460",
+	"encounterPath": "Assets/ExpandPrefabs/AIActors/Poisbulord/Poisbulord.prefab"
+}

@@ -41,6 +41,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static EnemyEntryData WestBrosNome;
         public static EnemyEntryData WestBrosTuc;
         public static EnemyEntryData Doppelgunner;
+        public static EnemyEntryData Poisbulord;
 
 
 
@@ -64,6 +65,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             WestBrosNome = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosNome_AmmonomiconData").text);
             WestBrosTuc = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("WestBrosTuc_AmmonomiconData").text);
             Doppelgunner = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Doppelgunner_AmmonomiconData").text);
+            Poisbulord = JsonUtility.FromJson<EnemyEntryData>(expandSharedAssets1.LoadAsset<TextAsset>("Poisbulord_AmmonomiconData").text);
         }
 
         public static void AddExistingEnemyToAmmonomicon(AIActor targetEnemy, EnemyEntryData enemyEntryData, bool AddToEncounterDatabase = true, Texture2D FullArtSpriteOverride = null) {

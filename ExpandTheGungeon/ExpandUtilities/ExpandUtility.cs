@@ -18,6 +18,31 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        public static int GetIDFromClip(string clipName, tk2dSpriteAnimator SpriteAnimator) {
+            if (!string.IsNullOrEmpty(clipName) && SpriteAnimator && SpriteAnimator.Library?.clips?.Length > 0) {
+                for (int i = 0; i < SpriteAnimator.Library.clips.Length; i++) {
+                    if (SpriteAnimator.Library.clips[i].name == clipName) return i;
+                }
+            }
+            return 0;
+        }
+
+        public static int GetIDFromClip(string clipName, tk2dSpriteAnimation SpriteAnimation) {
+            if (!string.IsNullOrEmpty(clipName) && SpriteAnimation && SpriteAnimation.clips?.Length > 0) {
+                for (int i = 0; i < SpriteAnimation.clips.Length; i++) {
+                    if (SpriteAnimation.clips[i].name == clipName) return i;
+                }
+            }
+            return 0;
+        }
+
+        public static void DisableSuperTinting(tk2dBaseSprite sprite) {
+            Material mat = sprite.renderer.material;
+            mat.mainTexture = sprite.renderer.material.mainTexture;
+            mat.EnableKeyword("BRIGHTNESS_CLAMP_ON");
+            mat.DisableKeyword("BRIGHTNESS_CLAMP_OFF");
+        }
+
         public static void CorrectForWalls(SpeculativeRigidbody rigidBody, SpeculativeRigidbody[] rigidBodiesToIgnore = null, bool checkForOtherRigidBodies = false) {
             if (!rigidBody)return;
             SpeculativeRigidbody[] m_rigidBodiesToIgnore;

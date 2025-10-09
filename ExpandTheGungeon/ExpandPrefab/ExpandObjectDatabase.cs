@@ -121,6 +121,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject SlipperySign;
         // Misc
         public static GameObject GungeonSewersExit;
+        public static GameObject BlobulordGrate;
 
 
 
@@ -141,6 +142,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable GungeonLockedDoors;
         public static DungeonPlaceable IronWoodDoors;
         public static DungeonPlaceable ForgeHammerPlacable_TracksPlayer;
+
+        // Future themed objects from R&G
+        public static DungeonPlaceableBehaviour TechWallLong;
+        public static DungeonPlaceableBehaviour TechWallTall;
+        public static DungeonPlaceableBehaviour MetalPipe;
+        public static DungeonPlaceableBehaviour MarineMachine;
+        public static DungeonPlaceableBehaviour Tech_Machine_Wall;
+        public static DungeonPlaceableBehaviour Techno_Jail_Floor;
+        public static DungeonPlaceableBehaviour Techno_Jail_Alien;
+        public static DungeonPlaceableBehaviour Techno_Jail_Leever;
+        public static DungeonPlaceableBehaviour Techno_Jail_Spider;
+        public static DungeonPlaceableBehaviour Techno_Floor_Placable;
+        public static DungeonPlaceableBehaviour Metal_Crate;
+        public static DungeonPlaceableBehaviour Alien_Tank;
+
 
         public static void InitObjectDatabase() {
             
@@ -231,7 +247,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EndTimesChest = forgeDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("EndTimes_Xform").Find("G_CacheOfTheAmmulich").gameObject;
             GungeonSewersExit = castleDungeon.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
 
-            
+            BlobulordGrate = ExpandAssets.LoadOfficialAsset<GameObject>("BlobulordGrate", ExpandAssets.AssetSource.SharedAuto1);
+
+
             foreach (WeightedRoom wRoom in sewersDungeon.PatternSettings.flows[0].fallbackRoomTable.includedRooms.elements) {
                 if (wRoom.room != null && !string.IsNullOrEmpty(wRoom.room.name)) {
                     if (wRoom.room.name.ToLower().StartsWith("sewer_trash_compactor_001")) {
@@ -327,7 +345,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             GlassWall_Front = NakatomiPrefab.PatternSettings.flows[0].AllNodes[7].overrideExactRoom.placedObjects[6].nonenemyBehaviour.gameObject;
             BossOfficeDesk = NakatomiPrefab.PatternSettings.flows[0].AllNodes[8].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
             SlipperySign = NakatomiPrefab.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[3].nonenemyBehaviour.gameObject;
-            
+
+            TechWallLong = NakatomiPrefab.PatternSettings.flows[0].AllNodes[11].overrideExactRoom.placedObjects[0].nonenemyBehaviour; // 2x1
+            TechWallTall = NakatomiPrefab.PatternSettings.flows[0].AllNodes[11].overrideExactRoom.placedObjects[7].nonenemyBehaviour; // 2x1
+            MetalPipe = NakatomiPrefab.PatternSettings.flows[0].AllNodes[11].overrideExactRoom.placedObjects[8].nonenemyBehaviour; // 1x2
+            MarineMachine = NakatomiPrefab.PatternSettings.flows[0].AllNodes[11].overrideExactRoom.placedObjects[13].nonenemyBehaviour; // 1x2
+            Tech_Machine_Wall = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[6].nonenemyBehaviour; // 1x2
+            Techno_Jail_Floor = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[0].nonenemyBehaviour; // 1x1
+            Techno_Jail_Alien = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[4].nonenemyBehaviour; // 1x1
+            Techno_Jail_Leever = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[13].nonenemyBehaviour; // 1x1
+            Techno_Jail_Spider = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[14].nonenemyBehaviour; // 1x1
+            Metal_Crate = NakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom.placedObjects[10].nonenemyBehaviour; // 1x2
+            Alien_Tank = NakatomiPrefab.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[9].nonenemyBehaviour; // 1x2
+
+            Techno_Floor_Placable = NakatomiPrefab.PatternSettings.flows[0].AllNodes[13].overrideExactRoom.placedObjects[29].nonenemyBehaviour; // 1x1
+                        
+
             NakatomiPrefab = null;
             convictPastDungeon = null;
             catacombsDungeon = null;

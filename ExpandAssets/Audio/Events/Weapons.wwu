@@ -1866,6 +1866,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_EX_SignPost_Past" ID="{24E54CE5-8F5D-4E92-9B21-00505750BE5D}">
+					<ChildrenList>
+						<Action Name="" ID="{934A07D3-FF78-43E0-8CCC-374854791291}" ShortID="35771110">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SCD_PCM_01" ID="{6A866C6A-15CD-4146-BEFF-CE140CDF5A36}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_EX_SignPost_Future" ID="{71330E81-336B-4704-B942-66F5632A2DF7}">
+					<ChildrenList>
+						<Action Name="" ID="{CA3282F2-86C6-414B-BBBA-58932D805A84}" ShortID="1049046318">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SCD_PCM_00" ID="{5A2CDAFD-AB09-4A44-8D6E-BA3F9B6DEDCE}" WorkUnitID="{4F9648B0-61C9-4DD2-BB9A-A9E397791F31}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

@@ -7,6 +7,7 @@ using BepInEx;
 using ExpandTheGungeon.ExpandPrefab;
 using ExpandTheGungeon.ExpandMain;
 using ExpandTheGungeon.ExpandLoadingScreens;
+using HarmonyLib;
 
 namespace ExpandTheGungeon {
 
@@ -56,7 +57,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.3";
+        public const string VERSION = "3.0.4";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -80,11 +81,16 @@ namespace ExpandTheGungeon {
         public static StringDB Strings;
         public static List<string> ExceptionTextList;
         public static string ExceptionText;
-        
-        
+
+        public static Harmony HarmonyPatches;
+
+
         private static GameObject m_FoyerCheckerOBJ;
         
         public void Start() {
+            HarmonyPatches = new Harmony(GUID);
+            HarmonyPatches.PatchAll(Assembly.GetExecutingAssembly());
+
             FilePath = this.FolderPath();
             ZipFilePath = this.FolderPath();
             

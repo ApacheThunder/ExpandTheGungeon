@@ -97,13 +97,13 @@ namespace ExpandTheGungeon.ItemAPI {
             tk2dSpriteAnimator MrCapProjAnimator = ExpandUtility.GenerateSpriteAnimator(m_CapProjSpriteObject, playAutomatically: true);
             ExpandUtility.AddAnimation(MrCapProjAnimator, ExpandPrefabs.EXItemCollection, projSpritePaths, "spin", tk2dSpriteAnimationClip.WrapMode.Loop, frameRate: 12);
             
-            PierceProjModifier m_CapPiercer = MrCapProjectile.AddComponent<PierceProjModifier>();
+            /*PierceProjModifier m_CapPiercer = MrCapProjectile.AddComponent<PierceProjModifier>();
             m_CapPiercer.penetration = 1000;
             m_CapPiercer.penetratesBreakables = true;
             m_CapPiercer.preventPenetrationOfActors = true;
             m_CapPiercer.BeastModeLevel = PierceProjModifier.BeastModeStatus.BEAST_MODE_LEVEL_ONE;
             m_CapPiercer.UsesMaxBossImpacts = false;
-            m_CapPiercer.MaxBossImpacts = -1;
+            m_CapPiercer.MaxBossImpacts = -1;*/
             
 
             MrCapVFX = expandSharedAssets1.LoadAsset<GameObject>("EXMrCapVFX");

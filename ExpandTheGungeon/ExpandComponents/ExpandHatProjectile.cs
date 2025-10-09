@@ -37,8 +37,17 @@ namespace ExpandTheGungeon.ExpandComponents {
         private float m_LifeTimer;
 
         private bool m_Configured = false;
-        
-        
+
+        public override void Start() {
+            if (!gameObject.GetComponent<MinorBreakable>()) {
+                MinorBreakable breakable = gameObject.AddComponent<MinorBreakable>();
+                breakable.enabled = false;
+            } else {
+                gameObject.GetComponent<MinorBreakable>().enabled = false;
+            }
+            base.Start();
+        }
+
         protected override void Move() {
             if (!m_Configured) {
                 specRigidbody.OnPreRigidbodyCollision = (SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate)Delegate.Combine(specRigidbody.OnPreRigidbodyCollision, new SpeculativeRigidbody.OnPreRigidbodyCollisionDelegate(HatOnPreRigidBodyCollision));
@@ -168,6 +177,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             AIActor m_AIActor = otherRigidbody.gameObject.GetComponent<AIActor>();
             Chest m_Chest = otherRigidbody.gameObject.GetComponent<Chest>();
             ForgeHammerController m_Hammer = otherRigidbody.gameObject.GetComponent<ForgeHammerController>();
+            MajorBreakable m_Breakable = otherRigidbody.gameObject.GetComponent<MajorBreakable>();
 
             if (otherRigidbody.GetComponentInChildren<ExpandHatMindController>())return;
             if (hatItemOwner.InUse)return;
@@ -246,9 +256,25 @@ namespace ExpandTheGungeon.ExpandComponents {
                     } else {
                         IsAttached = true;
                     }
-                    
                 }
             }
+
+            if(!IsAttached && m_Breakable && !m_AIActor && !m_Chest && m_Owner.CenterPosition.GetAbsoluteRoom() != null && m_Breakable.gameObject.transform.position.GetAbsoluteRoom() == m_Owner.CenterPosition.GetAbsoluteRoom() &&
+                !(m_Breakable && (m_Breakable.GetComponent<ExpandFakeChest>() && (m_Breakable.GetComponent<ExpandFakeChest>().Opened | m_Breakable.GetComponent<ExpandFakeChest>().IsBroken)))) {
+                hatItemOwner.CurrentMindControl = m_Breakable.gameObject.AddComponent<ExpandHatMindController>();
+                hatItemOwner.CurrentMindControl.targetType = ExpandHatMindController.TargetType.Breakable;
+                hatItemOwner.CurrentMindControl.UseFakeActorTarget = false;
+                hatItemOwner.CurrentMindControl.MrCapItem = hatItemOwner;
+                if (Owner) hatItemOwner.CurrentMindControl.Init(m_Owner, m_Breakable.gameObject);
+                if (hatItemOwner.CurrentMindControl && hatItemOwner.CurrentMindControl.AttachFailed) {
+                    hatItemOwner.CurrentMindControl.IsOnDeath = false;
+                    Destroy(hatItemOwner.CurrentMindControl);
+                    hatItemOwner.CurrentMindControl = null;
+                } else {
+                    IsAttached = true;
+                }
+            }
+
             if (IsAttached) {
                 PlayCaptureSFX(otherRigidbody.gameObject);
                 IsReturning = false;

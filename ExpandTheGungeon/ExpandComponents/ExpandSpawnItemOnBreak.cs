@@ -91,6 +91,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         public void OnPreRigidBodyCollision(SpeculativeRigidbody myRigidbody, PixelCollider myPixelCollider, SpeculativeRigidbody otherRigidbody, PixelCollider otherPixelCollider) {
+            if (myRigidbody.GetComponent<ExpandHatMindController>())return;
             if (BreakOnEnemyCollision && majorBreakable && otherRigidbody.GetComponent<AIActor>()) {
                 if (!otherRigidbody.GetComponent<AIActor>().IgnoreForRoomClear && !otherRigidbody.GetComponent<CompanionController>()) {
                     BreakOnEnemyCollision = false;

@@ -12,12 +12,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
     public class ExpandDungeonPrefabs {
 
+        public static Dictionary<string, Dungeon> DungeonDatabase;
+
         public static GameObject Base_Space;
         public static GameObject Base_Jungle;
         public static GameObject Base_Belly;
         public static GameObject Base_West;
         public static GameObject Base_Phobos;
         public static GameObject Base_Office;
+        public static GameObject Base_Future;
         public static GameObject Base_BackRooms;
 
         public static Hook getOrLoadByName_Hook;
@@ -231,81 +234,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             return m_NewDungeonCollection;
         }
-
-        /*public static tk2dSpriteCollectionData ENV_Tileset_BackRooms(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
-
-            tk2dSpriteCollectionData m_NewDungeonCollection = TargetObject.AddComponent<tk2dSpriteCollectionData>();
-            JsonUtility.FromJsonOverwrite(ExpandAssets.DeserializeJSONDataFromAssetBundle(expandSharedAssets1, "TilesetData/Nakatomi/ENV_Tileset_Nakatomi"), m_NewDungeonCollection);
-
-            Material m_LitCutout = new Material(sharedAssets.LoadAsset<Shader>("BraveLitTk2dCustomFalloffCutout"));
-            Material m_LitBlend = new Material(sharedAssets.LoadAsset<Shader>("BraveLitTK2dCustomFalloff"));
-            Material m_Unlit = new Material(sharedAssets.LoadAsset<Shader>("BraveUnlitCutout"));
-            m_LitCutout.mainTexture = tileSetTexture;
-            m_LitCutout.SetFloat("_Cutoff", 0.5f);
-            m_LitCutout.SetFloat("_MaxValue", 1);
-            m_LitCutout.SetFloat("_Perpendicular", 1);
-            m_LitBlend.mainTexture = tileSetTexture;
-            m_LitBlend.SetFloat("_Cutoff", 0.5f);
-            m_LitBlend.SetFloat("_Perpendicular", 1);
-            m_Unlit.mainTexture = tileSetTexture;
-            m_Unlit.SetFloat("_Cutoff", 0.5f);
-            m_Unlit.SetFloat("_Perpendicular", 1);
-
-            string[] m_WestMaterialTable = ExpandAssets.GetLinesFromAssetBundle(expandSharedAssets1, "ExpandSerializedData/TilesetData/Nakatomi/ENV_Tileset_Nakatomi_MaterialTable");
-
-            for (int i = 0; i < m_NewDungeonCollection.spriteDefinitions.Length; i++) {
-                if (m_WestMaterialTable[i].Contains("lit cutout")) {
-                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
-                } else if (m_WestMaterialTable[i].Contains("lit blend")) {
-                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitBlend;
-                } else if (m_WestMaterialTable[i].Contains("unlit")) {
-                    m_NewDungeonCollection.spriteDefinitions[i].material = m_Unlit;
-                } else {
-                    Debug.Log("[ExpandTheGungeon] ERROR: sprite id " + i + " did not have a matching material name in lookup table!");
-                    m_NewDungeonCollection.spriteDefinitions[i].material = m_LitCutout;
-                }
-            }
-
-            m_NewDungeonCollection.materials = new Material[] { m_LitCutout, m_LitBlend, m_Unlit};
-            m_NewDungeonCollection.textures = new Texture[] { tileSetTexture };
-            
-            sharedAssets = null;
-
-            return m_NewDungeonCollection;
-        }*/
-
+        
+                
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
-            switch (name.ToLower()) {
-                case "base_space":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_Space.GetComponent<Dungeon>();
-                case "base_jungle":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_Jungle.GetComponent<Dungeon>();
-                case "base_belly":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_Belly.GetComponent<Dungeon>();
-                case "base_west":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_West.GetComponent<Dungeon>();
-                case "base_phobos":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_Phobos.GetComponent<Dungeon>();
-                case "base_office":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_Office.GetComponent<Dungeon>();
-                case "base_backrooms":
-                    DebugTime.RecordStartTime();
-                    DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
-                    return Base_BackRooms.GetComponent<Dungeon>();
-                default:
-                    return orig(name);
+            Dungeon dungeon = null;
+            if (DungeonDatabase != null)DungeonDatabase.TryGetValue(name.ToLower(), out dungeon);
+            if (dungeon) {
+                DebugTime.RecordStartTime();
+                DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
+                return dungeon;
+            } else {
+                return orig(name);
             }
         }
                 
@@ -325,6 +264,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Base_West = expandSharedAuto1.LoadAsset<GameObject>("Base_West");
             Base_Phobos = expandSharedAuto1.LoadAsset<GameObject>("Base_Phobos");
             Base_Office = expandSharedAuto1.LoadAsset<GameObject>("Base_Office");
+            Base_Future = expandSharedAuto1.LoadAsset<GameObject>("Base_Future");
             Base_BackRooms = expandSharedAuto1.LoadAsset<GameObject>("Base_BackRooms");
             
             InitSpaceDungeon(Base_Space, LoadOfficialDungeonPrefab("Base_ResourcefulRat"));
@@ -333,7 +273,19 @@ namespace ExpandTheGungeon.ExpandPrefab {
             InitWestDungeon(expandSharedAuto1, sharedAssets2, Base_West, LoadOfficialDungeonPrefab("Base_Gungeon"));
             InitPhobosDungeon(expandSharedAuto1, sharedAssets2, Base_Phobos, LoadOfficialDungeonPrefab("Base_Gungeon"));
             InitOfficeDungeon(expandSharedAuto1, sharedAssets2, Base_Office, LoadOfficialDungeonPrefab("Base_Gungeon"));
+            InitFutureDungeon(sharedAssets2, Base_Future, LoadOfficialDungeonPrefab("Base_Nakatomi"));
             InitBackRoomsDungeon(expandSharedAuto1, sharedAssets2, Base_BackRooms, LoadOfficialDungeonPrefab("Base_Gungeon"));
+
+            DungeonDatabase = new Dictionary<string, Dungeon>() {
+                ["base_space"] = Base_Space.GetComponent<Dungeon>(),
+                ["base_jungle"] = Base_Jungle.GetComponent<Dungeon>(),
+                ["base_belly"] = Base_Belly.GetComponent<Dungeon>(),
+                ["base_west"] = Base_West.GetComponent<Dungeon>(),
+                ["base_phobos"] = Base_Phobos.GetComponent<Dungeon>(),
+                ["base_office"] = Base_Office.GetComponent<Dungeon>(),
+                ["base_future"] = Base_Future.GetComponent<Dungeon>(),
+                ["base_backrooms"] = Base_BackRooms.GetComponent<Dungeon>()
+            };
         }
         
         public static void InitCustomGameLevelDefinitions(AssetBundle braveResources, GameManager gameManager) {
@@ -387,6 +339,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
                                 definition.enemyHealthMultiplier = 1.7f;
                                 definition.damageCap = 300;
                                 definition.bossDpsCap = 60;
+                                definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
+                                definition.predefinedSeeds = new List<int>(0);
+                                break;
+                            case "tt_future":
+                                definition.priceMultiplier = 1.20000005f;
+                                definition.secretDoorHealthMultiplier = 1;
+                                definition.enemyHealthMultiplier = 0.7f;
+                                definition.damageCap = 300;
+                                definition.bossDpsCap = 42;
                                 definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
                                 definition.predefinedSeeds = new List<int>(0);
                                 break;
@@ -1590,7 +1551,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.PlaceDoors = true;
             dungeon.doorObjects = ExpandPrefabs.Belly_Doors;
             dungeon.oneWayDoorObjects = AbbeyPrefab.oneWayDoorObjects;
-            dungeon.oneWayDoorPressurePlate = AbbeyPrefab.oneWayDoorPressurePlate;
+            dungeon.oneWayDoorPressurePlate = ExpandPrefabs.Monstro_PressurePlate;
             dungeon.phantomBlockerDoorObjects = AbbeyPrefab.phantomBlockerDoorObjects;
             dungeon.UsesWallWarpWingDoors = false;
             dungeon.baseChestContents = AbbeyPrefab.baseChestContents;
@@ -2958,29 +2919,346 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     }
                 }
             }
-            // m_ObjectStamps[0].relativeWeight = 0.005f; // office chairs
-            // m_ObjectStamps[1].relativeWeight = 0.005f;
-            // m_ObjectStamps[2].relativeWeight = 0.005f;
-            // m_ObjectStamps[3].relativeWeight = 0.001f; // water coolers
-            // m_ObjectStamps[4].relativeWeight = 0.001f;
-            // m_ObjectStamps[5].relativeWeight = 0.001f;
-            m_ObjectStamps[6].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL_LEFT_CORNER; // Potted Plants (floor)
-            //m_ObjectStamps[7].relativeWeight = 0.0006f; // Cardboard Boxs (floor)
-            m_ObjectStamps[7].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
-            m_ObjectStamps[8].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
-            // m_ObjectStamps[9].relativeWeight = 0.004f; // Potted Plant Long/Tall
-            m_ObjectStamps[9].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS;
-            m_ObjectStamps[10].placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS;
-            m_ObjectStamps[11].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
-            // m_ObjectStamps[12].roomTypeData[0].roomRelativeWeight = 0.01f; // Slippery Sign (floor)
-            // m_ObjectStamps[12].placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL;
-            // m_ObjectStamps[12].roomTypeData[0].roomSubType = 1;
+            m_ObjectStamps[6].placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR; // Potted Plants (floor)
+            
+            m_ObjectStamps[0].roomTypeData[1].roomRelativeWeight = 0; // Office Chair Front
+            m_ObjectStamps[0].width = 2; // Office Chair Front
+            m_ObjectStamps[1].roomTypeData[1].roomRelativeWeight = 0; // Office Chair Right
+            m_ObjectStamps[2].roomTypeData[1].roomRelativeWeight = 0; // Office Chair Left
+            m_ObjectStamps[3].roomTypeData[1].roomRelativeWeight = 0; // Water Cooler Front
+            m_ObjectStamps[5].roomTypeData[1].roomRelativeWeight = 0; // Water Cooler Side
+            m_ObjectStamps[6].roomTypeData[1].roomRelativeWeight = 0; // Water Cooler Side
+            m_ObjectStamps[7].placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR; // Cardboard Box 001
+            m_ObjectStamps[7].roomTypeData[1].roomRelativeWeight = 0.4f;
+            m_ObjectStamps[7].roomTypeData[1].roomRelativeWeight = 0;
+            m_ObjectStamps[7].relativeWeight = 0.4f;
+            m_ObjectStamps[8].placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR; // Cardboard Box 003
+            m_ObjectStamps[8].relativeWeight = 0.4f;
+            m_ObjectStamps[8].roomTypeData[0].roomRelativeWeight = 0.4f;
+            m_ObjectStamps[8].roomTypeData[1].roomRelativeWeight = 0;
 
-            m_ObjectStamps.Remove(m_ObjectStamps[12]);
-            m_ObjectStamps.Remove(m_ObjectStamps[11]);
-            m_ObjectStamps.Remove(m_ObjectStamps[10]);
-            m_ObjectStamps.Remove(m_ObjectStamps[9]);
-            m_ObjectStamps.Remove(m_ObjectStamps[6]);
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.4f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[6].overrideExactRoom.placedObjects[2].nonenemyBehaviour.gameObject // Toilet Wall (front)
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.4f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[6].overrideExactRoom.placedObjects[7].nonenemyBehaviour.gameObject // Toilet Left
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.4f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[6].overrideExactRoom.placedObjects[10].nonenemyBehaviour.gameObject // Toilet Right
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 3,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[16].nonenemyBehaviour.gameObject // KitchenCounter
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[8].nonenemyBehaviour.gameObject // KitchenChair_Left
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[12].nonenemyBehaviour.gameObject // KitchenChair_Right
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 2,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[2].nonenemyBehaviour.gameObject // Kitchen Chair Front
+            });
+
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[8].nonenemyBehaviour.gameObject // KitchenChair_Left
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[12].nonenemyBehaviour.gameObject // KitchenChair_Right
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 2,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[4].overrideExactRoom.placedObjects[2].nonenemyBehaviour.gameObject // Kitchen Chair Front
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.2f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.2f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[3].nonenemyBehaviour.gameObject // Slippery_Sign
+            });
+
+
+            for (int i = 0; i < 200; i++) { 
+                m_ObjectStamps.Add(new ObjectStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1f,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = 0,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1f },
+                        new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 1f }
+                    },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXDummyObject,
+                });
+            }
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.1f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.6f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.6f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.1f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.6f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.6f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.6f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 1f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 1f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.6f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 0, roomRelativeWeight = 0.8f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 1, roomRelativeWeight = 0.8f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
 
 
             dungeon.stampData.objectStamps = m_ObjectStamps.ToArray();
@@ -3029,6 +3307,612 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             NakatomiPrefab = null;
             AbbeyPrefab = null;
+        }
+
+        public static void InitFutureDungeon(AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {
+            Dungeon dungeon = targetObject.AddComponent<Dungeon>();
+            ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
+            ExpandUtility.DuplicateComponent(targetObject.AddComponent<FuturegeonGroundLightDoer>(), dungeonTemplate.gameObject.GetComponent<FuturegeonGroundLightDoer>());
+            
+            dungeon.PatternSettings.flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F1b_Future_Flow_01") };
+
+            dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
+                dungeonTemplate.roomMaterialDefinitions[8],
+                dungeonTemplate.roomMaterialDefinitions[1],
+                dungeonTemplate.roomMaterialDefinitions[2],
+                dungeonTemplate.roomMaterialDefinitions[3],
+                dungeonTemplate.roomMaterialDefinitions[4],
+                sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights"),
+                dungeonTemplate.roomMaterialDefinitions[6],
+                dungeonTemplate.roomMaterialDefinitions[7],
+                dungeonTemplate.roomMaterialDefinitions[8],
+            };
+
+            dungeon.stampData = ScriptableObject.CreateInstance<DungeonTileStampData>();
+            dungeon.stampData.name = "ENV_FUTURE_STAMP_DATA";
+            dungeon.stampData.tileStampWeight = 0.33f;
+            dungeon.stampData.spriteStampWeight = 0;
+            dungeon.stampData.objectStampWeight = 1;
+            dungeon.stampData.SymmetricFrameChance = 0.1f;
+            dungeon.stampData.SymmetricCompleteChance = 0.1f;
+            dungeon.stampData.spriteStamps = new SpriteStampData[0];
+            dungeon.stampData.stamps = new TileStampData[] {
+                new TileStampData() {
+                    width = dungeonTemplate.stampData.stamps[8].width,
+                    height = dungeonTemplate.stampData.stamps[8].height,
+                    relativeWeight = dungeonTemplate.stampData.stamps[8].relativeWeight,
+                    placementRule = dungeonTemplate.stampData.stamps[8].placementRule,
+                    occupySpace = dungeonTemplate.stampData.stamps[8].occupySpace,
+                    stampCategory = dungeonTemplate.stampData.stamps[8].stampCategory,
+                    preferredIntermediaryStamps = dungeonTemplate.stampData.stamps[8].preferredIntermediaryStamps,
+                    intermediaryMatchingStyle = dungeonTemplate.stampData.stamps[8].intermediaryMatchingStyle,
+                    requiresForcedMatchingStyle = dungeonTemplate.stampData.stamps[8].requiresForcedMatchingStyle,
+                    opulence = dungeonTemplate.stampData.stamps[8].opulence,
+                    indexOfSymmetricPartner = dungeonTemplate.stampData.stamps[8].indexOfSymmetricPartner,
+                    preventRoomRepeats = dungeonTemplate.stampData.stamps[8].preventRoomRepeats,
+                    stampTileIndices = dungeonTemplate.stampData.stamps[8].stampTileIndices,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() {
+                            roomSubType = dungeonTemplate.stampData.stamps[8].roomTypeData[0].roomSubType,
+                            roomRelativeWeight = dungeonTemplate.stampData.stamps[8].roomTypeData[0].roomRelativeWeight
+                        }
+                    }
+                },
+                new TileStampData() {
+                    width = dungeonTemplate.stampData.stamps[9].width,
+                    height = dungeonTemplate.stampData.stamps[9].height,
+                    relativeWeight = dungeonTemplate.stampData.stamps[9].relativeWeight,
+                    placementRule = dungeonTemplate.stampData.stamps[9].placementRule,
+                    occupySpace = dungeonTemplate.stampData.stamps[9].occupySpace,
+                    stampCategory = dungeonTemplate.stampData.stamps[9].stampCategory,
+                    preferredIntermediaryStamps = dungeonTemplate.stampData.stamps[9].preferredIntermediaryStamps,
+                    intermediaryMatchingStyle = dungeonTemplate.stampData.stamps[9].intermediaryMatchingStyle,
+                    requiresForcedMatchingStyle = dungeonTemplate.stampData.stamps[9].requiresForcedMatchingStyle,
+                    opulence = dungeonTemplate.stampData.stamps[9].opulence,
+                    indexOfSymmetricPartner = dungeonTemplate.stampData.stamps[9].indexOfSymmetricPartner,
+                    preventRoomRepeats = dungeonTemplate.stampData.stamps[9].preventRoomRepeats,
+                    stampTileIndices = dungeonTemplate.stampData.stamps[9].stampTileIndices,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() {
+                            roomSubType = dungeonTemplate.stampData.stamps[9].roomTypeData[0].roomSubType,
+                            roomRelativeWeight = dungeonTemplate.stampData.stamps[9].roomTypeData[0].roomRelativeWeight
+                        }
+                    }
+                },
+                new TileStampData() {
+                    width = dungeonTemplate.stampData.stamps[10].width,
+                    height = dungeonTemplate.stampData.stamps[10].height,
+                    relativeWeight = dungeonTemplate.stampData.stamps[10].relativeWeight,
+                    placementRule = dungeonTemplate.stampData.stamps[10].placementRule,
+                    occupySpace = dungeonTemplate.stampData.stamps[10].occupySpace,
+                    stampCategory = dungeonTemplate.stampData.stamps[10].stampCategory,
+                    preferredIntermediaryStamps = dungeonTemplate.stampData.stamps[10].preferredIntermediaryStamps,
+                    intermediaryMatchingStyle = dungeonTemplate.stampData.stamps[10].intermediaryMatchingStyle,
+                    requiresForcedMatchingStyle = dungeonTemplate.stampData.stamps[10].requiresForcedMatchingStyle,
+                    opulence = dungeonTemplate.stampData.stamps[10].opulence,
+                    indexOfSymmetricPartner = dungeonTemplate.stampData.stamps[10].indexOfSymmetricPartner,
+                    preventRoomRepeats = dungeonTemplate.stampData.stamps[10].preventRoomRepeats,
+                    stampTileIndices = dungeonTemplate.stampData.stamps[10].stampTileIndices,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() {
+                            roomSubType = dungeonTemplate.stampData.stamps[10].roomTypeData[0].roomSubType,
+                            roomRelativeWeight = dungeonTemplate.stampData.stamps[10].roomTypeData[0].roomRelativeWeight
+                        }
+                    }
+                }
+            };
+            List<ObjectStampData> m_ObjectStamps = new List<ObjectStampData>();
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Metal_Crate.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 2,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.MarineMachine.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Metal_Crate.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Metal_Crate.gameObject
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Alien_Tank.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 3,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.MetalPipe.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Alien_Tank.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Alien_Tank.gameObject
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 2,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Tech_Machine_Wall.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 3,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.MetalPipe.gameObject
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.Ooze_Tank
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Alien_Tank.gameObject
+            });
+                        
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.Metal_Crate.gameObject
+            });
+
+
+            for (int i = 0; i < 200; i++) { 
+                m_ObjectStamps.Add(new ObjectStampData() {
+                    width = 1,
+                    height = 1,
+                    relativeWeight = 1f,
+                    placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                    occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                    stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                    preferredIntermediaryStamps = 0,
+                    intermediaryMatchingStyle = 0,
+                    requiresForcedMatchingStyle = false,
+                    opulence = Opulence.PLAIN,
+                    roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                        new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 1f },
+                        new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 1f }
+                    },
+                    indexOfSymmetricPartner = -1,
+                    preventRoomRepeats = false,
+                    objectReference = ExpandPrefabs.EXDummyObject,
+                });
+            }
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.1f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.6f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.6f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+            
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.1f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.6f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.6f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.6f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 1f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 1f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 1,
+                relativeWeight = 0.6f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = 0,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.8f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.8f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.EXDummyObject,
+            });
+
+            dungeon.stampData.objectStamps = m_ObjectStamps.ToArray();
+
+            dungeon.decoSettings = new TilemapDecoSettings() {
+                standardRoomVisualSubtypes = new WeightedIntCollection() {
+                    elements = new WeightedInt[] {
+                        new WeightedInt() {
+                            annotation = "purple",
+                            value = 0,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "blue",
+                            value = 1,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "bathroom",
+                            value = 2,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "duct",
+                            value = 3,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 4,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 5,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "unused",
+                            value = 6,
+                            weight = 0,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "dark polymer",
+                            value = 7,
+                            weight = 0.5f,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        },
+                        new WeightedInt() {
+                            annotation = "metal plate",
+                            value = 8,
+                            weight = 0.5f,
+                            additionalPrerequisites = new DungeonPrerequisite[0]
+                        }
+                    }
+                },
+                decalLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                decalSize = 3,
+                decalSpacing = 1,
+                decalExpansion = 0,
+                patternLayerStyle = TilemapDecoSettings.DecoStyle.NONE,
+                patternSize = 3,
+                patternSpacing = 3,
+                patternExpansion = 0,
+                decoPatchFrequency = 0.01f,
+                ambientLightColor = dungeonTemplate.decoSettings.ambientLightColor,
+                ambientLightColorTwo = dungeonTemplate.decoSettings.ambientLightColorTwo,
+                lowQualityAmbientLightColor = dungeonTemplate.decoSettings.lowQualityAmbientLightColor,
+                lowQualityAmbientLightColorTwo = dungeonTemplate.decoSettings.lowQualityAmbientLightColorTwo,
+                lowQualityCheapLightVector = dungeonTemplate.decoSettings.lowQualityCheapLightVector,
+                UsesAlienFXFloorColor = false,
+                AlienFXFloorColor = dungeonTemplate.decoSettings.AlienFXFloorColor,
+                generateLights = true,
+                lightCullingPercentage = 0.2f,
+                lightOverlapRadius = 8,
+                nearestAllowedLight = 12,
+                minLightExpanseWidth = 2,
+                lightHeight = -2,
+                lightCookies = dungeonTemplate.decoSettings.lightCookies,
+                debug_view = false,
+            };
+
+            
+            dungeon.tileIndices = new TileIndices() {
+                tilesetId = GlobalDungeonData.ValidTilesets.SPACEGEON,
+                dungeonCollection = dungeonTemplate.tileIndices.dungeonCollection,
+                dungeonCollectionSupportsDiagonalWalls = false,
+                aoTileIndices = new AOTileIndices() {
+                    AOFloorTileIndex = 0,
+                    AOBottomWallBaseTileIndex = 1,
+                    AOBottomWallTileRightIndex = 2,
+                    AOBottomWallTileLeftIndex = 3,
+                    AOBottomWallTileBothIndex = 4,
+                    AOTopFacewallRightIndex = 6,
+                    AOTopFacewallLeftIndex = 5,
+                    AOTopFacewallBothIndex = 7,
+                    AOFloorWallLeft = 5,
+                    AOFloorWallRight = 6,
+                    AOFloorWallBoth = 7,
+                    AOFloorPizzaSliceLeft = 8,
+                    AOFloorPizzaSliceRight = 9,
+                    AOFloorPizzaSliceBoth = 10,
+                    AOFloorPizzaSliceLeftWallRight = 11,
+                    AOFloorPizzaSliceRightWallLeft = 12,
+                    AOFloorWallUpAndLeft = 13,
+                    AOFloorWallUpAndRight = 14,
+                    AOFloorWallUpAndBoth = 15,
+                    AOFloorDiagonalWallNortheast = -1,
+                    AOFloorDiagonalWallNortheastLower = -1,
+                    AOFloorDiagonalWallNortheastLowerJoint = -1,
+                    AOFloorDiagonalWallNorthwest = -1,
+                    AOFloorDiagonalWallNorthwestLower = -1,
+                    AOFloorDiagonalWallNorthwestLowerJoint = -1,
+                    AOBottomWallDiagonalNortheast = -1,
+                    AOBottomWallDiagonalNorthwest = -1
+                },
+                placeBorders = true,
+                placePits = false,
+                chestHighWallIndices = new List<TileIndexVariant>() {
+                    new TileIndexVariant() {
+                        index = 41,
+                        // index = 745,
+                        likelihood = 0.5f,
+                        overrideIndex = 0,
+                        overrideLayerIndex = 0
+                    }
+                },
+                decalIndexGrid = null,
+                patternIndexGrid = null,
+                globalSecondBorderTiles = new List<int>(0),
+                edgeDecorationTiles = null,
+            };
+            dungeon.alternateDoorObjectsNakatomi = null;
+            dungeon.PlayerLightIntensity = 3;
+            dungeon.PlayerLightRadius = 5;
+            dungeon.doorObjects = dungeonTemplate.alternateDoorObjectsNakatomi;
+            dungeon.oneWayDoorPressurePlate = ExpandPrefabs.SpaceShip_PressurePlate;
+            dungeon.LevelOverrideType = GameManager.LevelOverrideState.NONE;
+            dungeon.DungeonFloorName = "Far into the Future";
+            dungeon.DungeonShortName = "Into the Future";
+            dungeon.DungeonFloorLevelTextOverride = "An Advanced Place...";
+            dungeon.musicEventName = "Play_MUS_Space_Theme_01";
         }
 
         public static void InitBackRoomsDungeon(AssetBundle expandSharedAuto1, AssetBundle sharedAssets2, GameObject targetObject, Dungeon dungeonTemplate) {

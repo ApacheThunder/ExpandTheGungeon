@@ -50,7 +50,7 @@ namespace ExpandTheGungeon.SpriteAPI {
         }
 
         public static void SerializeSpriteCollection(tk2dSpriteCollectionData collectionData, bool SaveTextures = false, string pathOverride = null) {
-            if (SaveTextures) { DumpSpriteCollection(collectionData, pathOverride); }
+            if (SaveTextures)DumpSpriteCollection(collectionData, pathOverride);
             collectionData.material = null;
             collectionData.materials = null;
             collectionData.textures = null;
@@ -102,6 +102,16 @@ namespace ExpandTheGungeon.SpriteAPI {
             return m_tk2dSprite;
         }
 
+        public static tk2dSprite AddSpriteToObject(GameObject obj, tk2dSpriteCollectionData existingSpriteCollection, string mainSpriteDefinitionName, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED, float HeightOffGround = 1) {
+            tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
+            m_tk2dSprite.SetSprite(existingSpriteCollection, mainSpriteDefinitionName);
+            m_tk2dSprite.SortingOrder = 0;
+            if (spriteAlignment != tk2dBaseSprite.PerpendicularState.UNDEFINED) { m_tk2dSprite.CachedPerpState = spriteAlignment; }
+            if (HeightOffGround != 1) { m_tk2dSprite.HeightOffGround = HeightOffGround; }
+            obj.GetComponent<BraveBehaviour>().sprite = m_tk2dSprite;
+            return m_tk2dSprite;
+        }
+
         public static tk2dSprite AddSpriteToObject(GameObject obj, GameObject existingSpriteCollectionObject, int spriteID, tk2dBaseSprite.PerpendicularState spriteAlignment = tk2dBaseSprite.PerpendicularState.UNDEFINED) {
             tk2dSprite m_tk2dSprite = obj.AddComponent<tk2dSprite>();
             m_tk2dSprite.SetSprite(existingSpriteCollectionObject.GetComponent<tk2dSpriteCollectionData>(), spriteID);
@@ -129,6 +139,107 @@ namespace ExpandTheGungeon.SpriteAPI {
         }
 
         public static void DumpSpriteCollection(tk2dSpriteCollectionData sprites, string pathOverride = null) {
+            string text = "DUMPsprites/" + sprites.spriteCollectionName;
+            string path = Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");
+            if (!string.IsNullOrEmpty(pathOverride)) { Path.Combine(pathOverride, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png"); }
+            bool flag = File.Exists(path);
+            bool staticFlag = false;
+            if (!flag) {
+                Texture2D texture2D = null;
+                Texture2D texture2D2 = null;
+                Texture2D texture2D4 = null;
+                Texture2D texture2D3 = null;
+                Color[] array = null;
+                for (int i = 0; i < sprites.spriteDefinitions.Length; i++) {
+                    try {
+                        tk2dSpriteDefinition spriteDefinition = sprites.spriteDefinitions[i];
+                        if (spriteDefinition?.material?.mainTexture) texture2D3 = (spriteDefinition.material.mainTexture as Texture2D);
+                        bool flag2 = texture2D3 == null || !spriteDefinition.Valid || (spriteDefinition.materialInst != null && staticFlag);
+                        if (!flag2) {
+                            string text2 = text + "/" + spriteDefinition.name;
+                            bool flag3 = texture2D != texture2D3;
+                            if (flag3) {
+                                texture2D = texture2D3;
+                                texture2D2 = ETGMod.GetRW(texture2D3);
+                                array = texture2D2.GetPixels();
+                                path = Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");
+                                Directory.GetParent(path).Create();
+                                File.WriteAllBytes(path, ImageConversion.EncodeToPNG(texture2D2));
+                            }
+                            double num = 1.0;
+                            double num2 = 1.0;
+                            double num3 = 0.0;
+                            double num4 = 0.0;
+                            for (int j = 0; j < spriteDefinition.uvs.Length; j++) {
+                                bool flag4 = spriteDefinition.uvs[j].x < num;
+                                if (flag4) { num = spriteDefinition.uvs[j].x; }
+                                bool flag5 = spriteDefinition.uvs[j].y < num2;
+                                if (flag5) { num2 = spriteDefinition.uvs[j].y; }
+                                bool flag6 = num3 < spriteDefinition.uvs[j].x;
+                                if (flag6) { num3 = spriteDefinition.uvs[j].x; }
+                                bool flag7 = num4 < spriteDefinition.uvs[j].y;
+                                if (flag7) { num4 = spriteDefinition.uvs[j].y; }
+                            }
+                            int num5 = (int)Math.Floor(num * texture2D3.width);
+                            int num6 = (int)Math.Floor(num2 * texture2D3.height);
+                            int num7 = (int)Math.Ceiling(num3 * texture2D3.width);
+                            int num8 = (int)Math.Ceiling(num4 * texture2D3.height);
+                            int num9 = num7 - num5;
+                            int num10 = num8 - num6;
+                            if (spriteDefinition.uvs?.Length > 3) {
+                                bool flag8 = spriteDefinition.uvs[0].x == num && spriteDefinition.uvs[0].y == num2 && spriteDefinition.uvs[1].x == num3 && spriteDefinition.uvs[1].y == num2 && spriteDefinition.uvs[2].x == num && spriteDefinition.uvs[2].y == num4 && spriteDefinition.uvs[3].x == num3 && spriteDefinition.uvs[3].y == num4;
+                                if (flag8) {
+                                    texture2D4 = new Texture2D(num9, num10);
+                                    texture2D4.SetPixels(texture2D2.GetPixels(num5, num6, num9, num10));
+                                } else {
+                                    bool flag9 = spriteDefinition.uvs[0].x == spriteDefinition.uvs[1].x;
+                                    if (flag9) {
+                                        int num11 = num10;
+                                        num10 = num9;
+                                        num9 = num11;
+                                    }
+                                    texture2D4 = new Texture2D(num9, num10);
+                                    double num12 = spriteDefinition.uvs[1].x - spriteDefinition.uvs[0].x;
+                                    double num13 = spriteDefinition.uvs[2].x - spriteDefinition.uvs[0].x;
+                                    double num14 = spriteDefinition.uvs[1].y - spriteDefinition.uvs[0].y;
+                                    double num15 = spriteDefinition.uvs[2].y - spriteDefinition.uvs[0].y;
+                                    double num16 = texture2D3.width * (spriteDefinition.uvs[3].x - spriteDefinition.uvs[0].x);
+                                    double num17 = texture2D3.height * (spriteDefinition.uvs[3].y - spriteDefinition.uvs[0].y);
+                                    double num18 = 0.001;
+                                    double num19 = (num12 < num18) ? 0.0 : num16;
+                                    double num20 = (num13 < num18) ? 0.0 : num16;
+                                    double num21 = (num14 < num18) ? 0.0 : num17;
+                                    double num22 = (num15 < num18) ? 0.0 : num17;
+                                    for (int k = 0; k < num10; k++) {
+                                        double num23 = k / (double)num10;
+                                        for (int l = 0; l < num9; l++) {
+                                            double num24 = l / (double)num9;
+                                            double num25 = num24 * num19 + num23 * num20;
+                                            double num26 = num24 * num21 + num23 * num22;
+                                            double num27 = Math.Round(spriteDefinition.uvs[0].y * texture2D3.height + num26) * texture2D3.width + Math.Round(spriteDefinition.uvs[0].x * texture2D3.width + num25);
+                                            texture2D4.SetPixel(l, k, array[(int)num27]);
+                                        }
+                                    }
+                                }
+                            }
+                            if (texture2D4) {
+                                path = Path.Combine(ETGMod.ResourcesDirectory, text2.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");
+                                bool flag10 = !File.Exists(path);
+                                if (flag10) {
+                                    Directory.GetParent(path).Create();
+                                    File.WriteAllBytes(path, ImageConversion.EncodeToPNG(texture2D4));
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ETGModConsole.Log("Exception with sprite ID: " + i.ToString(), true);
+                        ETGModConsole.Log("This sprite was skipped.", true);
+                        Debug.Log(ex);
+                    }
+                }
+            }
+        }
+        /*public static void DumpSpriteCollection(tk2dSpriteCollectionData sprites, string pathOverride = null) {
             string text = "DUMPsprites/" + sprites.spriteCollectionName;
             string path = Path.Combine(ETGMod.ResourcesDirectory, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png");
             if (!string.IsNullOrEmpty(pathOverride)) { Path.Combine(pathOverride, text.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar) + ".png"); }
@@ -217,7 +328,7 @@ namespace ExpandTheGungeon.SpriteAPI {
                     }
                 }
             }
-        }
+        }*/
 
         public static string DeserializeJSONDataFromAssetBundle(AssetBundle bundle, string AssetPath) {
             string m_ResultAsset = string.Empty;

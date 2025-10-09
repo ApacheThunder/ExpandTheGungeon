@@ -41,6 +41,8 @@ namespace ExpandTheGungeon {
         public static bool HasVisitedBackrooms = false;
         [NonSerialized]
         public static bool BackroomsEntrancePlaced = false;
+        [NonSerialized]
+        public static bool SewersIsFuture = false;
 
         public static void LoadSettings() {
             if (File.Exists(Path.Combine(ETGMod.ResourcesDirectory, ExpandTheGungeon.ModSettingsFileName))) {

@@ -79,6 +79,8 @@
 				<Event Id="3822868090" Name="Play_EX_PowBlock_EnemyDeath" ObjectPath="\Events\Weapons\Play_EX_PowBlock_EnemyDeath"/>
 				<Event Id="1482671396" Name="Play_EX_PowBlock_Trigger" ObjectPath="\Events\Weapons\Play_EX_PowBlock_Trigger"/>
 				<Event Id="2223469189" Name="Play_EX_RickRollMusic_01" ObjectPath="\Events\Weapons\Play_EX_RickRollMusic_01"/>
+				<Event Id="1136719421" Name="Play_EX_SignPost_Future" ObjectPath="\Events\Weapons\Play_EX_SignPost_Future"/>
+				<Event Id="3138349708" Name="Play_EX_SignPost_Past" ObjectPath="\Events\Weapons\Play_EX_SignPost_Past"/>
 				<Event Id="3761498917" Name="Play_EX_SonicBrake_01" ObjectPath="\Events\Weapons\Play_EX_SonicBrake_01"/>
 				<Event Id="1464046876" Name="Play_EX_SonicDeath_01" ObjectPath="\Events\Weapons\Play_EX_SonicDeath_01"/>
 				<Event Id="304406506" Name="Play_EX_SonicLoseRings_01" ObjectPath="\Events\Weapons\Play_EX_SonicLoseRings_01"/>
@@ -223,6 +225,10 @@
 					<ShortName>Belly_Door_Open.wav</ShortName>
 					<Path>SFX\Belly_Door_Open_F7D0E330.wem</Path>
 				</File>
+				<File Id="406904442" Language="SFX">
+					<ShortName>SCD_PCM_00.wav</ShortName>
+					<Path>SFX\SCD_PCM_00_F7D0E330.wem</Path>
+				</File>
 				<File Id="438768819" Language="SFX">
 					<ShortName>Play_EX_BOSS_westbros_slam_01.wav</ShortName>
 					<Path>SFX\Play_EX_BOSS_westbros_slam_01_F7D0E330.wem</Path>
@@ -282,6 +288,10 @@
 				<File Id="737636557" Language="SFX">
 					<ShortName>SonicRingCollect.wav</ShortName>
 					<Path>SFX\SonicRingCollect_F7D0E330.wem</Path>
+				</File>
+				<File Id="769654451" Language="SFX">
+					<ShortName>SCD_PCM_01.wav</ShortName>
+					<Path>SFX\SCD_PCM_01_F7D0E330.wem</Path>
 				</File>
 				<File Id="777371175" Language="SFX">
 					<ShortName>Shots Fired!.wav</ShortName>

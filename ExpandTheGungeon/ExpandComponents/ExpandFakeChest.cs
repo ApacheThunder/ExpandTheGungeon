@@ -102,6 +102,21 @@ namespace ExpandTheGungeon.ExpandComponents {
 
         public float groundHitDelay;
 
+        public bool Opened {
+            get {
+                return m_Opened;
+            }
+        }
+
+        public RoomHandler ParentRoom {
+            get {
+                return m_room;
+            }
+            set {
+                m_room = value;
+            }
+        }
+
         private bool m_configured;
         private bool m_Opened;
         private bool m_temporarilyUnopenable;
@@ -118,12 +133,15 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ToggleSwitch();
                     return;
                 case ChestType.RickRoll:
+                    if (m_Opened) return;
                     OpenAsRickRoll(player);
                     return;
                 case ChestType.SurpriseChest:
+                    if (m_Opened) return;
                     OpenAsSurpriseChest(player);
                     return;
                 case ChestType.WestChest:
+                    if (m_Opened) return;
                     OpenAsWestChest(player);
                     return;
             }

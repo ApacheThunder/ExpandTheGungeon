@@ -68,6 +68,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook transitionToDepartHook;
         public static Hook exciseElbowsHook;
         public static Hook delayedLoadNextLevelHook;
+        public static Hook loadCustomLevelHook;
         // public static Hook pixelatorStartHook;
         // public static Hook generateOcclusionTextureHook;
 
@@ -407,6 +408,13 @@ namespace ExpandTheGungeon.ExpandMain {
             delayedLoadNextLevelHook = new Hook(
                 typeof(GameManager).GetMethod("DelayedLoadNextLevel", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(float) }, new ParameterModifier[0]),
                 typeof(ExpandHooks).GetMethod(nameof(DelayedLoadNextLevelHook), BindingFlags.Public | BindingFlags.Instance),
+                typeof(GameManager)
+            );
+
+            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.LoadCustomLevel Hook...."); }
+            loadCustomLevelHook = new Hook(
+                typeof(GameManager).GetMethod(nameof(GameManager.LoadCustomLevel), BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(string) }, new ParameterModifier[0]),
+                typeof(ExpandHooks).GetMethod(nameof(LoadCustomLevelHook), BindingFlags.Public | BindingFlags.Instance),
                 typeof(GameManager)
             );
 
@@ -1949,6 +1957,15 @@ namespace ExpandTheGungeon.ExpandMain {
             orig(self, delay);
         }
 
+        public void LoadCustomLevelHook(Action<GameManager, string>orig, GameManager self, string custom) {
+            if (ExpandSettings.SewersIsFuture && custom.ToLower().Contains("tt_sewer")) {
+                ExpandSettings.SewersIsFuture = false;
+                orig(self, "tt_future");
+            } else {
+                orig(self, custom);
+            }
+        }
+
         /*protected void OnDestroyHook(Action<AIAnimator>orig, AIAnimator self) {
             try {
                 orig(self);
@@ -1960,7 +1977,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
 
         // public DungeonFlow GetRandomFlowHook(Func<SemioticDungeonGenSettings, DungeonFlow> orig, SemioticDungeonGenSettings self) {
-        
+
         /*public Texture2D GenerateOcclusionTextureHook(Func<OcclusionLayer, int, int, DungeonData, Texture2D>orig, OcclusionLayer self, int baseX, int baseY, DungeonData d) {
             FieldInfo m_gameManagerCachedField = typeof(OcclusionLayer).GetField("m_gameManagerCached", BindingFlags.Instance | BindingFlags.NonPublic);
             FieldInfo m_pixelatorCachedField = typeof(OcclusionLayer).GetField("m_pixelatorCached", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -2118,28 +2135,28 @@ namespace ExpandTheGungeon.ExpandMain {
         }
         */
 
-                /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
-                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                        // self.UseTexturedOcclusion = true;
-                        // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                        // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                        Color32 previousAlpha = self.occludedColor;
+        /*private void PixelatorStartHook(Action<Pixelator>orig, Pixelator self) {
+            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                // self.UseTexturedOcclusion = true;
+                // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                Color32 previousAlpha = self.occludedColor;
 
-                        self.occludedColor = new Color32(73, 33, 26, previousAlpha.a);
-                        // m_vignetteMaterial
-                    }
-                    orig(self);
-                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
-                        // self.UseTexturedOcclusion = true;
-                        // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                        // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
-                        // m_smallBlackTexture
-                        typeof(Pixelator).GetField("m_smallBlackTexture", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest"));
-                    }
-                    if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                        self.UseTexturedOcclusion = false;
-                    }
-                }*/
+                self.occludedColor = new Color32(73, 33, 26, previousAlpha.a);
+                // m_vignetteMaterial
+            }
+            orig(self);
+            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.BELLYGEON) {
+                // self.UseTexturedOcclusion = true;
+                // self.sourceOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                // self.localOcclusionTexture = ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest");
+                // m_smallBlackTexture
+                typeof(Pixelator).GetField("m_smallBlackTexture", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, ExpandAssets.LoadAsset<Texture2D>("JungleOcclusionTest"));
+            }
+            if (GameManager.Instance.Dungeon != null && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                self.UseTexturedOcclusion = false;
+            }
+        }*/
             }
         }
 

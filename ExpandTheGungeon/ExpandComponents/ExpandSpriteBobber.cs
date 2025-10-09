@@ -134,7 +134,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             if (!alreadyMiddleCenter) transform.localPosition = transform.localPosition.QuantizeFloor(0.0625f);
             
             if (IsLocalBob) m_CachedPosition = transform.localPosition;
-                                    
+
+            if (SpriteToBob.usesOverrideMaterial && SpriteToBob.renderer.material.shader == ShaderCache.Acquire("Brave/Internal/RainbowChestShader")) {
+                m_CachedBobSprite.usesOverrideMaterial = true;
+                m_CachedBobSprite.renderer.material.shader = ShaderCache.Acquire("Brave/Internal/RainbowChestShader");
+            }
+
             m_BobInitComplete = true;
             IsBobbin = true;
             ShowBobber();
@@ -241,8 +246,6 @@ namespace ExpandTheGungeon.ExpandComponents {
 
             switch (bobType) {
                 case BobType.BigChonker:
-                    break;
-                case BobType.TinyBoi:
                     if (ImpactVFXObjects != null && ImpactVFXObjects.Length > 0) {
                         int SpawnCount = Random.Range(2, 4);
                         if (Random.value > 0.4f) {
@@ -252,6 +255,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                                 Instantiate(BraveUtility.RandomElement(ImpactVFXObjects), m_ChosenSpawnPoint, Quaternion.identity);
                             }
                         }
+                    }
+                    break;
+                case BobType.TinyBoi:
+                    if (ImpactVFXObjects != null && ImpactVFXObjects.Length > 0) {
+                        Instantiate(BraveUtility.RandomElement(ImpactVFXObjects), SpriteToBob.WorldBottomCenter, Quaternion.identity);
                     }
                     break;
                 case BobType.Standard:

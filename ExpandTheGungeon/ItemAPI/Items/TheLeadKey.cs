@@ -184,7 +184,9 @@ namespace ExpandTheGungeon.ItemAPI {
                     m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Phobos");
                     break;
                 case GlobalDungeonData.ValidTilesets.SPACEGEON:
-                    if (CurrentDungeonName.ToLower().Contains("office")) {
+                    if (CurrentDungeonName.ToLower().Contains("future")) {
+                        m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Future");
+                    } else if (CurrentDungeonName.ToLower().Contains("office")) {
                         m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Office");
                     } else if (CurrentDungeonName.ToLower().Contains("backrooms")) {
                         m_Texture = ExpandAssets.LoadAsset<Texture2D>("EXPortal_Backrooms");

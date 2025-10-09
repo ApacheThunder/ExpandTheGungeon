@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
+using HarmonyLib;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Collections;
@@ -11,6 +12,7 @@ using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
 
 namespace ExpandTheGungeon.ExpandLoadingScreens {
     
+    [HarmonyPatch]
     public class ExpandLoadingScreen : FoyerPreloader {
 
         public static GameObject EXDebugObject;
@@ -93,11 +95,11 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
 
         public static void Init() {
-            FoyerPreloadHook = new Hook(
+            /*FoyerPreloadHook = new Hook(
                 typeof(FoyerPreloader).GetMethod(nameof(Update), BindingFlags.Public | BindingFlags.Instance),
                 typeof(ExpandLoadingScreen).GetMethod(nameof(EXUpdate), BindingFlags.Public | BindingFlags.Instance),
                 typeof(FoyerPreloader)
-            );
+            );*/
 
             EXLoadScreenLogo = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo.png", new IntVector2(218, 96));
             EXLoadScreenThrobber_Error = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Error.png", new IntVector2(1024, 512));
@@ -113,8 +115,66 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
             AssetsReady = true;
         }
-        
-        public void EXUpdate(Action<FoyerPreloader>orig, FoyerPreloader self) {
+
+        [HarmonyPatch(typeof(FoyerPreloader), nameof(FoyerPreloader.Update))]
+        [HarmonyPrefix]
+        public static bool EXUpdate(FoyerPreloader __instance) {
+            if (!HookActive) {
+                ExpandSettings.EnableAsyncAssetLoading = false;
+                return true;
+            }
+            if (!__instance) return true;
+            if (!Instance) Instance = __instance;
+
+            bool m_wasFirstLoadScreen = ReflectGetField<bool>(typeof(FoyerPreloader), "m_wasFirstLoadScreen", __instance);
+            bool m_isLoading = ReflectGetField<bool>(typeof(FoyerPreloader), "m_isLoading", __instance);
+
+            if (!AssetsReady) return false;
+
+            if (ExpandSettings.EnableAsyncAssetLoading) {
+                if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished && ExpandTheGungeon.PreventInput) {
+                    if (UnityInput.Current != null) UnityInput.Current.ResetInputAxes();
+                } else if (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadFinished && ExpandTheGungeon.PreventInput) {
+                    ExpandTheGungeon.PreventInput = false;
+                }
+            }
+            
+            if (m_wasFirstLoadScreen && RefreshText) {
+                string m_NewText = string.Empty;
+                if (!InitialScreenInit) {
+                    if (ExpandSettings.EnableAsyncAssetLoading) {
+                        LoadText.TryGetValue(ExpandTheGungeon.LoadStatus.PreStartup, out m_NewText);
+                    } else {
+                        LoadText.TryGetValue(ExpandTheGungeon.LoadStatus.PreInit, out m_NewText);
+                    }
+                    if (!LoadingScreenObject)CreateInitialLoadingScreen(__instance, m_NewText);
+                    UpdateLoadingBar(ExpandTheGungeon.loadStatus);
+                    InitialScreenInit = true;
+                } else {
+                    LoadText.TryGetValue(ExpandTheGungeon.loadStatus, out m_NewText);
+                    if (!string.IsNullOrEmpty(m_NewText)) UpdateText(m_NewText, (ExpandTheGungeon.loadStatus == ExpandTheGungeon.LoadStatus.LoadError));
+                    UpdateLoadingBar(ExpandTheGungeon.loadStatus);
+                }
+                RefreshText = false;
+            }
+                        
+            if (m_wasFirstLoadScreen && Time.frameCount > 4 && !m_isLoading) {
+                __instance.StartCoroutine(EXAsyncLoadFoyer(__instance, m_wasFirstLoadScreen));
+                typeof(FoyerPreloader).GetField("m_isLoading", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, true);
+                return false;
+            } else if (!m_wasFirstLoadScreen) {
+                if (Instance && !Instance.gameObject.GetComponent<EXLoadingScreenResetThrobbersOnDestroy>()) Instance.gameObject.AddComponent<EXLoadingScreenResetThrobbersOnDestroy>();
+                if (Instance && overrideType != OverrideType.None)MaybeOverrideGraphics(__instance);
+                if (Instance && ExpandDebugCamera.DebugCameraEnabled) {
+                    CreateThirdEyeLoadingScreen(Instance);
+                    ExpandDebugCamera.ClearLoadScreenBackground(Instance);
+                }
+            }
+            return false;
+        }
+
+
+        /*public void EXUpdate(Action<FoyerPreloader>orig, FoyerPreloader self) {
             if (!self) return;
             if (!HookActive) {
                 ExpandSettings.EnableAsyncAssetLoading = false;
@@ -167,7 +227,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
                     ExpandDebugCamera.ClearLoadScreenBackground(Instance);
                 }
             }
-        }
+        }*/
 
         public static IEnumerator WaitForTextUpdate() {
             RefreshText = true;
@@ -176,7 +236,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             yield break;
         }
 
-        private void MaybeOverrideGraphics(FoyerPreloader foyerPreloader) {
+        private static void MaybeOverrideGraphics(FoyerPreloader foyerPreloader) {
             switch (overrideType) {
                 case OverrideType.None:
                     return;
@@ -215,7 +275,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
             }
         }
         
-        private IEnumerator EXAsyncLoadFoyer(FoyerPreloader preloader, bool m_wasFirstLoadScreen) {
+        private static IEnumerator EXAsyncLoadFoyer(FoyerPreloader preloader, bool m_wasFirstLoadScreen) {
             DebugTime.Log("FoyerLoader.AsyncLoadFoyer()", new object[0]);
             GameManager.AttemptSoundEngineInitializationAsync();
             yield return preloader.StartCoroutine(ResourceManager.InitAsync());
@@ -323,7 +383,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
         }
 
 
-        public void CreateInitialLoadingScreen(FoyerPreloader foyerPreloader, string InitialText) {
+        public static void CreateInitialLoadingScreen(FoyerPreloader foyerPreloader, string InitialText) {
             if (!foyerPreloader) return;
             
             foyerPreloader.LoadingLabel.gameObject.SetActive(true);

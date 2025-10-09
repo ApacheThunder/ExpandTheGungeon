@@ -34,11 +34,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXSpaceCollection;
         public static GameObject EXFoyerCollection;
         public static GameObject EXBackroomsCollection;
+        public static GameObject EXFutureCollection;
         public static GameObject EXHattyHammerCollection;
+        public static GameObject EXPoisbulordCollection; // The crawler AIActor spawned after death also uses this collection.
+        
 
         // Materials
         public static Material SpaceFog;
         public static Material HattyHammerMaterial;
+        public static Material PoisbulordMaterial;
+        public static Material PoisbulordCrawlerMaterial;
 
         // Custom Textures
         public static Texture2D BulletManMonochromeTexture;
@@ -170,6 +175,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable BackRoomsRoomTable;
         public static GenericRoomTable BackRoomsWarpWingTable;
         public static GenericRoomTable BackRoomsEntranceRoomTable;
+        public static GenericRoomTable FutureRoomTable;
+        public static GenericRoomTable FutureFoyerRoomTable;
+
 
         public static WeightedRoom[] OfficeAndUnusedWeightedRooms;
 
@@ -351,6 +359,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Belly_PitVFX1;
         public static GameObject Belly_PitVFX2;
         public static GameObject Belly_PitVFX3;
+        // Pressure Plate for Belly. (mostly unused but setup incase alternate flows are loaded via other mods)
+        public static GameObject Monstro_PressurePlate;
 
         // Modified Nakatomi Light to match the one Jungle used
         public static GameObject JungleLight;
@@ -448,6 +458,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject EXVoidRoomAmbience;
         public static GameObject EXEntitySpawner;
 
+        // Objects for Future
+        public static GameObject EXPoisbulordGrate;
+        public static GameObject Ooze_Tank;
+        public static GameObject SpaceShip_PressurePlate;
+        public static GameObject EXFuture_SignPost;
+        public static GameObject EXSignPost_MinimapIcon;
+
         // Custom Goops
         public static GoopDefinition EXBacteriaGoop;
 
@@ -483,8 +500,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXSpaceCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXSpaceCollection", "EXSpace_Collection", "EXSpaceCollection");
             EXFoyerCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFoyerCollection", "EXFoyer_Collection", "EXFoyerCollection");
             EXBackroomsCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXBackroomsCollection", "EXBackrooms_Collection", "EXBackroomsCollection");
+            EXFutureCollection = SpriteSerializer.DeserializeSpriteCollectionFromAssetBundle(expandSharedAssets1, "EXFutureCollection", "EXFuture_Collection", "EXFutureCollection");
 
             EXHattyHammerCollection = expandSharedAssets1.LoadAsset<GameObject>("HattyHammerCollection");
+            EXPoisbulordCollection = expandSharedAssets1.LoadAsset<GameObject>("PoisbulordCollection");
 
             tk2dSpriteCollectionData m_EXHattyHammerCollection = EXHattyHammerCollection.AddComponent<tk2dSpriteCollectionData>();
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(ExpandObjectDatabase.ForgeHammer.GetComponent<tk2dSprite>().Collection), m_EXHattyHammerCollection);
@@ -494,6 +513,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
             m_EXHattyHammerCollection.materials[0] = HattyHammerMaterial;
 
             foreach (tk2dSpriteDefinition spriteDefinition in m_EXHattyHammerCollection.spriteDefinitions) { spriteDefinition.material = HattyHammerMaterial; }
+
+            
+            tk2dSpriteCollectionData m_PoisbulordCollection = EXPoisbulordCollection.AddComponent<tk2dSpriteCollectionData>();
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(EnemyDatabase.GetOrLoadByGuid("1b5810fafbec445d89921a4efb4e42b7").sprite.Collection), m_PoisbulordCollection);
+
+            PoisbulordMaterial = new Material(EnemyDatabase.GetOrLoadByGuid("1b5810fafbec445d89921a4efb4e42b7").sprite.Collection.materials[0]);
+            PoisbulordMaterial.mainTexture = expandSharedAssets1.LoadAsset<Texture2D>("Poisbulord_Collection");
+            m_PoisbulordCollection.materials[0] = PoisbulordMaterial;
+
+            foreach (tk2dSpriteDefinition spriteDefinition in m_PoisbulordCollection.spriteDefinitions) { spriteDefinition.material = PoisbulordMaterial; }
+            
             
             tk2dSpriteCollectionData gunCollection = EXGunCollection.GetComponent<tk2dSpriteCollectionData>();
             gunCollection.DefineProjectileCollision("bootleg_pistol_projectile_001", 8, 8, 4, 4, 0, 0);
@@ -703,6 +733,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BackRoomsWarpWingTable.includedRooms = new WeightedRoomCollection();
             BackRoomsWarpWingTable.includedRooms.elements = new List<WeightedRoom>();
             BackRoomsWarpWingTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+
+            FutureRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            FutureRoomTable.includedRooms = new WeightedRoomCollection();
+            FutureRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            FutureRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            FutureFoyerRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            FutureFoyerRoomTable.includedRooms = new WeightedRoomCollection();
+            FutureFoyerRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            FutureFoyerRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
 
             AbbeyRoomTableForOffice = ScriptableObject.CreateInstance<GenericRoomTable>();
             AbbeyRoomTableForOffice.name = "Office_RoomTable";
@@ -5676,7 +5718,233 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EXBacteriaGoop.SpeedModifierEffect.effectIdentifier = "bacteria goop speed";
             EXBacteriaGoop.SpeedModifierEffect.duration = 0.1f;
             EXBacteriaGoop.SpeedModifierEffect.OnlyAffectPlayerWhenGrounded = true;
-            
+
+
+            EXPoisbulordGrate = expandSharedAssets1.LoadAsset<GameObject>("PoisbulordGrate");
+
+            ExpandUtility.DuplicateComponent(EXPoisbulordGrate.AddComponent<tk2dSprite>(), ExpandObjectDatabase.BlobulordGrate.GetComponent<tk2dSprite>());
+
+            DungeonPlaceableBehaviour m_PoisbulordGratePlacable = EXPoisbulordGrate.AddComponent<DungeonPlaceableBehaviour>();
+            m_PoisbulordGratePlacable.placeableWidth = 6;
+            m_PoisbulordGratePlacable.placeableHeight = 5;
+            m_PoisbulordGratePlacable.difficulty = DungeonPlaceableBehaviour.PlaceableDifficulty.BASE;
+            m_PoisbulordGratePlacable.isPassable = true;
+
+            tk2dSprite m_EXPoisbulordGrateFrameSprite = SpriteSerializer.AddSpriteToObject(EXPoisbulordGrate.transform.Find("frame").gameObject, EXFutureCollection, "poisbulord_sewer_grateframe_001", tk2dBaseSprite.PerpendicularState.FLAT, -1);
+
+            List<string> m_EXPoisbulordGrateFrameList = new List<string>() {
+                "poisbulord_sewer_grateframe_001",
+                "poisbulord_sewer_grateframe_002",
+                "poisbulord_sewer_grateframe_003",
+                "poisbulord_sewer_grateframe_004",
+                "poisbulord_sewer_grateframe_004",
+                "poisbulord_sewer_grateframe_004",
+                "poisbulord_sewer_grateframe_004",
+                "poisbulord_sewer_grateframe_004",
+                "poisbulord_sewer_grateframe_003",
+                "poisbulord_sewer_grateframe_002",
+                "poisbulord_sewer_grateframe_001",
+            };
+
+            tk2dSpriteAnimator m_EXPoisbulordGrateFrameAnimator = ExpandUtility.GenerateSpriteAnimator(m_EXPoisbulordGrateFrameSprite.gameObject, playAutomatically: true);
+
+            ExpandUtility.AddAnimation(m_EXPoisbulordGrateFrameAnimator, EXFutureCollection, m_EXPoisbulordGrateFrameList, "flash", tk2dSpriteAnimationClip.WrapMode.LoopFidget, 10, 0, 1, 2);
+
+            ExpandObjectReshader m_PoisbulordGrateReshader = EXPoisbulordGrate.transform.Find("frame").gameObject.AddComponent<ExpandObjectReshader>();
+            m_PoisbulordGrateReshader.Colors = new List<Color>() {
+                new Color (1, 0, 0, 0), // This sprite is already red tinted. Used zero alpha color to act as a dummy for instances where I want it still be red.
+                new Color (0, 1, 0, 1),
+                new Color (0, 0, 1, 1),
+                new Color (0, 1, 1, 1),
+                new Color (1, 1, 0, 1),
+                new Color (1, 0.5f, 0, 1),
+            };
+
+
+            Ooze_Tank = expandSharedAssets1.LoadAsset<GameObject>("Ooze Tank");
+            GameObject m_OozeTankShadow = Ooze_Tank.transform.Find("shadow").Find("Shadow").gameObject;
+
+            tk2dSprite OozeTankSprite = Ooze_Tank.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(OozeTankSprite, ExpandObjectDatabase.Tech_Machine_Wall.gameObject.GetComponent<tk2dSprite>());
+            OozeTankSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.PERPENDICULAR;
+            OozeTankSprite.SetSprite("ooze_tank_idle_001");
+            OozeTankSprite.HeightOffGround = -1;
+
+
+            ExpandUtility.DuplicateComponent(Ooze_Tank.AddComponent<tk2dSpriteAnimator>(), ExpandObjectDatabase.Tech_Machine_Wall.gameObject.GetComponent<tk2dSpriteAnimator>());
+            tk2dSpriteAnimator OozeTankAnimator = Ooze_Tank.GetComponent<tk2dSpriteAnimator>();
+            OozeTankAnimator.playAutomatically = false;
+
+            SpeculativeRigidbody OozeTankRigidBody = Ooze_Tank.AddComponent<SpeculativeRigidbody>();
+            ExpandUtility.DuplicateComponent(OozeTankRigidBody, ExpandObjectDatabase.YellowDrum.GetComponent<SpeculativeRigidbody>());
+
+            MinorBreakable OozeTankBreakable = Ooze_Tank.AddComponent<MinorBreakable>();
+            ExpandUtility.DuplicateComponent(OozeTankBreakable, ExpandObjectDatabase.YellowDrum.GetComponent<MinorBreakable>());
+            OozeTankBreakable.breakAnimName = "ooze_tank_green_burst";
+
+            ExpandUtility.DuplicateComponent(Ooze_Tank.AddComponent<HitEffectHandler>(), ExpandObjectDatabase.YellowDrum.GetComponent<HitEffectHandler>());
+
+            ExpandUtility.DuplicateComponent(Ooze_Tank.AddComponent<KickableObject>(), ExpandObjectDatabase.YellowDrum.GetComponent<KickableObject>());
+
+            KickableObject OozeTankKickable = Ooze_Tank.GetComponent<KickableObject>();
+            OozeTankKickable.RollingBreakAnim = "ooze_tank_green_burst";
+            OozeTankKickable.rollAnimations[0] = "ooze_tank_green_roll_up";
+            OozeTankKickable.rollAnimations[1] = "ooze_tank_green_roll_right";
+            OozeTankKickable.rollAnimations[2] = "ooze_tank_green_roll_down";
+            OozeTankKickable.rollAnimations[3] = "ooze_tank_green_roll_left";
+
+            OozeTankKickable.impactAnimations[0] = "ooze_tank_green_roll_up_burst";
+            OozeTankKickable.impactAnimations[1] = "ooze_tank_green_roll_side_burst";
+            OozeTankKickable.impactAnimations[2] = "ooze_tank_green_roll_up_burst";
+            OozeTankKickable.impactAnimations[3] = "ooze_tank_green_roll_side_burst";
+
+
+            tk2dSpriteAttachPoint OozeTankAttachPoint = Ooze_Tank.AddComponent<tk2dSpriteAttachPoint>();
+            OozeTankAttachPoint.attachPoints = new List<Transform>() { Ooze_Tank.transform.Find("shadow") };
+            OozeTankAttachPoint.deactivateUnusedAttachPoints = false;
+            OozeTankAttachPoint.disableEmissionOnUnusedParticleSystems = false;
+            OozeTankAttachPoint.ignorePosition = false;
+            OozeTankAttachPoint.ignoreScale = false;
+            OozeTankAttachPoint.ignoreRotation = false;
+            OozeTankAttachPoint.centerUnusedAttachPoints = false;
+
+
+            AudioAnimatorListener OozeTankAudioListener = Ooze_Tank.AddComponent<AudioAnimatorListener>();
+            OozeTankAudioListener.animationAudioEvents = new ActorAudioEvent[] {
+                new ActorAudioEvent() {
+                    eventTag = "break",
+                    eventName = "Play_Obj_barrel_break_01"
+                }
+            };
+
+            AutoAimTarget OozeTankTarget = Ooze_Tank.AddComponent<AutoAimTarget>();
+            OozeTankTarget.ForceUseTransform = false;
+            OozeTankTarget.IgnoreForSuperAutoAim = false;
+            OozeTankTarget.MinDistForSuperAutoAim = 5;
+
+            Ooze_Tank.AddComponent<ExpandAutoRegister>(); // Incase is used as a object stamp in Dungeon Prefab. Those objects interactible components don't get registered for some reason.
+
+
+            tk2dSprite OozeTankShadowSprite = m_OozeTankShadow.AddComponent<tk2dSprite>();
+            ExpandUtility.DuplicateComponent(OozeTankShadowSprite, ExpandObjectDatabase.Tech_Machine_Wall.gameObject.GetComponent<tk2dSprite>());
+            OozeTankShadowSprite.CachedPerpState = tk2dBaseSprite.PerpendicularState.FLAT;
+            OozeTankShadowSprite.SetSprite("ooze_tank_idle_shadow_001");
+            OozeTankShadowSprite.HeightOffGround = -1;
+            OozeTankShadowSprite.usesOverrideMaterial = true;
+            OozeTankShadowSprite.renderer.material.shader = ExpandObjectDatabase.YellowDrum.transform.Find("shadow").Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+
+            SpaceShip_PressurePlate = expandSharedAssets1.LoadAsset<GameObject>("Spaceship_PressurePlate");
+            Monstro_PressurePlate = expandSharedAssets1.LoadAsset<GameObject>("Monstro_PressurePlate");
+            ExpandUtility.DuplicateComponent(SpaceShip_PressurePlate.AddComponent<tk2dSprite>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(Monstro_PressurePlate.AddComponent<tk2dSprite>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(SpaceShip_PressurePlate.AddComponent<tk2dSpriteAnimator>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateComponent(Monstro_PressurePlate.AddComponent<tk2dSpriteAnimator>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateComponent(SpaceShip_PressurePlate.AddComponent<SpeculativeRigidbody>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<SpeculativeRigidbody>());
+            ExpandUtility.DuplicateComponent(Monstro_PressurePlate.AddComponent<SpeculativeRigidbody>(), NakatomiDungeonPrefab.oneWayDoorPressurePlate.GetComponent<SpeculativeRigidbody>());
+
+            SpaceShip_PressurePlate.GetComponent<tk2dSprite>().SetSprite("spaceship_floor_switch_001");
+            Monstro_PressurePlate.GetComponent<tk2dSprite>().SetSprite("monstro_floor_switch_001");
+            SpaceShip_PressurePlate.GetComponent<tk2dSpriteAnimator>().DefaultClipId = ExpandUtility.GetIDFromClip("future_plate_depress", SpaceShip_PressurePlate.GetComponent<tk2dSpriteAnimator>());
+            Monstro_PressurePlate.GetComponent<tk2dSpriteAnimator>().DefaultClipId = ExpandUtility.GetIDFromClip("monstro_plate_depress", Monstro_PressurePlate.GetComponent<tk2dSpriteAnimator>());
+
+            PressurePlate SpaceShipPressurePlate = SpaceShip_PressurePlate.AddComponent<PressurePlate>();
+            PressurePlate MonstroPressurePlate = Monstro_PressurePlate.AddComponent<PressurePlate>();
+
+            SpaceShipPressurePlate.PlayersCanTrigger = true;
+            MonstroPressurePlate.PlayersCanTrigger = true;
+            SpaceShipPressurePlate.EnemiesCanTrigger = false;
+            MonstroPressurePlate.EnemiesCanTrigger = false;
+            SpaceShipPressurePlate.ArbitraryObjectsCanTrigger = false;
+            MonstroPressurePlate.ArbitraryObjectsCanTrigger = false;
+            SpaceShipPressurePlate.CanUnpress = false;
+            MonstroPressurePlate.CanUnpress = false;
+            SpaceShipPressurePlate.depressAnimationName = "future_plate_depress";
+            MonstroPressurePlate.depressAnimationName = "monstro_plate_depress";
+            SpaceShipPressurePlate.unpressAnimationName = "future_plate_unpress";
+            MonstroPressurePlate.unpressAnimationName = "monstro_plate_unpress";
+
+
+            EXFuture_SignPost = expandSharedAssets1.LoadAsset<GameObject>("EXFuture_Sign");
+            SpriteSerializer.AddSpriteToObject(EXFuture_SignPost, EXFutureCollection, "Future_Sign_001", tk2dBaseSprite.PerpendicularState.PERPENDICULAR, -1.4f);
+
+            GameObject m_FutureSignPostShadow = EXFuture_SignPost.transform.Find("Shadow").gameObject;
+
+            tk2dSprite m_FutureSignShadowSprite = SpriteSerializer.AddSpriteToObject(m_FutureSignPostShadow, EXFutureCollection, "Future_Sign_Shadow", tk2dBaseSprite.PerpendicularState.FLAT, -1.7f);
+            m_FutureSignShadowSprite.usesOverrideMaterial = true;
+            m_FutureSignShadowSprite.renderer.material.shader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            List<string> m_FutureSpinAnimationFrames = new List<string>() {
+                "Future_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Future_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Future_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Future_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Future_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Future_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Future_Sign_005"
+            };
+
+            List<string> m_PastSpinAnimationFrames = new List<string>() {
+                "Past_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Past_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Past_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Past_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Past_Sign_001",
+                "Future_Sign_002",
+                "Future_Sign_003",
+                "Future_Sign_004",
+                "Past_Sign_005",
+                "Future_Sign_006",
+                "Future_Sign_003",
+                "Future_Sign_008",
+                "Past_Sign_005"
+            };
+
+            tk2dSpriteAnimator m_EXFuture_SignPostAnimator = ExpandUtility.GenerateSpriteAnimator(EXFuture_SignPost.gameObject);
+
+            ExpandUtility.AddAnimation(m_EXFuture_SignPostAnimator, EXFutureCollection, m_FutureSpinAnimationFrames, "spin_future", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+            ExpandUtility.AddAnimation(m_EXFuture_SignPostAnimator, EXFutureCollection, m_PastSpinAnimationFrames, "spin_past", tk2dSpriteAnimationClip.WrapMode.Once, 12);
+
+            ExpandUtility.GenerateOrAddToRigidBody(EXFuture_SignPost, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(10, 19), offset: new IntVector2(11, 3));
+            // ExpandUtility.GenerateOrAddToRigidBody(EXFuture_SignPost, CollisionLayer.HighObstacle, PixelCollider.PixelColliderGeneration.Manual, UsesPixelsAsUnitSize: true, dimensions: new IntVector2(10, 16), offset: new IntVector2(11, 22));
+
+            ExpandSignPostController m_SignPostController = EXFuture_SignPost.AddComponent<ExpandSignPostController>();
+
+
+            EXSignPost_MinimapIcon = expandSharedAssets1.LoadAsset<GameObject>("EXSignPost_MinimapIcon");
+            SpriteSerializer.AddSpriteToObject(EXSignPost_MinimapIcon, EXFutureCollection, "SignPost_MinimapIcon", tk2dBaseSprite.PerpendicularState.FLAT, 0);
+
+            m_SignPostController.MinimapIcon = EXSignPost_MinimapIcon;
 
             m_gungeon_rewardroom_1 = null;
             // Null any Dungeon prefabs you call up when done else you'll break level generation for that prefab on future level loads!

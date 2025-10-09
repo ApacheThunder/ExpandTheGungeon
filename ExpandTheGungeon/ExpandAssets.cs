@@ -103,6 +103,7 @@ namespace ExpandTheGungeon {
                 ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
                 ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");
                 ETGModConsole.DungeonDictionary.Add("office", "tt_office");
+                ETGModConsole.DungeonDictionary.Add("future", "tt_future");
                 ETGModConsole.DungeonDictionary.Add("phobos", "tt_phobos");
                 ETGModConsole.DungeonDictionary.Add("space", "tt_space");
                 ETGModConsole.DungeonDictionary.Add("west", "tt_west");

@@ -34,6 +34,26 @@ namespace ExpandTheGungeon.ExpandPrefab {
             "This town ain't big enough for the two of us! ... by two us I mean this item you could have gotten.\n\nOnly room in this town for {wb}RAAAAAIIIINBOWS{w}!\n\n-Bowler"
         };
 
+
+        public static readonly List<string> EXFutureCollection = new List<string>() {
+            "poisbulord_sewer_grateframe_001",
+            "poisbulord_sewer_grateframe_002",
+            "poisbulord_sewer_grateframe_003",
+            "poisbulord_sewer_grateframe_004",
+            "Future_Sign_001",
+            "Future_Sign_002",
+            "Future_Sign_003",
+            "Future_Sign_004",
+            "Future_Sign_005",
+            "Future_Sign_006",
+            "Future_Sign_007",
+            "Future_Sign_008",
+            "Past_Sign_001",
+            "Past_Sign_005",
+            "Future_Sign_Shadow",
+            "SignPost_MinimapIcon"
+        };
+
         public static readonly List<string> EXChestCollection = new List<string>() {
             "chest_west_appear_001",
             "chest_west_appear_002",
@@ -1915,7 +1935,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ["EXFoyerCollection"] = EXFoyerCollection,
             ["GungeoneerMimicCollection"] = EXGungeoneerMimicCollection,
             ["EXSecretDoorCollection"] = EXSecretDoorCollection,
-            ["EXBackroomsCollection"] = EXBackroomsCollection
+            ["EXBackroomsCollection"] = EXBackroomsCollection,
+            ["EXFutureCollection"] = EXFutureCollection
         };
     }
 }

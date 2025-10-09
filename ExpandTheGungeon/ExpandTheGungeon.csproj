@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpandComponents\ExpandArkController.cs" />
+    <Compile Include="ExpandComponents\ExpandAutoRegister.cs" />
     <Compile Include="ExpandComponents\ExpandBalloonController.cs" />
     <Compile Include="ExpandComponents\ExpandBulletManBossIntroDoer.cs" />
     <Compile Include="ExpandComponents\ExpandCasinoGameController.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="ExpandComponents\ExpandCasinoWarpTrigger.cs" />
     <Compile Include="ExpandComponents\ExpandClownKinBalloonManager.cs" />
     <Compile Include="ExpandComponents\ExpandConfettiSpawner.cs" />
+    <Compile Include="ExpandComponents\ExpandSignPostController.cs" />
+    <Compile Include="ExpandComponents\ExpandObjectReshader.cs" />
     <Compile Include="ExpandComponents\ExpandSpriteMirror.cs" />
     <Compile Include="ExpandDebugCamera.cs" />
     <Compile Include="ExpandComponents\ExpandEntityManager.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="ExpandComponents\ExpandTeleportBehavior.cs" />
     <Compile Include="ExpandConsole.cs" />
     <Compile Include="ExpandComponents\ExpandEnemyAutoKiller.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_future_flow.cs" />
     <Compile Include="ExpandLoadingScreens\ExpandLoadingScreen.cs" />
     <Compile Include="ExpandComponents\ExpandHatMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />

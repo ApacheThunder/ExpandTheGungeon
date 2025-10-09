@@ -3903,6 +3903,114 @@
 						<ActiveSource Name="chest_slam_04" ID="{86EE0E3D-2310-456D-A4D6-78FD9A8B6753}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="SCD_PCM_00" ID="{5A2CDAFD-AB09-4A44-8D6E-BA3F9B6DEDCE}" ShortID="862694178">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{2E3FBFBA-DD90-47D7-AEF7-B551993F1C30}" ShortID="684294159">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{9AF4A061-89A4-403B-B5D8-6ECA9B1063A2}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>200</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="SCD_PCM_00" ID="{814A9086-A113-4B87-8D5C-10D90E2EA9D4}" ShortID="406904442">
+							<Language>SFX</Language>
+							<AudioFile>SCD_PCM_00.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="SCD_PCM_00" ID="{814A9086-A113-4B87-8D5C-10D90E2EA9D4}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="SCD_PCM_01" ID="{6A866C6A-15CD-4146-BEFF-CE140CDF5A36}" ShortID="177343245">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+						<Property Name="Spatialization" Type="int16" Value="0"/>
+						<Property Name="Volume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{7CDCF73A-04A0-45CD-8ED8-C140CBCC81F2}" ShortID="690402003">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="VOL_SFX" ID="{1B989754-E268-4E05-87F6-EF2E52876DD2}" WorkUnitID="{0BCD1533-529C-45CE-B227-C2114C66F6EF}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{38B420A1-295F-4E11-88C7-22E0DEE7F584}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>200</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="MediumRange_Attenuation" ID="{C067E6B5-C374-4E98-A4E7-CFC2D36BD3E9}" WorkUnitID="{744B00C3-EA25-4917-9EBB-2F56113E3ACB}"/>
+						</Reference>
+						<Reference Name="Conversion">
+							<ObjectRef Name="OGG Conversion Settings" ID="{D719B3DD-5064-45B8-B7B4-2EBB9A005D53}" WorkUnitID="{00E09DB1-0F1B-4A44-ABD8-25DD2D11F438}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{DA9C00D2-B24B-460B-90B6-A5DF32460F04}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="SCD_PCM_01" ID="{B28AD98F-2A89-4295-8908-C19FCA0FD38A}" ShortID="769654451">
+							<Language>SFX</Language>
+							<AudioFile>SCD_PCM_01.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="SCD_PCM_01" ID="{B28AD98F-2A89-4295-8908-C19FCA0FD38A}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

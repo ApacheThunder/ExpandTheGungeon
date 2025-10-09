@@ -128,12 +128,14 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static SharedInjectionData JungleInjectionData;
         public static SharedInjectionData BellyInjectionData;
         public static SharedInjectionData PhobosInjectionData;
+        public static SharedInjectionData FutureInjectionData;
         public static SharedInjectionData OfficeInjectionData;
 
         public static ProceduralFlowModifierData JunkSecretRoomInjector;
         public static ProceduralFlowModifierData SecretFloorEntranceInjector;
         public static ProceduralFlowModifierData SecretMiniElevatorInjector;
         public static ProceduralFlowModifierData SecretJungleEntranceInjector;
+        public static ProceduralFlowModifierData SecretFutureSignRoomInjector;
         public static ProceduralFlowModifierData BellySpecialEntranceRoomInjector;
         public static ProceduralFlowModifierData BellySpecialMonsterRoomInjector;
 
@@ -415,8 +417,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     ExpandRoomPrefabs.GenerateWeightedRoom(ExpandRoomPrefabs.Expand_Keep_TreeRoom4)
                 }
             };
-
+                        
             
+
             SecretJungleEntranceInjector = new ProceduralFlowModifierData() {
                 annotation = "Secret Jungle Entrance Room",
                 DEBUG_FORCE_SPAWN = false,
@@ -458,10 +461,69 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 framedCombatNodes = 0,
             };
 
+            SecretFutureSignRoomInjector = new ProceduralFlowModifierData() {
+                annotation = "Secret SignPost Entrance Room",
+                DEBUG_FORCE_SPAWN = false,
+                OncePerRun = false,
+                placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                    ProceduralFlowModifierData.FlowModifierPlacementType.RANDOM_NODE_CHILD
+                },
+                roomTable = null,
+                exactRoom = ExpandRoomPrefabs.Expand_FutureSignPostRoom,
+                IsWarpWing = false,
+                RequiresMasteryToken = false,
+                chanceToLock = 0,
+                selectionWeight = 1,
+                chanceToSpawn = 0.6f,
+                RequiredValidPlaceable = null,
+                prerequisites = new DungeonPrerequisite[] {
+                    new DungeonPrerequisite() {
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.EQUAL_TO,
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.TILESET,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.CASTLEGEON,
+                        requireTileset = true,
+                        comparisonValue = 1,
+                        encounteredObjectGuid = string.Empty,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        requireDemoMode = false,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requireFlag = true,
+                        useSessionStatValue = false,
+                        encounteredRoom = null,
+                        requiredNumberOfEncounters = -1,
+                        saveFlagToCheck = GungeonFlags.ACHIEVEMENT_ACCESS_OUBLIETTE,
+                        statToCheck = TrackedStats.TIMES_CLEARED_SEWERS
+                    },
+                    new DungeonPrerequisite() {
+                        prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.GREATER_THAN,
+                        prerequisiteType = DungeonPrerequisite.PrerequisiteType.ENCOUNTER_OR_FLAG,
+                        requiredTileset = GlobalDungeonData.ValidTilesets.SEWERGEON,
+                        requireTileset = false,
+                        comparisonValue = 1,
+                        encounteredObjectGuid = string.Empty,
+                        maxToCheck = TrackedMaximums.MOST_KEYS_HELD,
+                        requireDemoMode = false,
+                        requireCharacter = false,
+                        requiredCharacter = PlayableCharacters.Pilot,
+                        requireFlag = true,
+                        useSessionStatValue = false,
+                        encounteredRoom = null,
+                        requiredNumberOfEncounters = 1,
+                        saveFlagToCheck = GungeonFlags.ACHIEVEMENT_ACCESS_OUBLIETTE,
+                        statToCheck = TrackedStats.TIMES_CLEARED_SEWERS
+                    }
+                },
+                CanBeForcedSecret = true,
+                RandomNodeChildMinDistanceFromEntrance = 1,
+                exactSecondaryRoom = null,
+                framedCombatNodes = 0,
+            };
+
             HollowsInjectionData.InjectionData.Add(SecretFloorEntranceInjector);
             HollowsInjectionData.InjectionData.Add(SecretMiniElevatorInjector);
             CastleInjectionData.InjectionData.Add(SecretJungleEntranceInjector);
-
+            CastleInjectionData.InjectionData.Add(SecretFutureSignRoomInjector);
 
             RickRollSecretRoomInjector = new ProceduralFlowModifierData() {
                 annotation = "RickRoll Secret Room",
@@ -496,6 +558,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             CustomSecretFloorSharedInjectionData.ChanceToSpawnOne = 1;
             CustomSecretFloorSharedInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
 
+            BuildFutureInjectionData();
+            FutureInjectionData.InjectionData.Add(JunkSecretRoomInjector);
+
 
             // Don't build/add flows until injection data is created!
             Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
@@ -524,7 +589,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[0])));
             KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[1])));
             KnownFlows.Add(f0b_office_flows.F0b_Office_Flow_01(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[0])));
-
+            KnownFlows.Add(f1b_future_flow_01.F1b_Future_Flow_01);
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
             Foyer_Flow.name = "Foyer_Flow";
@@ -710,6 +775,59 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                             requireCharacter = false,
                             requiredTileset = GlobalDungeonData.ValidTilesets.JUNGLEGEON,
                             requireTileset = true,
+                            saveFlagToCheck = 0,
+                            requireFlag = false,
+                            requireDemoMode = false
+                        }
+                    }
+                }
+            };
+        }
+
+        public static void BuildFutureInjectionData() {
+            FutureInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+            FutureInjectionData.name = "Future Common Injection Data";
+            FutureInjectionData.UseInvalidWeightAsNoInjection = true;
+            FutureInjectionData.PreventInjectionOfFailedPrerequisites = false;
+            FutureInjectionData.IsNPCCell = false;
+            FutureInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+            FutureInjectionData.OnlyOne = false;
+            FutureInjectionData.ChanceToSpawnOne = 0.5f;
+            FutureInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+            FutureInjectionData.InjectionData = new List<ProceduralFlowModifierData>() {
+                new ProceduralFlowModifierData() {
+                    annotation = "Future Crest Room",
+                    DEBUG_FORCE_SPAWN = false,
+                    OncePerRun = false,
+                    placementRules = new List<ProceduralFlowModifierData.FlowModifierPlacementType>() {
+                        ProceduralFlowModifierData.FlowModifierPlacementType.END_OF_CHAIN
+                    },
+                    roomTable = null,
+                    exactRoom = ExpandRoomPrefabs.Expand_Future_CrestRoom,
+                    IsWarpWing = false,
+                    RequiresMasteryToken = false,
+                    chanceToLock = 0.25f,
+                    selectionWeight = 1,
+                    chanceToSpawn = 1,
+                    RequiredValidPlaceable = null,
+                    CanBeForcedSecret = true,
+                    RandomNodeChildMinDistanceFromEntrance = 2,
+                    exactSecondaryRoom = null,
+                    framedCombatNodes = 0,
+                    prerequisites = new DungeonPrerequisite[] {
+                        new DungeonPrerequisite() {
+                            prerequisiteType = DungeonPrerequisite.PrerequisiteType.DEMO_MODE,
+                            prerequisiteOperation = DungeonPrerequisite.PrerequisiteOperation.GREATER_THAN,
+                            statToCheck = TrackedStats.TIMES_REACHED_GUNGEON,
+                            maxToCheck = 0,
+                            comparisonValue = 0,
+                            encounteredObjectGuid = string.Empty,
+                            encounteredRoom = null,
+                            requiredNumberOfEncounters = 0,
+                            requiredCharacter = PlayableCharacters.Pilot,
+                            requireCharacter = false,
+                            requiredTileset = 0,
+                            requireTileset = false,
                             saveFlagToCheck = 0,
                             requireFlag = false,
                             requireDemoMode = false

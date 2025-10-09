@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
+using ExpandTheGungeon.ExpandDungeonFlows;
+using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
@@ -418,6 +420,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static List<string> Expand_BackRooms_RoomList;
         public static List<string> Expand_BackRooms_WarpWingList;
 
+        public static PrototypeDungeonRoom[] Expand_Future_Rooms;
+        public static PrototypeDungeonRoom[] Expand_Future_BossFoyers;
+        public static PrototypeDungeonRoom Expand_Future_EntranceRoom;
+        public static PrototypeDungeonRoom Expand_Future_CrestRoom;
+        public static PrototypeDungeonRoom Expand_Future_BossRoom;
+        public static PrototypeDungeonRoom Expand_Future_RewardRoom;
+        public static PrototypeDungeonRoom Expand_Future_ShopRoom;
+        public static PrototypeDungeonRoom Expand_Future_ExitRoom;
+
+
         public static PrototypeDungeonRoom Expand_Belly_Entrance;
         public static PrototypeDungeonRoom Expand_Belly_BossRoom;
         public static PrototypeDungeonRoom Expand_Belly_Connector_01;
@@ -456,6 +468,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static PrototypeDungeonRoom Expand_BackRooms_Exit;
 
+        // Future Sign Post Room for Keep
+        public static PrototypeDungeonRoom Expand_FutureSignPostRoom;
 
         // Foyer Rooms
         // public static PrototypeDungeonRoom Expand_Casino_Hub;
@@ -1080,6 +1094,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 foreach (PrototypeRoomExit exit in room.exitData.exits) { exit.containsDoor = false; }
             }
 
+
+
+
             Expand_BackRooms_Entrance = RoomFactory.BuildFromAssetBundle(AssetBundles, "BackRooms_Entrance", true, false);
             Expand_BackRooms_Entrance.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
             Expand_BackRooms_Entrance.IsLostWoodsRoom = true;
@@ -1109,6 +1126,128 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_BackRooms_Exit.allowWallDecoration = false;
             Expand_BackRooms_Exit.overrideRoomVisualType = 0;
             RoomBuilder.AddObjectToRoom(Expand_BackRooms_Exit, new Vector2(2, 14), ExpandSecretDoorPrefabs.EXSecretBackroomsDoor);
+
+            Expand_Future_EntranceRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_EntranceRoom", true, false, true);
+            Expand_Future_EntranceRoom.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_Future_EntranceRoom.overrideRoomVisualType = 8;
+
+            Expand_Future_CrestRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            Dungeon m_sewers = DungeonDatabase.GetOrLoadByName("base_sewer");
+            ExpandUtility.DuplicateComponent(Expand_Future_CrestRoom, m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom);
+            m_sewers = null;
+                        
+            Expand_Future_CrestRoom.overrideRoomVisualType = 7;
+
+            Expand_Future_BossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            ExpandUtility.DuplicateComponent(Expand_Future_BossRoom, ExpandPrefabs.blobulordroom01);
+            RoomBuilder.GenerateBasicRoomLayout(Expand_Future_BossRoom);
+            Expand_Future_BossRoom.overrideRoomVisualType = 8;
+            Expand_Future_BossRoom.placedObjects[0].enemyBehaviourGuid = ExpandEnemyDatabase.PoisbulordGUID;
+            Expand_Future_BossRoom.usesProceduralLighting = true;
+            Expand_Future_BossRoom.usesCustomAmbientLight = false;
+            foreach (PrototypePlacedObjectData objectData in Expand_Future_BossRoom.additionalObjectLayers[0].placedObjects) {
+                objectData.nonenemyBehaviour = ExpandPrefabs.EXPoisbulordGrate.GetComponent<DungeonPlaceableBehaviour>();
+            }
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(2, 2), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(2, 11), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(2, 20), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(2, 28), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(11, 2), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(11, 28), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(40, 2), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(40, 11), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(40, 20), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(40, 28), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(31, 2), ExpandPrefabs.Ooze_Tank, 0, 0);
+            RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(31, 28), ExpandPrefabs.Ooze_Tank, 0, 0);
+
+
+            Expand_Future_ShopRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            ExpandUtility.DuplicateComponent(Expand_Future_ShopRoom, ExpandPrefabs.shop02);
+            Expand_Future_ShopRoom.overrideRoomVisualType = 7;
+
+
+            Expand_Future_ExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            ExpandUtility.DuplicateComponent(Expand_Future_ExitRoom, ExpandPrefabs.exit_room_basic);
+            Expand_Future_ExitRoom.overrideRoomVisualType = 8;
+            
+
+            Expand_Future_RewardRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_RewardRoom", true, false, true);
+            Expand_Future_RewardRoom.overrideRoomVisualType = 8;
+            RoomBuilder.AddObjectToRoom(Expand_Future_RewardRoom, new Vector2(7, 6), null, ExpandPrefabs.gungeon_rewardroom_1.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 8);
+
+
+            List<PrototypeDungeonRoom> m_FutureRooms = new List<PrototypeDungeonRoom>();
+
+            for (int i = 0; i < 30; i++) {
+                string roomNumber = (i + 1).ToString();
+                if (i + 1 < 10)roomNumber = "0" + (i + 1).ToString();
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_CombatRoom_" + roomNumber, true, false, true);
+                if (i < 15) {
+                    m_room.overrideRoomVisualType = 7;
+                } else {
+                    m_room.overrideRoomVisualType = 8;
+                }
+                m_FutureRooms.Add(m_room);
+            }
+            
+            for (int i = 0; i < 10; i++) {
+                string roomNumber = (i + 1).ToString();
+                if (i + 1 < 10)roomNumber = "0" + (i + 1).ToString();
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_HubRoom_" + roomNumber, true, false, true);
+                if (i < 6) {
+                    m_room.overrideRoomVisualType = 7;
+                } else {
+                    m_room.overrideRoomVisualType = 8;
+                }
+                m_FutureRooms.Add(m_room);
+            }
+            for (int i = 0; i < 26; i++) {
+                string roomNumber = (i + 1).ToString();
+                if (i + 1 < 10) roomNumber = "0" + (i + 1).ToString();
+                PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_ConnectorRoom_" + roomNumber, true, false, true);
+                if (i < 13) {
+                    m_room.overrideRoomVisualType = 7;
+                } else {
+                    m_room.overrideRoomVisualType = 8;
+                }
+                m_FutureRooms.Add(m_room);
+            }
+
+            Expand_Future_Rooms = m_FutureRooms.ToArray();
+
+
+            List<PrototypeDungeonRoom> m_FutureBossFoyers = new List<PrototypeDungeonRoom>();
+
+            foreach (WeightedRoom wRoom in ExpandPrefabs.boss_foyertable.includedRooms.elements) {
+                PrototypeDungeonRoom m_NewRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+                ExpandUtility.DuplicateComponent(m_NewRoom, wRoom.room);
+                m_NewRoom.overrideRoomVisualType = 8;
+                m_FutureBossFoyers.Add(m_NewRoom);
+            }
+
+            Dungeon nakatomiPrefab = DungeonDatabase.GetOrLoadByName("Base_Nakatomi");
+
+            PrototypeDungeonRoom m_RGRoom1 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            PrototypeDungeonRoom m_RGRoom2 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            PrototypeDungeonRoom m_RGRoom3 = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+            ExpandUtility.DuplicateComponent(m_RGRoom1, nakatomiPrefab.PatternSettings.flows[0].AllNodes[11].overrideExactRoom);
+            ExpandUtility.DuplicateComponent(m_RGRoom2, nakatomiPrefab.PatternSettings.flows[0].AllNodes[10].overrideExactRoom);
+            ExpandUtility.DuplicateComponent(m_RGRoom3, nakatomiPrefab.PatternSettings.flows[0].AllNodes[13].overrideExactRoom);
+            m_RGRoom1.name = ("EX_" + m_RGRoom1.name);
+            m_RGRoom2.name = ("EX_" + m_RGRoom2.name);
+            m_RGRoom3.name = ("EX_" + m_RGRoom3.name);
+            m_RGRoom1.usesProceduralDecoration = false;
+            m_RGRoom2.usesProceduralDecoration = false;
+            m_RGRoom3.usesProceduralDecoration = false;
+            
+            nakatomiPrefab = null;
+
+            Expand_Future_BossFoyers = m_FutureBossFoyers.ToArray();
+
+            Expand_FutureSignPostRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_FutureSignPostRoom", true, false, true);
+            Expand_FutureSignPostRoom.overrideRoomVisualType = 1;
+            RoomBuilder.AddObjectToRoom(Expand_FutureSignPostRoom, new Vector2(7, 7), null, ExpandPrefabs.EXFuture_SignPost.GetComponent<ExpandSignPostController>(), yOffset: 10);
 
 
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion" };
@@ -1429,7 +1568,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_West_SecretKeyShop = UnityEngine.Object.Instantiate(ExpandPrefabs.shop_special_key_01);
             Expand_West_SecretKeyShop.overrideRoomVisualType = 0;
             Expand_West_SecretKeyShop.category = PrototypeDungeonRoom.RoomCategory.SECRET;
-
+            
             Expand_West_ChestRoom = UnityEngine.Object.Instantiate(ExpandPrefabs.reward_room);
             Expand_West_ChestRoom.overrideRoomVisualType = 0;
 
@@ -10280,8 +10419,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 GenerateWeightedRoom(Expand_SkullRoom),
                 GenerateWeightedRoom(Expand_TableRoomAgain)
             };
+
             
-                        
+
+
             foreach (PrototypeDungeonRoom room in Expand_West_CanyonRooms) {
                 ExpandPrefabs.WestCanyonRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
             }
@@ -10295,12 +10436,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_Rooms) {
-                if (room.name.ToLower().StartsWith("BackRooms_Room101")) {
-
-                } else {
+                if (!room.name.ToLower().StartsWith("BackRooms_Room101")) {
                     ExpandPrefabs.BackRoomsRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room, 0.5f));
                 }
             }
+
+            foreach (PrototypeDungeonRoom room in Expand_Future_Rooms) {
+                ExpandPrefabs.FutureRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+
+           
+
+            foreach (PrototypeDungeonRoom room in Expand_Future_BossFoyers) {
+                ExpandPrefabs.FutureFoyerRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(room));
+            }
+
 
             foreach (PrototypeDungeonRoom room in Expand_Backrooms_WarpWings) {
                 ExpandPrefabs.BackRoomsWarpWingTable.includedRooms.elements.Add(GenerateWeightedRoom(room, LimitedCopies: false));

@@ -24,6 +24,7 @@ namespace ExpandTheGungeon {
             InitObjectMods(GameManager.Instance.Dungeon);
             
             ExpandDungeonFlow.isGlitchFlow = false;
+            ExpandSettings.SewersIsFuture = false;
         }
 
         private static void InitObjectMods(Dungeon dungeon) {

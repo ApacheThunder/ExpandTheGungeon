@@ -23,6 +23,7 @@ namespace ExpandTheGungeon.ItemAPI {
             string longDesc = "Sometimes you just need to escape. A one time use item Lunk found but he dropped it while exploring the Gungeon because he was too busy looking at his map.";
             ItemBuilder.SetupItem(portableelevator, shortDesc, longDesc, "ex");
             ItemBuilder.SetCooldownType(portableelevator, ItemBuilder.CooldownType.Damage, 275f);
+            ItemBuilder.AddPassiveStatModifier(portableelevator, PlayerStats.StatType.AdditionalItemCapacity, 1, StatModifier.ModifyMethod.ADDITIVE);
             portableelevator.quality = ItemQuality.B;
                         
             if (!ExpandSettings.EnableEXItems) { portableelevator.quality = ItemQuality.EXCLUDED; }
@@ -175,6 +176,7 @@ namespace ExpandTheGungeon.ItemAPI {
                 DoElevatorDrop(cachedPosition, user.CurrentRoom);
                 IsCurrentlyActive = false;
                 m_WasUsed = true;
+                Minimap.Instance.RegisterRoomIcon(user.CurrentRoom, ExpandPrefabs.Belly_ExitRoomIcon, false);
                 user.DropActiveItem(this);
             }
         }

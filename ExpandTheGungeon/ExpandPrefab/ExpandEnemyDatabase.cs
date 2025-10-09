@@ -42,7 +42,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ClownkinAltGUID = "dd1505fb84744002ad42ee8316b86ea0";
             ClownkinNoFXGUID = "ccd416569b6d4ca0bb057a837a517d73";
             ClownkinAngryGUID = "3eee833068614536a5f56cbe7dc6cfe9";
-            EntityGUID = "0108a031c74940739c56a22068c915b6";            
+            EntityGUID = "0108a031c74940739c56a22068c915b6";
+            PoisbulordGUID = "b19ec5d13d754e5f8293910e10bf7ff1";
+            PoisbulordCrawlerGUID = "aa060bcd358048b8ac99127571e500ae";
         }
 
         // Saved GUIDs for use in things like room prefabs
@@ -72,6 +74,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly string ClownkinNoFXGUID;
         public static readonly string ClownkinAngryGUID;
         public static readonly string EntityGUID;
+        public static readonly string PoisbulordGUID;
+        public static readonly string PoisbulordCrawlerGUID;
+
 
         public static Hook loadEnemyGUIDHook;
 
@@ -128,6 +133,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject com4nd0BossPrefab;
         public static GameObject DoppelGunnerPrefab;
         public static GameObject BulletManBossPrefab;
+        public static GameObject PoisbulordPrefab;
+        public static GameObject PoisbulordCrawlerPrefab; // Piosbulord Crawler
 
         // Enemies with pallete system disabled
         public static GameObject RedShotGunMan;
@@ -148,12 +155,24 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject DopplegunnerHand;
         public static GameObject ClownkinWig;
         
+        // Poisbulord VFX Objects
+        public static GameObject VFX_Poisbulord_Splash;
+        public static GameObject VFX_Poisbulord_Die_Big;
+        public static GameObject VFX_Poisbulord_Die_Small;
+
+        // Poisbulord Projectiles (these versions produced when he does split attack.
+        // These versions leave poison goop
+        public static GameObject Poisbulord_Poisbulon_Projectile;
+        public static GameObject Poisbulord_Poisbuloid_Projectile;
+        // public static GameObject Poisbulord_Poisbulin_Projectile;
+
         public static Texture2D[] RatGrenadeTextures;
         
         private static AIActor Chameleon;
         private static AIActor Skusketling;
 
         public static Texture2D ModifiedCompanionsAtlas;
+        public static Texture2D PoisbulordAtlas;
 
         // public static tk2dSpriteCollectionData ModifiedCompanionCollection;
 
@@ -182,6 +201,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             ModifiedCompanionsAtlas = expandSharedAssets1.LoadAsset<Texture2D>("ModifiedCompanions_Collection");
+            PoisbulordAtlas = expandSharedAssets1.LoadAsset<Texture2D>("Poisbulord_Collection");
 
             // ModifiedCompanionCollection = ExpandUtility.BuildSpriteCollection(EnemyDatabase.GetOrLoadByGuid("6f9c28403d3248c188c391f5e40774c5").sprite.Collection, ModifiedCompanionsAtlas, null, null, true);
         }
@@ -223,6 +243,10 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             BuildBulletManBossPrefab(expandSharedAssets1, out BulletManBossPrefab);
 
+            BuildPoisbulordBossPrefab(expandSharedAssets1, out PoisbulordPrefab);
+
+            BuildPoisbulordCrawlerPrefab(expandSharedAssets1, out PoisbulordCrawlerPrefab);
+            
             ExpandWesternBrosPrefabBuilder.BuildWestBrosBossPrefabs(expandSharedAssets1);
             
             // Fake Prefabs
@@ -5369,6 +5393,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
                         
             AIActor m_CachedAIActor = m_CachedTargetObject.GetComponent<AIActor>();
 
+            m_CachedAIActor.EffectResistances = new ActorEffectResistance[] {
+                new ActorEffectResistance() {
+                    resistAmount = 1,
+                    resistType = EffectResistanceType.Poison
+                },
+            };
+
             // m_CachedAIActor.HasShadow = false;
             m_CachedAIActor.ActorShadowOffset = new Vector3(0, -0.18f, 0);
             m_CachedAIActor.MovementSpeed = 7f;
@@ -6008,7 +6039,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AddEnemyToDatabase(CachedTargetEnemyObject, FriendlyCultistGUID, false);
         }
 
-         public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
+        public static void BuildParasiteBossPrefab(out GameObject m_CachedTargetObject, bool isFakePrefab = true) {
             
             m_CachedTargetObject = UnityEngine.Object.Instantiate(EnemyDatabase.GetOrLoadByGuid("dc3cd41623d447aeba77c77c99598426").gameObject);
             m_CachedTargetObject.SetActive(false);
@@ -6601,6 +6632,427 @@ namespace ExpandTheGungeon.ExpandPrefab {
             AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, BulletManBossGUID, ExpandAmmonomiconDatabase.BulletManBoss);
             
             m_CachedEnemyActor = null;
+            return;
+        }
+        
+        public static void BuildPoisbulordBossPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("1b5810fafbec445d89921a4efb4e42b7"); // blobulord
+                        
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("Poisbulord");
+            VFX_Poisbulord_Splash = expandSharedAssets1.LoadAsset<GameObject>("VFX_Poisbulord_Splash");
+            VFX_Poisbulord_Die_Big = expandSharedAssets1.LoadAsset<GameObject>("VFX_Poisbulord_Die_Big");
+            VFX_Poisbulord_Die_Small = expandSharedAssets1.LoadAsset<GameObject>("VFX_Poisbulord_Die_Small");
+
+            GameObject m_CachedShootPoint = m_CachedTargetObject.transform.Find("shoot point").gameObject;
+            GameObject m_CachedSplashVFX = m_CachedTargetObject.transform.Find("splash vfx").gameObject;
+
+
+            ExpandUtility.DuplicateRigidBody(m_CachedTargetObject.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.specRigidbody);
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.AddComponent<AIActor>();
+            ExpandUtility.DuplicateComponent(m_CachedAIActor, m_CachedEnemyActor);
+            m_CachedAIActor.ActorName = "Poisbulord";
+            m_CachedAIActor.EnemyGuid = PoisbulordGUID;
+            m_CachedAIActor.EnemyId = UnityEngine.Random.Range(11000, 99999);
+
+            m_CachedAIActor.EffectResistances = new ActorEffectResistance[] {
+                new ActorEffectResistance() { resistAmount = 1, resistType = EffectResistanceType.Poison },
+            };
+
+            
+
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<AIBulletBank>(), m_CachedEnemyActor.bulletBank);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.GetOrAddComponent<HitEffectHandler>(), m_CachedEnemyActor.hitEffectHandler);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<HealthHaver>(), m_CachedEnemyActor.healthHaver);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<KnockbackDoer>(), m_CachedEnemyActor.knockbackDoer);
+
+            ExpandUtility.DuplicateSprite(m_CachedTargetObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, m_CachedEnemyActor.spriteAnimator.Library, 8, 0, playAutomatically: true, ClipFps: 0);
+            
+
+            tk2dSpriteAnimation m_SourceBlobulorAnimationLibrary = m_CachedEnemyActor.spriteAnimator.Library;
+            tk2dSpriteAnimation m_PoisbulordLibrary = m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>();
+            ExpandUtility.DuplicateComponent(m_PoisbulordLibrary, m_SourceBlobulorAnimationLibrary);
+
+            List<tk2dSpriteAnimationClip> m_Clips = new List<tk2dSpriteAnimationClip>();
+
+            foreach (tk2dSpriteAnimationClip clip in m_SourceBlobulorAnimationLibrary.clips) {
+                m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+            }
+
+            foreach (tk2dSpriteAnimationClip clip in m_Clips) {
+                foreach (tk2dSpriteAnimationFrame frame in clip.frames) {
+                    frame.spriteCollection = ExpandPrefabs.EXPoisbulordCollection.GetComponent<tk2dSpriteCollectionData>();
+                }
+            }
+            
+            if (m_Clips.Count > 0) m_PoisbulordLibrary.clips = m_Clips.ToArray();
+
+            m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>().Library = m_PoisbulordLibrary;
+            
+
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<AIAnimator>(), m_CachedEnemyActor.aiAnimator);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<ObjectVisibilityManager>(), m_CachedEnemyActor.visibilityManager);
+            
+            AIAnimator m_PoisbulordAIAnimator = m_CachedTargetObject.GetComponent<AIAnimator>();
+            m_PoisbulordAIAnimator.OtherVFX[0].anchorTransform = m_CachedSplashVFX.transform;
+            m_PoisbulordAIAnimator.OtherVFX[0].vfxPool = new VFXPool() {
+                type = VFXPoolType.Single,
+                effects = new VFXComplex[] {
+                    new VFXComplex() {
+                        effects = new VFXObject[] {
+                            new VFXObject() {
+                                effect = VFX_Poisbulord_Splash,
+                                orphaned = false,
+                                attached = false,
+                                persistsOnDeath = false,
+                                usesZHeight = false,
+                                zHeight = 0,
+                                alignment = VFXAlignment.Fixed,
+                                destructible = false
+                            }
+                        }
+                    }
+                }
+            };
+
+            GameObject m_SourceVFXSplashObject = m_CachedEnemyActor.aiAnimator.OtherVFX[0].vfxPool.effects[0].effects[0].effect;
+
+            ExpandUtility.DuplicateSprite(VFX_Poisbulord_Splash.AddComponent<tk2dSprite>(), m_SourceVFXSplashObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Splash.AddComponent<tk2dSpriteAnimator>(), m_SourceVFXSplashObject.GetComponent<tk2dSpriteAnimator>());
+
+            tk2dSpriteAnimator m_VFXPoisbulordSplashAnimator = VFX_Poisbulord_Splash.GetComponent<tk2dSpriteAnimator>();
+            m_VFXPoisbulordSplashAnimator.Library = m_PoisbulordLibrary;
+            m_VFXPoisbulordSplashAnimator.DefaultClipId = 24;
+
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Splash.AddComponent<SpriteAnimatorKiller>(), m_SourceVFXSplashObject.GetComponent<SpriteAnimatorKiller>());
+            
+
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 2;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>();
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>();
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>();
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>();
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            foreach (TargetBehaviorBase targetBehavior in m_CachedEnemyActor.behaviorSpeculator.TargetBehaviors) {
+                customBehaviorSpeculator.TargetBehaviors.Add(targetBehavior);
+            }
+            foreach (MovementBehaviorBase movementBehavior in m_CachedEnemyActor.behaviorSpeculator.MovementBehaviors) {
+                customBehaviorSpeculator.MovementBehaviors.Add(movementBehavior);
+            }
+            foreach (AttackBehaviorBase attackBehavior in m_CachedEnemyActor.behaviorSpeculator.AttackBehaviors) {
+                if (attackBehavior is AttackBehaviorGroup) {
+                    AttackBehaviorGroup attackGroup = (attackBehavior as AttackBehaviorGroup);
+                    AttackBehaviorGroup newAttackGroup = new AttackBehaviorGroup();
+                    newAttackGroup.ShareCooldowns = attackGroup.ShareCooldowns;
+                    newAttackGroup.AttackBehaviors = new List<AttackBehaviorGroup.AttackGroupItem>();
+                    foreach (AttackBehaviorGroup.AttackGroupItem behaviorItem in attackGroup.AttackBehaviors) {
+                        AttackBehaviorGroup.AttackGroupItem newBehaviorItem = new AttackBehaviorGroup.AttackGroupItem();
+                        ExpandUtility.DuplicateComponent(newBehaviorItem, behaviorItem);
+                        if (behaviorItem.NickName == "Move and Shoot" && (behaviorItem.Behavior is ShootBehavior)) {
+                            ShootBehavior newShootBehavior = new ShootBehavior();
+                            ExpandUtility.DuplicateComponent(newShootBehavior, (behaviorItem.Behavior as ShootBehavior));
+                            newShootBehavior.ShootPoint = m_CachedShootPoint;
+                            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newShootBehavior.ShootPoint);
+                            newBehaviorItem.Behavior = newShootBehavior;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        } else if (behaviorItem.NickName == "Bouncing Blob Bullets" && (behaviorItem.Behavior is ShootBehavior)) {
+                            ShootBehavior newShootBehavior = new ShootBehavior();
+                            ExpandUtility.DuplicateComponent(newShootBehavior, (behaviorItem.Behavior as ShootBehavior));
+                            newShootBehavior.ShootPoint = m_CachedShootPoint;
+                            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newShootBehavior.ShootPoint);
+                            newBehaviorItem.Behavior = newShootBehavior;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        } else if (behaviorItem.NickName == "Firehose" && (behaviorItem.Behavior is ShootBehavior)) {
+                            ShootBehavior newShootBehavior = new ShootBehavior();
+                            ExpandUtility.DuplicateComponent(newShootBehavior, (behaviorItem.Behavior as ShootBehavior));
+                            newShootBehavior.ShootPoint = m_CachedShootPoint;
+                            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newShootBehavior.ShootPoint);
+                            newBehaviorItem.Behavior = newShootBehavior;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        } else if (behaviorItem.NickName == "Moving Spray" && (behaviorItem.Behavior is ShootBehavior)) {
+                            ShootBehavior newShootBehavior = new ShootBehavior();
+                            ExpandUtility.DuplicateComponent(newShootBehavior, (behaviorItem.Behavior as ShootBehavior));
+                            newShootBehavior.ShootPoint = m_CachedShootPoint;
+                            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newShootBehavior.ShootPoint);
+                            newBehaviorItem.Behavior = newShootBehavior;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        } else if (behaviorItem.NickName == "Split Apart" && behaviorItem.Behavior is SequentialAttackBehaviorGroup) {
+                            SequentialAttackBehaviorGroup sequentialAttackBehaviorGroup = (behaviorItem.Behavior as SequentialAttackBehaviorGroup);
+                            SequentialAttackBehaviorGroup newSequentialAttackBehaviorGroup = new SequentialAttackBehaviorGroup();
+                            newSequentialAttackBehaviorGroup.OverrideCooldowns = sequentialAttackBehaviorGroup.OverrideCooldowns;
+                            newSequentialAttackBehaviorGroup.RunInClass = sequentialAttackBehaviorGroup.RunInClass;
+                            newSequentialAttackBehaviorGroup.AttackBehaviors = new List<AttackBehaviorBase>();
+                            foreach (AttackBehaviorBase sequentialbehavior in sequentialAttackBehaviorGroup.AttackBehaviors) {
+                                if (sequentialbehavior is AttackMoveBehavior) {
+                                    AttackMoveBehavior newAttackMoveBehavior = new AttackMoveBehavior();
+                                    ExpandUtility.DuplicateComponent(newAttackMoveBehavior, (sequentialbehavior as AttackMoveBehavior));
+                                    newSequentialAttackBehaviorGroup.AttackBehaviors.Add(newAttackMoveBehavior);
+                                } else if (sequentialbehavior is TransformBehavior) {
+                                    TransformBehavior newTransformBehavior = new TransformBehavior();
+                                    ExpandUtility.DuplicateComponent(newTransformBehavior, (sequentialbehavior as TransformBehavior));
+                                    newTransformBehavior.shootPoint = m_CachedShootPoint;
+                                    m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newTransformBehavior.shootPoint);
+                                    newSequentialAttackBehaviorGroup.AttackBehaviors.Add(newTransformBehavior);
+                                }
+                            }
+                            newBehaviorItem.Behavior = newSequentialAttackBehaviorGroup;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        } else if (behaviorItem.NickName == "Slam Burst " && (behaviorItem.Behavior is ShootBehavior)) {
+                            ShootBehavior newShootBehavior = new ShootBehavior();
+                            ExpandUtility.DuplicateComponent(newShootBehavior, (behaviorItem.Behavior as ShootBehavior));
+                            newShootBehavior.ShootPoint = m_CachedShootPoint;
+                            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences.Add(newShootBehavior.ShootPoint);
+                            newBehaviorItem.Behavior = newShootBehavior;
+                            newAttackGroup.AttackBehaviors.Add(newBehaviorItem);
+                        }
+                    }
+                    customBehaviorSpeculator.AttackBehaviors.Add(newAttackGroup);
+                }
+            }
+                        
+
+            string bossName = "POISBULORD";
+            GenericIntroDoer bossIntroDoer = m_CachedTargetObject.AddComponent<GenericIntroDoer>();
+            ExpandUtility.DuplicateComponent(bossIntroDoer, m_CachedTargetObject.GetComponent<GenericIntroDoer>());
+            bossIntroDoer.portraitSlideSettings = new PortraitSlideSettings() {
+                bossArtSprite = ExpandAssets.LoadAsset<Texture2D>("Poisbulord_boss_Bosscard_001"),
+                bossNameString = bossName,
+                bossSubtitleString = "FIVE-STAR GENERAL",
+                // bossQuoteString = string.Empty,
+            };
+
+            m_CachedTargetObject.AddComponent<BlobulordIntroDoer>();
+
+            BlobulordDeathController m_SourceDeathController = m_CachedEnemyActor.gameObject.GetComponent<BlobulordDeathController>();
+            BlobulordDeathController blobulordDeathController = m_CachedTargetObject.AddComponent<BlobulordDeathController>();
+            blobulordDeathController.name = string.Empty;
+            blobulordDeathController.bigExplosionVfx = VFX_Poisbulord_Die_Big;
+            blobulordDeathController.explosionVfx = new List<GameObject>() { VFX_Poisbulord_Die_Small };
+            blobulordDeathController.explosionMidDelay = 0.12f;
+            blobulordDeathController.explosionCount = 25;
+            blobulordDeathController.finalScale = 0.2f;
+            blobulordDeathController.crawlerSpawnDelay = 0.3f;
+            blobulordDeathController.crawlerGuid = PoisbulordCrawlerGUID;
+
+            ExpandUtility.DuplicateSprite(VFX_Poisbulord_Die_Big.AddComponent<tk2dSprite>(), m_SourceDeathController.bigExplosionVfx.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Die_Big.AddComponent<tk2dSpriteAnimator>(), m_SourceDeathController.bigExplosionVfx.GetComponent<tk2dSpriteAnimator>());
+
+            tk2dSpriteAnimator m_VFXPoisbulordDieBigAnimator = VFX_Poisbulord_Die_Big.GetComponent<tk2dSpriteAnimator>();
+            m_VFXPoisbulordDieBigAnimator.Library = m_PoisbulordLibrary;
+            m_VFXPoisbulordDieBigAnimator.DefaultClipId = 25;
+
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Die_Big.AddComponent<SpriteAnimatorKiller>(), m_SourceDeathController.bigExplosionVfx.GetComponent<SpriteAnimatorKiller>());
+            
+
+            ExpandUtility.DuplicateSprite(VFX_Poisbulord_Die_Small.AddComponent<tk2dSprite>(), m_SourceDeathController.explosionVfx[0].GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Die_Small.AddComponent<tk2dSpriteAnimator>(), m_SourceDeathController.explosionVfx[0].GetComponent<tk2dSpriteAnimator>());
+
+            tk2dSpriteAnimator m_VFXPoisbulordDieSmallAnimator = VFX_Poisbulord_Die_Small.GetComponent<tk2dSpriteAnimator>();
+            m_VFXPoisbulordDieSmallAnimator.Library = m_PoisbulordLibrary;
+            m_VFXPoisbulordDieSmallAnimator.DefaultClipId = 26;
+
+            ExpandUtility.DuplicateComponent(VFX_Poisbulord_Die_Small.AddComponent<SpriteAnimatorKiller>(), m_SourceDeathController.explosionVfx[0].GetComponent<SpriteAnimatorKiller>());
+
+            
+            tk2dSpriteAttachPoint spriteAttachPoint = m_CachedTargetObject.AddComponent<tk2dSpriteAttachPoint>();
+            spriteAttachPoint.attachPoints = new List<Transform>() { m_CachedShootPoint.transform };
+            spriteAttachPoint.deactivateUnusedAttachPoints = false;
+            spriteAttachPoint.disableEmissionOnUnusedParticleSystems = false;
+            spriteAttachPoint.ignorePosition = false;
+            spriteAttachPoint.ignoreScale = false;
+            spriteAttachPoint.ignoreRotation = false;
+            spriteAttachPoint.centerUnusedAttachPoints = false;
+
+            
+            GoopDoer[] m_SourceGoopDoers = m_CachedEnemyActor.gameObject.GetComponents<GoopDoer>();
+
+            GoopDoer m_GoopDoer1 = m_CachedTargetObject.AddComponent<GoopDoer>();
+            GoopDoer m_GoopDoer2 = m_CachedTargetObject.AddComponent<GoopDoer>();
+
+            ExpandUtility.DuplicateComponent(m_GoopDoer1, m_SourceGoopDoers[0]);
+            ExpandUtility.DuplicateComponent(m_GoopDoer2, m_SourceGoopDoers[1]);
+
+            
+            m_GoopDoer1.goopDefinition = ExpandAssets.LoadOfficialAsset<GoopDefinition>("Poison Goop", ExpandAssets.AssetSource.SharedAuto1);
+            m_GoopDoer2.goopDefinition = m_GoopDoer1.goopDefinition;
+            m_GoopDoer2.DispersalParticleSystemPrefab = m_SourceGoopDoers[1].DispersalParticleSystemPrefab;
+
+
+            Poisbulord_Poisbulon_Projectile = expandSharedAssets1.LoadAsset<GameObject>("Poisbulord_Poisbulon_Projectile");
+            Poisbulord_Poisbuloid_Projectile = expandSharedAssets1.LoadAsset<GameObject>("Poisbulord_Poisbuloid_Projectile");
+            // Poisbulord_Poisbulin_Projectile = expandSharedAssets1.LoadAsset<GameObject>("Poisbulord_Poisbulin_Projectile");
+
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbulon_Projectile.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.bulletBank.Bullets[4].BulletObject.GetComponent<SpeculativeRigidbody>());
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbuloid_Projectile.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.bulletBank.Bullets[5].BulletObject.GetComponent<SpeculativeRigidbody>());
+            // ExpandUtility.DuplicateComponent(Poisbulord_Poisbulin_Projectile.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.bulletBank.Bullets[6].BulletObject.GetComponent<SpeculativeRigidbody>());
+
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbulon_Projectile.AddComponent<Projectile>(), m_CachedEnemyActor.bulletBank.Bullets[4].BulletObject.GetComponent<Projectile>());
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbuloid_Projectile.AddComponent<Projectile>(), m_CachedEnemyActor.bulletBank.Bullets[5].BulletObject.GetComponent<Projectile>());
+            // ExpandUtility.DuplicateComponent(Poisbulord_Poisbulin_Projectile.AddComponent<Projectile>(), m_CachedEnemyActor.bulletBank.Bullets[6].BulletObject.GetComponent<Projectile>());
+
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbulon_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.bulletBank.Bullets[4].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbuloid_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.bulletBank.Bullets[5].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>());
+            // ExpandUtility.DuplicateComponent(Poisbulord_Poisbulin_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.bulletBank.Bullets[6].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbulon_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSpriteAnimator>(), m_CachedEnemyActor.bulletBank.Bullets[4].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSpriteAnimator>());
+            ExpandUtility.DuplicateComponent(Poisbulord_Poisbuloid_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSpriteAnimator>(), m_CachedEnemyActor.bulletBank.Bullets[5].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSpriteAnimator>());
+            // ExpandUtility.DuplicateComponent(Poisbulord_Poisbulin_Projectile.transform.Find("Sprite").gameObject.AddComponent<tk2dSpriteAnimator>(), m_CachedEnemyActor.bulletBank.Bullets[6].BulletObject.transform.Find("Sprite").gameObject.GetComponent<tk2dSpriteAnimator>());
+
+
+            
+            GoopDoer m_ProjectileGoopDoer1 = Poisbulord_Poisbulon_Projectile.transform.Find("Sprite").gameObject.AddComponent<GoopDoer>();
+            GoopDoer m_ProjectileGoopDoer2 = Poisbulord_Poisbuloid_Projectile.transform.Find("Sprite").gameObject.AddComponent<GoopDoer>();
+            // GoopDoer m_ProjectileGoopDoer3 = Poisbulord_Poisbulin_Projectile.transform.Find("Sprite").gameObject.AddComponent<GoopDoer>();
+            ExpandUtility.DuplicateComponent(m_ProjectileGoopDoer1, m_SourceGoopDoers[0]);
+            ExpandUtility.DuplicateComponent(m_ProjectileGoopDoer2, m_SourceGoopDoers[0]);
+            // ExpandUtility.DuplicateComponent(m_ProjectileGoopDoer3, m_SourceGoopDoers[0]);
+            m_ProjectileGoopDoer1.goopDefinition = m_GoopDoer1.goopDefinition;
+            m_ProjectileGoopDoer2.goopDefinition = m_GoopDoer1.goopDefinition;
+            // m_ProjectileGoopDoer3.goopDefinition = m_GoopDoer1.goopDefinition;
+            m_ProjectileGoopDoer1.positionSource = GoopDoer.PositionSource.SpriteCenter;
+            m_ProjectileGoopDoer2.positionSource = GoopDoer.PositionSource.SpriteCenter;
+            // m_ProjectileGoopDoer3.positionSource = GoopDoer.PositionSource.SpriteCenter;
+            m_ProjectileGoopDoer1.updateFrequency = 0.05f;
+            m_ProjectileGoopDoer2.updateFrequency = 0.05f;
+            // m_ProjectileGoopDoer3.updateFrequency = 0.05f;
+            m_ProjectileGoopDoer1.defaultGoopRadius = 0.8f;
+            m_ProjectileGoopDoer2.defaultGoopRadius = 0.6f;
+            // m_ProjectileGoopDoer3.defaultGoopRadius = 0.45f;
+
+            m_CachedAIActor.bulletBank.Bullets[4].BulletObject = Poisbulord_Poisbulon_Projectile;
+            m_CachedAIActor.bulletBank.Bullets[5].BulletObject = Poisbulord_Poisbuloid_Projectile;
+            // m_CachedAIActor.bulletBank.Bullets[6].BulletObject = Poisbulord_Poisbulin_Projectile;
+
+            /*VFX_Poisbulord_Splash.AddComponent<ExpandObjectReshader>();
+            VFX_Poisbulord_Die_Big.AddComponent<ExpandObjectReshader>();
+            VFX_Poisbulord_Die_Small.AddComponent<ExpandObjectReshader>();
+            m_CachedTargetObject.AddComponent<ExpandObjectReshader>();*/
+
+            AddEnemyToDatabaseAndAmmonomicon(m_CachedAIActor, PoisbulordGUID, ExpandAmmonomiconDatabase.Poisbulord);
+
+            m_CachedEnemyActor = null;
+            return;
+        }
+        
+        public static void BuildPoisbulordCrawlerPrefab(AssetBundle expandSharedAssets1, out GameObject m_CachedTargetObject) {
+            AIActor m_CachedEnemyActor = GetOfficialEnemyByGuid("d1c9781fdac54d9e8498ed89210a0238"); // blobulord crawler
+
+            m_CachedTargetObject = expandSharedAssets1.LoadAsset<GameObject>("PoisbulordCrawler");
+            
+            ExpandUtility.DuplicateRigidBody(m_CachedTargetObject.AddComponent<SpeculativeRigidbody>(), m_CachedEnemyActor.specRigidbody);
+
+            if (!m_CachedEnemyActor) {
+                if (ExpandSettings.debugMode) ETGModConsole.Log("[DEBUG] ERROR: Source object for donor enemy is null!", false);
+                return;
+            }
+
+            AIActor m_CachedAIActor = m_CachedTargetObject.AddComponent<AIActor>();
+            ExpandUtility.DuplicateComponent(m_CachedAIActor, m_CachedEnemyActor);
+            m_CachedAIActor.ActorName = "Poisbulord Remains";
+            m_CachedAIActor.EnemyGuid = PoisbulordCrawlerGUID;
+            m_CachedAIActor.EnemyId = UnityEngine.Random.Range(11000, 99999);
+
+            m_CachedAIActor.EffectResistances = new ActorEffectResistance[] {
+                new ActorEffectResistance() { resistAmount = 1, resistType = EffectResistanceType.Poison },
+            };
+            
+                        
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.GetOrAddComponent<HitEffectHandler>(), m_CachedEnemyActor.hitEffectHandler);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<HealthHaver>(), m_CachedEnemyActor.healthHaver);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<KnockbackDoer>(), m_CachedEnemyActor.knockbackDoer);
+
+            ExpandUtility.DuplicateSprite(m_CachedTargetObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.gameObject.GetComponent<tk2dSprite>());
+            ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, m_CachedEnemyActor.spriteAnimator.Library, 12, 0, playAutomatically: true, ClipFps: 0);
+
+
+            tk2dSpriteAnimation m_SourceBlobulorCrawlerAnimationLibrary = m_CachedEnemyActor.spriteAnimator.Library;
+            tk2dSpriteAnimation m_PoisbulordCrawlerLibrary = m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>();
+            ExpandUtility.DuplicateComponent(m_PoisbulordCrawlerLibrary, m_SourceBlobulorCrawlerAnimationLibrary);
+
+            List<tk2dSpriteAnimationClip> m_Clips = new List<tk2dSpriteAnimationClip>();
+
+            foreach (tk2dSpriteAnimationClip clip in m_SourceBlobulorCrawlerAnimationLibrary.clips) {
+                m_Clips.Add(ExpandUtility.DuplicateAnimationClip(clip));
+            }
+
+            foreach (tk2dSpriteAnimationClip clip in m_Clips) {
+                foreach (tk2dSpriteAnimationFrame frame in clip.frames) {
+                    frame.spriteCollection = ExpandPrefabs.EXPoisbulordCollection.GetComponent<tk2dSpriteCollectionData>();
+                }
+            }
+
+            if (m_Clips.Count > 0) m_PoisbulordCrawlerLibrary.clips = m_Clips.ToArray();
+
+            m_CachedTargetObject.GetComponent<tk2dSpriteAnimator>().Library = m_PoisbulordCrawlerLibrary;
+
+
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<AIAnimator>(), m_CachedEnemyActor.aiAnimator);
+            ExpandUtility.DuplicateComponent(m_CachedTargetObject.AddComponent<ObjectVisibilityManager>(), m_CachedEnemyActor.visibilityManager);
+            
+
+            BehaviorSpeculator customBehaviorSpeculator = m_CachedTargetObject.AddComponent<BehaviorSpeculator>();
+            customBehaviorSpeculator.InstantFirstTick = false;
+            customBehaviorSpeculator.TickInterval = 0.1f;
+            customBehaviorSpeculator.PostAwakenDelay = 0;
+            customBehaviorSpeculator.RemoveDelayOnReinforce = false;
+            customBehaviorSpeculator.OverrideStartingFacingDirection = false;
+            customBehaviorSpeculator.StartingFacingDirection = -90;
+            customBehaviorSpeculator.SkipTimingDifferentiator = false;
+            customBehaviorSpeculator.OverrideBehaviors = new List<OverrideBehaviorBase>(0);
+            customBehaviorSpeculator.TargetBehaviors = new List<TargetBehaviorBase>();
+            customBehaviorSpeculator.MovementBehaviors = new List<MovementBehaviorBase>();
+            customBehaviorSpeculator.AttackBehaviors = new List<AttackBehaviorBase>(0);
+            customBehaviorSpeculator.OtherBehaviors = new List<BehaviorBase>(0);
+
+            ISerializedObject m_TargetBehaviorSpeculatorSerialized = customBehaviorSpeculator;
+            m_TargetBehaviorSpeculatorSerialized.SerializedObjectReferences = new List<UnityEngine.Object>();
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateKeys = new List<string>() { "OverrideBehaviors", "TargetBehaviors", "MovementBehaviors", "AttackBehaviors", "OtherBehaviors" };
+            m_TargetBehaviorSpeculatorSerialized.SerializedStateValues = new List<string>(0);
+
+            foreach (TargetBehaviorBase targetBehavior in m_CachedEnemyActor.behaviorSpeculator.TargetBehaviors) {
+                customBehaviorSpeculator.TargetBehaviors.Add(targetBehavior);
+            }
+            foreach (MovementBehaviorBase movementBehavior in m_CachedEnemyActor.behaviorSpeculator.MovementBehaviors) {
+                customBehaviorSpeculator.MovementBehaviors.Add(movementBehavior);
+            }
+
+            AIActor m_Blobulord = GetOfficialEnemyByGuid("1b5810fafbec445d89921a4efb4e42b7"); // blobulord
+            GoopDoer[] m_SourceGoopDoers = m_Blobulord.gameObject.GetComponents<GoopDoer>();
+
+            GoopDoer m_GoopDoer = m_CachedTargetObject.AddComponent<GoopDoer>();
+
+            ExpandUtility.DuplicateComponent(m_GoopDoer, m_SourceGoopDoers[0]);
+
+            m_GoopDoer.goopDefinition = ExpandAssets.LoadOfficialAsset<GoopDefinition>("Poison Goop", ExpandAssets.AssetSource.SharedAuto1);
+            m_GoopDoer.DispersalParticleSystemPrefab = m_SourceGoopDoers[1].DispersalParticleSystemPrefab;
+            m_GoopDoer.defaultGoopRadius = 0.5f;
+
+
+            // m_CachedTargetObject.AddComponent<ExpandObjectReshader>();
+            
+            AddEnemyToDatabase(m_CachedTargetObject, PoisbulordCrawlerGUID);
+
+            m_CachedEnemyActor = null;
+            m_Blobulord = null;
             return;
         }
 
