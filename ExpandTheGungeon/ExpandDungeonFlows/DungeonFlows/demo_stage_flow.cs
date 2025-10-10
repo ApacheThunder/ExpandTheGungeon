@@ -5,10 +5,19 @@ using ExpandTheGungeon.ExpandPrefab;
 
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
-
+    
     public class demo_stage_flow {
 
-        public static DungeonFlow DEMO_STAGE_FLOW() {
+        public static DungeonFlow DEMO_STAGE_FLOW {
+            get {
+                if (!m_demo_stage_flow) m_demo_stage_flow = m_DEMO_STAGE_FLOW();
+                return m_demo_stage_flow;
+            }
+        }
+
+        private static DungeonFlow m_demo_stage_flow;
+
+        private static DungeonFlow m_DEMO_STAGE_FLOW() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

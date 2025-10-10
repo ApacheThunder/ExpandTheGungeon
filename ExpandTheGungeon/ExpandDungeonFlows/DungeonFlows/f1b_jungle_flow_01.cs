@@ -6,8 +6,17 @@ using UnityEngine;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class f1b_jungle_flow_01 {
+
+        public static DungeonFlow F1b_Jungle_Flow_01 {
+            get {
+                if (!m_f1b_jungle_flow_01) m_f1b_jungle_flow_01 = m_F1b_Jungle_Flow_01();
+                return m_f1b_jungle_flow_01;
+            }
+        }
+
+        private static DungeonFlow m_f1b_jungle_flow_01;
         
-        public static DungeonFlow F1b_Jungle_Flow_01() {
+        private static DungeonFlow m_F1b_Jungle_Flow_01() {
             
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

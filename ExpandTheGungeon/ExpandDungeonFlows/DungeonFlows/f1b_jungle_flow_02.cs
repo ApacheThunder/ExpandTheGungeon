@@ -1,13 +1,23 @@
-﻿using ExpandTheGungeon.ExpandPrefab;
+﻿using System.Collections.Generic;
 using Dungeonator;
-using System.Collections.Generic;
 using UnityEngine;
+using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class f1b_jungle_flow_02 {
 
-        public static DungeonFlow F1b_Jungle_Flow_02() {
+        public static DungeonFlow F1b_Jungle_Flow_02 {
+            get {
+                if (!m_f1b_jungle_flow_02) m_f1b_jungle_flow_02 = m_F1b_Jungle_Flow_02();
+                return m_f1b_jungle_flow_02;
+            }
+        }
+
+        private static DungeonFlow m_f1b_jungle_flow_02;
+
+
+        private static DungeonFlow m_F1b_Jungle_Flow_02() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

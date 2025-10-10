@@ -25,11 +25,15 @@ namespace ExpandTheGungeon {
 		
 		public static void Install() {
 
-            if (ExpandDungeonFlow.KnownFlows != null && ExpandDungeonFlow.KnownFlows.Count > 0) {
+            if (ExpandDungeonFlow.KnownFlows != null && ExpandDungeonFlow.KnownFlows.Length > 0) {
                 foreach (DungeonFlow flow in ExpandDungeonFlow.KnownFlows) {
-                    if (flow.name != null && flow.name != string.Empty) { knownFlows.Add(flow.name.ToLower()); }
+                    if (flow.name != null && flow.name != string.Empty)knownFlows.Add(flow.name.ToLower());
                 }
             }
+
+            knownFlows.Add("npcparadise");
+            knownFlows.Add("secret_doublebeholster_flow");
+            // knownFlows.Add("foyer_flow");
 
             foreach (GameLevelDefinition dungeonFloors in GameManager.Instance.dungeonFloors) {
                 if (dungeonFloors.dungeonPrefabPath != null && dungeonFloors.dungeonPrefabPath != string.Empty) {
@@ -79,12 +83,8 @@ namespace ExpandTheGungeon {
                 bool invalidTileset = tilesetSpecified && !knownTilesets.Contains(args[1]);
                 string flowName = args[0].Replace('-', ' ');
 
-                if (flowName.ToLower().StartsWith("custom_glitchchest_flow") |
-                    flowName.ToLower().StartsWith("custom_glitchchestalt_flow") |
-                    flowName.ToLower().StartsWith("custom_glitch_flow"))
-                {
-                    ExpandDungeonFlow.isGlitchFlow = true;
-                }
+                if (ExpandDungeonFlow.GlitchChestFlows.Contains(flowName.ToLower()))ExpandDungeonFlow.isGlitchFlow = true;
+
                 if (invalidTileset) {
                     ETGModConsole.Log("Not a valid tileset!");
                 } else {

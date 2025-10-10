@@ -10,7 +10,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static int LoopRoomCount = 4;
         public static int SingleChainRoomCount = 3;
 
-        public static DungeonFlow Custom_GlitchChestAlt_Flow() {
+        public static DungeonFlow Custom_GlitchChestAlt_Flow {
+            get {
+                if (!m_custom_glitchchestalt_flow) m_custom_glitchchestalt_flow = m_Custom_GlitchChestAlt_Flow();
+                return m_custom_glitchchestalt_flow;
+            }
+        }
+
+        private static DungeonFlow m_custom_glitchchestalt_flow;
+
+        private static DungeonFlow m_Custom_GlitchChestAlt_Flow() {
             
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

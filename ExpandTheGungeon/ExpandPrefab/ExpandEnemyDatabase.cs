@@ -11,9 +11,11 @@ using Gungeon;
 using ExpandTheGungeon.SpriteAPI;
 using Dungeonator;
 using ExpandTheGungeon.ExpandComponent;
+using HarmonyLib;
 
 namespace ExpandTheGungeon.ExpandPrefab {
-    
+
+    // [HarmonyPatch]
     public static class ExpandEnemyDatabase {
 
         static ExpandEnemyDatabase() {
@@ -210,8 +212,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
             loadEnemyGUIDHook = new Hook(
-                typeof(EnemyDatabase).GetMethod("GetOrLoadByGuid", BindingFlags.Static | BindingFlags.Public),
-                typeof(ExpandEnemyDatabase).GetMethod("GetOrLoadByGuidHook", BindingFlags.Static | BindingFlags.Public)
+                typeof(EnemyDatabase).GetMethod(nameof(EnemyDatabase.GetOrLoadByGuid), BindingFlags.Static | BindingFlags.Public),
+                typeof(ExpandEnemyDatabase).GetMethod(nameof(GetOrLoadByGuidHook), BindingFlags.Static | BindingFlags.Public)
             );
             
             // Palette Fix to Red/Blue Shotgun Kin and Veteran Bullet Kin (so they work correctly with glitch shader)
@@ -268,8 +270,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static AIActor GetOrLoadByGuidHook(Func<string, AIActor> orig, string guid) {
             AIActor enemyPrefab;
-            if (enemyPrefabDictionary.TryGetValue(guid, out enemyPrefab)) { return enemyPrefab; } else { return orig(guid); }
+            if (enemyPrefabDictionary != null && enemyPrefabDictionary.TryGetValue(guid, out enemyPrefab)) { return enemyPrefab; } else { return orig(guid); }
         }
+
+        // This was randomly breaking something on loading of a new floor sometimes.
+        /*[HarmonyPatch(typeof(EnemyDatabase), nameof(EnemyDatabase.GetOrLoadByGuid), typeof(string))]
+        [HarmonyPostfix]
+        private static void GetOrLoadByGuidPatch(EnemyDatabase __instance, string guid, ref AIActor __result) {
+            if (enemyPrefabDictionary != null) {
+                AIActor enemyPrefab;
+                if (enemyPrefabDictionary.TryGetValue(guid, out enemyPrefab)) __result = enemyPrefab;
+            }
+        }*/
 
         public static AIActor GetOfficialEnemyByGuid(string guid) { return EnemyDatabase.Instance.InternalGetByGuid(guid); }
 

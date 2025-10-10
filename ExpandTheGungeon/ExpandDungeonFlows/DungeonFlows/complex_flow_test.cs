@@ -9,7 +9,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class complex_flow_test {        
 
-        public static DungeonFlow Complex_Flow_Test() {
+        public static DungeonFlow Complex_Flow_Test {
+            get {
+                if (!m_complex_flow_test) m_complex_flow_test = m_Complex_Flow_Test();
+                return m_complex_flow_test;
+            }
+        }
+
+        private static DungeonFlow m_complex_flow_test;
+
+        private static DungeonFlow m_Complex_Flow_Test() {
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 
             DungeonFlowNode ComplexFlowNode_00 = new DungeonFlowNode(m_CachedFlow) {

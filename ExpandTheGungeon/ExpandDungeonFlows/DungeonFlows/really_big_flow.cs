@@ -9,7 +9,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class really_big_flow {
         
-        public static DungeonFlow Really_Big_Flow() {
+        public static DungeonFlow Really_Big_Flow {
+            get {
+                if (!m_really_big_flow) m_really_big_flow = m_Really_Big_Flow();
+                return m_really_big_flow;
+            }
+        }
+
+        private static DungeonFlow m_really_big_flow;
+
+        private static DungeonFlow m_Really_Big_Flow() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

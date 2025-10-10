@@ -6,8 +6,17 @@ using UnityEngine;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class test_customroom_flow {
+
+        public static DungeonFlow Test_CustomRoom_Flow {
+            get {
+                if (!m_test_customroom_flow) m_test_customroom_flow = m_Test_CustomRoom_Flow();
+                return m_test_customroom_flow;
+            }
+        }
+
+        private static DungeonFlow m_test_customroom_flow;
         
-        public static DungeonFlow Test_CustomRoom_Flow() {
+        private static DungeonFlow m_Test_CustomRoom_Flow() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

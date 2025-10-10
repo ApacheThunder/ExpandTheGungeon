@@ -6,8 +6,17 @@ using UnityEngine;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class backrooms_flow_01 {
+
+        public static DungeonFlow BackRooms_Flow_01 {
+            get {
+                if (!m_backrooms_flow_01) m_backrooms_flow_01 = m_BackRooms_Flow_01();
+                return m_backrooms_flow_01;
+            }
+        }
+
+        private static DungeonFlow m_backrooms_flow_01;
         
-        public static DungeonFlow BackRooms_Flow_01() {
+        private static DungeonFlow m_BackRooms_Flow_01() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

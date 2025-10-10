@@ -7,7 +7,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class backrooms_flow_03 {
         
-        public static DungeonFlow BackRooms_Flow_03() {
+        public static DungeonFlow BackRooms_Flow_03 {
+            get {
+                if (!m_backrooms_flow_03) m_backrooms_flow_03 = m_BackRooms_Flow_03();
+                return m_backrooms_flow_03;
+            }
+        }
+
+        private static DungeonFlow m_backrooms_flow_03;
+        
+        private static DungeonFlow m_BackRooms_Flow_03() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
             

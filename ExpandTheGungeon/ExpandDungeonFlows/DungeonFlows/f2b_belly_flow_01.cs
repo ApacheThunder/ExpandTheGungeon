@@ -7,7 +7,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class f2b_belly_flow_01 {
         
-        public static DungeonFlow F2b_Belly_Flow_01() {
+        public static DungeonFlow F2b_Belly_Flow_01 {
+            get {
+                if (!m_f2b_belly_flow_01) m_f2b_belly_flow_01 = m_F2b_Belly_Flow_01();
+                return m_f2b_belly_flow_01;
+            }
+        }
+
+        private static DungeonFlow m_f2b_belly_flow_01;
+
+        private static DungeonFlow m_F2b_Belly_Flow_01() {
             
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

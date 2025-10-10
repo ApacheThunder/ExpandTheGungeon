@@ -1,12 +1,15 @@
-using ExpandTheGungeon.ExpandUtilities;
 using Dungeonator;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using HarmonyLib;
+using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandPrefab;
+
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
     
+    // [HarmonyPatch]
     public class ExpandDungeonFlow {
 
         public static bool isGlitchFlow = false;
@@ -69,33 +72,68 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             }
         }
 
-        public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
-            string flowName = target;
-            if (flowName.Contains("/")) { flowName = target.Substring(target.LastIndexOf("/") + 1); }
-            // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
-            if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
-                DungeonFlow m_Flow = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
-                DebugTime.RecordStartTime();
-                DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { m_Flow.name });
-                return m_Flow;
-            } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
-                flowName = "secret_doublebeholster_flow"; // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
-            }
-            if (KnownFlows != null && KnownFlows.Count > 0) {
-                foreach (DungeonFlow flow in KnownFlows) {
-                    if (flow.name != null && flow.name != string.Empty && flowName.ToLower() == flow.name.ToLower()) {
-                        // Allows glitch chest floors to have things like the Old Crest room drop off if on Gungeon tileset, etc.
-                        if (GlitchChestFlows.Contains(flow.name.ToLower())) {
-                            flow.sharedInjectionData = RetrieveSharedInjectionDataListFromCurrentFloor();
+
+        /*[HarmonyPatch(typeof(FlowDatabase), nameof(FlowDatabase.GetOrLoadByName), typeof(string))]
+        [HarmonyPostfix]
+        private static void GetOrLoadByNamePatch(FlowDatabase __instance, string name, ref DungeonFlow __result) {
+            if (KnownFlows != null && KnownFlows.Count > 0) { 
+                string flowName = name;
+                if (flowName.Contains("/")) { flowName = name.Substring(name.LastIndexOf("/") + 1); }
+                // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
+                if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
+                    __result = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
+                } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
+                    __result = LoadOfficialFlow("secret_doublebeholster_flow"); // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
+                } else {
+                    foreach (DungeonFlow flow in KnownFlows) {
+                        if (flow.name != null && flow.name != string.Empty && flowName.ToLower() == flow.name.ToLower()) {
+                            __result = flow;
+                            break;
                         }
-                        DebugTime.RecordStartTime();
-                        DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
-                        return flow;
-                        
                     }
                 }
             }
-            return orig(target);
+        }*/
+
+        public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
+            try {
+                string flowName = target;
+                if (flowName.Contains("/"))flowName = target.Substring(target.LastIndexOf("/") + 1);
+                // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
+                if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
+                    DungeonFlow m_Flow = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
+                    if (m_Flow) {
+                        DebugTime.RecordStartTime();
+                        DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { m_Flow.name });
+                        return m_Flow;
+                    }
+                } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
+                    return orig("secret_doublebeholster_flow"); // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
+                } /*else if (flowName.ToLower().EndsWith("foyer_flow")) {
+                    if (Foyer_Flow) {
+                        DebugTime.RecordStartTime();
+                        DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { Foyer_Flow.name });
+                    }
+                    return Foyer_Flow;
+                } */else if (KnownFlows != null && KnownFlows.Length > 0) {
+                    foreach (DungeonFlow flow in KnownFlows) {
+                        if (flow && !string.IsNullOrEmpty(flow.name) && flowName.ToLower() == flow.name.ToLower()) {
+                            // Allows glitch chest floors to have things like the Old Crest room drop off if on Gungeon tileset, etc.
+                            if (GlitchChestFlows.Contains(flow.name.ToLower())) {
+                                flow.sharedInjectionData = RetrieveSharedInjectionDataListFromCurrentFloor();
+                            }
+                            DebugTime.RecordStartTime();
+                            DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { flowName });
+                            return flow;
+                        }
+                    }
+                }
+                return orig(target);
+            } catch (Exception ex) {
+                ETGModConsole.Log(ExpandTheGungeon.ModName + ".LoadCustomFlow: Exception caught while trying to load a DungeonFlow!", true);
+                Debug.LogException(ex);
+                return null;
+            }
         }
 
         public static DungeonFlow LoadOfficialFlow(string target) {
@@ -114,10 +152,24 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 return result;
             }
         }
-        
-        public static List<DungeonFlow> KnownFlows;
-        
-        public static DungeonFlow Foyer_Flow;
+
+        // public static List<DungeonFlow> KnownFlows;
+        public static DungeonFlow[] KnownFlows;
+
+        /*public static DungeonFlow Foyer_Flow {
+            get {
+                if (!m_Foyer_Flow) {
+                    m_Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(ExpandAssets.LoadOfficialAsset<DungeonFlow>("Foyer Flow", ExpandAssets.AssetSource.SharedAuto2));
+                    m_Foyer_Flow.name = "Foyer_Flow_Copy";
+                    m_Foyer_Flow.AllNodes[1].handlesOwnWarping = true;
+                    m_Foyer_Flow.AllNodes[2].handlesOwnWarping = true;
+                    m_Foyer_Flow.AllNodes[3].handlesOwnWarping = true;
+                }
+                return m_Foyer_Flow;
+            }
+        }
+
+        private static DungeonFlow m_Foyer_Flow;*/
 
         // Default stuff to use with custom Flows
         public static SharedInjectionData BaseSharedInjectionData;
@@ -562,71 +614,149 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             FutureInjectionData.InjectionData.Add(JunkSecretRoomInjector);
 
 
-            // Don't build/add flows until injection data is created!
-            Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
+            PhobosInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+            PhobosInjectionData.name = "Phobos Common Injection Data";
+            PhobosInjectionData.UseInvalidWeightAsNoInjection = true;
+            PhobosInjectionData.PreventInjectionOfFailedPrerequisites = false;
+            PhobosInjectionData.IsNPCCell = false;
+            PhobosInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+            PhobosInjectionData.OnlyOne = false;
+            PhobosInjectionData.ChanceToSpawnOne = 0.5f;
+            PhobosInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+            PhobosInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
 
-            // List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
-            KnownFlows = new List<DungeonFlow>();
+            OfficeInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
+            OfficeInjectionData.name = "Office Common Injection Data";
+            OfficeInjectionData.UseInvalidWeightAsNoInjection = true;
+            OfficeInjectionData.PreventInjectionOfFailedPrerequisites = false;
+            OfficeInjectionData.IsNPCCell = false;
+            OfficeInjectionData.IgnoreUnmetPrerequisiteEntries = false;
+            OfficeInjectionData.OnlyOne = false;
+            OfficeInjectionData.ChanceToSpawnOne = 0.5f;
+            OfficeInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
+            OfficeInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
+
+            // Don't build/add flows until injection data is created!
+            // Foyer_Flow = FlowHelpers.DuplicateDungeonFlow(sharedAssets2.LoadAsset<DungeonFlow>("Foyer Flow"));
+
+            List<DungeonFlow> m_knownFlows = new List<DungeonFlow>();
+            // KnownFlows = new List<DungeonFlow>();
 
             // Build and add custom flows to list.
             BossrushFlows.InitBossrushFlows();
 
-            KnownFlows.Add(custom_glitchchest_flow.Custom_GlitchChest_Flow());
-            KnownFlows.Add(test_west_floor_03a_flow.TEST_West_Floor_03a_Flow());
-            KnownFlows.Add(demo_stage_flow.DEMO_STAGE_FLOW());
-            KnownFlows.Add(complex_flow_test.Complex_Flow_Test());
-            KnownFlows.Add(custom_glitch_flow.Custom_Glitch_Flow());
-            KnownFlows.Add(really_big_flow.Really_Big_Flow());
-            KnownFlows.Add(fruit_loops.Fruit_Loops());
-            KnownFlows.Add(custom_glitchchestalt_flow.Custom_GlitchChestAlt_Flow());
-            KnownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow());
-            KnownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow());
-            KnownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow());
-            KnownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01());
-            KnownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02());
-            KnownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01());
-            KnownFlows.Add(f4c_west_flow_01.F4c_West_Flow_01());
-            KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[0])));
-            KnownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02(FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[1])));
-            KnownFlows.Add(f0b_office_flows.F0b_Office_Flow_01(FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[0])));
-            KnownFlows.Add(f1b_future_flow_01.F1b_Future_Flow_01);
+            m_knownFlows.Add(custom_glitchchest_flow.Custom_GlitchChest_Flow);
+            m_knownFlows.Add(test_west_floor_03a_flow.TEST_West_Floor_03a_Flow);
+            m_knownFlows.Add(demo_stage_flow.DEMO_STAGE_FLOW);
+            m_knownFlows.Add(complex_flow_test.Complex_Flow_Test);
+            m_knownFlows.Add(custom_glitch_flow.Custom_Glitch_Flow);
+            m_knownFlows.Add(really_big_flow.Really_Big_Flow);
+            m_knownFlows.Add(fruit_loops.Fruit_Loops);
+            m_knownFlows.Add(custom_glitchchestalt_flow.Custom_GlitchChestAlt_Flow);
+            m_knownFlows.Add(test_traproom_flow.Test_TrapRoom_Flow);
+            m_knownFlows.Add(test_customroom_flow.Test_CustomRoom_Flow);
+            m_knownFlows.Add(apache_fucking_around_flow.Apache_Fucking_Around_Flow);
+            m_knownFlows.Add(f1b_jungle_flow_01.F1b_Jungle_Flow_01);
+            m_knownFlows.Add(f1b_jungle_flow_02.F1b_Jungle_Flow_02);
+            m_knownFlows.Add(f2b_belly_flow_01.F2b_Belly_Flow_01);
+            m_knownFlows.Add(f4c_west_flow_01.F4c_West_Flow_01);
+            m_knownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01);
+            m_knownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02);
+            m_knownFlows.Add(f0b_office_flows.F0b_Office_Flow_01);
+            m_knownFlows.Add(f1b_future_flow_01.F1b_Future_Flow_01);
+            // Add Backrooms flows
+            m_knownFlows.Add(backrooms_flow_01.BackRooms_Flow_01);
+            m_knownFlows.Add(backrooms_flow_02.BackRooms_Flow_02);
+            m_knownFlows.Add(backrooms_flow_03.BackRooms_Flow_03);
 
             // Fix issues with nodes so that things other then MainMenu can load Foyer flow
-            Foyer_Flow.name = "Foyer_Flow";
+            /*Foyer_Flow.name = "Foyer_Flow_Fixed";
             Foyer_Flow.AllNodes[1].handlesOwnWarping = true;
             Foyer_Flow.AllNodes[2].handlesOwnWarping = true;
-            Foyer_Flow.AllNodes[3].handlesOwnWarping = true;
+            Foyer_Flow.AllNodes[3].handlesOwnWarping = true;*/
 
-            KnownFlows.Add(Foyer_Flow);
-            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("npcparadise")));
-            KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("secret_doublebeholster_flow")));
-            KnownFlows.Add(BossrushFlows.Bossrush_01_Castle);
-            KnownFlows.Add(BossrushFlows.Bossrush_01a_Sewer);
-            KnownFlows.Add(BossrushFlows.Bossrush_02_Gungeon);
-            KnownFlows.Add(BossrushFlows.Bossrush_02a_Cathedral);
-            KnownFlows.Add(BossrushFlows.Bossrush_03_Mines);
-            KnownFlows.Add(BossrushFlows.Bossrush_04_Catacombs);
-            KnownFlows.Add(BossrushFlows.Bossrush_05_Forge);
-            KnownFlows.Add(BossrushFlows.Bossrush_06_BulletHell);
-            KnownFlows.Add(BossrushFlows.MiniBossrush_01);
+
+
+            // m_knownFlows.Add(Foyer_Flow);
+            // m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("npcparadise")));
+            // m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(LoadOfficialFlow("secret_doublebeholster_flow")));
+            m_knownFlows.Add(BossrushFlows.Bossrush_01_Castle);
+            m_knownFlows.Add(BossrushFlows.Bossrush_01a_Sewer);
+            m_knownFlows.Add(BossrushFlows.Bossrush_02_Gungeon);
+            m_knownFlows.Add(BossrushFlows.Bossrush_02a_Cathedral);
+            m_knownFlows.Add(BossrushFlows.Bossrush_03_Mines);
+            m_knownFlows.Add(BossrushFlows.Bossrush_04_Catacombs);
+            m_knownFlows.Add(BossrushFlows.Bossrush_05_Forge);
+            m_knownFlows.Add(BossrushFlows.Bossrush_06_BulletHell);
+            m_knownFlows.Add(BossrushFlows.MiniBossrush_01);
 
             // Add official flows to list (flows found in Dungeon asset bundles after AG&D)
-            foreach (DungeonFlow flow in TutorialPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in CastlePrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in SewerPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in GungeonPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in CathedralPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in MinesPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in ResourcefulRatPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in CatacombsPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in NakatomiPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in ForgePrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-            foreach (DungeonFlow flow in BulletHellPrefab.PatternSettings.flows) { KnownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow)); }
-
-            // Add Backrooms flows
-            KnownFlows.Add(backrooms_flow_01.BackRooms_Flow_01());
-            KnownFlows.Add(backrooms_flow_02.BackRooms_Flow_02());
-            KnownFlows.Add(backrooms_flow_03.BackRooms_Flow_03());
+            /*foreach (DungeonFlow flow in TutorialPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in CastlePrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in SewerPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in GungeonPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in CathedralPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in MinesPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in ResourcefulRatPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in CatacombsPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in NakatomiPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in ForgePrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));
+            foreach (DungeonFlow flow in BulletHellPrefab.PatternSettings.flows) m_knownFlows.Add(FlowHelpers.DuplicateDungeonFlow(flow));*/
+            foreach (DungeonFlow flow in TutorialPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in CastlePrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in SewerPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in GungeonPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in CathedralPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in MinesPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in ResourcefulRatPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in CatacombsPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in NakatomiPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in ForgePrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
+            foreach (DungeonFlow flow in BulletHellPrefab.PatternSettings.flows) {
+                DungeonFlow m_flowCopy = FlowHelpers.DuplicateDungeonFlow(flow);
+                m_flowCopy.name = (m_flowCopy.name + "_Copy");
+                m_knownFlows.Add(m_flowCopy);
+            }
 
             // Let's make things look cool and give all boss rush flows my new tiny exit room. :D            
             BossrushFlows.Bossrush_01a_Sewer.AllNodes[2].overrideExactRoom = ExpandPrefabs.tiny_exit;
@@ -639,6 +769,9 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             // Using the same foyer room for previous floors looks odd so I fixed it. :P
             BossrushFlows.Bossrush_05_Forge.AllNodes[1].overrideExactRoom = ExpandPrefabs.DragunBossFoyerRoom;
             BossrushFlows.Bossrush_05_Forge.AllNodes[3].overrideExactRoom = ExpandPrefabs.tiny_exit;
+
+
+            KnownFlows = m_knownFlows.ToArray();
 
             TutorialPrefab = null;
             CastlePrefab = null;

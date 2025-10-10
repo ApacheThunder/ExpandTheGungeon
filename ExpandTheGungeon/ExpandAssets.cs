@@ -99,6 +99,7 @@ namespace ExpandTheGungeon {
             
                 ExpandConsole.InitConsoleCommands(ExpandConsole.ConsoleCommandName);
 
+                if (!ETGModConsole.DungeonDictionary.ContainsKey("foyer")) ETGModConsole.DungeonDictionary.Add("foyer", "tt_foyer");
                 ETGModConsole.DungeonDictionary.Add("belly", "tt_belly");
                 ETGModConsole.DungeonDictionary.Add("monster", "tt_belly");
                 ETGModConsole.DungeonDictionary.Add("jungle", "tt_jungle");

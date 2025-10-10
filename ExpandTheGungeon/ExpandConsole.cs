@@ -17,7 +17,7 @@ namespace ExpandTheGungeon {
 
         public static List<string> itemList;
 
-        public static List<string> debugCommands = new List<string>() { "debugcamera", "stats", "clearroom", "unsealroom", "fixplayerinput" };
+        public static List<string> debugCommands = new List<string>() { "debugcamera", "stats", "clearroom", "unsealroom", "fixplayerinput", "destroyloadscreen" };
         
                                 
         public static void InitConsoleCommands(string MainCommandName) {
@@ -52,10 +52,7 @@ namespace ExpandTheGungeon {
             // Tools.ExportTexture(Pixelator.Instance.sourceOcclusionTexture);
 
             // m_texturedOcclusionTarget
-            // Ooze_Tank
-            GameObject oozeTank = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandPrefabs.Ooze_Tank, GameManager.Instance.PrimaryPlayer.CurrentRoom, (GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2() - GameManager.Instance.PrimaryPlayer.CurrentRoom.area.basePosition), false);
-            GameManager.Instance.PrimaryPlayer.CurrentRoom.RegisterInteractable(oozeTank.GetComponent<KickableObject>());
-
+            
             // GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ItemAPI.MrCap.MrCapHammer, GameManager.Instance.PrimaryPlayer.CurrentRoom, (GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2() - GameManager.Instance.PrimaryPlayer.CurrentRoom.area.basePosition), true);
             // GameObject ForgeHammer = UnityEngine.Object.Instantiate(ItemAPI.MrCap.MrCapHammer, GameManager.Instance.PrimaryPlayer.CenterPosition, Quaternion.identity);
             // GameObject ForgeHammer = DungeonPlaceableUtility.InstantiateDungeonPlaceable(ExpandObjectDatabase.ForgeHammer, GameManager.Instance.PrimaryPlayer.CurrentRoom, (GameManager.Instance.PrimaryPlayer.CenterPosition.ToIntVector2() - GameManager.Instance.PrimaryPlayer.CurrentRoom.area.basePosition), true);
@@ -69,7 +66,7 @@ namespace ExpandTheGungeon {
             // SpriteSerializer.DumpSpriteCollection((PickupObjectDatabase.GetById(448) as SpawnObjectPlayerItem).objectToSpawn.transform.Find("Sprite").gameObject.GetComponent<tk2dSprite>().Collection);
             // FieldInfo field = typeof(GameManager).GetField("m_dungeon", BindingFlags.Instance | BindingFlags.NonPublic);
             // field.SetValue(GameManager.Instance, Instantiate(ExpandDungeonPrefabs.Base_Office).GetComponent<Dungeon>());
-            SpriteSerializer.DumpSpriteCollection(DungeonDatabase.GetOrLoadByName("Base_Nakatomi").tileIndices.dungeonCollection);
+            // SpriteSerializer.DumpSpriteCollection(DungeonDatabase.GetOrLoadByName("Base_Nakatomi").tileIndices.dungeonCollection);
             return;
         }*/
         
@@ -102,8 +99,11 @@ namespace ExpandTheGungeon {
             foreach (string command in debugCommands)validSubCommands += "\n" + command;
 
             if (!m_IsCommandValid(consoleText, validSubCommands, "debug"))return;
-
-            RoomHandler currentRoom = GameManager.Instance.PrimaryPlayer.CurrentRoom;
+                        
+            PlayerController primaryPlayer = GameManager.Instance?.PrimaryPlayer;
+            CameraController cameraController = GameManager.Instance?.MainCameraController;
+            RoomHandler currentRoom = null;
+            if (primaryPlayer) currentRoom = primaryPlayer.CurrentRoom;
 
             switch (consoleText[0].ToLower()) {
                 case "debugcamera":
@@ -155,8 +155,23 @@ namespace ExpandTheGungeon {
                     }
                     break;
                 case "fixplayerinput":
-                    PlayerController primaryPlayer = GameManager.Instance.PrimaryPlayer;
-                    CameraController cameraController = GameManager.Instance.MainCameraController;
+                        if (cameraController && primaryPlayer) {
+                            cameraController.OverridePosition = primaryPlayer.transform.position;
+                            cameraController.SetManualControl(false, true);
+                        }
+                        if (primaryPlayer) {
+                            primaryPlayer.CurrentInputState = PlayerInputState.AllInput;
+                            primaryPlayer.healthHaver.IsVulnerable = true;
+                        }
+                        if (GameManager.Instance?.CurrentGameType == GameManager.GameType.COOP_2_PLAYER) {
+                            PlayerController otherPlayer = GameManager.Instance.GetOtherPlayer(primaryPlayer);
+                            if (otherPlayer) {
+                                otherPlayer.CurrentInputState = PlayerInputState.AllInput;
+                                otherPlayer.healthHaver.IsVulnerable = true;
+                            }
+                        }
+                    break;
+                case "destroyloadscreen":
                     if (cameraController && primaryPlayer) {
                         cameraController.OverridePosition = primaryPlayer.transform.position;
                         cameraController.SetManualControl(false, true);
@@ -172,6 +187,8 @@ namespace ExpandTheGungeon {
                             otherPlayer.healthHaver.IsVulnerable = true;
                         }
                     }
+                    FoyerPreloader foyerPreloader = UnityEngine.Object.FindObjectOfType<FoyerPreloader>();
+                    if (foyerPreloader)UnityEngine.Object.Destroy(foyerPreloader.gameObject);
                     break;
                 default:
                     ETGModConsole.Log("[ExpandTheGungeon] ERROR: Unknown sub-command. Valid Commands: \n" + validSubCommands);

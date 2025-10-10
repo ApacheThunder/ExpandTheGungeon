@@ -1,8 +1,8 @@
-﻿using Dungeonator;
-using MonoMod.RuntimeDetour;
-using System;
-using System.Reflection;
+﻿using System;
+// using System.Reflection;
+// using MonoMod.RuntimeDetour;
 using UnityEngine;
+using Dungeonator;
 
 using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandLoadingScreens;
@@ -16,23 +16,32 @@ namespace ExpandTheGungeon {
 
         [NonSerialized]
         public static GameObject EXFoyerChecker;
+        [NonSerialized]
+        public static ExpandFoyer Instance;
+        
+        public static void CreateFoyerController() {
+            if (!Instance) {
+                GameObject m_FoyerInstance = Instantiate(EXFoyerChecker, Vector3.zero, Quaternion.identity);
+                Instance = m_FoyerInstance.GetComponent<ExpandFoyer>();
+                DontDestroyOnLoad(m_FoyerInstance);
+            } else {
+                return;
+            }
+        }
 
-        public ExpandFoyer() { m_State = State.PreFoyerCheck; }
-
-        private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit };
+        public ExpandFoyer() {
+            m_State = State.PreFoyerCheck;
+        }
+        
+        private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit, Inactive };
         private State m_State;
+        private GameObject m_FoyerButton;
+        
 
         public void Update() {
+            if (GameManager.IsShuttingDown | !GameManager.HasInstance | GameStatsManager.Instance == null) return;
             switch (m_State) {
                 case State.PreFoyerCheck:
-                    if (ExpandTheGungeon.GameManagerHook == null) {
-                        if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.Awake Hook...."); }
-                        ExpandTheGungeon.GameManagerHook = new Hook(
-                            typeof(GameManager).GetMethod("Awake", BindingFlags.NonPublic | BindingFlags.Instance),
-                            typeof(ExpandTheGungeon).GetMethod(nameof(ExpandTheGungeon.GameManager_Awake), BindingFlags.Public | BindingFlags.Instance),
-                            typeof(GameManager)
-                        );
-                    }
                     if (ExpandTheGungeon.loadStatus != ExpandTheGungeon.LoadStatus.LoadFinished) return;
                     if (!BlackAndGoldenRevolver.RevolverExceptionListsBuilt)BlackAndGoldenRevolver.BuildExceptionsList();
                     if (Foyer.DoIntroSequence) return;
@@ -62,7 +71,7 @@ namespace ExpandTheGungeon {
                         GameManager.Instance.InjectedLevelName = ExpandSettings.TestFloor;
                         ExpandSettings.EnableTestDungeonFlow = false;
                     }
-                    if (GameManager.Instance.EnemyReplacementTiers != null) { ExpandEnemyReplacements.Init(GameManager.Instance.EnemyReplacementTiers); }
+                    if (GameManager.Instance.EnemyReplacementTiers != null)ExpandEnemyReplacements.Init(GameManager.Instance.EnemyReplacementTiers);
                     ExpandDungeonMusicAPI.EnteredNewCustomFloor = false;
                     m_State = State.SpawnObjects;
                     return;
@@ -71,20 +80,30 @@ namespace ExpandTheGungeon {
                         m_State = State.Exit;
                         return;
                     }
-                    GameObject FoyerButton = Instantiate(ExpandPrefabs.EXFoyerTrigger, new Vector3(50.2f, 60.7f, 61.8f), Quaternion.identity);
-                    RoomHandler FoyerRoom = FoyerButton.transform.position.GetAbsoluteRoom();
-                    ExpandCasinoWarpTrigger CasinoWarpTrigger = FoyerButton.GetComponent<ExpandCasinoWarpTrigger>();
-                    CasinoWarpTrigger.ConfigureOnPlacement(gameObject.transform.position.GetAbsoluteRoom());
-                    FoyerRoom.RegisterInteractable(CasinoWarpTrigger);
+                    CreateCasinoWarp();
                     m_State = State.Exit;
                     return;
                 case State.Exit:
-                    if (gameObject) { Destroy(gameObject); }
+                    m_State = State.Inactive;
+                    if (gameObject)Destroy(gameObject);
+                    return;
+                case State.Inactive:
                     return;
             }
         }
 
-        protected override void OnDestroy() { base.OnDestroy(); }
+        public void CreateCasinoWarp() {
+            if (m_FoyerButton) return;
+            m_FoyerButton = Instantiate(ExpandPrefabs.EXFoyerTrigger, new Vector3(50.2f, 60.7f, 61.8f), Quaternion.identity);
+            RoomHandler FoyerRoom = m_FoyerButton.transform.position.GetAbsoluteRoom();
+            ExpandCasinoWarpTrigger CasinoWarpTrigger = m_FoyerButton.GetComponent<ExpandCasinoWarpTrigger>();
+            CasinoWarpTrigger.ConfigureOnPlacement(m_FoyerButton.transform.position.GetAbsoluteRoom());
+            FoyerRoom.RegisterInteractable(CasinoWarpTrigger);
+        }
 
+        protected override void OnDestroy() {
+            Instance = null;
+            base.OnDestroy();
+        }
     }
 }

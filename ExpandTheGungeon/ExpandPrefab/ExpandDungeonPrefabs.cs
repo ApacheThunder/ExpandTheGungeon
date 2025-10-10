@@ -7,12 +7,14 @@ using System.Reflection;
 using MonoMod.RuntimeDetour;
 using ExpandTheGungeon.ItemAPI;
 using ExpandTheGungeon.ExpandDungeonFlows;
+using HarmonyLib;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
+    // [HarmonyPatch]
     public class ExpandDungeonPrefabs {
 
-        public static Dictionary<string, Dungeon> DungeonDatabase;
+        public static Dictionary<string, Dungeon> dungeonDatabase;
 
         public static GameObject Base_Space;
         public static GameObject Base_Jungle;
@@ -24,7 +26,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject Base_BackRooms;
 
         public static Hook getOrLoadByName_Hook;
-        public static Hook dungeonStartHook;
 
         public static tk2dSpriteCollectionData ENV_Tileset_Jungle(GameObject TargetObject, Texture2D tileSetTexture, AssetBundle sharedAssets, AssetBundle expandSharedAssets1) {
             
@@ -234,11 +235,20 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             return m_NewDungeonCollection;
         }
-        
-                
+
+
+        /*[HarmonyPatch(typeof(DungeonDatabase), nameof(DungeonDatabase.GetOrLoadByName), typeof(string))]
+        [HarmonyPostfix]
+        public static void GetOrLoadByNamePatch(DungeonDatabase __instance, string name, ref Dungeon __result) {
+            if (dungeonDatabase != null) {
+                Dungeon dungeonPrefab;
+                if (dungeonDatabase.TryGetValue(name.ToLower(), out dungeonPrefab)) __result = dungeonPrefab;
+            }
+        }*/
+
         public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             Dungeon dungeon = null;
-            if (DungeonDatabase != null)DungeonDatabase.TryGetValue(name.ToLower(), out dungeon);
+            if (dungeonDatabase != null)dungeonDatabase.TryGetValue(name.ToLower(), out dungeon);
             if (dungeon) {
                 DebugTime.RecordStartTime();
                 DebugTime.Log("AssetBundle.LoadAsset<Dungeon>({0})", new object[] { name });
@@ -247,7 +257,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 return orig(name);
             }
         }
-                
+
         public static Dungeon LoadOfficialDungeonPrefab(string name) {
             AssetBundle assetBundle = ResourceManager.LoadAssetBundle("dungeons/" + name.ToLower());
             DebugTime.RecordStartTime();
@@ -276,7 +286,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             InitFutureDungeon(sharedAssets2, Base_Future, LoadOfficialDungeonPrefab("Base_Nakatomi"));
             InitBackRoomsDungeon(expandSharedAuto1, sharedAssets2, Base_BackRooms, LoadOfficialDungeonPrefab("Base_Gungeon"));
 
-            DungeonDatabase = new Dictionary<string, Dungeon>() {
+            dungeonDatabase = new Dictionary<string, Dungeon>() {
                 ["base_space"] = Base_Space.GetComponent<Dungeon>(),
                 ["base_jungle"] = Base_Jungle.GetComponent<Dungeon>(),
                 ["base_belly"] = Base_Belly.GetComponent<Dungeon>(),
@@ -291,13 +301,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static void InitCustomGameLevelDefinitions(AssetBundle braveResources, GameManager gameManager) {
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDatabase.GetOrLoadByName Hook..."); }
             getOrLoadByName_Hook = new Hook(
-                typeof(DungeonDatabase).GetMethod("GetOrLoadByName", BindingFlags.Static | BindingFlags.Public),
-                typeof(ExpandDungeonPrefabs).GetMethod("GetOrLoadByNameHook", BindingFlags.Static | BindingFlags.Public)
+                typeof(DungeonDatabase).GetMethod(nameof(DungeonDatabase.GetOrLoadByName), BindingFlags.Static | BindingFlags.Public),
+                typeof(ExpandDungeonPrefabs).GetMethod(nameof(GetOrLoadByNameHook), BindingFlags.Static | BindingFlags.Public)
             );
-            ReInitFloorDefinitions(gameManager);
+            InitFloorDefinitions(gameManager);
         }
         
-        public static void ReInitFloorDefinitions(GameManager gameManager) {
+        public static void InitFloorDefinitions(GameManager gameManager) {
             if (gameManager) {
                 bool SpaceEntryExists = false;
                 bool OfficeEntryExists = false;
@@ -946,7 +956,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false
             };
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { f1b_jungle_flow_01.F1b_Jungle_Flow_01(), f1b_jungle_flow_02.F1b_Jungle_Flow_02() },
+                flows = new List<DungeonFlow>() { f1b_jungle_flow_01.F1b_Jungle_Flow_01, f1b_jungle_flow_02.F1b_Jungle_Flow_02 },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -1388,7 +1398,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             };
 
             dungeon.PatternSettings = new SemioticDungeonGenSettings() {
-                flows = new List<DungeonFlow>() { f2b_belly_flow_01.F2b_Belly_Flow_01() },
+                flows = new List<DungeonFlow>() { f2b_belly_flow_01.F2b_Belly_Flow_01 },
                 mandatoryExtraRooms = new List<ExtraIncludedRoomData>(0),
                 optionalExtraRooms = new List<ExtraIncludedRoomData>(0),
                 MAX_GENERATION_ATTEMPTS = 250,
@@ -1848,7 +1858,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 WALLS_ARE_PITS = false
             };
 
-            dungeon.PatternSettings.flows = new List<DungeonFlow>() { f4c_west_flow_01.F4c_West_Flow_01() };
+            dungeon.PatternSettings.flows = new List<DungeonFlow>() { f4c_west_flow_01.F4c_West_Flow_01 };
             dungeon.PatternSettings.MAX_GENERATION_ATTEMPTS = 1;
             dungeon.ForceRegenerationOfCharacters = false;
             dungeon.ActuallyGenerateTilemap = true;
@@ -2502,7 +2512,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             dungeon.doorObjects = NakatomiPrefab.alternateDoorObjectsNakatomi;
             dungeon.lockedDoorObjects = null;
             dungeon.oneWayDoorObjects = NakatomiPrefab.oneWayDoorObjects;
-            dungeon.oneWayDoorPressurePlate = NakatomiPrefab.oneWayDoorPressurePlate;
+            dungeon.oneWayDoorPressurePlate = ExpandPrefabs.SpaceShip_PressurePlate;
             // dungeon.phantomBlockerDoorObjects
             dungeon.WarpWingDoorPrefab = null;
             // dungeon.baseChestContents

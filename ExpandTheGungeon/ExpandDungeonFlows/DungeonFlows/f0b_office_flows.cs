@@ -1,28 +1,28 @@
-﻿using ExpandTheGungeon.ExpandPrefab;
-using Dungeonator;
+﻿using Dungeonator;
 using System.Collections.Generic;
-using UnityEngine;
+using ExpandTheGungeon.ExpandPrefab;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class f0b_office_flows {
 
-        public static DungeonFlow F0b_Office_Flow_01(DungeonFlow m_CachedFlow) {
-            
-            if (!ExpandDungeonFlow.OfficeInjectionData) {
-                ExpandDungeonFlow.OfficeInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
-                ExpandDungeonFlow.OfficeInjectionData.name = "Office Common Injection Data";
-                ExpandDungeonFlow.OfficeInjectionData.UseInvalidWeightAsNoInjection = true;
-                ExpandDungeonFlow.OfficeInjectionData.PreventInjectionOfFailedPrerequisites = false;
-                ExpandDungeonFlow.OfficeInjectionData.IsNPCCell = false;
-                ExpandDungeonFlow.OfficeInjectionData.IgnoreUnmetPrerequisiteEntries = false;
-                ExpandDungeonFlow.OfficeInjectionData.OnlyOne = false;
-                ExpandDungeonFlow.OfficeInjectionData.ChanceToSpawnOne = 0.5f;
-                ExpandDungeonFlow.OfficeInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-                ExpandDungeonFlow.OfficeInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
+        public static DungeonFlow F0b_Office_Flow_01 {
+            get {
+                if (!m_f0b_office_flow_01) m_f0b_office_flow_01 = m_F0b_Office_Flow_01();
+                return m_f0b_office_flow_01;
             }
+        }
 
-            
+        private static DungeonFlow m_f0b_office_flow_01;
+
+        private static DungeonFlow m_F0b_Office_Flow_01() {
+            Dungeon CathedralPrefab = DungeonDatabase.GetOrLoadByName("Base_Cathedral");
+
+            DungeonFlow m_CachedFlow = FlowHelpers.DuplicateDungeonFlow(CathedralPrefab.PatternSettings.flows[0]);
+
+            CathedralPrefab = null;
+
             m_CachedFlow.name = "F0b_Office_Flow_01";
             m_CachedFlow.phantomRoomTable = null;
             m_CachedFlow.fallbackRoomTable = ExpandPrefabs.AbbeyRoomTableForOffice;

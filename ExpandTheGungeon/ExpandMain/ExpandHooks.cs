@@ -15,11 +15,13 @@ using ExpandTheGungeon.ExpandUtilities;
 using ExpandTheGungeon.ExpandDungeonFlows;
 using ExpandTheGungeon.ExpandLoadingScreens;
 using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
+using HarmonyLib;
 // using tk2dRuntime.TileMap;
 // using Pathfinding;
 
 namespace ExpandTheGungeon.ExpandMain {
 
+    [HarmonyPatch]
     public class ExpandHooks {
         public static Hook cellhook;
         public static Hook enterRoomHook;
@@ -67,8 +69,8 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook flameTrapHook;
         public static Hook transitionToDepartHook;
         public static Hook exciseElbowsHook;
-        public static Hook delayedLoadNextLevelHook;
-        public static Hook loadCustomLevelHook;
+        // public static Hook delayedLoadNextLevelHook;
+        // public static Hook loadCustomLevelHook;
         // public static Hook pixelatorStartHook;
         // public static Hook generateOcclusionTextureHook;
 
@@ -97,6 +99,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
+        
         public static void InstallMidGameSaveHooks() {
             // Fix MidGame save stuff involving custom floors.
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing MainMenuFoyerController.OnContinueGameSelected Hook...."); }
@@ -166,8 +169,8 @@ namespace ExpandTheGungeon.ExpandMain {
             
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlowDatabase.GetOrLoadByName Hook...."); }
             flowhook = new Hook(
-                typeof(FlowDatabase).GetMethod("GetOrLoadByName", BindingFlags.Public | BindingFlags.Static),
-                typeof(ExpandDungeonFlow).GetMethod("LoadCustomFlow", BindingFlags.Public | BindingFlags.Static)
+                typeof(FlowDatabase).GetMethod(nameof(FlowDatabase.GetOrLoadByName), BindingFlags.Public | BindingFlags.Static),
+                typeof(ExpandDungeonFlow).GetMethod(nameof(ExpandDungeonFlow.LoadCustomFlow), BindingFlags.Public | BindingFlags.Static)
             );
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ApplyObjectStamp Hook...."); }
@@ -404,7 +407,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(DungeonData)
             );
 
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.DelayedLoadNextLevel Hook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.DelayedLoadNextLevel Hook...."); }
             delayedLoadNextLevelHook = new Hook(
                 typeof(GameManager).GetMethod("DelayedLoadNextLevel", BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(float) }, new ParameterModifier[0]),
                 typeof(ExpandHooks).GetMethod(nameof(DelayedLoadNextLevelHook), BindingFlags.Public | BindingFlags.Instance),
@@ -416,7 +419,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(GameManager).GetMethod(nameof(GameManager.LoadCustomLevel), BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, CallingConventions.Any, new Type[] { typeof(string) }, new ParameterModifier[0]),
                 typeof(ExpandHooks).GetMethod(nameof(LoadCustomLevelHook), BindingFlags.Public | BindingFlags.Instance),
                 typeof(GameManager)
-            );
+            );*/
 
 
             /*new Hook(
@@ -441,6 +444,26 @@ namespace ExpandTheGungeon.ExpandMain {
             );*/
 
             return;
+        }
+
+        [HarmonyPatch(typeof(GameManager), "Awake")]
+        [HarmonyPostfix]
+        private static void GameManager_AwakePatch(GameManager __instance) {
+            __instance.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
+            ExpandDungeonPrefabs.InitFloorDefinitions(__instance);
+            ExpandFoyer.CreateFoyerController();
+            ExpandSettings.HasVisitedBackrooms = false;
+            ExpandSettings.allowGlitchFloor = false;
+        }
+
+        [HarmonyPatch(typeof(ChangeToNewCharacter), "HandleCharacterChange")]
+        [HarmonyPostfix]
+        public static void HandleCharacterChangePatch(ChangeToNewCharacter __instance) {
+            ExpandCasinoRoomController m_CasinoHub = UnityEngine.Object.FindObjectOfType<ExpandCasinoRoomController>();
+            if (m_CasinoHub) {
+                if (m_CasinoHub.CasinoGame_GunBall)m_CasinoHub.CasinoGame_GunBall.Reset();
+                if (m_CasinoHub.CasinoGame_Punchout)m_CasinoHub.CasinoGame_Punchout.Reset();
+            }
         }
 
         private void FloodFillDungeonInteriorHook(Action<DungeonData>orig, DungeonData self) {
@@ -493,7 +516,7 @@ namespace ExpandTheGungeon.ExpandMain {
         }
 
         public bool EscapeRopCanBeUsedHook(Func<EscapeRopeItem, PlayerController, bool> orig, EscapeRopeItem self, PlayerController user) {
-            return orig(self, user) && user?.CurrentRoom != null && !user.CurrentRoom.IsActuallyWildWestEntrance();
+            return orig(self, user) && user?.CurrentRoom != null && !user.CurrentRoom.IsActuallyWildWestEntrance() && !ExpandTheGungeon.MrCapInUse;
         }
         
         private void ClearPerLevelData(Action<GameManager> orig, GameManager self) {
@@ -689,15 +712,16 @@ namespace ExpandTheGungeon.ExpandMain {
             try {
                 return orig(self);
             } catch (Exception ex) {
-                if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!"); }
-                Debug.Log("WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!");
+                if (ExpandSettings.debugMode)ETGModConsole.Log("[DEBUG] WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!");
+                Debug.Log("["+ ExpandTheGungeon.ModName + "] " + "WARNING: Attempted to return a null DungeonFlow or primary flow list is empty in SemioticDungeonGenSettings.GetRandomFlow!");
                 Debug.LogException(ex);
                 // Falling back to mod's compiled list of Flows                
                 if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER) {
-                    return ExpandDungeonFlow.Foyer_Flow;
+                    // return ExpandDungeonFlow.Foyer_Flow;
+                    return ExpandAssets.LoadOfficialAsset<DungeonFlow>("Foyer Flow", ExpandAssets.AssetSource.SharedAuto2);
                 } else {
                     Dungeon dungeon = GameManager.Instance.Dungeon;
-                    if (!dungeon) { return FlowDatabase.GetOrLoadByName("Complex_Flow_Test"); }
+                    if (!dungeon)return FlowDatabase.GetOrLoadByName("Complex_Flow_Test");
                     List<DungeonFlow> m_fallbacklist = new List<DungeonFlow>();
                     switch (dungeon.tileIndices.tilesetId) {
                         case GlobalDungeonData.ValidTilesets.CASTLEGEON:
@@ -1624,7 +1648,11 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void PlacePlayerInRoomHook(Action<Dungeon, tk2dTileMap, RoomHandler>orig, Dungeon self, tk2dTileMap map, RoomHandler startRoom) {
             PlayerController[] allPlayers = GameManager.Instance.AllPlayers;
-            if (allPlayers.Length == 0) { return; }
+            if (allPlayers.Length == 0)return;
+            if (!GameManager.Instance.PrimaryPlayer) {
+                ETGModConsole.Log("[" + ExpandTheGungeon.ModName + ".PlacePlayerInRoomHook] ERROR: Primary Player is null!");
+                return;
+            }
             int num = (allPlayers.Length >= 2) ? allPlayers.Length : 1;
             for (int i = 0; i < num; i++) {
                 PlayerController playerController = (allPlayers.Length >= 2) ? allPlayers[i] : GameManager.Instance.PrimaryPlayer;
@@ -1946,23 +1974,26 @@ namespace ExpandTheGungeon.ExpandMain {
                 return;
             }
         }
+        
 
-        public void DelayedLoadNextLevelHook(Action<GameManager, float>orig, GameManager self, float delay) {
-            if (!string.IsNullOrEmpty(GameManager.Instance.InjectedFlowPath) && GameManager.Instance.InjectedFlowPath.Contains("Core Game Flows/Secret_DoubleBeholster_Flow")) {
+        [HarmonyPatch(typeof(GameManager), nameof(GameManager.DelayedLoadNextLevel), typeof(float))]
+        [HarmonyPrefix]
+        public static bool DelayedLoadNextLevelPatch(GameManager __instance, float delay) {
+            if (!string.IsNullOrEmpty(__instance.InjectedFlowPath) && __instance.InjectedFlowPath.Contains("Core Game Flows/Secret_DoubleBeholster_Flow")) {
                 ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Glitched;
                 if (ExpandSettings.EnableExpandedGlitchFloors) {
-                    GameManager.Instance.InjectedFlowPath = "secret_expandeddoublebeholster_flow"; // custom dummy name to use as trigger to avoid breaking other mods taht want to use original for references.
+                    __instance.InjectedFlowPath = "secret_expandeddoublebeholster_flow"; // custom dummy name to use as trigger to avoid breaking other mods taht want to use original for references.
                 }
             }
-            orig(self, delay);
+            return true;
         }
 
-        public void LoadCustomLevelHook(Action<GameManager, string>orig, GameManager self, string custom) {
+        [HarmonyPatch(typeof(GameManager), nameof(GameManager.LoadCustomLevel), typeof(string))]
+        [HarmonyPrefix]
+        public static void LoadCustomLevelPatch(GameManager __instance, ref string custom) {
             if (ExpandSettings.SewersIsFuture && custom.ToLower().Contains("tt_sewer")) {
                 ExpandSettings.SewersIsFuture = false;
-                orig(self, "tt_future");
-            } else {
-                orig(self, custom);
+                custom = "tt_future";
             }
         }
 
@@ -2157,6 +2188,7 @@ namespace ExpandTheGungeon.ExpandMain {
                 self.UseTexturedOcclusion = false;
             }
         }*/
-            }
-        }
+    }
+
+}
 

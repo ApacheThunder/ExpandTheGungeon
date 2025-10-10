@@ -7,8 +7,17 @@ using ExpandTheGungeon.ExpandPrefab;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class custom_glitchchest_flow {
+
+        public static DungeonFlow Custom_GlitchChest_Flow {
+            get {
+                if (!m_custom_glitchchest_flow) m_custom_glitchchest_flow = m_Custom_GlitchChest_Flow();
+                return m_custom_glitchchest_flow;
+            }
+        }
+
+        private static DungeonFlow m_custom_glitchchest_flow;
                         
-        public static DungeonFlow Custom_GlitchChest_Flow() {
+        private static DungeonFlow m_Custom_GlitchChest_Flow() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

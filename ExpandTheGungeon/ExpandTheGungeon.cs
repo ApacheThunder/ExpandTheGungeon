@@ -57,7 +57,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.4";
+        public const string VERSION = "3.0.5";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -81,14 +81,10 @@ namespace ExpandTheGungeon {
         public static StringDB Strings;
         public static List<string> ExceptionTextList;
         public static string ExceptionText;
-
-        public static Harmony HarmonyPatches;
-
-
-        private static GameObject m_FoyerCheckerOBJ;
+        
         
         public void Start() {
-            HarmonyPatches = new Harmony(GUID);
+            Harmony HarmonyPatches = new Harmony(GUID);
             HarmonyPatches.PatchAll(Assembly.GetExecutingAssembly());
 
             FilePath = this.FolderPath();
@@ -194,7 +190,7 @@ namespace ExpandTheGungeon {
                 return;
             }
 
-            CreateFoyerController();
+            ExpandFoyer.CreateFoyerController();
             
             try {
                 Strings = new StringDB();
@@ -275,26 +271,16 @@ namespace ExpandTheGungeon {
                 gameManager.StartCoroutine(ExpandAssets.InitAssets(gameManager));
             }
         }
-
-
-        public static void CreateFoyerController() {
-            if (!m_FoyerCheckerOBJ) {
-                m_FoyerCheckerOBJ = Instantiate(ExpandFoyer.EXFoyerChecker, Vector3.zero, Quaternion.identity);
-                DontDestroyOnLoad(m_FoyerCheckerOBJ);
-            } else {
-                return;
-            }
-        }
-                
         
-        public void GameManager_Awake(Action<GameManager> orig, GameManager self) {
+        
+        /*public static void GameManager_Awake(Action<GameManager> orig, GameManager self) {
             orig(self);
             self.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
             ExpandDungeonPrefabs.ReInitFloorDefinitions(self);
-            CreateFoyerController();
+            ExpandFoyer.CreateFoyerController();
             ExpandSettings.HasVisitedBackrooms = false;
             ExpandSettings.allowGlitchFloor = false;
-        }
+        }*/
 
         public void InitializeMainMenuHook(Action<MainMenuFoyerController> orig, MainMenuFoyerController self) {
             orig(self);
@@ -383,7 +369,6 @@ namespace ExpandTheGungeon {
             referenceFont = null;
             referenceLabel = null;
         }
-
     }
 }
 

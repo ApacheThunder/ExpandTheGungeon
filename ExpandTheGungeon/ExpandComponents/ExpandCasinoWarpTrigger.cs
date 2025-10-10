@@ -17,6 +17,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             TargetDoorOpenAnim = "open";
             TargetDoorCloseAnim = "close";
 
+            HasBeenUsed = false;
             m_Interacted = false;
         }
         
@@ -26,17 +27,19 @@ namespace ExpandTheGungeon.ExpandComponents {
         public Vector3 TargetSpawnPosition;
         public Vector3 TargetSpawnPosition2;
 
+        [NonSerialized]
+        public bool HasBeenUsed;
 
         [NonSerialized]
         private bool m_Interacted;
         [NonSerialized]
-        GameObject m_SpawnedObject;
+        private GameObject m_SpawnedObject;
         [NonSerialized]
-        GameObject m_SpawnedObject2;
+        private GameObject m_SpawnedObject2;
         [NonSerialized]
-        GameObject m_SpawnedObject3;
+        private GameObject m_SpawnedObject3;
         [NonSerialized]
-        GameObject m_SpawnedObject4;
+        private GameObject m_SpawnedObject4;
         [NonSerialized]
         private tk2dSpriteAnimator m_TargetAnimator;
         [NonSerialized]
@@ -68,6 +71,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public void Interact(PlayerController player) {
             if (!m_Interacted && player) {
                 m_Interacted = true;
+                HasBeenUsed = true;
                 if (!m_SpawnedObject) {
                     if (m_SpawnedObject2) { Destroy(m_SpawnedObject2); }
                     m_SpawnedObject = Instantiate(TargetSpawnObject, (gameObject.transform.position + TargetSpawnPosition), Quaternion.identity);
@@ -168,7 +172,13 @@ namespace ExpandTheGungeon.ExpandComponents {
             return string.Empty;
         }
         
-        protected override void OnDestroy() { base.OnDestroy(); }
+        protected override void OnDestroy() {
+            if (m_SpawnedObject) Destroy(m_SpawnedObject);
+            if (m_SpawnedObject2) Destroy(m_SpawnedObject2);
+            if (m_SpawnedObject3) Destroy(m_SpawnedObject3);
+            if (m_SpawnedObject4) Destroy(m_SpawnedObject4);
+            base.OnDestroy();
+        }
     }
 }
 

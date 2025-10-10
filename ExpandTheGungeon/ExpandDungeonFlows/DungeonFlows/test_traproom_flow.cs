@@ -7,9 +7,30 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class test_traproom_flow {
         
-        public static GenericRoomTable TrapRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+        public static DungeonFlow Test_TrapRoom_Flow {
+            get {
+                if (!m_test_traproom_flow) m_test_traproom_flow = m_Test_TrapRoom_Flow();
+                return m_test_traproom_flow;
+            }
+        }
+        
+        public static GenericRoomTable TrapRoomTable {
+            get {
+                if (!m_TrapRoomTable) {
+                    m_TrapRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+                    m_TrapRoomTable.includedRooms = new WeightedRoomCollection();
+                    m_TrapRoomTable.includedRooms.elements = new List<WeightedRoom>();
+                }
+                return m_TrapRoomTable;
+            }
+        }
 
-        public static DungeonFlow Test_TrapRoom_Flow() {
+        private static DungeonFlow m_test_traproom_flow;
+        private static GenericRoomTable m_TrapRoomTable;
+        
+
+
+        private static DungeonFlow m_Test_TrapRoom_Flow() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

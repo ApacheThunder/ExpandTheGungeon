@@ -7,7 +7,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class f4c_west_flow_01 {
 
-        public static DungeonFlow F4c_West_Flow_01() {
+        public static DungeonFlow F4c_West_Flow_01 {
+            get {
+                if (!m_f4c_west_flow_01) m_f4c_west_flow_01 = m_F4c_West_Flow_01();
+                return m_f4c_west_flow_01;
+            }
+        }
+
+        private static DungeonFlow m_f4c_west_flow_01;
+
+        private static DungeonFlow m_F4c_West_Flow_01() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
             m_CachedFlow.name = "F4c_West_Flow_01";

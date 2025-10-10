@@ -6,8 +6,17 @@ using ExpandTheGungeon.ExpandPrefab;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class apache_fucking_around_flow {
+
+        public static DungeonFlow Apache_Fucking_Around_Flow {
+            get {
+                if (!m_apache_fucking_around_flow) m_apache_fucking_around_flow = m_Apache_Fucking_Around_Flow();
+                return m_apache_fucking_around_flow;
+            }
+        }
+
+        private static DungeonFlow m_apache_fucking_around_flow;
         
-        public static DungeonFlow Apache_Fucking_Around_Flow() {
+        private static DungeonFlow m_Apache_Fucking_Around_Flow() {
 
             DungeonFlowSubtypeRestriction m_SubTypeRestrictions = new DungeonFlowSubtypeRestriction() {
                 baseCategoryRestriction = PrototypeDungeonRoom.RoomCategory.NORMAL,

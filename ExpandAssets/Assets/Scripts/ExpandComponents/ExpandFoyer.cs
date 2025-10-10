@@ -5,13 +5,18 @@ namespace ExpandTheGungeon {
 
     public class ExpandFoyer : BraveBehaviour {
 		
+        [NonSerialized]
+        public static GameObject EXFoyerChecker;
 		[NonSerialized]
-		public static GameObject EXFoyerChecker;
+        public static ExpandFoyer Instance;
+        
+        public ExpandFoyer() {
+            m_State = State.PreFoyerCheck;
+        }
 
-        public ExpandFoyer() { m_State = State.PreFoyerCheck; }
-
-        private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit };
+        private enum State { PreFoyerCheck, CheckSettings, SpawnObjects, Exit, Inactive };
         private State m_State;
+        private GameObject m_FoyerButton;
 
         public void Awake() { }
         public void Start() { }

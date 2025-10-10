@@ -6,8 +6,17 @@ using UnityEngine;
 namespace ExpandTheGungeon.ExpandDungeonFlows {
 
     public class test_west_floor_03a_flow {
+
+        public static DungeonFlow TEST_West_Floor_03a_Flow {
+            get {
+                if (!m_test_west_floor_03a_flow) m_test_west_floor_03a_flow = m_TEST_West_Floor_03a_Flow();
+                return m_test_west_floor_03a_flow;
+            }
+        }
+
+        private static DungeonFlow m_test_west_floor_03a_flow;
         
-        public static DungeonFlow TEST_West_Floor_03a_Flow() {
+        private static DungeonFlow m_TEST_West_Floor_03a_Flow() {
 
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 

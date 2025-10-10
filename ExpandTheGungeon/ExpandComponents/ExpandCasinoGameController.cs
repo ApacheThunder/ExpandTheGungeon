@@ -423,7 +423,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                 case Mode.LockedGame:
                     return;
                 case Mode.PunchoutArcade:
-                    if (!Finished) { return; }
+                    if (!Finished) return;
                     m_PunchoutArcadeController.DestroyOverlayUI();
                     GameUIRoot.Instance.PauseMenuPanel.GetComponent<PauseMenuController>().metaCurrencyPanel.IsVisible = true;
                     if (!DoingResults) {
@@ -475,7 +475,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                         DoingResults = true;
                     }
 
-                    if (DoingResults && !ResultsGiven) { return; }
+                    if (DoingResults && !ResultsGiven)return;
 
                     foreach (PlayerController player in GameManager.Instance.AllPlayers) {
                         player.ClearInputOverride("starting punchout");
@@ -495,6 +495,17 @@ namespace ExpandTheGungeon.ExpandComponents {
             }
         }
         
+
+        // Provided so games can be reset on character change and not have to require loading the floor to reset them.
+        public void Reset() {
+            if (m_Uses == 0) return;
+            m_Uses = 0;
+            m_CurrentAnimation = string.Empty;
+            m_NewAnimation = string.Empty;
+            if (mode == Mode.PunchoutArcade) IdleAnimation = "idle";
+            animationState = AnimationState.Idle;
+        }
+
         public string GetAnimationState(PlayerController interactor, out bool shouldBeFlipped) {
             shouldBeFlipped = false;
             return string.Empty;

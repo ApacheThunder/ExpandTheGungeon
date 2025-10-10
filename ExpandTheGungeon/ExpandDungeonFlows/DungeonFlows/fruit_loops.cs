@@ -10,7 +10,16 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         public static int LoopRoomCount = 8;
         public static int SingleChainRoomCount = 10;
 
-        public static DungeonFlow Fruit_Loops() {
+        public static DungeonFlow Fruit_Loops {
+            get {
+                if (!m_fruit_loops) m_fruit_loops = m_Fruit_Loops();
+                return m_fruit_loops;
+            }
+        }
+
+        private static DungeonFlow m_fruit_loops;
+
+        private static DungeonFlow m_Fruit_Loops() {
             DungeonFlow m_CachedFlow = ScriptableObject.CreateInstance<DungeonFlow>();
 
             List<DungeonFlowNode> m_cachedNodes_01 = new List<DungeonFlowNode>();

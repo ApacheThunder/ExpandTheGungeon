@@ -1,27 +1,35 @@
 ﻿using ExpandTheGungeon.ExpandPrefab;
 using Dungeonator;
 using System.Collections.Generic;
-using UnityEngine;
+using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
-
+        
     public class f0b_phobos_flows {
 
-        public static DungeonFlow F0b_Phobos_Flow_01(DungeonFlow m_CachedFlow) {
-            
-            if (!ExpandDungeonFlow.PhobosInjectionData) {
-                ExpandDungeonFlow.PhobosInjectionData = ScriptableObject.CreateInstance<SharedInjectionData>();
-                ExpandDungeonFlow.PhobosInjectionData.name = "Phobos Common Injection Data";
-                ExpandDungeonFlow.PhobosInjectionData.UseInvalidWeightAsNoInjection = true;
-                ExpandDungeonFlow.PhobosInjectionData.PreventInjectionOfFailedPrerequisites = false;
-                ExpandDungeonFlow.PhobosInjectionData.IsNPCCell = false;
-                ExpandDungeonFlow.PhobosInjectionData.IgnoreUnmetPrerequisiteEntries = false;
-                ExpandDungeonFlow.PhobosInjectionData.OnlyOne = false;
-                ExpandDungeonFlow.PhobosInjectionData.ChanceToSpawnOne = 0.5f;
-                ExpandDungeonFlow.PhobosInjectionData.AttachedInjectionData = new List<SharedInjectionData>(0);
-                ExpandDungeonFlow.PhobosInjectionData.InjectionData = new List<ProceduralFlowModifierData>(0);
+        public static DungeonFlow F0b_Phobos_Flow_01 {
+            get {
+                if (!m_f0b_phobos_flow_01) m_f0b_phobos_flow_01 = m_F0b_Phobos_Flow_01();
+                return m_f0b_phobos_flow_01;
             }
+        }
 
+        public static DungeonFlow F0b_Phobos_Flow_02 {
+            get {
+                if (!m_f0b_phobos_flow_02) m_f0b_phobos_flow_02 = m_F0b_Phobos_Flow_02();
+                return m_f0b_phobos_flow_02;
+            }
+        }
+
+        private static DungeonFlow m_f0b_phobos_flow_01;
+        private static DungeonFlow m_f0b_phobos_flow_02;
+
+        private static DungeonFlow m_F0b_Phobos_Flow_01() {
+            Dungeon SewerPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
+
+            DungeonFlow m_CachedFlow = FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[0]);
+
+            SewerPrefab = null;
             
             m_CachedFlow.name = "F0b_Phobos_Flow_01";
             m_CachedFlow.phantomRoomTable = null;
@@ -31,13 +39,18 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             m_CachedFlow.FirstNode.overrideExactRoom = ExpandPrefabs.big_entrance;
 
-            m_CachedFlow.AllNodes[2].overrideExactRoom = ExpandPrefabs.blobulordroom01;
+            m_CachedFlow.AllNodes[2].overrideExactRoom = ExpandRoomPrefabs.Expand_Future_BossRoom;
 
             return m_CachedFlow;
         }
 
-        public static DungeonFlow F0b_Phobos_Flow_02(DungeonFlow m_CachedFlow) {
-            
+        public static DungeonFlow m_F0b_Phobos_Flow_02() {
+            Dungeon SewerPrefab = DungeonDatabase.GetOrLoadByName("Base_Sewer");
+
+            DungeonFlow m_CachedFlow = FlowHelpers.DuplicateDungeonFlow(SewerPrefab.PatternSettings.flows[1]);
+
+            SewerPrefab = null;
+
             m_CachedFlow.name = "F0b_Phobos_Flow_02";
             m_CachedFlow.phantomRoomTable = null;
             m_CachedFlow.subtypeRestrictions = new List<DungeonFlowSubtypeRestriction>(0);
@@ -46,7 +59,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
 
             m_CachedFlow.FirstNode.overrideExactRoom = ExpandPrefabs.big_entrance;
 
-            m_CachedFlow.AllNodes[2].overrideExactRoom = ExpandPrefabs.blobulordroom01;
+            m_CachedFlow.AllNodes[2].overrideExactRoom = ExpandRoomPrefabs.Expand_Future_BossRoom;
 
             return m_CachedFlow;
         }
