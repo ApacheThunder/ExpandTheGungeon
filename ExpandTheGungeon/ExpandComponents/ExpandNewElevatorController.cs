@@ -19,6 +19,7 @@ namespace ExpandTheGungeon.ExpandComponents {
             UsesOverrideTargetFloor = true;
             IsArrivalElevator = false;
             IsGlitchElevator = false;
+            IsPortableElevator = false;
 
             elevatorArriveAnimName = "arrive";
             elevatorOpenAnimName = "open";
@@ -87,6 +88,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         public bool UsesOverrideTargetFloor;
         public bool IsArrivalElevator;
         public bool IsGlitchElevator;
+        public bool IsPortableElevator;
 
         public string OverrideBossMusic;
         public string OverrideFloorName;
@@ -472,6 +474,8 @@ namespace ExpandTheGungeon.ExpandComponents {
                 GlobalDungeonData.ValidTilesets nextTileset = GameManager.Instance.GetNextTileset(GameManager.Instance.Dungeon.tileIndices.tilesetId);
                 GameManager.DoMidgameSave(nextTileset);
             }
+
+            if ((IsPortableElevator | UsesOverrideTargetFloor) && !IsGlitchElevator && GameManager.HasInstance)ExpandUtility.CheckAndFixNextLevelIndex(GameManager.Instance);
 
             if (IsGlitchElevator) {
                 ExpandSettings.glitchElevatorHasBeenUsed = true;

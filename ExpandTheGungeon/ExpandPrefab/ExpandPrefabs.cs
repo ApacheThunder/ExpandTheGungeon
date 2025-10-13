@@ -176,6 +176,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GenericRoomTable BackRoomsWarpWingTable;
         public static GenericRoomTable BackRoomsEntranceRoomTable;
         public static GenericRoomTable FutureRoomTable;
+        public static GenericRoomTable FutureEntranceRoomTable;
         public static GenericRoomTable FutureFoyerRoomTable;
 
 
@@ -739,6 +740,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
             FutureRoomTable.includedRooms = new WeightedRoomCollection();
             FutureRoomTable.includedRooms.elements = new List<WeightedRoom>();
             FutureRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
+
+            FutureEntranceRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
+            FutureEntranceRoomTable.includedRooms = new WeightedRoomCollection();
+            FutureEntranceRoomTable.includedRooms.elements = new List<WeightedRoom>();
+            FutureEntranceRoomTable.includedRoomTables = new List<GenericRoomTable>(0);
 
             FutureFoyerRoomTable = ScriptableObject.CreateInstance<GenericRoomTable>();
             FutureFoyerRoomTable.includedRooms = new WeightedRoomCollection();

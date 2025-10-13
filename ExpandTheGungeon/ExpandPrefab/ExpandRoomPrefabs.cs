@@ -422,7 +422,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static PrototypeDungeonRoom[] Expand_Future_Rooms;
         public static PrototypeDungeonRoom[] Expand_Future_BossFoyers;
-        public static PrototypeDungeonRoom Expand_Future_EntranceRoom;
+        public static PrototypeDungeonRoom Expand_Future_EntranceRoom_01;
+        public static PrototypeDungeonRoom Expand_Future_EntranceRoom_02;
+        public static PrototypeDungeonRoom Expand_Future_EntranceRoom_03;
         public static PrototypeDungeonRoom Expand_Future_CrestRoom;
         public static PrototypeDungeonRoom Expand_Future_BossRoom;
         public static PrototypeDungeonRoom Expand_Future_RewardRoom;
@@ -1127,16 +1129,33 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_BackRooms_Exit.overrideRoomVisualType = 0;
             RoomBuilder.AddObjectToRoom(Expand_BackRooms_Exit, new Vector2(2, 14), ExpandSecretDoorPrefabs.EXSecretBackroomsDoor);
 
-            Expand_Future_EntranceRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_EntranceRoom", true, false, true);
-            Expand_Future_EntranceRoom.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
-            Expand_Future_EntranceRoom.overrideRoomVisualType = 8;
 
-            Expand_Future_CrestRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
+
+            Expand_Future_EntranceRoom_01 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_EntranceRoom_01", true, false, true);
+            Expand_Future_EntranceRoom_01.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_Future_EntranceRoom_01.overrideRoomVisualType = 7;
+
+            Expand_Future_EntranceRoom_02 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_EntranceRoom_02", true, false, true);
+            Expand_Future_EntranceRoom_02.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_Future_EntranceRoom_02.overrideRoomVisualType = 8;
+
+            Expand_Future_EntranceRoom_03 = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_EntranceRoom_03", true, false, true);
+            Expand_Future_EntranceRoom_03.associatedMinimapIcon = ExpandPrefabs.gungeon_entrance.associatedMinimapIcon;
+            Expand_Future_EntranceRoom_03.overrideRoomVisualType = 8;
+
+            ExpandPrefabs.FutureEntranceRoomTable.includedRooms.Add(GenerateWeightedRoom(Expand_Future_EntranceRoom_01, 0.2f));
+            ExpandPrefabs.FutureEntranceRoomTable.includedRooms.Add(GenerateWeightedRoom(Expand_Future_EntranceRoom_02));
+            ExpandPrefabs.FutureEntranceRoomTable.includedRooms.Add(GenerateWeightedRoom(Expand_Future_EntranceRoom_03, 0.5f));
+
             Dungeon m_sewers = DungeonDatabase.GetOrLoadByName("base_sewer");
-            ExpandUtility.DuplicateComponent(Expand_Future_CrestRoom, m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom);
-            m_sewers = null;
-                        
+            Expand_Future_CrestRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_CrestRoom", true, false, true);            
+            Expand_Future_CrestRoom.placedObjects = m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom.placedObjects;
+            Expand_Future_CrestRoom.placedObjectPositions = m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom.placedObjectPositions;
+            Expand_Future_CrestRoom.additionalObjectLayers = m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom.additionalObjectLayers;
+            Expand_Future_CrestRoom.associatedMinimapIcon = m_sewers.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[1].exactRoom.associatedMinimapIcon;
             Expand_Future_CrestRoom.overrideRoomVisualType = 7;
+            m_sewers = null;
+            
 
             Expand_Future_BossRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ExpandUtility.DuplicateComponent(Expand_Future_BossRoom, ExpandPrefabs.blobulordroom01);
@@ -1161,29 +1180,38 @@ namespace ExpandTheGungeon.ExpandPrefab {
             RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(31, 2), ExpandPrefabs.Ooze_Tank, 0, 0);
             RoomBuilder.AddObjectToRoom(Expand_Future_BossRoom, new Vector2(31, 28), ExpandPrefabs.Ooze_Tank, 0, 0);
 
-
-            Expand_Future_ShopRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
-            ExpandUtility.DuplicateComponent(Expand_Future_ShopRoom, ExpandPrefabs.shop02);
+            
+            Expand_Future_ShopRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_ShopRoom", true, false, true);
+            Expand_Future_ShopRoom.placedObjects = ExpandPrefabs.shop02.placedObjects;
+            Expand_Future_ShopRoom.placedObjectPositions = ExpandPrefabs.shop02.placedObjectPositions;
+            Expand_Future_ShopRoom.OverrideMusicState = DungeonFloorMusicController.DungeonMusicState.CALM;
+            Expand_Future_ShopRoom.rewardChestSpawnPosition = ExpandPrefabs.shop02.rewardChestSpawnPosition;
+            Expand_Future_ShopRoom.associatedMinimapIcon = ExpandPrefabs.shop02.associatedMinimapIcon;
             Expand_Future_ShopRoom.overrideRoomVisualType = 7;
-
+            Expand_Future_ShopRoom.usesProceduralDecoration = false;
+            Expand_Future_ShopRoom.allowFloorDecoration = true;
+            Expand_Future_ShopRoom.allowWallDecoration = true;
+            
 
             Expand_Future_ExitRoom = ScriptableObject.CreateInstance<PrototypeDungeonRoom>();
             ExpandUtility.DuplicateComponent(Expand_Future_ExitRoom, ExpandPrefabs.exit_room_basic);
-            Expand_Future_ExitRoom.overrideRoomVisualType = 8;
+            Expand_Future_ExitRoom.usesProceduralDecoration = false;
+            Expand_Future_ExitRoom.overrideRoomVisualType = 7;
             
 
             Expand_Future_RewardRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_RewardRoom", true, false, true);
             Expand_Future_RewardRoom.overrideRoomVisualType = 8;
-            RoomBuilder.AddObjectToRoom(Expand_Future_RewardRoom, new Vector2(7, 6), null, ExpandPrefabs.gungeon_rewardroom_1.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 8);
+            RoomBuilder.AddObjectToRoom(Expand_Future_RewardRoom, new Vector2(8, 8), ExpandObjectDatabase.Treasure_Dais_Stone_Carpet, yOffset: 1);
+            RoomBuilder.AddObjectToRoom(Expand_Future_RewardRoom, new Vector2(9, 10), null, ExpandPrefabs.gungeon_rewardroom_1.additionalObjectLayers[1].placedObjects[0].nonenemyBehaviour, xOffset: 10, yOffset: 1);
 
 
             List<PrototypeDungeonRoom> m_FutureRooms = new List<PrototypeDungeonRoom>();
 
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 50; i++) {
                 string roomNumber = (i + 1).ToString();
                 if (i + 1 < 10)roomNumber = "0" + (i + 1).ToString();
                 PrototypeDungeonRoom m_room = RoomFactory.BuildFromAssetBundle(AssetBundles, "Future_CombatRoom_" + roomNumber, true, false, true);
-                if (i < 15) {
+                if (i < 25) {
                     m_room.overrideRoomVisualType = 7;
                 } else {
                     m_room.overrideRoomVisualType = 8;
@@ -1213,7 +1241,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 }
                 m_FutureRooms.Add(m_room);
             }
-
+            
             Expand_Future_Rooms = m_FutureRooms.ToArray();
 
 
@@ -1248,6 +1276,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             Expand_FutureSignPostRoom = RoomFactory.BuildFromAssetBundle(AssetBundles, "Expand_FutureSignPostRoom", true, false, true);
             Expand_FutureSignPostRoom.overrideRoomVisualType = 1;
             RoomBuilder.AddObjectToRoom(Expand_FutureSignPostRoom, new Vector2(7, 7), null, ExpandPrefabs.EXFuture_SignPost.GetComponent<ExpandSignPostController>(), yOffset: 10);
+
 
 
             Expand_BulletHell_RoomList = new List<string>() { "BHell_TheReunion" };

@@ -133,6 +133,9 @@ namespace ExpandTheGungeon {
                 }
 
                 if (dungeon.IsGlitchDungeon | ExpandDungeonFlow.isGlitchFlow) {
+                    if (ExpandDungeonFlow.isGlitchFlow && !dungeon.IsGlitchDungeon) dungeon.IsGlitchDungeon = true;
+                    if (GameManager.HasInstance) ExpandUtility.CheckAndFixNextLevelIndex(GameManager.Instance);
+
                     dungeon.BossMasteryTokenItemId = CustomMasterRounds.GtlichFloorMasterRoundID;
 
                     if (ExpandSettings.EnableGlitchFloorScreenShader && !ExpandLists.InvalidGraphicsModes.Contains(SystemInfo.graphicsDeviceType)) {

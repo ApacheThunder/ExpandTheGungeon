@@ -1,8 +1,6 @@
 ﻿using BepInEx;
-using ExpandTheGungeon.ExpandComponents;
 using ExpandTheGungeon.ExpandUtilities;
 using HarmonyLib;
-using MonoMod.RuntimeDetour;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,8 +14,7 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
     public class ExpandLoadingScreen : FoyerPreloader {
 
         public static GameObject EXDebugObject;
-
-        public static Hook FoyerPreloadHook; 
+        
         public static FoyerPreloader Instance;
 
         public static GameObject LoadingScreenObject;
@@ -95,11 +92,6 @@ namespace ExpandTheGungeon.ExpandLoadingScreens {
 
 
         public static void Init() {
-            /*FoyerPreloadHook = new Hook(
-                typeof(FoyerPreloader).GetMethod(nameof(Update), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandLoadingScreen).GetMethod(nameof(EXUpdate), BindingFlags.Public | BindingFlags.Instance),
-                typeof(FoyerPreloader)
-            );*/
 
             EXLoadScreenLogo = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadScreenLogo.png", new IntVector2(218, 96));
             EXLoadScreenThrobber_Error = ExpandUtility.GetTextureFromResource("ExpandLoadingScreens/EXLoadingScreen_Error.png", new IntVector2(1024, 512));

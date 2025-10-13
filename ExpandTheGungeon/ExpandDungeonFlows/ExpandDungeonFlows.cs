@@ -9,7 +9,7 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandDungeonFlows {
     
-    // [HarmonyPatch]
+    [HarmonyPatch]
     public class ExpandDungeonFlow {
 
         public static bool isGlitchFlow = false;
@@ -22,80 +22,96 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
         };
 
         public static DungeonFlow GetRandomFlowFromNextDungeonPrefabForGlitchFloor() {
-            int NextLevelIndex = ReflectionHelpers.ReflectGetField<int>(typeof(GameManager), "nextLevelIndex", GameManager.Instance);
+            int? NextLevelIndex = null;
+            if (GameManager.HasInstance) NextLevelIndex = ReflectionHelpers.ReflectGetField<int>(typeof(GameManager), "nextLevelIndex", GameManager.Instance);
             Dungeon dungeon = null;
             bool useFallBack = true;
-            switch (NextLevelIndex) {
-                case 2:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Castle");
-                    break;
-                case 3:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Gungeon");
-                    break;
-                case 4:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
-                    break;
-                case 5:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
-                    break;
-                case 6:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Forge");
-                    break;
-                case 7:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Bullethell");
-                    break;
-                default:
-                    dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
-                    break;
-            }
-            DungeonFlow m_AssignedFallBackFlow = FlowDatabase.GetOrLoadByName(BraveUtility.RandomElement(GlitchChestFlows));
-            DungeonFlow m_AssignedFlow = FlowHelpers.DuplicateDungeonFlow(BraveUtility.RandomElement(dungeon.PatternSettings.flows));
-            dungeon = null;
-            foreach (DungeonFlowNode node in m_AssignedFlow.AllNodes) {
-                if (node.roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
-                    // If doublebeholstertable isn't null that means player has custom glitch chest rooms installed!
-                    // Will use them instead of original room intended for glitch chest floor.
-                    if (ExpandPrefabs.doublebeholstertable) {
-                        node.overrideRoomTable = ExpandPrefabs.doublebeholstertable;
-                        useFallBack = false;
-                    } else if (ExpandPrefabs.doublebeholsterroom01) {
-                        node.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
-                        useFallBack = false;
-                    }
-                    break;
+            bool isBulletHell = false; // If true, Double Beholster boss won't be allowed to appear if on Bullet Hell as this is the final level and the boss shouldn't be replaced there.
+            if (NextLevelIndex.HasValue) {
+                switch (NextLevelIndex.Value) {
+                    case 2:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Castle");
+                        break;
+                    case 3:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Gungeon");
+                        break;
+                    case 4:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
+                        break;
+                    case 5:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Catacombs");
+                        break;
+                    case 6:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Forge");
+                        break;
+                    case 7:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Bullethell");
+                        isGlitchFlow = true; // Dungeon.IsGlitchDungeon doesn't get set if Double Beholster boss room isn't present.
+                        isBulletHell = true;
+                        break;
+                    default:
+                        dungeon = DungeonDatabase.GetOrLoadByName("Base_Mines");
+                        break;
                 }
             }
-            if (useFallBack) {
-                return m_AssignedFallBackFlow;
-            } else {
-                return m_AssignedFlow;
+            DungeonFlow m_AssignedFallBackFlow = FlowDatabase.GetOrLoadByName(BraveUtility.RandomElement(GlitchChestFlows));
+            DungeonFlow m_AssignedFlow = null;
+            if (dungeon?.PatternSettings?.flows?.Count > 0) m_AssignedFlow = FlowHelpers.DuplicateDungeonFlow(BraveUtility.RandomElement(dungeon.PatternSettings.flows));
+            if (m_AssignedFlow) {
+                string flowName = (m_AssignedFlow.name + "_glitched");
+                m_AssignedFlow.name = flowName;
             }
+            dungeon = null;
+            if (isBulletHell && m_AssignedFlow) return m_AssignedFlow;
+            if (m_AssignedFlow) {
+                foreach (DungeonFlowNode node in m_AssignedFlow.AllNodes) {
+                    if (node.roomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                        // If doublebeholstertable isn't null that means player has custom glitch chest rooms installed!
+                        // Will use them instead of original room intended for glitch chest floor.
+                        if (ExpandPrefabs.doublebeholstertable) {
+                            node.overrideRoomTable = ExpandPrefabs.doublebeholstertable;
+                            node.overrideExactRoom = null;
+                            useFallBack = false;
+                        } else if (ExpandPrefabs.doublebeholsterroom01) {
+                            node.overrideExactRoom = ExpandPrefabs.doublebeholsterroom01;
+                            node.overrideRoomTable = null;
+                            useFallBack = false;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (useFallBack | !m_AssignedFlow) return m_AssignedFallBackFlow;
+            return m_AssignedFlow;
         }
 
 
-        /*[HarmonyPatch(typeof(FlowDatabase), nameof(FlowDatabase.GetOrLoadByName), typeof(string))]
-        [HarmonyPostfix]
-        private static void GetOrLoadByNamePatch(FlowDatabase __instance, string name, ref DungeonFlow __result) {
-            if (KnownFlows != null && KnownFlows.Count > 0) { 
-                string flowName = name;
-                if (flowName.Contains("/")) { flowName = name.Substring(name.LastIndexOf("/") + 1); }
-                // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
-                if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
-                    __result = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
-                } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
-                    __result = LoadOfficialFlow("secret_doublebeholster_flow"); // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
-                } else {
-                    foreach (DungeonFlow flow in KnownFlows) {
-                        if (flow.name != null && flow.name != string.Empty && flowName.ToLower() == flow.name.ToLower()) {
-                            __result = flow;
-                            break;
-                        }
+        [HarmonyPatch(typeof(FlowDatabase), nameof(FlowDatabase.GetOrLoadByName), typeof(string))]
+        [HarmonyPrefix]
+        private static bool GetOrLoadByNamePatch(FlowDatabase __instance, string name, ref DungeonFlow __result) {
+            if (KnownFlows == null) return true;
+            if (KnownFlows.Length <= 0) return true;
+            string flowName = name;
+            if (flowName.Contains("/"))flowName = name.Substring(name.LastIndexOf("/") + 1);
+            // Altered this to use a custom flow name set by my mod. This could break future mods that load data async like mine now does.
+            if (flowName.ToLower().EndsWith("secret_expandeddoublebeholster_flow")) {
+                __result = GetRandomFlowFromNextDungeonPrefabForGlitchFloor();
+                return false;
+            } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
+                __result = LoadOfficialFlow("secret_doublebeholster_flow"); // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
+                return false;
+            } else {
+                foreach (DungeonFlow flow in KnownFlows) {
+                    if (!string.IsNullOrEmpty(flow.name) && flowName.ToLower() == flow.name.ToLower()) {
+                        __result = flow;
+                        return false;
                     }
                 }
             }
-        }*/
+            return true;
+        }
 
-        public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
+        /*public static DungeonFlow LoadCustomFlow(Func<string, DungeonFlow>orig, string target) {
             try {
                 string flowName = target;
                 if (flowName.Contains("/"))flowName = target.Substring(target.LastIndexOf("/") + 1);
@@ -109,13 +125,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                     }
                 } else if (flowName.ToLower().EndsWith("secret_doublebeholster_flow_orig")) {
                     return orig("secret_doublebeholster_flow"); // Keeping this to avoid breaking any legacy mods that might be using this flow name as a work-a-round.
-                } /*else if (flowName.ToLower().EndsWith("foyer_flow")) {
-                    if (Foyer_Flow) {
-                        DebugTime.RecordStartTime();
-                        DebugTime.Log("AssetBundle.LoadAsset<DungeonFlow>({0})", new object[] { Foyer_Flow.name });
-                    }
-                    return Foyer_Flow;
-                } */else if (KnownFlows != null && KnownFlows.Length > 0) {
+                } else if (KnownFlows != null && KnownFlows.Length > 0) {
                     foreach (DungeonFlow flow in KnownFlows) {
                         if (flow && !string.IsNullOrEmpty(flow.name) && flowName.ToLower() == flow.name.ToLower()) {
                             // Allows glitch chest floors to have things like the Old Crest room drop off if on Gungeon tileset, etc.
@@ -134,7 +144,7 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
                 Debug.LogException(ex);
                 return null;
             }
-        }
+        }*/
 
         public static DungeonFlow LoadOfficialFlow(string target) {
             string flowName = target;
@@ -663,7 +673,8 @@ namespace ExpandTheGungeon.ExpandDungeonFlows {
             m_knownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_01);
             m_knownFlows.Add(f0b_phobos_flows.F0b_Phobos_Flow_02);
             m_knownFlows.Add(f0b_office_flows.F0b_Office_Flow_01);
-            m_knownFlows.Add(f1b_future_flow_01.F1b_Future_Flow_01);
+            m_knownFlows.Add(f1b_future_flows.F1b_Future_Flow_01);
+            m_knownFlows.Add(f1b_future_flows.F1b_Future_Flow_02);
             // Add Backrooms flows
             m_knownFlows.Add(backrooms_flow_01.BackRooms_Flow_01);
             m_knownFlows.Add(backrooms_flow_02.BackRooms_Flow_02);

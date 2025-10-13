@@ -517,7 +517,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void PlaceNoClipZone(Dungeon dungeon, int CurrentFloor, int wallMimicCount) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
-            if (CurrentFloor > 4 | ExpandSettings.HasVisitedBackrooms)return;
+            if (ExpandSettings.HasVisitedBackrooms)return;
             if (dungeon.gameObject.name.ToLower().StartsWith("base_backrooms"))return;
             if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
             if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
@@ -752,19 +752,17 @@ namespace ExpandTheGungeon.ExpandMain {
 
         private void PlaceGlitchElevator(Dungeon dungeon, int CurrentFloor) {
             GameManager.LevelOverrideState levelOverrideState = GameManager.Instance.CurrentLevelOverrideState;
-            if (dungeon.IsGlitchDungeon | ExpandSettings.glitchElevatorHasBeenUsed | CurrentFloor > 4) { return; }
-            if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH) { return; }
-            if (levelOverrideState == GameManager.LevelOverrideState.FOYER | levelOverrideState == GameManager.LevelOverrideState.TUTORIAL) {
+            if (dungeon.IsGlitchDungeon | ExpandSettings.glitchElevatorHasBeenUsed)return;
+            if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH | GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH)return;
+            if (levelOverrideState == GameManager.LevelOverrideState.FOYER | 
+                levelOverrideState == GameManager.LevelOverrideState.TUTORIAL |
+                levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST)
+            {
                 ExpandSettings.glitchElevatorHasBeenUsed = false;
                 return;
             }
-            if (levelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST) {
-                ExpandSettings.glitchElevatorHasBeenUsed = false;
-                return;
-            }
-            if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
-            if (GameManager.Instance.CurrentFloor >= 5) { return; }
-            if (UnityEngine.Random.value > 0.004f) { return; }
+            if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES)return;
+            if (UnityEngine.Random.value > 0.004f)return;
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a Glitch Elevator!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
             foreach (RoomHandler room in dungeon.data.rooms) {

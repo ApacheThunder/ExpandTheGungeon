@@ -11,7 +11,7 @@ using HarmonyLib;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    // [HarmonyPatch]
+    [HarmonyPatch]
     public class ExpandDungeonPrefabs {
 
         public static Dictionary<string, Dungeon> dungeonDatabase;
@@ -237,16 +237,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
 
-        /*[HarmonyPatch(typeof(DungeonDatabase), nameof(DungeonDatabase.GetOrLoadByName), typeof(string))]
-        [HarmonyPostfix]
-        public static void GetOrLoadByNamePatch(DungeonDatabase __instance, string name, ref Dungeon __result) {
-            if (dungeonDatabase != null) {
-                Dungeon dungeonPrefab;
-                if (dungeonDatabase.TryGetValue(name.ToLower(), out dungeonPrefab)) __result = dungeonPrefab;
-            }
-        }*/
-
-        public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
+        [HarmonyPatch(typeof(DungeonDatabase), nameof(DungeonDatabase.GetOrLoadByName), typeof(string))]
+        [HarmonyPrefix]
+        public static bool GetOrLoadByNamePatch(DungeonDatabase __instance, string name, ref Dungeon __result) {
+            if (dungeonDatabase == null) return true;
+            Dungeon dungeonPrefab;
+            if (!dungeonDatabase.TryGetValue(name.ToLower(), out dungeonPrefab)) return true;
+            __result = dungeonPrefab;
+            return false;
+        }
+        
+        /*public static Dungeon GetOrLoadByNameHook(Func<string, Dungeon>orig, string name) {
             Dungeon dungeon = null;
             if (dungeonDatabase != null)dungeonDatabase.TryGetValue(name.ToLower(), out dungeon);
             if (dungeon) {
@@ -256,7 +257,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
             } else {
                 return orig(name);
             }
-        }
+        }*/
 
         public static Dungeon LoadOfficialDungeonPrefab(string name) {
             AssetBundle assetBundle = ResourceManager.LoadAssetBundle("dungeons/" + name.ToLower());
@@ -296,17 +297,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 ["base_future"] = Base_Future.GetComponent<Dungeon>(),
                 ["base_backrooms"] = Base_BackRooms.GetComponent<Dungeon>()
             };
+            /*if (getOrLoadByName_Hook == null) {
+                if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDatabase.GetOrLoadByName Hook..."); }
+                getOrLoadByName_Hook = new Hook(
+                    typeof(DungeonDatabase).GetMethod(nameof(DungeonDatabase.GetOrLoadByName), BindingFlags.Static | BindingFlags.Public),
+                    typeof(ExpandDungeonPrefabs).GetMethod(nameof(GetOrLoadByNameHook), BindingFlags.Static | BindingFlags.Public)
+                );
+            }*/
         }
-        
-        public static void InitCustomGameLevelDefinitions(AssetBundle braveResources, GameManager gameManager) {
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonDatabase.GetOrLoadByName Hook..."); }
-            getOrLoadByName_Hook = new Hook(
-                typeof(DungeonDatabase).GetMethod(nameof(DungeonDatabase.GetOrLoadByName), BindingFlags.Static | BindingFlags.Public),
-                typeof(ExpandDungeonPrefabs).GetMethod(nameof(GetOrLoadByNameHook), BindingFlags.Static | BindingFlags.Public)
-            );
-            InitFloorDefinitions(gameManager);
-        }
-        
+
         public static void InitFloorDefinitions(GameManager gameManager) {
             if (gameManager) {
                 bool SpaceEntryExists = false;
@@ -355,7 +354,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                             case "tt_future":
                                 definition.priceMultiplier = 1.20000005f;
                                 definition.secretDoorHealthMultiplier = 1;
-                                definition.enemyHealthMultiplier = 0.7f;
+                                definition.enemyHealthMultiplier = 1.1f;
                                 definition.damageCap = 300;
                                 definition.bossDpsCap = 42;
                                 definition.flowEntries = new List<DungeonFlowLevelEntry>(0);
@@ -2955,7 +2954,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -2975,7 +2974,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -2995,7 +2994,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3015,7 +3014,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3035,7 +3034,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3055,7 +3054,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3075,7 +3074,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3096,7 +3095,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3116,7 +3115,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3136,7 +3135,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3156,7 +3155,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3178,7 +3177,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                     stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                     preferredIntermediaryStamps = 0,
-                    intermediaryMatchingStyle = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                     requiresForcedMatchingStyle = false,
                     opulence = Opulence.PLAIN,
                     roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3198,7 +3197,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3218,7 +3217,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3238,7 +3237,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3258,7 +3257,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3324,16 +3323,16 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandUtility.DuplicateComponent(dungeon, dungeonTemplate);
             ExpandUtility.DuplicateComponent(targetObject.AddComponent<FuturegeonGroundLightDoer>(), dungeonTemplate.gameObject.GetComponent<FuturegeonGroundLightDoer>());
             
-            dungeon.PatternSettings.flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F1b_Future_Flow_01") };
+            dungeon.PatternSettings.flows = new List<DungeonFlow>() { FlowDatabase.GetOrLoadByName("F1b_Future_Flow_01"), FlowDatabase.GetOrLoadByName("F1b_Future_Flow_02") };
 
             dungeon.roomMaterialDefinitions = new DungeonMaterial[] {
+                dungeonTemplate.roomMaterialDefinitions[7],
                 dungeonTemplate.roomMaterialDefinitions[8],
-                dungeonTemplate.roomMaterialDefinitions[1],
-                dungeonTemplate.roomMaterialDefinitions[2],
-                dungeonTemplate.roomMaterialDefinitions[3],
-                dungeonTemplate.roomMaterialDefinitions[4],
+                dungeonTemplate.roomMaterialDefinitions[7],
+                dungeonTemplate.roomMaterialDefinitions[8],
+                dungeonTemplate.roomMaterialDefinitions[7],
                 sharedAssets2.LoadAsset<DungeonMaterial>("Boss_Cathedral_StainedGlass_Lights"),
-                dungeonTemplate.roomMaterialDefinitions[6],
+                dungeonTemplate.roomMaterialDefinitions[8],
                 dungeonTemplate.roomMaterialDefinitions[7],
                 dungeonTemplate.roomMaterialDefinitions[8],
             };
@@ -3421,7 +3420,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3441,7 +3440,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3461,7 +3460,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3481,7 +3480,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3501,7 +3500,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3514,26 +3513,6 @@ namespace ExpandTheGungeon.ExpandPrefab {
             });
 
             m_ObjectStamps.Add(new ObjectStampData() {
-                width = 3,
-                height = 1,
-                relativeWeight = 0.5f,
-                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
-                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
-                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
-                preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
-                requiresForcedMatchingStyle = false,
-                opulence = Opulence.PLAIN,
-                roomTypeData = new List<StampPerRoomPlacementSettings>() {
-                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
-                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
-                },
-                indexOfSymmetricPartner = -1,
-                preventRoomRepeats = false,
-                objectReference = ExpandObjectDatabase.MetalPipe.gameObject
-            });
-
-            m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
                 height = 2,
                 relativeWeight = 0.5f,
@@ -3541,7 +3520,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3561,7 +3540,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3581,7 +3560,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3597,11 +3576,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 width = 3,
                 height = 1,
                 relativeWeight = 0.5f,
-                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3614,6 +3593,67 @@ namespace ExpandTheGungeon.ExpandPrefab {
             });
 
             m_ObjectStamps.Add(new ObjectStampData() {
+                width = 2,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.Ooze_Tank
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.Ooze_Tank
+            });
+
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 1,
+                height = 2,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandPrefabs.Ooze_Tank
+            });
+            
+
+            m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
                 height = 2,
                 relativeWeight = 0.5f,
@@ -3621,7 +3661,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3641,7 +3681,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3662,7 +3702,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3674,8 +3714,27 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 objectReference = ExpandObjectDatabase.Metal_Crate.gameObject
             });
 
+            m_ObjectStamps.Add(new ObjectStampData() {
+                width = 3,
+                height = 1,
+                relativeWeight = 0.5f,
+                placementRule = DungeonTileStampData.StampPlacementRule.ON_ANY_FLOOR,
+                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
+                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
+                preferredIntermediaryStamps = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
+                requiresForcedMatchingStyle = false,
+                opulence = Opulence.PLAIN,
+                roomTypeData = new List<StampPerRoomPlacementSettings>() {
+                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.5f },
+                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.5f }
+                },
+                indexOfSymmetricPartner = -1,
+                preventRoomRepeats = false,
+                objectReference = ExpandObjectDatabase.MetalPipe.gameObject
+            });
 
-            for (int i = 0; i < 200; i++) { 
+            for (int i = 0; i < 10; i++) { 
                 m_ObjectStamps.Add(new ObjectStampData() {
                     width = 1,
                     height = 1,
@@ -3684,7 +3743,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                     stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                     preferredIntermediaryStamps = 0,
-                    intermediaryMatchingStyle = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                     requiresForcedMatchingStyle = false,
                     opulence = Opulence.PLAIN,
                     roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3696,45 +3755,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     objectReference = ExpandPrefabs.EXDummyObject,
                 });
             }
-            m_ObjectStamps.Add(new ObjectStampData() {
-                width = 1,
-                height = 1,
-                relativeWeight = 0.1f,
-                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
-                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
-                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
-                preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
-                requiresForcedMatchingStyle = false,
-                opulence = Opulence.PLAIN,
-                roomTypeData = new List<StampPerRoomPlacementSettings>() {
-                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.6f },
-                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.6f }
-                },
-                indexOfSymmetricPartner = -1,
-                preventRoomRepeats = false,
-                objectReference = ExpandPrefabs.EXDummyObject,
-            });
             
-            m_ObjectStamps.Add(new ObjectStampData() {
-                width = 1,
-                height = 1,
-                relativeWeight = 0.1f,
-                placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
-                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
-                stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
-                preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
-                requiresForcedMatchingStyle = false,
-                opulence = Opulence.PLAIN,
-                roomTypeData = new List<StampPerRoomPlacementSettings>() {
-                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.6f },
-                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.6f }
-                },
-                indexOfSymmetricPartner = -1,
-                preventRoomRepeats = false,
-                objectReference = ExpandPrefabs.EXDummyObject,
-            });
 
             m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
@@ -3744,7 +3765,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -3755,26 +3776,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 preventRoomRepeats = false,
                 objectReference = ExpandPrefabs.EXDummyObject,
             });
-
-            m_ObjectStamps.Add(new ObjectStampData() {
-                width = 1,
-                height = 1,
-                relativeWeight = 0.6f,
-                placementRule = DungeonTileStampData.StampPlacementRule.ON_LOWER_FACEWALL,
-                occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
-                stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
-                preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
-                requiresForcedMatchingStyle = false,
-                opulence = Opulence.PLAIN,
-                roomTypeData = new List<StampPerRoomPlacementSettings>() {
-                    new StampPerRoomPlacementSettings() { roomSubType = 7, roomRelativeWeight = 0.8f },
-                    new StampPerRoomPlacementSettings() { roomSubType = 8, roomRelativeWeight = 0.8f }
-                },
-                indexOfSymmetricPartner = -1,
-                preventRoomRepeats = false,
-                objectReference = ExpandPrefabs.EXDummyObject,
-            });
+            
 
             dungeon.stampData.objectStamps = m_ObjectStamps.ToArray();
 
@@ -4360,7 +4362,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4380,7 +4382,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4401,7 +4403,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                     stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
                     preferredIntermediaryStamps = 0,
-                    intermediaryMatchingStyle = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                     requiresForcedMatchingStyle = false,
                     opulence = Opulence.PLAIN,
                     roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4415,14 +4417,14 @@ namespace ExpandTheGungeon.ExpandPrefab {
             }
 
             m_ObjectStamps.Add(new ObjectStampData() {
-                width = 1,
+                width = 2,
                 height = 1,
                 relativeWeight = 0.5f,
                 placementRule = DungeonTileStampData.StampPlacementRule.BELOW_LOWER_FACEWALL,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4432,17 +4434,17 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 indexOfSymmetricPartner = -1,
                 preventRoomRepeats = false,
                 objectReference = NakatomiPrefab.PatternSettings.flows[0].AllNodes[6].overrideExactRoom.placedObjects[2].nonenemyBehaviour.gameObject // Toilet Wall (front)
-        });
+            });
 
             m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
-                height = 1,
+                height = 2,
                 relativeWeight = 0.5f,
                 placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4456,13 +4458,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
-                height = 1,
+                height = 2,
                 relativeWeight = 0.5f,
                 placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4482,7 +4484,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4496,13 +4498,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
-                height = 1,
+                height = 2,
                 relativeWeight = 0.5f,
                 placementRule = DungeonTileStampData.StampPlacementRule.ALONG_RIGHT_WALLS,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4516,13 +4518,13 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             m_ObjectStamps.Add(new ObjectStampData() {
                 width = 1,
-                height = 1,
+                height = 2,
                 relativeWeight = 0.5f,
                 placementRule = DungeonTileStampData.StampPlacementRule.ALONG_LEFT_WALLS,
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4542,7 +4544,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4563,7 +4565,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4583,7 +4585,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4603,7 +4605,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4623,7 +4625,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4645,7 +4647,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                     occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                     stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                     preferredIntermediaryStamps = 0,
-                    intermediaryMatchingStyle = 0,
+                    intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                     requiresForcedMatchingStyle = false,
                     opulence = Opulence.PLAIN,
                     roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4665,7 +4667,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4685,7 +4687,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4705,7 +4707,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.MUNDANE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {
@@ -4725,7 +4727,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
                 occupySpace = DungeonTileStampData.StampSpace.OBJECT_SPACE,
                 stampCategory = DungeonTileStampData.StampCategory.DECORATIVE,
                 preferredIntermediaryStamps = 0,
-                intermediaryMatchingStyle = 0,
+                intermediaryMatchingStyle = DungeonTileStampData.IntermediaryMatchingStyle.ANY,
                 requiresForcedMatchingStyle = false,
                 opulence = Opulence.PLAIN,
                 roomTypeData = new List<StampPerRoomPlacementSettings>() {

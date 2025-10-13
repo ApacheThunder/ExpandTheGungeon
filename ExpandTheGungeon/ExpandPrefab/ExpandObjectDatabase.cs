@@ -102,6 +102,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         // public static GameObject CastleWarpDoor;
         public static GameObject EndTimes;
         public static GameObject EndTimesChest;
+        
         // R&G Floor Objects
         public static GameObject TableHorizontalSteel;
         public static GameObject TableVerticalSteel;
@@ -142,6 +143,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static DungeonPlaceable GungeonLockedDoors;
         public static DungeonPlaceable IronWoodDoors;
         public static DungeonPlaceable ForgeHammerPlacable_TracksPlayer;
+        public static DungeonPlaceable Treasure_Dais_Stone_Carpet;
 
         // Future themed objects from R&G
         public static DungeonPlaceableBehaviour TechWallLong;
@@ -247,6 +249,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             EndTimesChest = forgeDungeon.PatternSettings.flows[0].AllNodes[12].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("EndTimes_Xform").Find("G_CacheOfTheAmmulich").gameObject;
             GungeonSewersExit = castleDungeon.PatternSettings.flows[0].sharedInjectionData[1].InjectionData[0].exactRoom.placedObjects[0].nonenemyBehaviour.gameObject;
 
+            
+
             BlobulordGrate = ExpandAssets.LoadOfficialAsset<GameObject>("BlobulordGrate", ExpandAssets.AssetSource.SharedAuto1);
 
 
@@ -284,6 +288,8 @@ namespace ExpandTheGungeon.ExpandPrefab {
             IronWoodDoors = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("DoorTest", ExpandAssets.AssetSource.SharedAuto2);
             // DimensionFog = marinePastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.transform.Find("DimensionFog").gameObject;
             ForgeHammerPlacable_TracksPlayer = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("Hammer", ExpandAssets.AssetSource.SharedAuto1);
+            Treasure_Dais_Stone_Carpet = ExpandAssets.LoadOfficialAsset<DungeonPlaceable>("Treasure_Dais_Stone_Carpet", ExpandAssets.AssetSource.SharedAuto2);
+
 
             ConvictPastController pastController = convictPastDungeon.PatternSettings.flows[0].AllNodes[0].overrideExactRoom.placedObjects[0].nonenemyBehaviour.gameObject.GetComponent<ConvictPastController>();
             NightclubCrowdController crowdController = pastController.crowdController;

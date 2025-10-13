@@ -57,7 +57,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.5";
+        public const string VERSION = "3.0.6";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -236,7 +236,7 @@ namespace ExpandTheGungeon {
                         
             try {
                 // Init Custom GameLevelDefinitions
-                ExpandDungeonPrefabs.InitCustomGameLevelDefinitions(braveResources, gameManager);
+                ExpandDungeonPrefabs.InitFloorDefinitions(gameManager);
                 // Init Custom Sprite Collections
                 ExpandPrefabs.InitSpriteCollections(expandSharedAssets1, sharedAssets);
                 ExpandEnemyDatabase.InitSpriteCollections(expandSharedAssets1);

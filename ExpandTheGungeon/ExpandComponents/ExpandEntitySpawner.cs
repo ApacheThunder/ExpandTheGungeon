@@ -1,7 +1,10 @@
-﻿using Dungeonator;
-using System;
+﻿using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
+using Dungeonator;
+using ExpandTheGungeon.ExpandUtilities;
+
 
 namespace ExpandTheGungeon.ExpandComponents {
 
@@ -63,12 +66,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                 SpawnState = EntitySpawnState.DoCleanup;
                 return;
             }
+            if (GameManager.HasInstance) ExpandUtility.CheckAndFixNextLevelIndex(GameManager.Instance);
         }
         
         public void Update() {
-            if (!GameManager.HasInstance | GameManager.Instance.IsLoadingLevel | !GameManager.Instance.Dungeon |
-                Dungeon.IsGenerating
-                ) {
+            if (!GameManager.HasInstance | GameManager.Instance.IsLoadingLevel | !GameManager.Instance.Dungeon | Dungeon.IsGenerating) {
                 return;
             }
             switch (SpawnState) {

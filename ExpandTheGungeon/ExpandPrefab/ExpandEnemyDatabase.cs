@@ -15,7 +15,7 @@ using HarmonyLib;
 
 namespace ExpandTheGungeon.ExpandPrefab {
 
-    // [HarmonyPatch]
+    [HarmonyPatch]
     public static class ExpandEnemyDatabase {
 
         static ExpandEnemyDatabase() {
@@ -80,7 +80,7 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static readonly string PoisbulordCrawlerGUID;
 
 
-        public static Hook loadEnemyGUIDHook;
+        // public static Hook loadEnemyGUIDHook;
 
         public static Dictionary<string, AIActor> enemyPrefabDictionary = new Dictionary<string, AIActor>();
 
@@ -146,6 +146,9 @@ namespace ExpandTheGungeon.ExpandPrefab {
         public static GameObject BulletManEyepatch;
         public static GameObject BulletManEyepatchCollection;
 
+        // Misc altered vanilla enemies
+        public static GameObject OldKingBossAnimationLibrary;
+
 
         // Misc Objects
         public static GameObject CronenbergCorpseDebrisObject1;
@@ -210,15 +213,18 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
         public static void InitPrefabs(AssetBundle expandSharedAssets1) {
 
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing EnemyDatabase.GetOrLoadByGuid Hook...."); }
             loadEnemyGUIDHook = new Hook(
                 typeof(EnemyDatabase).GetMethod(nameof(EnemyDatabase.GetOrLoadByGuid), BindingFlags.Static | BindingFlags.Public),
                 typeof(ExpandEnemyDatabase).GetMethod(nameof(GetOrLoadByGuidHook), BindingFlags.Static | BindingFlags.Public)
-            );
+            );*/
             
             // Palette Fix to Red/Blue Shotgun Kin and Veteran Bullet Kin (so they work correctly with glitch shader)
             PaletteFixEnemies(expandSharedAssets1);
-            
+
+            // Fix missing sound effect for throne_burst animation clip used by Old King's throne object (after he dies and leaves it behind)
+            OldKingThroneSFXFix();
+
             // Real Prefabs
             BuildHotShotCultistPrefab(expandSharedAssets1, out BuildHotShotGunCultistPrefab);
             BuildHotShotShotgunManPrefab(expandSharedAssets1, out HotShotShotgunKinPrefab);
@@ -274,14 +280,15 @@ namespace ExpandTheGungeon.ExpandPrefab {
         }
 
         // This was randomly breaking something on loading of a new floor sometimes.
-        /*[HarmonyPatch(typeof(EnemyDatabase), nameof(EnemyDatabase.GetOrLoadByGuid), typeof(string))]
-        [HarmonyPostfix]
-        private static void GetOrLoadByGuidPatch(EnemyDatabase __instance, string guid, ref AIActor __result) {
-            if (enemyPrefabDictionary != null) {
-                AIActor enemyPrefab;
-                if (enemyPrefabDictionary.TryGetValue(guid, out enemyPrefab)) __result = enemyPrefab;
-            }
-        }*/
+        [HarmonyPatch(typeof(EnemyDatabase), nameof(EnemyDatabase.GetOrLoadByGuid), typeof(string))]
+        [HarmonyPrefix]
+        private static bool GetOrLoadByGuidPatch(EnemyDatabase __instance, string guid, ref AIActor __result) {
+            if (enemyPrefabDictionary == null) return false;
+            AIActor enemyPrefab;
+            if (!enemyPrefabDictionary.TryGetValue(guid, out enemyPrefab)) return true;
+            __result = enemyPrefab;
+            return false;
+        }
 
         public static AIActor GetOfficialEnemyByGuid(string guid) { return EnemyDatabase.Instance.InternalGetByGuid(guid); }
 
@@ -349,6 +356,21 @@ namespace ExpandTheGungeon.ExpandPrefab {
             BulletManEyepatchEnemy.optionalPalette = null;
         }
         
+        // Fix missing sound effect for old king's throne when it is destroyed by the player.
+        // Dodge Roll forgot to attach event audio to animation clip lol.
+        public static void OldKingThroneSFXFix() {
+            AIActor m_OldKingBoss = GetOfficialEnemyByGuid("5729c8b5ffa7415bb3d01205663a33ef");
+
+            tk2dSpriteAnimation m_OldKingAnimation = m_OldKingBoss.spriteAnimator.Library;
+
+            tk2dSpriteAnimationClip m_OldKingThroneBurstClip = m_OldKingAnimation.GetClipByName("throne_burst");
+
+            m_OldKingThroneBurstClip.frames[0].eventAudio = "PLay_ENM_kali_explode_01";
+            m_OldKingThroneBurstClip.frames[0].triggerEvent = true;
+
+            OldKingBossAnimationLibrary = m_OldKingAnimation.gameObject;
+        }
+
         public static void AddEnemyToDatabase(GameObject EnemyPrefab, string EnemyGUID, bool IsNormalEnemy = false, bool AddToMTGSpawnPool = true) {
             EnemyDatabaseEntry entry = new EnemyDatabaseEntry {
                 myGuid = EnemyGUID,
@@ -6685,7 +6707,11 @@ namespace ExpandTheGungeon.ExpandPrefab {
 
             ExpandUtility.DuplicateSprite(m_CachedTargetObject.AddComponent<tk2dSprite>(), m_CachedEnemyActor.gameObject.GetComponent<tk2dSprite>());
             ExpandUtility.GenerateSpriteAnimator(m_CachedTargetObject, m_CachedEnemyActor.spriteAnimator.Library, 8, 0, playAutomatically: true, ClipFps: 0);
-            
+
+
+            HealthHaver m_PoisbulordHealthHaver = m_CachedTargetObject.GetComponent<HealthHaver>();
+            ExpandUtility.SetHealth(m_PoisbulordHealthHaver, 1500);
+
 
             tk2dSpriteAnimation m_SourceBlobulorAnimationLibrary = m_CachedEnemyActor.spriteAnimator.Library;
             tk2dSpriteAnimation m_PoisbulordLibrary = m_CachedTargetObject.AddComponent<tk2dSpriteAnimation>();

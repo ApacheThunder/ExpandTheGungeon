@@ -77,11 +77,13 @@ namespace ExpandTheGungeon.ItemAPI {
         public override bool CanBeUsed(PlayerController user) { return (IsUsableRightNow(user) && base.CanBeUsed(user)); }
 
         private bool IsUsableRightNow(PlayerController user) {
-            if (!user | user.IsInCombat | user.CurrentRoom == null | user.CurrentRoom.IsSealed) { return false; }
-            if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON) { return false; }
+            if (!user)return false;
+            if (user.IsInCombat | user.CurrentRoom == null) return false;
+            if (user.CurrentRoom.IsSealed) return false;
+            /*if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON)return false;
             if (!GameStatsManager.Instance.AllCorePastsBeaten() && GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON) {
                 return false;
-            }
+            }*/
             return true;
         }
 
@@ -187,6 +189,7 @@ namespace ExpandTheGungeon.ItemAPI {
             ExpandNewElevatorController m_ElevatorController = m_ElevatorOBJ.GetComponent<ExpandNewElevatorController>();
             m_ElevatorController.OverrideBossMusic = "Play_EX_MUS_ShotsFired_01";
             m_ElevatorController.OverrideFloorName = BraveUtility.RandomElement(ValidDestinations.Shuffle());
+            m_ElevatorController.IsPortableElevator = true;
             m_ElevatorController.ConfigureOnPlacement(targetRoom);
 
             if(Random.value <= 0.004f) {

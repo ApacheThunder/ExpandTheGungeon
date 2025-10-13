@@ -4,7 +4,6 @@ using Dungeonator;
 using UnityEngine;
 using ExpandTheGungeon.ExpandUtilities;
 using static ExpandTheGungeon.ExpandUtilities.ReflectionHelpers;
-using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandComponents {
 

@@ -18,6 +18,29 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
     public class ExpandUtility {
 
+        // To allow Glitch Elevator/Backrooms no clip zones to appear on Forge/Bullet Hell. 
+        // In these instances when the player leaves these floors they return to the floor they came from instead of advancing to next floor to avoid issues with player reaching bullet hell sooner then expected or advancing past bullet hell when that shouldn't be possible.
+        public static void CheckAndFixNextLevelIndex(GameManager instance) {
+            int nextLevelIndex = ReflectionHelpers.ReflectGetField<int>(typeof(GameManager), "nextLevelIndex", instance);
+            if ((nextLevelIndex > 5) | (nextLevelIndex == 0)) {
+                if (nextLevelIndex == 0 | nextLevelIndex > 6) {
+                    nextLevelIndex = 6;
+                } else {
+                    nextLevelIndex = 5;
+                }
+                (typeof(GameManager).GetField("nextLevelIndex", BindingFlags.Instance | BindingFlags.NonPublic)).SetValue(instance, nextLevelIndex);
+            }
+        }
+
+        public static void SetHealth(HealthHaver source, float health, float? maxHealth = null) {
+            FieldInfo currentHealth = typeof(HealthHaver).GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo maximumHealth = typeof(HealthHaver).GetField("maximumHealth", BindingFlags.Instance | BindingFlags.NonPublic);
+            float m_maxHealth = health;
+            if (maxHealth.HasValue) m_maxHealth = maxHealth.Value;
+            currentHealth.SetValue(source, health);
+            maximumHealth.SetValue(source, m_maxHealth);
+        }
+
         public static int GetIDFromClip(string clipName, tk2dSpriteAnimator SpriteAnimator) {
             if (!string.IsNullOrEmpty(clipName) && SpriteAnimator && SpriteAnimator.Library?.clips?.Length > 0) {
                 for (int i = 0; i < SpriteAnimator.Library.clips.Length; i++) {

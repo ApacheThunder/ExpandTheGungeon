@@ -136,7 +136,7 @@
     <Compile Include="ExpandComponents\ExpandTeleportBehavior.cs" />
     <Compile Include="ExpandConsole.cs" />
     <Compile Include="ExpandComponents\ExpandEnemyAutoKiller.cs" />
-    <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_future_flow.cs" />
+    <Compile Include="ExpandDungeonFlows\DungeonFlows\f1b_future_flows.cs" />
     <Compile Include="ExpandLoadingScreens\ExpandLoadingScreen.cs" />
     <Compile Include="ExpandComponents\ExpandHatMindController.cs" />
     <Compile Include="ExpandComponents\ExpandNewElevatorController.cs" />

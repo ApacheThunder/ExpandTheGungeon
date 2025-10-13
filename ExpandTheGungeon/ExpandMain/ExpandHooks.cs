@@ -33,7 +33,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook clearActiveGameDataHook;
         public static Hook wallmimichook;
         public static Hook Stringhook;
-        public static Hook flowhook;
+        // public static Hook flowhook;
         public static Hook objectstamphook;
         public static Hook placeRoomHook;
         public static Hook getRandomFlowHook;
@@ -167,11 +167,11 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(ExpandHooks).GetMethod("GetEnemiesString", BindingFlags.Public | BindingFlags.Static)
             );
             
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlowDatabase.GetOrLoadByName Hook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing FlowDatabase.GetOrLoadByName Hook...."); }
             flowhook = new Hook(
                 typeof(FlowDatabase).GetMethod(nameof(FlowDatabase.GetOrLoadByName), BindingFlags.Public | BindingFlags.Static),
                 typeof(ExpandDungeonFlow).GetMethod(nameof(ExpandDungeonFlow.LoadCustomFlow), BindingFlags.Public | BindingFlags.Static)
-            );
+            );*/
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing ApplyObjectStamp Hook...."); }
             objectstamphook = new Hook(
@@ -1995,6 +1995,36 @@ namespace ExpandTheGungeon.ExpandMain {
                 ExpandSettings.SewersIsFuture = false;
                 custom = "tt_future";
             }
+        }
+
+        // For debugging source of null clips in logs.
+        /*[HarmonyPatch(typeof(tk2dSpriteAnimator), "GetClipByNameVerbose", typeof(string))]
+        [HarmonyPostfix]
+        public static void GetClipByNameVerbosePatch(tk2dSpriteAnimator __instance, string name, ref tk2dSpriteAnimationClip __result) {
+            if (__result == null && __instance.gameObject) {
+                string WarningText = ("EX: Calling clip.Play() with a null clip on object '" + __instance.gameObject.name);
+                if (__instance.gameObject.transform.parent && __instance.gameObject.transform.parent.gameObject) {
+                    WarningText = WarningText + ("' on Parent Object: '" + __instance.gameObject.transform.parent.gameObject.name + "'.");
+                } else {
+                    WarningText = (WarningText + "'!");
+                }
+                Debug.LogWarning(WarningText);
+            }
+        }*/
+
+        [HarmonyPatch(typeof(tk2dSpriteAnimator), nameof(tk2dSpriteAnimator.Play), typeof(tk2dSpriteAnimationClip), typeof(float), typeof(float), typeof(bool))]
+        [HarmonyPrefix]
+        public static bool PlayPatch(tk2dSpriteAnimator __instance, tk2dSpriteAnimationClip clip, float clipStartTime, float overrideFps, bool skipEvents = false) {
+            if (clip == null && __instance.gameObject) {
+                string WarningText = ("EX: Calling clip.Play() with a null clip on object '" + __instance.gameObject.name + "'");
+                if (__instance.gameObject.transform.parent && __instance.gameObject.transform.parent.gameObject) {
+                    WarningText = WarningText + (" on Parent Object: '" + __instance.gameObject.transform.parent.gameObject.name + "'.");
+                } else {
+                    WarningText = (WarningText + "!");
+                }
+                Debug.LogWarning(WarningText);
+            }
+            return true;
         }
 
         /*protected void OnDestroyHook(Action<AIAnimator>orig, AIAnimator self) {
