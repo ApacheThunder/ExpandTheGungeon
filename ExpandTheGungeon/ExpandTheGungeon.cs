@@ -57,7 +57,7 @@ namespace ExpandTheGungeon {
         
         public const string GUID = "ApacheThunder.etg.ExpandTheGungeon";
         public const string ModName = "ExpandTheGungeon";
-        public const string VERSION = "3.0.6";
+        public const string VERSION = "3.0.7";
         public static string ZipFilePath;
         public static string FilePath;
         public static string ResourcesPath;
@@ -159,12 +159,8 @@ namespace ExpandTheGungeon {
 
                 if (expandSharedAssets1) {
                     ExpandFoyer.EXFoyerChecker = expandSharedAssets1.LoadAsset<GameObject>("EXFoyerChecker");
-
                     ModLogo = expandSharedAssets1.LoadAsset<Texture2D>("EXLogo");
-                    ModLogo.filterMode = FilterMode.Point;
-
                     ModLogoMini = expandSharedAssets1.LoadAsset<Texture2D>("EXLogoMini");
-                    ModLogoMini.filterMode = FilterMode.Point;
                 }
                 
                 expandSharedAssets1 = null;
@@ -186,7 +182,7 @@ namespace ExpandTheGungeon {
             if(ExpandSettings.EnableAsyncAssetLoading)ExpandLoadingScreen.UpdateLoadingBar(loadStatus);
 
             if (ExceptionTextList.Count > 0) {
-                foreach (string text in ExceptionTextList) { ETGModConsole.Log(text); }
+                foreach (string text in ExceptionTextList)ETGModConsole.Log(text);
                 return;
             }
 
@@ -206,7 +202,7 @@ namespace ExpandTheGungeon {
                 gameManager.OnNewLevelFullyLoaded += ExpandObjectMods.InitSpecialMods;
 
                 ExpandHooks.InstallRequiredHooks();
-                ExpandDungeonMusicAPI.InitHooks();
+                // ExpandDungeonMusicAPI.InitHooks();
             } catch (Exception ex) {
                 ETGModConsole.Log("[ExpandTheGungeon] ERROR: Exception occured while installing hooks!");
                 ExpandLoadingScreen.LoadText[LoadStatus.LoadError] = "ERROR: Exception while installing hooks!";

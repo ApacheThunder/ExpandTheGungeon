@@ -37,6 +37,12 @@ namespace ExpandTheGungeon.ItemAPI {
                     amount = 1,
                     modifyType = StatModifier.ModifyMethod.ADDITIVE,
                     isMeatBunBuff = false
+                },
+                new StatModifier() {
+                    statToBoost = PlayerStats.StatType.AdditionalItemCapacity,
+                    amount = 1,
+                    modifyType = StatModifier.ModifyMethod.ADDITIVE,
+                    isMeatBunBuff = false
                 }
             };
 
@@ -378,12 +384,13 @@ namespace ExpandTheGungeon.ItemAPI {
                         yield break;
                     }
                     
-                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
-                    ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
+                    ExpandPlaceCorruptTiles.Instance.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[0], null, true, true);
+                    ExpandPlaceCorruptTiles.Instance.PlaceCorruptTiles(dungeon, SecretBossRoomCluster[1], null, true, true);
+                    ExpandPlaceCorruptTiles.DestroyInstance();
 
                     TeleportToRoom(user, SecretBossRoomCluster[0]);
                     
-                    while (m_IsTeleporting) { yield return null; }
+                    while (m_IsTeleporting)yield return null;
 
                     
                     GameObject m_PortalWarpObjectBossCluster = Instantiate(ExpandPrefabs.EX_GlitchPortal, (user.gameObject.transform.position + new Vector3(0.75f, 0)), Quaternion.identity);
@@ -410,7 +417,7 @@ namespace ExpandTheGungeon.ItemAPI {
                     }
                     Destroy(TempFXObject);
                     m_InUse = false;
-                    if (m_DebugMode) { ClearCooldowns(); }
+                    if (m_DebugMode)ClearCooldowns();
                     yield break;
                 }
             }
@@ -626,10 +633,12 @@ namespace ExpandTheGungeon.ItemAPI {
             if (GlitchRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.SECRET && GlitchRoom.IsSecretRoom) { GlitchRoom.secretRoomManager.OpenDoor(); }
             
             if (m_CopyCurrentRoom) {
-                ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
+                ExpandPlaceCorruptTiles.Instance.PlaceCorruptTiles(dungeon, GlitchRoom, null, false, true, true);
             } else {
-                ExpandPlaceCorruptTiles.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
+                ExpandPlaceCorruptTiles.Instance.PlaceCorruptTiles(dungeon, GlitchRoom, null, true, true, true);
             }
+
+            ExpandPlaceCorruptTiles.DestroyInstance();
 
             bool IsWinchesterRoom = false;
 

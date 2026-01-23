@@ -6,14 +6,32 @@ using ExpandTheGungeon.ExpandUtilities;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandFloorDecorator {
-        
-        private static int RandomObjectsPlaced = 0;
-        private static int RandomObjectsSkipped = 0;
-        
+    public class ExpandFloorDecorator : MonoBehaviour {
+
         private static readonly bool DebugMode = false;
 
-        public static void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
+        public static ExpandFloorDecorator Instance {
+            get {
+                if (!m_Instance) {
+                    GameObject m_ExpandFloorDecorator = new GameObject("Expand Floor Decorator", new System.Type[] { typeof(ExpandFloorDecorator) }) { layer = 22 };
+                    m_Instance = m_ExpandFloorDecorator.GetComponent<ExpandFloorDecorator>();
+                }
+                return m_Instance;
+            }
+        }
+
+        private static ExpandFloorDecorator m_Instance;
+
+        public static void DestroyInstance() {
+            Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
+
+        
+        private int RandomObjectsPlaced = 0;
+        private int RandomObjectsSkipped = 0;
+
+        public void PlaceFloorDecoration(Dungeon dungeon, List<RoomHandler> roomListOverride = null, bool ignoreTilesetType = false) {
             
             List<GlobalDungeonData.ValidTilesets> ValidTilesets = new List<GlobalDungeonData.ValidTilesets>() {
                 GlobalDungeonData.ValidTilesets.JUNGLEGEON,
@@ -74,7 +92,8 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private static void PlaceRandomTrees(Dungeon dungeon, RoomHandler currentRoom) {
+
+        private void PlaceRandomTrees(Dungeon dungeon, RoomHandler currentRoom) {
 
             if (currentRoom.area == null) { return; }
             
@@ -150,7 +169,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private static void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom) {
+        private void PlaceRandomCorpses(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             int MaxObjectsPerRoom = 12;
@@ -202,7 +221,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
         
-        private static void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom) {
+        private void PlaceRandomCacti(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
 
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | currentRoom.IsMaintenanceRoom() |
@@ -303,7 +322,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
         
-        private static void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom) {
+        private void PlaceRandomAlarmMushrooms(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
             
             if (currentRoom == null | roomCategory == PrototypeDungeonRoom.RoomCategory.REWARD | string.IsNullOrEmpty(currentRoom.GetRoomName()) |
@@ -372,7 +391,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
         
-        private static void PlaceRandomOfficeSupplies(Dungeon dungeon, RoomHandler currentRoom) {
+        private void PlaceRandomOfficeSupplies(Dungeon dungeon, RoomHandler currentRoom) {
             PrototypeDungeonRoom.RoomCategory roomCategory = currentRoom.area.PrototypeRoomCategory;
             
             int MaxObjectsPerRoom = 8;
@@ -426,7 +445,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private static void ReplaceTables() {
+        private void ReplaceTables() {
             FlippableCover[] AllTables = Object.FindObjectsOfType<FlippableCover>();                
             if (AllTables != null && AllTables.Length > 0) {
                 for (int i = 0; i < AllTables.Length; i++) {
@@ -485,7 +504,7 @@ namespace ExpandTheGungeon.ExpandMain {
             }
         }
 
-        private static void RemoveTableDecorations(FlippableCover table, RoomHandler currentRoom) {
+        private void RemoveTableDecorations(FlippableCover table, RoomHandler currentRoom) {
             for (int i = 0; i < StaticReferenceManager.AllMinorBreakables.Count; i++) {
                 if (!StaticReferenceManager.AllMinorBreakables[i].IsBroken && !StaticReferenceManager.AllMinorBreakables[i].debris && StaticReferenceManager.AllMinorBreakables[i].transform.position.GetAbsoluteRoom() == currentRoom) {
                     SpeculativeRigidbody specRigidbody = StaticReferenceManager.AllMinorBreakables[i].specRigidbody;

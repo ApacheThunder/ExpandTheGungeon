@@ -105,7 +105,7 @@ namespace ExpandTheGungeon {
 
             bool playerHasCorruptedJunk = false;
 
-            if (ExpandPlaceWallMimic.PlayerHasThirdEye && Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) { Pixelator.Instance.DoOcclusionLayer = false; }
+            if (ExpandPlaceFloorObjects.PlayerHasThirdEye && Pixelator.Instance && Pixelator.Instance.DoOcclusionLayer) { Pixelator.Instance.DoOcclusionLayer = false; }
 
             if (player1) { if (player1.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
             if (player2) { if (player2.HasPassiveItem(CorruptedJunk.CorruptedJunkID)) { playerHasCorruptedJunk = true; } }
@@ -180,7 +180,8 @@ namespace ExpandTheGungeon {
                         }
                     }
                     
-                    ExpandPlaceCorruptedEnemies.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
+                    ExpandPlaceCorruptedEnemies.Instance.PlaceRandomEnemies(dungeon, GameManager.Instance.CurrentFloor);
+                    ExpandPlaceCorruptedEnemies.DestroyInstance();
                     // Destroy(m_GlitchEnemyRandomizer);
                     MaybeSetupGlitchEnemyStun(dungeon);
 

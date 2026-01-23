@@ -73,7 +73,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override void Pickup(PlayerController player) {                        
             base.Pickup(player);
-            ExpandPlaceWallMimic.PlayerHasCorruptedJunk = true;
+            ExpandPlaceFloorObjects.PlayerHasCorruptedJunk = true;
             HandleUIAnimation();
             HandleRandomEffect(player);
             m_PickedUp = true;
@@ -191,7 +191,7 @@ namespace ExpandTheGungeon.ItemAPI {
             DebrisObject drop = base.Drop(player);
             GetComponent<CorruptedJunk>().m_pickedUpThisRun = true;
             GetComponent<CorruptedJunk>().m_PickedUp = true;
-            ExpandPlaceWallMimic.PlayerHasCorruptedJunk = false;
+            ExpandPlaceFloorObjects.PlayerHasCorruptedJunk = false;
             return drop;
         }
 
@@ -212,7 +212,7 @@ namespace ExpandTheGungeon.ItemAPI {
         }
 
         protected override void OnDestroy() {
-            ExpandPlaceWallMimic.PlayerHasCorruptedJunk = false;
+            ExpandPlaceFloorObjects.PlayerHasCorruptedJunk = false;
             base.OnDestroy();
         }
     }

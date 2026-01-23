@@ -39,7 +39,7 @@ namespace ExpandTheGungeon.ItemAPI {
         public override void Pickup(PlayerController player) {
             if (m_pickedUp) { return; }
             m_owner = player;
-            ExpandPlaceWallMimic.PlayerHasWallMimicItem = true;
+            ExpandPlaceFloorObjects.PlayerHasWallMimicItem = true;
             base.Pickup(player);
         }
         
@@ -53,13 +53,13 @@ namespace ExpandTheGungeon.ItemAPI {
             
             if (player) { m_owner = null; }
 
-            ExpandPlaceWallMimic.PlayerHasWallMimicItem = false;
+            ExpandPlaceFloorObjects.PlayerHasWallMimicItem = false;
 
             return debrisObject;
         }
 
         protected override void OnDestroy() {
-            ExpandPlaceWallMimic.PlayerHasWallMimicItem = false;
+            ExpandPlaceFloorObjects.PlayerHasWallMimicItem = false;
             base.OnDestroy();
         }
 

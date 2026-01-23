@@ -31,7 +31,7 @@ namespace ExpandTheGungeon.ExpandMain {
         public static Hook escapeRopeCanBeUsedHook;
         public static Hook clearPerLevelDataHook;
         public static Hook clearActiveGameDataHook;
-        public static Hook wallmimichook;
+        // public static Hook wallmimichook;
         public static Hook Stringhook;
         // public static Hook flowhook;
         public static Hook objectstamphook;
@@ -154,12 +154,12 @@ namespace ExpandTheGungeon.ExpandMain {
                 typeof(GameManager)
             );
 
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
+            /*if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing PlaceWallMimics Hook...."); }
             wallmimichook = new Hook(
                 typeof(Dungeon).GetMethod("PlaceWallMimics", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandPlaceWallMimic).GetMethod(nameof(ExpandPlaceWallMimic.PlaceWallMimics), BindingFlags.Public | BindingFlags.Instance),
+                typeof(ExpandPlaceFloorObjects).GetMethod(nameof(ExpandPlaceFloorObjects.PlaceWallMimics), BindingFlags.Public | BindingFlags.Instance),
                 typeof(Dungeon)
-            );
+            );*/
 
             if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GetEnemiesString Hook...."); }
             Stringhook = new Hook(

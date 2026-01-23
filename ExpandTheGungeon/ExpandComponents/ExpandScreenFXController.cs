@@ -263,9 +263,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                     }
                     /*if (m_xScanline <= 0 || Random.value < 0.05) { m_xScanline = Random.value; }
                     m_xScanline -= (BraveTime.DeltaTime * 0.1f);*/
-                    m_xScanline = Random.Range(0.4f, 0.6f);
-                    m_xShiftIntensity = Random.Range(190, 500);
-                    m_xShift = Random.Range(0, 0.002f);
+                    // m_xScanline = Random.Range(0.4f, 0.6f);
+                    m_xScanline = Random.Range(0.3f, 0.45f);
+                    // m_xShiftIntensity = Random.Range(190, 500);
+                    m_xShiftIntensity = Random.Range(700, 950);
+                    m_xShift = Random.Range(0, 0.0009f);
                     ScreenMaterial.SetFloat("_xScanline", m_xScanline);
                     ScreenMaterial.SetFloat("_xShift", m_xShift);
                     ScreenMaterial.SetFloat("_xShiftIntensity", m_xShiftIntensity);

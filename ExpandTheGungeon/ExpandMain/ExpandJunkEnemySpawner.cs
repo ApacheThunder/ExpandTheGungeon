@@ -7,13 +7,31 @@ using System.Linq;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandJunkEnemySpawneer {
+    public class ExpandJunkEnemySpawner : MonoBehaviour {
 
-        public static void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler, bool isBackRoomsEntitySpawner) {
-            if (dungeon.IsGlitchDungeon) { return; }
-            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON) { return; }
+        public static ExpandJunkEnemySpawner Instance {
+            get {
+                if (!m_Instance) {
+                    GameObject m_ExpandJunkEnemySpawneer = new GameObject("Expand Junk Enemy Placer", new System.Type[] { typeof(ExpandJunkEnemySpawner) }) { layer = 22 };
+                    m_Instance = m_ExpandJunkEnemySpawneer.GetComponent<ExpandJunkEnemySpawner>();
+                }
+                return m_Instance;
+            }
+        }
 
-            if (!isBackRoomsEntitySpawner && (Random.value < 0.85f)) { return; }
+        private static ExpandJunkEnemySpawner m_Instance;
+
+        public static void DestroyInstance() {
+            Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
+
+
+        public void PlaceRandomJunkEnemies(Dungeon dungeon, RoomHandler roomHandler, bool isBackRoomsEntitySpawner) {
+            if (dungeon.IsGlitchDungeon)return;
+            if (dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.RATGEON)return;
+
+            if (!isBackRoomsEntitySpawner && (Random.value < 0.85f))return;
 
             int RandomEnemiesPlaced = 0;
             int RandomEnemiesSkipped = 0;
@@ -22,7 +40,7 @@ namespace ExpandTheGungeon.ExpandMain {
 
             if (!isBackRoomsEntitySpawner && (Random.value < 0.1f)) { MaxEnemies = 2; }
             
-            if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0) { return; }
+            if (dungeon.data.rooms == null | dungeon.data.rooms.Count <= 0)return;
 
             List<int> roomList = Enumerable.Range(0, dungeon.data.rooms.Count).ToList();
             roomList = roomList.Shuffle();
@@ -144,7 +162,7 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private static IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int gridSnap = 1) {
+        private IntVector2? GetRandomAvailableCellForEnemy(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int gridSnap = 1) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }
             if (validCellsCached.Count == 0) {
                 for (int Width = -1; Width <= currentRoom.area.dimensions.x; Width++) {

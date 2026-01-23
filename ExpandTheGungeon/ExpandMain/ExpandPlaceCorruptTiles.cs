@@ -9,9 +9,27 @@ using ExpandTheGungeon.ExpandComponents;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPlaceCorruptTiles {
+    public class ExpandPlaceCorruptTiles : MonoBehaviour {
 
-        public static void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false, bool isCorruptedJunkRoom = false) {
+        public static ExpandPlaceCorruptTiles Instance {
+            get {
+                if (!m_Instance) {
+                    GameObject m_ExpandCorruptTilePlacer = new GameObject("Expand Corrupt Tile Placer", new Type[] { typeof(ExpandPlaceCorruptTiles) }) { layer = 22 };
+                    m_Instance = m_ExpandCorruptTilePlacer.GetComponent<ExpandPlaceCorruptTiles>();
+                }
+                return m_Instance;
+            }
+        }
+
+        private static ExpandPlaceCorruptTiles m_Instance;
+
+        public static void DestroyInstance() {
+            Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
+
+
+        public void PlaceCorruptTiles(Dungeon dungeon, RoomHandler roomHandler = null, GameObject parentObject = null, bool corruptWallsOnly = false, bool isLeadKeyRoom = false, bool isCorruptedJunkRoom = false) {
 
             bool m_CorruptedSecretRoomsPresent = false;
 

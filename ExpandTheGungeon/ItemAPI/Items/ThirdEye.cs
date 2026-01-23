@@ -62,7 +62,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override void Pickup(PlayerController player) {
             base.Pickup(player);
-            ExpandPlaceWallMimic.PlayerHasThirdEye = true;
+            ExpandPlaceFloorObjects.PlayerHasThirdEye = true;
             Pixelator.Instance.DoOcclusionLayer = false;
             player.OnRoomClearEvent += OnRoomCleared;
             player.OnNewFloorLoaded += OnFloorEntered;
@@ -133,7 +133,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         public override DebrisObject Drop(PlayerController player) {
             DebrisObject drop = base.Drop(player);
-            ExpandPlaceWallMimic.PlayerHasThirdEye = false;
+            ExpandPlaceFloorObjects.PlayerHasThirdEye = false;
             Pixelator.Instance.DoOcclusionLayer = true;
             m_PickedUp = false;
             m_DoRoomActivations = false;
@@ -149,7 +149,7 @@ namespace ExpandTheGungeon.ItemAPI {
 
         protected override void OnDestroy() {
             if (Pixelator.Instance)Pixelator.Instance.DoOcclusionLayer = true;
-            ExpandPlaceWallMimic.PlayerHasThirdEye = false;
+            ExpandPlaceFloorObjects.PlayerHasThirdEye = false;
             ExpandDebugCamera.DebugCameraEnabled = false;
             m_PickedUp = false;
             base.OnDestroy();

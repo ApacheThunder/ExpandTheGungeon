@@ -10307,22 +10307,22 @@ namespace ExpandTheGungeon.ExpandPrefab {
             ExpandPrefabs.AbbeyRoomTable.includedRooms.elements.Add(GenerateWeightedRoom(Expand_Apache_FieldOfSaws));
 
             WeightedRoom[] CustomSecretRooms = new WeightedRoom[] {
-                GenerateWeightedRoom(Expand_TinySecret, 4),
+                GenerateWeightedRoom(Expand_TinySecret),
                 GenerateWeightedRoom(Expand_GlitchedSecret, 0.45f),
-                GenerateWeightedRoom(Expand_RickRollSecret, 0.8f),
+                GenerateWeightedRoom(Expand_RickRollSecret, 0.65f),
             };
 
             WeightedRoom[] CustomAlbernRooms = new WeightedRoom[] {
-                GenerateWeightedRoom(Expand_Secret_Brother1),
-                GenerateWeightedRoom(Expand_Secret_Brother2),
-                GenerateWeightedRoom(Expand_Secret_Brother3),
-                GenerateWeightedRoom(Expand_Secret_Brother4),
-                GenerateWeightedRoom(Expand_Secret_Brother5),
-                GenerateWeightedRoom(Expand_Secret_Brother6),
-                GenerateWeightedRoom(Expand_Secret_Brother7),
-                GenerateWeightedRoom(Expand_Secret_Brother8),
-                GenerateWeightedRoom(Expand_Secret_Brother9),
-                GenerateWeightedRoom(Expand_Secret_Brother10)
+                GenerateWeightedRoom(Expand_Secret_Brother1, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother2, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother3, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother4, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother5, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother6, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother7, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother8, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother9, 0.55f),
+                GenerateWeightedRoom(Expand_Secret_Brother10, 0.55f)
             };
 
             WeightedRoom[] CustomMiscRooms = new WeightedRoom[] { GenerateWeightedRoom(Expand_BootlegRoom) };

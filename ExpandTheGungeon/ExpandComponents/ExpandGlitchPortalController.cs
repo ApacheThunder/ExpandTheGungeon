@@ -80,7 +80,7 @@ namespace ExpandTheGungeon.ExpandComponents {
                     ParentRoom.DeregisterInteractable(this);
                     if (GameManager.Instance.CurrentGameMode == GameManager.GameMode.SUPERBOSSRUSH |
                         GameManager.Instance.CurrentGameMode == GameManager.GameMode.BOSSRUSH |
-                        (GameManager.Instance.CurrentFloor > 4) | ExpandSettings.HasVisitedBackrooms) {
+                        ExpandSettings.HasVisitedBackrooms | Random.value > 0.3f) {
                         StartCoroutine(HandleTeleport(GameManager.Instance.PrimaryPlayer, CachedPosition, 1));
                     } else {
                         ExpandLoadingScreen.overrideType = ExpandLoadingScreen.OverrideType.Backrooms;

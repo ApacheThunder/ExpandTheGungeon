@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 775569347
+CRC: 2354279313
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9cb3463b8915f3f760aeac23f10892e8
+    Hash: 35905220159c87d17f2fee1a10babcbc
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6af7294dcb7fd671c320d2135cf8bbda
@@ -1161,6 +1161,7 @@ Assets:
 - Assets/ExpandSerializedData/SpriteCollections/ClownkinCollection.txt
 - Assets/ExpandRooms/RoomFactoryData/West/Expand_West_Canyon1_TinyPassage5.bytes
 - Assets/ExpandRooms/RoomFactoryData/Belly/Expand_Belly_Viscera11.bytes
+- Assets/ExpandTextures/Misc/EmptyVHSTextureAlt.png
 - Assets/ExpandSerializedData/SpriteCollections/CultistCompanionCollection.txt
 - Assets/ExpandSerializedData/AmmonomiconData/BootlegBulletKin_AmmonomiconData.txt
 - Assets/ExpandPrefabs/Misc/EXPortableElevator_Departure.prefab

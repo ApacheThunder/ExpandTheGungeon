@@ -158,6 +158,7 @@ namespace ExpandTheGungeon.ItemAPI {
             if (!user) return false;
             if (InFlight) return false;
             // if (!user.IsInCombat)return false;
+            if (GameManager.HasInstance && GameManager.Instance?.Dungeon?.LevelOverrideType == GameManager.LevelOverrideState.RESOURCEFUL_RAT) return false;
             if (ExpandTheGungeon.PortableShipInUse) return false;
             if (IsOnCooldown) return false;
             return true;

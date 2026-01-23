@@ -1,28 +1,18 @@
 ﻿using Dungeonator;
-using MonoMod.RuntimeDetour;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
 namespace ExpandTheGungeon.ExpandMain {
-    
+
+    [HarmonyPatch]
     public class ExpandDungeonMusicAPI {
 
         public static string TempCustomBossMusic = string.Empty;
         public static bool EnteredNewCustomFloor = false;
-        
-        public static Hook switchToStateHook;
-        public static Hook notifyEnteredNewRoomHook;
-        public static Hook switchToCustomMusicHook;
-        public static Hook switchToEndTimesMusicHook;
-        public static Hook switchToBossMusicHook;
-        public static Hook switchToDragunTwoHook;
-        public static Hook flushMusicAudioHook;
-        public static Hook flushAudioHook;
-        public static Hook endBossMusicHook;
-
-        
+                
         // Event for stopping all custom music. Ensure you defined this in your sound bank and put the string for it here.
         public static readonly string StopAllMusicEventName = "Stop_EX_MUS_All";
 
@@ -58,106 +48,42 @@ namespace ExpandTheGungeon.ExpandMain {
         };
         
         // Normal Action delegate doesn't support 5 arguments needed for SwitchToCustomMusic hook.
-        public delegate void Action5X<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+        // public delegate void Action5X<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
         // Needed to get some private fields. Can omit this if you have a ReflectionHelpers class that already has a version of this.
         public static T ReflectGetField<T>(Type classType, string fieldName, object o = null) {
             FieldInfo field = classType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | ((o != null) ? BindingFlags.Instance : BindingFlags.Static));
             return (T)field.GetValue(o);
         }
-
-        // Call this from mod's main Start() call
-        public static void InitHooks() {
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToState Hook...."); }
-            switchToStateHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod("SwitchToState", BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToState), BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.NotifyEnteredNewRoom Hook...."); }
-            notifyEnteredNewRoomHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.NotifyEnteredNewRoom), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(NotifyEnteredNewRoom)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToCustomMusic Hook...."); }
-            switchToCustomMusicHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.SwitchToCustomMusic), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToCustomMusic)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToEndTimesMusic Hook...."); }
-            switchToEndTimesMusicHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.SwitchToEndTimesMusic), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToEndTimesMusic)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToBossMusic Hook...."); }
-            switchToBossMusicHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.SwitchToBossMusic), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToBossMusic)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.SwitchToDragunTwo Hook...."); }
-            switchToDragunTwoHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.SwitchToDragunTwo), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(SwitchToDragunTwo)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing DungeonFloorMusicController.EndBossMusic Hook...."); }
-            endBossMusicHook = new Hook(
-                typeof(DungeonFloorMusicController).GetMethod(nameof(DungeonFloorMusicController.EndBossMusic), BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(EndBossMusic)),
-                typeof(DungeonFloorMusicController)
-            );
-
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushMusicAudio Hook...."); }
-            flushMusicAudioHook = new Hook(
-                typeof(GameManager).GetMethod("FlushMusicAudio", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(FlushMusicAudio)),
-                typeof(GameManager)
-            );
-            if (ExpandSettings.debugMode) { Debug.Log("[ExpandTheGungeon] Installing GameManager.FlushAudio Hook...."); }
-            flushAudioHook = new Hook(
-                typeof(GameManager).GetMethod("FlushAudio", BindingFlags.Public | BindingFlags.Instance),
-                typeof(ExpandDungeonMusicAPI).GetMethod(nameof(FlushAudio)),
-                typeof(GameManager)
-            );
-        }
-
+        
         // For setting up specific loop events for the floor's custom music and ending custom music while in certain rooms like shops/secret rooms.
-        private void SwitchToState(Action<DungeonFloorMusicController, DungeonFloorMusicController.DungeonMusicState> orig, DungeonFloorMusicController self, DungeonFloorMusicController.DungeonMusicState targetState) {
-            string m_cachedMusicEventCore = ReflectGetField<string>(typeof(DungeonFloorMusicController), "m_cachedMusicEventCore", self);
+        [HarmonyPatch(typeof(DungeonFloorMusicController), "SwitchToState", typeof(DungeonFloorMusicController.DungeonMusicState))]
+        [HarmonyPrefix]
+        private static bool SwitchToState(DungeonFloorMusicController __instance, DungeonFloorMusicController.DungeonMusicState targetState) {
+            string m_cachedMusicEventCore = ReflectGetField<string>(typeof(DungeonFloorMusicController), "m_cachedMusicEventCore", __instance);
             bool SupportsLoopSections = false;
 
-            float m_changedToArcadeTimer = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_changedToArcadeTimer", self);
-            float m_cooldownTimerRemaining = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_cooldownTimerRemaining", self);
-            uint m_coreMusicEventID = ReflectGetField<uint>(typeof(DungeonFloorMusicController), "m_coreMusicEventID", self);
+            float m_changedToArcadeTimer = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_changedToArcadeTimer", __instance);
+            float m_cooldownTimerRemaining = ReflectGetField<float>(typeof(DungeonFloorMusicController), "m_cooldownTimerRemaining", __instance);
+            uint m_coreMusicEventID = ReflectGetField<uint>(typeof(DungeonFloorMusicController), "m_coreMusicEventID", __instance);
             // DungeonFloorMusicController.DungeonMusicState m_currentState = ReflectGetField<DungeonFloorMusicController.DungeonMusicState>(typeof(DungeonFloorMusicController), "m_currentState", self);
             // bool m_overrideMusic = ReflectGetField<bool>(typeof(DungeonFloorMusicController), "m_overrideMusic", self);
             
             if (string.IsNullOrEmpty(m_cachedMusicEventCore) | !CustomLevelMusic.TryGetValue(m_cachedMusicEventCore, out SupportsLoopSections)) {
-                if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                 }
-                orig(self, targetState);
-                return;
+                return true;
             }
 
             FieldInfo m_cooldownTimerRemainingField = typeof(DungeonFloorMusicController).GetField("m_cooldownTimerRemaining", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo m_currentStateField = typeof(DungeonFloorMusicController).GetField("m_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
             
-            if (m_changedToArcadeTimer > 0f && targetState == DungeonFloorMusicController.DungeonMusicState.CALM && self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE) {
-                return;
+            if (m_changedToArcadeTimer > 0f && targetState == DungeonFloorMusicController.DungeonMusicState.CALM && __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE) {
+                return false;
             }
 
             Debug.Log(string.Concat(new object[] { "(EX) Attemping to switch to state: ", targetState.ToString(), " with core ID: ", m_coreMusicEventID }));
-            if (self.MusicOverridden) { return; }
+            if (__instance.MusicOverridden)return false;
             switch (targetState) {
                 /*default:
                     AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
@@ -167,218 +93,222 @@ namespace ExpandTheGungeon.ExpandMain {
                 case DungeonFloorMusicController.DungeonMusicState.ACTIVE_SIDE_A:
                     if (SupportsLoopSections) {
                         if (EnteredNewCustomFloor) {
-                            AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopA", self.gameObject);
+                            AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopA", __instance.gameObject);
                         } else {
                             EnteredNewCustomFloor = true;
                         }
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_LoopA", self.gameObject);
-                    } else if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
-                            self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
+                    } else if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
+                            __instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
                         )
                     {
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                        if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                        if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                         }
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.ACTIVE_SIDE_B:
                     if (SupportsLoopSections) {
                         if (EnteredNewCustomFloor) {
-                            AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopB", self.gameObject);
+                            AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopB", __instance.gameObject);
                         } else {
                             EnteredNewCustomFloor = true;
                         }
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_LoopB", self.gameObject);
-                    } else if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
-                            self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
+                    } else if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
+                            __instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
                         )
                     {
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                        if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                        if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                         }
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.ACTIVE_SIDE_C:
                     if (SupportsLoopSections) {
                         if (EnteredNewCustomFloor) {
-                            AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopC", self.gameObject);
+                            AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopC", __instance.gameObject);
                         } else {
                             EnteredNewCustomFloor = true;
                         }
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_LoopC", self.gameObject);
-                    } else if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
-                            self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
+                    } else if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
+                            __instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
                         )
                     {
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                        if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                        if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                         }
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.ACTIVE_SIDE_D:
                     if (SupportsLoopSections) {
                         if (EnteredNewCustomFloor) {
-                            AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopD", self.gameObject);
+                            AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_LoopD", __instance.gameObject);
                         } else {
                             EnteredNewCustomFloor = true;
                         }
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_LoopD", self.gameObject);
-                    } else if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
-                            self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
-                            self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
+                    } else if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
+                            __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
+                            __instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
                         )
                     {
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                        if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                        if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                         }
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.ARCADE:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
                     // if (SupportsLoopSections) { AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject); }
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Winchester", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Winchester_State_Drone", self.gameObject);
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", __instance.gameObject);
+                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Winchester", __instance.gameObject);
+                    AkSoundEngine.PostEvent("Play_MUS_Winchester_State_Drone", __instance.gameObject);
                     // if (SupportsLoopSections) { AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Calm", self.gameObject); }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.CALM:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    if (self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
-                        if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET) {
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    if (__instance.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
+                        if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET) {
                             Debug.Log("(EX) Skipped switching to state on Old West Floor: " + targetState.ToString());
-                            m_currentStateField.SetValue(self, targetState);
-                            return;
+                            m_currentStateField.SetValue(__instance, targetState);
+                            return false;
                         }
                     }
                     if (GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.FOYER && GameStatsManager.Instance.AnyPastBeaten()) {
-                        AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Winner", self.gameObject);
+                        AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Winner", __instance.gameObject);
                     } else {
-                        AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
+                        AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
                         if (SupportsLoopSections) {
-                            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Calm", self.gameObject);
-                        } else if (self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
-                                self.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
-                                self.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
-                                self.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
-                                self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
+                            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Calm", __instance.gameObject);
+                        } else if (__instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SHOP |
+                                __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.SECRET |
+                                __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS |
+                                __instance.CurrentState == DungeonFloorMusicController.DungeonMusicState.ARCADE |
+                                __instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)
                             )
                         {
-                            if (self.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
-                                AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+                            if (__instance.CurrentState == (DungeonFloorMusicController.DungeonMusicState)(-1)) {
+                                AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
                             }
-                            AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                            AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                         }
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Drone", self.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.FLOOR_INTRO:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
                     if (SupportsLoopSections) {
-                        AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Intro", self.gameObject);
+                        AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Intro", __instance.gameObject);
                     } else {
-                        AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                        AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                         // AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Intro", self.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.FOYER_ELEVATOR:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent(m_cachedMusicEventCore, self.gameObject);
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                    AkSoundEngine.PostEvent(m_cachedMusicEventCore, __instance.gameObject);
                     // AkSoundEngine.PostEvent("Play_MUS_State_Elevator", self.gameObject);
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.FOYER_SORCERESS:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                    AkSoundEngine.PostEvent("Play_MUS_State_Sorceress", self.gameObject);
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                    AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", __instance.gameObject);
+                    AkSoundEngine.PostEvent("Play_MUS_State_Sorceress", __instance.gameObject);
                     // AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Sorceress", self.gameObject);
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.SECRET:
-                    if (self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) { return; }
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Secret", self.gameObject);
+                    if (__instance.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) return false;
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(__instance.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Secret", __instance.gameObject);
                     } else {
-                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Secret", self.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", __instance.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Secret", __instance.gameObject);
                     }
                     break;
                 case DungeonFloorMusicController.DungeonMusicState.SHOP:
-                    m_cooldownTimerRemainingField.SetValue(self, -1f);
-                    AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-                    AkSoundEngine.PostEvent("Stop_MUS_All", self.gameObject);
-                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(self.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
-                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Shop", self.gameObject);
+                    m_cooldownTimerRemainingField.SetValue(__instance, -1f);
+                    AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+                    AkSoundEngine.PostEvent("Stop_MUS_All", __instance.gameObject);
+                    if (SupportsLoopSections && TilesetsWithCustomShopSecretMusic.Contains(__instance.gameObject.GetComponent<GameManager>().Dungeon.tileIndices.tilesetId)) {
+                        AkSoundEngine.PostEvent(m_cachedMusicEventCore + "_Shop", __instance.gameObject);
                     } else {
-                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", self.gameObject);
-                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Shop", self.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_Theme_01", __instance.gameObject);
+                        AkSoundEngine.PostEvent("Play_MUS_Dungeon_State_Shop", __instance.gameObject);
                     }
                     break;
             }            
             Debug.Log("(EX) Successfully switched to state: " + targetState.ToString());
-            m_currentStateField.SetValue(self, targetState);
+            m_currentStateField.SetValue(__instance, targetState);
+            return false;
         }
 
         // Ensures custom floor music doesn't overlap and not overlap with other custom room music if player enters one room that has custom room music into another that also has custom room music.
-        public void SwitchToCustomMusic(Action5X<DungeonFloorMusicController, string, GameObject, bool, string> orig, DungeonFloorMusicController self, string customMusicEvent, GameObject source, bool useSwitch, string switchEvent) {
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.SwitchToCustomMusic), typeof(string), typeof(GameObject), typeof(bool), typeof(string))]
+        [HarmonyPrefix]
+        public static bool SwitchToCustomMusic(DungeonFloorMusicController __instance, string customMusicEvent, GameObject source, bool useSwitch, string switchEvent) {
             if (customMusicEvent == "Play_MUS_Dungeon_State_NPC") {
-                string m_cachedMusicEventCore = ReflectGetField<string>(typeof(DungeonFloorMusicController), "m_cachedMusicEventCore", self);
+                string m_cachedMusicEventCore = ReflectGetField<string>(typeof(DungeonFloorMusicController), "m_cachedMusicEventCore", __instance);
                 bool SupportsLoopSections = false;
-                if (CustomLevelMusic.TryGetValue(m_cachedMusicEventCore, out SupportsLoopSections)) { return; }
+                if (CustomLevelMusic.TryGetValue(m_cachedMusicEventCore, out SupportsLoopSections)) return false;
             }
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
             Debug.Log("(EX) Successfully switched to custom music: " + customMusicEvent);
-            orig(self, customMusicEvent, source, useSwitch, switchEvent);
+            return true;
         }
-        
+
         // This is specific to ExpandTheGungeon's Old West floor currently.
-        public void NotifyEnteredNewRoom(Action<DungeonFloorMusicController, RoomHandler> orig, DungeonFloorMusicController self, RoomHandler newRoom) {
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.NotifyEnteredNewRoom), typeof(RoomHandler))]
+        [HarmonyPrefix]
+        public static bool NotifyEnteredNewRoom(DungeonFloorMusicController __instance, RoomHandler newRoom) {
             /*if (GameManager.Instance.Dungeon.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.WESTGEON) {
                 self.UpdateCoreMusicEvent();
                 FieldInfo m_cachedMusicEventCore = typeof(DungeonFloorMusicController).GetField("m_cachedMusicEventCore", BindingFlags.NonPublic | BindingFlags.Instance);
                 FieldInfo m_currentState = typeof(DungeonFloorMusicController).GetField("m_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
                 if (string.IsNullOrEmpty((string)m_cachedMusicEventCore.GetValue(self)) | !CustomWestFloorMusic.Contains((string)m_cachedMusicEventCore.GetValue(self))) {
-                    orig(self, newRoom);
-                    return;
+                    return true;
                 }
                 if (newRoom != null && (newRoom.RoomVisualSubtype == 1 || newRoom.RoomVisualSubtype == 2)) {
                     if ((string)m_cachedMusicEventCore.GetValue(self) != CustomWestFloorMusic[0]) {
@@ -408,41 +338,52 @@ namespace ExpandTheGungeon.ExpandMain {
                     }
                 }*/
             } catch (Exception) { };
-            orig(self, newRoom);
+            return true;
         }
 
         // These Hooks ensure custom floor music ends when boss/endtimes musics starts.
-        public void SwitchToEndTimesMusic(Action<DungeonFloorMusicController> orig, DungeonFloorMusicController self) {
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-            orig(self);
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.SwitchToEndTimesMusic))]
+        [HarmonyPrefix]
+        public static bool SwitchToEndTimesMusic(DungeonFloorMusicController __instance) {
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+            return true;
         }
 
-        public void SwitchToBossMusic(Action<DungeonFloorMusicController, string, GameObject>orig, DungeonFloorMusicController self, string bossMusicString, GameObject source) {
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-            orig(self, bossMusicString, source);
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.SwitchToBossMusic), typeof(string), typeof(GameObject))]
+        [HarmonyPrefix]
+        public static bool SwitchToBossMusic(DungeonFloorMusicController __instance, string bossMusicString, GameObject source) {
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+            return true;
         }
 
-        public void SwitchToDragunTwo(Action<DungeonFloorMusicController> orig, DungeonFloorMusicController self) {
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-            orig(self);
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.SwitchToDragunTwo))]
+        [HarmonyPrefix]
+        public static bool SwitchToDragunTwo(DungeonFloorMusicController __instance) {
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+            return true;
         }
         
-
         // Ensures any custom boss music is cleared.
-        public void EndBossMusic(Action<DungeonFloorMusicController>orig, DungeonFloorMusicController self) {
-            AkSoundEngine.PostEvent("Stop_EX_MUS_All", self.gameObject);
-            orig(self);
+        [HarmonyPatch(typeof(DungeonFloorMusicController), nameof(DungeonFloorMusicController.EndBossMusic))]
+        [HarmonyPrefix]
+        public static bool EndBossMusic(DungeonFloorMusicController __instance) {
+            AkSoundEngine.PostEvent("Stop_EX_MUS_All", __instance.gameObject);
+            return true;
         }
 
         // These hooks ensure our custom music/audio gets stopped properly when leaving a floor.
-        public void FlushMusicAudio(Action<GameManager> orig, GameManager self) {
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-            orig(self);
+        [HarmonyPatch(typeof(GameManager), nameof(GameManager.FlushMusicAudio))]
+        [HarmonyPrefix]
+        public static bool FlushMusicAudio(GameManager __instance) {
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+            return true;
         }
 
-        public void FlushAudio(Action<GameManager> orig, GameManager self) {
-            AkSoundEngine.PostEvent(StopAllMusicEventName, self.gameObject);
-            orig(self);
+        [HarmonyPatch(typeof(GameManager), nameof(GameManager.FlushAudio))]
+        [HarmonyPrefix]
+        public static bool FlushAudio(GameManager __instance) {
+            AkSoundEngine.PostEvent(StopAllMusicEventName, __instance.gameObject);
+            return true;
         }
     }
 }

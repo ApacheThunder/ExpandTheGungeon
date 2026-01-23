@@ -5,9 +5,26 @@ using ExpandTheGungeon.ExpandPrefab;
 
 namespace ExpandTheGungeon.ExpandMain {
 
-    public class ExpandPlaceCorruptedEnemies {
+    public class ExpandPlaceCorruptedEnemies : MonoBehaviour{
 
-        public static void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
+        public static ExpandPlaceCorruptedEnemies Instance {
+            get {
+                if (!m_Instance) {
+                    GameObject m_ExpandCorruptEnemyPlacer = new GameObject("Expand Corrupt Enemy Placer", new System.Type[] { typeof(ExpandPlaceCorruptedEnemies) }) { layer = 22 };
+                    m_Instance = m_ExpandCorruptEnemyPlacer.GetComponent<ExpandPlaceCorruptedEnemies>();
+                }
+                return m_Instance;
+            }
+        }
+
+        private static ExpandPlaceCorruptedEnemies m_Instance;
+
+        public static void DestroyInstance() {
+            Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
+
+        public void PlaceRandomEnemies(Dungeon dungeon, int currentFloor, RoomHandler roomHandler = null) {
             
             if (!dungeon.IsGlitchDungeon && roomHandler == null) { return; }
 
@@ -111,7 +128,7 @@ namespace ExpandTheGungeon.ExpandMain {
             return;
         }
 
-        private static IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = true) {
+        private IntVector2? GetRandomAvailableCell(Dungeon dungeon, RoomHandler currentRoom, List<IntVector2> validCellsCached, int Clearence = 2, int ExitClearence = 10, bool avoidExits = false, bool avoidPits = true, bool PositionRelativeToRoom = true) {
             if (dungeon == null | currentRoom == null | validCellsCached == null) { return null; }            
             if (validCellsCached.Count == 0) {
                 for (int X = 0; X < currentRoom.area.dimensions.x; X++) {

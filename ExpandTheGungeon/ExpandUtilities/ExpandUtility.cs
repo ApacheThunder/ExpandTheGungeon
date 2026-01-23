@@ -2510,7 +2510,8 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             if (!m_CollisionObject.GetComponent<SpeculativeRigidbody>()) { UnityEngine.Object.Destroy(m_CollisionObject); }
 
-            ExpandFloorDecorator.PlaceFloorDecoration(dungeon, new List<RoomHandler>() { targetRoom });
+            ExpandFloorDecorator.Instance.PlaceFloorDecoration(dungeon, new List<RoomHandler>() { targetRoom });
+            ExpandFloorDecorator.DestroyInstance();
 
             HandleSpecificRoomAGDInjection(targetRoom, dungeon, dungeon2.tileIndices.tilesetId);
 
@@ -2605,7 +2606,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
         public static void MaybeSpawnWallMimics(Dungeon dungeon, RoomHandler currentRoom, GlobalDungeonData.ValidTilesets TilesetOverride = GlobalDungeonData.ValidTilesets.CASTLEGEON, bool GuranteedWallMimic = false, int OverrideWallMimicCount = -1, tk2dSpriteCollectionData FakeWallDungeonCollectionOverride = null) {
 
-            if (!GuranteedWallMimic && !ExpandPlaceWallMimic.PlayerHasWallMimicItem && UnityEngine.Random.value < 0.85f) { return; }
+            if (!GuranteedWallMimic && !ExpandPlaceFloorObjects.PlayerHasWallMimicItem && UnityEngine.Random.value < 0.85f) { return; }
 
             string RoomName = "NULL";
 
@@ -2616,7 +2617,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
             }
 
             if (!GuranteedWallMimic) {
-                if (currentRoom.IsShop | currentRoom.GetRoomName().StartsWith("DraGunRoom") | ExpandPlaceWallMimic.BannedWallMimicRoomList.Contains(RoomName.ToLower())) {
+                if (currentRoom.IsShop | currentRoom.GetRoomName().StartsWith("DraGunRoom") | ExpandPlaceFloorObjects.BannedWallMimicRoomList.Contains(RoomName.ToLower())) {
                     return;
                 }
                 if (currentRoom.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS && BraveUtility.RandomBool()) { return; }
@@ -2626,7 +2627,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
 
             if (TilesetOverride != GlobalDungeonData.ValidTilesets.CASTLEGEON) { TilesetOverride = dungeon.tileIndices.tilesetId; }
 
-            if (ExpandPlaceWallMimic.PlayerHasWallMimicItem) {
+            if (ExpandPlaceFloorObjects.PlayerHasWallMimicItem) {
                 switch (TilesetOverride) {
                     case GlobalDungeonData.ValidTilesets.CATHEDRALGEON:
                         WallMimicsPerRoom = 2;
@@ -2797,7 +2798,7 @@ namespace ExpandTheGungeon.ExpandUtilities {
                         AIActor WallMimic = AIActor.Spawn(orLoadByGuid, Position, currentRoom, true, AIActor.AwakenAnimationType.Default, true);
                         ExpandWallMimicManager wallMimicController = WallMimic.gameObject.GetComponent<ExpandWallMimicManager>();
                         if (wallMimicController) {
-                            if (ExpandPlaceWallMimic.PlayerHasWallMimicItem) { wallMimicController.CursedBrickMode = true; }
+                            if (ExpandPlaceFloorObjects.PlayerHasWallMimicItem) { wallMimicController.CursedBrickMode = true; }
                             wallMimicController.DungeonCollectionOverride = FakeWallDungeonCollectionOverride;
                             wallMimicController.SkipPlayerCheck = true;
                         }

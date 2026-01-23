@@ -20,6 +20,9 @@ namespace ExpandTheGungeon.ExpandComponents {
                 "b5e699a0abb94666bda567ab23bd91c4", // bullet_kings_toadie
                 "d4dd2b2bbda64cc9bcec534b4e920518", // bullet_kings_toadie_revenge
                 "02a14dec58ab45fb8aacde7aacd25b01", // old_kings_toadie
+            };
+
+            ToadieWithGunsGUIDs = new List<string>() {
                 "01972dee89fc4404a5c408d50007dad5", // bullet_kin
                 ExpandEnemyDatabase.ClownkinAngryGUID
             };
@@ -31,6 +34,7 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
         
         public List<string> ToadieGUIDs;
+        public List<string> ToadieWithGunsGUIDs;
 
         public float MinTimeBetweenSpawns;
         public float MaxTimeBetweenSpawns;
@@ -65,8 +69,8 @@ namespace ExpandTheGungeon.ExpandComponents {
         }
 
         private void Update() {
-            if (m_CurrentRoom == null | !m_CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear)) { return; }
-            if (!m_Boss | m_Boss.healthHaver.IsDead) { return; }
+            if (m_CurrentRoom == null | !m_CurrentRoom.HasActiveEnemies(RoomHandler.ActiveEnemyType.RoomClear))return;
+            if (!m_Boss | m_Boss.healthHaver.IsDead)return;
 
             m_SpawnTimer -= BraveTime.DeltaTime;
             if (m_SpawnTimer <= 0) {
@@ -82,8 +86,16 @@ namespace ExpandTheGungeon.ExpandComponents {
                 if (ActiveToadies >= MaxActiveToadies) {
                     return;
                 } else {
+                    bool SpawnedToadieWithGun = false;
                     int ToadiesToSpawn = Random.Range(4, MaxToadiesPerWave);                    
-                    for (int i = 0; i < ToadiesToSpawn; i++) { RandomToadieAirDrop(BraveUtility.RandomElement(ToadieGUIDs), m_CurrentRoom); }
+                    for (int i = 0; i < ToadiesToSpawn; i++) {
+                        if (Random.value > 0.75f && !SpawnedToadieWithGun) {
+                            SpawnedToadieWithGun = true;
+                            RandomToadieAirDrop(BraveUtility.RandomElement(ToadieWithGunsGUIDs), m_CurrentRoom);
+                        } else {
+                            RandomToadieAirDrop(BraveUtility.RandomElement(ToadieGUIDs), m_CurrentRoom);
+                        }
+                    }
                 }
             }
         }
