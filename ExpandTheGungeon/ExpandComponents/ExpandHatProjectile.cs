@@ -167,9 +167,12 @@ namespace ExpandTheGungeon.ExpandComponents {
             
             if (m_Owner.CurrentRoom != null && m_Owner.CurrentRoom.connectedRooms != null) {
                 foreach (RoomHandler room in m_Owner.CurrentRoom.connectedRooms) {
-                    if (room.area != null && room.area.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
+                    if (room.area != null && room.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS) {
                         return;
                     }
+                }
+                if (m_Owner.CurrentRoom.area?.PrototypeRoomCategory == PrototypeDungeonRoom.RoomCategory.BOSS && GameManager.Instance?.Dungeon?.tileIndices.tilesetId == GlobalDungeonData.ValidTilesets.HELLGEON) {
+                    return;
                 }
             }
             
