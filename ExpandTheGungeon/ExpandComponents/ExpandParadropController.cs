@@ -352,6 +352,11 @@ namespace ExpandTheGungeon.ExpandComponents {
                                 m_ParentEnemy.behaviorSpeculator.PostAwakenDelay = 0;
                             }
                             m_ParentEnemy.behaviorSpeculator.RemoveDelayOnReinforce = true;
+                            if (m_ParentEnemy.transform.position.GetAbsoluteRoom() == null | (GameManager.HasInstance && GameManager.Instance.PrimaryPlayer && GameManager.Instance.PrimaryPlayer.CurrentRoom != null && m_ParentEnemy.transform.position.GetAbsoluteRoom() != GameManager.Instance.PrimaryPlayer.CurrentRoom)) {
+                                m_ParentEnemy.EraseFromExistence(true);
+                                Destroy(m_Anchor.gameObject);
+                                Destroy(this);
+                            }
                         }
                         if (healthHaver) {
                             healthHaver.PreventAllDamage = false;

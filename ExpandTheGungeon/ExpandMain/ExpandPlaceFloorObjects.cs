@@ -568,11 +568,11 @@ namespace ExpandTheGungeon.ExpandMain {
             }
             if (levelOverrideState == GameManager.LevelOverrideState.END_TIMES) { return; }
             
-            float SpawnChance = 0.1f;
+            float SpawnChance = 0.025f;
 
-            if (wallMimicCount != 0) { SpawnChance = 0.25f; }
+            if (wallMimicCount != 0)SpawnChance = 0.075f;
 
-            if (UnityEngine.Random.value > SpawnChance) { return; }
+            if (UnityEngine.Random.value > SpawnChance)return;
 
             if (ExpandSettings.debugMode) { ETGModConsole.Log("[DEBUG] Attempting to place a BackRooms NoClip Zone!"); }
             List<RoomHandler> Rooms = new List<RoomHandler>();
